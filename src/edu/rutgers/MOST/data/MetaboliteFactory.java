@@ -178,6 +178,25 @@ public class MetaboliteFactory {
 		return metabolites;
 	}
 	
+	public ArrayList<String> metaboliteExternalList() {
+		ArrayList<String> metaboliteExternalList = new ArrayList<String>();
+
+		if("SBML".equals(sourceType)){
+			for (int i = 0; i < GraphicalInterface.metabolitesTable.getRowCount(); i++) {
+				if (GraphicalInterface.metabolitesTable.getModel().getValueAt(i, GraphicalInterfaceConstants.METABOLITE_ABBREVIATION_COLUMN) != null &&
+						((String) GraphicalInterface.metabolitesTable.getModel().getValueAt(i, GraphicalInterfaceConstants.METABOLITE_ABBREVIATION_COLUMN)).trim().length() > 0) {
+					String boundary = (String) GraphicalInterface.metabolitesTable.getModel().getValueAt(i, GraphicalInterfaceConstants.BOUNDARY_COLUMN);
+					if (boundary.equals(GraphicalInterfaceConstants.BOOLEAN_VALUES[1])) {
+						String abbrev = (String) GraphicalInterface.metabolitesTable.getModel().getValueAt(i, GraphicalInterfaceConstants.METABOLITE_ABBREVIATION_COLUMN);
+						metaboliteExternalList.add(abbrev);
+					}
+				}				
+			}
+		}
+		
+		return metaboliteExternalList;
+	}
+	
 	public static void main(String[] args) {
 		
 	}
