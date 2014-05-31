@@ -9,6 +9,7 @@ import java.util.Map;
 import javax.swing.SortOrder;
 import javax.swing.table.DefaultTableModel;
 
+import edu.rutgers.MOST.data.EnzymeData;
 import edu.rutgers.MOST.data.ModelReactionEquation;
 import edu.rutgers.MOST.presentation.GraphicalInterface;
 
@@ -774,6 +775,16 @@ public class LocalConfig {
 
 	public void setGdbbKnockoutsMap(Map<String, ArrayList<Integer>> gdbbKnockoutsMap) {
 		this.gdbbKnockoutsMap = gdbbKnockoutsMap;
+	}
+	
+	private ArrayList<EnzymeData> enzymeDataList;
+
+	public ArrayList<EnzymeData> getEnzymeDataList() {
+		return enzymeDataList;
+	}
+
+	public void setEnzymeDataList(ArrayList<EnzymeData> enzymeDataList) {
+		this.enzymeDataList = enzymeDataList;
 	}
 
 }
