@@ -229,6 +229,10 @@ public class GraphicalInterfaceConstants {
     {"Reaction Equation (Metabolite Name)"
     };
     
+    public static final String[] EC_NUMBER_COLUMN_NAMES = 
+        {"EC", "EC Number"
+        };
+    
     // messages box titles and messages
     // general 
     public static final String NUMERIC_VALUE_ERROR_TITLE = "Invalid numeric entry.";

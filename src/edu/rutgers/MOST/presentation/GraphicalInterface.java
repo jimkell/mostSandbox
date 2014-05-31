@@ -26,6 +26,7 @@ import org.sbml.jsbml.SBMLReader;
 
 import edu.rutgers.MOST.config.LocalConfig;
 import edu.rutgers.MOST.data.ConfigProperties;
+import edu.rutgers.MOST.data.EnzymeDataReader;
 import edu.rutgers.MOST.data.FBAModel;
 import edu.rutgers.MOST.data.GDBBModel;
 import edu.rutgers.MOST.data.JSBMLWriter;
@@ -2195,6 +2196,34 @@ public class GraphicalInterface extends JFrame {
 				DefaultTableModel model = (DefaultTableModel) metabolitesTable.getModel();
 				setUpMetabolitesTable(model);
 				tabbedPane.setSelectedIndex(1);
+			}
+		});
+		
+		editMenu.addSeparator();
+		
+		JMenuItem visualizeMenu = new JMenuItem("Visualize");
+		editMenu.add(visualizeMenu);
+		visualizeMenu.setMnemonic(KeyEvent.VK_V);
+		
+		visualizeMenu.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ae) {
+				EnzymeDataReader r = new EnzymeDataReader();
+				r.readFile();
+				if (LocalConfig.getInstance().getReactionsMetaColumnNames().contains(GraphicalInterfaceConstants.EC_NUMBER_COLUMN_NAMES[0])) {
+					int index = LocalConfig.getInstance().getReactionsMetaColumnNames().indexOf(GraphicalInterfaceConstants.EC_NUMBER_COLUMN_NAMES[0]);
+					for (int j = 0; j < reactionsTable.getRowCount(); j++) {
+						System.out.println(reactionsTable.getModel().getValueAt(j, GraphicalInterfaceConstants.REACTIONS_COLUMN_NAMES.length + index));
+					}
+				} else if (LocalConfig.getInstance().getReactionsMetaColumnNames().contains(GraphicalInterfaceConstants.EC_NUMBER_COLUMN_NAMES[1])) {
+					int index = LocalConfig.getInstance().getReactionsMetaColumnNames().indexOf(GraphicalInterfaceConstants.EC_NUMBER_COLUMN_NAMES[1]);
+					for (int j = 0; j < reactionsTable.getRowCount(); j++) {
+						System.out.println(reactionsTable.getModel().getValueAt(j, GraphicalInterfaceConstants.REACTIONS_COLUMN_NAMES.length + index));
+					}
+				} else {
+					for (int j = 0; j < reactionsTable.getRowCount(); j++) {
+						System.out.println(reactionsTable.getModel().getValueAt(j, GraphicalInterfaceConstants.PROTEIN_CLASS_COLUMN));
+					}
+				}
 			}
 		});
 		
