@@ -31,11 +31,13 @@ import edu.rutgers.MOST.data.GDBBModel;
 import edu.rutgers.MOST.data.JSBMLWriter;
 import edu.rutgers.MOST.data.MetaboliteFactory;
 import edu.rutgers.MOST.data.MetaboliteUndoItem;
+import edu.rutgers.MOST.data.ModelMetabolite;
 import edu.rutgers.MOST.data.ModelReactionEquation;
 import edu.rutgers.MOST.data.ObjectCloner;
 import edu.rutgers.MOST.data.ReactionEquationUpdater;
 import edu.rutgers.MOST.data.ReactionFactory;
 import edu.rutgers.MOST.data.ReactionUndoItem;
+import edu.rutgers.MOST.data.SBMLMetabolite;
 import edu.rutgers.MOST.data.SBMLModelReader;
 import edu.rutgers.MOST.data.SBMLProduct;
 import edu.rutgers.MOST.data.SBMLReactant;
@@ -10644,14 +10646,35 @@ public class GraphicalInterface extends JFrame {
 		ArrayList<String> externalMetab = aFactory.metaboliteExternalList();
 		ArrayList<Integer> externalReactions = new ArrayList<Integer>();
 		System.out.println(aFactory.metaboliteExternalList());
-		for (int i = 0; i < externalMetab.size(); i++) {
-			ArrayList<Integer> ext = aFactory.participatingReactions(externalMetab.get(i));
-			for (int j = 0; j < ext.size(); j++) {
-				if (!externalReactions.contains(ext.get(j))) {
-					externalReactions.add(ext.get(j));
+		// models with metabolites that have boundary conditions = true
+		// usually but not always end with "_b"
+		if (externalMetab.size() > 0) {
+			for (int i = 0; i < externalMetab.size(); i++) {
+				ArrayList<Integer> ext = aFactory.participatingReactions(externalMetab.get(i));
+				for (int j = 0; j < ext.size(); j++) {
+					if (!externalReactions.contains(ext.get(j))) {
+						externalReactions.add(ext.get(j));
+					}
+				}
+			}
+			// models with reactions of the type a <==>
+		} else {
+			System.out.println(LocalConfig.getInstance().getReactionEquationMap());
+			for (int i = 0; i < LocalConfig.getInstance().getReactionEquationMap().size(); i++) {
+				if (((SBMLReactionEquation) LocalConfig.getInstance().getReactionEquationMap().get(i)).getReactants().size() == 0 &&
+						((SBMLReactionEquation) LocalConfig.getInstance().getReactionEquationMap().get(i)).getProducts().size() > 0) {
+					ArrayList<SBMLProduct> prod = (ArrayList<SBMLProduct>) ((SBMLReactionEquation) LocalConfig.getInstance().getReactionEquationMap().get(i)).getProducts();
+					System.out.println(prod.get(0).getReactionId());
+					externalReactions.add(prod.get(0).getReactionId());
+				} else if (((SBMLReactionEquation) LocalConfig.getInstance().getReactionEquationMap().get(i)).getProducts().size() == 0 &&
+						((SBMLReactionEquation) LocalConfig.getInstance().getReactionEquationMap().get(i)).getReactants().size() > 0) {
+					ArrayList<SBMLReactant> reac = (ArrayList<SBMLReactant>) ((SBMLReactionEquation) LocalConfig.getInstance().getReactionEquationMap().get(i)).getReactants();
+					System.out.println(reac.get(0).getReactionId());
+					externalReactions.add(reac.get(0).getReactionId());
 				}
 			}
 		}
+		
 		Collections.sort(externalReactions);
 		System.out.println(externalReactions);
 	}

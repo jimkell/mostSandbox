@@ -63,6 +63,11 @@ public class SBMLModelReader {
 		LocalConfig.getInstance().getMetaboliteAbbreviationIdMap().clear();
 		Map<String, Object> metaboliteNameIdMap = new HashMap<String, Object>();
 
+		ListOf<Compartment> compartments = doc.getModel().getListOfCompartments();
+		for (int i = 0; i < compartments.size(); i++) {
+			System.out.println(compartments.get(i).toString());
+		}
+		
 		ArrayList<String> metabolitesMetaColumnNames = new ArrayList<String>();
 		ListOf<Species> metabolites = doc.getModel().getListOfSpecies();
 		for (int i = 0; i < metabolites.size(); i++) {
