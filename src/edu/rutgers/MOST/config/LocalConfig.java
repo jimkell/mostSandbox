@@ -786,5 +786,15 @@ public class LocalConfig {
 	public void setEnzymeDataList(ArrayList<EnzymeData> enzymeDataList) {
 		this.enzymeDataList = enzymeDataList;
 	}
+	
+	private Map<String, EnzymeData> enzymeDataMap;
+
+	public Map<String, EnzymeData> getEnzymeDataMap() {
+		return enzymeDataMap;
+	}
+
+	public void setEnzymeDataMap(Map<String, EnzymeData> enzymeDataMap) {
+		this.enzymeDataMap = enzymeDataMap;
+	}
 
 }

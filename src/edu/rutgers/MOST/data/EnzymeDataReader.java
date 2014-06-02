@@ -6,6 +6,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import edu.rutgers.MOST.config.LocalConfig;
 
@@ -37,6 +39,8 @@ public class EnzymeDataReader {
 			String temp = br.readLine();
 			ArrayList<EnzymeData> enzymeDataList = new ArrayList<EnzymeData>();
 			LocalConfig.getInstance().setEnzymeDataList(enzymeDataList);
+			Map<String, EnzymeData> enzymeDataMap = new HashMap<String, EnzymeData>();
+			LocalConfig.getInstance().setEnzymeDataMap(enzymeDataMap);
 			ArrayList<String> description = new ArrayList<String>();
 			ArrayList<String> alternateNames = new ArrayList<String>();
 			ArrayList<String> catalyticActivity = new ArrayList<String>();
@@ -51,6 +55,7 @@ public class EnzymeDataReader {
 						if (getEnzymeData().getId() != null) {
 							getEnzymeData().setCatalyticActivity(catalyticActivity);
 							LocalConfig.getInstance().getEnzymeDataList().add(getEnzymeData());
+							LocalConfig.getInstance().getEnzymeDataMap().put(getEnzymeData().getId(), getEnzymeData());
 						}
 						// create new lists for each new id
 						description = new ArrayList<String>();
@@ -86,9 +91,10 @@ public class EnzymeDataReader {
 					}
 				}
 			}
-			for (int i = 0; i < LocalConfig.getInstance().getEnzymeDataList().size(); i++) {
-				System.out.println(LocalConfig.getInstance().getEnzymeDataList().get(i).toString());
-			}
+//			for (int i = 0; i < LocalConfig.getInstance().getEnzymeDataList().size(); i++) {
+//				System.out.println(LocalConfig.getInstance().getEnzymeDataList().get(i).toString());
+//			}
+			//System.out.println(LocalConfig.getInstance().getEnzymeDataMap());
 		} catch (FileNotFoundException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -101,5 +107,6 @@ public class EnzymeDataReader {
 	public static void main(String[] args) {
 		EnzymeDataReader r = new EnzymeDataReader();
 		r.readFile();
+		//System.out.println(LocalConfig.getInstance().getEnzymeDataMap().get("1.1.1.1"));
 	}
 }

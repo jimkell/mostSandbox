@@ -2209,21 +2209,7 @@ public class GraphicalInterface extends JFrame {
 			public void actionPerformed(ActionEvent ae) {
 				EnzymeDataReader r = new EnzymeDataReader();
 				r.readFile();
-				if (LocalConfig.getInstance().getReactionsMetaColumnNames().contains(GraphicalInterfaceConstants.EC_NUMBER_COLUMN_NAMES[0])) {
-					int index = LocalConfig.getInstance().getReactionsMetaColumnNames().indexOf(GraphicalInterfaceConstants.EC_NUMBER_COLUMN_NAMES[0]);
-					for (int j = 0; j < reactionsTable.getRowCount(); j++) {
-						System.out.println(reactionsTable.getModel().getValueAt(j, GraphicalInterfaceConstants.REACTIONS_COLUMN_NAMES.length + index));
-					}
-				} else if (LocalConfig.getInstance().getReactionsMetaColumnNames().contains(GraphicalInterfaceConstants.EC_NUMBER_COLUMN_NAMES[1])) {
-					int index = LocalConfig.getInstance().getReactionsMetaColumnNames().indexOf(GraphicalInterfaceConstants.EC_NUMBER_COLUMN_NAMES[1]);
-					for (int j = 0; j < reactionsTable.getRowCount(); j++) {
-						System.out.println(reactionsTable.getModel().getValueAt(j, GraphicalInterfaceConstants.REACTIONS_COLUMN_NAMES.length + index));
-					}
-				} else {
-					for (int j = 0; j < reactionsTable.getRowCount(); j++) {
-						System.out.println(reactionsTable.getModel().getValueAt(j, GraphicalInterfaceConstants.PROTEIN_CLASS_COLUMN));
-					}
-				}
+				getECNumbers();
 			}
 		});
 		
@@ -10706,6 +10692,42 @@ public class GraphicalInterface extends JFrame {
 		
 		Collections.sort(externalReactions);
 		System.out.println(externalReactions);
+	}
+	
+	public Integer getECColumnColumnIndex() {
+		int index = -1;
+		for (int i = 0; i < LocalConfig.getInstance().getReactionsMetaColumnNames().size(); i++) {
+			if (LocalConfig.getInstance().getReactionsMetaColumnNames().get(i).equals(GraphicalInterfaceConstants.EC_NUMBER_COLUMN_NAMES[0])) {
+				index = GraphicalInterfaceConstants.REACTIONS_COLUMN_NAMES.length + LocalConfig.getInstance().getReactionsMetaColumnNames().indexOf(GraphicalInterfaceConstants.EC_NUMBER_COLUMN_NAMES[0]);
+			} else if (LocalConfig.getInstance().getReactionsMetaColumnNames().get(i).equals(GraphicalInterfaceConstants.EC_NUMBER_COLUMN_NAMES[1])) {
+				index = GraphicalInterfaceConstants.REACTIONS_COLUMN_NAMES.length + LocalConfig.getInstance().getReactionsMetaColumnNames().indexOf(GraphicalInterfaceConstants.EC_NUMBER_COLUMN_NAMES[1]);
+			}
+		}
+		if (index == -1) {
+			index = GraphicalInterfaceConstants.PROTEIN_CLASS_COLUMN;
+		}
+		System.out.println(index);
+		
+		return index;
+	}
+	
+	public void getECNumbers() {
+		int ecColumnIndex = getECColumnColumnIndex();
+		if (ecColumnIndex > -1) {
+			for (int j = 0; j < reactionsTable.getRowCount(); j++) {
+				String ECNumber = (String) reactionsTable.getModel().getValueAt(j, ecColumnIndex);
+				//System.out.println(reactionsTable.getModel().getValueAt(j, ecColumnIndex));
+				printDataFromECNumber(ECNumber);
+			}
+		}
+	}
+	
+	public void printDataFromECNumber(String ECNumber) {
+		if (ECNumber != null && ECNumber.length() > 0) {
+			if (LocalConfig.getInstance().getEnzymeDataMap().containsKey(ECNumber)) {
+				System.out.println(LocalConfig.getInstance().getEnzymeDataMap().get(ECNumber));
+			}
+		}
 	}
 	
 	public static void main(String[] args) {
