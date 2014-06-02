@@ -777,6 +777,7 @@ public class LocalConfig {
 		this.gdbbKnockoutsMap = gdbbKnockoutsMap;
 	}
 	
+	// may need to make maps with other keys such as Reaction Name
 	private ArrayList<EnzymeData> enzymeDataList;
 
 	public ArrayList<EnzymeData> getEnzymeDataList() {

@@ -97,6 +97,7 @@ import java.io.Writer;
 import java.nio.channels.FileChannel;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -10694,6 +10695,7 @@ public class GraphicalInterface extends JFrame {
 		System.out.println(externalReactions);
 	}
 	
+	// get index of column with EC numbers
 	public Integer getECColumnColumnIndex() {
 		int index = -1;
 		for (int i = 0; i < LocalConfig.getInstance().getReactionsMetaColumnNames().size(); i++) {
@@ -10706,17 +10708,18 @@ public class GraphicalInterface extends JFrame {
 		if (index == -1) {
 			index = GraphicalInterfaceConstants.PROTEIN_CLASS_COLUMN;
 		}
-		System.out.println(index);
 		
 		return index;
 	}
 	
+	// gets entries from EC column or Protein Class column
 	public void getECNumbers() {
 		int ecColumnIndex = getECColumnColumnIndex();
 		if (ecColumnIndex > -1) {
 			for (int j = 0; j < reactionsTable.getRowCount(); j++) {
 				String ECNumber = (String) reactionsTable.getModel().getValueAt(j, ecColumnIndex);
 				//System.out.println(reactionsTable.getModel().getValueAt(j, ecColumnIndex));
+				System.out.println(j);
 				printDataFromECNumber(ECNumber);
 			}
 		}
@@ -10724,8 +10727,16 @@ public class GraphicalInterface extends JFrame {
 	
 	public void printDataFromECNumber(String ECNumber) {
 		if (ECNumber != null && ECNumber.length() > 0) {
-			if (LocalConfig.getInstance().getEnzymeDataMap().containsKey(ECNumber)) {
-				System.out.println(LocalConfig.getInstance().getEnzymeDataMap().get(ECNumber));
+			// model may contain more tha one EC number, separated by white space
+			// AraGEM model has this condition
+			java.util.List<String> numbers = Arrays.asList(ECNumber.split("\\s"));
+			//System.out.println(numbers);
+			for (int i = 0; i < numbers.size(); i++) {
+				if (numbers.get(i) != null && numbers.get(i).length() > 0) {
+					if (LocalConfig.getInstance().getEnzymeDataMap().containsKey(numbers.get(i))) {
+						System.out.println(LocalConfig.getInstance().getEnzymeDataMap().get(numbers.get(i)));
+					}
+				}
 			}
 		}
 	}
