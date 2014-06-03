@@ -26,6 +26,7 @@ import org.sbml.jsbml.SBMLReader;
 
 import edu.rutgers.MOST.config.LocalConfig;
 import edu.rutgers.MOST.data.ConfigProperties;
+import edu.rutgers.MOST.data.EnzymeConstants;
 import edu.rutgers.MOST.data.EnzymeDataReader;
 import edu.rutgers.MOST.data.FBAModel;
 import edu.rutgers.MOST.data.GDBBModel;
@@ -10726,6 +10727,7 @@ public class GraphicalInterface extends JFrame {
 	}
 	
 	public void printDataFromECNumber(String ECNumber) {
+		ArrayList<String> tcaReactions = new ArrayList<String>();
 		if (ECNumber != null && ECNumber.length() > 0) {
 			// model may contain more tha one EC number, separated by white space
 			// AraGEM model has this condition
@@ -10735,6 +10737,12 @@ public class GraphicalInterface extends JFrame {
 				if (numbers.get(i) != null && numbers.get(i).length() > 0) {
 					if (LocalConfig.getInstance().getEnzymeDataMap().containsKey(numbers.get(i))) {
 						System.out.println(LocalConfig.getInstance().getEnzymeDataMap().get(numbers.get(i)));
+						for (int j = 0; j < EnzymeConstants.TCA_CYCLE_EC_NUMBERS.length; j++) {
+							if (EnzymeConstants.TCA_CYCLE_EC_NUMBERS[j].equals(numbers.get(i))) {
+								tcaReactions.add(numbers.get(i));
+								System.out.println("TCA " + numbers.get(i));
+							}
+						}
 					}
 				}
 			}
