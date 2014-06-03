@@ -10675,7 +10675,7 @@ public class GraphicalInterface extends JFrame {
 			}
 			// models with reactions of the type a <==>
 		} else {
-			System.out.println(LocalConfig.getInstance().getReactionEquationMap());
+			//System.out.println(LocalConfig.getInstance().getReactionEquationMap());
 			for (int i = 0; i < LocalConfig.getInstance().getReactionEquationMap().size(); i++) {
 				if (((SBMLReactionEquation) LocalConfig.getInstance().getReactionEquationMap().get(i)).getReactants().size() == 0 &&
 						((SBMLReactionEquation) LocalConfig.getInstance().getReactionEquationMap().get(i)).getProducts().size() > 0) {
