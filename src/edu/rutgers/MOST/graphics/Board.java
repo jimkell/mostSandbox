@@ -8,6 +8,8 @@ import java.awt.RenderingHints;
 
 import javax.swing.JPanel;
 
+// based on http://stackoverflow.com/questions/10148421/jpanel-setbackgroundcolor-black-does-nothing
+// and http://zetcode.com/gfx/java2d/shapesandfills/
 public class Board extends JPanel {
 
     /**
@@ -36,5 +38,6 @@ public class Board extends JPanel {
         g2d.drawLine(400, 30, 400, 120);
         g2d.drawArc(500, 225, 50, 50, 90, 180);
         g2d.drawOval(300, 150, 200, 200); 
+        //g2d.drawLine(700, 30, 700, 900);
     } 
 }

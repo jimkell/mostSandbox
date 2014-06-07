@@ -2,6 +2,7 @@ package edu.rutgers.MOST.graphics;
 
 import javax.swing.JFrame;
 
+//based on http://zetcode.com/gfx/java2d/shapesandfills/
 public class BasicShapes extends JFrame {
 
     /**

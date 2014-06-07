@@ -8,7 +8,7 @@ import java.awt.geom.Ellipse2D;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
-
+// based on http://zetcode.com/gfx/java2d/shapesandfills/
 class Surface extends JPanel {
     
     /**
