@@ -21,7 +21,8 @@ public class BasicShapes extends JFrame {
         
         add(new Surface());
         
-        setSize(350, 250);
+        //setSize(350, 250);
+        setSize(800, 600);
         setLocationRelativeTo(null);        
     }
 }
