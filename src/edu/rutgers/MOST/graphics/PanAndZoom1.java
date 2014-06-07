@@ -60,13 +60,22 @@ public class PanAndZoom1 implements ChangeListener {
         g2.drawLine(400, 30, 400, 105);
         FontMetrics fm = g2.getFontMetrics();
         int stringWidth = fm.stringWidth("Test");
-        System.out.println(stringWidth);
         int stringHeight = fm.getHeight();
         // centers string relative to line
         g2.drawString("Test", 400 - stringWidth/2, 105 + stringHeight);
         g2.drawArc(400, 102, 50, 50, 180, 75);
         g2.drawArc(500, 225, 50, 50, 90, 180);
+        // draw arrow at bottom of arc
+        g2.drawLine(515, 265, 525, 275);
+        g2.drawLine(512, 278, 526, 275);
+        // places string 10 px after top end of arc
+        g2.drawString("Test", 535, 225 + stringHeight/4);
         g2.drawOval(300, 150, 200, 200); 
+        g2.drawLine(100, 500, 150, 500);
+        // places string 10 px after end of line
+        g2.drawString("Test", 160, 500 + stringHeight/4);
+        // places line 10 px after end of string
+        g2.drawLine(170 + stringWidth, 500, 220 + stringWidth, 500);
         g2.dispose();  
     }  
    
