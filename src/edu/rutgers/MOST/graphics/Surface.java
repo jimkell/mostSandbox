@@ -1,4 +1,4 @@
-package edu.rutgers.MOST.presentation;
+package edu.rutgers.MOST.graphics;
 
 import java.awt.Color;
 import java.awt.Graphics;

@@ -1,4 +1,4 @@
-package edu.rutgers.MOST.presentation;
+package edu.rutgers.MOST.graphics;
 
 import javax.swing.JFrame;
 
