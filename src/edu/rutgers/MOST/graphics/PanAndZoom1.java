@@ -3,6 +3,8 @@ package edu.rutgers.MOST.graphics;
 import java.awt.*;  
 import java.awt.geom.*;  
 import java.awt.image.BufferedImage;  
+import java.util.ArrayList;
+
 import javax.swing.*;  
 import javax.swing.event.*;  
 
@@ -48,23 +50,29 @@ public class PanAndZoom1 implements ChangeListener {
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,  
                             RenderingHints.VALUE_ANTIALIAS_ON);  
         g2.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL,  
-                            RenderingHints.VALUE_STROKE_PURE);  
-        g2.setPaint(new Color(240,200,200));  
+                            RenderingHints.VALUE_STROKE_PURE);
+        
+      //g2.setStroke(new BasicStroke(3));
+        
+        g2.setPaint(Color.WHITE);  
         g2.fillRect(0,0,w,h);  
-        g2.setPaint(Color.blue);  
-        g2.draw(new Rectangle2D.Double(w/16, h/16, w*7/8, h*7/8));  
-        g2.setPaint(Color.green.darker());  
-        g2.draw(new Line2D.Double(w/16, h*15/16, w*15/16, h/16));  
-        Ellipse2D e = new Ellipse2D.Double(w/4, h/4, w/2, h/2);  
-        g2.setPaint(new Color(240,240,200));  
-        g2.fill(e);  
-        g2.setPaint(Color.red);  
-        g2.draw(e);  
+        g2.setColor(Color.BLACK);
+        g2.drawLine(400, 30, 400, 105);
+        FontMetrics fm = g2.getFontMetrics();
+        int stringWidth = fm.stringWidth("Test");
+        System.out.println(stringWidth);
+        int stringHeight = fm.getHeight();
+        // centers string relative to line
+        g2.drawString("Test", 400 - stringWidth/2, 105 + stringHeight);
+        g2.drawArc(400, 102, 50, 50, 180, 75);
+        g2.drawArc(500, 225, 50, 50, 90, 180);
+        g2.drawOval(300, 150, 200, 200); 
         g2.dispose();  
     }  
    
     private JSlider getControl() {  
         JSlider slider = new JSlider(JSlider.HORIZONTAL, 50, 200, 100);  
+        slider.setSize(100, 20); 
         slider.setMajorTickSpacing(50);  
         slider.setMinorTickSpacing(10);  
         slider.setPaintTicks(true);  
@@ -73,9 +81,15 @@ public class PanAndZoom1 implements ChangeListener {
         return slider;          
     }  
    
-    public static void main(String[] args) {  
+    public static void main(String[] args) { 
+    	final ArrayList<Image> icons = new ArrayList<Image>(); 
+		icons.add(new ImageIcon("etc/most16.jpg").getImage()); 
+		icons.add(new ImageIcon("etc/most32.jpg").getImage());
+    	
         PanAndZoom1 app = new PanAndZoom1();  
-        JFrame f = new JFrame();  
+        JFrame f = new JFrame(); 
+        f.setTitle("MOST");
+        f.setIconImages(icons);
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  
         f.getContentPane().add(new JScrollPane(app.getContent()));  
         f.getContentPane().add(app.getControl(), "Last");  
