@@ -58,6 +58,40 @@ public class BasicDraw {
     	g2d.dispose();
     }
     
+public void drawStraightVerticalPathway(Graphics g, int startX, int startY, int width, String[] metabolites) {
+    	
+    	//creates a copy of the Graphics instance
+    	Graphics2D g2d = (Graphics2D) g.create();
+    	
+    	g2d.setStroke(new BasicStroke(width));
+    	
+    	for (int i = 0; i < metabolites.length; i++) {
+    		FontMetrics fm = g2d.getFontMetrics();
+            int stringWidth = fm.stringWidth(metabolites[i]);
+            int stringHeight = fm.getHeight();
+    		g2d.drawString(metabolites[i], startX - stringWidth/2, startY);
+    		startY += GraphicsConstants.DEFAULT_SPACE;
+    		// places line 10 px after end of string
+    		g2d.drawLine(startX, startY, startX, startY + GraphicsConstants.DEFAULT_VERTICAL_PATH_LENGTH);
+    		drawVerticalArrow(g2d, startX, startY + GraphicsConstants.DEFAULT_VERTICAL_PATH_LENGTH, 2);
+    		// places line 10 px after end of string
+    		startY += stringHeight + GraphicsConstants.DEFAULT_VERTICAL_PATH_LENGTH;
+    	}
+    	
+    	g2d.dispose();
+    }
     
+    // startX and startY are start of line, endX and endY are end of line
+    // avoids use of trig functions
+    public void drawVerticalArrow(Graphics g, int endX, int endY, int width) {
+    	Graphics2D g2d = (Graphics2D) g.create();
+    	
+    	g2d.setStroke(new BasicStroke(width));
+    	
+    	g2d.drawLine(endX - GraphicsConstants.ARROW_HEIGHT, endY - GraphicsConstants.ARROW_LENGTH, endX, endY);
+    	g2d.drawLine(endX + GraphicsConstants.ARROW_HEIGHT, endY - GraphicsConstants.ARROW_LENGTH, endX, endY);
+    	
+    	g2d.dispose();
+    }
 	
 }
