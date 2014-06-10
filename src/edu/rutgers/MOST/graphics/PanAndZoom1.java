@@ -41,18 +41,19 @@ public class PanAndZoom1 implements ChangeListener {
         return label;  
     }  
    
-    private void createAnImage() {  
+    private void createAnImage() { 
         int w = 1000;  
         int h = 1000;  
         int type = BufferedImage.TYPE_INT_RGB; // many options  
         image = new BufferedImage(w, h, type);  
         Graphics2D g2 = image.createGraphics();  
+        BasicDraw basicDraw = new BasicDraw();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,  
                             RenderingHints.VALUE_ANTIALIAS_ON);  
         g2.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL,  
                             RenderingHints.VALUE_STROKE_PURE);
         
-      //g2.setStroke(new BasicStroke(3));
+        g2.setStroke(new BasicStroke(2));
         
         g2.setPaint(Color.WHITE);  
         g2.fillRect(0,0,w,h);  
@@ -76,6 +77,8 @@ public class PanAndZoom1 implements ChangeListener {
         g2.drawString("Test", 160, 500 + stringHeight/4);
         // places line 10 px after end of string
         g2.drawLine(170 + stringWidth, 500, 220 + stringWidth, 500);
+        g2.setPaint(Color.RED); 
+        basicDraw.drawDashedLine(g2, 800, 20, 800, 300, 2);
         g2.dispose();  
     }  
    
@@ -88,8 +91,8 @@ public class PanAndZoom1 implements ChangeListener {
         slider.setPaintLabels(true);  
         slider.addChangeListener(this);  
         return slider;          
-    }  
-   
+    } 
+
     public static void main(String[] args) { 
     	final ArrayList<Image> icons = new ArrayList<Image>(); 
 		icons.add(new ImageIcon("etc/most16.jpg").getImage()); 
