@@ -98,7 +98,7 @@ public class PanAndZoom1 implements ChangeListener {
 			"metab3",		
 			"metab4",
 			"metab5",
-			"longMetab\nName"
+			"long Metab\nName"
 		};
 
     public static void main(String[] args) { 

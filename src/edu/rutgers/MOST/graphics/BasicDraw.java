@@ -7,6 +7,8 @@ import java.awt.Graphics2D;
 import java.awt.Stroke;
 
 public class BasicDraw {
+	
+	private int maxStringWidth;
 
 	// based on http://stackoverflow.com/questions/21989082/drawing-dashed-line-in-java
     public void drawDashedLine(Graphics g, int x1, int y1, int x2, int y2, int width){
@@ -33,7 +35,12 @@ public class BasicDraw {
     		FontMetrics fm = g2d.getFontMetrics();
             int stringWidth = fm.stringWidth(metabolites[i]);
             int stringHeight = fm.getHeight();
-    		g2d.drawString(metabolites[i], startX, startY + stringHeight/4);
+    		if (metabolites[i].contains("\n")) {
+    			drawMultilineString(g2d, metabolites[i], startX, startY - stringHeight - stringHeight/4);
+    			stringWidth = maxStringWidth;
+    		} else {
+    			g2d.drawString(metabolites[i], startX, startY + stringHeight/4);
+    		}
     		startX += stringWidth + GraphicsConstants.DEFAULT_SPACE;
     		// places line 10 px after end of string
     		g2d.drawLine(startX, startY, startX + GraphicsConstants.DEFAULT_HORIZONTAL_PATH_LENGTH, startY);
@@ -92,6 +99,18 @@ public void drawStraightVerticalPathway(Graphics g, int startX, int startY, int 
     	g2d.drawLine(endX + GraphicsConstants.ARROW_HEIGHT, endY - GraphicsConstants.ARROW_LENGTH, endX, endY);
     	
     	g2d.dispose();
+    }
+    
+    // based on http://stackoverflow.com/questions/4413132/problems-with-newline-in-graphics2d-drawstring
+    public void drawMultilineString(Graphics g, String text, int x, int y) {
+    	FontMetrics fm = g.getFontMetrics();
+        for (String line : text.split("\n")) {
+        	int stringWidth = fm.stringWidth(line);
+        	if (stringWidth > maxStringWidth) {
+        		maxStringWidth = stringWidth;
+        	}
+        	g.drawString(line, x, y += g.getFontMetrics().getHeight());
+        }  
     }
 	
 }
