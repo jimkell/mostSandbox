@@ -36,7 +36,7 @@ public class BasicDraw {
             int stringWidth = fm.stringWidth(metabolites[i]);
             int stringHeight = fm.getHeight();
     		if (metabolites[i].contains("\n")) {
-    			drawMultilineString(g2d, metabolites[i], startX, startY - stringHeight - stringHeight/4);
+    			drawMultilineString(g2d, metabolites[i], startX, startY - stringHeight - stringHeight/4, true);
     			stringWidth = maxStringWidth;
     		} else {
     			g2d.drawString(metabolites[i], startX, startY + stringHeight/4);
@@ -102,14 +102,20 @@ public void drawStraightVerticalPathway(Graphics g, int startX, int startY, int 
     }
     
     // based on http://stackoverflow.com/questions/4413132/problems-with-newline-in-graphics2d-drawstring
-    public void drawMultilineString(Graphics g, String text, int x, int y) {
+    public void drawMultilineString(Graphics g, String text, int x, int y, boolean center) {
     	FontMetrics fm = g.getFontMetrics();
-        for (String line : text.split("\n")) {
-        	int stringWidth = fm.stringWidth(line);
+    	for (String line : text.split("\n")) {
+    		int stringWidth = fm.stringWidth(line);
         	if (stringWidth > maxStringWidth) {
         		maxStringWidth = stringWidth;
         	}
-        	g.drawString(line, x, y += g.getFontMetrics().getHeight());
+    	}
+        for (String line : text.split("\n")) {
+        	if (center) {
+        		g.drawString(line, x + maxStringWidth/2 - fm.stringWidth(line)/2, y += g.getFontMetrics().getHeight());
+        	} else {
+        		g.drawString(line, x, y += g.getFontMetrics().getHeight());
+        	}
         }  
     }
 	
