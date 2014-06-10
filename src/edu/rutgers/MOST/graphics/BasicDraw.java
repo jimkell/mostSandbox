@@ -22,10 +22,12 @@ public class BasicDraw {
     	g2d.dispose();
     }
     
-    public void drawStraightHorizontalPathway(Graphics g, int startX, int startY, String[] metabolites) {
+    public void drawStraightHorizontalPathway(Graphics g, int startX, int startY, int width, String[] metabolites) {
     	
     	//creates a copy of the Graphics instance
     	Graphics2D g2d = (Graphics2D) g.create();
+    	
+    	g2d.setStroke(new BasicStroke(width));
     	
     	for (int i = 0; i < metabolites.length; i++) {
     		FontMetrics fm = g2d.getFontMetrics();
@@ -35,12 +37,27 @@ public class BasicDraw {
     		startX += stringWidth + GraphicsConstants.DEFAULT_SPACE;
     		// places line 10 px after end of string
     		g2d.drawLine(startX, startY, startX + GraphicsConstants.DEFAULT_HORIZONTAL_PATH_LENGTH, startY);
+    		drawHorizontalArrow(g2d, startX + GraphicsConstants.DEFAULT_HORIZONTAL_PATH_LENGTH, startY, 2);
     		// places line 10 px after end of string
     		startX += stringWidth;
     	}
     	
-        //gets rid of the copy
     	g2d.dispose();
     }
+    
+    // startX and startY are start of line, endX and endY are end of line
+    // avoids use of trig functions
+    public void drawHorizontalArrow(Graphics g, int endX, int endY, int width) {
+    	Graphics2D g2d = (Graphics2D) g.create();
+    	
+    	g2d.setStroke(new BasicStroke(width));
+    	
+    	g2d.drawLine(endX - GraphicsConstants.ARROW_LENGTH, endY - GraphicsConstants.ARROW_HEIGHT, endX, endY);
+    	g2d.drawLine(endX - GraphicsConstants.ARROW_LENGTH, endY + GraphicsConstants.ARROW_HEIGHT, endX, endY);
+    	
+    	g2d.dispose();
+    }
+    
+    
 	
 }
