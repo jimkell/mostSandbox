@@ -72,11 +72,13 @@ public class PanAndZoom1 implements ChangeListener {
         // places string 10 px after top end of arc
         g2.drawString("Test", 535, 225 + stringHeight/4);
         g2.drawOval(300, 150, 200, 200); 
-        g2.drawLine(100, 500, 150, 500);
-        // places string 10 px after end of line
-        g2.drawString("Test", 160, 500 + stringHeight/4);
-        // places line 10 px after end of string
-        g2.drawLine(170 + stringWidth, 500, 220 + stringWidth, 500);
+        
+        basicDraw.drawStraightHorizontalPathway(g2, 100, 500, test);
+//        g2.drawLine(100, 500, 150, 500);
+//        // places string 10 px after end of line
+//        g2.drawString("Test", 160, 500 + stringHeight/4);
+//        // places line 10 px after end of string
+//        g2.drawLine(170 + stringWidth, 500, 220 + stringWidth, 500);
         g2.setPaint(Color.RED); 
         basicDraw.drawDashedLine(g2, 800, 20, 800, 300, 2);
         g2.dispose();  
@@ -92,6 +94,16 @@ public class PanAndZoom1 implements ChangeListener {
         slider.addChangeListener(this);  
         return slider;          
     } 
+    
+    public String[] test = 
+		{ 
+			"metab1",
+			"metab2",
+			"metab3",		
+			"metab4",
+			"metab5",
+			"longMetab\nName"
+		};
 
     public static void main(String[] args) { 
     	final ArrayList<Image> icons = new ArrayList<Image>(); 

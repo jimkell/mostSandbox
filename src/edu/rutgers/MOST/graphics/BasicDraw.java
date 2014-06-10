@@ -1,6 +1,7 @@
 package edu.rutgers.MOST.graphics;
 
 import java.awt.BasicStroke;
+import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Stroke;
@@ -18,6 +19,27 @@ public class BasicDraw {
     	g2d.drawLine(x1, y1, x2, y2);
 
     	//gets rid of the copy
+    	g2d.dispose();
+    }
+    
+    public void drawStraightHorizontalPathway(Graphics g, int startX, int startY, String[] metabolites) {
+    	
+    	//creates a copy of the Graphics instance
+    	Graphics2D g2d = (Graphics2D) g.create();
+    	
+    	for (int i = 0; i < metabolites.length; i++) {
+    		FontMetrics fm = g2d.getFontMetrics();
+            int stringWidth = fm.stringWidth(metabolites[i]);
+            int stringHeight = fm.getHeight();
+    		g2d.drawString(metabolites[i], startX, startY + stringHeight/4);
+    		startX += stringWidth + GraphicsConstants.DEFAULT_SPACE;
+    		// places line 10 px after end of string
+    		g2d.drawLine(startX, startY, startX + GraphicsConstants.DEFAULT_HORIZONTAL_PATH_LENGTH, startY);
+    		// places line 10 px after end of string
+    		startX += stringWidth;
+    	}
+    	
+        //gets rid of the copy
     	g2d.dispose();
     }
 	
