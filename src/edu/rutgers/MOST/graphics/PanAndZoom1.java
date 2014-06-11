@@ -77,6 +77,19 @@ public class PanAndZoom1 implements ChangeListener {
         basicDraw.drawStraightVerticalPathway(g2, 750, 20, 2, test);
         g2.setPaint(Color.RED); 
         basicDraw.drawDashedLine(g2, 800, 20, 800, 300, 2);
+ 
+        // uncomment to show that everything after rotate gets rotated
+//        g2.rotate(Math.toRadians(45), 55, 55);
+//        g2.drawLine(50, 50, 50, 60);
+//        g2.drawLine(130, 70, 130, 80);
+        
+        // draw rotated components
+        basicDraw.drawRotatedArrowedLine(g2, 50, 50, -45, 2);
+        basicDraw.drawRotatedArrowedLine(g2, 40, 50, 45, 2);
+        
+        // components drawn after rotated components are not rotated
+        g2.drawLine(130, 70, 130, 80);
+        
         g2.dispose();  
     }  
    
