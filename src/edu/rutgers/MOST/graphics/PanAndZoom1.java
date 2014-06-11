@@ -107,11 +107,12 @@ public class PanAndZoom1 implements ChangeListener {
     public String[] test = 
 		{ 
 			"metab1",
-			"metab2",
+			"metabolite2",
 			"metab3",		
-			"metab4",
+			"met4",
 			"metab5",
-			"long Metab\nName"
+			"long Metab\nName", 
+			"metab6"
 		};
 
     public static void main(String[] args) { 
