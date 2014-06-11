@@ -67,8 +67,9 @@ public class PanAndZoom1 implements ChangeListener {
         g2.drawArc(400, 102, 50, 50, 180, 75);
         g2.drawArc(500, 225, 50, 50, 90, 180);
         // draw arrow at bottom of arc
-        g2.drawLine(515, 265, 525, 275);
-        g2.drawLine(512, 278, 526, 275);
+        basicDraw.drawHorizontalArrow(g2, 530, 275, 2);
+//        g2.drawLine(515, 265, 525, 275);
+//        g2.drawLine(512, 278, 526, 275);
         // places string 10 px after top end of arc
         g2.drawString("Test", 535, 225 + stringHeight/4);
         g2.drawOval(300, 150, 200, 200); 
@@ -88,6 +89,9 @@ public class PanAndZoom1 implements ChangeListener {
         basicDraw.drawRotatedArrowedLine(g2, 40, 50, 45, 2);
         
         // components drawn after rotated components are not rotated
+        int increment = (int) (GraphicsConstants.DEFAULT_HORIZONTAL_PATH_LENGTH/(Math.sqrt(2)));
+        g2.drawLine(40 - increment, 60 + increment, 40 - increment, 60 + increment + GraphicsConstants.DEFAULT_VERTICAL_PATH_LENGTH);
+        g2.drawLine(50 + increment, 60 + increment, 50 + increment, 60 + increment + GraphicsConstants.DEFAULT_VERTICAL_PATH_LENGTH);
         g2.drawLine(130, 70, 130, 80);
         
         g2.dispose();  
