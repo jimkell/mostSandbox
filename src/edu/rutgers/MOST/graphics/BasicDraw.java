@@ -114,6 +114,16 @@ public class BasicDraw {
 		g2d.dispose();
 	}
 	
+	public void drawSideArc(Graphics g, int x, int y, int width, int startAngle, int endAngle) {
+		Graphics2D g2d = (Graphics2D) g.create();
+
+		g2d.setStroke(new BasicStroke(width));
+
+		g2d.drawArc(x + 1, y, GraphicsConstants.SIDE_ARC_MAJOR_AXIS, GraphicsConstants.SIDE_ARC_MINOR_AXIS, startAngle, endAngle);
+		
+		g2d.dispose();
+	}
+	
 	public int multilineStringWidth(Graphics g, String text) {
 		int maxWidth = 0;
 		FontMetrics fm = g.getFontMetrics();

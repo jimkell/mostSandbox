@@ -76,6 +76,8 @@ public class PanAndZoom1 implements ChangeListener {
         
         basicDraw.drawStraightHorizontalPathway(g2, 100, 500, 2, test);
         basicDraw.drawStraightVerticalPathway(g2, 750, 20, 2, test);
+        basicDraw.drawSideArc(g2, 750, 20 + GraphicsConstants.DEFAULT_VERTICAL_PATH_LENGTH/2, 1, 90, 90);
+        basicDraw.drawSideArc(g2, 750, 20 + GraphicsConstants.DEFAULT_VERTICAL_PATH_LENGTH/2, 1, 180, 90);
         g2.setPaint(Color.RED); 
         basicDraw.drawDashedLine(g2, 800, 20, 800, 300, 2);
  

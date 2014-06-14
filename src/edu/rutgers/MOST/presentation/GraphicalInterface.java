@@ -4547,7 +4547,7 @@ public class GraphicalInterface extends JFrame {
 		} catch (Throwable t) {
 			
 		}
-		printExternalReactions();
+		//printExternalReactions();
 	}
 
 	public void setBooleanDefaults() {
@@ -10693,7 +10693,7 @@ public class GraphicalInterface extends JFrame {
 		}
 		
 		Collections.sort(externalReactions);
-		System.out.println(externalReactions);
+		System.out.println("external reactions " + externalReactions);
 	}
 	
 	// get index of column with EC numbers
