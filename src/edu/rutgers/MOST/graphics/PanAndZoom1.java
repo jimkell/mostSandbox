@@ -67,7 +67,7 @@ public class PanAndZoom1 implements ChangeListener {
         g2.drawArc(400, 102, 50, 50, 180, 75);
         g2.drawArc(500, 225, 50, 50, 90, 180);
         // draw arrow at bottom of arc
-        basicDraw.drawHorizontalArrow(g2, 530, 275, 2);
+        basicDraw.drawHorizontalArrow(g2, 530, 275, 2, GraphicsConstants.ARROW_HEIGHT, GraphicsConstants.ARROW_LENGTH, 1);
 //        g2.drawLine(515, 265, 525, 275);
 //        g2.drawLine(512, 278, 526, 275);
         // places string 10 px after top end of arc
@@ -75,9 +75,30 @@ public class PanAndZoom1 implements ChangeListener {
         g2.drawOval(300, 150, 200, 200); 
         
         basicDraw.drawStraightHorizontalPathway(g2, 100, 500, 2, test);
+        // for horizontal, need to get midpoint of line between two reactions
+        // top arc
+        // in
+        basicDraw.drawHorizontalSideArc(g2, 132 + GraphicsConstants.DEFAULT_VERTICAL_PATH_LENGTH/2, 499 - GraphicsConstants.SIDE_ARC_MAJOR_AXIS, 1, GraphicsConstants.SIDE_ARC_MINOR_AXIS, GraphicsConstants.SIDE_ARC_MAJOR_AXIS, 180, 90, false);
+        // out
+        basicDraw.drawHorizontalSideArc(g2, 132 + GraphicsConstants.DEFAULT_VERTICAL_PATH_LENGTH/2, 499 - GraphicsConstants.SIDE_ARC_MAJOR_AXIS, 1, GraphicsConstants.SIDE_ARC_MINOR_AXIS, GraphicsConstants.SIDE_ARC_MAJOR_AXIS, 270, 90, true);
+        // bottom arc
+        // in
+        basicDraw.drawHorizontalSideArc(g2, 132 + GraphicsConstants.DEFAULT_VERTICAL_PATH_LENGTH/2, 501, 1, GraphicsConstants.SIDE_ARC_MINOR_AXIS, GraphicsConstants.SIDE_ARC_MAJOR_AXIS, 90, 90, false);
+        // out
+        basicDraw.drawHorizontalSideArc(g2, 132 + GraphicsConstants.DEFAULT_VERTICAL_PATH_LENGTH/2, 501, 1, GraphicsConstants.SIDE_ARC_MINOR_AXIS, GraphicsConstants.SIDE_ARC_MAJOR_AXIS, 0, 90, true);
+        
+        
         basicDraw.drawStraightVerticalPathway(g2, 750, 20, 2, test);
-        basicDraw.drawSideArc(g2, 750, 20 + GraphicsConstants.DEFAULT_VERTICAL_PATH_LENGTH/2, 1, 90, 90);
-        basicDraw.drawSideArc(g2, 750, 20 + GraphicsConstants.DEFAULT_VERTICAL_PATH_LENGTH/2, 1, 180, 90);
+        // left arc start x 1 less than vertical pathway to account for width of pathway stroke
+        // in
+        basicDraw.drawVerticalSideArc(g2, 749 - GraphicsConstants.SIDE_ARC_MAJOR_AXIS, 20 + GraphicsConstants.DEFAULT_VERTICAL_PATH_LENGTH/2, 1, GraphicsConstants.SIDE_ARC_MAJOR_AXIS, GraphicsConstants.SIDE_ARC_MINOR_AXIS, 0, 90, -1, true);
+        // out
+        //basicDraw.drawVerticalSideArc(g2, 749 - GraphicsConstants.SIDE_ARC_MAJOR_AXIS, 20 + GraphicsConstants.DEFAULT_VERTICAL_PATH_LENGTH/2, 1, GraphicsConstants.SIDE_ARC_MAJOR_AXIS, GraphicsConstants.SIDE_ARC_MINOR_AXIS, 270, 90, -1, true);
+        // right arc start x 1 more than vertical pathway to account for width of pathway stroke
+        // in
+        basicDraw.drawVerticalSideArc(g2, 751, 20 + GraphicsConstants.DEFAULT_VERTICAL_PATH_LENGTH/2, 1, GraphicsConstants.SIDE_ARC_MAJOR_AXIS, GraphicsConstants.SIDE_ARC_MINOR_AXIS, 90, 90, -1, false);
+        // out
+        basicDraw.drawVerticalSideArc(g2, 751, 20 + GraphicsConstants.DEFAULT_VERTICAL_PATH_LENGTH/2, 1, GraphicsConstants.SIDE_ARC_MAJOR_AXIS, GraphicsConstants.SIDE_ARC_MINOR_AXIS, 180, 90, 1, true);
         g2.setPaint(Color.RED); 
         basicDraw.drawDashedLine(g2, 800, 20, 800, 300, 2);
  
@@ -112,13 +133,13 @@ public class PanAndZoom1 implements ChangeListener {
     
     public String[] test = 
 		{ 
-			"metab1",
-			"metabolite2",
-			"metab3",		
-			"met4",
-			"metab5",
-			"long Metab\nName", 
-			"metab6"
+			"reac1",
+			"reaction2",
+			"react3",		
+			"rxn4",
+			"reac5",
+			"long Reaction\nName", 
+			"reac6"
 		};
 
     public static void main(String[] args) { 

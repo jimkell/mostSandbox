@@ -52,7 +52,7 @@ public class BasicDraw {
 			startX += stringWidth + GraphicsConstants.DEFAULT_SPACE;
 			// places line 10 px after end of string
 			g2d.drawLine(startX, startY, startX + GraphicsConstants.DEFAULT_HORIZONTAL_PATH_LENGTH, startY);
-			drawHorizontalArrow(g2d, startX + GraphicsConstants.DEFAULT_HORIZONTAL_PATH_LENGTH, startY, 2);
+			drawHorizontalArrow(g2d, startX + GraphicsConstants.DEFAULT_HORIZONTAL_PATH_LENGTH, startY, 2, GraphicsConstants.ARROW_HEIGHT, GraphicsConstants.ARROW_LENGTH, 1);
 		}
 
 		g2d.dispose();
@@ -60,13 +60,14 @@ public class BasicDraw {
 
 	// startX and startY are start of line, endX and endY are end of line
 	// avoids use of trig functions
-	public void drawHorizontalArrow(Graphics g, int endX, int endY, int width) {
+	// direction 1 if forward (right), -1 if backwards (left)
+	public void drawHorizontalArrow(Graphics g, int endX, int endY, int strokeWidth, int height, int width, int direction) {
 		Graphics2D g2d = (Graphics2D) g.create();
 
-		g2d.setStroke(new BasicStroke(width));
+		g2d.setStroke(new BasicStroke(strokeWidth));
 
-		g2d.drawLine(endX - GraphicsConstants.ARROW_LENGTH, endY - GraphicsConstants.ARROW_HEIGHT, endX, endY);
-		g2d.drawLine(endX - GraphicsConstants.ARROW_LENGTH, endY + GraphicsConstants.ARROW_HEIGHT, endX, endY);
+		g2d.drawLine(endX - width*direction, endY - height, endX, endY);
+		g2d.drawLine(endX - width*direction, endY + height, endX, endY);
 
 		g2d.dispose();
 	}
@@ -93,7 +94,7 @@ public class BasicDraw {
 			//g2d.drawString(metabolites[i], startX - stringWidth/2, startY);
 			// places line 10 px after end of string
 			g2d.drawLine(startX, startY, startX, startY + GraphicsConstants.DEFAULT_VERTICAL_PATH_LENGTH);
-			drawVerticalArrow(g2d, startX, startY + GraphicsConstants.DEFAULT_VERTICAL_PATH_LENGTH, 2);
+			drawVerticalArrow(g2d, startX, startY + GraphicsConstants.DEFAULT_VERTICAL_PATH_LENGTH, 2, GraphicsConstants.ARROW_HEIGHT, GraphicsConstants.ARROW_LENGTH, 1);
 			// places line 10 px after end of string
 			startY += stringHeight + GraphicsConstants.DEFAULT_VERTICAL_PATH_LENGTH;
 		}
@@ -103,25 +104,42 @@ public class BasicDraw {
 
 	// startX and startY are start of line, endX and endY are end of line
 	// avoids use of trig functions
-	public void drawVerticalArrow(Graphics g, int endX, int endY, int width) {
+	// direction 1 if down, -1 if up
+	public void drawVerticalArrow(Graphics g, int endX, int endY, int strokeWidth, int height, int width, int direction) {
 		Graphics2D g2d = (Graphics2D) g.create();
 
-		g2d.setStroke(new BasicStroke(width));
+		g2d.setStroke(new BasicStroke(strokeWidth));
 
-		g2d.drawLine(endX - GraphicsConstants.ARROW_HEIGHT, endY - GraphicsConstants.ARROW_LENGTH, endX, endY);
-		g2d.drawLine(endX + GraphicsConstants.ARROW_HEIGHT, endY - GraphicsConstants.ARROW_LENGTH, endX, endY);
+		g2d.drawLine(endX - height, endY - width*direction, endX, endY);
+		g2d.drawLine(endX + height, endY - width*direction, endX, endY);
 
 		g2d.dispose();
 	}
 	
-	public void drawSideArc(Graphics g, int x, int y, int width, int startAngle, int endAngle) {
+	public void drawSideArc(Graphics g, int x, int y, int strokeWidth, int arcWidth, int arcHeight, int startAngle, int endAngle) {
 		Graphics2D g2d = (Graphics2D) g.create();
 
-		g2d.setStroke(new BasicStroke(width));
+		g2d.setStroke(new BasicStroke(strokeWidth));
 
-		g2d.drawArc(x + 1, y, GraphicsConstants.SIDE_ARC_MAJOR_AXIS, GraphicsConstants.SIDE_ARC_MINOR_AXIS, startAngle, endAngle);
+		g2d.drawArc(x, y, arcWidth, arcHeight, startAngle, endAngle);
 		
 		g2d.dispose();
+	}
+	
+	// side arc actually vertical but is for a horizontal pathway
+	public void drawHorizontalSideArc(Graphics g, int x, int y, int strokeWidth, int arcWidth, int arcHeight, int startAngle, int endAngle, boolean arrow) {
+		drawSideArc(g, x, y, strokeWidth, arcWidth, arcHeight, startAngle, endAngle);
+		if (arrow) {
+			
+		}
+	}
+	
+	// side arc actually horizontal but is for a vertical pathway
+	public void drawVerticalSideArc(Graphics g, int x, int y, int strokeWidth, int arcWidth, int arcHeight, int startAngle, int endAngle, int direction, boolean arrow) {
+		drawSideArc(g, x, y, strokeWidth, arcWidth, arcHeight, startAngle, endAngle);
+		if (arrow) {
+			drawHorizontalArrow(g, x + arcHeight, y + arcWidth/2, 1, GraphicsConstants.SIDE_ARC_ARROW_HEIGHT, GraphicsConstants.SIDE_ARC_ARROW_LENGTH, direction);
+		}
 	}
 	
 	public int multilineStringWidth(Graphics g, String text) {
@@ -164,7 +182,7 @@ public class BasicDraw {
 		// rotates around starting point
 		g2d.rotate(Math.toRadians(angle), startX, startY);
         g2d.drawLine(startX, startY, startX, startY + GraphicsConstants.DEFAULT_VERTICAL_PATH_LENGTH);
-        drawVerticalArrow(g2d, startX, startY + GraphicsConstants.DEFAULT_VERTICAL_PATH_LENGTH, width);
+        drawVerticalArrow(g2d, startX, startY + GraphicsConstants.DEFAULT_VERTICAL_PATH_LENGTH, width, GraphicsConstants.ARROW_HEIGHT, GraphicsConstants.ARROW_LENGTH, 1);
 		
 		g2d.dispose();
 	}
