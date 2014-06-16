@@ -91,14 +91,26 @@ public class PanAndZoom1 implements ChangeListener {
         basicDraw.drawStraightVerticalPathway(g2, 750, 20, 2, test);
         // left arc start x 1 less than vertical pathway to account for width of pathway stroke
         // in
-        basicDraw.drawVerticalSideInArc(g2, 749 - GraphicsConstants.SIDE_ARC_MAJOR_AXIS, 20 + GraphicsConstants.DEFAULT_VERTICAL_PATH_LENGTH/2, 1, GraphicsConstants.SIDE_ARC_MAJOR_AXIS, GraphicsConstants.SIDE_ARC_MINOR_AXIS, 0, 90, 1, true);
+        basicDraw.drawVerticalSideInArc(g2, 749 - GraphicsConstants.SIDE_ARC_MAJOR_AXIS, 
+        		20 + GraphicsConstants.DEFAULT_VERTICAL_PATH_LENGTH/2, 1, 
+        		GraphicsConstants.SIDE_ARC_MAJOR_AXIS, GraphicsConstants.SIDE_ARC_MINOR_AXIS, 
+        		0, 90, -1, true);
         // out
-        //basicDraw.drawVerticalSideOutArc(g2, 749 - GraphicsConstants.SIDE_ARC_MAJOR_AXIS, 20 + GraphicsConstants.DEFAULT_VERTICAL_PATH_LENGTH/2, 1, GraphicsConstants.SIDE_ARC_MAJOR_AXIS, GraphicsConstants.SIDE_ARC_MINOR_AXIS, 270, 90, -1, true);
+        basicDraw.drawVerticalSideOutArc(g2, 749 - GraphicsConstants.SIDE_ARC_MAJOR_AXIS, 
+        		20 + GraphicsConstants.DEFAULT_VERTICAL_PATH_LENGTH/2, 1, 
+        		GraphicsConstants.SIDE_ARC_MAJOR_AXIS, GraphicsConstants.SIDE_ARC_MINOR_AXIS, 
+        		270, 90, -1, true);
         // right arc start x 1 more than vertical pathway to account for width of pathway stroke
         // in
-        basicDraw.drawVerticalSideInArc(g2, 751, 20 + GraphicsConstants.DEFAULT_VERTICAL_PATH_LENGTH/2, 1, GraphicsConstants.SIDE_ARC_MAJOR_AXIS, GraphicsConstants.SIDE_ARC_MINOR_AXIS, 90, 90, -1, false);
+        basicDraw.drawVerticalSideInArc(g2, 751, 
+        		20 + GraphicsConstants.DEFAULT_VERTICAL_PATH_LENGTH/2, 1, 
+        		GraphicsConstants.SIDE_ARC_MAJOR_AXIS, GraphicsConstants.SIDE_ARC_MINOR_AXIS, 
+        		90, 90, 1, true);
         // out
-        basicDraw.drawVerticalSideOutArc(g2, 751, 20 + GraphicsConstants.DEFAULT_VERTICAL_PATH_LENGTH/2, 1, GraphicsConstants.SIDE_ARC_MAJOR_AXIS, GraphicsConstants.SIDE_ARC_MINOR_AXIS, 180, 90, 1, true);
+        basicDraw.drawVerticalSideOutArc(g2, 751, 
+        		20 + GraphicsConstants.DEFAULT_VERTICAL_PATH_LENGTH/2, 1, 
+        		GraphicsConstants.SIDE_ARC_MAJOR_AXIS, GraphicsConstants.SIDE_ARC_MINOR_AXIS, 
+        		180, 90, 1, true);
         g2.setPaint(Color.RED); 
         basicDraw.drawDashedLine(g2, 800, 20, 800, 300, 2);
  

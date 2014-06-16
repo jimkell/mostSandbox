@@ -155,7 +155,11 @@ public class BasicDraw {
 
 			g2d.setStroke(new BasicStroke(strokeWidth));
 
-			g2d.drawLine(x + direction*arcWidth + 5*GraphicsConstants.ARROW_WIDTH, y + direction*arcHeight/2 - 5*GraphicsConstants.ARROW_LENGTH, x + direction*arcWidth, y + arcHeight);
+			if (direction == -1) {
+				x = x + GraphicsConstants.SIDE_ARC_MAJOR_AXIS;
+			}
+			g2d.drawLine(x + 3*direction, y - 2, x, y - 1 + arcHeight/2);
+			g2d.drawLine(x + direction + direction*GraphicsConstants.SIDE_ARC_ARROW_LENGTH, y - 1 + arcHeight/2, x, y - 1 + arcHeight/2);
 			
 			g2d.dispose();
 		}
@@ -165,7 +169,7 @@ public class BasicDraw {
 	public void drawVerticalSideOutArc(Graphics g, int x, int y, int strokeWidth, int arcWidth, int arcHeight, int startAngle, int endAngle, int direction, boolean arrow) {
 		drawSideArc(g, x, y, strokeWidth, arcWidth, arcHeight, startAngle, endAngle);
 		if (arrow) {
-			drawHorizontalArrow(g, x + arcHeight, y + arcWidth/2, 1, GraphicsConstants.SIDE_ARC_ARROW_WIDTH, GraphicsConstants.SIDE_ARC_ARROW_LENGTH, direction);
+			drawHorizontalArrow(g, x + 1*direction + arcHeight, y + arcWidth/2, 1, GraphicsConstants.SIDE_ARC_ARROW_WIDTH, GraphicsConstants.SIDE_ARC_ARROW_LENGTH, direction);
 		}
 	}
 
