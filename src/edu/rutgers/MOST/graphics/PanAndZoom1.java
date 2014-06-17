@@ -78,14 +78,24 @@ public class PanAndZoom1 implements ChangeListener {
         // for horizontal, need to get midpoint of line between two reactions
         // top arc
         // in
-        basicDraw.drawHorizontalSideInArc(g2, 132 + GraphicsConstants.DEFAULT_VERTICAL_PATH_LENGTH/2, 499 - GraphicsConstants.SIDE_ARC_MAJOR_AXIS, 1, GraphicsConstants.SIDE_ARC_MINOR_AXIS, GraphicsConstants.SIDE_ARC_MAJOR_AXIS, 180, 90, false);
+        basicDraw.drawHorizontalSideInArc(g2, 132 + GraphicsConstants.DEFAULT_VERTICAL_PATH_LENGTH/2, 
+        		499 - GraphicsConstants.SIDE_ARC_MAJOR_AXIS, 1, 
+        		GraphicsConstants.SIDE_ARC_MINOR_AXIS, GraphicsConstants.SIDE_ARC_MAJOR_AXIS, 
+        		180, 90, false);
         // out
-        basicDraw.drawHorizontalSideOutArc(g2, 132 + GraphicsConstants.DEFAULT_VERTICAL_PATH_LENGTH/2, 499 - GraphicsConstants.SIDE_ARC_MAJOR_AXIS, 1, GraphicsConstants.SIDE_ARC_MINOR_AXIS, GraphicsConstants.SIDE_ARC_MAJOR_AXIS, 270, 90, true);
+        basicDraw.drawHorizontalSideOutArc(g2, 132 + GraphicsConstants.DEFAULT_VERTICAL_PATH_LENGTH/2, 
+        		499 - GraphicsConstants.SIDE_ARC_MAJOR_AXIS, 1, 
+        		GraphicsConstants.SIDE_ARC_MINOR_AXIS, GraphicsConstants.SIDE_ARC_MAJOR_AXIS, 
+        		270, 90, -1, true);
         // bottom arc
         // in
-        basicDraw.drawHorizontalSideInArc(g2, 132 + GraphicsConstants.DEFAULT_VERTICAL_PATH_LENGTH/2, 501, 1, GraphicsConstants.SIDE_ARC_MINOR_AXIS, GraphicsConstants.SIDE_ARC_MAJOR_AXIS, 90, 90, false);
+        basicDraw.drawHorizontalSideInArc(g2, 132 + GraphicsConstants.DEFAULT_VERTICAL_PATH_LENGTH/2, 
+        		501, 1, GraphicsConstants.SIDE_ARC_MINOR_AXIS, GraphicsConstants.SIDE_ARC_MAJOR_AXIS, 
+        		90, 90, false);
         // out
-        basicDraw.drawHorizontalSideOutArc(g2, 132 + GraphicsConstants.DEFAULT_VERTICAL_PATH_LENGTH/2, 501, 1, GraphicsConstants.SIDE_ARC_MINOR_AXIS, GraphicsConstants.SIDE_ARC_MAJOR_AXIS, 0, 90, true);
+        basicDraw.drawHorizontalSideOutArc(g2, 132 + GraphicsConstants.DEFAULT_VERTICAL_PATH_LENGTH/2, 
+        		501, 1, GraphicsConstants.SIDE_ARC_MINOR_AXIS, GraphicsConstants.SIDE_ARC_MAJOR_AXIS, 
+        		0, 90, 1, true);
         
         
         basicDraw.drawStraightVerticalPathway(g2, 750, 20, 2, test);

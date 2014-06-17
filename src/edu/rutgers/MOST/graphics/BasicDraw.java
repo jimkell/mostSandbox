@@ -139,10 +139,10 @@ public class BasicDraw {
 	}
 
 	// side arc actually vertical but is for a horizontal pathway
-	public void drawHorizontalSideOutArc(Graphics g, int x, int y, int strokeWidth, int arcWidth, int arcHeight, int startAngle, int endAngle, boolean arrow) {
+	public void drawHorizontalSideOutArc(Graphics g, int x, int y, int strokeWidth, int arcWidth, int arcHeight, int startAngle, int endAngle, int direction, boolean arrow) {
 		drawSideArc(g, x, y, strokeWidth, arcWidth, arcHeight, startAngle, endAngle);
 		if (arrow) {
-
+			drawVerticalArrow(g, x + arcHeight/2, y + 1*direction + arcWidth,  1, GraphicsConstants.SIDE_ARC_ARROW_WIDTH, GraphicsConstants.SIDE_ARC_ARROW_LENGTH, direction);
 		}
 	}
 
