@@ -87,13 +87,10 @@ public class BasicDraw {
 		int stringHeight = fm.getHeight();
 		
 		for (int i = 0; i < reactions.size(); i++) {
-			int reactantsStringWidth = fm.stringWidth(reactants.get(i));
+			drawAnyString(g2d, reactants.get(i), stringHeight, startX, startY);
 			if (reactants.get(i).contains("\n")) {
-				int maxWidth = multilineStringWidth(g2d, reactants.get(i));
-				drawMultilineString(g2d, reactants.get(i), startX - maxWidth/2, startY - stringHeight, true);
 				startY += GraphicsConstants.DEFAULT_SPACE + stringHeight;
 			} else {
-				g2d.drawString(reactants.get(i), startX - reactantsStringWidth/2, startY);
 				startY += GraphicsConstants.DEFAULT_SPACE;
 			}
 			// add label to line
@@ -110,13 +107,10 @@ public class BasicDraw {
 			startY += stringHeight + GraphicsConstants.DEFAULT_VERTICAL_PATH_LENGTH;
 		}
 		
-		int productsStringWidth = fm.stringWidth(products.get(products.size() - 1));
+		drawAnyString(g2d, products.get(products.size() - 1), stringHeight, startX, startY);
 		if (products.get(products.size() - 1).contains("\n")) {
-			int maxWidth = multilineStringWidth(g2d, products.get(products.size() - 1));
-			drawMultilineString(g2d, products.get(products.size() - 1), startX - maxWidth/2, startY - stringHeight, true);
 			startY += GraphicsConstants.DEFAULT_SPACE + stringHeight;
 		} else {
-			g2d.drawString(products.get(products.size() - 1), startX - productsStringWidth/2, startY);
 			startY += GraphicsConstants.DEFAULT_SPACE;
 		}
 
@@ -211,6 +205,21 @@ public class BasicDraw {
 			}
 		}
 		return maxWidth;
+	}
+	
+	public void drawAnyString(Graphics g, String text, int stringHeight, int x, int y) {
+		Graphics2D g2d = (Graphics2D) g.create();
+		FontMetrics fm = g2d.getFontMetrics();
+		
+		int productsStringWidth = fm.stringWidth(text);
+		if (text.contains("\n")) {
+			int maxWidth = multilineStringWidth(g2d, text);
+			drawMultilineString(g2d, text, x - maxWidth/2, y - stringHeight, true);
+		} else {
+			g2d.drawString(text, x - productsStringWidth/2, y);
+		}
+
+		g2d.dispose();
 	}
 
 	// based on http://stackoverflow.com/questions/4413132/problems-with-newline-in-graphics2d-drawstring
