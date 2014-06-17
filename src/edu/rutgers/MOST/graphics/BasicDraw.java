@@ -93,13 +93,7 @@ public class BasicDraw {
 			} else {
 				startY += GraphicsConstants.DEFAULT_SPACE;
 			}
-			// add label to line
-			if (reactions.get(i).contains("\n")) {
-				drawMultilineString(g2d, reactions.get(i), startX + GraphicsConstants.DEFAULT_SPACE, (startY - 3*stringHeight/2) + GraphicsConstants.DEFAULT_VERTICAL_PATH_LENGTH/2, false);
-			} else {
-				g2d.drawString(reactions.get(i), startX + GraphicsConstants.DEFAULT_SPACE, startY + GraphicsConstants.DEFAULT_VERTICAL_PATH_LENGTH/2);
-			}
-			//g2d.drawString(reactions[i], startX - stringWidth/2, startY);
+			drawVerticalPathLabel(g, reactions.get(i), stringHeight, startX, startY);
 			// places line 10 px after end of string
 			g2d.drawLine(startX, startY, startX, startY + GraphicsConstants.DEFAULT_VERTICAL_PATH_LENGTH);
 			drawVerticalArrow(g2d, startX, startY + GraphicsConstants.DEFAULT_VERTICAL_PATH_LENGTH, 2, GraphicsConstants.ARROW_WIDTH, GraphicsConstants.ARROW_LENGTH, 1);
@@ -259,6 +253,14 @@ public class BasicDraw {
     	
 		return newLineString;
     }
+	
+	public void drawVerticalPathLabel(Graphics g, String text, int stringHeight, int x, int y) {
+		if (text.contains("\n")) {
+			drawMultilineString(g, text, x + GraphicsConstants.DEFAULT_SPACE, (y - 3*stringHeight/2) + GraphicsConstants.DEFAULT_VERTICAL_PATH_LENGTH/2, false);
+		} else {
+			g.drawString(text, x + GraphicsConstants.DEFAULT_SPACE, y + GraphicsConstants.DEFAULT_VERTICAL_PATH_LENGTH/2);
+		}
+	}
 	
 	/******************************************************************************************/
 	// rotated components
