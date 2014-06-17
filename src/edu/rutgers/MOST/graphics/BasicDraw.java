@@ -5,6 +5,7 @@ import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Stroke;
+import java.util.ArrayList;
 
 // The purpose of this class is to provide methods for common tasks. The draw vertical and
 // horizontal methods avoid using rotations and trig functions. Since most items will
@@ -27,30 +28,30 @@ public class BasicDraw {
 		g2d.dispose();
 	}
 
-	public void drawStraightHorizontalPathway(Graphics g, int startX, int startY, int width, String[] metabolites) {
+	public void drawStraightHorizontalPathway(Graphics g, int startX, int startY, int width, ArrayList<String> reactions) {
 
 		//creates a copy of the Graphics instance
 		Graphics2D g2d = (Graphics2D) g.create();
 
 		g2d.setStroke(new BasicStroke(width));
 
-		for (int i = 0; i < metabolites.length; i++) {
+		for (int i = 0; i < reactions.size(); i++) {
 			FontMetrics fm = g2d.getFontMetrics();
-			int stringWidth = fm.stringWidth(metabolites[i]);
+			int stringWidth = fm.stringWidth(reactions.get(i));
 			int stringHeight = fm.getHeight();
-			if (metabolites[i].contains("\n")) {
-				stringWidth = multilineStringWidth(g2d, metabolites[i]);
+			if (reactions.get(i).contains("\n")) {
+				stringWidth = multilineStringWidth(g2d, reactions.get(i));
 				// after first string, places string 10 px after arrow
 				if (i > 0) {
 					startX += GraphicsConstants.DEFAULT_HORIZONTAL_PATH_LENGTH + GraphicsConstants.DEFAULT_SPACE;
 				}
-				drawMultilineString(g2d, metabolites[i], startX, startY - stringHeight - stringHeight/4, true);
+				drawMultilineString(g2d, reactions.get(i), startX, startY - stringHeight - stringHeight/4, true);
 			} else {
 				// after first string, places string 10 px after arrow
 				if (i > 0) {
 					startX += GraphicsConstants.DEFAULT_HORIZONTAL_PATH_LENGTH + GraphicsConstants.DEFAULT_SPACE;
 				}
-				g2d.drawString(metabolites[i], startX, startY + stringHeight/4);
+				g2d.drawString(reactions.get(i), startX, startY + stringHeight/4);
 			}
 			startX += stringWidth + GraphicsConstants.DEFAULT_SPACE;
 			// places line 10 px after end of string
@@ -75,26 +76,26 @@ public class BasicDraw {
 		g2d.dispose();
 	}
 
-	public void drawStraightVerticalPathway(Graphics g, int startX, int startY, int width, String[] metabolites) {
+	public void drawStraightVerticalPathway(Graphics g, int startX, int startY, int width, ArrayList<String> reactions) {
 
 		//creates a copy of the Graphics instance
 		Graphics2D g2d = (Graphics2D) g.create();
 
 		g2d.setStroke(new BasicStroke(width));
 
-		for (int i = 0; i < metabolites.length; i++) {
+		for (int i = 0; i < reactions.size(); i++) {
 			FontMetrics fm = g2d.getFontMetrics();
-			int stringWidth = fm.stringWidth(metabolites[i]);
+			int stringWidth = fm.stringWidth(reactions.get(i));
 			int stringHeight = fm.getHeight();
-			if (metabolites[i].contains("\n")) {
-				int maxWidth = multilineStringWidth(g2d, metabolites[i]);
-				drawMultilineString(g2d, metabolites[i], startX - maxWidth/2, startY - stringHeight, true);
+			if (reactions.get(i).contains("\n")) {
+				int maxWidth = multilineStringWidth(g2d, reactions.get(i));
+				drawMultilineString(g2d, reactions.get(i), startX - maxWidth/2, startY - stringHeight, true);
 				startY += GraphicsConstants.DEFAULT_SPACE + stringHeight;
 			} else {
-				g2d.drawString(metabolites[i], startX - stringWidth/2, startY);
+				g2d.drawString(reactions.get(i), startX - stringWidth/2, startY);
 				startY += GraphicsConstants.DEFAULT_SPACE;
 			}
-			//g2d.drawString(metabolites[i], startX - stringWidth/2, startY);
+			//g2d.drawString(reactions[i], startX - stringWidth/2, startY);
 			// places line 10 px after end of string
 			g2d.drawLine(startX, startY, startX, startY + GraphicsConstants.DEFAULT_VERTICAL_PATH_LENGTH);
 			drawVerticalArrow(g2d, startX, startY + GraphicsConstants.DEFAULT_VERTICAL_PATH_LENGTH, 2, GraphicsConstants.ARROW_WIDTH, GraphicsConstants.ARROW_LENGTH, 1);
@@ -214,7 +215,10 @@ public class BasicDraw {
 		}  
 	}
 	
-	// 
+	/******************************************************************************************/
+	// rotated components
+	/******************************************************************************************/
+	
 	public void drawRotatedArrowedLine(Graphics g, int startX, int startY, int angle, int width) {
 		Graphics2D g2d = (Graphics2D) g.create();
 
@@ -224,6 +228,26 @@ public class BasicDraw {
 		g2d.rotate(Math.toRadians(angle), startX, startY);
         g2d.drawLine(startX, startY, startX, startY + GraphicsConstants.DEFAULT_VERTICAL_PATH_LENGTH);
         drawVerticalArrow(g2d, startX, startY + GraphicsConstants.DEFAULT_VERTICAL_PATH_LENGTH, width, GraphicsConstants.ARROW_WIDTH, GraphicsConstants.ARROW_LENGTH, 1);
+		
+		g2d.dispose();
+	}
+	
+	public void drawRotatedSideInArc(Graphics g, int x, int y, int strokeWidth, int arcWidth, int arcHeight, int startAngle, int endAngle, int rotation, int direction, boolean arrow) {
+		Graphics2D g2d = (Graphics2D) g.create();
+		
+		// rotates around starting point
+	    g2d.rotate(Math.toRadians(rotation), x, y);
+		drawVerticalSideInArc(g2d, x, y, strokeWidth, arcWidth, arcHeight, startAngle, endAngle, direction, arrow);
+		
+		g2d.dispose();
+	}
+	
+	public void drawRotatedSideOutArc(Graphics g, int x, int y, int strokeWidth, int arcWidth, int arcHeight, int startAngle, int endAngle, int rotation, int direction, boolean arrow) {
+		Graphics2D g2d = (Graphics2D) g.create();
+		
+		// rotates around starting point
+	    g2d.rotate(Math.toRadians(rotation), x, y);
+		drawVerticalSideOutArc(g2d, x, y, strokeWidth, arcWidth, arcHeight, startAngle, endAngle, direction, arrow);
 		
 		g2d.dispose();
 	}

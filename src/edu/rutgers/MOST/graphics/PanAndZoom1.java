@@ -4,6 +4,7 @@ import java.awt.*;
 import java.awt.geom.*;  
 import java.awt.image.BufferedImage;  
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import javax.swing.*;  
 import javax.swing.event.*;  
@@ -74,7 +75,7 @@ public class PanAndZoom1 implements ChangeListener {
         g2.drawString("Test", 535, 225 + stringHeight/4);
         g2.drawOval(300, 150, 200, 200); 
         
-        basicDraw.drawStraightHorizontalPathway(g2, 100, 500, 2, test);
+        basicDraw.drawStraightHorizontalPathway(g2, 100, 500, 2, testList);
         // for horizontal, need to get midpoint of line between two reactions
         // top arc
         // in
@@ -98,7 +99,7 @@ public class PanAndZoom1 implements ChangeListener {
         		0, 90, 1, true);
         
         
-        basicDraw.drawStraightVerticalPathway(g2, 750, 20, 2, test);
+        basicDraw.drawStraightVerticalPathway(g2, 750, 20, 2, testList);
         // left arc start x 1 less than vertical pathway to account for width of pathway stroke
         // in
         basicDraw.drawVerticalSideInArc(g2, 749 - GraphicsConstants.SIDE_ARC_MAJOR_AXIS, 
@@ -133,11 +134,20 @@ public class PanAndZoom1 implements ChangeListener {
         basicDraw.drawRotatedArrowedLine(g2, 50, 50, -45, 2);
         basicDraw.drawRotatedArrowedLine(g2, 40, 50, 45, 2);
         
+        basicDraw.drawRotatedSideInArc(g2, 56, 
+        		53, 1, 
+        		GraphicsConstants.SIDE_ARC_MAJOR_AXIS, GraphicsConstants.SIDE_ARC_MINOR_AXIS, 
+        		90, 90, -45, 1, false);
+        
+        basicDraw.drawRotatedSideOutArc(g2, 56, 
+        		53, 1, 
+        		GraphicsConstants.SIDE_ARC_MAJOR_AXIS, GraphicsConstants.SIDE_ARC_MINOR_AXIS, 
+        		180, 90, -45, 1, true);
+        
         // components drawn after rotated components are not rotated
         int increment = (int) (GraphicsConstants.DEFAULT_HORIZONTAL_PATH_LENGTH/(Math.sqrt(2)));
         g2.drawLine(40 - increment, 60 + increment, 40 - increment, 60 + increment + GraphicsConstants.DEFAULT_VERTICAL_PATH_LENGTH);
         g2.drawLine(50 + increment, 60 + increment, 50 + increment, 60 + increment + GraphicsConstants.DEFAULT_VERTICAL_PATH_LENGTH);
-        g2.drawLine(130, 70, 130, 80);
         
         g2.dispose();  
     }  
@@ -163,6 +173,8 @@ public class PanAndZoom1 implements ChangeListener {
 			"long Reaction\nName", 
 			"reac6"
 		};
+    
+	ArrayList<String> testList = new ArrayList<String>(Arrays.asList(test)); 
 
     public static void main(String[] args) { 
     	final ArrayList<Image> icons = new ArrayList<Image>(); 
