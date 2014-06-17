@@ -131,10 +131,20 @@ public class BasicDraw {
 
 	// side arc actually vertical but is for a horizontal pathway. in arc would have
 	// a rotated arrow, so in can't use same method as out
-	public void drawHorizontalSideInArc(Graphics g, int x, int y, int strokeWidth, int arcWidth, int arcHeight, int startAngle, int endAngle, boolean arrow) {
+	public void drawHorizontalSideInArc(Graphics g, int x, int y, int strokeWidth, int arcWidth, int arcHeight, int startAngle, int endAngle, int direction, boolean arrow) {
 		drawSideArc(g, x, y, strokeWidth, arcWidth, arcHeight, startAngle, endAngle);
 		if (arrow) {
+			Graphics2D g2d = (Graphics2D) g.create();
 
+			g2d.setStroke(new BasicStroke(strokeWidth));
+
+			if (direction == -1) {
+				y = y + GraphicsConstants.SIDE_ARC_MAJOR_AXIS;
+			}
+			g2d.drawLine(x - 2, y + 3*direction, x - 1 + arcWidth/2, y);
+			g2d.drawLine(x - 1 + arcWidth/2, y + direction + direction*GraphicsConstants.SIDE_ARC_ARROW_LENGTH, x - 1 + arcWidth/2, y);
+			
+			g2d.dispose();
 		}
 	}
 

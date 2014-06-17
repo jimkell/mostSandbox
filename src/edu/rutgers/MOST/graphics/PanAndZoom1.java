@@ -81,7 +81,7 @@ public class PanAndZoom1 implements ChangeListener {
         basicDraw.drawHorizontalSideInArc(g2, 132 + GraphicsConstants.DEFAULT_VERTICAL_PATH_LENGTH/2, 
         		499 - GraphicsConstants.SIDE_ARC_MAJOR_AXIS, 1, 
         		GraphicsConstants.SIDE_ARC_MINOR_AXIS, GraphicsConstants.SIDE_ARC_MAJOR_AXIS, 
-        		180, 90, false);
+        		180, 90, -1, true);
         // out
         basicDraw.drawHorizontalSideOutArc(g2, 132 + GraphicsConstants.DEFAULT_VERTICAL_PATH_LENGTH/2, 
         		499 - GraphicsConstants.SIDE_ARC_MAJOR_AXIS, 1, 
@@ -91,7 +91,7 @@ public class PanAndZoom1 implements ChangeListener {
         // in
         basicDraw.drawHorizontalSideInArc(g2, 132 + GraphicsConstants.DEFAULT_VERTICAL_PATH_LENGTH/2, 
         		501, 1, GraphicsConstants.SIDE_ARC_MINOR_AXIS, GraphicsConstants.SIDE_ARC_MAJOR_AXIS, 
-        		90, 90, false);
+        		90, 90, 1, true);
         // out
         basicDraw.drawHorizontalSideOutArc(g2, 132 + GraphicsConstants.DEFAULT_VERTICAL_PATH_LENGTH/2, 
         		501, 1, GraphicsConstants.SIDE_ARC_MINOR_AXIS, GraphicsConstants.SIDE_ARC_MAJOR_AXIS, 
