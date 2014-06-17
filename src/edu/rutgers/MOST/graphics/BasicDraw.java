@@ -76,24 +76,31 @@ public class BasicDraw {
 		g2d.dispose();
 	}
 
-	public void drawStraightVerticalPathway(Graphics g, int startX, int startY, int width, ArrayList<String> reactions) {
+	public void drawStraightVerticalPathway(Graphics g, int startX, int startY, int width, ArrayList<String> reactions, ArrayList<String> reactants, ArrayList<String> products) {
 
 		//creates a copy of the Graphics instance
 		Graphics2D g2d = (Graphics2D) g.create();
 
 		g2d.setStroke(new BasicStroke(width));
 
+		FontMetrics fm = g2d.getFontMetrics();
+		int stringHeight = fm.getHeight();
+		
 		for (int i = 0; i < reactions.size(); i++) {
-			FontMetrics fm = g2d.getFontMetrics();
-			int stringWidth = fm.stringWidth(reactions.get(i));
-			int stringHeight = fm.getHeight();
-			if (reactions.get(i).contains("\n")) {
-				int maxWidth = multilineStringWidth(g2d, reactions.get(i));
-				drawMultilineString(g2d, reactions.get(i), startX - maxWidth/2, startY - stringHeight, true);
+			int reactantsStringWidth = fm.stringWidth(reactants.get(i));
+			if (reactants.get(i).contains("\n")) {
+				int maxWidth = multilineStringWidth(g2d, reactants.get(i));
+				drawMultilineString(g2d, reactants.get(i), startX - maxWidth/2, startY - stringHeight, true);
 				startY += GraphicsConstants.DEFAULT_SPACE + stringHeight;
 			} else {
-				g2d.drawString(reactions.get(i), startX - stringWidth/2, startY);
+				g2d.drawString(reactants.get(i), startX - reactantsStringWidth/2, startY);
 				startY += GraphicsConstants.DEFAULT_SPACE;
+			}
+			// add label to line
+			if (reactions.get(i).contains("\n")) {
+				drawMultilineString(g2d, reactions.get(i), startX + GraphicsConstants.DEFAULT_SPACE, (startY - 3*stringHeight/2) + GraphicsConstants.DEFAULT_VERTICAL_PATH_LENGTH/2, false);
+			} else {
+				g2d.drawString(reactions.get(i), startX + GraphicsConstants.DEFAULT_SPACE, startY + GraphicsConstants.DEFAULT_VERTICAL_PATH_LENGTH/2);
 			}
 			//g2d.drawString(reactions[i], startX - stringWidth/2, startY);
 			// places line 10 px after end of string
@@ -101,6 +108,16 @@ public class BasicDraw {
 			drawVerticalArrow(g2d, startX, startY + GraphicsConstants.DEFAULT_VERTICAL_PATH_LENGTH, 2, GraphicsConstants.ARROW_WIDTH, GraphicsConstants.ARROW_LENGTH, 1);
 			// places line 10 px after end of string
 			startY += stringHeight + GraphicsConstants.DEFAULT_VERTICAL_PATH_LENGTH;
+		}
+		
+		int productsStringWidth = fm.stringWidth(products.get(products.size() - 1));
+		if (products.get(products.size() - 1).contains("\n")) {
+			int maxWidth = multilineStringWidth(g2d, products.get(products.size() - 1));
+			drawMultilineString(g2d, products.get(products.size() - 1), startX - maxWidth/2, startY - stringHeight, true);
+			startY += GraphicsConstants.DEFAULT_SPACE + stringHeight;
+		} else {
+			g2d.drawString(products.get(products.size() - 1), startX - productsStringWidth/2, startY);
+			startY += GraphicsConstants.DEFAULT_SPACE;
 		}
 
 		g2d.dispose();
@@ -214,6 +231,25 @@ public class BasicDraw {
 			}
 		}  
 	}
+	
+	public String newLineString(String reactionName) {
+    	String newLineString = reactionName;
+    	if (newLineString.length() > 20) {
+    		String s[] = newLineString.split(" ");
+    		for (int i = 0; i < s.length; i++) {
+    			if (s.length > 1 && i == 1) {
+    				newLineString = s[0] + "\n" + s[1];
+    				if (s.length > 2) {
+    					for (int j = 2; j < s.length; j++) {
+    						newLineString += " " + s[j];
+    					}
+    				}
+    			}
+    		}
+    	}
+    	
+		return newLineString;
+    }
 	
 	/******************************************************************************************/
 	// rotated components

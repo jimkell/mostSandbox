@@ -4,6 +4,7 @@ import java.awt.*;
 import java.awt.geom.*;  
 import java.awt.image.BufferedImage;  
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import javax.swing.*;  
 import javax.swing.event.*;  
@@ -46,7 +47,7 @@ public class MetabolicPathway implements ChangeListener {
     }  
    
     private void createAnImage() { 
-        int w = 1000;  
+        int w = 2000;  
         int h = 1000;  
         int type = BufferedImage.TYPE_INT_RGB; // many options  
         image = new BufferedImage(w, h, type);  
@@ -63,21 +64,23 @@ public class MetabolicPathway implements ChangeListener {
         g2.fillRect(0,0,w,h);  
         g2.setColor(Color.BLACK);
      
-        drawGlycolysisPathway(g2, 600, 30);
+        drawGlycolysisPathway(g2, 1000, 50);
         
         g2.dispose();  
     }  
     
     public void drawGlycolysisPathway(Graphics g, int x, int y) {
+    	BasicDraw basicDraw = new BasicDraw();
     	ArrayList<String> glycolysisReactionNames = new ArrayList<String>();
+    	ArrayList<String> reactants = new ArrayList<String>(Arrays.asList(EnzymeConstants.GLYCOLYSIS_REACTANTS)); 
+    	ArrayList<String> products = new ArrayList<String>(Arrays.asList(EnzymeConstants.GLYCOLYSIS_PRODUCTS)); 
     	for (int i = 0; i < EnzymeConstants.GLYCOLYSIS_EC_NUMBERS.length; i++) {
     		System.out.println(LocalConfig.getInstance().getEnzymeDataMap().get(EnzymeConstants.GLYCOLYSIS_EC_NUMBERS[i]));
     		String reaction = LocalConfig.getInstance().getEnzymeDataMap().get(EnzymeConstants.GLYCOLYSIS_EC_NUMBERS[i]).getDescription().get(0);
-    		glycolysisReactionNames.add(newLineString(reaction));
+    		glycolysisReactionNames.add(basicDraw.newLineString(reaction));
     	}
-    	System.out.println(glycolysisReactionNames);
-    	BasicDraw basicDraw = new BasicDraw();
-    	basicDraw.drawStraightVerticalPathway(g, x, y, 2, glycolysisReactionNames);
+    	
+    	basicDraw.drawStraightVerticalPathway(g, x, y, 2, glycolysisReactionNames, reactants, products);
     }
    
     private JSlider getControl() {  
@@ -90,25 +93,6 @@ public class MetabolicPathway implements ChangeListener {
         slider.addChangeListener(this);  
         return slider;          
     } 
-    
-    public String newLineString(String reactionName) {
-    	String newLineString = reactionName;
-    	if (newLineString.length() > 20) {
-    		String s[] = newLineString.split(" ");
-    		for (int i = 0; i < s.length; i++) {
-    			if (s.length > 1 && i == 1) {
-    				newLineString = s[0] + "\n" + s[1];
-    				if (s.length > 2) {
-    					for (int j = 2; j < s.length; j++) {
-    						newLineString += " " + s[j];
-    					}
-    				}
-    			}
-    		}
-    	}
-    	
-		return newLineString;
-    }
 
     public static void main(String[] args) { 
     	final ArrayList<Image> icons = new ArrayList<Image>(); 
