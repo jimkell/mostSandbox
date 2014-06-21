@@ -25,7 +25,7 @@ public class EnzymeConstants {
 			"4.1.2.13",
 			"1.2.1.12",
 			"2.7.2.3",
-			"5.4.2.12", // was 5.4.2.1 but Enzyme database replaces with 5.4.2.11 or 5.4.2.12
+			"5.4.2.1", // was 5.4.2.1 but Enzyme database replaces with 5.4.2.11 or 5.4.2.12
 			"4.2.1.11",
 			"2.7.1.40"
 		};
@@ -43,7 +43,7 @@ public class EnzymeConstants {
 			"Fructose_1_6_bisphosphate",
 			"Glyceraldehyde_3_phosphate",
 			"3_Phospho_D_glyceroyl_phosphate",
-			"3_Phospho_D_glyceroyl_phosphate",
+			"3_Phospho_D_glycerate",
 			"D_Glycerate_2_phosphate",
 			"M_Phosphoenolpyruvate"
 		};
@@ -55,7 +55,7 @@ public class EnzymeConstants {
 			"Fructose_1_6_bisphosphate",
 			"Glyceraldehyde_3_phosphate",
 			"3_Phospho_D_glyceroyl_phosphate",
-			"3_Phospho_D_glyceroyl_phosphate",
+			"3_Phospho_D_glycerate",
 			"D_Glycerate_2_phosphate",
 			"M_Phosphoenolpyruvate",
 			"Pyruvate"
