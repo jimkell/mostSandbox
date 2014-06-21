@@ -3,7 +3,6 @@ package edu.rutgers.MOST.config;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.swing.SortOrder;
@@ -11,7 +10,7 @@ import javax.swing.table.DefaultTableModel;
 
 import edu.rutgers.MOST.data.EnzymeData;
 import edu.rutgers.MOST.data.ModelReactionEquation;
-import edu.rutgers.MOST.presentation.GraphicalInterface;
+import edu.rutgers.MOST.data.SubsystemReaction;
 
 public class LocalConfig {	
 
@@ -797,5 +796,18 @@ public class LocalConfig {
 	public void setEnzymeDataMap(Map<String, EnzymeData> enzymeDataMap) {
 		this.enzymeDataMap = enzymeDataMap;
 	}
+	
+	private Map<String, ArrayList<SubsystemReaction>> subsystemDataMap;
+
+	public Map<String, ArrayList<SubsystemReaction>> getSubsystemDataMap() {
+		return subsystemDataMap;
+	}
+
+	public void setSubsystemDataMap(
+			Map<String, ArrayList<SubsystemReaction>> subsystemDataMap) {
+		this.subsystemDataMap = subsystemDataMap;
+	}
+
+	
 
 }
