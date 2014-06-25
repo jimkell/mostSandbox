@@ -46,8 +46,9 @@ public class Subsystems2pegReader {
 							}
 							reac.setReactionDescription(description);
 							if (LocalConfig.getInstance().getSubsystemDataMap().containsKey(s[0])) {
-//								ArrayList<SubsystemReaction> reacList = ((SubsystemReaction) LocalConfig.getInstance().getSubsystemDataMap().get(s[0]))).getReaction();
-//								reacList.add(reac);
+								ArrayList<SubsystemReaction> reacList = LocalConfig.getInstance().getSubsystemDataMap().get(s[0]);
+								reacList.add(reac);
+								LocalConfig.getInstance().getSubsystemDataMap().put(s[0], reacList);
 							} else {
 								reaction = new ArrayList<SubsystemReaction>();
 								reaction.add(reac);
