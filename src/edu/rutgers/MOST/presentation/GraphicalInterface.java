@@ -10662,7 +10662,7 @@ public class GraphicalInterface extends JFrame {
 		MetaboliteFactory aFactory = new MetaboliteFactory("SBML");
 		ArrayList<String> externalMetab = aFactory.metaboliteExternalList();
 		ArrayList<Integer> externalReactions = new ArrayList<Integer>();
-		System.out.println(aFactory.metaboliteExternalList());
+		//System.out.println(aFactory.metaboliteExternalList());
 		// models with metabolites that have boundary conditions = true
 		// usually but not always end with "_b"
 		if (externalMetab.size() > 0) {
@@ -10681,12 +10681,12 @@ public class GraphicalInterface extends JFrame {
 				if (((SBMLReactionEquation) LocalConfig.getInstance().getReactionEquationMap().get(i)).getReactants().size() == 0 &&
 						((SBMLReactionEquation) LocalConfig.getInstance().getReactionEquationMap().get(i)).getProducts().size() > 0) {
 					ArrayList<SBMLProduct> prod = (ArrayList<SBMLProduct>) ((SBMLReactionEquation) LocalConfig.getInstance().getReactionEquationMap().get(i)).getProducts();
-					System.out.println(prod.get(0).getReactionId());
+					//System.out.println(prod.get(0).getReactionId());
 					externalReactions.add(prod.get(0).getReactionId());
 				} else if (((SBMLReactionEquation) LocalConfig.getInstance().getReactionEquationMap().get(i)).getProducts().size() == 0 &&
 						((SBMLReactionEquation) LocalConfig.getInstance().getReactionEquationMap().get(i)).getReactants().size() > 0) {
 					ArrayList<SBMLReactant> reac = (ArrayList<SBMLReactant>) ((SBMLReactionEquation) LocalConfig.getInstance().getReactionEquationMap().get(i)).getReactants();
-					System.out.println(reac.get(0).getReactionId());
+					//System.out.println(reac.get(0).getReactionId());
 					externalReactions.add(reac.get(0).getReactionId());
 				}
 			}
@@ -10720,7 +10720,7 @@ public class GraphicalInterface extends JFrame {
 			for (int j = 0; j < reactionsTable.getRowCount(); j++) {
 				String ECNumber = (String) reactionsTable.getModel().getValueAt(j, ecColumnIndex);
 				//System.out.println(reactionsTable.getModel().getValueAt(j, ecColumnIndex));
-				System.out.println(j);
+				//System.out.println(j);
 				printDataFromECNumber(ECNumber);
 			}
 		}
@@ -10728,6 +10728,7 @@ public class GraphicalInterface extends JFrame {
 	
 	public void printDataFromECNumber(String ECNumber) {
 		ArrayList<String> tcaReactions = new ArrayList<String>();
+		ArrayList<String> glycolysisReactions = new ArrayList<String>();
 		if (ECNumber != null && ECNumber.length() > 0) {
 			// model may contain more tha one EC number, separated by white space
 			// AraGEM model has this condition
@@ -10736,11 +10737,17 @@ public class GraphicalInterface extends JFrame {
 			for (int i = 0; i < numbers.size(); i++) {
 				if (numbers.get(i) != null && numbers.get(i).length() > 0) {
 					if (LocalConfig.getInstance().getEnzymeDataMap().containsKey(numbers.get(i))) {
-						System.out.println(LocalConfig.getInstance().getEnzymeDataMap().get(numbers.get(i)));
+						//System.out.println(LocalConfig.getInstance().getEnzymeDataMap().get(numbers.get(i)));
 						for (int j = 0; j < EnzymeConstants.TCA_CYCLE_EC_NUMBERS.length; j++) {
 							if (EnzymeConstants.TCA_CYCLE_EC_NUMBERS[j].equals(numbers.get(i))) {
 								tcaReactions.add(numbers.get(i));
 								System.out.println("TCA " + numbers.get(i));
+							}
+						}
+						for (int j = 0; j < EnzymeConstants.GLYCOLYSIS_EC_NUMBERS.length; j++) {
+							if (EnzymeConstants.GLYCOLYSIS_EC_NUMBERS[j].equals(numbers.get(i))) {
+								glycolysisReactions.add(numbers.get(i));
+								System.out.println("Glycolysis " + numbers.get(i));
 							}
 						}
 					}

@@ -74,5 +74,6 @@ public class Subsystems2pegReader {
 	    r.readFile();
 	    System.out.println(LocalConfig.getInstance().getSubsystemDataMap());
 	    System.out.println(LocalConfig.getInstance().getSubsystemDataMap().get("TCA_Cycle"));
+	    System.out.println(LocalConfig.getInstance().getSubsystemDataMap().get("Glycolysis_and_Gluconeogenesis"));
 	}
 }
