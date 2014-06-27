@@ -1,38 +1,47 @@
 package edu.rutgers.MOST.data;
 
 public class EnzymeConstants {
-	public static final String[] TCA_CYCLE_EC_NUMBERS = 
+	public static final String[][] TCA_CYCLE_EC_NUMBERS = 
 		{ 
-			"2.3.3.3",
-			"4.2.1.3",
-			"1.1.1.42",		
-			"1.2.4.2",
-			"6.2.1.5",
-			"1.3.99.1",
-			"4.2.1.2",
-			"1.1.1.37",
-			// alternate reactions 
-			"4.1.3.6",
-			"1.1.99.16",
-			"2.3.1.61"
+			{"2.3.3.1", "2.3.3.3", "2.3.3.8", "4.1.3.7", "4.1.3.6", "2.8.3.10"}, // citrate synthase, citrate lyase
+			{"4.2.1.3"}, // aconitate hydratase
+			{"1.1.1.42", "1.1.1.41", "1.1.1.286"}, // isocitrate dehydrogenase, isocitrate--homoisocitrate dehydrogenase	
+			{"1.2.4.2", "2.3.1.61"}, // 2-oxoglutarate dehydrogenase
+			{"6.2.1.4", "6.2.1.5", "2.8.3.18"}, // succinyl-CoA synthetase, succinyl-CoA:acetate CoA-transferase
+			{"1.3.99.1", "1.3.5.1"}, // succinate dehydrogenase
+			{"4.2.1.2"}, // fumarate hydratase
+			{"1.1.1.37", "1.1.1.54"} // malate dehydrogenase
 		};
 	
-	public static final String[] GLYCOLYSIS_EC_NUMBERS = 
+	public static final String[][] TCA_CYCLE_EC_NUMBERS_SIDE_REACTIONS = 
 		{ 
-			"2.7.1.1",
-			"5.3.1.9",
-			"2.7.1.11",
-			"4.1.2.13",
-			"1.2.1.12",
-			"2.7.2.3",
-			"5.4.2.1", // was 5.4.2.1 but Enzyme database replaces with 5.4.2.11 or 5.4.2.12
-			"4.2.1.11",
-			"2.7.1.40"
+			{"1.2.7.3"}, // 2-oxoglutarate ferredoxin oxidoreductase
 		};
 	
-	public static final String[] GLYCOLYSIS_EC_NUMBERS_SIDE_BRANCH = 
+	public static final String[][] GLYCOLYSIS_EC_NUMBERS = 
 		{ 
-			"5.3.1.1"
+			{"2.7.1.1", "2.7.1.2", "2.7.1.63", "2.7.1.147"}, // hexokinase, glucokinase, polyphosphate glucokinase
+			{"5.3.1.9", "5.3.1.15"}, // glucose-6-phosphate isomerase, glucose-6-phosphate 1-epimerase
+			{"2.7.1.11", "2.7.1.146", "2.7.1.147"}, // 6-phosphofructokinase, ADP-dependent phosphofructokinase/glucokinase
+			{"4.1.2.13"}, // fructose-bisphosphate aldolase
+			{"1.2.1.12", "1.2.1.59"}, // glyceraldehyde 3-phosphate dehydrogenase
+			{"2.7.2.3"}, // phosphoglycerate kinase
+			{"5.4.2.1", "5.4.2.11", "5.4.2.12"}, // phosphoglycerate mutase
+			{"4.2.1.11"}, // enolase
+			{"2.7.1.40"} // pyruvate kinase
+		};
+	
+	public static final String[][] GLYCOLYSIS_EC_NUMBERS_SIDE_BRANCH = 
+		{ 
+			{"5.3.1.1"} // triosephosphate isomerase
+		};
+	
+	public static final String[][] GLYCONEOGENESIS_EC_NUMBERS = 
+		{ 
+			{"3.1.3.11"}, // fructose-1,6-bisphosphatase I
+			{"1.2.1.9", "1.2.7.6"}, // glyceraldehyde-3-phosphate dehydrogenase
+			{"5.4.2.4", "5.4.2.11", "3.1.3.13"}, // bisphosphoglycerate mutase
+			{"1.1.1.27"} // L-lactate dehydrogenase
 		};
 	
 	public static final String[] GLYCOLYSIS_REACTANTS = 

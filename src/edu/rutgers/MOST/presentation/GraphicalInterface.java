@@ -10739,15 +10739,19 @@ public class GraphicalInterface extends JFrame {
 					if (LocalConfig.getInstance().getEnzymeDataMap().containsKey(numbers.get(i))) {
 						//System.out.println(LocalConfig.getInstance().getEnzymeDataMap().get(numbers.get(i)));
 						for (int j = 0; j < EnzymeConstants.TCA_CYCLE_EC_NUMBERS.length; j++) {
-							if (EnzymeConstants.TCA_CYCLE_EC_NUMBERS[j].equals(numbers.get(i))) {
-								tcaReactions.add(numbers.get(i));
-								System.out.println("TCA " + numbers.get(i));
+							for (int k = 0; k < EnzymeConstants.TCA_CYCLE_EC_NUMBERS[j].length; k++) {
+								if (EnzymeConstants.TCA_CYCLE_EC_NUMBERS[j][k].equals(numbers.get(i))) {
+									tcaReactions.add(numbers.get(i));
+									System.out.println("TCA " + numbers.get(i));
+								}
 							}
 						}
 						for (int j = 0; j < EnzymeConstants.GLYCOLYSIS_EC_NUMBERS.length; j++) {
-							if (EnzymeConstants.GLYCOLYSIS_EC_NUMBERS[j].equals(numbers.get(i))) {
-								glycolysisReactions.add(numbers.get(i));
-								System.out.println("Glycolysis " + numbers.get(i));
+							for (int k = 0; k < EnzymeConstants.GLYCOLYSIS_EC_NUMBERS[j].length; k++) {
+								if (EnzymeConstants.GLYCOLYSIS_EC_NUMBERS[j][k].equals(numbers.get(i))) {
+									glycolysisReactions.add(numbers.get(i));
+									System.out.println("Glycolysis " + numbers.get(i));
+								}
 							}
 						}
 					}
