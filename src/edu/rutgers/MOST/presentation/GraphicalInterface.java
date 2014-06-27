@@ -2211,7 +2211,9 @@ public class GraphicalInterface extends JFrame {
 			public void actionPerformed(ActionEvent ae) {
 				EnzymeDataReader r = new EnzymeDataReader();
 				r.readFile();
-				getECNumbers();
+				//getECNumbers();
+				FBAModel model = new FBAModel();
+				System.out.println(model.toString());
 			}
 		});
 		

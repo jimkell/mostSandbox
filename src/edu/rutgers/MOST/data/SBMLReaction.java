@@ -24,6 +24,7 @@ public class SBMLReaction implements ModelReaction {
 	private String proteinAssociation;
 	private String subsystem;
 	private String proteinClass;
+	private String ecNumber;
 	private ArrayList<String> metaValues;
 	
 	public int getId() {
@@ -154,6 +155,14 @@ public class SBMLReaction implements ModelReaction {
 		return proteinClass;
 	}
 	
+	public String getEcNumber() {
+		return ecNumber;
+	}
+
+	public void setEcNumber(String ecNumber) {
+		this.ecNumber = ecNumber;
+	}
+
 	public ArrayList<String> getMetaValues() {
 		return metaValues;
 	}
@@ -211,12 +220,22 @@ public class SBMLReaction implements ModelReaction {
 	@Override
 	public String toString() {
 		return "SBMLReaction [id=" + id
+				+ ", knockout=" + knockout
 		        + ", fluxValue=" + fluxValue
-				+ ", biologicalObjective=" + biologicalObjective
+		        + ", reactionAbbreviation=" + reactionAbbreviation
+		    	+ ", reactionName=" + reactionName
+		    	+ ", reactionEqunAbbr=" + reactionEqunAbbr
+		    	+ ", reactionEqunNames=" + reactionEqunNames
+		    	+ ", reversible=" + reversible
 				+ ", upperBound=" + upperBound
-				+ ", lowerBound=" + lowerBound				
+				+ ", lowerBound=" + lowerBound	
+				+ ", biologicalObjective=" + biologicalObjective
+				+ ", syntheticObjective=" + syntheticObjective
 				+ ", geneAssociation=" + geneAssociation
-				+ ", knockout=" + knockout + "]";
+				+ ", proteinAssociation=" + proteinAssociation
+				+ ", subsystem=" + subsystem
+				+ ", proteinClass=" + proteinClass
+				+ ", ecNumber=" + ecNumber + "]";
 	}
 
 	public static void main(String[] args) {

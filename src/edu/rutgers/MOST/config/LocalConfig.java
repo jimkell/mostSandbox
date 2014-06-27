@@ -808,6 +808,5 @@ public class LocalConfig {
 		this.subsystemDataMap = subsystemDataMap;
 	}
 
-	
 
 }
