@@ -74,7 +74,8 @@ public class EnzymeConstants {
 	// will be placed on side arrows in pathways
 	public static final String[] SIDE_SPECIES =
 		{
-			"ADP", "ATP", "NAD(+)", "NADH", "NADP(+)", "NADPH", "H(2)O", "H(+)", "OH(-)"
+			"ADP", "ATP", "NAD(+)", "NADH", "NADP(+)", "NADPH", "NAD(P)(+)", "NAD(P)H",
+			"H(2)O", "H(+)", "OH(-)"
 		};
 
 }
