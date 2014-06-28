@@ -6,6 +6,7 @@ public class PathwayReaction {
 	private int id;
 	private String name;
 	private String ecNumber;
+	private String equation;
 	private ArrayList<String> mainReactants;
 	private ArrayList<String> mainProducts;
 	private ArrayList<String> sideReactants;
@@ -30,6 +31,12 @@ public class PathwayReaction {
 	}
 	public void setEcNumber(String ecNumber) {
 		this.ecNumber = ecNumber;
+	}
+	public String getEquation() {
+		return equation;
+	}
+	public void setEquation(String equation) {
+		this.equation = equation;
 	}
 	public ArrayList<String> getMainReactants() {
 		return mainReactants;
@@ -73,6 +80,7 @@ public class PathwayReaction {
 		return "\nPathway Reaction [id=" + id
 		+ ", name=" + name
 		+ ", ecNumber=" + ecNumber	
+		+ ", equation=" + equation
 		+ ", mainReactants=" + mainReactants		
 		+ ", mainProducts=" + mainProducts
 		+ ", sideReactants=" + sideReactants

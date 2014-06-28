@@ -26,7 +26,7 @@ public class EnzymeConstants {
 			{"4.1.2.13"}, // fructose-bisphosphate aldolase
 			{"1.2.1.12", "1.2.1.59"}, // glyceraldehyde 3-phosphate dehydrogenase
 			{"2.7.2.3"}, // phosphoglycerate kinase
-			{"5.4.2.1", "5.4.2.11", "5.4.2.12"}, // phosphoglycerate mutase
+			{"5.4.2.1", "5.4.2.11", "5.4.2.12", "2.7.5.3"}, // phosphoglycerate mutase, 2.7.5.3 and 5.4.2.1 are transferred entries in enzyme.dat
 			{"4.2.1.11"}, // enolase
 			{"2.7.1.40"} // pyruvate kinase
 		};
@@ -68,6 +68,13 @@ public class EnzymeConstants {
 			"D_Glycerate_2_phosphate",
 			"M_Phosphoenolpyruvate",
 			"Pyruvate"
+		};
+	
+	// names of species used in enzyme.dat, used to determine which species in a reaction
+	// will be placed on side arrows in pathways
+	public static final String[] SIDE_SPECIES =
+		{
+			"ADP", "ATP", "NAD(+)", "NADH", "NADP(+)", "NADPH", "H(2)O", "H(+)", "OH(-)"
 		};
 
 }

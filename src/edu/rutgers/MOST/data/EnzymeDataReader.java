@@ -43,9 +43,9 @@ public class EnzymeDataReader {
 			LocalConfig.getInstance().setEnzymeDataMap(enzymeDataMap);
 			ArrayList<String> description = new ArrayList<String>();
 			ArrayList<String> alternateNames = new ArrayList<String>();
-			ArrayList<String> catalyticActivity = new ArrayList<String>();
 			ArrayList<String> cofactors = new ArrayList<String>();
 			ArrayList<String> comments = new ArrayList<String>();
+			String catalyticActivity = "";
 			while (temp != null) {
 				temp = br.readLine();
 				//System.out.println(temp);
@@ -53,15 +53,14 @@ public class EnzymeDataReader {
 					//System.out.println(temp.substring(0, 2));
 					if (temp.substring(0, 2).equals("ID")) {
 						if (getEnzymeData().getId() != null) {
-							getEnzymeData().setCatalyticActivity(catalyticActivity);
 							LocalConfig.getInstance().getEnzymeDataList().add(getEnzymeData());
 							LocalConfig.getInstance().getEnzymeDataMap().put(getEnzymeData().getId(), getEnzymeData());
 						}
 						// create new lists for each new id
 						description = new ArrayList<String>();
 						alternateNames = new ArrayList<String>();
-						catalyticActivity = new ArrayList<String>();
 						cofactors = new ArrayList<String>();
+						catalyticActivity = "";
 						comments = new ArrayList<String>();
 						// create new enzyme data object
 						EnzymeData enzyme = new EnzymeData();
@@ -78,7 +77,7 @@ public class EnzymeDataReader {
 						getEnzymeData().setAlternateNames(alternateNames);
 					}
 					if (temp.substring(0, 2).equals("CA")) {
-						catalyticActivity.add(temp.substring(5, temp.length()));
+						catalyticActivity += temp.substring(5, temp.length());
 						getEnzymeData().setCatalyticActivity(catalyticActivity);
 					}
 					if (temp.substring(0, 2).equals("CF")) {
@@ -107,6 +106,6 @@ public class EnzymeDataReader {
 	public static void main(String[] args) {
 		EnzymeDataReader r = new EnzymeDataReader();
 		r.readFile();
-		//System.out.println(LocalConfig.getInstance().getEnzymeDataMap().get("1.1.1.1"));
+		System.out.println(LocalConfig.getInstance().getEnzymeDataMap().get("1.1.1.1"));
 	}
 }

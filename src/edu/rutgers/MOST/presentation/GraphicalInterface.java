@@ -2241,6 +2241,23 @@ public class GraphicalInterface extends JFrame {
 										pathwayReaction.setEcNumber(ecNumbers.get(i));
 										pathwayReaction.setId(id);
 										pathwayReaction.setName(name);
+										if (LocalConfig.getInstance().getEnzymeDataMap().containsKey(ecNumbers.get(i))) {
+											String equnString = "";
+											// 5.4.2.1 has no data - replaced by 5.4.2.11 and 5.4.2.12, each has same reaction
+											if (ecNumbers.get(i).equals("5.4.2.1") || ecNumbers.get(i).equals("2.7.5.3")) {
+												equnString = LocalConfig.getInstance().getEnzymeDataMap().get("5.4.2.11").getCatalyticActivity();
+											} else {
+												if (LocalConfig.getInstance().getEnzymeDataMap().get(ecNumbers.get(i)).getCatalyticActivity() != null) {
+													equnString = LocalConfig.getInstance().getEnzymeDataMap().get(ecNumbers.get(i)).getCatalyticActivity();
+												}
+											}
+											System.out.println(LocalConfig.getInstance().getEnzymeDataMap().get(ecNumbers.get(i)));
+											System.out.println(LocalConfig.getInstance().getEnzymeDataMap().get(ecNumbers.get(i)).getCatalyticActivity());
+											if (equnString.length() > 2) {
+												System.out.println(equnString.substring(0, equnString.length() - 1));
+												pathwayReaction.setEquation(equnString.substring(0, equnString.length() - 1));
+											}
+										}
 										reacList.add(pathwayReaction);
 									}
 								}
@@ -2249,6 +2266,8 @@ public class GraphicalInterface extends JFrame {
 					}
 					reactionsList.add(reacList);
 				}
+//				System.out.println(LocalConfig.getInstance().getEnzymeDataMap().get("5.4.2.11"));
+//				System.out.println(LocalConfig.getInstance().getEnzymeDataMap().get("5.4.2.12"));
 				System.out.println(glycolysisPathway.toString());
 			}
 		});

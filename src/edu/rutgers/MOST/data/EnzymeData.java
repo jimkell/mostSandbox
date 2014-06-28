@@ -6,7 +6,7 @@ public class EnzymeData {
 	private String id;
 	private ArrayList<String> description;
 	private ArrayList<String> alternateNames;
-	private ArrayList<String> catalyticActivity;
+	private String catalyticActivity;
 	private ArrayList<String> cofactors;
 	private ArrayList<String> comments;
 
@@ -34,14 +34,6 @@ public class EnzymeData {
 		this.alternateNames = alternateNames;
 	}
 
-	public ArrayList<String> getCatalyticActivity() {
-		return catalyticActivity;
-	}
-
-	public void setCatalyticActivity(ArrayList<String> catalyticActivity) {
-		this.catalyticActivity = catalyticActivity;
-	}
-
 	public ArrayList<String> getCofactors() {
 		return cofactors;
 	}
@@ -50,6 +42,14 @@ public class EnzymeData {
 		this.cofactors = cofactors;
 	}
 	
+	public String getCatalyticActivity() {
+		return catalyticActivity;
+	}
+
+	public void setCatalyticActivity(String catalyticActivity) {
+		this.catalyticActivity = catalyticActivity;
+	}
+
 	public ArrayList<String> getComments() {
 		return comments;
 	}
