@@ -42,6 +42,7 @@ public class SBMLModelReader {
 	public static Map<String, Object> metaboliteAbbreviationIdMap = new HashMap<String, Object>();
 	// id name map used only to set metabolite names in SBMLReactants and SBMLProducts
 	public static Map<Object, String> metaboliteIdNameMap = new HashMap<Object, String>();
+	public static Map<Object, String> metaboliteIdCompartmentMap = new HashMap<Object, String>();
 	private static Map<Object, ModelReactionEquation> reactionEquationMap = new HashMap<Object, ModelReactionEquation>();
 	
 	public SBMLModelReader(SBMLDocument doc) {
@@ -50,7 +51,6 @@ public class SBMLModelReader {
 
 	@SuppressWarnings("deprecation")
 	public void load(){
-		new SBMLModelReader(doc);
 		//String id = doc.getModel().getId(); 
 		//System.out.println(id);
 		
@@ -63,11 +63,6 @@ public class SBMLModelReader {
 		LocalConfig.getInstance().getMetaboliteAbbreviationIdMap().clear();
 		Map<String, Object> metaboliteNameIdMap = new HashMap<String, Object>();
 
-		ListOf<Compartment> compartments = doc.getModel().getListOfCompartments();
-		for (int i = 0; i < compartments.size(); i++) {
-			System.out.println(compartments.get(i).toString());
-		}
-		
 		ArrayList<String> metabolitesMetaColumnNames = new ArrayList<String>();
 		ListOf<Species> metabolites = doc.getModel().getListOfSpecies();
 		for (int i = 0; i < metabolites.size(); i++) {
@@ -85,6 +80,7 @@ public class SBMLModelReader {
 			metaboliteAbbreviationIdMap.put(metabolites.get(i).getId(), new Integer(i));
 			metabRow.add(metabolites.get(i).getName());	
 			metaboliteIdNameMap.put(new Integer(i), metabolites.get(i).getName());
+			metaboliteIdCompartmentMap.put(new Integer(i), metabolites.get(i).getCompartment());
 			metaboliteNameIdMap.put(metabolites.get(i).getId(), new Integer(i));
 			if (metabolites.get(i).isSetCharge()) {
 				charge = Integer.toString(metabolites.get(i).getCharge());
@@ -116,7 +112,6 @@ public class SBMLModelReader {
 				}
 
 				if (i == 0) {
-					int metaColCount = 0;
 					//set list of notes names to meta columns			
 					for (int n = 0; n < metabNoteItemList.size(); n++) {
 						if (metabNoteItemList.get(n).contains(":")) {
@@ -173,7 +168,6 @@ public class SBMLModelReader {
 							}
 							if (!contains) {
 								metabolitesMetaColumnNames.add(columnName);
-								metaColCount += 1;
 							}	
 						}
 					}
@@ -204,7 +198,7 @@ public class SBMLModelReader {
 					}
 				}
 				//System.out.println(metabolitesMetaColumnMap);
-			} 		
+			} 
 			metabRow.add(charge);	
 			metabRow.add(metabolites.get(i).getCompartment());
 			String boundary = "";
@@ -332,6 +326,7 @@ public class SBMLModelReader {
 				reactant.setStoic(reactants.get(r).getStoichiometry());
 				reactant.setMetaboliteAbbreviation(reactants.get(r).getSpecies());
 				reactant.setMetaboliteName(metaboliteIdNameMap.get(id));
+				reactant.setCompartment(metaboliteIdCompartmentMap.get(id));
 				//System.out.println(reactant.toString());
 				equnReactants.add(reactant);
 			}
@@ -372,6 +367,7 @@ public class SBMLModelReader {
 				product.setStoic(products.get(p).getStoichiometry());
 				product.setMetaboliteAbbreviation(products.get(p).getSpecies());
 				product.setMetaboliteName(metaboliteIdNameMap.get(id));
+				product.setCompartment(metaboliteIdCompartmentMap.get(id));
 				//System.out.println(product.toString());
 				equnProducts.add(product);
 			}
@@ -431,26 +427,27 @@ public class SBMLModelReader {
 				for (int u = 0; u < reactions.get(j).getNotes().getChildCount(); u++) {
 					if (!reactions.get(j).getNotes().getChildAt(u).getName().isEmpty()) {
 						String noteString = reactions.get(j).getNotes().getChildAt(u).toXMLString();
-						//System.out.println(noteString);
 						String noteItem = "";
 						//removes xmlns (xml namespace tags)
 						if (noteString.contains("xmlns")) {
-							//System.out.println(noteString);
 							if (!noteString.endsWith("/>")) {
+								if (noteString.contains("<p/>")) {
+									noteString = noteString.replace("<p/>", "");
+								}
 								noteString = noteString.substring(noteString.indexOf(">") + 1, noteString.lastIndexOf("<"));
-								//System.out.println(noteString);
 								if (noteString.contains("<")) {
 									String endtag = noteString.substring(noteString.lastIndexOf("<"));
 									//System.out.println("endtag " + endtag);
 									String[] nameSpaces = noteString.split(endtag);
 									for (int n = 0; n < nameSpaces.length; n++) {
 										noteItem = nameSpaces[n].substring(nameSpaces[n].indexOf(">") + 1); 
+										//System.out.println(noteItem);
 										noteItemList.add(noteItem);										
 									}
 								} else {
 									noteItemList.add(noteString);
 								}
-							} 
+							}
 						} else {
 							if ((noteString.indexOf(">") + 1) < noteString.lastIndexOf("<")) {
 								//for "<>", "</>" types of nodes, tags are removed
@@ -468,7 +465,6 @@ public class SBMLModelReader {
 					//System.out.println(noteItemList);
 					//set list of notes names to meta columns							
 					boolean genes = false;
-					int metaColCount = 0;
 					for (int n = 0; n < noteItemList.size(); n++) {
 						if (noteItemList.get(n).contains(":")) {
 							//accounts for condition of multiple ":"
@@ -538,7 +534,6 @@ public class SBMLModelReader {
 							if (!contains) {
 								if (!reactionsMetaColumnNames.contains(columnName)) {
 									reactionsMetaColumnNames.add(columnName);
-									metaColCount += 1;
 								}					
 							}
 						}
@@ -642,14 +637,13 @@ public class SBMLModelReader {
 		LocalConfig.getInstance().setMetaboliteAbbreviationIdMap(metaboliteAbbreviationIdMap);
 		//System.out.println(metaboliteNameIdMap);
 		LocalConfig.getInstance().setMetaboliteIdNameMap(metaboliteIdNameMap);
+		LocalConfig.getInstance().setMetaboliteIdCompartmentMap(metaboliteIdCompartmentMap);
+		//System.out.println(LocalConfig.getInstance().getMetaboliteIdCompartmentMap());
 		//System.out.println(LocalConfig.getInstance().getMetaboliteUsedMap());
 		LocalConfig.getInstance().setReactionEquationMap(reactionEquationMap);
 		//System.out.println(LocalConfig.getInstance().getReactionEquationMap());
 		LocalConfig.getInstance().setProgress(100);	
 		//System.out.println("Done");
-
-	}
-	public static void main(String[] args) throws Exception {
 
 	}
 }

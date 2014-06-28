@@ -12,7 +12,6 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.swing.JOptionPane;
-import javax.xml.namespace.QName;
 import javax.xml.stream.XMLEventFactory;
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLEventWriter;
@@ -27,6 +26,8 @@ import javax.xml.stream.events.StartDocument;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
+import edu.rutgers.MOST.presentation.Utilities;
+
 public class SettingsFactory {
 	public Map<String, String> mappings;
 	public String filename;
@@ -39,25 +40,9 @@ public class SettingsFactory {
 	
 	public SettingsFactory() throws Exception {
 		mappings = new HashMap<String, String>();
-		String fileName = "";
-		if (System.getProperty("os.name").equals("Windows 7") || System.getProperty("os.name").equals("Windows 8") || System.getProperty("os.name").equals("Windows Vista")) {
-			File destDir = new File(SettingsConstants.SETTINGS_PATH_PREFIX_WINDOWS_7 + System.getProperty("user.name") + SettingsConstants.SETTINGS_PATH_SUFFIX_WINDOWS_7 + SettingsConstants.FOLDER_NAME);
-			if (!destDir.exists()) {
-				destDir.mkdir();				
-			}
-			fileName = SettingsConstants.SETTINGS_PATH_PREFIX_WINDOWS_7 + System.getProperty("user.name") + SettingsConstants.SETTINGS_PATH_SUFFIX_WINDOWS_7 + SettingsConstants.FOLDER_NAME + "settings.xml";
-		} else if (System.getProperty("os.name").equals("Windows XP")) {
-			File destDir = new File(SettingsConstants.SETTINGS_PATH_PREFIX_WINDOWS_XP + System.getProperty("user.name") + SettingsConstants.SETTINGS_PATH_SUFFIX_WINDOWS_XP + SettingsConstants.FOLDER_NAME);
-			if (!destDir.exists()) {
-				destDir.mkdir();				
-			}
-			fileName = SettingsConstants.SETTINGS_PATH_PREFIX_WINDOWS_XP + System.getProperty("user.name") + SettingsConstants.SETTINGS_PATH_SUFFIX_WINDOWS_XP + SettingsConstants.FOLDER_NAME + "settings.xml";
-		} else {
-			fileName = "settings.xml";
-		}
+		Utilities u = new Utilities();
+		String fileName = u.createLogFileName("settings.xml");
 		this.filename = fileName;
-		//this.filename = "settings.xml";
-		//System.out.println(this.filename);
 		this.read();
 	}
 	
@@ -111,8 +96,8 @@ public class SettingsFactory {
 	    writer.add(startElement);
 
 	    Attribute attribute = xmlEventFactory.createAttribute("version", "1");
-	    List attributeList = Arrays.asList(attribute);
-	    List nsList = Arrays.asList();
+	    List< Attribute > attributeList = Arrays.asList(attribute);
+	    List< ? > nsList = Arrays.asList();
 	    
 	    StartElement startElement2 = xmlEventFactory.createStartElement("", "", "Attributes",
 	        attributeList.iterator(), nsList.iterator());
@@ -190,18 +175,15 @@ public class SettingsFactory {
 
 					//System.out.println("Start Element: " + element.getName());
 
-					Iterator iterator = element.getAttributes();
+					Iterator< ? > iterator = element.getAttributes();
 					while (iterator.hasNext()) {
 						Attribute attribute = (Attribute) iterator.next();
-						QName name = attribute.getName();
-						String value = attribute.getValue();
-						//System.out.println("Attribute name/value: " + name + "/" + value);
+						attribute.getName();
+						attribute.getValue();
 					}
 				}
 
 				if (event.isEndElement()) {
-					EndElement element = (EndElement) event;
-					//System.out.println("End element:" + element.getName());
 				}
 
 				if (event.isCharacters()) {

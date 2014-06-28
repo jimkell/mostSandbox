@@ -10,8 +10,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Vector;
 
-import javax.swing.JOptionPane;
-
 import org.apache.commons.lang3.ArrayUtils;
 import org.gnu.glpk.GLPK;
 import org.gnu.glpk.GLPKConstants;
@@ -23,17 +21,12 @@ import org.gnu.glpk.glp_iocp;
 import org.gnu.glpk.glp_prob;
 import org.gnu.glpk.glp_tree;
 
+import edu.rutgers.MOST.Analysis.GDBB;
 import edu.rutgers.MOST.data.Solution;
-import edu.rutgers.MOST.optimization.GDBB.GDBB;
 import edu.rutgers.MOST.presentation.ResizableDialog;
 
 public class GLPKSolver extends Solver implements GlpkCallbackListener
 {
-	private enum SolverKind
-	{
-		FBASolver, GDBBSolver
-	}
-
 	private class RowEntry
 	{
 		public int idx;
@@ -48,7 +41,6 @@ public class GLPKSolver extends Solver implements GlpkCallbackListener
 
 	private class RowType
 	{
-		public double val;
 		public int type;
 		public double lb;
 		public double ub;
@@ -56,7 +48,6 @@ public class GLPKSolver extends Solver implements GlpkCallbackListener
 
 		RowType( double v, int t, double l, double u )
 		{
-			val = v;
 			type = t;
 			lb = l;
 			ub = u;
@@ -93,7 +84,6 @@ public class GLPKSolver extends Solver implements GlpkCallbackListener
 	private ArrayList< Double > soln = new ArrayList< Double >();
 	private double objval;
 	private glp_prob problem_tmp;
-	private SolverKind solverKind = SolverKind.FBASolver;
 	private ResizableDialog dialog = new ResizableDialog( "Error",
 			"GLPK Solver Error", "GLPK Solver Error" );
 
@@ -132,10 +122,10 @@ public class GLPKSolver extends Solver implements GlpkCallbackListener
 		dialog.setVisible( true );
 	}
 
-	public GLPKSolver()
+	public GLPKSolver( Algorithm algorithm )
 	{
+		super( algorithm );
 		String dependsFolder = "lib/";
-		Object[] options = { "    OK    " };
 		if( System.getProperty( "os.name" ).toLowerCase().contains( "windows" ) )
 		{
 			dependsFolder += "win" + System.getProperty( "sun.arch.data.model" );
@@ -180,11 +170,9 @@ public class GLPKSolver extends Solver implements GlpkCallbackListener
 		switch( types )
 		{
 		case INTEGER:
-			solverKind = SolverKind.GDBBSolver;
 			kind = GLPKConstants.GLP_IV;
 			break;
 		case BINARY:
-			solverKind = SolverKind.GDBBSolver;
 			kind = GLPKConstants.GLP_BV;
 			break;
 		default:
@@ -217,8 +205,8 @@ public class GLPKSolver extends Solver implements GlpkCallbackListener
 			double value )
 	{
 		// row definitions
-		double lb = 0;
-		double ub = 0;
+		double lb = Double.NEGATIVE_INFINITY;
+		double ub = Double.POSITIVE_INFINITY;
 		int type = 0;
 		switch( con )
 		{
@@ -301,7 +289,9 @@ public class GLPKSolver extends Solver implements GlpkCallbackListener
 		glp_iocp parm = new glp_iocp();
 		GLPK.glp_init_iocp( parm );
 		parm.setPresolve( GLPK.GLP_ON );
-		parm.setTol_int( 1e-6 );
+		parm.setTol_int( 1E-9 );
+		parm.setTol_obj( 1E-9 );
+		
 		try
 		{
 			/* int optres = */// GLPK.glp_simplex( problem, null );
@@ -386,7 +376,7 @@ public class GLPKSolver extends Solver implements GlpkCallbackListener
 			double[] darray = ArrayUtils.toPrimitive( soln
 					.toArray( new Double[] {} ) );
 			Solution sn = new Solution( objval, darray );
-			if( solverKind == SolverKind.GDBBSolver )
+			if( this.getAlgorithm() == Algorithm.GDBB )
 				GDBB.intermediateSolution.add( sn );
 		}
 	}

@@ -91,8 +91,8 @@ public class GraphicalInterfaceConstants {
     public static final int BOUNDARY_COLUMN = metabolitesList.indexOf("Boundary Condition");
     public static final int METABOLITE_META_DEFAULT_WIDTH = 150;
     
-    public static final double FLUX_VALUE_DEFAULT = 0.0;
-    public static final String FLUX_VALUE_DEFAULT_STRING = "0.0";
+    public static final double FLUX_VALUE_DEFAULT = 0;
+    public static final String FLUX_VALUE_DEFAULT_STRING = "0";
     public static final double LOWER_BOUND_DEFAULT = 0.0;
     public static final double LOWER_BOUND_REVERSIBLE_DEFAULT = -999999.0;
     public static final String LOWER_BOUND_DEFAULT_IRREVERBIBLE_STRING = "0.0";
@@ -107,6 +107,9 @@ public class GraphicalInterfaceConstants {
     // if lower bound default < 0 then reversible must be true
     public static final String REVERSIBLE_DEFAULT = "true";
     public static final String BOUNDARY_DEFAULT = "false";
+    
+    public static final double MIN_DECIMAL_FORMAT = 0.0001;
+    public static final double MAX_DECIMAL_FORMAT =	10000;	
         
     // prefixes and suffixes
     public static final String DB_COPIER_SUFFIX = "_orig";
@@ -246,6 +249,9 @@ public class GraphicalInterfaceConstants {
     public static final String BOOLEAN_VALUE_ERROR_TITLE = "Boolean Value Error";
     public static final String BOOLEAN_VALUE_ERROR_MESSAGE = "Invalid Boolean Value";
     //public static final String BOOLEAN_VALUE_ERROR_MESSAGE = "Invalid entry. Enter \"t\" for \"true\", \"f\" for \"false\"";
+    
+    public static final String[] VALID_INFINITY_VALUES = {"inf", "infinity"};
+    public static final String VALID_INFINITY_ENTRY = "Infinity";
 	
     // lower/upper bound/reversible
     public static final String LOWER_BOUND_ERROR_TITLE = "Lower Bound Error.";
@@ -341,7 +347,7 @@ public class GraphicalInterfaceConstants {
     // about
     public static final String ABOUT_BOX_TITLE = "About MOST";
     public static final String ABOUT_BOX_TEXT = "MOST - Metabolic Optimization and Simulation Tool.";	
-    public static final String ABOUT_BOX_VERSION_TEXT = "Version: alpha-7";
+    public static final String ABOUT_BOX_VERSION_TEXT = "Version: alpha-9";
     
     public static final String ABOUT_LICENSE_URL = "http://most.ccib.rutgers.edu/help.html#about";
     
@@ -410,11 +416,11 @@ public class GraphicalInterfaceConstants {
     public static final Color GRAYED_LABEL_COLOR = new Color(150,150,150);
     
     // directories used for writing log files
-    public static final String SETTINGS_PATH_PREFIX_WINDOWS_7 = "C:\\Users\\";
+    // The suffix must be used as there are bugs in getting the application data folder
+    // in Windows XP - http://stackoverflow.com/questions/1198911/how-to-get-local-application-data-folder-in-java
 	public static final String SETTINGS_PATH_SUFFIX_WINDOWS_7 = "\\AppData\\Local";
 	
-	public static final String SETTINGS_PATH_PREFIX_WINDOWS_XP = "C:\\Documents and Settings\\";
-	public static final String SETTINGS_PATH_SUFFIX_WINDOWS_XP = "\\Local Settings\\Application Data\\";
+	public static final String SETTINGS_PATH_SUFFIX_WINDOWS_XP = "\\Local Settings\\Application Data";
 	
 	public static final String FOLDER_NAME = "\\MOST\\";
     

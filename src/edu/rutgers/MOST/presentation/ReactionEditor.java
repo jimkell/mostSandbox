@@ -4,17 +4,12 @@ import javax.swing.*;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
-import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.StringSelection;
-import java.awt.datatransfer.Transferable;
-import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.IOException;
-import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -125,6 +120,7 @@ public class ReactionEditor extends JFrame {
 	}
 
 	// private final JList names;
+	@SuppressWarnings( { "rawtypes", "unchecked", "unused" } )
 	public ReactionEditor() {
 	setTitle("Reaction Editor");
 
@@ -287,7 +283,7 @@ public class ReactionEditor extends JFrame {
 					if (reactionArea.getText() != null && parser.isValid(reactionArea.getText())) {
 						parser.reactionList(reactionArea.getText().trim());
 						if ((getNumPopulatedReacBoxes() + 1) < getNumReactantFields()) {
-							int index = parser.getEquation().getReactants().size();
+							int index = ReactionParser.getEquation().getReactants().size();
 							if (index == getNumPopulatedReacBoxes() && !reactantsPopulated) {
 								for (int m = 0; m < metabList.size(); m++) {
 									cbReactant[index].addItem(metabList.get(m));
@@ -396,7 +392,7 @@ public class ReactionEditor extends JFrame {
 					if (reactionArea.getText() != null && parser.isValid(reactionArea.getText())) {
 						parser.reactionList(reactionArea.getText().trim());
 						if ((getNumPopulatedProdBoxes() + 1) < getNumProductFields()) {
-							int index = parser.getEquation().getProducts().size();
+							int index = ReactionParser.getEquation().getProducts().size();
 							if (index == getNumPopulatedProdBoxes() && !productsPopulated) {
 								for (int m = 0; m < metabList.size(); m++) {
 									cbProduct[index].addItem(metabList.get(m));
@@ -510,8 +506,8 @@ public class ReactionEditor extends JFrame {
 			// TODO: determine if needed
 			setOldReaction(reactionEquation);
 			parser.reactionList(reactionEquation);
-			reactants = parser.getEquation().getReactants();
-			products = parser.getEquation().getProducts();
+			reactants = ReactionParser.getEquation().getReactants();
+			products = ReactionParser.getEquation().getProducts();
 			//reactions of the type ==> b will have a reactants list of size 0
 			if (reactants.size() == 0) {	
 				for (int m = 0; m < metabList.size(); m++) {
@@ -736,49 +732,6 @@ public class ReactionEditor extends JFrame {
 		});
 		
 	}	
-
-	//from http://www.javakb.com/Uwe/Forum.aspx/java-programmer/21291/popupmenu-for-a-cell-in-a-JXTable
-	private static String getClipboardContents(Object requestor) {
-		Transferable t = Toolkit.getDefaultToolkit()
-				.getSystemClipboard().getContents(requestor);
-		if (t != null) {
-			DataFlavor df = DataFlavor.stringFlavor;
-			if (df != null) {
-				try {
-					Reader r = df.getReaderForText(t);
-					char[] charBuf = new char[512];
-					StringBuffer buf = new StringBuffer();
-					int n;
-					while ((n = r.read(charBuf, 0, charBuf.length)) > 0) {
-						buf.append(charBuf, 0, n);
-					}
-					r.close();
-					return (buf.toString());
-				} catch (IOException ex) {
-					JOptionPane.showMessageDialog(null,                
-							"Clipboard Error.",                
-							"Error",                                
-							JOptionPane.ERROR_MESSAGE);
-					//ex.printStackTrace();
-				} catch (UnsupportedFlavorException ex) {
-					JOptionPane.showMessageDialog(null,                
-							"Clipboard Error. Unsupported Flavor",                
-							"Error",                                
-							JOptionPane.ERROR_MESSAGE);
-					//ex.printStackTrace();
-				}
-			}
-		}
-		return null;
-	}
-
-	private static boolean isClipboardContainingText(Object requestor) {
-		Transferable t = Toolkit.getDefaultToolkit()
-				.getSystemClipboard().getContents(requestor);
-		return t != null
-				&& (t.isDataFlavorSupported(DataFlavor.stringFlavor) || t
-						.isDataFlavorSupported(DataFlavor.plainTextFlavor));
-	}
 
 	private static void setClipboardContents(String s) {
 		StringSelection selection = new StringSelection(s);

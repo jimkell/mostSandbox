@@ -3,8 +3,6 @@ package edu.rutgers.MOST.data;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Vector;
-
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
@@ -115,9 +113,9 @@ public class JSBMLWriter implements TreeModelListener{
 	}
 
 	public JSBMLWriter() {
-		metabolitesMap = new HashMap();
-		speciesMap = new HashMap();
-		speciesRefMap = new HashMap();
+		metabolitesMap = new HashMap< Integer, SBMLMetabolite >();
+		speciesMap = new HashMap< String, Species >();
+		speciesRefMap = new HashMap< String, SpeciesReference >();
 	}
 	
 	public void metaMap() {
@@ -212,6 +210,7 @@ public class JSBMLWriter implements TreeModelListener{
 	public void setOutFile(File toFile) {
 		outFile = toFile;
 	}
+	@SuppressWarnings( "deprecation" )
 	public void create() throws Exception {
 		level = 3;
 		version = 1;
@@ -309,15 +308,14 @@ public class JSBMLWriter implements TreeModelListener{
 		// For brevity, WE DO NOT PERFORM ERROR CHECKING, but you should,
 		// using the method doc.checkConsistency() and then checking the error log.
 		
-		// Write the SBML document to a file.
-		SBMLWriter sbmlwrite = new SBMLWriter();
+		new SBMLWriter();
 		
 		
 		if (null == outFile) {
-			sbmlwrite.write(doc, "test.xml", "MOST", "1.0");
+			SBMLWriter.write(doc, "test.xml", "MOST", "1.0");
 		}
 		else {
-			sbmlwrite.write(doc, outFile, "MOST", "1.0");
+			SBMLWriter.write(doc, outFile, "MOST", "1.0");
 		}
 		
 		//System.out.println("Successfully outputted to " + outFile);
@@ -329,8 +327,8 @@ public class JSBMLWriter implements TreeModelListener{
 		public ArrayList<Species> allSpecies;
 	
 		public SMetabolites() {
-			allMetabolites = new ArrayList();
-			allSpecies = new ArrayList();
+			allMetabolites = new ArrayList< SBMLMetabolite >();
+			allSpecies = new ArrayList< Species >();
 		}
 		
 		public void setDatabase(String name) {
@@ -358,7 +356,7 @@ public class JSBMLWriter implements TreeModelListener{
 			*/
 			int metabRow = 0;
 			int blankMetabAbbrCount = 1;
-			compartments = new HashMap();
+			compartments = new HashMap< String, Compartment >();
 			for (int i=0; i < length; i++) {
 				SBMLMetabolite curMeta = (SBMLMetabolite) mFactory.getMetaboliteByRow(i);
 				//SBMLMetabolite curMeta = (SBMLMetabolite) mFactory.getMetaboliteById(i);
@@ -402,12 +400,7 @@ public class JSBMLWriter implements TreeModelListener{
 		}
 		
 		public void devModel() {
-			Vector<Species> curSpecies;
-			
-			int count = 0;
-						
 			String comp;
-			Compartment curComp;
 			for (SBMLMetabolite cur : allMetabolites) {
 				comp = cur.getCompartment();
 								
@@ -481,7 +474,7 @@ public class JSBMLWriter implements TreeModelListener{
 		public ArrayList<SBMLReaction> allReactions;
 	
 		public SReactions() {
-			allReactions = new ArrayList();
+			allReactions = new ArrayList< SBMLReaction >();
 		}
 		public void setModel(Model model) {
 			this.model = model;
@@ -493,9 +486,7 @@ public class JSBMLWriter implements TreeModelListener{
 			
 			//int length = rFactory.getAllReactions().size();
 			
-			int reacCount = 0;
 			int blankReacAbbrCount = 1;
-			int duplCount = 1;
 			for (int i = 0; i < GraphicalInterface.reactionsTable.getRowCount(); i++) {
 			//for (int i = 0 ; i< length; i++) {
 				SBMLReaction curReact = (SBMLReaction) rFactory.getReactionByRow(i);
@@ -531,15 +522,9 @@ public class JSBMLWriter implements TreeModelListener{
 		
 		
 		public void devModel() {
-			Vector<Species> curSpecies;
-			
-			int count = 0;
-			//System.out.println();
 			//model.addNamespace("html");
 			//model.addNamespace("html:p");
-			MetaboliteFactory mFactory = new MetaboliteFactory(sourceType);
-			ReactantFactory reFactory = new ReactantFactory(sourceType);
-			ProductFactory prFactory = new ProductFactory(sourceType);			
+			MetaboliteFactory mFactory = new MetaboliteFactory(sourceType);	
 			
 			/*LocalParameter lParaml = new LocalParameter("LOWER_BOUND");
 			LocalParameter uParaml = new LocalParameter("UPPER_BOUND");
@@ -549,7 +534,7 @@ public class JSBMLWriter implements TreeModelListener{
 			*/
 			
 			//The following handles the 1 to 1 relation of instance variables to values 
-			Map<Integer, Map<String, LocalParameter>> allparams = new HashMap();
+			Map<Integer, Map<String, LocalParameter>> allparams = new HashMap< Integer, Map< String, LocalParameter >>();
 			
 			String lowerStr = "LOWER_BOUND";
 			String upperStr = "UPPER_BOUND";
@@ -567,7 +552,7 @@ public class JSBMLWriter implements TreeModelListener{
 				LocalParameter fParaml = new LocalParameter(fluxStr);
 				LocalParameter rParaml = new LocalParameter(redStr);
 				
-				Map<String, LocalParameter> curParams = new HashMap();
+				Map<String, LocalParameter> curParams = new HashMap< String, LocalParameter >();
 				lParaml.setUnits(uD);
 				uParaml.setUnits(uD);
 				fParaml.setUnits(uD);
@@ -679,7 +664,7 @@ public class JSBMLWriter implements TreeModelListener{
 						SpeciesReference curSpec = new SpeciesReference(); //TODO: Figure spec
 						SBMLReactant curR = ((SBMLReactionEquation)LocalConfig.getInstance().getReactionEquationMap().get(cur.getId())).reactants.get(r);
 						int inId = curR.getMetaboliteId();
-						SBMLMetabolite sMReactant = (SBMLMetabolite) mFactory.getMetaboliteById(inId);
+						mFactory.getMetaboliteById(inId);
 						String reactAbbrv = curR.getMetaboliteAbbreviation();
 				
 						//Utilities u = new Utilities();
@@ -701,7 +686,7 @@ public class JSBMLWriter implements TreeModelListener{
 						SpeciesReference curSpec = new SpeciesReference(); //TODO: Figure spec
 						SBMLProduct curP = ((SBMLReactionEquation)LocalConfig.getInstance().getReactionEquationMap().get(cur.getId())).products.get(p);
 						int inId = curP.getMetaboliteId();
-						SBMLMetabolite sMReactant = (SBMLMetabolite) mFactory.getMetaboliteById(inId);
+						mFactory.getMetaboliteById(inId);
 						String reactAbbrv = curP.getMetaboliteAbbreviation();
 						
 						//Utilities u = new Utilities();

@@ -120,9 +120,8 @@ public class TextReactionsModelReader {
 		CSVReader reader;
 		try {
 			reader = new CSVReader(new FileReader(file), ',');
-			String[] dataArray;
 			try {
-				while ((dataArray = reader.readNext()) != null) {
+				while ((reader.readNext()) != null) {
 					count++; 	
 				}
 				reader.close();
@@ -182,7 +181,6 @@ public class TextReactionsModelReader {
 		CSVReader reader;
 		try {
 			reader = new CSVReader(new FileReader(file), ',');
-			String [] dataArray;
 		} catch (FileNotFoundException e) {
 			JOptionPane.showMessageDialog(null,                
 					"File Not Found Error.",                
@@ -214,7 +212,6 @@ public class TextReactionsModelReader {
 					String reactionAbbreviation = "";
 					String reactionName = "";
 					String reactionEqunAbbr = "";
-					String reactionEqunNames = "";
 					String reversible = "";
 					Double lowerBound = GraphicalInterfaceConstants.LOWER_BOUND_DEFAULT;
 					Double upperBound =	GraphicalInterfaceConstants.UPPER_BOUND_DEFAULT;
@@ -253,7 +250,7 @@ public class TextReactionsModelReader {
 					if (parser.isValid(reactionEqunAbbr)) {
 						parser.reactionList(reactionEqunAbbr);
 						SBMLReactionEquation equn = new SBMLReactionEquation();
-						equn = parser.getEquation();
+						equn = ReactionParser.getEquation();
 						updateReactionEquation(reactionEqunAbbr, id, equn, reacRow);
 					} else {
 						if (reactionEqunAbbr != null && reactionEqunAbbr.trim().length() > 0) {
@@ -290,7 +287,7 @@ public class TextReactionsModelReader {
 					// TODO : add error message here?
 					// reversible = false
 					if (lowerBound < 0.0 && reversible.equals(GraphicalInterfaceConstants.BOOLEAN_VALUES[0])) {
-						lowerBound = lowerBound = GraphicalInterfaceConstants.LOWER_BOUND_DEFAULT;
+						lowerBound = GraphicalInterfaceConstants.LOWER_BOUND_DEFAULT;
 					} 
 					reacRow.add(Double.toString(lowerBound));
 					if (LocalConfig.getInstance().getUpperBoundColumnIndex() > -1) {
@@ -373,7 +370,8 @@ public class TextReactionsModelReader {
 				equation.getReactants().get(i).setMetaboliteId(metabId);
 				if (LocalConfig.getInstance().getMetaboliteIdNameMap().containsKey(metabId)) {
 					equation.getReactants().get(i).setMetaboliteName(LocalConfig.getInstance().getMetaboliteIdNameMap().get(metabId));
-				}				
+					equation.getReactants().get(i).setCompartment(LocalConfig.getInstance().getMetaboliteIdCompartmentMap().get(metabId));
+				}		
 				reactants.add(equation.getReactants().get(i));
 				if (parser.isSuspicious(equation.getReactants().get(i).getMetaboliteAbbreviation())) {
 					if (!LocalConfig.getInstance().getSuspiciousMetabolites().contains(metabId)) {
@@ -390,6 +388,7 @@ public class TextReactionsModelReader {
 				equation.getProducts().get(i).setMetaboliteId(metabId);
 				if (LocalConfig.getInstance().getMetaboliteIdNameMap().containsKey(metabId)) {
 					equation.getProducts().get(i).setMetaboliteName(LocalConfig.getInstance().getMetaboliteIdNameMap().get(metabId));
+					equation.getProducts().get(i).setCompartment(LocalConfig.getInstance().getMetaboliteIdCompartmentMap().get(metabId));
 				}				
 				products.add(equation.getProducts().get(i));
 				if (parser.isSuspicious(equation.getProducts().get(i).getMetaboliteAbbreviation())) {
