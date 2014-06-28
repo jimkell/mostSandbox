@@ -75,9 +75,11 @@ public class MetabolicPathway implements ChangeListener {
     	ArrayList<String> reactants = new ArrayList<String>(Arrays.asList(EnzymeConstants.GLYCOLYSIS_REACTANTS)); 
     	ArrayList<String> products = new ArrayList<String>(Arrays.asList(EnzymeConstants.GLYCOLYSIS_PRODUCTS)); 
     	for (int i = 0; i < EnzymeConstants.GLYCOLYSIS_EC_NUMBERS.length; i++) {
-    		System.out.println(LocalConfig.getInstance().getEnzymeDataMap().get(EnzymeConstants.GLYCOLYSIS_EC_NUMBERS[i]));
-    		String reaction = LocalConfig.getInstance().getEnzymeDataMap().get(EnzymeConstants.GLYCOLYSIS_EC_NUMBERS[i]).getDescription().get(0);
-    		glycolysisReactionNames.add(basicDraw.newLineString(reaction));
+    		//for (int j = 0; j < EnzymeConstants.GLYCOLYSIS_EC_NUMBERS[i].length; j++) {
+    			System.out.println(LocalConfig.getInstance().getEnzymeDataMap().get(EnzymeConstants.GLYCOLYSIS_EC_NUMBERS[i][0]));
+        		String reaction = LocalConfig.getInstance().getEnzymeDataMap().get(EnzymeConstants.GLYCOLYSIS_EC_NUMBERS[i][0]).getDescription().get(0);
+        		glycolysisReactionNames.add(basicDraw.newLineString(reaction));
+    		//}
     	}
     	
     	basicDraw.drawStraightVerticalPathway(g, x, y, 2, glycolysisReactionNames, reactants, products);
