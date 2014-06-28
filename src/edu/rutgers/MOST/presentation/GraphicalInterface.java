@@ -31,11 +31,14 @@ import edu.rutgers.MOST.data.EnzymeDataReader;
 import edu.rutgers.MOST.data.FBAModel;
 import edu.rutgers.MOST.data.GDBBModel;
 import edu.rutgers.MOST.data.JSBMLWriter;
+import edu.rutgers.MOST.data.MetabolicPathway;
 import edu.rutgers.MOST.data.MetaboliteFactory;
 import edu.rutgers.MOST.data.MetaboliteUndoItem;
 import edu.rutgers.MOST.data.ModelMetabolite;
+import edu.rutgers.MOST.data.ModelReaction;
 import edu.rutgers.MOST.data.ModelReactionEquation;
 import edu.rutgers.MOST.data.ObjectCloner;
+import edu.rutgers.MOST.data.PathwayReaction;
 import edu.rutgers.MOST.data.ReactionEquationUpdater;
 import edu.rutgers.MOST.data.ReactionFactory;
 import edu.rutgers.MOST.data.ReactionUndoItem;
@@ -43,6 +46,7 @@ import edu.rutgers.MOST.data.SBMLMetabolite;
 import edu.rutgers.MOST.data.SBMLModelReader;
 import edu.rutgers.MOST.data.SBMLProduct;
 import edu.rutgers.MOST.data.SBMLReactant;
+import edu.rutgers.MOST.data.SBMLReaction;
 import edu.rutgers.MOST.data.SBMLReactionEquation;
 import edu.rutgers.MOST.data.SettingsConstants;
 import edu.rutgers.MOST.data.SettingsFactory;
@@ -2209,11 +2213,43 @@ public class GraphicalInterface extends JFrame {
 		
 		visualizeMenu.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
-				EnzymeDataReader r = new EnzymeDataReader();
-				r.readFile();
-				//getECNumbers();
-				FBAModel model = new FBAModel();
-				System.out.println(model.toString());
+				EnzymeDataReader reader = new EnzymeDataReader();
+				reader.readFile();
+
+				ReactionFactory reac = new ReactionFactory("SBML");
+				
+				MetabolicPathway glycolysisPathway = new MetabolicPathway();
+				glycolysisPathway.setName("Glycolysis");
+				ArrayList<ArrayList<PathwayReaction>> reactionsList = new ArrayList<ArrayList<PathwayReaction>>();
+				glycolysisPathway.setReactions(reactionsList);
+				Vector<ModelReaction> reactions = reac.getAllReactions();
+				for (int j = 0; j < EnzymeConstants.GLYCOLYSIS_EC_NUMBERS.length; j++) {
+					ArrayList<PathwayReaction> reacList = new ArrayList<PathwayReaction>();
+					for (int k = 0; k < EnzymeConstants.GLYCOLYSIS_EC_NUMBERS[j].length; k++) {
+						for (int r = 0; r < reactions.size(); r++) {
+							SBMLReaction reaction = (SBMLReaction) reactions.get(r);
+							String ecString = reaction.getEcNumber();
+							int id = reaction.getId();
+							String name = reaction.getReactionName();
+							if (ecString != null && ecString.length() > 0) {
+								// model may contain more tha one EC number, separated by white space
+								// AraGEM model has this condition
+								java.util.List<String> ecNumbers = Arrays.asList(ecString.split("\\s"));
+								for (int i = 0; i < ecNumbers.size(); i++) {
+									if (EnzymeConstants.GLYCOLYSIS_EC_NUMBERS[j][k].equals(ecNumbers.get(i))) {
+										PathwayReaction pathwayReaction = new PathwayReaction();
+										pathwayReaction.setEcNumber(ecNumbers.get(i));
+										pathwayReaction.setId(id);
+										pathwayReaction.setName(name);
+										reacList.add(pathwayReaction);
+									}
+								}
+							}
+						}
+					}
+					reactionsList.add(reacList);
+				}
+				System.out.println(glycolysisPathway.toString());
 			}
 		});
 		
@@ -10696,70 +10732,6 @@ public class GraphicalInterface extends JFrame {
 		
 		Collections.sort(externalReactions);
 		System.out.println("external reactions " + externalReactions);
-	}
-	
-	// get index of column with EC numbers
-	public Integer getECColumnColumnIndex() {
-		int index = -1;
-		for (int i = 0; i < LocalConfig.getInstance().getReactionsMetaColumnNames().size(); i++) {
-			if (LocalConfig.getInstance().getReactionsMetaColumnNames().get(i).equals(GraphicalInterfaceConstants.EC_NUMBER_COLUMN_NAMES[0])) {
-				index = GraphicalInterfaceConstants.REACTIONS_COLUMN_NAMES.length + LocalConfig.getInstance().getReactionsMetaColumnNames().indexOf(GraphicalInterfaceConstants.EC_NUMBER_COLUMN_NAMES[0]);
-			} else if (LocalConfig.getInstance().getReactionsMetaColumnNames().get(i).equals(GraphicalInterfaceConstants.EC_NUMBER_COLUMN_NAMES[1])) {
-				index = GraphicalInterfaceConstants.REACTIONS_COLUMN_NAMES.length + LocalConfig.getInstance().getReactionsMetaColumnNames().indexOf(GraphicalInterfaceConstants.EC_NUMBER_COLUMN_NAMES[1]);
-			}
-		}
-		if (index == -1) {
-			index = GraphicalInterfaceConstants.PROTEIN_CLASS_COLUMN;
-		}
-		
-		return index;
-	}
-	
-	// gets entries from EC column or Protein Class column
-	public void getECNumbers() {
-		int ecColumnIndex = getECColumnColumnIndex();
-		if (ecColumnIndex > -1) {
-			for (int j = 0; j < reactionsTable.getRowCount(); j++) {
-				String ECNumber = (String) reactionsTable.getModel().getValueAt(j, ecColumnIndex);
-				//System.out.println(reactionsTable.getModel().getValueAt(j, ecColumnIndex));
-				//System.out.println(j);
-				printDataFromECNumber(ECNumber);
-			}
-		}
-	}
-	
-	public void printDataFromECNumber(String ECNumber) {
-		ArrayList<String> tcaReactions = new ArrayList<String>();
-		ArrayList<String> glycolysisReactions = new ArrayList<String>();
-		if (ECNumber != null && ECNumber.length() > 0) {
-			// model may contain more tha one EC number, separated by white space
-			// AraGEM model has this condition
-			java.util.List<String> numbers = Arrays.asList(ECNumber.split("\\s"));
-			//System.out.println(numbers);
-			for (int i = 0; i < numbers.size(); i++) {
-				if (numbers.get(i) != null && numbers.get(i).length() > 0) {
-					if (LocalConfig.getInstance().getEnzymeDataMap().containsKey(numbers.get(i))) {
-						//System.out.println(LocalConfig.getInstance().getEnzymeDataMap().get(numbers.get(i)));
-						for (int j = 0; j < EnzymeConstants.TCA_CYCLE_EC_NUMBERS.length; j++) {
-							for (int k = 0; k < EnzymeConstants.TCA_CYCLE_EC_NUMBERS[j].length; k++) {
-								if (EnzymeConstants.TCA_CYCLE_EC_NUMBERS[j][k].equals(numbers.get(i))) {
-									tcaReactions.add(numbers.get(i));
-									System.out.println("TCA " + numbers.get(i));
-								}
-							}
-						}
-						for (int j = 0; j < EnzymeConstants.GLYCOLYSIS_EC_NUMBERS.length; j++) {
-							for (int k = 0; k < EnzymeConstants.GLYCOLYSIS_EC_NUMBERS[j].length; k++) {
-								if (EnzymeConstants.GLYCOLYSIS_EC_NUMBERS[j][k].equals(numbers.get(i))) {
-									glycolysisReactions.add(numbers.get(i));
-									System.out.println("Glycolysis " + numbers.get(i));
-								}
-							}
-						}
-					}
-				}
-			}
-		}
 	}
 	
 	public static void main(String[] args) {

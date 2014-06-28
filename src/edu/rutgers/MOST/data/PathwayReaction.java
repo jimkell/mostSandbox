@@ -3,7 +3,9 @@ package edu.rutgers.MOST.data;
 import java.util.ArrayList;
 
 public class PathwayReaction {
+	private int id;
 	private String name;
+	private String ecNumber;
 	private ArrayList<String> mainReactants;
 	private ArrayList<String> mainProducts;
 	private ArrayList<String> sideReactants;
@@ -11,11 +13,23 @@ public class PathwayReaction {
 	private String direction; // forward or reverse, only necessary if not reversible
 	private String reversible;
 	
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
 	public String getName() {
 		return name;
 	}
 	public void setName(String name) {
 		this.name = name;
+	}
+	public String getEcNumber() {
+		return ecNumber;
+	}
+	public void setEcNumber(String ecNumber) {
+		this.ecNumber = ecNumber;
 	}
 	public ArrayList<String> getMainReactants() {
 		return mainReactants;
@@ -56,7 +70,9 @@ public class PathwayReaction {
 	
 	@Override
 	public String toString() {
-		return "Pathway Reaction [name=" + name
+		return "\nPathway Reaction [id=" + id
+		+ ", name=" + name
+		+ ", ecNumber=" + ecNumber	
 		+ ", mainReactants=" + mainReactants		
 		+ ", mainProducts=" + mainProducts
 		+ ", sideReactants=" + sideReactants
