@@ -93,7 +93,7 @@ public class PathwayReaction {
 		+ ", sideReactants=" + sideReactants
 		+ ", sideProducts=" + sideProducts
 		+ ", direction=" + direction
-		+ ", sideProducts=" + sideProducts
+		+ ", reversible=" + reversible
 		+ ", compartmentList=" + compartmentList + "]";
 	}
 
