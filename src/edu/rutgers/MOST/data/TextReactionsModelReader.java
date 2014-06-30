@@ -411,7 +411,6 @@ public class TextReactionsModelReader {
 		equn.setReversibleArrow(equation.getReversibleArrow());
 		equn.setIrreversibleArrow(equation.getIrreversibleArrow());
 		equn.writeReactionEquation();
-		System.out.println(compartmentList);
 		equn.setCompartmentList(compartmentList);
 		reacRow.add(equn.equationAbbreviations);
 		reacRow.add(equn.equationNames);

@@ -2489,6 +2489,8 @@ public class GraphicalInterface extends JFrame {
 										pathwayReaction.setEcNumber(ecNumbers.get(i));
 										pathwayReaction.setId(id);
 										pathwayReaction.setName(name);
+										SBMLReactionEquation equn = (SBMLReactionEquation) LocalConfig.getInstance().getReactionEquationMap().get(id);
+										pathwayReaction.setCompartmentList(equn.getCompartmentList());
 										if (LocalConfig.getInstance().getEnzymeDataMap().containsKey(ecNumbers.get(i))) {
 											String equnString = "";
 											// 5.4.2.1 has no data - replaced by 5.4.2.11 and 5.4.2.12, each has same reaction
