@@ -361,6 +361,7 @@ public class TextReactionsModelReader {
 		SBMLReactionEquation equn = new SBMLReactionEquation();	
 		ArrayList<SBMLReactant> reactants = new ArrayList<SBMLReactant>();
 		ArrayList<SBMLProduct> products = new ArrayList<SBMLProduct>();
+		ArrayList<String> compartmentList = new ArrayList<String>();
 		ReactionParser parser = new ReactionParser();
 		for (int i = 0; i < equation.getReactants().size(); i++){
 			maybeAddSpecies(equation.getReactants().get(i).getMetaboliteAbbreviation(), equation, "reactant", i);
@@ -371,7 +372,10 @@ public class TextReactionsModelReader {
 				if (LocalConfig.getInstance().getMetaboliteIdNameMap().containsKey(metabId)) {
 					equation.getReactants().get(i).setMetaboliteName(LocalConfig.getInstance().getMetaboliteIdNameMap().get(metabId));
 					equation.getReactants().get(i).setCompartment(LocalConfig.getInstance().getMetaboliteIdCompartmentMap().get(metabId));
-				}		
+					if (!compartmentList.contains(LocalConfig.getInstance().getMetaboliteIdCompartmentMap().get(metabId))) {
+						compartmentList.add(LocalConfig.getInstance().getMetaboliteIdCompartmentMap().get(metabId));
+					}
+				}
 				reactants.add(equation.getReactants().get(i));
 				if (parser.isSuspicious(equation.getReactants().get(i).getMetaboliteAbbreviation())) {
 					if (!LocalConfig.getInstance().getSuspiciousMetabolites().contains(metabId)) {
@@ -389,7 +393,10 @@ public class TextReactionsModelReader {
 				if (LocalConfig.getInstance().getMetaboliteIdNameMap().containsKey(metabId)) {
 					equation.getProducts().get(i).setMetaboliteName(LocalConfig.getInstance().getMetaboliteIdNameMap().get(metabId));
 					equation.getProducts().get(i).setCompartment(LocalConfig.getInstance().getMetaboliteIdCompartmentMap().get(metabId));
-				}				
+					if (!compartmentList.contains(LocalConfig.getInstance().getMetaboliteIdCompartmentMap().get(metabId))) {
+						compartmentList.add(LocalConfig.getInstance().getMetaboliteIdCompartmentMap().get(metabId));
+					}
+				}
 				products.add(equation.getProducts().get(i));
 				if (parser.isSuspicious(equation.getProducts().get(i).getMetaboliteAbbreviation())) {
 					if (!LocalConfig.getInstance().getSuspiciousMetabolites().contains(metabId)) {
@@ -404,6 +411,8 @@ public class TextReactionsModelReader {
 		equn.setReversibleArrow(equation.getReversibleArrow());
 		equn.setIrreversibleArrow(equation.getIrreversibleArrow());
 		equn.writeReactionEquation();
+		System.out.println(compartmentList);
+		equn.setCompartmentList(compartmentList);
 		reacRow.add(equn.equationAbbreviations);
 		reacRow.add(equn.equationNames);
 		reacRow.add(equn.getReversible());
