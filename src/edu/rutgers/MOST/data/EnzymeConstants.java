@@ -1,5 +1,7 @@
 package edu.rutgers.MOST.data;
 
+import java.util.Arrays;
+
 public class EnzymeConstants {
 	public static final String[][] TCA_CYCLE_EC_NUMBERS = 
 		{ 

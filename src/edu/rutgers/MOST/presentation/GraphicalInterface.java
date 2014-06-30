@@ -2486,6 +2486,10 @@ public class GraphicalInterface extends JFrame {
 								for (int i = 0; i < ecNumbers.size(); i++) {
 									if (EnzymeConstants.GLYCOLYSIS_EC_NUMBERS[j][k].equals(ecNumbers.get(i))) {
 										PathwayReaction pathwayReaction = new PathwayReaction();
+										ArrayList<String> mainReactants = new ArrayList<String>();
+										ArrayList<String> mainProducts = new ArrayList<String>();
+										ArrayList<String> sideReactants = new ArrayList<String>();
+										ArrayList<String> sideProducts = new ArrayList<String>();
 										pathwayReaction.setEcNumber(ecNumbers.get(i));
 										pathwayReaction.setId(id);
 										pathwayReaction.setName(name);
@@ -2506,6 +2510,33 @@ public class GraphicalInterface extends JFrame {
 											if (equnString.length() > 2) {
 												System.out.println(equnString.substring(0, equnString.length() - 1));
 												pathwayReaction.setEquation(equnString.substring(0, equnString.length() - 1));
+												ReactionParser parser = new ReactionParser();
+												if (parser.isValid(pathwayReaction.getEquation())) {
+													parser.reactionList(pathwayReaction.getEquation());
+													SBMLReactionEquation equn1 = new SBMLReactionEquation();
+													equn1 = ReactionParser.getEquation();
+													ArrayList<SBMLReactant> reactants = equn1.getReactants();
+													ArrayList<String> sideSpeciesList = new ArrayList<String>(Arrays.asList(EnzymeConstants.SIDE_SPECIES)); 
+													for (int s = 0; s < reactants.size(); s++) {
+														if (sideSpeciesList.contains(reactants.get(s).getMetaboliteAbbreviation())) {
+															sideReactants.add(reactants.get(s).getMetaboliteAbbreviation());
+														} else {
+															mainReactants.add(reactants.get(s).getMetaboliteAbbreviation());
+														}
+													}
+													ArrayList<SBMLProduct> products = equn1.getProducts();
+													for (int t = 0; t < products.size(); t++) {
+														if (sideSpeciesList.contains(products.get(t).getMetaboliteAbbreviation())) {
+															sideProducts.add(products.get(t).getMetaboliteAbbreviation());
+														} else {
+															mainProducts.add(products.get(t).getMetaboliteAbbreviation());
+														}
+													}
+													pathwayReaction.setMainReactants(mainReactants);
+													pathwayReaction.setSideReactants(sideReactants);
+													pathwayReaction.setMainProducts(mainProducts);
+													pathwayReaction.setSideProducts(sideProducts);
+												}
 											}
 										}
 										reacList.add(pathwayReaction);
