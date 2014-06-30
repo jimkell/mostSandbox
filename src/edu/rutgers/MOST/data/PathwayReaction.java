@@ -13,6 +13,7 @@ public class PathwayReaction {
 	private ArrayList<String> sideProducts;
 	private String direction; // forward or reverse, only necessary if not reversible
 	private String reversible;
+	private ArrayList<String> compartmentList;
 	
 	public int getId() {
 		return id;
@@ -74,6 +75,12 @@ public class PathwayReaction {
 	public void setReversible(String reversible) {
 		this.reversible = reversible;
 	}
+	public ArrayList<String> getCompartmentList() {
+		return compartmentList;
+	}
+	public void setCompartmentList(ArrayList<String> compartmentList) {
+		this.compartmentList = compartmentList;
+	}
 	
 	@Override
 	public String toString() {
@@ -86,7 +93,8 @@ public class PathwayReaction {
 		+ ", sideReactants=" + sideReactants
 		+ ", sideProducts=" + sideProducts
 		+ ", direction=" + direction
-		+ ", sideProducts=" + sideProducts + "]";
+		+ ", sideProducts=" + sideProducts
+		+ ", compartmentList=" + compartmentList + "]";
 	}
 
 	public static void main(String[] args) {

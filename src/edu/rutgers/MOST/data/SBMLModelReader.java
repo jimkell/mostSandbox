@@ -287,6 +287,7 @@ public class SBMLModelReader {
 			SBMLReactionEquation equation = new SBMLReactionEquation();
 			ArrayList<SBMLReactant> equnReactants = new ArrayList<SBMLReactant>();
 			ArrayList<SBMLProduct> equnProducts = new ArrayList<SBMLProduct>();
+			ArrayList<String> compartmentList = new ArrayList<String>();
 			
 			ListOf<SpeciesReference> reactants = reactions.get(j).getListOfReactants();
 			
@@ -327,6 +328,9 @@ public class SBMLModelReader {
 				reactant.setMetaboliteAbbreviation(reactants.get(r).getSpecies());
 				reactant.setMetaboliteName(metaboliteIdNameMap.get(id));
 				reactant.setCompartment(metaboliteIdCompartmentMap.get(id));
+				if (!compartmentList.contains(metaboliteIdCompartmentMap.get(id))) {
+					compartmentList.add(metaboliteIdCompartmentMap.get(id));
+				}
 				//System.out.println(reactant.toString());
 				equnReactants.add(reactant);
 			}
@@ -368,6 +372,9 @@ public class SBMLModelReader {
 				product.setMetaboliteAbbreviation(products.get(p).getSpecies());
 				product.setMetaboliteName(metaboliteIdNameMap.get(id));
 				product.setCompartment(metaboliteIdCompartmentMap.get(id));
+				if (!compartmentList.contains(metaboliteIdCompartmentMap.get(id))) {
+					compartmentList.add(metaboliteIdCompartmentMap.get(id));
+				}
 				//System.out.println(product.toString());
 				equnProducts.add(product);
 			}
@@ -377,6 +384,7 @@ public class SBMLModelReader {
             equation.setReversibleArrow(GraphicalInterfaceConstants.REVERSIBLE_ARROWS[0]);
             equation.setIrreversibleArrow(GraphicalInterfaceConstants.NOT_REVERSIBLE_ARROWS[1]);
             equation.writeReactionEquation();
+            equation.setCompartmentList(compartmentList);
             reactionEquationMap.put(j, equation);
 
 			String reactionEquationAbbr = equation.equationAbbreviations;
