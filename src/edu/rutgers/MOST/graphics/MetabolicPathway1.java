@@ -14,7 +14,7 @@ import edu.rutgers.MOST.data.EnzymeConstants;
 import edu.rutgers.MOST.data.EnzymeDataReader;
 
 // based on code from http://www.coderanch.com/t/346846/GUI/java/Wanted-Java-zooming-panning-scroll 
-public class MetabolicPathway implements ChangeListener {  
+public class MetabolicPathway1 implements ChangeListener {  
     BufferedImage image;  
     JLabel label;  
    
@@ -105,7 +105,7 @@ public class MetabolicPathway implements ChangeListener {
 		r.readFile();
 		//System.out.println(LocalConfig.getInstance().getEnzymeDataMap().get("1.1.1.1"));
 		
-		MetabolicPathway mp = new MetabolicPathway();  
+		MetabolicPathway1 mp = new MetabolicPathway1();  
         JFrame f = new JFrame(); 
         f.setTitle("MOST");
         f.setIconImages(icons);

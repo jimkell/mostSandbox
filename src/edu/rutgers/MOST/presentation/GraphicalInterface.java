@@ -57,6 +57,7 @@ import edu.rutgers.MOST.data.TextMetabolitesWriter;
 import edu.rutgers.MOST.data.TextReactionsModelReader;
 import edu.rutgers.MOST.data.TextReactionsWriter;
 import edu.rutgers.MOST.data.UndoConstants;
+import edu.rutgers.MOST.graphics.PathwayFrame;
 import edu.rutgers.MOST.logic.ReactionParser;
 import edu.rutgers.MOST.optimization.solvers.GurobiSolver;
 
@@ -2497,6 +2498,7 @@ public class GraphicalInterface extends JFrame {
 										SBMLReactionEquation equn = (SBMLReactionEquation) LocalConfig.getInstance().getReactionEquationMap().get(id);
 										pathwayReaction.setCompartmentList(equn.getCompartmentList());
 										pathwayReaction.setReversible(equn.getReversible());
+										pathwayReaction.setSubsystem(subsystem);
 										if (LocalConfig.getInstance().getEnzymeDataMap().containsKey(ecNumbers.get(i))) {
 											String equnString = "";
 											// 5.4.2.1 has no data - replaced by 5.4.2.11 and 5.4.2.12, each has same reaction
@@ -2552,6 +2554,8 @@ public class GraphicalInterface extends JFrame {
 				//System.out.println(LocalConfig.getInstance().getEnzymeDataMap().get("5.4.2.11"));
 				//System.out.println(LocalConfig.getInstance().getEnzymeDataMap().get("5.4.2.12"));
 				System.out.println(glycolysisPathway.toString());
+				LocalConfig.getInstance().setGlycolysisPathway(glycolysisPathway);
+				PathwayFrame p = new PathwayFrame();
 			}
 		});
 

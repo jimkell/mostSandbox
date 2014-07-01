@@ -33,6 +33,12 @@ public class EnzymeConstants {
 			{"2.7.1.40"} // pyruvate kinase
 		};
 	
+	// these reactions go in reverse direction in enzyme.dat
+	public static final Integer[] GLYCOLYSIS_REVERSED_REACTIONS = 
+		{
+			5, 6, 8
+		};
+	
 	public static final String[][] GLYCOLYSIS_EC_NUMBERS_SIDE_BRANCH = 
 		{ 
 			{"5.3.1.1"} // triosephosphate isomerase

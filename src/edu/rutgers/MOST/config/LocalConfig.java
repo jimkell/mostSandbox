@@ -9,6 +9,7 @@ import javax.swing.SortOrder;
 import javax.swing.table.DefaultTableModel;
 
 import edu.rutgers.MOST.data.EnzymeData;
+import edu.rutgers.MOST.data.MetabolicPathway;
 import edu.rutgers.MOST.data.ModelReactionEquation;
 import edu.rutgers.MOST.data.SubsystemReaction;
 
@@ -817,6 +818,16 @@ public class LocalConfig {
 	public void setSubsystemDataMap(
 			Map<String, ArrayList<SubsystemReaction>> subsystemDataMap) {
 		this.subsystemDataMap = subsystemDataMap;
+	}
+	
+	private MetabolicPathway glycolysisPathway;
+
+	public MetabolicPathway getGlycolysisPathway() {
+		return glycolysisPathway;
+	}
+
+	public void setGlycolysisPathway(MetabolicPathway glycolysisPathway) {
+		this.glycolysisPathway = glycolysisPathway;
 	}
 
 }
