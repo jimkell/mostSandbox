@@ -2479,6 +2479,7 @@ public class GraphicalInterface extends JFrame {
 							String ecString = reaction.getEcNumber();
 							int id = reaction.getId();
 							String name = reaction.getReactionName();
+							String subsystem = reaction.getSubsystem();
 							if (ecString != null && ecString.length() > 0) {
 								// model may contain more tha one EC number, separated by white space
 								// AraGEM model has this condition
@@ -2506,10 +2507,10 @@ public class GraphicalInterface extends JFrame {
 													equnString = LocalConfig.getInstance().getEnzymeDataMap().get(ecNumbers.get(i)).getCatalyticActivity();
 												}
 											}
-											System.out.println(LocalConfig.getInstance().getEnzymeDataMap().get(ecNumbers.get(i)));
-											System.out.println(LocalConfig.getInstance().getEnzymeDataMap().get(ecNumbers.get(i)).getCatalyticActivity());
+//											System.out.println(LocalConfig.getInstance().getEnzymeDataMap().get(ecNumbers.get(i)));
+//											System.out.println(LocalConfig.getInstance().getEnzymeDataMap().get(ecNumbers.get(i)).getCatalyticActivity());
 											if (equnString.length() > 2) {
-												System.out.println(equnString.substring(0, equnString.length() - 1));
+//												System.out.println(equnString.substring(0, equnString.length() - 1));
 												pathwayReaction.setEquation(equnString.substring(0, equnString.length() - 1));
 												ReactionParser parser = new ReactionParser();
 												if (parser.isValid(pathwayReaction.getEquation())) {
