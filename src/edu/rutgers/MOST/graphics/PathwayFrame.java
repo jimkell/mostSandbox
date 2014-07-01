@@ -11,9 +11,6 @@ public class PathwayFrame extends Frame implements ActionListener {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	// Initial Frame size
-	static final int WIDTH = 1000; // frame width
-	static final int HEIGHT = 600; // frame height
 	Button plus;
 	Button minus;
 	
@@ -44,13 +41,31 @@ public class PathwayFrame extends Frame implements ActionListener {
 	
 	public void actionPerformed(ActionEvent event) {
 		if(event.getSource() == plus) { 
-			System.out.println("+");
-			canvas.setShape(DrawCanvas.CLEAR);
+			int zoomExponent = canvas.getZoomExponent();
+			if (zoomExponent == GraphicsConstants.MIN_ZOOM_EXPONENT) {
+				minus.setEnabled(true);
+			}
+			if (zoomExponent < GraphicsConstants.MAX_ZOOM_EXPONENT) {
+				zoomExponent += 1;
+				canvas.setZoomExponent(zoomExponent);
+			} else {
+				plus.setEnabled(false);
+			}
+			System.out.println(zoomExponent);
 			canvas.repaint();
 		}
 		else if(event.getSource() == minus) {
-			System.out.println("-");
-			canvas.setShape(DrawCanvas.CLEAR);
+			int zoomExponent = canvas.getZoomExponent();
+			if (zoomExponent == GraphicsConstants.MAX_ZOOM_EXPONENT) {
+				plus.setEnabled(true);
+			}
+			if (zoomExponent > GraphicsConstants.MIN_ZOOM_EXPONENT) {
+				zoomExponent -= 1;
+				canvas.setZoomExponent(zoomExponent);
+			} else {
+				minus.setEnabled(false);
+			}
+			System.out.println(zoomExponent);
 			canvas.repaint();
 		}
 	}
@@ -58,7 +73,7 @@ public class PathwayFrame extends Frame implements ActionListener {
 	public static void main(String[] argv) {
 		// Create a frame
 		PathwayFrame frame = new PathwayFrame();
-		frame.setSize(WIDTH, HEIGHT);
+		frame.setSize(1000, 600);
 		frame.setLocationRelativeTo(null);
 		//frame.setLocation(150, 100);
 		// add window closing listener

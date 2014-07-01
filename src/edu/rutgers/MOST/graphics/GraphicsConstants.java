@@ -12,4 +12,6 @@ public class GraphicsConstants {
 	public static final int SIDE_ARC_ARROW_LENGTH = 4;
 	public static final int SIDE_ARC_ARROW_WIDTH = 2;
 	
+	public static final int MIN_ZOOM_EXPONENT = 1;
+	public static final int MAX_ZOOM_EXPONENT = 10;
 }
