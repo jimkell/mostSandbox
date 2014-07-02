@@ -99,7 +99,7 @@ public class PanAndZoom1 implements ChangeListener {
         		0, 90, 1, true);
         
         
-        basicDraw.drawStraightVerticalPathway(g2, 750, 20, 2, testList, testList, testList);
+        basicDraw.drawStraightVerticalPathway(g2, 750, 20, 2, testList, testList, testList, testList, testList);
         // left arc start x 1 less than vertical pathway to account for width of pathway stroke
         // in
         basicDraw.drawVerticalSideInArc(g2, 749 - GraphicsConstants.SIDE_ARC_MAJOR_AXIS, 

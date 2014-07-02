@@ -113,7 +113,7 @@ public class PathwayFrame {
 			// draw the objects
 			oldGraphics.setColor(Color.BLACK);
 			int zoom = (int) Math.pow(2.0, zoomExponent);
-			//oldGraphics.drawRect(50, 50, 5*zoom, 5*zoom);
+			oldGraphics.drawRect(200, 200, 5*zoom, 5*zoom);
 			drawGlycolysisPathway(oldGraphics, 50, 50);
 
 			// make sure you restore the original transform or else the drawing
@@ -222,34 +222,59 @@ public class PathwayFrame {
     	ArrayList<String> glycolysisReactionNames = new ArrayList<String>();
     	ArrayList<String> reactants = new ArrayList<String>(); 
     	ArrayList<String> products = new ArrayList<String>(); 
+    	ArrayList<String> sideReactants = new ArrayList<String>(); 
+    	ArrayList<String> sideProducts = new ArrayList<String>(); 
     	ArrayList<ArrayList<PathwayReaction>> listOfPathwayReactions = LocalConfig.getInstance().getGlycolysisPathway().getReactions();
     	for (int i = 0; i < listOfPathwayReactions.size(); i++) {
     		ArrayList<PathwayReaction> glycolysisReactions = listOfPathwayReactions.get(i);
-    		//for (int j = 0; j < glycolysisReactions.size(); j++) {
+    		if (glycolysisReactions != null && glycolysisReactions.size() > 0) {
+    			//for (int j = 0; j < glycolysisReactions.size(); j++) {
     			if (glycolysisReactions.get(0).getName() != null) {
     				glycolysisReactionNames.add(glycolysisReactions.get(0).getName());
     			}
     			if (glycolysisReversedReactions.contains(i)) {
-    				// just add first main species for now
+    				// just add first species for now
         			if (glycolysisReactions.get(0).getMainReactants().size() > 0) {
         				products.add(glycolysisReactions.get(0).getMainReactants().get(0));
+        			}
+        			if (glycolysisReactions.get(0).getSideReactants().size() > 0) {
+        				sideProducts.add(glycolysisReactions.get(0).getSideReactants().get(0));
+        			} else {
+        				sideProducts.add("");
         			}
         			if (glycolysisReactions.get(0).getMainProducts().size() > 0) {
         				reactants.add(glycolysisReactions.get(0).getMainProducts().get(0));
         			}
+        			if (glycolysisReactions.get(0).getSideProducts().size() > 0) {
+        				sideReactants.add(glycolysisReactions.get(0).getSideProducts().get(0));
+        			} else {
+        				sideReactants.add("");
+        			}
     			} else {
-    				// just add first main species for now
         			if (glycolysisReactions.get(0).getMainReactants().size() > 0) {
         				reactants.add(glycolysisReactions.get(0).getMainReactants().get(0));
+        			}
+        			if (glycolysisReactions.get(0).getSideReactants().size() > 0) {
+        				sideReactants.add(glycolysisReactions.get(0).getSideReactants().get(0));
+        			} else {
+        				sideReactants.add("");
         			}
         			if (glycolysisReactions.get(0).getMainProducts().size() > 0) {
         				products.add(glycolysisReactions.get(0).getMainProducts().get(0));
         			}
+        			if (glycolysisReactions.get(0).getSideProducts().size() > 0) {
+        				sideProducts.add(glycolysisReactions.get(0).getSideProducts().get(0));
+        			} else {
+        				sideProducts.add("");
+        			}
     			}
     		//}
+    		}
     	}
+    	System.out.println(reactants);
+    	System.out.println(sideReactants);
     	
-    	basicDraw.drawStraightVerticalPathway(g, x, y, 2, glycolysisReactionNames, reactants, products);
+    	basicDraw.drawStraightVerticalPathway(g, x, y, 2, glycolysisReactionNames, reactants, products, sideReactants, sideProducts);
     }
 	
 	public static void main(String[] args) {

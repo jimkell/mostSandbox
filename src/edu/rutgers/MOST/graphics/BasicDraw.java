@@ -76,7 +76,8 @@ public class BasicDraw {
 		g2d.dispose();
 	}
 
-	public void drawStraightVerticalPathway(Graphics g, int startX, int startY, int width, ArrayList<String> reactions, ArrayList<String> reactants, ArrayList<String> products) {
+	public void drawStraightVerticalPathway(Graphics g, int startX, int startY, int width, ArrayList<String> reactions, 
+			ArrayList<String> reactants, ArrayList<String> products, ArrayList<String> sideReactants, ArrayList<String> sideProducts) {
 
 		//creates a copy of the Graphics instance
 		Graphics2D g2d = (Graphics2D) g.create();
@@ -99,6 +100,8 @@ public class BasicDraw {
 			drawVerticalArrow(g2d, startX, startY + GraphicsConstants.DEFAULT_VERTICAL_PATH_LENGTH, 2, GraphicsConstants.ARROW_WIDTH, GraphicsConstants.ARROW_LENGTH, 1);
 			// places line 10 px after end of string
 			startY += stringHeight + GraphicsConstants.DEFAULT_VERTICAL_PATH_LENGTH;
+			System.out.println("sr " + sideReactants.get(i));
+			System.out.println("sp " + sideProducts.get(i));
 		}
 		
 		drawAnyString(g2d, products.get(products.size() - 1), stringHeight, startX, startY);

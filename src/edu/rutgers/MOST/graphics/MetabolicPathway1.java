@@ -82,7 +82,7 @@ public class MetabolicPathway1 implements ChangeListener {
     		//}
     	}
     	
-    	basicDraw.drawStraightVerticalPathway(g, x, y, 2, glycolysisReactionNames, reactants, products);
+    	basicDraw.drawStraightVerticalPathway(g, x, y, 2, glycolysisReactionNames, reactants, products, reactants, products);
     }
    
     private JSlider getControl() {  

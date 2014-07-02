@@ -78,12 +78,19 @@ public class EnzymeConstants {
 			"Pyruvate"
 		};
 	
+	public static final String[][] PENTOSE_PHOSPHATE_OXIDATIVE_EC_NUMBERS = 
+		{ 
+			{"1.1.1.49"}, // glucose-6-phosphate 1-dehydrogenase
+			{"3.1.1.31"}, // 6-phosphogluconolactonase
+			{"1.1.1.44"} // 6-phosphogluconate dehydrogenase
+		};
+	
 	// names of species used in enzyme.dat, used to determine which species in a reaction
 	// will be placed on side arrows in pathways
 	public static final String[] SIDE_SPECIES =
 		{
 			"ADP", "ATP", "NAD(+)", "NADH", "NADP(+)", "NADPH", "NAD(P)(+)", "NAD(P)H",
-			"H(2)O", "H(+)", "OH(-)"
+			"H(2)O", "H(+)", "OH(-)", "CO(2)"
 		};
 
 }
