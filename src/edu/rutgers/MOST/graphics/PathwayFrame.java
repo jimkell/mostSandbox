@@ -33,7 +33,7 @@ public class PathwayFrame {
 	
 	Button plus;
 	Button minus;
-	int zoomExponent = 5;
+	int zoomExponent = 1;
 	
 	double centerX;
 	double centerY;
@@ -127,7 +127,14 @@ public class PathwayFrame {
 			// draw the objects
 			oldGraphics.setColor(Color.BLACK);
 			int zoom = (int) Math.pow(2.0, zoomExponent);
-			oldGraphics.drawRect(400, 200, 5*zoom, 5*zoom);
+			
+			int xStart = 495;
+			int yStart = 295;
+			int xOffset = (int) curCenterX - xStart;
+			int yOffset = (int) curCenterY - yStart;
+			
+			oldGraphics.drawRect((int) curCenterX - xOffset*zoom, (int) curCenterY - yOffset*zoom, 10*zoom, 10*zoom);
+//			oldGraphics.drawRect(400, 200, 5*zoom, 5*zoom);
 //			drawGlycolysisPathway(oldGraphics, 50, 50);
 
 			// make sure you restore the original transform or else the drawing
@@ -211,9 +218,10 @@ public class PathwayFrame {
 				}
 				if (zoomExponent < GraphicsConstants.MAX_ZOOM_EXPONENT) {
 					zoomExponent += 1;
-				} else {
-					plus.setEnabled(false);
-				}
+					if (zoomExponent == GraphicsConstants.MAX_ZOOM_EXPONENT) {
+						plus.setEnabled(false);
+					}
+				} 
 				canvas.repaint();
 			}
 			else if(event.getSource() == minus) {
@@ -222,9 +230,10 @@ public class PathwayFrame {
 				}
 				if (zoomExponent > GraphicsConstants.MIN_ZOOM_EXPONENT) {
 					zoomExponent -= 1;
-				} else {
-					minus.setEnabled(false);
-				}
+					if (zoomExponent == GraphicsConstants.MIN_ZOOM_EXPONENT) {
+						minus.setEnabled(false);
+					}
+				} 
 				canvas.repaint();
 			}
 		}
