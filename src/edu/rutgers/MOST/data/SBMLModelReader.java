@@ -385,6 +385,7 @@ public class SBMLModelReader {
             equation.setIrreversibleArrow(GraphicalInterfaceConstants.NOT_REVERSIBLE_ARROWS[1]);
             equation.writeReactionEquation();
             equation.setCompartmentList(compartmentList);
+            System.out.println(compartmentList);
             reactionEquationMap.put(j, equation);
 
 			String reactionEquationAbbr = equation.equationAbbreviations;

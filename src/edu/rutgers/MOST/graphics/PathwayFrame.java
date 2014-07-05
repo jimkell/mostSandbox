@@ -27,17 +27,20 @@ import edu.rutgers.MOST.presentation.GraphicalInterfaceConstants;
 
 public class PathwayFrame {
 
-	PanAndZoomCanvas canvas;
+	PanCanvas canvas;
 	AffineTransform at;   // the current pan and zoom transform
 	Point2D XFormedPoint; // storage for a transformed mouse point
 	
 	Button plus;
 	Button minus;
 	int zoomExponent = 5;
+	
+	double centerX;
+	double centerY;
 
 	public PathwayFrame() {
 		JFrame frame = new JFrame();
-		canvas = new PanAndZoomCanvas();
+		canvas = new PanCanvas();
 		PanningHandler panner = new PanningHandler();
 		canvas.addMouseListener(panner);
 		canvas.addMouseMotionListener(panner);
@@ -64,6 +67,10 @@ public class PathwayFrame {
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.setSize(1000, 600);
 		frame.setLocationRelativeTo(null);
+		centerX = frame.getWidth()/2;
+		centerY = frame.getHeight()/2;
+		System.out.println(centerX);
+		System.out.println(centerY);
 		// add window closing listener
 //		frame.addWindowListener(new WindowAdapter() {
 //			public void windowClosing(WindowEvent event) {
@@ -71,10 +78,10 @@ public class PathwayFrame {
 //			}
 //		});
 		frame.setVisible(true);
-		System.out.println(LocalConfig.getInstance().getGlycolysisPathway().toString());
+//		System.out.println(LocalConfig.getInstance().getGlycolysisPathway().toString());
 	}
 
-	class PanAndZoomCanvas extends JComponent {
+	class PanCanvas extends JComponent {
 		/**
 		 * 
 		 */
@@ -82,7 +89,7 @@ public class PathwayFrame {
 		double translateX;
 		double translateY;
 
-		PanAndZoomCanvas() {
+		PanCanvas() {
 			translateX = 0;
 			translateY = 0;
 		}
@@ -107,14 +114,21 @@ public class PathwayFrame {
 
 			// The panning transformation
 			at.translate(translateX, translateY);
+			System.out.println("t " + translateX);
+			System.out.println("t " + translateY);
+			
+			double curCenterX = centerX + translateX;
+			double curCenterY = centerY + translateY;
+			System.out.println("c " + curCenterX);
+			System.out.println("c " + curCenterY);
 
 			oldGraphics.setTransform(at);
 
 			// draw the objects
 			oldGraphics.setColor(Color.BLACK);
 			int zoom = (int) Math.pow(2.0, zoomExponent);
-			oldGraphics.drawRect(200, 200, 5*zoom, 5*zoom);
-			drawGlycolysisPathway(oldGraphics, 50, 50);
+			oldGraphics.drawRect(400, 200, 5*zoom, 5*zoom);
+//			drawGlycolysisPathway(oldGraphics, 50, 50);
 
 			// make sure you restore the original transform or else the drawing
 			// of borders and other components might be messed up
@@ -274,7 +288,7 @@ public class PathwayFrame {
     	System.out.println(reactants);
     	System.out.println(sideReactants);
     	
-    	basicDraw.drawStraightVerticalPathway(g, x, y, 2, glycolysisReactionNames, reactants, products, sideReactants, sideProducts);
+    	//basicDraw.drawStraightVerticalPathway(g, x, y, 2, glycolysisReactionNames, reactants, products, sideReactants, sideProducts);
     }
 	
 	public static void main(String[] args) {
