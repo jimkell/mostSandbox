@@ -37,6 +37,14 @@ public class PathwayFrame {
 	
 	double centerX;
 	double centerY;
+	
+	double curCenterX;
+	double curCenterY;
+	
+	boolean zoomAction;
+	
+	int curX;
+	int curY;
 
 	public PathwayFrame() {
 		JFrame frame = new JFrame();
@@ -69,8 +77,8 @@ public class PathwayFrame {
 		frame.setLocationRelativeTo(null);
 		centerX = frame.getWidth()/2;
 		centerY = frame.getHeight()/2;
-		System.out.println(centerX);
-		System.out.println(centerY);
+//		System.out.println(centerX);
+//		System.out.println(centerY);
 		// add window closing listener
 //		frame.addWindowListener(new WindowAdapter() {
 //			public void windowClosing(WindowEvent event) {
@@ -114,13 +122,13 @@ public class PathwayFrame {
 
 			// The panning transformation
 			at.translate(translateX, translateY);
-			System.out.println("t " + translateX);
-			System.out.println("t " + translateY);
+//			System.out.println("t " + translateX);
+//			System.out.println("t " + translateY);
 			
-			double curCenterX = centerX + translateX;
-			double curCenterY = centerY + translateY;
-			System.out.println("c " + curCenterX);
-			System.out.println("c " + curCenterY);
+			curCenterX = centerX - translateX;
+			curCenterY = centerY - translateY;
+//			System.out.println("c " + curCenterX);
+//			System.out.println("c " + curCenterY);
 
 			oldGraphics.setTransform(at);
 
@@ -128,15 +136,32 @@ public class PathwayFrame {
 			oldGraphics.setColor(Color.BLACK);
 			int zoom = (int) Math.pow(2.0, zoomExponent);
 			
-			int xStart = 495;
-			int yStart = 295;
-			int xOffset = (int) curCenterX - xStart;
-			int yOffset = (int) curCenterY - yStart;
+			int xStart = 425;
+			int yStart = 235;
+			int xOffset = (int) centerX - xStart;
+			int yOffset = (int) centerY - yStart;
+						
+//			int xStart1 = 405;
+//			int yStart1 = 205;
+//			int xOffset1 = (int) centerX - xStart1;
+//			int yOffset1 = (int) centerY - yStart1;
 			
-			oldGraphics.drawRect((int) curCenterX - xOffset*zoom, (int) curCenterY - yOffset*zoom, 10*zoom, 10*zoom);
+			if (zoomAction) {
+//				oldGraphics.drawRect((int) centerX - xOffset, (int) centerY - yOffset, 10*zoom, 10*zoom);
+//				System.out.println((int) centerX - xOffset*zoom + zoom*((int) centerX - (int) curCenterX));
+//				curX = (int) centerX - xOffset*zoom + zoom*((int) centerX - (int) curCenterX);
+//				curY = (int) centerY - yOffset*zoom + zoom*((int) centerY - (int) curCenterY);
+				oldGraphics.drawRect((int) centerX - xOffset*zoom + zoom*((int) centerX - (int) curCenterX), (int) centerY - yOffset*zoom + zoom*((int) centerY - (int) curCenterY), 10*zoom, 10*zoom);
+//				oldGraphics.drawRect((int) centerX - xOffset1*zoom + zoom*((int) centerX - (int) curCenterX), (int) centerY - yOffset1*zoom + zoom*((int) centerY - (int) curCenterY), 10*zoom, 10*zoom);
+			} else {
+				oldGraphics.drawRect((int) centerX - xOffset, (int) centerY - yOffset, 10*zoom, 10*zoom);
+//				oldGraphics.drawRect((int) centerX - xOffset*zoom, (int) centerY - yOffset*zoom, 10*zoom, 10*zoom);
+//				oldGraphics.drawRect((int) centerX - xOffset1 + zoom*((int) centerX - (int) curCenterX), (int) centerY - yOffset1 + zoom*((int) centerY - (int) curCenterY), 10*zoom, 10*zoom); 
+			}
+			
 //			oldGraphics.drawRect(400, 200, 5*zoom, 5*zoom);
 //			drawGlycolysisPathway(oldGraphics, 50, 50);
-
+			
 			// make sure you restore the original transform or else the drawing
 			// of borders and other components might be messed up
 			oldGraphics.setTransform(saveTransform);
@@ -199,6 +224,7 @@ public class PathwayFrame {
 			canvas.translateX += deltaX;
 			canvas.translateY += deltaY;
 
+			zoomAction = false;
 			// schedule a repaint.
 			canvas.repaint();
 		}
@@ -211,7 +237,8 @@ public class PathwayFrame {
 	}
 	
 	ActionListener buttonActionListener = new ActionListener() {
-		public void actionPerformed(ActionEvent event) {	
+		public void actionPerformed(ActionEvent event) {
+			zoomAction = true;
 			if(event.getSource() == plus) { 
 				if (zoomExponent == GraphicsConstants.MIN_ZOOM_EXPONENT) {
 					minus.setEnabled(true);
