@@ -2,15 +2,24 @@ package edu.rutgers.MOST.presentation;
 
 import java.awt.Image;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.channels.FileChannel;
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Map;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileSystemView;
 
+/**
+ * Class contains commonly used functions and eliminate redundancy of code.
+ *
+ */
 public class Utilities {
 
 	public String createDateTimeStamp() {
@@ -23,7 +32,7 @@ public class Utilities {
 	}
 	
 	// based on http://www.java2s.com/Code/Java/File-Input-Output/DeletefileusingJavaIOAPI.htm
-	public void delete(String fileName) {
+	public static void delete(String fileName) {
 		// A File object to represent the filename
 		File f = new File(fileName);
 
@@ -92,7 +101,7 @@ public class Utilities {
 		FileSystemView fsv = fileChooser.getFileSystemView();
 		String defaultPath = fsv.getDefaultDirectory().getPath();
 		// if username is preferable this works
-		//String defaultPath = System.getenv("USERPROFILE") ;
+		//String defaultPath = System.getenv("USERPROFILE");
 		if (path == null) {
 			return defaultPath;
 		} else {
@@ -105,37 +114,42 @@ public class Utilities {
 		}
 	}
 	
-	public String createLogFileName(String name) {
-		String fileName = "";
-		if (System.getProperty("os.name").contains("Windows")) {
-			if (System.getProperty("os.name").equals("Windows XP")) {
-				File destDir = new File(System.getProperty("user.home") + GraphicalInterfaceConstants.SETTINGS_PATH_SUFFIX_WINDOWS_XP + GraphicalInterfaceConstants.FOLDER_NAME);
-				if (!destDir.exists()) {
-					destDir.mkdir();				
-				}
-				fileName = System.getProperty("user.home") + GraphicalInterfaceConstants.SETTINGS_PATH_SUFFIX_WINDOWS_XP + GraphicalInterfaceConstants.FOLDER_NAME + name;
-			} else {
-				File destDir = new File(System.getenv("LOCALAPPDATA") + GraphicalInterfaceConstants.FOLDER_NAME);
-				if (!destDir.exists()) {
-					destDir.mkdir();				
-				}
-				fileName = System.getenv("LOCALAPPDATA") + GraphicalInterfaceConstants.FOLDER_NAME + name;
+	public static String getMOSTSettingsPath()
+	{
+		File destDir = null;
+		if( System.getProperty( "os.name" ).contains( "Windows" ) )
+		{
+			if( System.getProperty( "os.name" ).equals( "Windows XP" ) )
+			{
+				destDir = new File(
+						System.getProperty( "user.home" )
+								+ GraphicalInterfaceConstants.SETTINGS_PATH_SUFFIX_WINDOWS_XP
+								+ GraphicalInterfaceConstants.FOLDER_NAME );
 			}
-		} else if (System.getProperty( "os.name" ).toLowerCase().contains( "mac os x" )) {
-			File destDir = new File(System.getenv("HOME") + "/Library/" + GraphicalInterfaceConstants.FOLDER_NAME);
-			if (!destDir.exists()) {
-				destDir.mkdir();				
+			else
+			{
+				destDir = new File( System.getenv( "LOCALAPPDATA" )
+						+ GraphicalInterfaceConstants.FOLDER_NAME );
 			}
-			fileName = System.getenv("HOME") + "/Library/" + GraphicalInterfaceConstants.FOLDER_NAME + name;
-		} else if (System.getProperty("os.name").equals("Linux")) {	
-			fileName = name;
-		} else {
-			fileName = name;
 		}
+		else if( System.getProperty( "os.name" ).toLowerCase()
+				.contains( "mac os x" ) )
+		{
+			destDir = new File( System.getenv( "HOME" ) + "/Library/"
+					+ GraphicalInterfaceConstants.FOLDER_NAME );
+		}
+		else if( System.getProperty( "os.name" ).equals( "Linux" ) )
+		{
+			destDir = new File( GraphicalInterfaceConstants.FOLDER_NAME );
+		}
+		if( !destDir.exists() )
+			destDir.mkdir();
 		
-		//System.out.println("util " + fileName);
-		return fileName;
-		
+		return destDir.getAbsolutePath() + File.separatorChar;
+	}
+	
+	public String createLogFileName(String name) {
+		return getMOSTSettingsPath() + name;		
 	}
 	
 	public void showResizableDialog(String errorTitle, String errorDescription, String errorMessage) {
@@ -148,6 +162,68 @@ public class Utilities {
 		r.setIconImages(icons);
     	r.setLocationRelativeTo(null);
     	r.setVisible(true);
+	}
+	
+	/**
+	 * Appends numeric suffix to duplicate abbreviations such as [1]. [2].
+	 * These fields are keys in SBML and must be unique.
+	 * @param value
+	 * @param abbreviationIdMap
+	 * @return
+	 */
+	public String duplicateSuffix(String value, Map<String, Object> abbreviationIdMap) {
+		String duplicateSuffix = GraphicalInterfaceConstants.DUPLICATE_SUFFIX;
+		if (abbreviationIdMap.containsKey(value + duplicateSuffix)) {
+			int duplicateCount = Integer.valueOf(duplicateSuffix.substring(1, duplicateSuffix.length() - 1));
+			while (abbreviationIdMap.containsKey(value + duplicateSuffix.replace("1", Integer.toString(duplicateCount + 1)))) {
+				duplicateCount += 1;
+			}
+			duplicateSuffix = duplicateSuffix.replace("1", Integer.toString(duplicateCount + 1));
+		}
+		return duplicateSuffix;
+	}
+	
+	/**
+	 * Returns next available letter (to upper case) to be used as mnemonic
+	 * from parameter name and list of used mnemonics.
+	 * @param usedMnemonics
+	 * @param parameterName
+	 * @return mnemonic
+	 */
+	public String findMnemonic(ArrayList<String> usedMnemonics, String parameterName) {
+		String mnemonic = "";
+		for (int i = 0; i < parameterName.length(); i++) {
+			mnemonic = Character.toString(parameterName.charAt(i)).toUpperCase();
+			if (!usedMnemonics.contains(mnemonic)) {
+				break;
+			} 
+		}
+		
+		return mnemonic;
+		
+	}
+	
+	public static void copyFile(File sourceFile, File destFile) throws IOException {
+		if(!destFile.exists()) {
+			destFile.createNewFile();
+		}
+
+		FileChannel source = null;
+		FileChannel destination = null;
+
+		try {
+			source = new FileInputStream(sourceFile).getChannel();
+			destination = new FileOutputStream(destFile).getChannel();
+			destination.transferFrom(source, 0, source.size());
+		}
+		finally {
+			if(source != null) {
+				source.close();
+			}
+			if(destination != null) {
+				destination.close();
+			}
+		}
 	}
 	
 }

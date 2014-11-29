@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
 
-import edu.rutgers.MOST.config.LocalConfig;
 import edu.rutgers.MOST.presentation.GraphicalInterface;
 import edu.rutgers.MOST.presentation.GraphicalInterfaceConstants;
 
@@ -165,13 +164,10 @@ public class MetaboliteFactory {
 			for (int i = 0; i < GraphicalInterface.metabolitesTable.getRowCount(); i++) {
 				if (GraphicalInterface.metabolitesTable.getModel().getValueAt(i, GraphicalInterfaceConstants.METABOLITE_ABBREVIATION_COLUMN) != null &&	
 						((String) GraphicalInterface.metabolitesTable.getModel().getValueAt(i, GraphicalInterfaceConstants.METABOLITE_ABBREVIATION_COLUMN)).trim().length() > 0) {
-					//int id = Integer.valueOf((String) GraphicalInterface.metabolitesTable.getModel().getValueAt(i, GraphicalInterfaceConstants.METABOLITE_ID_COLUMN));	
+					Integer.valueOf((String) GraphicalInterface.metabolitesTable.getModel().getValueAt(i, GraphicalInterfaceConstants.METABOLITE_ID_COLUMN));	
 					SBMLMetabolite metabolite = new SBMLMetabolite();
 					metabolite.setId(Integer.valueOf((String) GraphicalInterface.metabolitesTable.getModel().getValueAt(i, GraphicalInterfaceConstants.METABOLITE_ID_COLUMN)));
-					metabolite.setMetaboliteAbbreviation((String) GraphicalInterface.metabolitesTable.getModel().getValueAt(i, GraphicalInterfaceConstants.METABOLITE_ABBREVIATION_COLUMN));
-					metabolite.setMetaboliteName((String) GraphicalInterface.metabolitesTable.getModel().getValueAt(i, GraphicalInterfaceConstants.METABOLITE_NAME_COLUMN));
 					metabolite.setBoundary((String) GraphicalInterface.metabolitesTable.getModel().getValueAt(i, GraphicalInterfaceConstants.BOUNDARY_COLUMN));
-					metabolite.setCompartment((String) GraphicalInterface.metabolitesTable.getModel().getValueAt(i, GraphicalInterfaceConstants.COMPARTMENT_COLUMN));
 					metabolites.add(metabolite);
 				}													
 			}
@@ -179,25 +175,6 @@ public class MetaboliteFactory {
 		}
 		
 		return metabolites;
-	}
-	
-	public ArrayList<String> metaboliteExternalList() {
-		ArrayList<String> metaboliteExternalList = new ArrayList<String>();
-
-		if("SBML".equals(sourceType)){
-			for (int i = 0; i < GraphicalInterface.metabolitesTable.getRowCount(); i++) {
-				if (GraphicalInterface.metabolitesTable.getModel().getValueAt(i, GraphicalInterfaceConstants.METABOLITE_ABBREVIATION_COLUMN) != null &&
-						((String) GraphicalInterface.metabolitesTable.getModel().getValueAt(i, GraphicalInterfaceConstants.METABOLITE_ABBREVIATION_COLUMN)).trim().length() > 0) {
-					String boundary = (String) GraphicalInterface.metabolitesTable.getModel().getValueAt(i, GraphicalInterfaceConstants.BOUNDARY_COLUMN);
-					if (boundary.equals(GraphicalInterfaceConstants.BOOLEAN_VALUES[1])) {
-						String abbrev = (String) GraphicalInterface.metabolitesTable.getModel().getValueAt(i, GraphicalInterfaceConstants.METABOLITE_ABBREVIATION_COLUMN);
-						metaboliteExternalList.add(abbrev);
-					}
-				}				
-			}
-		}
-		
-		return metaboliteExternalList;
 	}
 	
 	public static void main(String[] args) {

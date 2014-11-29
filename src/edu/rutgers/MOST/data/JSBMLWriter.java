@@ -46,7 +46,7 @@ public class JSBMLWriter implements TreeModelListener{
 	public SettingsFactory curSettings;
 	public String optFilePath;
 	public boolean load;
-	
+
 	public String getOptFilePath() {
 		return optFilePath;
 	}
@@ -212,7 +212,7 @@ public class JSBMLWriter implements TreeModelListener{
 	}
 	@SuppressWarnings( "deprecation" )
 	public void create() throws Exception {
-		level = 3;
+		level = 2;
 		version = 1;
 		
 		
@@ -236,7 +236,14 @@ public class JSBMLWriter implements TreeModelListener{
 		//Replace the following with something proper (see issue # ):
 		String dbN = "someModel";
 		
-		Model model = doc.createModel(dbN + "1");
+		if (outFile.getName().endsWith(".xml")) {
+			dbN = outFile.getName().substring(0, outFile.getName().length() - 4);
+		}
+		
+		JSBMLValidator validator = new JSBMLValidator();
+		String validDbN = validator.makeValidID(dbN);
+		Model model = doc.createModel(validDbN);
+		//Model model = doc.createModel(dbN + "1");
 		UnitDefinition mmolgh = new UnitDefinition();
 		
 		Unit mole = new Unit();
@@ -571,7 +578,7 @@ public class JSBMLWriter implements TreeModelListener{
 			
 			
 			ASTNode math = new ASTNode();
-			//math.setName("FLUX_VALUE");
+			math.setName("FLUX_VALUE");
 			int curReacCount = 0;
 			ArrayList<String> abbrList = new ArrayList<String>();
 			JSBMLValidator validator = new JSBMLValidator();
@@ -649,6 +656,16 @@ public class JSBMLWriter implements TreeModelListener{
 				String syn = Double.toString(cur.getSyntheticObjective());
 				String synClass = "SYNTHETIC_OBJECTIVE:" + " " + syn;
 				curReact.appendNotes(synClass);
+				
+				if (LocalConfig.getInstance().fvaColumnsVisible) {
+					String minFlux = Double.toString(cur.getMinFlux());
+					String minFluxClass = SBMLConstants.MIN_FLUX_NOTES_NAME + ":" + " " + minFlux;
+					curReact.appendNotes(minFluxClass);
+					
+					String maxFlux = Double.toString(cur.getMaxFlux());
+					String maxFluxClass = SBMLConstants.MAX_FLUX_NOTES_NAME + ":" + " " + maxFlux;
+					curReact.appendNotes(maxFluxClass);
+				}
 				
 				for (int n = 0; n < LocalConfig.getInstance().getReactionsMetaColumnNames().size(); n++) {
 					String value = "";

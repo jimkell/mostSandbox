@@ -8,10 +8,7 @@ import java.util.Map;
 import javax.swing.SortOrder;
 import javax.swing.table.DefaultTableModel;
 
-import edu.rutgers.MOST.data.EnzymeData;
-import edu.rutgers.MOST.data.MetabolicPathway;
 import edu.rutgers.MOST.data.ModelReactionEquation;
-import edu.rutgers.MOST.data.SubsystemReaction;
 
 public class LocalConfig {	
 
@@ -22,7 +19,7 @@ public class LocalConfig {
 	// Private constructor prevents instantiation from other classes
 	private LocalConfig() { }
 
-	public static LocalConfig getInstance() {
+	public static synchronized LocalConfig getInstance() {
 		return instance;
 	}
 	
@@ -68,11 +65,11 @@ public class LocalConfig {
 	
 	private Integer progress;
 	
-	public void setProgress(Integer progress) {
+	public synchronized void setProgress(Integer progress) {
 		this.progress = progress;
 	}
 	
-	public Integer getProgress() {
+	public synchronized Integer getProgress() {
 		return progress;
 	}
 	
@@ -150,8 +147,19 @@ public class LocalConfig {
 	public void setUnusedList(ArrayList<Integer> unusedList) {
 		this.unusedList = unusedList;
 	}
+	
+	public Map<String, Object> reactionAbbreviationIdMap = new HashMap<String, Object>();
     
-    //map used to hold metabolite abbreviation/id pairs, in order to construct reaction_reactant
+    public Map<String, Object> getReactionAbbreviationIdMap() {
+		return reactionAbbreviationIdMap;
+	}
+
+	public void setReactionAbbreviationIdMap(
+			Map<String, Object> reactionAbbreviationIdMap) {
+		this.reactionAbbreviationIdMap = reactionAbbreviationIdMap;
+	}
+
+	//map used to hold metabolite abbreviation/id pairs, in order to construct reaction_reactant
 	//and reaction_product (lookup) tables
     public Map<String, Object> metaboliteAbbreviationIdMap = new HashMap<String, Object>();
 
@@ -551,6 +559,12 @@ public class LocalConfig {
 	
 	public boolean hasValidGurobiKey;
 	
+	public boolean fvaDone;
+	public boolean fvaColumnsVisible;
+	
+	public boolean noBiolObjWarningShown;
+	public boolean noSynObjWarningShown;
+	
 	private Integer reactionsLocationsListCount;
 	
 	public void setReactionsLocationsListCount(Integer reactionsLocationsListCount) {
@@ -788,46 +802,14 @@ public class LocalConfig {
 		this.gdbbKnockoutsMap = gdbbKnockoutsMap;
 	}
 	
-	// may need to make maps with other keys such as Reaction Name
-	private ArrayList<EnzymeData> enzymeDataList;
+	private ArrayList<String> showFVAColumnsList;
 
-	public ArrayList<EnzymeData> getEnzymeDataList() {
-		return enzymeDataList;
+	public ArrayList<String> getShowFVAColumnsList() {
+		return showFVAColumnsList;
 	}
 
-	public void setEnzymeDataList(ArrayList<EnzymeData> enzymeDataList) {
-		this.enzymeDataList = enzymeDataList;
-	}
-
-	private Map<String, EnzymeData> enzymeDataMap;
-
-	public Map<String, EnzymeData> getEnzymeDataMap() {
-		return enzymeDataMap;
-	}
-
-	public void setEnzymeDataMap(Map<String, EnzymeData> enzymeDataMap) {
-		this.enzymeDataMap = enzymeDataMap;
-	}
-
-	private Map<String, ArrayList<SubsystemReaction>> subsystemDataMap;
-
-	public Map<String, ArrayList<SubsystemReaction>> getSubsystemDataMap() {
-		return subsystemDataMap;
-	}
-
-	public void setSubsystemDataMap(
-			Map<String, ArrayList<SubsystemReaction>> subsystemDataMap) {
-		this.subsystemDataMap = subsystemDataMap;
-	}
-	
-	private MetabolicPathway glycolysisPathway;
-
-	public MetabolicPathway getGlycolysisPathway() {
-		return glycolysisPathway;
-	}
-
-	public void setGlycolysisPathway(MetabolicPathway glycolysisPathway) {
-		this.glycolysisPathway = glycolysisPathway;
+	public void setShowFVAColumnsList(ArrayList<String> showFVAColumnsList) {
+		this.showFVAColumnsList = showFVAColumnsList;
 	}
 
 }

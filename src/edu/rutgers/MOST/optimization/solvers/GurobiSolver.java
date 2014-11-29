@@ -1,3 +1,4 @@
+
 package edu.rutgers.MOST.optimization.solvers;
 
 import java.awt.Image;
@@ -9,86 +10,47 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Map;
-import java.util.Vector;
 import java.util.Map.Entry;
+import java.util.Vector;
 
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
+import edu.rutgers.MOST.presentation.AbstractParametersDialog;
 import edu.rutgers.MOST.presentation.GraphicalInterfaceConstants;
+import edu.rutgers.MOST.presentation.GurobiParameters;
 import edu.rutgers.MOST.presentation.ResizableDialog;
 import edu.rutgers.MOST.presentation.GraphicalInterface;
-import edu.rutgers.MOST.Analysis.GDBB;
+import edu.rutgers.MOST.presentation.SimpleProgressBar;
+import edu.rutgers.MOST.presentation.Utilities;
 import edu.rutgers.MOST.config.LocalConfig;
-import edu.rutgers.MOST.data.Solution;
+import edu.rutgers.MOST.data.Model;
+import edu.rutgers.MOST.data.ModelCompressor;
 import gurobi.GRB;
+import gurobi.GRB.DoubleAttr;
 import gurobi.GRBCallback;
 import gurobi.GRBEnv;
 import gurobi.GRBException;
 import gurobi.GRBModel;
-import gurobi.GRBQuadExpr;
 import gurobi.GRBVar;
 import gurobi.GRBLinExpr;
 
-public class GurobiSolver extends Solver
-{	
-	private class RowEntry
-	{
-		public int idx;
-		public double value;
-
-		RowEntry( int i, double v )
-		{
-			idx = i;
-			value = v;
-		}
-	}
-
-	private class RowType
-	{
-		public double val;
-		public char type;
-		public Vector< RowEntry > entries = new Vector< RowEntry >();
-
-		RowType( double v, char t )
-		{
-			val = v;
-			type = t;
-		}
-	}
-
-	private class ColumnType
-	{
-		public String name;
-		public int type;
-		public double lb;
-		public double ub;
-
-		ColumnType( String n, int t, double l, double u )
-		{
-			name = n;
-			type = t;
-			lb = l;
-			ub = u;
-		}
-	}
-
-	private class ObjectiveType
-	{
-		Vector< RowEntry > coefs = new Vector< RowEntry >();
-	}
-
-	private Vector< RowType > rows = new Vector< RowType >();
-	private Vector< ColumnType > columns = new Vector< ColumnType >();
-	private ObjectiveType objective = new ObjectiveType();
-	private ArrayList< Double > soln = new ArrayList< Double >();
-	
-	private double objval;
-	private GRBEnv env = null;
-	private ObjType objType;
-	private ResizableDialog dialog = new ResizableDialog( "Error",
+public abstract class GurobiSolver implements MILSolver
+{
+	protected Model dataModel = null;
+	protected ModelCompressor compressor = null;
+	protected ArrayList< Double > soln = new ArrayList< Double >();
+	protected Vector< Double > geneExpr = new Vector< Double >();
+	protected double objval;
+	protected GRBEnv env = null;
+	protected ObjType objType;
+	protected ResizableDialog dialog = new ResizableDialog( "Error",
 			"Gurobi Solver Error", "Gurobi Solver Error" );
-
+	protected boolean abort = false;
+	protected SolverComponent component = new SolverComponentLightWeight();
+	protected ArrayList< Double > objCoefs = new ArrayList< Double >();
+	protected GRBModel model = null;
+	protected boolean showErrorMessages = true;
 	public static boolean isGurobiLinked()
 	{
 		try
@@ -109,60 +71,75 @@ public class GurobiSolver extends Solver
 
 		return true; // gurobi does link
 	}
-	private void processStackTrace( Exception e )
+	protected void processStackTrace( final Exception e )
 	{
 		//e.printStackTrace();
-		StringWriter errors = new StringWriter();
-		e.printStackTrace( new PrintWriter( errors ) );
-		dialog.setErrorMessage( errors.toString() + "</p></html>" );
-		// centers dialog
-		dialog.setLocationRelativeTo(null);
-		dialog.setModal(true);		
-		dialog.setVisible( true );
+		Thread t = new Thread()
+		{
+			@Override
+			public void run()
+			{
+				if( showErrorMessages )
+				{
+					StringWriter errors = new StringWriter();
+					e.printStackTrace( new PrintWriter( errors ) );
+					dialog.setErrorMessage( errors.toString() + "</p></html>" );
+					// centers dialog
+					dialog.setLocationRelativeTo(null);
+					dialog.setModal(true);		
+					dialog.setVisible( true );
+				}
+			}
+		};
+		t.run();
+		
 	}
-	private void promptGRBError( GRBException e )
+	protected void promptGRBError( GRBException e )
 	{
 		abort();
-		String errMsg;
-		int code = e.getErrorCode();
-		switch( code )
+		if( showErrorMessages )
 		{
-		case GRB.Error.NO_LICENSE:
-			errMsg = "<html><p>No validation file - run 'grbgetkey' to refresh it.</p></html>";
-			LocalConfig.getInstance().hasValidGurobiKey = false;
-			break;
-		case GRB.Error.FAILED_TO_CREATE_MODEL:
-			errMsg = "<html><p>Gurobi failed to create the model";
-		case GRB.Error.NOT_SUPPORTED:
-			errMsg = "<html><p>This optimization is not supported by Gurobi";
-			break;
-		case GRB.Error.INVALID_ARGUMENT:
-			errMsg = "<html><p>Gurobi encountered an invalid argument";
-			break;
-		case GRB.Error.IIS_NOT_INFEASIBLE:
-			errMsg = "<html><p>Gurobi determined the IIS is not feasable";
-			break;
-		case GRB.Error.NUMERIC:
-			errMsg = "<html><p>Gurobi encountered a numerical error while optimizing the model";
-			break;
-		case GRB.Error.INTERNAL:
-			errMsg = "<html><p>Gurobi has encountered an internal error!";
-			break;
-		case 0:
-			errMsg = e.getMessage() + "\n";
-			break;
-		default:
-			errMsg = "<html><p>Gurobi encountered an error optimizing the model - <br> "
-					+ " <a href=" + GraphicalInterfaceConstants.GUROBI_ERROR_CODE_URL
-					+ ">Error Code:" + code + "</a><br>\n";
+			String errMsg;
+			int code = e.getErrorCode();
+			switch( code )
+			{
+			case GRB.Error.NO_LICENSE:
+				errMsg = "<html><p>No validation file - run 'grbgetkey' to refresh it.</p></html>";
+				LocalConfig.getInstance().hasValidGurobiKey = false;
+				break;
+			case GRB.Error.FAILED_TO_CREATE_MODEL:
+				errMsg = "<html><p>Gurobi failed to create the model";
+			case GRB.Error.NOT_SUPPORTED:
+				errMsg = "<html><p>This optimization is not supported by Gurobi";
+				break;
+			case GRB.Error.INVALID_ARGUMENT:
+				errMsg = "<html><p>Gurobi encountered an invalid argument";
+				break;
+			case GRB.Error.IIS_NOT_INFEASIBLE:
+				errMsg = "<html><p>Gurobi determined the IIS is not feasable";
+				break;
+			case GRB.Error.NUMERIC:
+				errMsg = "<html><p>Gurobi encountered a numerical error while optimizing the model";
+				break;
+			case GRB.Error.INTERNAL:
+				errMsg = "<html><p>Gurobi has encountered an internal error!";
+				break;
+			case 0:
+				errMsg = e.getMessage() + "\n";
+				break;
+			default:
+				errMsg = "<html><p>Gurobi encountered an error optimizing the model - <br> "
+						+ " <a href=" + GraphicalInterfaceConstants.GUROBI_ERROR_CODE_URL
+						+ ">Error Code:" + code + "</a><br>\n";
+			}
+			if( GraphicalInterface.getGdbbDialog() != null )
+				GraphicalInterface.getGdbbDialog().setVisible( false );
+	
+			processStackTrace( new Exception( errMsg ) );
+			LocalConfig.getInstance().getOptimizationFilesList().clear();
 		}
-		if( GraphicalInterface.getGdbbDialog() != null )
-			GraphicalInterface.getGdbbDialog().setVisible( false );
-
-		processStackTrace( new Exception( errMsg ) );
-		LocalConfig.getInstance().getOptimizationFilesList().clear();
 	}
-	private char getGRBVarType( VarType type )
+	protected char getGRBVarType( VarType type )
 	{
 		switch( type )
 		{
@@ -180,7 +157,7 @@ public class GurobiSolver extends Solver
 			return GRB.CONTINUOUS;
 		}
 	}
-	private char getGRBConType( ConType type )
+	protected char getGRBConType( ConType type )
 	{
 		switch( type )
 		{
@@ -194,7 +171,7 @@ public class GurobiSolver extends Solver
 			return GRB.LESS_EQUAL;
 		}
 	}
-	private int getGRBObjType( ObjType objType )
+	protected int getGRBObjType( ObjType objType )
 	{
 		switch( objType )
 		{
@@ -207,9 +184,8 @@ public class GurobiSolver extends Solver
 		}
 	}
 
-	public GurobiSolver( Algorithm algorithm )
+	public GurobiSolver()
 	{
-		super( algorithm );
 		// set the dialog
 		final ArrayList< Image > icons = new ArrayList< Image >();
 		icons.add( new ImageIcon( "etc/most16.jpg" ).getImage() );
@@ -255,10 +231,8 @@ public class GurobiSolver extends Solver
 		try
 		{
 			// set up environment and the model/problem objects
-			if( env  == null )
+			if( env == null )
 				env = new GRBEnv();
-			env.set( GRB.DoubleParam.IntFeasTol, 1.0E-9 );
-			env.set( GRB.DoubleParam.FeasibilityTol, 1.0E-9 );
 			env.set( GRB.IntParam.OutputFlag, 0 );
 			
 		}
@@ -284,21 +258,9 @@ public class GurobiSolver extends Solver
 		return soln;
 	}
 	@Override
-	public void setVar( String varName, VarType types, double lb, double ub )
+	public void setVar( String varName, VarType type, double lb, double ub )
 	{
-		try
-		{
-			// column definitions
-			if( varName == null || types == null  )
-				return;
-			
-			columns.add( new ColumnType( varName, getGRBVarType( types ), lb, ub ) );
-		}
-		catch ( Exception e )
-		{
-			processStackTrace( e );
-		}
-
+		component.addVariable( type, lb, ub );
 	}
 	@Override
 	public void setObjType( ObjType objType )
@@ -308,168 +270,70 @@ public class GurobiSolver extends Solver
 	@Override
 	public void setObj( Map< Integer, Double > map )
 	{
-		try
+		if( objCoefs.size() == 0 )
 		{
-			// objective definition
-			for( Entry< Integer, Double > entry : map.entrySet())
-				objective.coefs.add( new RowEntry( entry.getKey(), entry
-						.getValue() ) );
+			for( int j = 0; j < component.variableCount(); ++j )
+				objCoefs.add( new Double( 0.0 ) );
 		}
-		catch ( Exception e )
-		{
-			processStackTrace( e );
-		}
-
+		
+		for( Entry< Integer, Double > coef : map.entrySet() )
+			objCoefs.set( coef.getKey(), coef.getValue() );
 	}
 	@Override
-	public void addConstraint( Map< Integer, Double > map, ConType con,
+	public void addConstraint( Map< Integer, Double > map, ConType conType,
 			double value )
 	{
-		try
-		{
-			// row / constraint definitions
-			RowType row = new RowType( value, getGRBConType( con ) );
-			for( Entry< Integer, Double > entry : map.entrySet() )
-			{
-				int key = entry.getKey();
-				double kvalue = entry.getValue();
-				row.entries.add( new RowEntry( key, kvalue ) );
-			}
-			rows.add( row );
-		}
-		catch ( Exception e )
-		{
-			processStackTrace( e );
-		}
+		component.addConstraint( map, conType, value );
 	}
 
-	private double minimizeEuclideanNorm()
+	public void setDataModel( Model model )
 	{
-		double result = 0.0;
-		
-		try
-		{
-			// set up the quadratic environment model
-			GRBEnv quad_env = new GRBEnv();
-			GRBModel quad_model = new GRBModel( env );
-			ArrayList< GRBVar > vars = new ArrayList< GRBVar >();
-			quad_env.set( GRB.DoubleParam.IntFeasTol, 1.0E-9 );
-			quad_env.set( GRB.DoubleParam.FeasibilityTol, 1.0E-9 );
-			quad_env.set( GRB.IntParam.OutputFlag, 0 );
-			
-			// create the variables
-			for( ColumnType it : columns)
-			{
-				vars.add( quad_model.addVar( it.lb, it.ub, 0.0, (char)it.type,
-						it.name ) );
-			}
-			quad_model.update();
-			
-			// add rows / constraints
-			for( RowType it : rows)
-			{
-				GRBLinExpr expr = new GRBLinExpr();
-				for( RowEntry entry : it.entries )
-				{
-					expr.addTerm( entry.value, vars.get( entry.idx ) );
-				}
-				quad_model.addConstr( expr, it.type, it.val, null );
-			}
-			
-			// add the Maximum objective constraint
-			GRBLinExpr maxObj = new GRBLinExpr();
-			for( RowEntry entry : objective.coefs )
-				maxObj.addTerm( entry.value, vars.get( entry.idx ) );
-			GRBVar objValue = quad_model.addVar( this.objval, this.objval, 0.0, GRB.CONTINUOUS, null );
-			quad_model.update(); // due to adding a new variable
-			quad_model.addConstr( maxObj, GRB.EQUAL, objValue, null );
-			
-			// set the objective
-			GRBQuadExpr expr = new GRBQuadExpr();
-			for( GRBVar var : quad_model.getVars() ) 
-				expr.addTerm( 1.0, var, var );
-			quad_model.setObjective( expr );
-			
-			// optimize the model
-			quad_model.optimize();
-			
-			// get min of sum of min v^2
-			// objval = result = quad_model.get( GRB.DoubleAttr.ObjVal );
-			
-			soln.clear();
-			
-			for( GRBVar var : vars)
-				soln.add( var.get( GRB.DoubleAttr.X ) );
-			
-			// clean up
-			quad_model.dispose();
-			quad_env.dispose();
-		}
-		catch( GRBException e )
-		{
-			promptGRBError( e );
-		}
-		
-		return result;
+		this.dataModel = model;
 	}
 	@Override
-	public double optimize()
+	public double optimize() throws Exception
 	{
 		try
 		{
-			final GRBModel model = new GRBModel( env );
+			AbstractParametersDialog params = GraphicalInterface.getGurobiParameters();
+			env.set( GRB.IntParam.Threads, 
+				Integer.valueOf( params.getParameter( GurobiParameters.NUM_THREADS_NAME ) ) );
+			env.set( GRB.IntParam.MIPFocus,
+				Integer.valueOf( params.getParameter( GurobiParameters.MIPFOCUS_NAME ) ) );
+			env.set( GRB.DoubleParam.FeasibilityTol,
+				Double.valueOf( params.getParameter( GurobiParameters.FEASIBILITYTOL_NAME ) ) );
+			env.set( GRB.DoubleParam.IntFeasTol,
+				Double.valueOf( params.getParameter( GurobiParameters.INTFEASIBILITYTOL_NAME ) ) );
+			env.set( GRB.DoubleParam.Heuristics, 
+				Double.valueOf( params.getParameter( GurobiParameters.HEURISTICS_NAME ) ) );
+			env.set( GRB.DoubleParam.OptimalityTol,
+				Double.valueOf( params.getParameter( GurobiParameters.OPTIMALITYTOL_NAME ) ) );
+			env.set( GRB.IntParam.OutputFlag, 0 );
+
+			model = new GRBModel( env );
 			ArrayList< GRBVar > vars = new ArrayList< GRBVar >();
 			
 			try
 			{
 				// set the callback
-				model.setCallback( new GRBCallback()
-				{
-					@Override
-					protected void callback()
-					{
-						try
-						{
-							if( abort )
-								this.abort();
-							else if( this.where == GRB.CB_SIMPLEX )
-								objval = getDoubleInfo( GRB.CB_SPX_OBJVAL ); // FBA
-																				// objective
-							else if( this.where == GRB.CB_MIPSOL )
-							{
-								// GDBB intermediate solutions
-								GDBB.intermediateSolution.add( new Solution( this
-										.getDoubleInfo( GRB.CB_MIPSOL_OBJ ), this
-										.getSolution( model.getVars() ) ) );
-								objval = getDoubleInfo( GRB.CB_MIPSOL_OBJ ); // MIP
-																				// objective
-							}
-						}
-						catch ( GRBException e )
-						{
-							processStackTrace( e );
-						}
-					}
-				} );
+				model.setCallback( this.createGRBCallback() );
 				
 				// add columns
-				for( ColumnType it : columns)
+				for( int j = 0; j < component.variableCount(); ++j )
 				{
-					vars.add( model.addVar( it.lb, it.ub, 0.0, (char)it.type,
-							it.name ) );
+					Variable var = component.getVariable( j );
+					vars.add( model.addVar( var.lb, var.ub, 0.0, getGRBVarType( var.type ),
+							null ) );
 				}
 				model.update();
 				
-	
-				// add rows / constraints
-				for( RowType it : rows)
+				for( int i = 0; i < component.constraintCount(); ++i )
 				{
+					Constraint constraint = component.getConstraint( i );
 					GRBLinExpr expr = new GRBLinExpr();
-					for( RowEntry entry : it.entries )
-					{
-						expr.addTerm( entry.value, vars.get( entry.idx ) );
-					}
-					model.addConstr( expr, it.type, it.val, null );
+					for( int j = 0; j < component.variableCount(); ++j )
+						expr.addTerm( constraint.getCoefficient( j ), vars.get( j ) );
+					model.addConstr( expr, getGRBConType( constraint.type ), constraint.value, null );
 				}
 				
 				
@@ -477,14 +341,20 @@ public class GurobiSolver extends Solver
 				GRBLinExpr expr = new GRBLinExpr();
 	
 				// set the terms & coefficients defining the objective function
-				for( RowEntry entry : objective.coefs )
-					expr.addTerm( entry.value, vars.get( entry.idx ) );
+				for( int j = 0; j < component.variableCount(); ++j )
+					expr.addTerm( objCoefs.get( j ), vars.get( j ) );
 	
 				// set the objective
 				model.setObjective( expr, getGRBObjType( objType ) );
 				
 				// perform the optimization and get the objective value
 				model.optimize();
+				
+				// write to MPS file if specified
+				if( params.getParameter(
+						GurobiParameters.SAVE_TO_MPS_NAME ).equals( Boolean.toString( true ) ) )
+					model.write( Utilities.getMOSTSettingsPath() + "LastProblem_Gurobi.mps" );
+				
 				if( !abort )
 				{
 					switch( model.get( GRB.IntAttr.Status ) )
@@ -521,8 +391,6 @@ public class GurobiSolver extends Solver
 					// get the flux values
 					for( GRBVar var : vars)
 						soln.add( var.get( GRB.DoubleAttr.X ) );
-					if( getAlgorithm() == Algorithm.Eflux2 )
-						this.minimizeEuclideanNorm();
 				}
 			}
 			catch( GRBException e )
@@ -532,8 +400,6 @@ public class GurobiSolver extends Solver
 			finally
 			{
 				// clean up
-				columns.clear();
-				rows.clear();
 				model.dispose();
 				env.dispose();
 				vars.clear();
@@ -542,25 +408,26 @@ public class GurobiSolver extends Solver
 		catch ( GRBException e )
 		{
 			promptGRBError( e );
-			return Double.NaN;
+			throw new Exception( e );
 		}
 
 		return objval;
 	}
 	@Override
 	public void setEnv( double timeLimit, int numThreads )
-	{
-		if( env != null )
-			return;
-		
+	{		
 		try
 		{
-			env = new GRBEnv();
-			env.set( GRB.DoubleParam.Heuristics, 1.0 );
-			env.set( GRB.DoubleParam.ImproveStartGap, Double.POSITIVE_INFINITY );
+			if( env == null )
+				env = new GRBEnv();
 			env.set( GRB.DoubleParam.TimeLimit, timeLimit );
-			env.set( GRB.IntParam.MIPFocus, 1 );
-			env.set( GRB.IntParam.Threads, numThreads );
+			//env.set( GRB.IntParam.Threads, numThreads );
+			//env.set( GRB.DoubleParam.Heuristics, 1.0 );
+			//env.set( GRB.DoubleParam.ImproveStartGap, Double.POSITIVE_INFINITY );
+			//env.set( GRB.IntParam.MIPFocus, 1 );
+			//env.set( GRB.IntParam.Presolve, 2 );
+			//env.set( GRB.IntParam.PreDepRow, 1 );
+			//env.set( GRB.IntParam.PreSparsify, 1 );
 		}
 		catch ( GRBException e )
 		{
@@ -570,7 +437,6 @@ public class GurobiSolver extends Solver
 	@Override
 	public void setVars( VarType[] types, double[] lb, double[] ub )
 	{
-		// TODO Auto-generated method stub
 	}
 	@Override
 	public void abort()
@@ -583,8 +449,159 @@ public class GurobiSolver extends Solver
 		abort = false;
 	}
 	@Override
-	public void setAbort( boolean abort )
+	public synchronized void setAbort( boolean abort )
 	{
 		this.abort = abort;
+	}
+	@Override
+	public void setGeneExpr( Vector< Double > geneExpr )
+	{
+		this.geneExpr = geneExpr;
+	}
+	protected synchronized boolean aborted()
+	{
+		return this.abort;
+	}
+	protected abstract GRBCallback createGRBCallback();
+	public SolverComponent getSolverComponent()
+	{
+		return component;
+	}
+	public ArrayList< Double > getObjectiveCoefs()
+	{
+		return this.objCoefs;
+	}
+	
+	@Override
+	public void disableErrors()
+	{
+		this.showErrorMessages = false;
+	}
+	
+	@Override
+	public void setModelCompressor( ModelCompressor compressor )
+	{
+		this.compressor = compressor;
+	}
+	
+	@Override
+	public void FVA( ArrayList< Double > objCoefs, Double objVal, ArrayList< Double > fbaSoln,
+			ArrayList< Double > min, ArrayList< Double > max, SolverComponent component ) throws Exception
+	{
+		GRBEnv quad_env = null;
+		GRBModel quad_model = null;
+		try
+		{
+			AbstractParametersDialog params = GraphicalInterface.getGurobiParameters();
+			quad_env = new GRBEnv();
+			quad_env.set( GRB.IntParam.Threads, 
+				Integer.valueOf( params.getParameter( GurobiParameters.NUM_THREADS_NAME ) ) );
+			quad_env.set( GRB.IntParam.MIPFocus,
+				Integer.valueOf( params.getParameter( GurobiParameters.MIPFOCUS_NAME ) ) );
+			quad_env.set( GRB.DoubleParam.FeasibilityTol,
+				Double.valueOf( params.getParameter( GurobiParameters.FEASIBILITYTOL_NAME ) ) );
+			quad_env.set( GRB.DoubleParam.IntFeasTol,
+				Double.valueOf( params.getParameter( GurobiParameters.INTFEASIBILITYTOL_NAME ) ) );
+			quad_env.set( GRB.DoubleParam.Heuristics, 
+				Double.valueOf( params.getParameter( GurobiParameters.HEURISTICS_NAME ) ) );
+			quad_env.set( GRB.DoubleParam.OptimalityTol,
+				Double.valueOf( params.getParameter( GurobiParameters.OPTIMALITYTOL_NAME ) ) );
+			quad_env.set( GRB.IntParam.OutputFlag, 0 );
+				
+			quad_model = new GRBModel( quad_env );
+			ArrayList< GRBVar > vars = new ArrayList< GRBVar >();
+			
+			// create the variables
+			for( int j = 0; j < component.variableCount(); ++ j )
+			{
+				Variable var = component.getVariable( j );
+
+				vars.add( quad_model.addVar( var.lb, var.ub, 0.0, getGRBVarType( var.type ),
+						null ) );
+			}
+			quad_model.update();
+			
+			// Fv = z extra constraint
+			double param_feas = Double.valueOf( params.getParameter( GurobiParameters.FEASIBILITYTOL_NAME ) );
+			component.addConstraint( objCoefs, ConType.GREATER_EQUAL, objVal - param_feas );
+			component.addConstraint( objCoefs, ConType.LESS_EQUAL, objVal + param_feas );
+			
+			// set constraints to Gurobi
+			for( int i = 0; i < component.constraintCount(); ++i )
+			{
+				Constraint constraint = component.getConstraint( i );
+
+				GRBLinExpr expr = new GRBLinExpr();
+				for( int j = 0; j < component.variableCount(); ++j )
+				{
+					expr.addTerm( constraint.getCoefficient( j ), vars.get( j ) );
+				}
+				quad_model.addConstr( expr, getGRBConType( constraint.type ), constraint.value, null );
+			}
+			
+			SimpleProgressBar progress = new SimpleProgressBar( "Flux Variability Analysis", "Progress" );
+			progress.progressBar.setIndeterminate( false );
+			progress.progressBar.setMaximum( component.variableCount() );
+			progress.progressBar.setValue( 0 );
+			progress.progressBar.setStringPainted( true );
+			progress.setAlwaysOnTop( true );
+			progress.setLocationRelativeTo( null );
+			
+			for( int j = 0; j < component.variableCount(); ++j )
+			{
+				if( !progress.isVisible() ) {
+					// this allows x button of Graphical Interface to work
+					// correctly if progress closed
+					LocalConfig.getInstance().fvaDone = true;
+					throw new Exception( "Exit" );
+				}
+				progress.progressBar.setValue( j );
+				// add the term to the objective expression
+				GRBLinExpr objExpr = new GRBLinExpr();
+				objExpr.addTerm( 1.0, vars.get( j ) );
+				
+				// set the objective to minimize the flux
+				quad_model.setObjective( objExpr, GRB.MINIMIZE );
+				
+				// optimize the model
+				quad_model.optimize();
+				
+				// add to the minimized flux vector
+				min.add( vars.get( j ).get( GRB.DoubleAttr.X ) );
+				
+				// set the objective to maximize the flux
+				quad_model.setObjective( objExpr, GRB.MAXIMIZE );
+				
+				// optimize the model
+				quad_model.optimize();
+				
+				// add to the maximized flux vector
+				max.add( vars.get( j ).get( GRB.DoubleAttr.X ) );
+			}
+			LocalConfig.getInstance().fvaDone = true;
+			progress.setVisible( false );
+			progress.dispose();
+			
+			// remove the extra constraint
+			component.removeConstraint( component.constraintCount() - 1 );
+			
+			// clean up
+		}
+		catch( GRBException e )
+		{
+			promptGRBError( e );
+			throw new Exception( e );
+		}
+		catch( Exception e )
+		{
+			throw new Exception( e );
+		}
+		finally
+		{
+			if( quad_model != null )
+				quad_model.dispose();
+			if( quad_env != null )
+				quad_env.dispose();
+		}
 	}
 }

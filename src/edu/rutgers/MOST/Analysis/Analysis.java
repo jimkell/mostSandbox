@@ -9,21 +9,14 @@ import edu.rutgers.MOST.data.*;
 import edu.rutgers.MOST.optimization.solvers.*;
 import edu.rutgers.MOST.presentation.GraphicalInterfaceConstants;
 
-public class Analysis
+public abstract class Analysis
 {
-	protected Model model = new Model();
-	protected Solver solver;
-	protected Vector< String > varNames = new Vector< String >();
-	protected double maxObj;
+	protected Model model = null;
+	protected double maxObj = Double.NaN;
 
-	public Analysis( Algorithm algorithm )
+	protected void setVars()
 	{
-		this.solver = SolverFactory.createSolver( algorithm );
-		this.varNames = new Vector< String >();
-	}
-
-	private void setVars()
-	{
+	
 		Vector< SBMLReaction > reactions = this.model.getReactions();
 		for( int i = 0; i < reactions.size(); i++)
 		{
@@ -42,28 +35,44 @@ public class Analysis
 			}
 
 			this.getSolver().setVar( varName, VarType.CONTINUOUS, lb, ub );
-
-			this.varNames.add( varName );
 		}
+	
 	}
 
-	private void setConstraints()
+	protected void setConstraints()
 	{
 		Vector< SBMLReaction > reactions = this.model.getReactions();
 		setConstraints( reactions, ConType.EQUAL, 0.0 );
 	}
 
-	private void setConstraints( Vector< SBMLReaction > reactions,
+	protected void setConstraints( Vector< SBMLReaction > reactions,
 			ConType conType, double bValue )
 	{
 		ArrayList< Map< Integer, Double >> sMatrix = this.model.getSMatrix();
+		ModelCompressor compressor = new ModelCompressor();
+		ArrayList< Double > lowerBounds = new ArrayList< Double >();
+		ArrayList< Double > upperBounds = new ArrayList< Double >();
+		for( SBMLReaction reac : reactions )
+		{
+			boolean ko = reac.getKnockout().equals(
+					GraphicalInterfaceConstants.BOOLEAN_VALUES[1] );
+			lowerBounds.add( ko ? 0.0 : reac.getLowerBound() );
+			upperBounds.add( ko ? 0.0 : reac.getUpperBound() );
+		}
+		compressor.setsMatrix( sMatrix );
+		compressor.setLowerBounds( lowerBounds );
+		compressor.setUpperBounds( upperBounds );
+		compressor.compressNet();
+		sMatrix = compressor.getsMatrix();
+	
+		
 		for( int i = 0; i < sMatrix.size(); i++)
 		{
 			this.getSolver().addConstraint( sMatrix.get( i ), conType, bValue );
 		}
 	}
 
-	private void setObjective()
+	protected void setObjective()
 	{
 		this.getSolver().setObjType( ObjType.Maximize );
 		Vector< Double > objective = this.model.getObjective();
@@ -83,20 +92,22 @@ public class Analysis
 		this.model = m;
 	}
 	
-	public ArrayList< Double > run()
+	public void setSolverParameters()
 	{
 		this.setVars();
 		this.setConstraints();
 		this.setObjective();
+	}
+	
+	public ArrayList< Double > run() throws Exception
+	{
+		this.setSolverParameters();
 		this.maxObj = this.getSolver().optimize();
 
 		return this.getSolver().getSoln();
 	}
 	
-	public Solver getSolver()
-	{
-		return solver;
-	}
+	public abstract Solver getSolver();
 
 	public double getMaxObj()
 	{

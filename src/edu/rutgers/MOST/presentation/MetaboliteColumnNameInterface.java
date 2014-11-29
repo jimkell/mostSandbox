@@ -72,11 +72,11 @@ public class MetaboliteColumnNameInterface  extends JDialog {
 
 		validColumns = true;
 		
-		cbMetaboliteAbbreviation.setEditable(true);	
-		cbMetaboliteName.setEditable(true);
-		cbCharge.setEditable(true);	
-		cbCompartment.setEditable(true);
-		cbBoundary.setEditable(true);
+		cbMetaboliteAbbreviation.setEditable(false);	
+		cbMetaboliteName.setEditable(false);
+		cbCharge.setEditable(false);	
+		cbCompartment.setEditable(false);
+		cbBoundary.setEditable(false);
 
 		cbMetaboliteAbbreviation.setPreferredSize(new Dimension(250, 25));
 		cbMetaboliteAbbreviation.setMaximumSize(new Dimension(250, 25));
@@ -478,7 +478,7 @@ public class MetaboliteColumnNameInterface  extends JDialog {
 	}
 	
 	public static void main(String[] args) throws Exception {
-		// based on code from http:stackoverflow.com/questions/6403821/how-to-add-an-image-to-a-jframe-title-bar
+		//based on code from http:stackoverflow.com/questions/6403821/how-to-add-an-image-to-a-jframe-title-bar
 		final ArrayList<Image> icons = new ArrayList<Image>(); 
 		icons.add(new ImageIcon("etc/most16.jpg").getImage()); 
 		icons.add(new ImageIcon("etc/most32.jpg").getImage());

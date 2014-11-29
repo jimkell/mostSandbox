@@ -43,9 +43,11 @@ public class SBMLReactionEquation implements ModelReactionEquation {
 		return reversibleArrow;
 	}
 
+
 	public void setReversibleArrow(String reversibleArrow) {
 		this.reversibleArrow = reversibleArrow;
 	}
+
 
 	public String getIrreversibleArrow() {
 		return irreversibleArrow;
@@ -206,7 +208,6 @@ public class SBMLReactionEquation implements ModelReactionEquation {
 		+ ", reactants=" + reactantsString
 		+ ", products=" + productsString
 		+ ", equationAbbreviations=" + equationAbbreviations
-		+ ", equationNames=" + equationNames
-		+ ", compartmentList=" + compartmentList + "]\n";
+		+ ", equationNames=" + equationNames + "]\n";
 	}
 }

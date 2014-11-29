@@ -1,6 +1,5 @@
 package edu.rutgers.MOST.Analysis;
 
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -13,22 +12,26 @@ import edu.rutgers.MOST.optimization.solvers.*;
 import edu.rutgers.MOST.presentation.GraphicalInterfaceConstants;
 
 
-
-
-
 //http://commons.apache.org/proper/commons-lang/download_lang.cgi
 import org.apache.commons.lang3.time.StopWatch;
 
 public class GDBB extends Thread {
+	
+	public static interface Callback
+	{
+		public abstract void invoke();
+	}
 
+	private ModelCompressor compressor = new ModelCompressor();
+	private Callback finalizingCallback = null;
 	private GDBBModel model;
-	private Solver solver;
+	private MILSolver solver;
 	private double maxObj;
 
 //  public static ArrayList<Double> objIntermediate;
 //  public static ArrayList<double[]> knockoutVectors;
 
-	public static Queue<Solution> intermediateSolution;
+	private static Queue<Solution> intermediateSolution;
 	/*        Ma:
 	 *        [I(n, n) 0(n, n) 0(n, n) 0(n, n) 0(n, m) ad.G']
 	 *        [0(n, n) 0(n, n) 0(n, n) I(n, n) 0(n, m) D.G' ]
@@ -62,9 +65,14 @@ public class GDBB extends Thread {
 	private ArrayList<Double> solution;
 
 	private ArrayList<SBMLReaction> reac;
+	
+	public synchronized static Queue<Solution> getintermediateSolution()
+	{
+		return intermediateSolution;
+	}
 
 	public GDBB() {
-		this.setSolver(SolverFactory.createSolver( Algorithm.GDBB ));
+		this.setSolver( SolverFactory.createGDBBSolver() );
 		new Vector<String>();
 		intermediateSolution = new LinkedList<Solution>();
 		reac = new ArrayList<SBMLReaction>();
@@ -72,7 +80,7 @@ public class GDBB extends Thread {
 
 	public GDBB(GDBBModel m) {
 		this.model = m;
-		this.setSolver(SolverFactory.createSolver( Algorithm.GDBB ));
+		this.setSolver(SolverFactory.createGDBBSolver());
 		new Vector<String>();
 	}
 
@@ -446,7 +454,80 @@ public class GDBB extends Thread {
 	}
 
 	public void setGDBBModel(GDBBModel m) {
+		
 		this.model = m;
+		
+		ArrayList< Double > lowerBounds = new ArrayList< Double >();
+		ArrayList< Double > upperBounds = new ArrayList< Double >();
+		for( SBMLReaction reac : m.getReactions() )
+		{
+			double lb = reac.getLowerBound();
+			double ub = reac.getUpperBound();
+			if( reac.getKnockout().equals( GraphicalInterfaceConstants.BOOLEAN_VALUES[1] ) )
+			{
+				lb = 0.0;
+				ub = 0.0;
+			}
+			lowerBounds.add( lb );
+			upperBounds.add( ub );
+		}
+		
+		Vector< Double > objective = m.getObjective();
+		Map< Integer, Double > mapObjective = new HashMap< Integer, Double >();
+		for( int i = 0; i < objective.size(); i++)
+		{
+			if( objective.elementAt( i ) != 0.0 )
+			{
+				mapObjective.put( i, objective.elementAt( i ) );
+			}
+		}
+		
+		Vector< Double > syntheticObjective = m.getSyntheticObjective();
+		Map< Integer, Double > mapSyntheticObjective = new HashMap< Integer, Double >();
+		for( int i = 0; i < syntheticObjective.size(); i++)
+		{
+			if( syntheticObjective.elementAt( i ) != 0.0 )
+			{
+				mapSyntheticObjective.put( i, syntheticObjective.elementAt( i ) );
+			}
+		}
+		
+		compressor.setReactions( m.getReactions() );
+		compressor.setMetabolites( m.getMetabolites() );
+		compressor.setGeneAssociations( m.getGeneAssociations() );
+		compressor.setgMatrix( m.getGprMatrix() );
+		compressor.setsMatrix( m.getSMatrix() );
+		compressor.setObjVec( mapObjective );
+		compressor.setSynthObjVec( mapSyntheticObjective );
+		compressor.setLowerBounds( lowerBounds );
+		compressor.setUpperBounds( upperBounds );
+		compressor.compressNet();
+		
+		for( int i = 0; i < m.getReactions().size(); ++i )
+		{
+			m.getReactions().get( i ).setLowerBound( lowerBounds.get( i ) );
+			m.getReactions().get( i ).setUpperBound( upperBounds.get( i ) );
+		}
+		
+		
+		m.getSyntheticObjective().clear();
+		m.getObjective().clear();
+		mapObjective = compressor.getObjVec();
+		mapSyntheticObjective = compressor.getSynthObjVec();
+		
+		for( int j = 0; j < m.getReactions().size(); ++j )
+		{
+			if( mapObjective.containsKey( j ) )
+				m.getObjective().add( mapObjective.get( j ) );
+			else
+				m.getObjective().add( 0.0 );
+			
+			if( mapSyntheticObjective.containsKey( j ) )
+				m.getSyntheticObjective().add( mapSyntheticObjective.get( j ) );
+			else
+				m.getSyntheticObjective().add( 0.0 );
+		}
+	
 	}
 
 //  public ArrayList<Double> run() {
@@ -455,8 +536,23 @@ public class GDBB extends Thread {
 		this.setVars();
 		this.setConstraints();
 		this.setSyntheticObjective();
-		this.maxObj = this.getSolver().optimize();
-		solution = this.getSolver().getSoln();
+		this.getSolver().setDataModel( this.model );
+		this.model.setReactions( compressor.getReactionsCopy() );
+		this.model.setMetabolites( compressor.getMetabolitesCopy() );
+		this.solver.setModelCompressor( this.compressor );
+		try
+		{
+			this.maxObj = this.getSolver().optimize();
+			solution = this.getSolver().getSoln();
+		}
+		catch( Exception e )
+		{
+			e.printStackTrace();
+		}
+		finally
+		{
+			finalizingCallback.invoke();
+		}
 	}
 
 	public void setTimeLimit(double timeLimit) {
@@ -482,12 +578,17 @@ public class GDBB extends Thread {
 		return this.solver;
 	}
 
-	public void setSolver(Solver solver) {
+	public void setSolver(MILSolver solver) {
 		this.solver = solver;
 	}
 
 	public void enableGDBB() {
 		this.getSolver().enable();
+	}
+
+	public void setFinalizingCallback( Callback callback )
+	{
+		this.finalizingCallback = callback;
 	}
 }
 

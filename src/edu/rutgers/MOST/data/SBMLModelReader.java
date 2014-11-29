@@ -17,6 +17,7 @@ import edu.rutgers.MOST.presentation.ProgressConstants;
 public class SBMLModelReader {
 
 	private SBMLDocument doc;
+	private boolean finished = false;
 
 	private static DefaultTableModel metabolitesTableModel;
 
@@ -29,6 +30,10 @@ public class SBMLModelReader {
 		SBMLModelReader.metabolitesTableModel = metabolitesTableModel;
 	}
 
+	public synchronized boolean isFinished()
+	{
+		return finished;
+	}
 	private static DefaultTableModel reactionsTableModel;
 
 	public static DefaultTableModel getReactionsTableModel() {
@@ -44,6 +49,8 @@ public class SBMLModelReader {
 	public static Map<Object, String> metaboliteIdNameMap = new HashMap<Object, String>();
 	public static Map<Object, String> metaboliteIdCompartmentMap = new HashMap<Object, String>();
 	private static Map<Object, ModelReactionEquation> reactionEquationMap = new HashMap<Object, ModelReactionEquation>();
+	
+	public static Map<String, Object> reactionAbbreviationIdMap = new HashMap<String, Object>();
 	
 	public SBMLModelReader(SBMLDocument doc) {
 		this.doc = doc;
@@ -230,11 +237,16 @@ public class SBMLModelReader {
 		LocalConfig.getInstance().setMetabolitesMetaColumnNames(metabolitesMetaColumnNames);
         // end metabolites read
 		
+		boolean containsMinFlux = false;
+		boolean containsMaxFlux = false;
+		
 		// begin reactions read
 		DefaultTableModel reacTableModel = new DefaultTableModel();
 		for (int r = 0; r < GraphicalInterfaceConstants.REACTIONS_COLUMN_NAMES.length; r++) {
 			reacTableModel.addColumn(GraphicalInterfaceConstants.REACTIONS_COLUMN_NAMES[r]);
 		}
+		
+		LocalConfig.getInstance().getReactionAbbreviationIdMap().clear();
 
 		ArrayList<String> reactionsMetaColumnNames = new ArrayList<String>();
 		ListOf<Reaction> reactions = doc.getModel().getListOfReactions();
@@ -248,6 +260,8 @@ public class SBMLModelReader {
 			//System.out.println("j" + j);
 
 			String fluxValue = GraphicalInterfaceConstants.FLUX_VALUE_DEFAULT_STRING;
+			String minFlux = GraphicalInterfaceConstants.MIN_FLUX_DEFAULT_STRING;
+			String maxFlux = GraphicalInterfaceConstants.MAX_FLUX_DEFAULT_STRING;
 			String geneAssociation = "";
 			String proteinAssociation = "";
 			String subsystem = "";
@@ -269,8 +283,11 @@ public class SBMLModelReader {
 			}
 			reacRow.add(fluxValue);
 			//System.out.println("flux value " + fluxValue);
-
+			reacRow.add(minFlux);
+			reacRow.add(maxFlux);
+			
 			reacRow.add(reactions.get(j).getId());
+			reactionAbbreviationIdMap.put(reactions.get(j).getId(), new Integer(j));
 			//System.out.println("reac id " + reactions.get(j).getId());
 			reacRow.add(reactions.get(j).getName());
 			//System.out.println("name " + reactions.get(j).getName());
@@ -287,7 +304,6 @@ public class SBMLModelReader {
 			SBMLReactionEquation equation = new SBMLReactionEquation();
 			ArrayList<SBMLReactant> equnReactants = new ArrayList<SBMLReactant>();
 			ArrayList<SBMLProduct> equnProducts = new ArrayList<SBMLProduct>();
-			ArrayList<String> compartmentList = new ArrayList<String>();
 			
 			ListOf<SpeciesReference> reactants = reactions.get(j).getListOfReactants();
 			
@@ -328,9 +344,6 @@ public class SBMLModelReader {
 				reactant.setMetaboliteAbbreviation(reactants.get(r).getSpecies());
 				reactant.setMetaboliteName(metaboliteIdNameMap.get(id));
 				reactant.setCompartment(metaboliteIdCompartmentMap.get(id));
-				if (!compartmentList.contains(metaboliteIdCompartmentMap.get(id))) {
-					compartmentList.add(metaboliteIdCompartmentMap.get(id));
-				}
 				//System.out.println(reactant.toString());
 				equnReactants.add(reactant);
 			}
@@ -372,9 +385,6 @@ public class SBMLModelReader {
 				product.setMetaboliteAbbreviation(products.get(p).getSpecies());
 				product.setMetaboliteName(metaboliteIdNameMap.get(id));
 				product.setCompartment(metaboliteIdCompartmentMap.get(id));
-				if (!compartmentList.contains(metaboliteIdCompartmentMap.get(id))) {
-					compartmentList.add(metaboliteIdCompartmentMap.get(id));
-				}
 				//System.out.println(product.toString());
 				equnProducts.add(product);
 			}
@@ -384,8 +394,6 @@ public class SBMLModelReader {
             equation.setReversibleArrow(GraphicalInterfaceConstants.REVERSIBLE_ARROWS[0]);
             equation.setIrreversibleArrow(GraphicalInterfaceConstants.NOT_REVERSIBLE_ARROWS[1]);
             equation.writeReactionEquation();
-            equation.setCompartmentList(compartmentList);
-            System.out.println(compartmentList);
             reactionEquationMap.put(j, equation);
 
 			String reactionEquationAbbr = equation.equationAbbreviations;
@@ -589,16 +597,25 @@ public class SBMLModelReader {
 						} 
 						if (columnName.compareTo("SYNTHETIC_OBJECTIVE") == 0 || columnName.compareTo("SYNTHETIC OBJECTIVE") == 0) {
 							syntheticObjective = value.trim();
-						}  else {
-							if (columnName.compareTo("LOCUS") == 0) {
-								//System.out.println(j);
-								//System.out.println(locusBfrStr);
-								reactionsMetaColumnMap.put("Genes", locusBfrStr);
-							} else {
-								if (reactionsMetaColumnNames.contains(columnName)) {
-									reactionsMetaColumnMap.put(columnName, value.trim());
-								}							
-							}
+						}
+						if (columnName.compareTo(SBMLConstants.MIN_FLUX_NOTES_NAME) == 0) {
+							minFlux = value.trim();
+							reacRow.set(GraphicalInterfaceConstants.MIN_FLUX_COLUMN, minFlux);
+							containsMinFlux = true;
+						}
+						if (columnName.compareTo(SBMLConstants.MAX_FLUX_NOTES_NAME) == 0) {
+							maxFlux = value.trim();
+							reacRow.set(GraphicalInterfaceConstants.MAX_FLUX_COLUMN, maxFlux);
+							containsMaxFlux = true;
+						}
+						if (columnName.compareTo("LOCUS") == 0) {
+							//System.out.println(j);
+							//System.out.println(locusBfrStr);
+							reactionsMetaColumnMap.put("Genes", locusBfrStr);
+						} else {
+							if (reactionsMetaColumnNames.contains(columnName)) {
+								reactionsMetaColumnMap.put(columnName, value.trim());
+							}							
 						}					    
 					}					
 				}
@@ -651,7 +668,14 @@ public class SBMLModelReader {
 		//System.out.println(LocalConfig.getInstance().getMetaboliteUsedMap());
 		LocalConfig.getInstance().setReactionEquationMap(reactionEquationMap);
 		//System.out.println(LocalConfig.getInstance().getReactionEquationMap());
+		LocalConfig.getInstance().setReactionAbbreviationIdMap(reactionAbbreviationIdMap);
+		//System.out.println(reactionAbbreviationIdMap);
 		LocalConfig.getInstance().setProgress(100);	
+		if (containsMinFlux && containsMaxFlux) {
+			LocalConfig.getInstance().getShowFVAColumnsList().add(LocalConfig.getInstance().getModelName());
+		}
+		//System.out.println(LocalConfig.getInstance().getShowFVAColumnsList());
+		finished = true;
 		//System.out.println("Done");
 
 	}

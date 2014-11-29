@@ -86,8 +86,7 @@ public class DynamicTree extends JPanel implements TreeSelectionListener {
 		DynamicTree.row = row;
 	}
 
-	public JPopupMenu jPopupMenu = new JPopupMenu();
-//	public JMenuItem saveItem = new JMenuItem("Save As SQLite");         
+	public JPopupMenu jPopupMenu = new JPopupMenu();       
 //	public JMenuItem saveAsCSVItem = new JMenuItem("Save As CSV Reactions");    
 //	public JMenuItem saveAsSBMLItem = new JMenuItem("Save As SBML");
 //	public JMenuItem saveAllItem = new JMenuItem("Save All Optimizations");
@@ -307,6 +306,10 @@ public class DynamicTree extends JPanel implements TreeSelectionListener {
 		javax.swing.tree.TreePath path = this.tree.getPathForRow(id);//pass the selected id here  
 		tree.setSelectionPath(path);  
 		tree.scrollPathToVisible(path);
+	}
+	public void selectLastNode()
+	{
+		setNodeSelected( this.tree.getRowCount() - 1 );
 	}
 	
 	public void print(DefaultTreeModel treeModel) {

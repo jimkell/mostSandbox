@@ -12,12 +12,12 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 import au.com.bytecode.opencsv.CSVReader;
-
 import edu.rutgers.MOST.config.LocalConfig;
 //import edu.rutgers.MOST.logic.ReactionParser;
 import edu.rutgers.MOST.logic.ReactionParser;
 import edu.rutgers.MOST.presentation.GraphicalInterface;
 import edu.rutgers.MOST.presentation.GraphicalInterfaceConstants;
+import edu.rutgers.MOST.presentation.Utilities;
 
 public class TextReactionsModelReader {
 	
@@ -143,8 +143,10 @@ public class TextReactionsModelReader {
 	}
 
 	public void load(File file){
+		Utilities u = new Utilities();
 		LocalConfig.getInstance().getMetaboliteUsedMap().clear();
 		LocalConfig.getInstance().getSuspiciousMetabolites().clear();
+		LocalConfig.getInstance().getReactionAbbreviationIdMap().clear();
 		
 		DefaultTableModel reacTableModel = new DefaultTableModel();
 		if (LocalConfig.getInstance().hasMetabolitesFile) {
@@ -209,6 +211,8 @@ public class TextReactionsModelReader {
 					reacRow.add(Integer.toString(id));
 					String knockout = GraphicalInterfaceConstants.KO_DEFAULT;
 					Double fluxValue = GraphicalInterfaceConstants.FLUX_VALUE_DEFAULT;
+					Double minFlux = GraphicalInterfaceConstants.MIN_FLUX_DEFAULT;
+					Double maxFlux = GraphicalInterfaceConstants.MAX_FLUX_DEFAULT;
 					String reactionAbbreviation = "";
 					String reactionName = "";
 					String reactionEqunAbbr = "";
@@ -236,7 +240,21 @@ public class TextReactionsModelReader {
 						} 
 					} 
 					reacRow.add(Double.toString(fluxValue));
+					reacRow.add(Double.toString(minFlux));
+					reacRow.add(Double.toString(maxFlux));
 					reactionAbbreviation = dataArray[LocalConfig.getInstance().getReactionAbbreviationColumnIndex()];
+					
+					// appends suffix on duplicate abbreviations
+					if (reactionAbbreviation == null || reactionAbbreviation.trim().length() == 0) {
+						
+					} else {
+						if (LocalConfig.getInstance().getReactionAbbreviationIdMap().containsKey(reactionAbbreviation)) {
+							reactionAbbreviation = reactionAbbreviation + u.duplicateSuffix(reactionAbbreviation, LocalConfig.getInstance().getReactionAbbreviationIdMap());
+						}
+						LocalConfig.getInstance().getReactionAbbreviationIdMap().put(reactionAbbreviation, id);
+					}
+					
+					LocalConfig.getInstance().getReactionAbbreviationIdMap().put(reactionAbbreviation, id);
 					reacRow.add(reactionAbbreviation);
 					if (LocalConfig.getInstance().getReactionNameColumnIndex() > -1) {
 						reactionName = dataArray[LocalConfig.getInstance().getReactionNameColumnIndex()];
@@ -352,6 +370,7 @@ public class TextReactionsModelReader {
 		GraphicalInterface.showPrompt = true;
 		LocalConfig.getInstance().hasMetabolitesFile = false;
 		setReactionsTableModel(reacTableModel);
+//		System.out.println(LocalConfig.getInstance().getReactionAbbreviationIdMap());
 //		System.out.println(LocalConfig.getInstance().getReactionEquationMap());
 //		System.out.println(LocalConfig.getInstance().getMetaboliteUsedMap());
 //		System.out.println(LocalConfig.getInstance().getMetaboliteAbbreviationIdMap());
@@ -361,7 +380,6 @@ public class TextReactionsModelReader {
 		SBMLReactionEquation equn = new SBMLReactionEquation();	
 		ArrayList<SBMLReactant> reactants = new ArrayList<SBMLReactant>();
 		ArrayList<SBMLProduct> products = new ArrayList<SBMLProduct>();
-		ArrayList<String> compartmentList = new ArrayList<String>();
 		ReactionParser parser = new ReactionParser();
 		for (int i = 0; i < equation.getReactants().size(); i++){
 			maybeAddSpecies(equation.getReactants().get(i).getMetaboliteAbbreviation(), equation, "reactant", i);
@@ -372,10 +390,7 @@ public class TextReactionsModelReader {
 				if (LocalConfig.getInstance().getMetaboliteIdNameMap().containsKey(metabId)) {
 					equation.getReactants().get(i).setMetaboliteName(LocalConfig.getInstance().getMetaboliteIdNameMap().get(metabId));
 					equation.getReactants().get(i).setCompartment(LocalConfig.getInstance().getMetaboliteIdCompartmentMap().get(metabId));
-					if (!compartmentList.contains(LocalConfig.getInstance().getMetaboliteIdCompartmentMap().get(metabId))) {
-						compartmentList.add(LocalConfig.getInstance().getMetaboliteIdCompartmentMap().get(metabId));
-					}
-				}
+				}		
 				reactants.add(equation.getReactants().get(i));
 				if (parser.isSuspicious(equation.getReactants().get(i).getMetaboliteAbbreviation())) {
 					if (!LocalConfig.getInstance().getSuspiciousMetabolites().contains(metabId)) {
@@ -393,10 +408,7 @@ public class TextReactionsModelReader {
 				if (LocalConfig.getInstance().getMetaboliteIdNameMap().containsKey(metabId)) {
 					equation.getProducts().get(i).setMetaboliteName(LocalConfig.getInstance().getMetaboliteIdNameMap().get(metabId));
 					equation.getProducts().get(i).setCompartment(LocalConfig.getInstance().getMetaboliteIdCompartmentMap().get(metabId));
-					if (!compartmentList.contains(LocalConfig.getInstance().getMetaboliteIdCompartmentMap().get(metabId))) {
-						compartmentList.add(LocalConfig.getInstance().getMetaboliteIdCompartmentMap().get(metabId));
-					}
-				}
+				}				
 				products.add(equation.getProducts().get(i));
 				if (parser.isSuspicious(equation.getProducts().get(i).getMetaboliteAbbreviation())) {
 					if (!LocalConfig.getInstance().getSuspiciousMetabolites().contains(metabId)) {
@@ -411,7 +423,6 @@ public class TextReactionsModelReader {
 		equn.setReversibleArrow(equation.getReversibleArrow());
 		equn.setIrreversibleArrow(equation.getIrreversibleArrow());
 		equn.writeReactionEquation();
-		equn.setCompartmentList(compartmentList);
 		reacRow.add(equn.equationAbbreviations);
 		reacRow.add(equn.equationNames);
 		reacRow.add(equn.getReversible());

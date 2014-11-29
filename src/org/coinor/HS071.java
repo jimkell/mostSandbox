@@ -7,6 +7,8 @@
  * Authors: Rafael de Pelegrini Soares
  */
 
+/* description of callbacks: http://www.coin-or.org/Ipopt/documentation/node23.html#SECTION00053180000000000000 */
+/* java interface example of callbacks: http://www.coin-or.org/Ipopt/documentation/node26.html */
 package org.coinor;
 
 import org.coinor.Ipopt;
@@ -105,7 +107,8 @@ public class HS071 extends Ipopt {
 
 	protected boolean eval_grad_f(int n, double[] x, boolean new_x, double[] grad_f) {
 		assert n == this.n;
-
+		
+		/* this is the gradient of the objective function */
 		grad_f[0] = x[0] * x[3] + x[3] * (x[0] + x[1] + x[2]);
 		grad_f[1] = x[0] * x[3];
 		grad_f[2] = x[0] * x[3] + 1;
@@ -118,14 +121,18 @@ public class HS071 extends Ipopt {
 		assert n == this.n;
 		assert m == this.m;
 
-		g[0] = x[0] * x[1] * x[2] * x[3];
-		g[1] = x[0]*x[0] + x[1]*x[1] + x[2]*x[2] + x[3]*x[3];
+		g[0] = x[0] * x[1] * x[2] * x[3]; // function in 1st constraint
+		g[1] = x[0]*x[0] + x[1]*x[1] + x[2]*x[2] + x[3]*x[3]; // function in 2nd constraint
 
 		return true;
 	}
 
 	protected boolean eval_jac_g(int n, double[] x, boolean new_x,
 			int m, int nele_jac, int[] iRow, int[] jCol, double[] values) {
+		
+		/* see: http://www.coin-or.org/Ipopt/documentation/node37.html */
+		/* tutorial: http://www.youtube.com/watch?v=Bw5yEqwMjQU */
+		
 		assert n == this.n;
 		assert m == this.m;
 
@@ -133,6 +140,7 @@ public class HS071 extends Ipopt {
 			/* return the structure of the jacobian */
 
 			/* this particular jacobian is dense */
+			/* this is a C-style sparse matrix  */
 			iRow[0] = 0;
 			jCol[0] = 0;
 			iRow[1] = 0;
@@ -153,11 +161,13 @@ public class HS071 extends Ipopt {
 		else {
 			/* return the values of the jacobian of the constraints */
 
+			/* this is the gradient of 1st constraint */
 			values[0] = x[1]*x[2]*x[3]; /* 0,0 */
 			values[1] = x[0]*x[2]*x[3]; /* 0,1 */
 			values[2] = x[0]*x[1]*x[3]; /* 0,2 */
 			values[3] = x[0]*x[1]*x[2]; /* 0,3 */
 
+			/* this is the gradient of 2nd constraint */
 			values[4] = 2*x[0];         /* 1,0 */
 			values[5] = 2*x[1];         /* 1,1 */
 			values[6] = 2*x[2];         /* 1,2 */
@@ -168,6 +178,7 @@ public class HS071 extends Ipopt {
 	}
 
 	protected boolean eval_h(int n, double[] x, boolean new_x, double obj_factor, int m, double[] lambda, boolean new_lambda, int nele_hess, int[] iRow, int[] jCol, double[] values) {
+		/* http://www.coin-or.org/Ipopt/documentation/node22.html#eq:IpoptLAG */
 		int idx = 0; /* nonzero element counter */
 		int row = 0; /* row counter for loop */
 		int col = 0; /* col counter for loop */
@@ -191,6 +202,8 @@ public class HS071 extends Ipopt {
 		else {
 			/* return the values. This is a symmetric matrix, fill the lower left
 			 * triangle only */
+			
+			/* ::obj_factor * matrix of gradient of obj_func + (sum of ( lambda * matrix of gradient of constraints ) ) */
 
 			/* fill the objective portion */
 			values[0] = obj_factor * (2*x[3]);               /* 0,0 */

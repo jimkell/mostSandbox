@@ -102,6 +102,11 @@ public class GDBBModel extends Model {
 	public Vector<Double> getSyntheticObjective() {
 		return syntheticObjective;
 	}
+	
+	public void setSyntheticObjective( Vector< Double > syntheticObjective )
+	{
+		this.syntheticObjective = syntheticObjective;
+	}
 
 	public ArrayList<Map<Integer, Double>> getGprMatrix() {
 		return gprMatrix;
@@ -125,5 +130,10 @@ public class GDBBModel extends Model {
 
 	public void setThreadNum(int threadNum) {
 		this.threadNum = threadNum;
+	}
+
+	public Vector< String > getGeneAssociations()
+	{
+		return distinctGeneAssociations;
 	}
 }

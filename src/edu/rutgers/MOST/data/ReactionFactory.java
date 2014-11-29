@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
@@ -20,6 +21,7 @@ public class ReactionFactory {
 	private String sourceType;
 	private Map<Object, Object> reactionsIdPositionMap;
 	private static String columnName;
+	private boolean objVecWarning = true;
 	private ResizableDialog dialog = new ResizableDialog( "Error",
 			"Error", "Error" );
 
@@ -35,6 +37,11 @@ public class ReactionFactory {
 		this.reactionsIdPositionMap = reactionsIdPositionMap;
 	}
 
+	public void disableObjVectorWarning()
+	{
+		this.objVecWarning = false;
+	}
+	
 	public SBMLReaction getReactionById(Integer reactionId){
 		if("SBML".equals(sourceType)){
 			SBMLReaction reaction = new SBMLReaction();
@@ -57,7 +64,6 @@ public class ReactionFactory {
 		Vector<SBMLReaction> reactions = new Vector<SBMLReaction>();
 		Map<Object, Object> reactionsIdPositionMap = new HashMap<Object, Object>();
 		int count = 0;
-		int ecColumn = getECColumnColumnIndex();
 
 		if("SBML".equals(sourceType)){
 			// returns a list of SBMLReactions
@@ -71,6 +77,8 @@ public class ReactionFactory {
 					reaction.setId(Integer.valueOf((String) GraphicalInterface.reactionsTable.getModel().getValueAt(i, GraphicalInterfaceConstants.REACTIONS_ID_COLUMN)));
 					reaction.setKnockout((String) GraphicalInterface.reactionsTable.getModel().getValueAt(i, GraphicalInterfaceConstants.KO_COLUMN));
 					reaction.setFluxValue(Double.valueOf((String) GraphicalInterface.reactionsTable.getModel().getValueAt(i, GraphicalInterfaceConstants.FLUX_VALUE_COLUMN)));
+					reaction.setMinFlux(Double.valueOf((String) GraphicalInterface.reactionsTable.getModel().getValueAt(i, GraphicalInterfaceConstants.MIN_FLUX_COLUMN)));
+					reaction.setMaxFlux(Double.valueOf((String) GraphicalInterface.reactionsTable.getModel().getValueAt(i, GraphicalInterfaceConstants.MAX_FLUX_COLUMN)));
 					reaction.setReactionAbbreviation((String) GraphicalInterface.reactionsTable.getModel().getValueAt(i, GraphicalInterfaceConstants.REACTION_ABBREVIATION_COLUMN));
 					reaction.setReactionName((String) GraphicalInterface.reactionsTable.getModel().getValueAt(i, GraphicalInterfaceConstants.REACTION_NAME_COLUMN));
 					reaction.setReactionEqunAbbr((String) GraphicalInterface.reactionsTable.getModel().getValueAt(i, GraphicalInterfaceConstants.REACTION_EQUN_ABBR_COLUMN));
@@ -83,7 +91,6 @@ public class ReactionFactory {
 					reaction.setProteinAssociation((String) GraphicalInterface.reactionsTable.getModel().getValueAt(i, GraphicalInterfaceConstants.PROTEIN_ASSOCIATION_COLUMN));
 					reaction.setSubsystem((String) GraphicalInterface.reactionsTable.getModel().getValueAt(i, GraphicalInterfaceConstants.SUBSYSTEM_COLUMN));
 					reaction.setProteinClass((String) GraphicalInterface.reactionsTable.getModel().getValueAt(i, GraphicalInterfaceConstants.PROTEIN_CLASS_COLUMN));
-					reaction.setEcNumber((String) GraphicalInterface.reactionsTable.getModel().getValueAt(i, ecColumn));
 					reactions.add(reaction);
 					reactionsIdPositionMap.put(reaction.getId(), count);
 					count += 1;
@@ -111,6 +118,8 @@ public class ReactionFactory {
 				tmodel.setValueAt( Integer.toString( reaction.getId() ), i, GraphicalInterfaceConstants.REACTIONS_ID_COLUMN );
 				tmodel.setValueAt( reaction.getKnockout(), i, GraphicalInterfaceConstants.KO_COLUMN );
 				tmodel.setValueAt( Double.toString( reaction.getFluxValue() ), i, GraphicalInterfaceConstants.FLUX_VALUE_COLUMN );
+				tmodel.setValueAt( Double.toString( reaction.getMinFlux() ), i, GraphicalInterfaceConstants.MIN_FLUX_COLUMN );
+				tmodel.setValueAt( Double.toString( reaction.getMaxFlux() ), i, GraphicalInterfaceConstants.MAX_FLUX_COLUMN );
 				tmodel.setValueAt( reaction.getReactionAbbreviation(), i, GraphicalInterfaceConstants.REACTION_ABBREVIATION_COLUMN );
 				tmodel.setValueAt( reaction.getReactionName(), i, GraphicalInterfaceConstants.REACTION_NAME_COLUMN );
 				tmodel.setValueAt( reaction.getReactionEqunAbbr(), i, GraphicalInterfaceConstants.REACTION_EQUN_ABBR_COLUMN );
@@ -134,29 +143,50 @@ public class ReactionFactory {
 		Vector<Double> objective = new Vector<Double>(reactions.size());
 
 		if("SBML".equals(sourceType)){
+			double max = 0;
 			for (int i = 0; i < reactions.size(); i++) {
 				int id = reactions.get(i).getId();
 				Double obj = reactions.get(i).getBiologicalObjective();
+				if (obj != 0) {
+					max = obj;
+				}
 				objective.add((Integer) reactionsIdPositionMap.get(id), obj);
+			}
+			if (max == 0 && !LocalConfig.getInstance().noBiolObjWarningShown && objVecWarning) {
+				JOptionPane.showMessageDialog(null,                
+						"No Biological Objective Set.",                
+						"Warning",                                
+						JOptionPane.WARNING_MESSAGE);
+				LocalConfig.getInstance().noBiolObjWarningShown = true;
 			}
 		}
 
 		return objective;
 	}
+	
+	/**
+	 * resets all elements in the Knockout column to false
+		 */
+	public void resetKnockOuts()
+	{
+		for (int i = 0; i < GraphicalInterface.reactionsTable.getRowCount(); i++)
+			GraphicalInterface.reactionsTable.getModel().setValueAt( "false", i, GraphicalInterfaceConstants.KO_COLUMN );
+	}
 
-	public void setFluxes(ArrayList<Double> fluxes) {
-		DefaultTableModel reactionsOptModel = (DefaultTableModel) GraphicalInterface.reactionsTable.getModel();
+	public void setFluxes(ArrayList<Double> fluxes, int columnIndex, DefaultTableModel reactionsOptModel) {
+		//DefaultTableModel reactionsOptModel = (DefaultTableModel) GraphicalInterface.reactionsTable.getModel();
 		Vector<SBMLReaction> reactions = getAllReactions();
 		Map<String, Object> reactionsIdRowMap = new HashMap<String, Object>();
 		for (int i = 0; i < GraphicalInterface.reactionsTable.getRowCount(); i++) {
 			reactionsIdRowMap.put((String) GraphicalInterface.reactionsTable.getModel().getValueAt(i, GraphicalInterfaceConstants.REACTIONS_ID_COLUMN), i);
 		}
-		for (int i = 0; i < fluxes.size(); i++) {
+		for( int i = 0; i < fluxes.size(); ++i )
+		{
 			int id = ((SBMLReaction) reactions.get(i)).getId();
 			String row = (reactionsIdRowMap.get(Integer.toString(id))).toString();
 			int rowNum = Integer.valueOf(row);
 			try {
-				reactionsOptModel.setValueAt(fluxes.get(i).toString(), rowNum, GraphicalInterfaceConstants.FLUX_VALUE_COLUMN);
+				reactionsOptModel.setValueAt(fluxes.get(i).toString(), rowNum, columnIndex);
 			} catch (Exception e) {
 				processStackTrace(e);
 			}			
@@ -304,10 +334,21 @@ public class ReactionFactory {
 		Vector<Double> syntheticObjectiveVector = new Vector<Double>();
 
 		if("SBML".equals(sourceType)){
+			double max = 0;
 			for (int i = 0; i < reactions.size(); i++) {
 				int id = ((SBMLReaction) reactions.get(i)).getId();
 				Double obj = ((SBMLReaction) reactions.get(i)).getSyntheticObjective();
+				if (obj != 0) {
+					max = obj;
+				}
 				syntheticObjectiveVector.add((Integer) reactionsIdPositionMap.get(id), obj);
+			}
+			if (max == 0 && !LocalConfig.getInstance().noSynObjWarningShown) {
+				JOptionPane.showMessageDialog(null,                
+						"No Synthetic Objective Set.",                
+						"Warning",                                
+						JOptionPane.WARNING_MESSAGE);
+				LocalConfig.getInstance().noSynObjWarningShown = true;
 			}
 		}
 		//System.out.println("syn" + syntheticObjectiveVector);
@@ -349,23 +390,6 @@ public class ReactionFactory {
 
 	public void setColumnName(String columnName) {
 		ReactionFactory.columnName = columnName;
-	}
-	
-	// get index of column with EC numbers
-	public Integer getECColumnColumnIndex() {
-		int index = -1;
-		for (int i = 0; i < LocalConfig.getInstance().getReactionsMetaColumnNames().size(); i++) {
-			if (LocalConfig.getInstance().getReactionsMetaColumnNames().get(i).equals(GraphicalInterfaceConstants.EC_NUMBER_COLUMN_NAMES[0])) {
-				index = GraphicalInterfaceConstants.REACTIONS_COLUMN_NAMES.length + LocalConfig.getInstance().getReactionsMetaColumnNames().indexOf(GraphicalInterfaceConstants.EC_NUMBER_COLUMN_NAMES[0]);
-			} else if (LocalConfig.getInstance().getReactionsMetaColumnNames().get(i).equals(GraphicalInterfaceConstants.EC_NUMBER_COLUMN_NAMES[1])) {
-				index = GraphicalInterfaceConstants.REACTIONS_COLUMN_NAMES.length + LocalConfig.getInstance().getReactionsMetaColumnNames().indexOf(GraphicalInterfaceConstants.EC_NUMBER_COLUMN_NAMES[1]);
-			}
-		}
-		if (index == -1) {
-			index = GraphicalInterfaceConstants.PROTEIN_CLASS_COLUMN;
-		}
-
-		return index;
 	}
 	
 	private void processStackTrace( Exception e ) {

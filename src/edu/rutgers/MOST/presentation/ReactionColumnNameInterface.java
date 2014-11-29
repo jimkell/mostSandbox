@@ -79,20 +79,20 @@ public class ReactionColumnNameInterface  extends JDialog {
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		//setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 
-		cbReactionAbbreviation.setEditable(true);
-		cbKnockout.setEditable(true);	
-		cbFluxValue.setEditable(true);			
-		cbReactionName.setEditable(true);
-		cbReactionEquation.setEditable(true);
-		cbReversible.setEditable(true);
-		cbLowerBound.setEditable(true);
-		cbUpperBound.setEditable(true);
-		cbBiologicalObjective.setEditable(true);
-		cbSyntheticObjective.setEditable(true);
-		cbGeneAssociation.setEditable(true);
-		cbProteinAssociation.setEditable(true);
-		cbSubsystem.setEditable(true);
-		cbProteinClass.setEditable(true);
+		cbReactionAbbreviation.setEditable(false);
+		cbKnockout.setEditable(false);	
+		cbFluxValue.setEditable(false);			
+		cbReactionName.setEditable(false);
+		cbReactionEquation.setEditable(false);
+		cbReversible.setEditable(false);
+		cbLowerBound.setEditable(false);
+		cbUpperBound.setEditable(false);
+		cbBiologicalObjective.setEditable(false);
+		cbSyntheticObjective.setEditable(false);
+		cbGeneAssociation.setEditable(false);
+		cbProteinAssociation.setEditable(false);
+		cbSubsystem.setEditable(false);
+		cbProteinClass.setEditable(false);
 
 		cbReactionAbbreviation.setPreferredSize(new Dimension(250, 25));
 		cbReactionAbbreviation.setMaximumSize(new Dimension(250, 25));
@@ -892,7 +892,9 @@ public class ReactionColumnNameInterface  extends JDialog {
 			if((columnNamesFromFile.get(c).toLowerCase()).compareTo(GraphicalInterfaceConstants.KNOCKOUT_COLUMN_FILTER[0]) == 0 || (columnNamesFromFile.get(c).toLowerCase()).compareTo(GraphicalInterfaceConstants.KNOCKOUT_COLUMN_FILTER[1]) == 0) {
 				cbKnockout.setSelectedIndex(c);
 				LocalConfig.getInstance().setKnockoutColumnIndex(c);
-			} else if((columnNamesFromFile.get(c).toLowerCase()).contains(GraphicalInterfaceConstants.FLUX_VALUE_COLUMN_FILTER[0])) {
+			} else if((columnNamesFromFile.get(c).toLowerCase()).contains(GraphicalInterfaceConstants.FLUX_VALUE_COLUMN_FILTER[0]) &&
+					!(columnNamesFromFile.get(c).toLowerCase()).contains(GraphicalInterfaceConstants.FLUX_VALUE_NOT_FILTER[0]) &&
+					!(columnNamesFromFile.get(c).toLowerCase()).contains(GraphicalInterfaceConstants.FLUX_VALUE_NOT_FILTER[1])) {
 				cbFluxValue.setSelectedIndex(c);
 				LocalConfig.getInstance().setFluxValueColumnIndex(c);
 			} else if(((columnNamesFromFile.get(c).toLowerCase()).contains(GraphicalInterfaceConstants.ABBREVIATION_COLUMN_FILTER[0]) || (columnNamesFromFile.get(c).toLowerCase()).compareTo(GraphicalInterfaceConstants.ABBREVIATION_COLUMN_FILTER[1]) == 0) && !(columnNamesFromFile.get(c).toLowerCase()).contains(GraphicalInterfaceConstants.ABBREVIATION_COLUMN_NOT_FILTER[0])) {
@@ -1044,7 +1046,7 @@ public class ReactionColumnNameInterface  extends JDialog {
 	}
 	
 	public static void main(String[] args) throws Exception {
-		// based on code from http:stackoverflow.com/questions/6403821/how-to-add-an-image-to-a-jframe-title-bar
+		//based on code from http:stackoverflow.com/questions/6403821/how-to-add-an-image-to-a-jframe-title-bar
 		final ArrayList<Image> icons = new ArrayList<Image>(); 
 		icons.add(new ImageIcon("etc/most16.jpg").getImage()); 
 		icons.add(new ImageIcon("etc/most32.jpg").getImage());

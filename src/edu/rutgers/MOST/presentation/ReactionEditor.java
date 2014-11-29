@@ -46,6 +46,8 @@ public class ReactionEditor extends JFrame {
 	private String oldReaction;
 	private boolean reactantsPopulated;
 	private boolean productsPopulated;
+	private ArrayList<String> tempReactantsList;
+	private ArrayList<String> tempProductsList;
 
 	public void setReactantString(String reactantString) {
 		this.reactantString = reactantString;
@@ -117,6 +119,22 @@ public class ReactionEditor extends JFrame {
 
 	public String getOldReaction() {
 		return oldReaction;
+	}
+
+	public ArrayList<String> getTempProductsList() {
+		return tempProductsList;
+	}
+
+	public void setTempProductsList(ArrayList<String> tempProductsList) {
+		this.tempProductsList = tempProductsList;
+	}
+
+	public ArrayList<String> getTempReactantsList() {
+		return tempReactantsList;
+	}
+
+	public void setTempReactantsList(ArrayList<String> tempReactantsList) {
+		this.tempReactantsList = tempReactantsList;
 	}
 
 	// private final JList names;
@@ -240,60 +258,24 @@ public class ReactionEditor extends JFrame {
 			// add reactant action listener
 			ActionListener reactantsActionListener = new ActionListener() {
 				public void actionPerformed(ActionEvent actionEvent) {
-					String reactantSelection[] = new String[numReactantFields];
 					String reactant[] = new String[numReactantFields];
-					ArrayList<String> tempReactantsList = new ArrayList<String>();
+					ArrayList<String> tempReacList = new ArrayList<String>();
 					for (int h = 0; h < numReactantFields; h++) {
-						reactant[h] = "";
-
-						reactantSelection[h] = (String) cbReactant[h].getSelectedItem();
-						// TODO: check if second condition necessary
-						if (reactantSelection[h] != null && reactantSelection[h].length() > 0) {
-							if (reactantCoeffField[h].getText().length() > 0) {
-								reactant[h] = reactantCoeffField[h].getText() + " " + reactantSelection[h];
-							} else {
-								reactant[h] = reactantSelection[h];
-							}
-							tempReactantsList.add(reactant[h]);
-						}      	    	      
+						addItems(cbReactant[h], reactantCoeffField[h], tempReacList, reactant[h]);
 					} 
 					//set reaction equation into text box
-					String reacString = "";
-
-					for (int i = 0; i < tempReactantsList.size(); i++) {
-						if (i == 0) {
-							reacString += (String) tempReactantsList.get(i);
-						} else {
-							reacString += " + " + (String) tempReactantsList.get(i);
-						}
-					}
-
-					setReactantString(reacString);
-					if (getReactantString() == null || getReactantString().length() == 0) {
-						reactionArea.setText(getArrowString() + " " + getProductString());
-						okButton.setEnabled(true);
-					} else if (getProductString() == null || getProductString().length() == 0) {
-						reactionArea.setText(getReactantString() + " " + getArrowString());
-						okButton.setEnabled(true);
-					} else {
-						reactionArea.setText(getReactantString() + " " + getArrowString() + " " + getProductString());
-						okButton.setEnabled(true);
-					}
+					setReactantString(createSpeciesString(tempReacList));
+					writeEquation();
+					
 					ReactionParser parser = new ReactionParser();
 					if (reactionArea.getText() != null && parser.isValid(reactionArea.getText())) {
 						parser.reactionList(reactionArea.getText().trim());
 						if ((getNumPopulatedReacBoxes() + 1) < getNumReactantFields()) {
 							int index = ReactionParser.getEquation().getReactants().size();
 							if (index == getNumPopulatedReacBoxes() && !reactantsPopulated) {
-								for (int m = 0; m < metabList.size(); m++) {
-									cbReactant[index].addItem(metabList.get(m));
-								}
+								populateComboBox(cbReactant[index], metabList);
 								reactantsPopulated = true;
-								cbReactant[index].setEnabled(true);
-								cbReactant[index].setSelectedIndex(-1);
-								reactantEditor[index] = new JTextField();
-								reactantEditor[index] = (JTextField)cbReactant[index].getEditor().getEditorComponent();
-								reactantEditor[index].addKeyListener(new ComboKeyHandler(cbReactant[index]));
+								setUpComboBox(cbReactant[index], reactantEditor[index]);
 								setNumPopulatedReacBoxes(index + 1);
 							}
 						}
@@ -301,8 +283,38 @@ public class ReactionEditor extends JFrame {
 					reactantsPopulated = false;
 				}				
 			};
-			reactantCoeffField[i].addActionListener(reactantsActionListener);
-			cbReactant[i].addActionListener(reactantsActionListener);			
+			cbReactant[i].addActionListener(reactantsActionListener);	
+			
+			reactantCoeffField[i].getDocument().addDocumentListener(new DocumentListener() {
+				public void changedUpdate(DocumentEvent e) {
+					fieldChangeAction();
+				}
+				public void removeUpdate(DocumentEvent e) {
+					fieldChangeAction();
+				}
+				public void insertUpdate(DocumentEvent e) {
+					fieldChangeAction();
+				}
+				public void fieldChangeAction() {
+					String reactant[] = new String[numReactantFields];
+					ArrayList<String> tempReacList = new ArrayList<String>();
+					boolean valid = true;
+					EntryValidator v = new EntryValidator();
+					for (int h = 0; h < numReactantFields; h++) {
+						if (reactantCoeffField[h].getText().length() > 0 && !v.isNumber(reactantCoeffField[h].getText())) {
+							valid = false;
+						}
+						addItems(cbReactant[h], reactantCoeffField[h], tempReacList, reactant[h]);
+					} 
+					if (!valid) {
+						showErrorMessage();
+					} else {
+						setReactantString(createSpeciesString(tempReacList));
+						writeEquation();
+					}
+					maybeEnableOKButton();
+				}
+			});
 		} 
 
 		//end reactant combo boxes
@@ -351,58 +363,24 @@ public class ReactionEditor extends JFrame {
 			// add product action listener
 			ActionListener productsActionListener = new ActionListener() {
 				public void actionPerformed(ActionEvent actionEvent) {
-					String productSelection[] = new String[numProductFields];
 					String product[] = new String[numProductFields];
-					ArrayList<String> tempProductsList = new ArrayList<String>();
+					ArrayList<String> tempProdList = new ArrayList<String>();
 					for (int h = 0; h < numProductFields; h++) {
-						product[h] = "";	      
-						productSelection[h] = (String) cbProduct[h].getSelectedItem();
-						if (productSelection[h] != null) {
-							if (productCoeffField[h].getText().length() > 0) {
-								product[h] = productCoeffField[h].getText() + " " + productSelection[h];
-							} else {
-								product[h] = productSelection[h];
-							}
-							tempProductsList.add(product[h]);
-						}      	    	      
-					}
+						addItems(cbProduct[h], productCoeffField[h], tempProdList, product[h]);
+					} 
 					//set reaction equation into text box
-					String prodString = "";
-
-					for (int i = 0; i < tempProductsList.size(); i++) {
-						if (i == 0) {
-							prodString += (String) tempProductsList.get(i);
-						} else {
-							prodString += " + " + (String) tempProductsList.get(i);
-						}
-					}
-
-					setProductString(prodString);
-					if (getReactantString() == null || getReactantString().length() == 0) {
-						reactionArea.setText(getArrowString() + " " + prodString);
-						okButton.setEnabled(true);
-					} else if (getProductString() == null || getProductString().length() == 0) {
-						reactionArea.setText(getReactantString() + " " + getArrowString());
-						okButton.setEnabled(true);
-					} else {
-						reactionArea.setText(getReactantString() + " " + getArrowString() + " " + prodString);
-						okButton.setEnabled(true);
-					}					
+					setProductString(createSpeciesString(tempProdList));
+					writeEquation();
+					
 					ReactionParser parser = new ReactionParser();
 					if (reactionArea.getText() != null && parser.isValid(reactionArea.getText())) {
 						parser.reactionList(reactionArea.getText().trim());
 						if ((getNumPopulatedProdBoxes() + 1) < getNumProductFields()) {
 							int index = ReactionParser.getEquation().getProducts().size();
 							if (index == getNumPopulatedProdBoxes() && !productsPopulated) {
-								for (int m = 0; m < metabList.size(); m++) {
-									cbProduct[index].addItem(metabList.get(m));
-								}
+								populateComboBox(cbProduct[index], metabList);
 								productsPopulated = true;
-								cbProduct[index].setEnabled(true);
-								cbProduct[index].setSelectedIndex(-1);
-								productEditor[index] = new JTextField();
-								productEditor[index] = (JTextField)cbProduct[index].getEditor().getEditorComponent();
-								productEditor[index].addKeyListener(new ComboKeyHandler(cbProduct[index]));
+								setUpComboBox(cbProduct[index], productEditor[index]);
 								setNumPopulatedProdBoxes(index + 1);
 							}
 						}
@@ -410,8 +388,38 @@ public class ReactionEditor extends JFrame {
 					productsPopulated = false;
 				}
 			};
-			productCoeffField[j].addActionListener(productsActionListener);
-			cbProduct[j].addActionListener(productsActionListener);			
+			cbProduct[j].addActionListener(productsActionListener);	
+			
+			productCoeffField[j].getDocument().addDocumentListener(new DocumentListener() {
+				public void changedUpdate(DocumentEvent e) {
+					fieldChangeAction();
+				}
+				public void removeUpdate(DocumentEvent e) {
+					fieldChangeAction();
+				}
+				public void insertUpdate(DocumentEvent e) {
+					fieldChangeAction();
+				}
+				public void fieldChangeAction() {
+					String product[] = new String[numProductFields];
+					ArrayList<String> tempProdList = new ArrayList<String>();
+					boolean valid = true;
+					EntryValidator v = new EntryValidator();
+					for (int h = 0; h < numProductFields; h++) {
+						if (productCoeffField[h].getText().length() > 0 && !v.isNumber(productCoeffField[h].getText())) {
+							valid = false;
+						}
+						addItems(cbProduct[h], productCoeffField[h], tempProdList, product[h]);
+					} 
+					if (!valid) {
+						showErrorMessage();
+					} else {
+						setProductString(createSpeciesString(tempProdList));
+						writeEquation();
+					}
+					maybeEnableOKButton();
+				}
+			});
 		} 
 		//end product combo boxes
 		/***************************************************************************/
@@ -737,6 +745,107 @@ public class ReactionEditor extends JFrame {
 		StringSelection selection = new StringSelection(s);
 		Toolkit.getDefaultToolkit().getSystemClipboard().setContents(
 				selection, selection);
+	}
+	
+	/** 
+	 * Creates reaction equation from reactants and products lists and arrow string.
+	 * Enables OK button after equation written if valid.
+	 */
+	public void writeEquation() {
+		if (getReactantString() == null || getReactantString().length() == 0) {
+			reactionArea.setText(getArrowString() + " " + getProductString());
+		} else if (getProductString() == null || getProductString().length() == 0) {
+			reactionArea.setText(getReactantString() + " " + getArrowString());
+		} else {
+			reactionArea.setText(getReactantString() + " " + getArrowString() + " " + getProductString());
+		}
+		maybeEnableOKButton();
+	}
+	
+	/**
+	 * Populates combo boxes with metabolites from metabolites table
+	 * @param combo
+	 * @param metabList
+	 */
+	public void populateComboBox(JComboBox<String> combo, ArrayList<String> metabList) {
+		for (int m = 0; m < metabList.size(); m++) {
+			combo.addItem(metabList.get(m));
+		}
+	}
+	
+	/**
+	 * After being populated, sets combo box to default state of enabled, no item selected, 
+	 * and suggestions when typing in text field of combo box shown.
+	 * @param combo
+	 * @param editor
+	 */
+	public void setUpComboBox(JComboBox<String> combo, JTextField editor) {
+		combo.setEnabled(true);
+		combo.setSelectedIndex(-1);
+		editor = new JTextField();
+		editor = (JTextField)combo.getEditor().getEditorComponent();
+		editor.addKeyListener(new ComboKeyHandler(combo));
+	}
+	
+	/**
+	 * 
+	 * @param tempList
+	 * @return reactants or products substring of reaction equation.
+	 */
+	public String createSpeciesString(ArrayList<String> tempList) {
+		String speciesString = "";
+
+		for (int i = 0; i < tempList.size(); i++) {
+			if (i == 0) {
+				speciesString += (String) tempList.get(i);
+			} else {
+				speciesString += " + " + (String) tempList.get(i);
+			}
+		}
+		return speciesString;
+	}
+	
+	/**
+	 * Checks if coefficient field is empty or not to add coefficient to equation.
+	 * Adds items from coefficient text fields and metabolites combo boxes to 
+	 * reactants or products lists for construction of reaction equation.
+	 * @param combo
+	 * @param coeffField
+	 * @param tempList
+	 * @param species
+	 */
+	public void addItems(JComboBox<String> combo, JTextField coeffField, ArrayList<String> tempList, String species) {
+		String entry = "";
+
+		species = (String) combo.getSelectedItem();
+		// TODO: check if second condition necessary
+		if (species != null && species.length() > 0) {
+			if (coeffField.getText().length() > 0) {
+				entry = coeffField.getText() + " " + species;
+			} else {
+				entry = species;
+			}
+			tempList.add(entry);
+		} 
+	}
+	
+	public void showErrorMessage() {
+		JOptionPane.showMessageDialog(null,                
+				GraphicalInterfaceConstants.NUMERIC_VALUE_ERROR_MESSAGE, 
+				GraphicalInterfaceConstants.NUMERIC_VALUE_ERROR_TITLE,                               
+				JOptionPane.ERROR_MESSAGE);
+	}
+	
+	/**
+	 * Enables OK button if reaction equation is valid
+	 */
+	public void maybeEnableOKButton() {
+		ReactionParser parser = new ReactionParser();
+		if (parser.isValid(reactionArea.getText())) {
+			okButton.setEnabled(true);
+		} else {
+			okButton.setEnabled(false);
+		}
 	}
 
 }

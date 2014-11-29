@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
 
+import edu.rutgers.MOST.config.LocalConfig;
+
 public class Model
 {
 	protected Vector< SBMLReaction > reactions;
@@ -15,6 +17,8 @@ public class Model
 	protected ArrayList< Integer > reactionIdList;
 	protected Map< Object, Object > reactionsIdPositionMap;
 	protected ReactionFactory rFactory = new ReactionFactory( "SBML" );
+	protected boolean bioObjVecWarning = true;
+	
 
 	public Map< Object, Object > getReactionsIdPositionMap()
 	{
@@ -28,9 +32,11 @@ public class Model
 	}
 
 	protected Map< Object, Object > metaboliteInternalIdMap;
-
-	public Model()
+	
+	private void setup()
 	{
+		if( !this.bioObjVecWarning )
+			this.rFactory.disableObjVectorWarning();
 		this.reactions = rFactory.getAllReactions();
 		this.objective = rFactory.getObjective();
 		this.reactionIdList = rFactory.reactionIdList();
@@ -83,19 +89,17 @@ public class Model
 								.getReactionId() ), product.getStoic() );
 			}
 		}
+	}
 
-		// System.out.println(sMatrix);
-
-		// for (int i = 0; i < metabolites.size(); i++) {
-		// Iterator<Integer> iterator = sMatrix.get(i).keySet().iterator();
-		//
-		// while (iterator.hasNext()) {
-		// Integer j = iterator.next();
-		// Double s = sMatrix.get(i).get(j);
-		//
-		// System.out.println((i + 1) + "\t" + (j + 1) + "\t" + s);
-		// }
-		// }
+	public Model()
+	{
+		setup();
+	}
+	
+	public Model( boolean bioObjWarning )
+	{
+		this.bioObjVecWarning = bioObjWarning;
+		setup();
 	}
 
 	public void updateFromrFactory()
@@ -107,11 +111,26 @@ public class Model
 	{
 		return this.reactions;
 	}
-
+	
+	public Vector< ModelMetabolite > getMetabolites()
+	{
+		return metabolites;
+	}
+	
+	public void setMetabolites( Vector< ModelMetabolite > metabs )
+	{
+		this.metabolites = metabs;
+	}
+	
 	public void setReactions( Vector< SBMLReaction > reactions )
 	{
 		this.reactions = reactions;
-		rFactory.setAllReactions( reactions );
+		//rFactory.setAllReactions( reactions );
+	}
+	
+	public void updateGUITableModel()
+	{
+		rFactory.setAllReactions( this.reactions );
 	}
 
 	public int getNumMetabolites()
@@ -128,10 +147,24 @@ public class Model
 	{
 		return this.objective;
 	}
+	
+	public void setObjective( Vector< Double > objective )
+	{
+		this.objective = objective;
+	}
 
 	public ArrayList< Map< Integer, Double >> getSMatrix()
 	{
 		return this.sMatrix;
+	}
+	
+	public int getMatrixIdFromReactionAbbreviation(String reactionAbbreviation) {
+		int matrixId = -1;
+		if (LocalConfig.getInstance().getReactionAbbreviationIdMap().containsKey(reactionAbbreviation)) {
+			int id = (int) LocalConfig.getInstance().getReactionAbbreviationIdMap().get(reactionAbbreviation);
+			matrixId = (Integer)reactionsIdPositionMap.get(id);
+		}
+		return matrixId;
 	}
 
 	@Override

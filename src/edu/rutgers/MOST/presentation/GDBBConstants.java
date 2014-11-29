@@ -4,7 +4,7 @@ public class GDBBConstants {
 
 	public static final String GDBB_DIALOG_TITLE = GraphicalInterfaceConstants.TITLE + " - " + "GDBB";
 	
-	public static final String NUM_KNOCKOUTS_LABEL = "   Number of Knockouts";
+	public static final String NUM_KNOCKOUTS_LABEL = "  Maximum Number of Knockouts";
 	public static final String NUM_THREADS_LABEL = "   Number of Threads";
 	public static final String SYN_OBJ_COLUMN_LABEL = "   Synthetic Objective Vector";
 	public static final String INDEFINITE_TIME_LABEL = "Indefinite Optimizer Time";
@@ -13,8 +13,10 @@ public class GDBBConstants {
 	public static final String COUNTER_LABEL_SUFFIX = " s";
 	
 	public static final String NUM_KNOCKOUTS_DEFAULT = "1";
-	public static final int MAX_NUM_THREADS = 4;
 	public static final String FINITE_TIME_DEFAULT = "300";
+	
+	public static final int GDBB_DIALOG_WIDTH = 400;
+	public static final int GDBB_DIALOG_HEIGHT = 280;
 	
 	// layout constants
 	public static final int COMPONENT_WIDTH = 150;
@@ -26,6 +28,9 @@ public class GDBBConstants {
 	
 	public static final int LABELED_BUTTON_TOP_GAP = 20;
 	public static final int LABELED_BUTTON_BOTTOM_GAP = 30;
+	
+	public static final int LABEL_TOP_BORDER_SIZE = 10;
+	public static final int LABEL_BOTTOM_BORDER_SIZE = 10;
 	
 	public static final String PROCESSING = "Processing";
 	public static final String PROCESSING_OOT = " .";
