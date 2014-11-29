@@ -59,6 +59,7 @@ import edu.rutgers.MOST.optimization.solvers.GurobiSolver;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Image;
@@ -2692,7 +2693,26 @@ public class GraphicalInterface extends JFrame {
 				tabbedPane.setSelectedIndex(1);
 			}
 		});
-		
+
+		editMenu.addSeparator();
+
+		JMenuItem visualizeMenu = new JMenuItem("Visualize");
+		editMenu.add(visualizeMenu);
+		visualizeMenu.setMnemonic(KeyEvent.VK_V);
+
+		visualizeMenu.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ae) {
+				// create a frome to hold the graph                                                                          
+		        final JFrame frame = new JFrame();                                                                           
+		        Container content = frame.getContentPane();                                                                  
+		        content.add(new PathwaysFrame());                                                                        
+		        frame.pack();                                                                                                
+		        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
+		        frame.setLocationRelativeTo(null);
+		        frame.setVisible(true);  
+			}
+		});
+
 		menuBar.add(editMenu);
 
 		JMenu optionsMenu = new JMenu("Options");
