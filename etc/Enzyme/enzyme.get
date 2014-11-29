@@ -1,0 +1,61 @@
+************************
+* How to obtain ENZYME *
+************************
+
+Name        : enzyme.get 
+Topic       : Describes how you can obtain a copy of ENZYME or browse
+              through the database using WWW
+Last revised: June 2011
+
+-----------------------------------------------------------------------------
+
+Scientific enquiries concerning ENZYME can be sent to:
+
+ Email    : enzyme@expasy.org
+
+-----------------------------------------------------------------------------
+
+The ENZYME files
+
+enzyme.dat     ENZYME database data file
+enzclass.txt   Definition of enzymes classes, subclasses and sub-subclasses
+enzuser.txt    User manual for ENZYME
+enzyme.get     How to obtain ENZYME (this document)
+
+-----------------------------------------------------------------------------
+--- How to obtain ENZYME ----------------------------------------------------
+-----------------------------------------------------------------------------
+
+1) ENZYME is available from the ExPASy WWW server
+
+   ExPASy is the SIB Bioinformatics Resource Portal which provides access to 
+   scientific databases and software tools in different areas of life sciences 
+   including proteomics, genomics, phylogeny, systems biology, population genetics, 
+   transcriptomics etc.
+   The URL for ExPASy is:
+
+             http://www.expasy.org/
+
+   The direct URL for ENZYME is:
+
+             http://enzyme.expasy.org/
+
+-----------------------------------------------------------------------------
+
+2) Obtain ENZYME from the following FTP servers:
+
+   Organism : SIB Swiss Institute of Bioinformatics
+   Address  : ftp.expasy.org
+   Login    : User=Anonymous  Password=Your name or email address
+   Directory: /databases/enzyme
+
+   Organism : European BioInformatics Institute (EBI)
+   Address  : ftp.ebi.ac.uk
+   Login    : User=Anonymous  Password=Your name or email address
+   Directory: /pub/databases/enzyme
+
+-----------------------------------------------------------------------
+Copyrighted by the SIB Swiss Institute of Bioinformatics.
+There are no restrictions on its use by any institutions as long as
+its content is in no way modified.
+-----------------------------------------------------------------------

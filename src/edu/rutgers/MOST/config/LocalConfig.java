@@ -8,6 +8,8 @@ import java.util.Map;
 import javax.swing.SortOrder;
 import javax.swing.table.DefaultTableModel;
 
+import edu.rutgers.MOST.data.EnzymeData;
+import edu.rutgers.MOST.data.MetabolicPathway;
 import edu.rutgers.MOST.data.ModelReactionEquation;
 
 public class LocalConfig {	
@@ -810,6 +812,59 @@ public class LocalConfig {
 
 	public void setShowFVAColumnsList(ArrayList<String> showFVAColumnsList) {
 		this.showFVAColumnsList = showFVAColumnsList;
+	}
+	
+	// Visualizations
+	
+	// may need to make maps with other keys such as Reaction Name
+	private ArrayList<EnzymeData> enzymeDataList;
+
+	public ArrayList<EnzymeData> getEnzymeDataList() {
+		return enzymeDataList;
+	}
+
+	public void setEnzymeDataList(ArrayList<EnzymeData> enzymeDataList) {
+		this.enzymeDataList = enzymeDataList;
+	}
+
+	private Map<String, EnzymeData> enzymeDataMap;
+
+	public Map<String, EnzymeData> getEnzymeDataMap() {
+		return enzymeDataMap;
+	}
+
+	public void setEnzymeDataMap(Map<String, EnzymeData> enzymeDataMap) {
+		this.enzymeDataMap = enzymeDataMap;
+	}
+
+	private Map<String, MetabolicPathway> metabolicPathways;
+
+	public Map<String, MetabolicPathway> getMetabolicPathways() {
+		return metabolicPathways;
+	}
+
+	public void setMetabolicPathways(Map<String, MetabolicPathway> metabolicPathways) {
+		this.metabolicPathways = metabolicPathways;
+	}
+
+	private ArrayList<String> drawOrder;
+
+	public ArrayList<String> getDrawOrder() {
+		return drawOrder;
+	}
+
+	public void setDrawOrder(ArrayList<String> drawOrder) {
+		this.drawOrder = drawOrder;
+	}
+
+	private Map<String, String> metaboliteNameAbbrMap;
+
+	public Map<String, String> getMetaboliteNameAbbrMap() {
+		return metaboliteNameAbbrMap;
+	}
+
+	public void setMetaboliteNameAbbrMap(Map<String, String> metaboliteNameAbbrMap) {
+		this.metaboliteNameAbbrMap = metaboliteNameAbbrMap;
 	}
 
 }
