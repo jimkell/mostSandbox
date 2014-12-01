@@ -96,6 +96,7 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -2703,11 +2704,13 @@ public class GraphicalInterface extends JFrame {
 		visualizeMenu.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
 				// create a frome to hold the graph                                                                          
-		        final JFrame frame = new JFrame();                                                                           
+		        final JFrame frame = new JFrame();  
+		        frame.setIconImages(icons);
+		        frame.setTitle(gi.getTitle());
 		        Container content = frame.getContentPane();                                                                  
 		        content.add(new PathwaysFrame());                                                                        
 		        frame.pack();                                                                                                
-		        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
+		        //frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
 		        frame.setLocationRelativeTo(null);
 		        frame.setVisible(true);  
 			}

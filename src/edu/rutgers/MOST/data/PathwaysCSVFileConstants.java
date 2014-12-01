@@ -2,13 +2,14 @@ package edu.rutgers.MOST.data;
 
 import java.util.Arrays;
 
-public class CSVFileConstants {
+public class PathwaysCSVFileConstants {
 
 	public static final String PATHWAYS_FILE_NAME = "pathways.csv";
 	public static final String PATHWAY_REACTIONS_FILE_NAME = "pathway_reactions.csv";
 	public static final String PATHWAY_METABOLITE_POSITIONS_FILE_NAME = "pathway_metabolite_positions.csv";
 	public static final String PATHWAY_DRAW_ORDER_FILE_NAME = "pathway_draw_order.csv";
 	public static final String PATHWAY_CONNECTIONS_FILE_NAME = "pathway_connections.csv";
+	public static final String PATHWAY_SIDE_SPECIES_FILE_NAME = "pathway_side_species.csv";
 	
 	public static final String[] PATHWAYS_COLUMN_NAMES = 
 		{
@@ -35,11 +36,17 @@ public class CSVFileConstants {
 		"Reactants", "Products", "Reversible", "EC # List"
 		};
 	
+	public static final String[] PATHWAY_SIDE_SPECIES_COLUMN_NAMES = 
+		{
+		"Species Name"
+		};
+	
 	private static java.util.List<String> pathwayColumnsList = Arrays.asList(PATHWAYS_COLUMN_NAMES);
 	private static java.util.List<String> pathwayMetabolitePositionsList = Arrays.asList(PATHWAY_METABOLITE_POSITIONS_COLUMN_NAMES);
 	private static java.util.List<String> pathwayReactionsColumnsList = Arrays.asList(PATHWAY_REACTIONS_COLUMN_NAMES);
 	private static java.util.List<String> pathwayDrawOrderColumnsList = Arrays.asList(PATHWAY_DRAW_ORDER_COLUMN_NAMES);
 	private static java.util.List<String> pathwayConnectionsColumnsList = Arrays.asList(PATHWAY_CONNECTIONS_COLUMN_NAMES);
+	private static java.util.List<String> pathwaySideSpeciesColumnsList = Arrays.asList(PATHWAY_SIDE_SPECIES_COLUMN_NAMES);
 	
 	public static final int PATHWAYS_ID_COLUMN = pathwayColumnsList.indexOf("Pathway ID");
 	public static final int PATHWAYS_NAME_COLUMN = pathwayColumnsList.indexOf("Pathway Name");
@@ -67,5 +74,7 @@ public class CSVFileConstants {
 	public static final int PATHWAY_CONNECTIONS_PRODUCTS_COLUMN = pathwayConnectionsColumnsList.indexOf("Products");
 	public static final int PATHWAY_CONNECTIONS_REVERSIBLE_COLUMN = pathwayConnectionsColumnsList.indexOf("Reversible");
 	public static final int PATHWAY_CONNECTIONS_EC_NUM_LIST_COLUMN = pathwayConnectionsColumnsList.indexOf("EC # List");
+	
+	public static final int PATHWAY_SIDE_SPECIES_NAME_COLUMN = pathwaySideSpeciesColumnsList.indexOf("Species Name");
 	
 }

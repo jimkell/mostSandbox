@@ -64,6 +64,7 @@ public class ReactionFactory {
 		Vector<SBMLReaction> reactions = new Vector<SBMLReaction>();
 		Map<Object, Object> reactionsIdPositionMap = new HashMap<Object, Object>();
 		int count = 0;
+		int ecColumn = getECColumnColumnIndex();
 
 		if("SBML".equals(sourceType)){
 			// returns a list of SBMLReactions
@@ -91,6 +92,7 @@ public class ReactionFactory {
 					reaction.setProteinAssociation((String) GraphicalInterface.reactionsTable.getModel().getValueAt(i, GraphicalInterfaceConstants.PROTEIN_ASSOCIATION_COLUMN));
 					reaction.setSubsystem((String) GraphicalInterface.reactionsTable.getModel().getValueAt(i, GraphicalInterfaceConstants.SUBSYSTEM_COLUMN));
 					reaction.setProteinClass((String) GraphicalInterface.reactionsTable.getModel().getValueAt(i, GraphicalInterfaceConstants.PROTEIN_CLASS_COLUMN));
+					reaction.setEcNumber((String) GraphicalInterface.reactionsTable.getModel().getValueAt(i, ecColumn));
 					reactions.add(reaction);
 					reactionsIdPositionMap.put(reaction.getId(), count);
 					count += 1;
@@ -392,6 +394,23 @@ public class ReactionFactory {
 		ReactionFactory.columnName = columnName;
 	}
 	
+	// get index of column with EC numbers
+	public Integer getECColumnColumnIndex() {
+		int index = -1;
+		for (int i = 0; i < LocalConfig.getInstance().getReactionsMetaColumnNames().size(); i++) {
+			if (LocalConfig.getInstance().getReactionsMetaColumnNames().get(i).equals(GraphicalInterfaceConstants.EC_NUMBER_COLUMN_NAMES[0])) {
+				index = GraphicalInterfaceConstants.REACTIONS_COLUMN_NAMES.length + LocalConfig.getInstance().getReactionsMetaColumnNames().indexOf(GraphicalInterfaceConstants.EC_NUMBER_COLUMN_NAMES[0]);
+			} else if (LocalConfig.getInstance().getReactionsMetaColumnNames().get(i).equals(GraphicalInterfaceConstants.EC_NUMBER_COLUMN_NAMES[1])) {
+				index = GraphicalInterfaceConstants.REACTIONS_COLUMN_NAMES.length + LocalConfig.getInstance().getReactionsMetaColumnNames().indexOf(GraphicalInterfaceConstants.EC_NUMBER_COLUMN_NAMES[1]);
+			}
+		}
+		if (index == -1) {
+			index = GraphicalInterfaceConstants.PROTEIN_CLASS_COLUMN;
+		}
+
+		return index;
+	}
+
 	private void processStackTrace( Exception e ) {
 		//e.printStackTrace();
 		StringWriter errors = new StringWriter();

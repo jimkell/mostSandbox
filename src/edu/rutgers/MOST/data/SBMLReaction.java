@@ -26,6 +26,7 @@ public class SBMLReaction implements ModelReaction {
 	private String proteinAssociation;
 	private String subsystem;
 	private String proteinClass;
+	private String ecNumber;
 	private ArrayList<String> metaValues;
 	
 	public int getId() {
@@ -172,6 +173,14 @@ public class SBMLReaction implements ModelReaction {
 		return proteinClass;
 	}
 	
+	public String getEcNumber() {
+		return ecNumber;
+	}
+
+	public void setEcNumber(String ecNumber) {
+		this.ecNumber = ecNumber;
+	}
+
 	public ArrayList<String> getMetaValues() {
 		return metaValues;
 	}

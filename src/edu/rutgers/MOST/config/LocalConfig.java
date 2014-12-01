@@ -856,6 +856,16 @@ public class LocalConfig {
 	public void setDrawOrder(ArrayList<String> drawOrder) {
 		this.drawOrder = drawOrder;
 	}
+	
+	private ArrayList<String> sideSpeciesList;
+
+	public ArrayList<String> getSideSpeciesList() {
+		return sideSpeciesList;
+	}
+
+	public void setSideSpeciesList(ArrayList<String> sideSpeciesList) {
+		this.sideSpeciesList = sideSpeciesList;
+	}
 
 	private Map<String, String> metaboliteNameAbbrMap;
 
@@ -865,6 +875,16 @@ public class LocalConfig {
 
 	public void setMetaboliteNameAbbrMap(Map<String, String> metaboliteNameAbbrMap) {
 		this.metaboliteNameAbbrMap = metaboliteNameAbbrMap;
+	}
+	
+	private Map<String, String> ecNumMap;
+
+	public Map<String, String> getEcNumMap() {
+		return ecNumMap;
+	}
+
+	public void setEcNumMap(Map<String, String> ecNumMap) {
+		this.ecNumMap = ecNumMap;
 	}
 
 }

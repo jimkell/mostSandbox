@@ -15,6 +15,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;                                                                                        
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;                                                                                          
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;                                                                                            
 import java.util.List;                                                                                               
@@ -22,6 +23,8 @@ import java.util.Map;
                                                                                                                      
 
 
+
+import java.util.Vector;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;                                                                                        
@@ -33,6 +36,8 @@ import javax.swing.JPanel;
 
 
 
+
+
 import org.apache.commons.collections15.Transformer;                                                                 
 import org.apache.commons.collections15.functors.ChainedTransformer;                                                 
                                                                                                                      
@@ -41,6 +46,8 @@ import org.apache.commons.collections15.functors.ConstantTransformer;
 import edu.rutgers.MOST.config.LocalConfig;
 import edu.rutgers.MOST.data.MetabolicPathway;
 import edu.rutgers.MOST.data.PathwayFilesReader;
+import edu.rutgers.MOST.data.ReactionFactory;
+import edu.rutgers.MOST.data.SBMLReaction;
 import edu.uci.ics.jung.algorithms.layout.Layout;                                                                    
 import edu.uci.ics.jung.algorithms.layout.StaticLayout;                                                              
 import edu.uci.ics.jung.graph.Graph;                                                                                 
@@ -95,7 +102,7 @@ public class PathwaysFrame extends JApplet {
    	ArrayList<String> reactions = new ArrayList<String>();
    	Map<String, Double> fluxMap = new HashMap<String, Double>(); 
    	
-   	private float scalingFactor = 2;
+   	private float scalingFactor = (float) 1.2;
    	private int graphWidth = 10000;
    	private int graphHeight = 8000;
    	private int borderWidth = 100;
@@ -107,8 +114,24 @@ public class PathwaysFrame extends JApplet {
    	
    	private static double borderThickness = 4;
    	
-   	private int horizontalIncrement = 300;
-   	private int verticalIncrement = 150;
+   	private int horizontalIncrement = 250;
+   	private int verticalIncrement = 125;
+   	private int pathwayNameNodeWidth = 120;
+   	private int pathwayNameNodeHeight = 40;
+   	private int metaboliteNodeWidth = 75;
+   	private int metaboliteNodeHeight = 25;
+   	private int reactionNodeWidth = 90;
+   	private int reactionNodeHeight = 25;
+   	private int pathwayNameNodeFontSize = 16;
+   	private int metaboliteNodeFontSize = 16;
+   	private int reactionNodeFontSize = 16;
+   	// positions to start text in node
+   	private int pathwayNameNodeXPos = 0;
+   	private int pathwayNameNodeYPos = 18;
+   	private int metaboliteNodeXPos = 0;
+   	private int metaboliteNodeYPos = 18;
+   	private int reactionNodeXPos = 0;
+   	private int reactionNodeYPos = 18;
    	
    	protected EdgeWeightStrokeFunction<Number> ewcs;
    	protected Map<Number, Number> edge_weight = new HashMap<Number, Number>();
@@ -151,12 +174,30 @@ public class PathwaysFrame extends JApplet {
 			borderList.add(Integer.toString(b));
 		}
 		
+		Map<String, String> ecNumMap = new HashMap<String, String>();
+		ReactionFactory rf = new ReactionFactory("SBML");
+		Vector<SBMLReaction> rxns = rf.getAllReactions();
+		for (int r = 0; r < rxns.size(); r++) {
+			SBMLReaction reaction = (SBMLReaction) rxns.get(r);
+			String ecString = reaction.getEcNumber();
+			int id = reaction.getId();
+			String name = reaction.getReactionName();
+			String subsystem = reaction.getSubsystem();
+			if (ecString != null && ecString.length() > 0) {
+				// model may contain more than one EC number, separated by white space
+				// AraGEM model has this condition
+				java.util.List<String> ecNumbers = Arrays.asList(ecString.split("\\s"));
+				for (int i = 0; i < ecNumbers.size(); i++) {
+					//System.out.println(ecNumbers.get(i) + " " + name);
+					ecNumMap.put(ecNumbers.get(i), name);
+				}
+			}
+		}
+		System.out.println(ecNumMap);
+		LocalConfig.getInstance().setEcNumMap(ecNumMap);
+		
 		PathwayFilesReader reader = new PathwayFilesReader();
 		reader.readFiles();
-		
-//		for (int i = 0; i < LocalConfig.getInstance().getMetabolicPathways().size(); i++) {
-//			
-//		}
 		
 		for (int i = 0; i < LocalConfig.getInstance().getDrawOrder().size(); i++) {
 			MetabolicPathway pathway = LocalConfig.getInstance().getMetabolicPathways().get("1");
@@ -185,7 +226,6 @@ public class PathwaysFrame extends JApplet {
 					//System.out.println(pathway.getMetabolites().get((pathway.getReactions().get(Integer.toString(k)).getMainReactants().get(r))).getNames().get(0));
 					String reac = pathway.getMetabolites().get((pathway.getReactions().get(Integer.toString(k)).getMainReactants().get(r))).getNames().get(0);
 					reactionMap.put(pathway.getReactions().get(Integer.toString(k)).getName() + "R " + Integer.toString(r), new String[] {pathway.getReactions().get(Integer.toString(k)).getName(), reac, reversible});
-					System.out.println(reac + " " + reversible);
 					fluxMap.put(pathway.getReactions().get(Integer.toString(k)).getName() + "R " + Integer.toString(r), 1.0);
 				}
 				for (int p = 0; p < pathway.getReactions().get(Integer.toString(k)).getMainProducts().size(); p++) {
@@ -330,17 +370,17 @@ public class PathwaysFrame extends JApplet {
         for(int i = 0; i < metaboliteList.size(); i++) {                                                                                                        
         	String name = metaboliteList.get(i);
         	String abbr = LocalConfig.getInstance().getMetaboliteNameAbbrMap().get(name);
-        	int width = 0;
-        	int height = 0;
+        	int width = (int) borderThickness;
+    		int height = (int) borderThickness;
         	if (borderList.contains(name)) {
         		width = (int) borderThickness;
         		height = (int) borderThickness;
         	} else if (metabolites.contains(name)) {
-        		width = 60;
-        		height = 25;
+        		width = metaboliteNodeWidth;
+        		height = metaboliteNodeHeight;
         	} else if (reactions.contains(name)) {
-        		width = 100;
-        		height = 25;
+        		width = reactionNodeWidth;
+        		height = reactionNodeHeight;
         	}
         	// based on http://stackoverflow.com/questions/2736320/write-text-onto-image-in-java
         	BufferedImage bufferedImage = new BufferedImage(width, height,
@@ -349,7 +389,7 @@ public class PathwaysFrame extends JApplet {
         	if (borderList.contains(name)) {
         		graphics.setColor(Color.black);
         	} else if (metabolites.contains(name)) {
-        		graphics.setColor(Color.gray);
+        		graphics.setColor(Color.lightGray);
         	} else if (reactions.contains(name)) {
         		graphics.setColor(Color.white);
         	}
@@ -360,9 +400,9 @@ public class PathwaysFrame extends JApplet {
             	graphics.drawString(name, 5, 15);
         	} else {
         		if (abbr != null) {
-        			alignCenterString(graphics, abbr, width, 0, 17);
+        			alignCenterString(graphics, abbr, width, metaboliteNodeXPos, metaboliteNodeYPos, metaboliteNodeFontSize);
         		} else {
-        			alignCenterString(graphics, name, width, 0, 17);
+        			alignCenterString(graphics, name, width, reactionNodeXPos, reactionNodeYPos, reactionNodeFontSize);
         		}
         	}
         	if (metabolites.contains(name) || reactions.contains(name)) {
@@ -537,11 +577,21 @@ public class PathwaysFrame extends JApplet {
     }                                                                                                                
        
     // based on http://www.coderanch.com/t/336616/GUI/java/Center-Align-text-drawString
-    private void alignCenterString(Graphics g2d, String s, int width, int XPos, int YPos){  
+    private void alignCenterString(Graphics g2d, String s, int width, int XPos, int YPos, int fontSize){  
+    	g2d.setFont(new Font("Arial", Font.TYPE1_FONT, fontSize));
+    	if (metabolites.contains(s)) {
+    		if (s.length() > 7) {
+        		s = s.substring(0, 5) + "...";
+        	}
+    	} else if (reactions.contains(s)) {
+    		if (s.length() > 12) {
+        		s = s.substring(0, 9) + "...";
+        	}
+    	}
         int stringLen = (int)  
             g2d.getFontMetrics().getStringBounds(s, g2d).getWidth();  
         int start = width/2 - stringLen/2;  
-        g2d.drawString(s, start + XPos, YPos);  
+        g2d.drawString(s, start + XPos, YPos);   
     }  
     
     private void drawBorder(Graphics g2d, int width, int height, int strokeWidth){
@@ -604,13 +654,13 @@ public class PathwaysFrame extends JApplet {
     
     public static void main(String[] args) {                                                                         
         // create a frome to hold the graph                                                                          
-        final JFrame frame = new JFrame();                                                                           
-        Container content = frame.getContentPane();                                                                  
-        content.add(new PathwaysFrame());                                                                        
-        frame.pack();                                                                                                
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);                                                                                      
+//        final JFrame frame = new JFrame();                                                                           
+//        Container content = frame.getContentPane();                                                                  
+//        content.add(new PathwaysFrame());                                                                        
+//        frame.pack();                                                                                                
+//        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
+//        frame.setLocationRelativeTo(null);
+//        frame.setVisible(true);                                                                                      
     }                                                                                                                
 }                                                                                                                    
                                                                                                                      
