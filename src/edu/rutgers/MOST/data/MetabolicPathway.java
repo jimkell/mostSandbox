@@ -7,8 +7,10 @@ import java.util.Map;
 public class MetabolicPathway {
 	private String id;
 	private String name;
-	private Map<String, PathwayMetabolite> metabolites = new HashMap<String, PathwayMetabolite>();
-	private Map<String, PathwayReaction> reactions = new HashMap<String, PathwayReaction>();
+	private Map<String, PathwayMetaboliteData> metabolitesData = new HashMap<String, PathwayMetaboliteData>();
+	private Map<String, PathwayMetaboliteNode> metabolitesNodes = new HashMap<String, PathwayMetaboliteNode>();
+	private Map<String, PathwayReactionData> reactionsData = new HashMap<String, PathwayReactionData>();
+	private Map<String, PathwayReactionNode> reactionsNodes = new HashMap<String, PathwayReactionNode>();
 	private ArrayList<PathwayEdge> edges;
 	private ArrayList<ArrayList<String>> ecNumbers = new ArrayList<ArrayList<String>>();
 	// horizontal or vertical
@@ -26,17 +28,31 @@ public class MetabolicPathway {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public Map<String, PathwayMetabolite> getMetabolites() {
-		return metabolites;
+	public Map<String, PathwayMetaboliteData> getMetabolitesData() {
+		return metabolitesData;
 	}
-	public void setMetabolites(Map<String, PathwayMetabolite> metabolites) {
-		this.metabolites = metabolites;
+	public void setMetabolitesData(
+			Map<String, PathwayMetaboliteData> metabolitesData) {
+		this.metabolitesData = metabolitesData;
 	}
-	public Map<String, PathwayReaction> getReactions() {
-		return reactions;
+	public Map<String, PathwayMetaboliteNode> getMetabolitesNodes() {
+		return metabolitesNodes;
 	}
-	public void setReactions(Map<String, PathwayReaction> reactions) {
-		this.reactions = reactions;
+	public void setMetabolitesNodes(
+			Map<String, PathwayMetaboliteNode> metabolitesNodes) {
+		this.metabolitesNodes = metabolitesNodes;
+	}
+	public Map<String, PathwayReactionData> getReactionsData() {
+		return reactionsData;
+	}
+	public void setReactionsData(Map<String, PathwayReactionData> reactionsData) {
+		this.reactionsData = reactionsData;
+	}
+	public Map<String, PathwayReactionNode> getReactionsNodes() {
+		return reactionsNodes;
+	}
+	public void setReactionsNodes(Map<String, PathwayReactionNode> reactionsNodes) {
+		this.reactionsNodes = reactionsNodes;
 	}
 	public ArrayList<ArrayList<String>> getEcNumbers() {
 		return ecNumbers;
@@ -61,8 +77,9 @@ public class MetabolicPathway {
 	public String toString() {
 		return "Metabolic Pathway [id=" + id
 		+ ", name=" + name		
-		+ ", metabolites=" + metabolites
-		+ ", reactions=" + reactions
+		+ ", metabolitesData=" + metabolitesData
+		+ ", reactionsData=" + reactionsData
+		+ ", reactionsNodes=" + reactionsNodes
 		+ ", edges=" + edges
 		+ ", ecNumbers=" + ecNumbers
 		+ ", direction=" + direction + "]\n";

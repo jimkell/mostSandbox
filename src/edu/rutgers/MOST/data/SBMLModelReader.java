@@ -62,6 +62,15 @@ public class SBMLModelReader {
 		//System.out.println(id);
 		
 		LocalConfig.getInstance().getMetaboliteUsedMap().clear();
+		
+		ArrayList<String> listOfCompartments = new ArrayList<String>();
+		for (int c = 0; c < doc.getModel().getListOfCompartments().size(); c++) {
+			listOfCompartments.add(doc.getModel().getCompartment(c).toString());
+		}
+		System.out.println(listOfCompartments);
+		LocalConfig.getInstance().setListOfCompartments(listOfCompartments);
+		
+		ArrayList<String> compartmentsList = new ArrayList<String>();
 
 		DefaultTableModel metabTableModel = new DefaultTableModel();
 		for (int m = 0; m < GraphicalInterfaceConstants.METABOLITES_COLUMN_NAMES.length; m++) {
@@ -208,6 +217,9 @@ public class SBMLModelReader {
 			} 
 			metabRow.add(charge);	
 			metabRow.add(metabolites.get(i).getCompartment());
+			if (!compartmentsList.contains(metabolites.get(i).getCompartment())) {
+				compartmentsList.add(metabolites.get(i).getCompartment());
+			}
 			String boundary = "";
 			if (!metabolites.get(i).getBoundaryCondition()) {
 				boundary = GraphicalInterfaceConstants.BOOLEAN_VALUES[0]; 
@@ -235,10 +247,14 @@ public class SBMLModelReader {
 		LocalConfig.getInstance().setMaxMetabolite(metabolites.size());
 		LocalConfig.getInstance().setMaxMetaboliteId(metabolites.size());
 		LocalConfig.getInstance().setMetabolitesMetaColumnNames(metabolitesMetaColumnNames);
+		LocalConfig.getInstance().setCompartmentsList(compartmentsList);
+		System.out.println(compartmentsList);
         // end metabolites read
 		
 		boolean containsMinFlux = false;
 		boolean containsMaxFlux = false;
+		
+		ArrayList<Integer> biCompartmentReactionIds = new ArrayList<Integer>();
 		
 		// begin reactions read
 		DefaultTableModel reacTableModel = new DefaultTableModel();
@@ -305,6 +321,8 @@ public class SBMLModelReader {
 			ArrayList<SBMLReactant> equnReactants = new ArrayList<SBMLReactant>();
 			ArrayList<SBMLProduct> equnProducts = new ArrayList<SBMLProduct>();
 			ArrayList<String> compartmentList = new ArrayList<String>();
+			ArrayList<String> compartmentReactantsList = new ArrayList<String>();
+			ArrayList<String> compartmentProductsList = new ArrayList<String>();
 			
 			ListOf<SpeciesReference> reactants = reactions.get(j).getListOfReactants();
 			
@@ -347,6 +365,12 @@ public class SBMLModelReader {
 				reactant.setCompartment(metaboliteIdCompartmentMap.get(id));
 				if (!compartmentList.contains(metaboliteIdCompartmentMap.get(id))) {
 					compartmentList.add(metaboliteIdCompartmentMap.get(id));
+				}
+				if (!compartmentReactantsList.contains(metaboliteIdCompartmentMap.get(id))) {
+					compartmentReactantsList.add(metaboliteIdCompartmentMap.get(id));
+				}
+				if (!compartmentProductsList.contains(metaboliteIdCompartmentMap.get(id))) {
+					compartmentProductsList.add(metaboliteIdCompartmentMap.get(id));
 				}
 				//System.out.println(reactant.toString());
 				equnReactants.add(reactant);
@@ -392,8 +416,17 @@ public class SBMLModelReader {
 				if (!compartmentList.contains(metaboliteIdCompartmentMap.get(id))) {
 					compartmentList.add(metaboliteIdCompartmentMap.get(id));
 				}
+				if (!compartmentReactantsList.contains(metaboliteIdCompartmentMap.get(id))) {
+					compartmentReactantsList.add(metaboliteIdCompartmentMap.get(id));
+				}
+				if (!compartmentProductsList.contains(metaboliteIdCompartmentMap.get(id))) {
+					compartmentProductsList.add(metaboliteIdCompartmentMap.get(id));
+				}
 				//System.out.println(product.toString());
 				equnProducts.add(product);
+				if (compartmentList.size() > 1 && !biCompartmentReactionIds.contains(j)) {
+					biCompartmentReactionIds.add(j);
+				}
 			}
             equation.setReactants(equnReactants);
             equation.setProducts(equnProducts);
@@ -402,6 +435,11 @@ public class SBMLModelReader {
             equation.setIrreversibleArrow(GraphicalInterfaceConstants.NOT_REVERSIBLE_ARROWS[1]);
             equation.writeReactionEquation();
             equation.setCompartmentList(compartmentList);
+            equation.setCompartmentReactantsList(compartmentReactantsList);
+            equation.setCompartmentProductsList(compartmentProductsList);
+//            System.out.println("c " + compartmentList);
+//            System.out.println("r " + compartmentReactantsList);
+//            System.out.println("p " + compartmentProductsList);
             reactionEquationMap.put(j, equation);
 
 			String reactionEquationAbbr = equation.equationAbbreviations;
@@ -678,6 +716,8 @@ public class SBMLModelReader {
 		//System.out.println(LocalConfig.getInstance().getReactionEquationMap());
 		LocalConfig.getInstance().setReactionAbbreviationIdMap(reactionAbbreviationIdMap);
 		//System.out.println(reactionAbbreviationIdMap);
+		LocalConfig.getInstance().setBiCompartmentReactionIds(biCompartmentReactionIds);
+		System.out.println(biCompartmentReactionIds);
 		LocalConfig.getInstance().setProgress(100);	
 		if (containsMinFlux && containsMaxFlux) {
 			LocalConfig.getInstance().getShowFVAColumnsList().add(LocalConfig.getInstance().getModelName());

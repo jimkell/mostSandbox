@@ -11,6 +11,7 @@ import javax.swing.table.DefaultTableModel;
 import edu.rutgers.MOST.data.EnzymeData;
 import edu.rutgers.MOST.data.MetabolicPathway;
 import edu.rutgers.MOST.data.ModelReactionEquation;
+import edu.rutgers.MOST.data.SBMLReaction;
 
 public class LocalConfig {	
 
@@ -877,14 +878,61 @@ public class LocalConfig {
 		this.metaboliteNameAbbrMap = metaboliteNameAbbrMap;
 	}
 	
-	private Map<String, String> ecNumMap;
+	private Map<String, ArrayList<SBMLReaction>> ecNumberReactionMap;
 
-	public Map<String, String> getEcNumMap() {
-		return ecNumMap;
+	public Map<String, ArrayList<SBMLReaction>> getEcNumberReactionMap() {
+		return ecNumberReactionMap;
 	}
 
-	public void setEcNumMap(Map<String, String> ecNumMap) {
-		this.ecNumMap = ecNumMap;
+	public void setEcNumberReactionMap(
+			Map<String, ArrayList<SBMLReaction>> ecNumberReactionMap) {
+		this.ecNumberReactionMap = ecNumberReactionMap;
+	}
+
+	// list from beginning of sbml file
+	private ArrayList<String> listOfCompartments;
+
+	public ArrayList<String> getListOfCompartments() {
+		return listOfCompartments;
+	}
+
+	public void setListOfCompartments(ArrayList<String> listOfCompartments) {
+		this.listOfCompartments = listOfCompartments;
+	}
+
+	// list from metabolites table
+	private ArrayList<String> compartmentsList;
+
+	public ArrayList<String> getCompartmentsList() {
+		return compartmentsList;
+	}
+
+	public void setCompartmentsList(ArrayList<String> compartmentsList) {
+		this.compartmentsList = compartmentsList;
+	}
+	
+	private ArrayList<Integer> biCompartmentReactionIds;
+
+	public ArrayList<Integer> getBiCompartmentReactionIds() {
+		return biCompartmentReactionIds;
+	}
+
+	public void setBiCompartmentReactionIds(
+			ArrayList<Integer> biCompartmentReactionIds) {
+		this.biCompartmentReactionIds = biCompartmentReactionIds;
+	}
+	
+	// contains metabolite abbreviations minus compartment suffix,
+	// suffixes in ArrayList
+	private Map<String, ArrayList<String>> metaboliteAbbreviationCompartmentMap;
+
+	public Map<String, ArrayList<String>> getMetaboliteAbbreviationCompartmentMap() {
+		return metaboliteAbbreviationCompartmentMap;
+	}
+
+	public void setMetaboliteAbbreviationCompartmentMap(
+			Map<String, ArrayList<String>> metaboliteAbbreviationCompartmentMap) {
+		this.metaboliteAbbreviationCompartmentMap = metaboliteAbbreviationCompartmentMap;
 	}
 
 }

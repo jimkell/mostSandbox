@@ -83,6 +83,7 @@ public class ReactionFactory {
 					reaction.setReactionAbbreviation((String) GraphicalInterface.reactionsTable.getModel().getValueAt(i, GraphicalInterfaceConstants.REACTION_ABBREVIATION_COLUMN));
 					reaction.setReactionName((String) GraphicalInterface.reactionsTable.getModel().getValueAt(i, GraphicalInterfaceConstants.REACTION_NAME_COLUMN));
 					reaction.setReactionEqunAbbr((String) GraphicalInterface.reactionsTable.getModel().getValueAt(i, GraphicalInterfaceConstants.REACTION_EQUN_ABBR_COLUMN));
+					reaction.setReactionEqunNames((String) GraphicalInterface.reactionsTable.getModel().getValueAt(i, GraphicalInterfaceConstants.REACTION_EQUN_NAMES_COLUMN));
 					reaction.setReversible((String) GraphicalInterface.reactionsTable.getModel().getValueAt(i, GraphicalInterfaceConstants.REVERSIBLE_COLUMN));				
 					reaction.setLowerBound(Double.valueOf((String) GraphicalInterface.reactionsTable.getModel().getValueAt(i, GraphicalInterfaceConstants.LOWER_BOUND_COLUMN)));
 					reaction.setUpperBound(Double.valueOf((String) GraphicalInterface.reactionsTable.getModel().getValueAt(i, GraphicalInterfaceConstants.UPPER_BOUND_COLUMN)));
@@ -125,6 +126,7 @@ public class ReactionFactory {
 				tmodel.setValueAt( reaction.getReactionAbbreviation(), i, GraphicalInterfaceConstants.REACTION_ABBREVIATION_COLUMN );
 				tmodel.setValueAt( reaction.getReactionName(), i, GraphicalInterfaceConstants.REACTION_NAME_COLUMN );
 				tmodel.setValueAt( reaction.getReactionEqunAbbr(), i, GraphicalInterfaceConstants.REACTION_EQUN_ABBR_COLUMN );
+				tmodel.setValueAt( reaction.getReactionEqunNames(), i, GraphicalInterfaceConstants.REACTION_EQUN_NAMES_COLUMN );
 				tmodel.setValueAt( reaction.getReversible(), i, GraphicalInterfaceConstants.REVERSIBLE_COLUMN );
 				tmodel.setValueAt( Double.toString( reaction.getLowerBound() ), i, GraphicalInterfaceConstants.LOWER_BOUND_COLUMN );
 				tmodel.setValueAt( Double.toString( reaction.getUpperBound() ), i, GraphicalInterfaceConstants.UPPER_BOUND_COLUMN );

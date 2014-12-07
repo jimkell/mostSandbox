@@ -2,7 +2,7 @@ package edu.rutgers.MOST.data;
 
 import java.util.ArrayList;
 
-public class PathwayMetabolite {
+public class PathwayMetaboliteData {
 
 	private String id;
 	private ArrayList<String> names = new ArrayList<String>();
@@ -52,7 +52,7 @@ public class PathwayMetabolite {
 
 	@Override
 	public String toString() {
-		return "PathwayMetabolite [id=" + id
+		return "PathwayMetabolite Data [id=" + id
 		+ ", names=" + names
 		+ ", abbreviation=" + abbreviation
 		+ ", level=" + level
