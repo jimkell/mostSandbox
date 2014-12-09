@@ -11,6 +11,7 @@ import javax.swing.table.DefaultTableModel;
 import edu.rutgers.MOST.data.EnzymeData;
 import edu.rutgers.MOST.data.MetabolicPathway;
 import edu.rutgers.MOST.data.ModelReactionEquation;
+import edu.rutgers.MOST.data.PathwayConnectionData;
 import edu.rutgers.MOST.data.SBMLReaction;
 
 public class LocalConfig {	
@@ -934,5 +935,17 @@ public class LocalConfig {
 			Map<String, ArrayList<String>> metaboliteAbbreviationCompartmentMap) {
 		this.metaboliteAbbreviationCompartmentMap = metaboliteAbbreviationCompartmentMap;
 	}
+	
+	Map<String, ArrayList<PathwayConnectionData>> connectionPositionMap;
 
+	public Map<String, ArrayList<PathwayConnectionData>> getConnectionPositionMap() {
+		return connectionPositionMap;
+	}
+
+	public void setConnectionPositionMap(
+			Map<String, ArrayList<PathwayConnectionData>> connectionPositionMap) {
+		this.connectionPositionMap = connectionPositionMap;
+	}
+
+	
 }

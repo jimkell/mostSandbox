@@ -33,7 +33,7 @@ public class PathwaysCSVFileConstants {
 	
 	public static final String[] PATHWAY_CONNECTIONS_COLUMN_NAMES = 
 		{
-		"Reactants", "Products", "Reversible", "EC # List", "Length"
+		"Reactants", "Products", "Reversible", "EC # List", "Length", "Positioning", "Direction"
 		};
 	
 	public static final String[] PATHWAY_SIDE_SPECIES_COLUMN_NAMES = 
@@ -75,6 +75,8 @@ public class PathwaysCSVFileConstants {
 	public static final int PATHWAY_CONNECTIONS_REVERSIBLE_COLUMN = pathwayConnectionsColumnsList.indexOf("Reversible");
 	public static final int PATHWAY_CONNECTIONS_EC_NUM_LIST_COLUMN = pathwayConnectionsColumnsList.indexOf("EC # List");
 	public static final int PATHWAY_CONNECTIONS_LENGTH_COLUMN = pathwayConnectionsColumnsList.indexOf("Length");
+	public static final int PATHWAY_CONNECTIONS_POSITIONING_COLUMN = pathwayConnectionsColumnsList.indexOf("Positioning");
+	public static final int PATHWAY_CONNECTIONS_DIRECTION_COLUMN = pathwayConnectionsColumnsList.indexOf("Direction");
 	
 	public static final int PATHWAY_SIDE_SPECIES_NAME_COLUMN = pathwaySideSpeciesColumnsList.indexOf("Species Name");
 	

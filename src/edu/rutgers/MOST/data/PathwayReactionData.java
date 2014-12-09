@@ -133,7 +133,7 @@ public class PathwayReactionData {
 		}
 			
 		this.equation = rxnBfr.toString();
-		System.out.println(this.equation);
+		//System.out.println(this.equation);
 	}
 	
 	@Override
