@@ -40,6 +40,7 @@ import javax.swing.JPanel;
 
 
 
+
 import org.apache.commons.collections15.Transformer;                                                                 
 import org.apache.commons.collections15.functors.ChainedTransformer;                                                 
                                                                                                                      
@@ -49,6 +50,7 @@ import edu.rutgers.MOST.config.LocalConfig;
 import edu.rutgers.MOST.data.ECNumberMapCreator;
 import edu.rutgers.MOST.data.MetabolicPathway;
 import edu.rutgers.MOST.data.PathwayFilesReader;
+import edu.rutgers.MOST.data.PathwayMetaboliteNode;
 import edu.rutgers.MOST.data.PathwayReactionNode;
 import edu.rutgers.MOST.data.ReactionFactory;
 import edu.rutgers.MOST.data.SBMLReaction;
@@ -149,6 +151,8 @@ public class PathwaysFrame extends JApplet {
 	public void setPathwaysList(ArrayList<MetabolicPathway> pathwaysList) {
 		this.pathwaysList = pathwaysList;
 	}
+	
+	private Map<String, ArrayList<Double>> startPosMap = new HashMap<String, ArrayList<Double>>();
 
 	/**                                                                                                              
      * create an instance of a simple graph with controls to                                                         
@@ -184,23 +188,31 @@ public class PathwaysFrame extends JApplet {
 		PathwayFilesReader reader = new PathwayFilesReader();
 		reader.readFiles();
 		
-		int startX = borderWidth + horizontalIncrement;
-		int startY = graphHeight/2;
+		double startX = borderWidth + horizontalIncrement;
+		double startY = graphHeight/2;
 		for (int i = 0; i < LocalConfig.getInstance().getDrawOrder().size(); i++) {
 			MetabolicPathway pathway = LocalConfig.getInstance().getMetabolicPathways().get(LocalConfig.getInstance().getDrawOrder().get(i));
+			if (startPosMap.containsKey(pathway.getId())) {
+				startX = startPosMap.get(pathway.getId()).get(0);
+				startY = startPosMap.get(pathway.getId()).get(1);
+			}
 			if (LocalConfig.getInstance().getConnectionPositionMap().containsKey(pathway.getId())) {
 //				System.out.println("map " + LocalConfig.getInstance().getConnectionPositionMap());
 //				System.out.println("map " + LocalConfig.getInstance().getConnectionPositionMap().get(pathway.getId()));
-				for (int p = 0; p < LocalConfig.getInstance().getConnectionPositionMap().get(pathway.getId()).size(); p++) {
-					System.out.println("reac " + LocalConfig.getInstance().getConnectionPositionMap().get(pathway.getId()).get(p).getReactantPathwaysIds().get(0));
-					System.out.println("prod " + LocalConfig.getInstance().getConnectionPositionMap().get(pathway.getId()).get(p).getProductPathwaysIds().get(0));
-				}
+//				for (int p = 0; p < LocalConfig.getInstance().getConnectionPositionMap().get(pathway.getId()).size(); p++) {
+//					System.out.println("reac " + LocalConfig.getInstance().getConnectionPositionMap().get(pathway.getId()).get(p).getReactantPathwaysIds().get(0));
+//					System.out.println("prod " + LocalConfig.getInstance().getConnectionPositionMap().get(pathway.getId()).get(p).getProductPathwaysIds().get(0));
+//				}
 			}
 			for (int j = 0; j < pathway.getMetabolitesData().size(); j++) {
 				metabolites.add(pathway.getMetabolitesData().get(Integer.toString(j)).getNames().get(0));
+				PathwayMetaboliteNode pn = new PathwayMetaboliteNode();
+				pn.setDataId(pathway.getMetabolitesData().get(Integer.toString(j)).getId());
 				double x = startX + horizontalIncrement*pathway.getMetabolitesData().get(Integer.toString(j)).getLevel();
-				
-				double y = startY + verticalIncrement*pathway.getMetabolitesData().get(Integer.toString(j)).getLevelPosition(); 
+				double y = startY + verticalIncrement*pathway.getMetabolitesData().get(Integer.toString(j)).getLevelPosition();
+				pn.setxPosition(x);
+				pn.setyPosition(y);
+				pathway.getMetabolitesNodes().put(pn.getDataId(), pn);
 				metabPosMap.put(pathway.getMetabolitesData().get(Integer.toString(j)).getNames().get(0), new String[] {Double.toString(x), Double.toString(y)});  
 			}
 			for (int k = 0; k < pathway.getReactionsData().size(); k++) {
@@ -262,111 +274,49 @@ public class PathwaysFrame extends JApplet {
 					fluxMap.put(pathway.getReactionsData().get(Integer.toString(k)).getName() + "product " + Integer.toString(p), 1.0);
 				}
 			}
-//			System.out.println("map " + LocalConfig.getInstance().getConnectionPositionMap());
-//			System.out.println("map " + LocalConfig.getInstance().getConnectionPositionMap().get(pathway.getId()));
+			//System.out.println("map " + LocalConfig.getInstance().getConnectionPositionMap());
+			//System.out.println("map " + LocalConfig.getInstance().getConnectionPositionMap().get(pathway.getId()));
+			if (LocalConfig.getInstance().getConnectionPositionMap().get(pathway.getId()) != null) {
+				System.out.println("pathway id " + pathway.getId());
+//				System.out.println("reactant " + LocalConfig.getInstance().getConnectionPositionMap().get(pathway.getId()).get(0).getReactantPathwaysIds().get(0));
+				if (LocalConfig.getInstance().getConnectionPositionMap().get(pathway.getId()).get(0).getReactantPathwaysIds().get(0).get(0).equals(pathway.getId())) {
+					for (int p = 0; p < LocalConfig.getInstance().getConnectionPositionMap().get(pathway.getId()).size(); p++) {
+						System.out.println("reac pathway id " + LocalConfig.getInstance().getConnectionPositionMap().get(pathway.getId()).get(p).getReactantPathwaysIds().get(0).get(0));
+						System.out.println("reactant " + LocalConfig.getInstance().getConnectionPositionMap().get(pathway.getId()).get(p).getReactantPathwaysIds().get(0).get(1));
+						System.out.println("x " + pathway.getMetabolitesNodes().get(LocalConfig.getInstance().getConnectionPositionMap().get(pathway.getId()).get(p).getReactantPathwaysIds().get(0).get(1)).getxPosition());
+						System.out.println("y " + pathway.getMetabolitesNodes().get(LocalConfig.getInstance().getConnectionPositionMap().get(pathway.getId()).get(p).getReactantPathwaysIds().get(0).get(1)).getyPosition());
+						System.out.println("d " + LocalConfig.getInstance().getConnectionPositionMap().get(pathway.getId()).get(p).getDirection());
+						System.out.println("l " + LocalConfig.getInstance().getConnectionPositionMap().get(pathway.getId()).get(p).getLength());
+						ArrayList<Double> xyList = new ArrayList<Double>();
+						double newStartX = startX;
+						double newStartY = startY;
+						if (LocalConfig.getInstance().getConnectionPositionMap().get(pathway.getId()).get(p).getDirection().equals("vertical")) {
+							newStartY = LocalConfig.getInstance().getConnectionPositionMap().get(pathway.getId()).get(p).getLength() * verticalIncrement +
+									pathway.getMetabolitesNodes().get(LocalConfig.getInstance().getConnectionPositionMap().get(pathway.getId()).get(p).getReactantPathwaysIds().get(0).get(1)).getyPosition();
+						} else if (LocalConfig.getInstance().getConnectionPositionMap().get(pathway.getId()).get(p).getDirection().equals("horizontal")) {
+							newStartX = LocalConfig.getInstance().getConnectionPositionMap().get(pathway.getId()).get(p).getLength() * horizontalIncrement +
+									pathway.getMetabolitesNodes().get(LocalConfig.getInstance().getConnectionPositionMap().get(pathway.getId()).get(p).getReactantPathwaysIds().get(0).get(1)).getxPosition();
+						}
+						xyList.add(newStartX);
+						xyList.add(newStartY);
+						startPosMap.put(LocalConfig.getInstance().getConnectionPositionMap().get(pathway.getId()).get(p).getProductPathwaysIds().get(0).get(0), xyList);
+						System.out.println("prod pathway id " + LocalConfig.getInstance().getConnectionPositionMap().get(pathway.getId()).get(p).getProductPathwaysIds().get(0).get(0));
+						System.out.println("product " + LocalConfig.getInstance().getConnectionPositionMap().get(pathway.getId()).get(p).getProductPathwaysIds().get(0).get(1));
+//						System.out.println(startX);
+//						System.out.println(startY);
+					}
+				}
+			}
 		}
 		                                                                                                 		
-//   		metabPosMap.put("M01", new String[] {"1000", "100"});                                                        
-//   		metabPosMap.put("M02", new String[] {"1000", "200"});                                                        
-//   		metabPosMap.put("M03", new String[] {"900", "300"});                                                         
-//   		metabPosMap.put("M04", new String[] {"1100", "300"});                                                         
-//   		metabPosMap.put("M05", new String[] {"1000", "400"});                                                         
-//   		metabPosMap.put("M06", new String[] {"1000", "500"});                                                         
-//   		metabPosMap.put("M07", new String[] {"1000", "600"});                                                          
-//   		metabPosMap.put("M08", new String[] {"1000", "700"});                                                          
-//   		metabPosMap.put("M09", new String[] {"1000", "800"});  
-//   		metabPosMap.put("M10", new String[] {"1000", "900"});                                                         
-//   		metabPosMap.put("M11", new String[] {"1000", "1000"});                                                         
-//   		metabPosMap.put("M12", new String[] {"1000", "1100"});                                                          
-//   		metabPosMap.put("M13", new String[] {"1000", "1200"});                                                          
-//   		metabPosMap.put("M14", new String[] {"1000", "1300"}); 
+//   		metabPosMap.put("M01", new String[] {"1000", "100"});                                                         
 //   		
 //   		// labels
 //   		metabPosMap.put("R01", new String[] {"1000", "150"});
-//   		metabPosMap.put("R02", new String[] {"950", "250"});
-//   		metabPosMap.put("R03", new String[] {"1050", "250"});
-//   		metabPosMap.put("R04", new String[] {"950", "350"});
-//   		metabPosMap.put("R05", new String[] {"1050", "350"});
-//   		metabPosMap.put("R06", new String[] {"1000", "450"});
-//   		metabPosMap.put("R07", new String[] {"1000", "550"});
-//   		metabPosMap.put("R08", new String[] {"1000", "650"});
-//   		metabPosMap.put("R09", new String[] {"1000", "750"});
-//   		metabPosMap.put("R10", new String[] {"1000", "850"});
-//   		metabPosMap.put("R11", new String[] {"1000", "950"});
-//   		metabPosMap.put("R12", new String[] {"1000", "1050"});
-//   		metabPosMap.put("R13", new String[] {"1000", "1150"});
-//   		metabPosMap.put("R14", new String[] {"1000", "1250"});
 //   		
-//   		metabPosMap.put("Pathway 1", new String[] {"850", "150"});
-//   		
-//   		metabPosMap.put("M15", new String[] {"320", "500"});                                                         
-//   		metabPosMap.put("M16", new String[] {"500", "500"});                                                          
-//   		metabPosMap.put("M17", new String[] {"570", "600"});                                                          
-//   		metabPosMap.put("M18", new String[] {"570", "700"});  
-//   		metabPosMap.put("M19", new String[] {"500", "800"});                                                         
-//   		metabPosMap.put("M20", new String[] {"320", "800"});
-//   		metabPosMap.put("M21", new String[] {"250", "700"});                                                         
-//   		metabPosMap.put("M22", new String[] {"250", "600"});
-//   		
-//   		// labels
-//   		metabPosMap.put("R15", new String[] {"535", "550"});
-//   		metabPosMap.put("R16", new String[] {"570", "650"});
-//   		metabPosMap.put("R17", new String[] {"535", "750"});
-//   		metabPosMap.put("R18", new String[] {"410", "800"});
-//   		metabPosMap.put("R19", new String[] {"285", "750"});
-//   		metabPosMap.put("R20", new String[] {"250", "650"});
-//   		metabPosMap.put("R21", new String[] {"285", "550"});
-//   		metabPosMap.put("R22", new String[] {"410", "500"});
-//   		
-//   		metabPosMap.put("Pathway 2", new String[] {"220", "450"});
-//   		
-//   		reactionMap.put("R01", new String[] {"M01", "M02", "false"});
-//   		reactionMap.put("R02", new String[] {"M02", "M03", "false"});
-//   		reactionMap.put("R03", new String[] {"M02", "M04", "true"});
-//   		reactionMap.put("R04", new String[] {"M03", "M05", "false"});
-//   		reactionMap.put("R05", new String[] {"M04", "M05", "false"});
-//   		reactionMap.put("R06", new String[] {"M05", "M06", "false"});
-//   		reactionMap.put("R07", new String[] {"M06", "M07", "false"});
-//   		reactionMap.put("R08", new String[] {"M07", "M08", "true"});
-//   		reactionMap.put("R09", new String[] {"M08", "M09", "false"});
-//   		reactionMap.put("R10", new String[] {"M09", "M10", "true"});
-//   		reactionMap.put("R11", new String[] {"M10", "M11", "false"});
-//   		reactionMap.put("R12", new String[] {"M11", "M12", "false"});
-//   		reactionMap.put("R13", new String[] {"M12", "M13", "true"});
-//   		reactionMap.put("R14", new String[] {"M13", "M14", "false"});
-//   		
-//   		reactionMap.put("R15", new String[] {"M15", "M16", "false"});
-//   		reactionMap.put("R16", new String[] {"M16", "M17", "false"});
-//   		reactionMap.put("R17", new String[] {"M17", "M18", "true"});
-//   		reactionMap.put("R18", new String[] {"M18", "M19", "false"});
-//   		reactionMap.put("R19", new String[] {"M19", "M20", "false"});
-//   		reactionMap.put("R20", new String[] {"M20", "M21", "false"});
-//   		reactionMap.put("R21", new String[] {"M21", "M22", "false"});
-//   		reactionMap.put("R22", new String[] {"M22", "M15", "true"});
-//   		
+//   		metabPosMap.put("Pathway 1", new String[] {"850", "150"});  		
+
 //   		fluxMap.put("R01", 0.0);
-//   		fluxMap.put("R02", 999999.0);
-//   		fluxMap.put("R03", 999999.0);
-//   		fluxMap.put("R04", 18.0);
-//   		fluxMap.put("R05", 0.4);
-//   		fluxMap.put("R06", 1.0);
-//   		fluxMap.put("R07", 500.0);
-//   		fluxMap.put("R08", 20.0);
-//   		fluxMap.put("R09", 150.0);
-//   		fluxMap.put("R10", 0.01);
-//   		fluxMap.put("R11", 1000.0);
-//   		fluxMap.put("R12", 999999.0);
-//   		fluxMap.put("R13", 50.0);
-//   		fluxMap.put("R14", 0.2);
-//   		
-//   		fluxMap.put("R15", 999999.0);
-//   		fluxMap.put("R16", 0.2);
-//   		fluxMap.put("R17", 0.3);
-//   		fluxMap.put("R18", 0.0);
-//   		fluxMap.put("R19", 0.5);
-//   		fluxMap.put("R20", 60.0);
-//   		fluxMap.put("R21", 7000.0);
-//   		fluxMap.put("R22", 999999.0);
                                                                                                                      
    		metaboliteList = new ArrayList<String>(metabPosMap.keySet()); 
    		Collections.sort(metaboliteList);

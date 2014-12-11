@@ -162,7 +162,7 @@ public class PathwayFilesReader {
 							//System.out.println("map " + metabolicPathways.get(id));		
 							if (s == PathwaysCSVFileConstants.PATHWAY_REACTIONS_REACTANTS_COLUMN) {
 								//System.out.println(dataArray[s]);
-								String[] reac = dataArray[s].split(",");
+								String[] reac = dataArray[s].split("\\|");
 								ArrayList<String> reactantIds = new ArrayList<String>();
 								for (int i = 0; i < reac.length; i++) {
 									reactantIds.add(reac[i]);
@@ -171,7 +171,7 @@ public class PathwayFilesReader {
 							}
 							if (s == PathwaysCSVFileConstants.PATHWAY_REACTIONS_PRODUCTS_COLUMN) {
 								//System.out.println(dataArray[s]);
-								String[] prod = dataArray[s].split(",");
+								String[] prod = dataArray[s].split("\\|");
 								ArrayList<String> productIds = new ArrayList<String>();
 								for (int i = 0; i < prod.length; i++) {
 									productIds.add(prod[i]);
@@ -183,7 +183,7 @@ public class PathwayFilesReader {
 							}
 							if (s == PathwaysCSVFileConstants.PATHWAY_REACTIONS_EC_NUM_LIST_COLUMN) {
 								//System.out.println(dataArray[s]);
-								String[] ecNumbers = dataArray[s].split(",");
+								String[] ecNumbers = dataArray[s].split("\\|");
 								ArrayList<String> ec = new ArrayList<String>();
 								for (int i = 0; i < ecNumbers.length; i++) {
 									ec.add(ecNumbers[i]);
@@ -323,7 +323,7 @@ public class PathwayFilesReader {
 						ArrayList<ArrayList<String>> productPathwaysIds = new ArrayList<ArrayList<String>>();
 						for (int s = 0; s < dataArray.length; s++) {	
 							if (s == PathwaysCSVFileConstants.PATHWAY_CONNECTIONS_REACTANTS_COLUMN) {
-								String[] reactants = dataArray[s].split(",");
+								String[] reactants = dataArray[s].split("\\|");
 								for (int t = 0; t < reactants.length; t++) {
 									ArrayList<String> item = new ArrayList<String>();
 									String[] pathwayId = reactants[t].split(" ");
@@ -334,7 +334,7 @@ public class PathwayFilesReader {
 								pc.setReactantPathwaysIds(reactantPathwaysIds);
 							}
 							if (s == PathwaysCSVFileConstants.PATHWAY_CONNECTIONS_PRODUCTS_COLUMN) {
-								String[] products = dataArray[s].split(",");
+								String[] products = dataArray[s].split("\\|");
 								for (int t = 0; t < products.length; t++) {
 									ArrayList<String> item = new ArrayList<String>();
 									String[] pathwayId = products[t].split(" ");
@@ -348,7 +348,7 @@ public class PathwayFilesReader {
 								pc.setReversible(dataArray[s]);
 							}
 							if (s == PathwaysCSVFileConstants.PATHWAY_CONNECTIONS_EC_NUM_LIST_COLUMN) {
-								String[] ecNumbers = dataArray[s].split(",");
+								String[] ecNumbers = dataArray[s].split("\\|");
 								ArrayList<String> ec = new ArrayList<String>();
 								for (int i = 0; i < ecNumbers.length; i++) {
 									ec.add(ecNumbers[i]);
