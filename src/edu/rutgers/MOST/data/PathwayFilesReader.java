@@ -310,8 +310,11 @@ public class PathwayFilesReader {
 		CSVReader reader;
 
 		int count = 0;
+		// used for connections that determine position of second pathway
 		Map<String, ArrayList<PathwayConnectionData>> connectionPositionMap = new HashMap<String, ArrayList<PathwayConnectionData>>();
-
+		// used for all other connections
+		ArrayList<PathwayConnectionData> connectionslist = new ArrayList<PathwayConnectionData>();
+		
 		try {
 			reader = new CSVReader(new FileReader(pathwayConnections), ',');
 			String [] dataArray;
@@ -363,27 +366,32 @@ public class PathwayFilesReader {
 							}
 							if (s == PathwaysCSVFileConstants.PATHWAY_CONNECTIONS_POSITIONING_COLUMN) {
 								pc.setPositioning(dataArray[s]);
-								if (dataArray[s].equals("1")) {
-									pc.setDirection(pc.getDirection());
-									if (connectionPositionMap.containsKey(pc.getReactantPathwaysIds().get(0).get(0))) {
-										ArrayList<PathwayConnectionData> cd = connectionPositionMap.get(pc.getReactantPathwaysIds().get(0).get(0));
-										cd.add(pc);
-									} else {
-										ArrayList<PathwayConnectionData> cd = new ArrayList<PathwayConnectionData>();
-										cd.add(pc);
-										connectionPositionMap.put(pc.getReactantPathwaysIds().get(0).get(0), cd);
-									}
-								}
+								
 							}
 						}
 						pc.writeReactionEquation();
 						pc.setName(pc.getEquation());
 						//System.out.println(pc);
+						if (pc.getPositioning().equals("1")) {
+							pc.setDirection(pc.getDirection());
+							if (connectionPositionMap.containsKey(pc.getReactantPathwaysIds().get(0).get(0))) {
+								ArrayList<PathwayConnectionData> cd = connectionPositionMap.get(pc.getReactantPathwaysIds().get(0).get(0));
+								cd.add(pc);
+							} else {
+								ArrayList<PathwayConnectionData> cd = new ArrayList<PathwayConnectionData>();
+								cd.add(pc);
+								connectionPositionMap.put(pc.getReactantPathwaysIds().get(0).get(0), cd);
+							}
+						} else {
+							connectionslist.add(pc);
+						}
 					}
 					count += 1;
 				}
 				LocalConfig.getInstance().setConnectionPositionMap(connectionPositionMap);
-				//System.out.println(connectionPositionMap);
+				System.out.println(connectionPositionMap);
+				LocalConfig.getInstance().setConnectionslist(connectionslist);
+				System.out.println(connectionslist);
 				reader.close();
 			} catch (IOException e) {
 				JOptionPane.showMessageDialog(null,                

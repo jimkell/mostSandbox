@@ -947,5 +947,13 @@ public class LocalConfig {
 		this.connectionPositionMap = connectionPositionMap;
 	}
 
-	
+	ArrayList<PathwayConnectionData> connectionslist;
+
+	public ArrayList<PathwayConnectionData> getConnectionslist() {
+		return connectionslist;
+	}
+
+	public void setConnectionslist(ArrayList<PathwayConnectionData> connectionslist) {
+		this.connectionslist = connectionslist;
+	}
 }

@@ -288,18 +288,26 @@ public class PathwaysFrame extends JApplet {
 						System.out.println("d " + LocalConfig.getInstance().getConnectionPositionMap().get(pathway.getId()).get(p).getDirection());
 						System.out.println("l " + LocalConfig.getInstance().getConnectionPositionMap().get(pathway.getId()).get(p).getLength());
 						ArrayList<Double> xyList = new ArrayList<Double>();
-						double newStartX = startX;
-						double newStartY = startY;
+						double newStartX = pathway.getMetabolitesNodes().get(LocalConfig.getInstance().getConnectionPositionMap().get(pathway.getId()).get(p).getReactantPathwaysIds().get(0).get(1)).getxPosition();;
+						double newStartY = pathway.getMetabolitesNodes().get(LocalConfig.getInstance().getConnectionPositionMap().get(pathway.getId()).get(p).getReactantPathwaysIds().get(0).get(1)).getyPosition();
 						if (LocalConfig.getInstance().getConnectionPositionMap().get(pathway.getId()).get(p).getDirection().equals("vertical")) {
-							newStartY = LocalConfig.getInstance().getConnectionPositionMap().get(pathway.getId()).get(p).getLength() * verticalIncrement +
-									pathway.getMetabolitesNodes().get(LocalConfig.getInstance().getConnectionPositionMap().get(pathway.getId()).get(p).getReactantPathwaysIds().get(0).get(1)).getyPosition();
+							newStartY += LocalConfig.getInstance().getConnectionPositionMap().get(pathway.getId()).get(p).getLength() * verticalIncrement;	
 						} else if (LocalConfig.getInstance().getConnectionPositionMap().get(pathway.getId()).get(p).getDirection().equals("horizontal")) {
-							newStartX = LocalConfig.getInstance().getConnectionPositionMap().get(pathway.getId()).get(p).getLength() * horizontalIncrement +
-									pathway.getMetabolitesNodes().get(LocalConfig.getInstance().getConnectionPositionMap().get(pathway.getId()).get(p).getReactantPathwaysIds().get(0).get(1)).getxPosition();
+							newStartX += LocalConfig.getInstance().getConnectionPositionMap().get(pathway.getId()).get(p).getLength() * horizontalIncrement;
 						}
 						xyList.add(newStartX);
 						xyList.add(newStartY);
 						startPosMap.put(LocalConfig.getInstance().getConnectionPositionMap().get(pathway.getId()).get(p).getProductPathwaysIds().get(0).get(0), xyList);
+						// purpose of these loops is to conpute average x and average y of reactants
+						// and products to place reaction node
+						for (int q = 0; q < LocalConfig.getInstance().getConnectionPositionMap().get(pathway.getId()).get(p).getProductPathwaysIds().size(); q++) {
+							System.out.println("reac pathway id " + LocalConfig.getInstance().getConnectionPositionMap().get(pathway.getId()).get(p).getReactantPathwaysIds().get(q).get(0));
+							System.out.println("reactant " + LocalConfig.getInstance().getConnectionPositionMap().get(pathway.getId()).get(p).getReactantPathwaysIds().get(q).get(1));
+						}
+						for (int r = 0; r < LocalConfig.getInstance().getConnectionPositionMap().get(pathway.getId()).get(p).getProductPathwaysIds().size(); r++) {
+							System.out.println("prod pathway id " + LocalConfig.getInstance().getConnectionPositionMap().get(pathway.getId()).get(p).getProductPathwaysIds().get(r).get(0));
+							System.out.println("product " + LocalConfig.getInstance().getConnectionPositionMap().get(pathway.getId()).get(p).getProductPathwaysIds().get(r).get(1));
+						}
 						System.out.println("prod pathway id " + LocalConfig.getInstance().getConnectionPositionMap().get(pathway.getId()).get(p).getProductPathwaysIds().get(0).get(0));
 						System.out.println("product " + LocalConfig.getInstance().getConnectionPositionMap().get(pathway.getId()).get(p).getProductPathwaysIds().get(0).get(1));
 //						System.out.println(startX);

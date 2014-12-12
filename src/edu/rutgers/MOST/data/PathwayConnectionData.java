@@ -15,7 +15,7 @@ public class PathwayConnectionData {
 	private ArrayList<String> ecNumbers;
 	private double length;
 	private String positioning;
-	private double positioningIndex;
+	//private double positioningIndex;
 	private String direction;
 	// equation made up of metabolite node names
 	private String equation;
@@ -73,13 +73,13 @@ public class PathwayConnectionData {
 		this.positioning = positioning;
 	}
 
-	public double getPositioningIndex() {
-		return positioningIndex;
-	}
-
-	public void setPositioningIndex(double positioningIndex) {
-		this.positioningIndex = positioningIndex;
-	}
+//	public double getPositioningIndex() {
+//		return positioningIndex;
+//	}
+//
+//	public void setPositioningIndex(double positioningIndex) {
+//		this.positioningIndex = positioningIndex;
+//	}
 
 	public String getDirection() {
 		return direction;
@@ -150,7 +150,7 @@ public class PathwayConnectionData {
 				+ ", ecNumbers=" + ecNumbers
 				+ ", length=" + length
 				+ ", positioning=" + positioning
-				+ ", positioningIndex=" + positioningIndex
+				//+ ", positioningIndex=" + positioningIndex
 				+ ", direction=" + direction
 				+ ", name=" + name
 				+ ", equation=" + equation + "]";
