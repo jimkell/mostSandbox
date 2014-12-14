@@ -12,6 +12,7 @@ import edu.rutgers.MOST.data.EnzymeData;
 import edu.rutgers.MOST.data.MetabolicPathway;
 import edu.rutgers.MOST.data.ModelReactionEquation;
 import edu.rutgers.MOST.data.PathwayConnectionData;
+import edu.rutgers.MOST.data.PathwayConnectionNode;
 import edu.rutgers.MOST.data.SBMLReaction;
 
 public class LocalConfig {	
@@ -955,5 +956,16 @@ public class LocalConfig {
 
 	public void setConnectionslist(ArrayList<PathwayConnectionData> connectionslist) {
 		this.connectionslist = connectionslist;
+	}
+	
+	ArrayList<PathwayConnectionNode> connectionsNodelist;
+
+	public ArrayList<PathwayConnectionNode> getConnectionsNodelist() {
+		return connectionsNodelist;
+	}
+
+	public void setConnectionsNodelist(
+			ArrayList<PathwayConnectionNode> connectionsNodelist) {
+		this.connectionsNodelist = connectionsNodelist;
 	}
 }

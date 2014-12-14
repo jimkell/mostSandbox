@@ -72,7 +72,7 @@ public class MetabolicPathway {
 	public void setDirection(String direction) {
 		this.direction = direction;
 	}
-
+	
 	@Override
 	public String toString() {
 		return "Metabolic Pathway [id=" + id

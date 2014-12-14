@@ -382,9 +382,8 @@ public class PathwayFilesReader {
 								cd.add(pc);
 								connectionPositionMap.put(pc.getReactantPathwaysIds().get(0).get(0), cd);
 							}
-						} else {
-							connectionslist.add(pc);
-						}
+						} 
+						connectionslist.add(pc);
 					}
 					count += 1;
 				}
