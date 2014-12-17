@@ -9,9 +9,12 @@ public class PathwayReactionNode {
 	private String reactionName;
 	// used for node text
 	private String modelReactionName;
+	private ArrayList<String> modelReactionNames;
 	private String dataId;
 	private String equation;
 	private String modelEquation;
+	private ArrayList<String> modelEquations;
+	private ArrayList<Double> fluxes;
 	
 	// data from enzyme.dat
 	private ArrayList<String> enzymeDataEquations;
@@ -68,6 +71,18 @@ public class PathwayReactionNode {
 
 
 
+	public ArrayList<String> getModelReactionNames() {
+		return modelReactionNames;
+	}
+
+
+
+	public void setModelReactionNames(ArrayList<String> modelReactionNames) {
+		this.modelReactionNames = modelReactionNames;
+	}
+
+
+
 	public String getModelReactionName() {
 		return modelReactionName;
 	}
@@ -112,6 +127,30 @@ public class PathwayReactionNode {
 
 	public void setModelEquation(String modelEquation) {
 		this.modelEquation = modelEquation;
+	}
+
+
+
+	public ArrayList<String> getModelEquations() {
+		return modelEquations;
+	}
+
+
+
+	public void setModelEquations(ArrayList<String> modelEquations) {
+		this.modelEquations = modelEquations;
+	}
+
+
+
+	public ArrayList<Double> getFluxes() {
+		return fluxes;
+	}
+
+
+
+	public void setFluxes(ArrayList<Double> fluxes) {
+		this.fluxes = fluxes;
 	}
 
 
@@ -304,13 +343,16 @@ public class PathwayReactionNode {
 		return "Pathway Reaction Node [compartment=" + compartment
 		+ ", pathwayId=" + pathwayId
 		+ ", reactionName=" + reactionName
-		+ ", modelReactionName=" + modelReactionName
+		//+ ", modelReactionName=" + modelReactionName
+		+ ", modelReactionNames=" + modelReactionNames
 		+ ", dataId=" + dataId
 		+ ", equation=" + equation
 		+ ", modelEquation=" + modelEquation
+		+ ", modelEquations=" + modelEquations
+		+ ", fluxes=" + fluxes
 		+ ", enzymeDataEquations=" + enzymeDataEquations
-		+ ", mainReactants=" + mainReactants		
-		+ ", mainProducts=" + mainProducts
+		//+ ", mainReactants=" + mainReactants		
+		//+ ", mainProducts=" + mainProducts
 		+ ", sideReactants=" + sideReactants		
 		+ ", sideProducts=" + sideProducts
 		+ ", mainPathwayReactants=" + mainPathwayReactants		

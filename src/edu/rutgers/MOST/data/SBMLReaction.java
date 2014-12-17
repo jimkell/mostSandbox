@@ -241,11 +241,13 @@ public class SBMLReaction implements ModelReaction {
 	public String toString() {
 		return "SBMLReaction [id=" + id
 		        + ", fluxValue=" + fluxValue
-				+ ", biologicalObjective=" + biologicalObjective
-				+ ", upperBound=" + upperBound
-				+ ", lowerBound=" + lowerBound				
-				+ ", geneAssociation=" + geneAssociation
-				+ ", knockout=" + knockout + "]";
+		        + ", reactionName=" + reactionName
+		        + ", reactionEqunAbbr=" + reactionEqunAbbr + "]";
+//				+ ", biologicalObjective=" + biologicalObjective
+//				+ ", upperBound=" + upperBound
+//				+ ", lowerBound=" + lowerBound				
+//				+ ", geneAssociation=" + geneAssociation
+//				+ ", knockout=" + knockout + "]";
 	}
 
 	public static void main(String[] args) {

@@ -199,6 +199,28 @@ public class LocalConfig {
 		this.metaboliteIdCompartmentMap = metaboliteIdCompartmentMap;
 	}
 
+	private Map<String, ArrayList<String>> metaboliteBaseNameCompartmentMap;
+	
+	public Map<String, ArrayList<String>> getMetaboliteBaseNameCompartmentMap() {
+		return metaboliteBaseNameCompartmentMap;
+	}
+
+	public void setMetaboliteBaseNameCompartmentMap(
+			Map<String, ArrayList<String>> metaboliteBaseNameCompartmentMap) {
+		this.metaboliteBaseNameCompartmentMap = metaboliteBaseNameCompartmentMap;
+	}
+
+	private ArrayList<String> compartmentAbbreviationList;
+
+	public ArrayList<String> getCompartmentAbbreviationList() {
+		return compartmentAbbreviationList;
+	}
+
+	public void setCompartmentAbbreviationList(
+			ArrayList<String> compartmentAbbreviationList) {
+		this.compartmentAbbreviationList = compartmentAbbreviationList;
+	}
+
 	//used for determining id when adding a metabolite when a reaction is
 	//read and metabolite is not present
 	private Integer maxMetabolite;

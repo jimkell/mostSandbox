@@ -42,6 +42,8 @@ import javax.swing.JPanel;
 
 
 
+
+
 import org.apache.commons.collections15.Transformer;                                                                 
 import org.apache.commons.collections15.functors.ChainedTransformer;                                                 
                                                                                                                      
@@ -186,11 +188,16 @@ public class PathwaysFrame extends JApplet {
 			borderList.add(Integer.toString(b));
 		}
 		
-		ECNumberMapCreator ecMapCreator = new ECNumberMapCreator();
-		ecMapCreator.createEcNumberReactionMap();
+//		ECNumberMapCreator ecMapCreator = new ECNumberMapCreator();
+//		ecMapCreator.createEcNumberReactionMap();
+		
+		ArrayList<String> foundList = new ArrayList<String>();
 		
 		PathwayFilesReader reader = new PathwayFilesReader();
 		reader.readFiles();
+		
+		ECNumberMapCreator ecMapCreator = new ECNumberMapCreator();
+		ecMapCreator.createEcNumberReactionMap();
 		
 		double startX = borderWidth + horizontalIncrement;
 		double startY = graphHeight/2;
@@ -217,11 +224,77 @@ public class PathwaysFrame extends JApplet {
 				metabPosMap.put(pathway.getMetabolitesData().get(Integer.toString(j)).getNames().get(0), new String[] {Double.toString(x), Double.toString(y)});  
 			}
 			for (int k = 0; k < pathway.getReactionsData().size(); k++) {
+				//System.out.println(pathway.getReactionsData().get(Integer.toString(k)).getEcNumbers());
+				ArrayList<String> sideReactants = new ArrayList<String>();
+				ArrayList<String> sideProducts = new ArrayList<String>();
+				ArrayList<String> enzymeDataEquations = new ArrayList<String>();
+				ArrayList<String> modelReactionNames = new ArrayList<String>();
+				ArrayList<String> modelEquations = new ArrayList<String>();
+				ArrayList<Double> fluxes = new ArrayList<Double>();
+				ArrayList<String> ecNumbers = new ArrayList<String>();
+				for (int m = 0; m < pathway.getReactionsData().get(Integer.toString(k)).getEcNumbers().size(); m++) {
+					if (LocalConfig.getInstance().getEcNumberReactionMap().containsKey(pathway.getReactionsData().get(Integer.toString(k)).getEcNumbers().get(m))) {
+						ecNumbers.add(pathway.getReactionsData().get(Integer.toString(k)).getEcNumbers().get(m));
+						ArrayList<SBMLReaction> reac = LocalConfig.getInstance().getEcNumberReactionMap().get(pathway.getReactionsData().get(Integer.toString(k)).getEcNumbers().get(m));
+						for (int r = 0; r < reac.size(); r++) {
+							modelReactionNames.add(reac.get(r).getReactionName());
+							modelEquations.add(reac.get(r).getReactionEqunAbbr());
+							fluxes.add(reac.get(r).getFluxValue());
+						}
+						if (LocalConfig.getInstance().getEnzymeDataMap().get(pathway.getReactionsData().get(Integer.toString(k)).getEcNumbers().get(m)).getCatalyticActivity() == null) {
+							//System.out.println(keys.get(j) + " " + LocalConfig.getInstance().getEnzymeDataMap().get(keys.get(j)).getDescription());
+						} else {
+							enzymeDataEquations.add(LocalConfig.getInstance().getEnzymeDataMap().get(pathway.getReactionsData().get(Integer.toString(k)).getEcNumbers().get(m)).getCatalyticActivity());
+							//System.out.println(keys.get(j) + " " + LocalConfig.getInstance().getEnzymeDataMap().get(keys.get(j)).getCatalyticActivity());
+							String[] halfReactions = LocalConfig.getInstance().getEnzymeDataMap().get(pathway.getReactionsData().get(Integer.toString(k)).getEcNumbers().get(m)).getCatalyticActivity().split(" = ");
+							for (int n = 0; n < LocalConfig.getInstance().getSideSpeciesList().size(); n++) {
+								if (halfReactions[0].contains(LocalConfig.getInstance().getSideSpeciesList().get(n))) {
+									if (!sideReactants.contains(LocalConfig.getInstance().getSideSpeciesList().get(n))) {
+										sideReactants.add(LocalConfig.getInstance().getSideSpeciesList().get(n));
+									}
+								}
+								if (halfReactions[1].contains(LocalConfig.getInstance().getSideSpeciesList().get(n))) {
+									if (!sideProducts.contains(LocalConfig.getInstance().getSideSpeciesList().get(n))) {
+										sideProducts.add(LocalConfig.getInstance().getSideSpeciesList().get(n));
+									}
+								}
+							}
+						}
+					}
+				}
 				PathwayReactionNode pn = new PathwayReactionNode();
-				reactions.add(pathway.getReactionsData().get(Integer.toString(k)).getName());
+				pn.setPathwayId(pathway.getId());
+				pn.setSideReactants(sideReactants);
+				pn.setSideProducts(sideProducts);
+				pn.setEnzymeDataEquations(enzymeDataEquations);
+				pn.setModelEquations(modelEquations);
+				pn.setModelReactionNames(modelReactionNames);
+				pn.setFluxes(fluxes);
+				pn.setEcNumbers(ecNumbers);
+				//System.out.println(pn);
+				String displayName = pathway.getReactionsData().get(Integer.toString(k)).getName();
+				if (modelReactionNames.size() > 0) {
+					String reacName = modelReactionNames.get(0);
+					if (modelReactionNames.size() > 1) {
+						reacName = modelReactionNames.toString();
+					}
+					String ec = "";
+					if (ecNumbers.size() > 0) {
+						ec = ecNumbers.get(0);
+					}
+					if (ecNumbers.size() > 1) {
+						ec = ecNumbers.toString();
+					}
+					displayName = "<html>" + reacName
+							+ "<p> EC Numbers: " + ec
+							+ "<p> Reaction: " + pathway.getReactionsData().get(Integer.toString(k)).getName()
+							+ "<p>Equation from Model: " + modelEquations;
+					foundList.add(displayName);
+				} 
+				reactions.add(displayName);
 				double x = startX + horizontalIncrement*pathway.getReactionsData().get(Integer.toString(k)).getLevel();
 				double y = startY + verticalIncrement*pathway.getReactionsData().get(Integer.toString(k)).getLevelPosition(); 
-				metabPosMap.put(pathway.getReactionsData().get(Integer.toString(k)).getName(), new String[] {Double.toString(x), Double.toString(y)});  
+				metabPosMap.put(displayName, new String[] {Double.toString(x), Double.toString(y)});  
 				pn.setDataId(pathway.getReactionsData().get(Integer.toString(k)).getReactionId());
 				pn.setxPosition(x);
 				pn.setyPosition(y);
@@ -236,16 +309,16 @@ public class PathwaysFrame extends JApplet {
 				for (int r = 0; r < pathway.getReactionsData().get(Integer.toString(k)).getReactantIds().size(); r++) {
 					//System.out.println(pathway.getMetabolites().get((pathway.getReactionsData().get(Integer.toString(k)).getMainReactants().get(r))).getNames().get(0));
 					String reac = pathway.getMetabolitesData().get((pathway.getReactionsData().get(Integer.toString(k)).getReactantIds().get(r))).getNames().get(0);
-					//if (!reactionMap.containsKey(pathway.getReactionsData().get(Integer.toString(k)).getName())) {
-						reactionMap.put(pathway.getReactionsData().get(Integer.toString(k)).getName() + "reactant " + Integer.toString(r), new String[] {pathway.getReactionsData().get(Integer.toString(k)).getName(), reac, reversible});
-						fluxMap.put(pathway.getReactionsData().get(Integer.toString(k)).getName() + "reactant " + Integer.toString(r), 1.0);
+					//if (!reactionMap.containsKey(displayName)) {
+						reactionMap.put(displayName + "reactant " + Integer.toString(r), new String[] {displayName, reac, reversible});
+						fluxMap.put(displayName + "reactant " + Integer.toString(r), 1.0);
 					//} 
 				}
 				for (int p = 0; p < pathway.getReactionsData().get(Integer.toString(k)).getProductIds().size(); p++) {
 					//System.out.println(pathway.getMetabolites().get((pathway.getReactionsData().get(Integer.toString(k)).getMainProducts().get(p))).getNames().get(0));
 					String prod = pathway.getMetabolitesData().get((pathway.getReactionsData().get(Integer.toString(k)).getProductIds().get(p))).getNames().get(0);
-					reactionMap.put(pathway.getReactionsData().get(Integer.toString(k)).getName() + "product " + Integer.toString(p), new String[] {pathway.getReactionsData().get(Integer.toString(k)).getName(), prod, "true"});
-					fluxMap.put(pathway.getReactionsData().get(Integer.toString(k)).getName() + "product " + Integer.toString(p), 1.0);
+					reactionMap.put(displayName + "product " + Integer.toString(p), new String[] {displayName, prod, "true"});
+					fluxMap.put(displayName + "product " + Integer.toString(p), 1.0);
 				}
 			}
 			//System.out.println("map " + LocalConfig.getInstance().getConnectionPositionMap());
@@ -397,6 +470,7 @@ public class PathwaysFrame extends JApplet {
         
         vv.setBackground(Color.white);
         
+        System.out.println("fl " + foundList);
         Map<String, Icon> iconMap = new HashMap<String, Icon>();                                                                                        
         for(int i = 0; i < metaboliteList.size(); i++) {                                                                                                        
         	String name = metaboliteList.get(i);
@@ -422,7 +496,11 @@ public class PathwaysFrame extends JApplet {
         	} else if (metabolites.contains(name)) {
         		graphics.setColor(Color.lightGray);
         	} else if (reactions.contains(name)) {
-        		graphics.setColor(Color.white);
+        		if (foundList.contains(name)) {
+        			graphics.setColor(Color.white);
+        		} else {
+        			graphics.setColor(Color.yellow);
+        		}
         	}
         	graphics.fillRect(0, 0, width, height);
         	graphics.setColor(Color.BLACK);
@@ -616,7 +694,7 @@ public class PathwaysFrame extends JApplet {
         		s = s.substring(6, s.indexOf("<p>"));
         	}
     		if (s.length() > 11) {
-        		s = s.substring(0, 8) + "...";
+        		s = s.substring(0, 9) + "...";
         	}
     	} else {
     		if (s.length() > 7) {
