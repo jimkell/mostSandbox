@@ -470,7 +470,7 @@ public class PathwaysFrame extends JApplet {
         
         vv.setBackground(Color.white);
         
-        System.out.println("fl " + foundList);
+        //System.out.println("fl " + foundList);
         Map<String, Icon> iconMap = new HashMap<String, Icon>();                                                                                        
         for(int i = 0; i < metaboliteList.size(); i++) {                                                                                                        
         	String name = metaboliteList.get(i);

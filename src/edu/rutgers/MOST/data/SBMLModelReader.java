@@ -70,7 +70,7 @@ public class SBMLModelReader {
 		for (int c = 0; c < doc.getModel().getListOfCompartments().size(); c++) {
 			listOfCompartments.add(doc.getModel().getCompartment(c).toString());
 		}
-		System.out.println(listOfCompartments);
+		//System.out.println(listOfCompartments);
 		LocalConfig.getInstance().setListOfCompartments(listOfCompartments);
 		
 		ArrayList<String> compartmentsList = new ArrayList<String>();
@@ -97,6 +97,16 @@ public class SBMLModelReader {
 			metabRow.add(Integer.toString(i));
 			metabRow.add(metabolites.get(i).getId());
 			if(metabolites.get(i).getId().substring(metabolites.get(i).getId().length() - 2, metabolites.get(i).getId().length() - 1).equals("_")) {
+				String metabPrefix = metabolites.get(i).getId().substring(0, metabolites.get(i).getId().length() - 2);
+				if (!metaboliteBaseNameCompartmentMap.containsKey(metabPrefix)) {
+					ArrayList<String> compList = new ArrayList<String>();
+					compList.add(metabolites.get(i).getId().substring(metabolites.get(i).getId().length() - 1, metabolites.get(i).getId().length() - 0));
+					metaboliteBaseNameCompartmentMap.put(metabPrefix, compList);
+				} else {
+					ArrayList<String> compList = metaboliteBaseNameCompartmentMap.get(metabPrefix);
+					compList.add(metabolites.get(i).getId().substring(metabolites.get(i).getId().length() - 1, metabolites.get(i).getId().length() - 0));
+					metaboliteBaseNameCompartmentMap.put(metabPrefix, compList);
+				}
 				//System.out.println(metabolites.get(i).getId().substring(0, metabolites.get(i).getId().length() - 2));
 				if (!compartmentAbbreviationList.contains(metabolites.get(i).getId().substring(metabolites.get(i).getId().length() - 1, metabolites.get(i).getId().length() - 0))) {
 					compartmentAbbreviationList.add(metabolites.get(i).getId().substring(metabolites.get(i).getId().length() - 1, metabolites.get(i).getId().length() - 0));
@@ -258,9 +268,11 @@ public class SBMLModelReader {
 		LocalConfig.getInstance().setMetabolitesMetaColumnNames(metabolitesMetaColumnNames);
 		LocalConfig.getInstance().setCompartmentsList(compartmentsList);
 		LocalConfig.getInstance().setCompartmentAbbreviationList(compartmentAbbreviationList);
-		System.out.println(compartmentAbbreviationList);
+		//System.out.println(compartmentAbbreviationList);
 		//System.out.println(compartmentsList);
-        // end metabolites read
+		LocalConfig.getInstance().setMetaboliteBaseNameCompartmentMap(metaboliteBaseNameCompartmentMap);
+        System.out.println(metaboliteBaseNameCompartmentMap);
+		// end metabolites read
 		
 		boolean containsMinFlux = false;
 		boolean containsMaxFlux = false;
@@ -728,7 +740,7 @@ public class SBMLModelReader {
 		LocalConfig.getInstance().setReactionAbbreviationIdMap(reactionAbbreviationIdMap);
 		//System.out.println(reactionAbbreviationIdMap);
 		LocalConfig.getInstance().setBiCompartmentReactionIds(biCompartmentReactionIds);
-		System.out.println("bicompartment ids " + biCompartmentReactionIds);
+		//System.out.println("bicompartment ids " + biCompartmentReactionIds);
 		LocalConfig.getInstance().setProgress(100);	
 		if (containsMinFlux && containsMaxFlux) {
 			LocalConfig.getInstance().getShowFVAColumnsList().add(LocalConfig.getInstance().getModelName());
