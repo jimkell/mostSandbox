@@ -193,11 +193,11 @@ public class PathwaysFrame extends JApplet {
 		
 		ArrayList<String> foundList = new ArrayList<String>();
 		
-		PathwayFilesReader reader = new PathwayFilesReader();
-		reader.readFiles();
-		
-		ECNumberMapCreator ecMapCreator = new ECNumberMapCreator();
-		ecMapCreator.createEcNumberReactionMap();
+//		PathwayFilesReader reader = new PathwayFilesReader();
+//		reader.readFiles();
+//		
+//		ECNumberMapCreator ecMapCreator = new ECNumberMapCreator();
+//		ecMapCreator.createEcNumberReactionMap();
 		
 		double startX = borderWidth + horizontalIncrement;
 		double startY = graphHeight/2;

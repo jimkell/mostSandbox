@@ -31,6 +31,7 @@ import edu.rutgers.MOST.Analysis.GDBB;
 import edu.rutgers.MOST.Analysis.SPOT;
 import edu.rutgers.MOST.config.LocalConfig;
 import edu.rutgers.MOST.data.ConfigProperties;
+import edu.rutgers.MOST.data.ECNumberMapCreator;
 import edu.rutgers.MOST.data.GDBBModel;
 import edu.rutgers.MOST.data.JSBMLWriter;
 import edu.rutgers.MOST.data.MetaboliteFactory;
@@ -38,6 +39,7 @@ import edu.rutgers.MOST.data.MetaboliteUndoItem;
 import edu.rutgers.MOST.data.Model;
 import edu.rutgers.MOST.data.ModelReactionEquation;
 import edu.rutgers.MOST.data.ObjectCloner;
+import edu.rutgers.MOST.data.PathwayFilesReader;
 import edu.rutgers.MOST.data.ReactionEquationUpdater;
 import edu.rutgers.MOST.data.ReactionFactory;
 import edu.rutgers.MOST.data.ReactionUndoItem;
@@ -1385,6 +1387,10 @@ public class GraphicalInterface extends JFrame {
 
 		ArrayList<Integer> addedMetabolites = new ArrayList<Integer>();
 		LocalConfig.getInstance().setAddedMetabolites(addedMetabolites);
+		
+		// visualizations 
+		Map<String, ArrayList<SBMLReaction>> ecNumberReactionMap = new HashMap<String, ArrayList<SBMLReaction>>();
+		LocalConfig.getInstance().setEcNumberReactionMap(ecNumberReactionMap);
 
 		DynamicTreePanel.getTreePanel().deleteItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent a) {
@@ -2703,16 +2709,41 @@ public class GraphicalInterface extends JFrame {
 
 		visualizeMenu.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
-				// create a frome to hold the graph                                                                          
-		        final JFrame frame = new JFrame();  
-		        frame.setIconImages(icons);
-		        frame.setTitle(gi.getTitle());
-		        Container content = frame.getContentPane();                                                                  
-		        content.add(new PathwaysFrame());                                                                        
-		        frame.pack();                                                                                                
-		        //frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
-		        frame.setLocationRelativeTo(null);
-		        frame.setVisible(true);  
+				PathwayFilesReader reader = new PathwayFilesReader();
+				reader.readFiles();
+				
+				ECNumberMapCreator ecMapCreator = new ECNumberMapCreator();
+				ecMapCreator.createEcNumberReactionMap();
+				
+				if (LocalConfig.getInstance().getEcNumberReactionMap().size() == 0) {
+					if (LocalConfig.getInstance().getEcNumberReactionMap().size() == 0) {
+
+					}
+					Object[] options = {"Yes",
+					"No"};
+					int choice = JOptionPane.showOptionDialog(null, 
+							"<html>Since there are no EC Numbers in the loaded model, <p>"
+									+ "MOST is unable to link reactions in model to reactions <p>"
+									+ "in the Visualizations database. Continue anyway?", 
+									"No EC Numbers in Model", 
+									JOptionPane.YES_NO_OPTION, 
+									JOptionPane.QUESTION_MESSAGE, 
+									null, options, options[0]);
+					//options[0] sets "Yes" as default button
+
+					// interpret the user's choice	  
+					if (choice == JOptionPane.YES_OPTION)
+					{
+						createVisualizationsPane();
+					}
+					//No option actually corresponds to "Yes to All" button
+					if (choice == JOptionPane.NO_OPTION)
+					{
+						// option in future to graph unconstrained
+					}
+				} else {
+					createVisualizationsPane();
+				} 
 			}
 		});
 
@@ -11883,6 +11914,19 @@ public class GraphicalInterface extends JFrame {
 		} else {
 			LocalConfig.getInstance().fvaColumnsVisible = false;
 		}
+	}
+	
+	public void createVisualizationsPane() {
+		// create a frome to hold the graph                                                                          
+        final JFrame frame = new JFrame();  
+        frame.setIconImages(icons);
+        frame.setTitle(gi.getTitle());
+        Container content = frame.getContentPane();                                                                  
+        content.add(new PathwaysFrame());                                                                        
+        frame.pack();                                                                                                
+        //frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true); 
 	}
 	
 	public static void main(String[] args) {
