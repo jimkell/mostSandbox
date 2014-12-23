@@ -18,10 +18,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import javax.swing.table.DefaultTableModel;
-import edu.rutgers.MOST.config.LocalConfig;
 
-public class ReactionColAddRenameInterface extends JDialog {
+public class NodeEditorDialog extends JDialog {
 
 	/**
 	 * 
@@ -31,7 +29,7 @@ public class ReactionColAddRenameInterface extends JDialog {
 	public static JButton cancelButton = new JButton("  Cancel  ");
 	public static final JTextField textField = new JTextField();
 
-	public ReactionColAddRenameInterface() {
+	public NodeEditorDialog() {
 
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		
@@ -45,7 +43,7 @@ public class ReactionColAddRenameInterface extends JDialog {
 		Box hbButton = Box.createHorizontalBox();
 
 		JLabel topLabel = new JLabel();
-		topLabel.setText(GraphicalInterfaceConstants.COLUMN_ADD_RENAME_LABEL);
+		topLabel.setText("Node Editor");
 		topLabel.setSize(new Dimension(150, 10));
 		//top, left, bottom. right
 		topLabel.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
@@ -116,37 +114,13 @@ public class ReactionColAddRenameInterface extends JDialog {
 		cancelButton.addActionListener(cancelButtonActionListener);
 	} 	 
 
-	public boolean isColumnDuplicate() {
-		String columnName = textField.getText();
-		boolean duplicate = false;
-		for (int i = 0; i < GraphicalInterfaceConstants.REACTIONS_COLUMN_NAMES.length; i++) {
-			if (GraphicalInterfaceConstants.REACTIONS_COLUMN_NAMES[i].equals(columnName)) {
-				duplicate = true;
-			}
-		}
-		for (int j = 0; j < LocalConfig.getInstance().getReactionsMetaColumnNames().size(); j++) {
-			if (LocalConfig.getInstance().getReactionsMetaColumnNames().get(j).equals(columnName)) {
-				duplicate = true;
-			}
-		}	
-		return duplicate;
-	}
-	
-	public void addColumn(){
-		String columnName = textField.getText();
-		//LocalConfig.getInstance().getReactionsMetaColumnNames().add(columnName);
-		DefaultTableModel model = (DefaultTableModel) GraphicalInterface.reactionsTable.getModel();
-		model.addColumn(columnName);
-		LocalConfig.getInstance().getReactionsTableModelMap().put(LocalConfig.getInstance().getModelName(), model);
-	}
-
 	public static void main(String[] args) throws Exception {
 		//based on code from http://stackoverflow.com/questions/6403821/how-to-add-an-image-to-a-jframe-title-bar
 		final ArrayList<Image> icons = new ArrayList<Image>(); 
 		icons.add(new ImageIcon("images/most16.jpg").getImage()); 
 		icons.add(new ImageIcon("images/most32.jpg").getImage());
 
-		ReactionColAddRenameInterface frame = new ReactionColAddRenameInterface();
+		NodeEditorDialog frame = new NodeEditorDialog();
 
 		frame.setIconImages(icons);
 		frame.setSize(350, 170);
@@ -155,6 +129,7 @@ public class ReactionColAddRenameInterface extends JDialog {
 		frame.setVisible(true);
 	}
 }
+
 
 
 

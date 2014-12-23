@@ -8,9 +8,15 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;                                                                                            
 import java.awt.Graphics2D;                                                                                          
+import java.awt.Image;
 import java.awt.Stroke;
 import java.awt.event.ActionEvent;                                                                                   
 import java.awt.event.ActionListener;                                                                                
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.geom.AffineTransform;                                                                                
 import java.awt.geom.Point2D;                                                                                        
 import java.awt.image.BufferedImage;
@@ -26,11 +32,16 @@ import java.util.Map;
 
 import java.util.Vector;
 
+import javax.swing.AbstractAction;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;                                                                                        
 import javax.swing.JApplet;                                                                                          
 import javax.swing.JButton;                                                                                          
+import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFrame;                                                                                           
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;                                                                                           
                                                                                                                      
 
@@ -43,6 +54,20 @@ import javax.swing.JPanel;
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+import javax.swing.JPopupMenu;
+import javax.swing.KeyStroke;
+import javax.swing.table.DefaultTableModel;
 
 import org.apache.commons.collections15.Transformer;                                                                 
 import org.apache.commons.collections15.functors.ChainedTransformer;                                                 
@@ -57,9 +82,20 @@ import edu.rutgers.MOST.data.PathwayFilesReader;
 import edu.rutgers.MOST.data.PathwayMetaboliteNode;
 import edu.rutgers.MOST.data.PathwayReactionNode;
 import edu.rutgers.MOST.data.ReactionFactory;
+import edu.rutgers.MOST.data.ReactionUndoItem;
 import edu.rutgers.MOST.data.SBMLReaction;
+import edu.rutgers.MOST.data.UndoConstants;
+import edu.rutgers.MOST.presentation.GraphicalInterface.ClearAction;
+import edu.rutgers.MOST.presentation.GraphicalInterface.ExitAction;
+import edu.rutgers.MOST.presentation.GraphicalInterface.LoadCSVAction;
+import edu.rutgers.MOST.presentation.GraphicalInterface.LoadExistingItemAction;
+import edu.rutgers.MOST.presentation.GraphicalInterface.LoadSBMLAction;
+import edu.rutgers.MOST.presentation.GraphicalInterface.SaveCSVItemAction;
+import edu.rutgers.MOST.presentation.GraphicalInterface.SaveItemAction;
+import edu.rutgers.MOST.presentation.GraphicalInterface.SaveSBMLItemAction;
 import edu.uci.ics.jung.algorithms.layout.Layout;                                                                    
 import edu.uci.ics.jung.algorithms.layout.StaticLayout;                                                              
+import edu.uci.ics.jung.algorithms.layout3d.GraphElementAccessor;
 import edu.uci.ics.jung.graph.Graph;                                                                                 
 import edu.uci.ics.jung.graph.SparseMultigraph;
 import edu.uci.ics.jung.graph.util.EdgeType;                                                                         
@@ -68,14 +104,18 @@ import edu.uci.ics.jung.visualization.Layer;
 import edu.uci.ics.jung.visualization.RenderContext;
 import edu.uci.ics.jung.visualization.VisualizationViewer;                                                           
 import edu.uci.ics.jung.visualization.control.AbstractModalGraphMouse;                                               
+import edu.uci.ics.jung.visualization.control.AbstractPopupGraphMousePlugin;
 import edu.uci.ics.jung.visualization.control.CrossoverScalingControl;                                               
 import edu.uci.ics.jung.visualization.control.DefaultModalGraphMouse;                                                
+import edu.uci.ics.jung.visualization.control.GraphMouseListener;
+import edu.uci.ics.jung.visualization.control.ModalGraphMouse;
 import edu.uci.ics.jung.visualization.control.ScalingControl;                                                        
 import edu.uci.ics.jung.visualization.decorators.DefaultVertexIconTransformer;
 import edu.uci.ics.jung.visualization.decorators.EdgeShape;
 import edu.uci.ics.jung.visualization.decorators.EllipseVertexShapeTransformer;
 import edu.uci.ics.jung.visualization.decorators.ToStringLabeller;                                                   
 import edu.uci.ics.jung.visualization.decorators.VertexIconShapeTransformer;
+import edu.uci.ics.jung.visualization.picking.PickedState;
 import edu.uci.ics.jung.visualization.renderers.DefaultVertexLabelRenderer;                           
                                                                                                                      
                                                                                                                      
@@ -87,7 +127,7 @@ import edu.uci.ics.jung.visualization.renderers.DefaultVertexLabelRenderer;
  */                                                                                                                  
 @SuppressWarnings("serial")                                                                                          
 public class PathwaysFrame extends JApplet {                                                                     
-                                                                                                                     
+	
     /**                                                                                                              
      * the graph                                                                                                     
      */                                                                                                              
@@ -96,7 +136,7 @@ public class PathwaysFrame extends JApplet {
     /**                                                                                                              
      * the visual component and renderer for the graph                                                               
      */                                                                                                              
-    VisualizationViewer<String, Number> vv;                                                                          
+    VisualizationViewer<String, Number> vv;  
                                                                                                                      
 	Map<String, String[]> metabPosMap = new HashMap<String, String[]>();                                                       
    	List<String> metaboliteList; 
@@ -111,39 +151,13 @@ public class PathwaysFrame extends JApplet {
    	ArrayList<String> metabolites = new ArrayList<String>();
    	ArrayList<String> reactions = new ArrayList<String>();
    	Map<String, Double> fluxMap = new HashMap<String, Double>(); 
-   	
-   	private float scalingFactor = (float) 1.2;
-   	private int graphWidth = 10000;
-   	private int graphHeight = 8000;
-   	private int borderWidth = 100;
-   	private int borderHeight = 100;
-   	String borderLeftX = Integer.toString(borderWidth);
-   	String borderRightX = Integer.toString(graphWidth - borderWidth);
-   	String borderTopY = Integer.toString(borderHeight);
-   	String borderBottomY = Integer.toString(graphHeight - borderHeight);
-   	
-   	private static double borderThickness = 4;
-   	
-//   	private int horizontalIncrement = 250;
-//   	private int verticalIncrement = 125;
-   	private int horizontalIncrement = 350;
-   	private int verticalIncrement = 175;
-   	private int pathwayNameNodeWidth = 120;
-   	private int pathwayNameNodeHeight = 40;
-   	private int metaboliteNodeWidth = 75;
-   	private int metaboliteNodeHeight = 25;
-   	private int reactionNodeWidth = 110;
-   	private int reactionNodeHeight = 25;
-   	private int pathwayNameNodeFontSize = 16;
-   	private int metaboliteNodeFontSize = 16;
-   	private int reactionNodeFontSize = 16;
-   	// positions to start text in node
-   	private int pathwayNameNodeXPos = 0;
-   	private int pathwayNameNodeYPos = 18;
-   	private int metaboliteNodeXPos = 0;
-   	private int metaboliteNodeYPos = 18;
-   	private int reactionNodeXPos = 0;
-   	private int reactionNodeYPos = 18;
+  
+   	String borderLeftX = Integer.toString(PathwaysFrameConstants.BORDER_WIDTH);
+   	String borderRightX = Integer.toString(PathwaysFrameConstants.GRAPH_WIDTH - PathwaysFrameConstants.BORDER_WIDTH);
+   	String borderTopY = Integer.toString(PathwaysFrameConstants.BORDER_HEIGHT);
+   	String borderBottomY = Integer.toString(PathwaysFrameConstants.GRAPH_HEIGHT - PathwaysFrameConstants.BORDER_HEIGHT);
+   
+   	public final JCheckBoxMenuItem transformItem = new JCheckBoxMenuItem("Transform");
    	
    	protected EdgeWeightStrokeFunction<Number> ewcs;
    	protected Map<Number, Number> edge_weight = new HashMap<Number, Number>();
@@ -167,7 +181,49 @@ public class PathwaysFrame extends JApplet {
      */                                                                                                              
     public PathwaysFrame() {                                                                                     
         setLayout(new BorderLayout());  
-		
+        
+        transformItem.setState(false);
+        
+        /**************************************************************************/
+    	// create menu bar
+    	/**************************************************************************/
+
+    	JMenuBar menuBar = new JMenuBar();
+
+    	setJMenuBar(menuBar);
+
+    	JMenu fileMenu = new JMenu("File");
+    	fileMenu.setMnemonic(KeyEvent.VK_F);
+
+    	menuBar.add(fileMenu);
+    	
+    	JMenu editMenu = new JMenu("Edit");
+    	fileMenu.setMnemonic(KeyEvent.VK_E);
+    	
+    	editMenu.add(transformItem);
+    	transformItem.setMnemonic(KeyEvent.VK_T);
+
+    	transformItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ae) {
+				boolean state = transformItem.getState();
+				if (state == true) {
+					final AbstractModalGraphMouse graphMouse = new DefaultModalGraphMouse(); 
+					graphMouse.setMode(ModalGraphMouse.Mode.PICKING);
+			        vv.setGraphMouse(graphMouse); 
+				} else {
+					final AbstractModalGraphMouse graphMouse = new DefaultModalGraphMouse(); 
+					graphMouse.setMode(ModalGraphMouse.Mode.TRANSFORMING);
+			        vv.setGraphMouse(graphMouse); 
+				}
+			}
+		});
+
+    	menuBar.add(editMenu);
+    	
+    	/**************************************************************************/
+    	// end create menu bar
+    	/**************************************************************************/
+       
 		// draw cell border
 		metabPosMap.put("1", new String[] {borderLeftX, borderTopY});                                                        
 		metabPosMap.put("2", new String[] {borderRightX, borderTopY}); 
@@ -179,10 +235,10 @@ public class PathwaysFrame extends JApplet {
 		reactionMap.put("3", new String[] {"3", "4", "false"});
 		reactionMap.put("4", new String[] {"4", "1", "false"});
 		
-		fluxMap.put("1", borderThickness);
-		fluxMap.put("2", borderThickness);
-		fluxMap.put("3", borderThickness);
-		fluxMap.put("4", borderThickness);
+		fluxMap.put("1", PathwaysFrameConstants.BORDER_THICKNESS);
+		fluxMap.put("2", PathwaysFrameConstants.BORDER_THICKNESS);
+		fluxMap.put("3", PathwaysFrameConstants.BORDER_THICKNESS);
+		fluxMap.put("4", PathwaysFrameConstants.BORDER_THICKNESS);
 		
 		for (int b = 1; b < 5; b++) {
 			borderList.add(Integer.toString(b));
@@ -199,23 +255,23 @@ public class PathwaysFrame extends JApplet {
 //		ECNumberMapCreator ecMapCreator = new ECNumberMapCreator();
 //		ecMapCreator.createEcNumberReactionMap();
 		
-		double startX = borderWidth + horizontalIncrement;
-		double startY = graphHeight/2;
+		double startX = PathwaysFrameConstants.BORDER_WIDTH + PathwaysFrameConstants.HORIZONTAL_INCREMENT;
+		double startY = PathwaysFrameConstants.GRAPH_HEIGHT/2;
 		for (int i = 0; i < LocalConfig.getInstance().getDrawOrder().size(); i++) {
 			MetabolicPathway pathway = LocalConfig.getInstance().getMetabolicPathways().get(LocalConfig.getInstance().getDrawOrder().get(i));
 			if (startPosMap.containsKey(pathway.getId())) {
 				startX = startPosMap.get(pathway.getId()).get(0);
 				startY = startPosMap.get(pathway.getId()).get(1);
 			}
-			if (LocalConfig.getInstance().getConnectionPositionMap().containsKey(pathway.getId())) {
-
-			}
+//			if (LocalConfig.getInstance().getConnectionPositionMap().containsKey(pathway.getId())) {
+//
+//			}
 			for (int j = 0; j < pathway.getMetabolitesData().size(); j++) {
 				metabolites.add(pathway.getMetabolitesData().get(Integer.toString(j)).getNames().get(0));
 				PathwayMetaboliteNode pn = new PathwayMetaboliteNode();
 				pn.setDataId(pathway.getMetabolitesData().get(Integer.toString(j)).getId());
-				double x = startX + horizontalIncrement*pathway.getMetabolitesData().get(Integer.toString(j)).getLevel();
-				double y = startY + verticalIncrement*pathway.getMetabolitesData().get(Integer.toString(j)).getLevelPosition();
+				double x = startX + PathwaysFrameConstants.HORIZONTAL_INCREMENT*pathway.getMetabolitesData().get(Integer.toString(j)).getLevel();
+				double y = startY + PathwaysFrameConstants.VERTICAL_INCREMENT*pathway.getMetabolitesData().get(Integer.toString(j)).getLevelPosition();
 				pn.setxPosition(x);
 				pn.setyPosition(y);
 				pn.setAbbreviation(pathway.getMetabolitesData().get(Integer.toString(j)).getAbbreviation());
@@ -272,7 +328,7 @@ public class PathwaysFrame extends JApplet {
 				pn.setFluxes(fluxes);
 				pn.setEcNumbers(ecNumbers);
 				//System.out.println(pn);
-				String displayName = pathway.getReactionsData().get(Integer.toString(k)).getName();
+				String displayName = pathway.getReactionsData().get(Integer.toString(k)).getDisplayName();
 				if (modelReactionNames.size() > 0) {
 					String reacName = modelReactionNames.get(0);
 					if (modelReactionNames.size() > 1) {
@@ -280,20 +336,32 @@ public class PathwaysFrame extends JApplet {
 					}
 					String ec = "";
 					if (ecNumbers.size() > 0) {
-						ec = ecNumbers.get(0);
+						ec = "<p>EC Number: " + ecNumbers.get(0);
 					}
 					if (ecNumbers.size() > 1) {
-						ec = ecNumbers.toString();
+						ec = "<p>EC Number(s): " + ecNumbers.toString();
+					}
+					// since equations can be quite long and a list of reactions may not fit on screen,
+					// each reaction is put on a separate line
+					String modelEquationString = "";
+					if (modelEquations.size() > 0) {
+						modelEquationString = "<p>Equation from Model: " + modelEquations.get(0);
+					}
+					if (modelEquations.size() > 1) {
+						modelEquationString = "<p>Equation(s) from Model: " + modelEquations.get(0);
+						for (int m = 1; m < modelEquations.size(); m++) {
+							modelEquationString += ", <p>" + modelEquations.get(m);
+						}
 					}
 					displayName = "<html>" + reacName
-							+ "<p> EC Numbers: " + ec
-							+ "<p> Reaction: " + pathway.getReactionsData().get(Integer.toString(k)).getName()
-							+ "<p>Equation from Model: " + modelEquations;
+							+ ec
+							+ "<p> Equation: " + pathway.getReactionsData().get(Integer.toString(k)).getName()
+							+ modelEquationString;
 					foundList.add(displayName);
 				} 
 				reactions.add(displayName);
-				double x = startX + horizontalIncrement*pathway.getReactionsData().get(Integer.toString(k)).getLevel();
-				double y = startY + verticalIncrement*pathway.getReactionsData().get(Integer.toString(k)).getLevelPosition(); 
+				double x = startX + PathwaysFrameConstants.HORIZONTAL_INCREMENT*pathway.getReactionsData().get(Integer.toString(k)).getLevel();
+				double y = startY + PathwaysFrameConstants.VERTICAL_INCREMENT*pathway.getReactionsData().get(Integer.toString(k)).getLevelPosition(); 
 				metabPosMap.put(displayName, new String[] {Double.toString(x), Double.toString(y)});  
 				pn.setDataId(pathway.getReactionsData().get(Integer.toString(k)).getReactionId());
 				pn.setxPosition(x);
@@ -338,9 +406,9 @@ public class PathwaysFrame extends JApplet {
 						double newStartX = pathway.getMetabolitesNodes().get(LocalConfig.getInstance().getConnectionPositionMap().get(pathway.getId()).get(p).getReactantPathwaysIds().get(0).get(1)).getxPosition();;
 						double newStartY = pathway.getMetabolitesNodes().get(LocalConfig.getInstance().getConnectionPositionMap().get(pathway.getId()).get(p).getReactantPathwaysIds().get(0).get(1)).getyPosition();
 						if (LocalConfig.getInstance().getConnectionPositionMap().get(pathway.getId()).get(p).getDirection().equals("vertical")) {
-							newStartY += LocalConfig.getInstance().getConnectionPositionMap().get(pathway.getId()).get(p).getLength() * verticalIncrement;	
+							newStartY += LocalConfig.getInstance().getConnectionPositionMap().get(pathway.getId()).get(p).getLength() * PathwaysFrameConstants.VERTICAL_INCREMENT;	
 						} else if (LocalConfig.getInstance().getConnectionPositionMap().get(pathway.getId()).get(p).getDirection().equals("horizontal")) {
-							newStartX += LocalConfig.getInstance().getConnectionPositionMap().get(pathway.getId()).get(p).getLength() * horizontalIncrement;
+							newStartX += LocalConfig.getInstance().getConnectionPositionMap().get(pathway.getId()).get(p).getLength() * PathwaysFrameConstants.HORIZONTAL_INCREMENT;
 						}
 						xyList.add(newStartX);
 						xyList.add(newStartY);
@@ -403,6 +471,17 @@ public class PathwaysFrame extends JApplet {
 			reactions.add(pcn.getReactionName());
 			double avgX = (avgReacX + avgProdX)/2;
 			double avgY = (avgReacY + avgProdY)/2;
+			// length field set to -2 or 2 for second reaction if two reactions connect 
+			// connection nodes, negative and positive values allow control of relative 
+			// position to first connecting reaction
+			if (LocalConfig.getInstance().getConnectionslist().get(i).getLength() == -2) {
+				avgX -= PathwaysFrameConstants.REACTION_NODE_WIDTH/2;
+				avgY -= PathwaysFrameConstants.REACTION_NODE_HEIGHT;
+			}
+			if (LocalConfig.getInstance().getConnectionslist().get(i).getLength() == 2) {
+				avgX += PathwaysFrameConstants.REACTION_NODE_WIDTH/2;
+				avgY += PathwaysFrameConstants.REACTION_NODE_HEIGHT;
+			}
 			metabPosMap.put(pcn.getReactionName(), new String[] {Double.toString(avgX), Double.toString(avgY)});  
 			pcn.setxPosition(avgX);
 			pcn.setyPosition(avgY);
@@ -451,17 +530,17 @@ public class PathwaysFrame extends JApplet {
    		Collections.sort(reactionList);
    		//System.out.println(reactionList);
                                                                                                                      
-        // create a simple graph for the demo                                                                        
+        // create a simple graph for the demo      
         graph = new SparseMultigraph<String, Number>();  
         createVertices();                                                                                            
         createEdges();                                                                                               
                                                                                                                                                                                                                                                                                                                       
-        Dimension layoutSize = new Dimension(graphWidth, graphHeight);                                                             
+        Dimension layoutSize = new Dimension(PathwaysFrameConstants.GRAPH_WIDTH, PathwaysFrameConstants.GRAPH_HEIGHT);                                                             
                                                                                                                      
         Layout<String,Number> layout = new StaticLayout<String,Number>(graph,                                        
         		new ChainedTransformer(new Transformer[]{                                                            
         				new MetabTransformer(metabPosMap),                                                                    
-        				new PixelTransformer(new Dimension(graphWidth, graphHeight))                                         
+        				new PixelTransformer(new Dimension(PathwaysFrameConstants.GRAPH_WIDTH, PathwaysFrameConstants.GRAPH_HEIGHT))                                         
         		}));                                                                                                 
         	                                                                                                         
         layout.setSize(layoutSize);                                                                                  
@@ -470,22 +549,61 @@ public class PathwaysFrame extends JApplet {
         
         vv.setBackground(Color.white);
         
+        // based on code from http://stackoverflow.com/questions/21657249/mouse-events-on-vertex-of-jung-graph
+        vv.addGraphMouseListener(new GraphMouseListener() {
+
+			@Override
+			public void graphClicked(final Object arg0, MouseEvent me) {
+				// TODO Auto-generated method stub
+				if (me.getButton() == MouseEvent.BUTTON3) {
+					final VisualizationViewer<String,String> vv =(VisualizationViewer<String,String>)me.getSource();
+			        final Point2D p = me.getPoint();
+			        JPopupMenu popup = new JPopupMenu();
+			        JMenuItem editNodeMenu = new JMenuItem("Edit");
+			        editNodeMenu.addActionListener(new ActionListener() {
+						public void actionPerformed(ActionEvent ae) {
+							createNodeEditorDialog(arg0);
+						}
+					});
+			        popup.add(editNodeMenu);
+			        popup.show(vv, me.getX(), me.getY());
+                }
+				if (me.getButton() == MouseEvent.BUTTON1 && me.getClickCount() == 2) {
+					createNodeEditorDialog(arg0);
+                }
+                me.consume();
+			}
+
+			@Override
+			public void graphPressed(Object arg0, MouseEvent me) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void graphReleased(Object arg0, MouseEvent me) {
+				// TODO Auto-generated method stub
+				
+			}
+            
+        });
+           
         //System.out.println("fl " + foundList);
         Map<String, Icon> iconMap = new HashMap<String, Icon>();                                                                                        
         for(int i = 0; i < metaboliteList.size(); i++) {                                                                                                        
         	String name = metaboliteList.get(i);
         	String abbr = LocalConfig.getInstance().getMetaboliteNameAbbrMap().get(name);
-        	int width = (int) borderThickness;
-    		int height = (int) borderThickness;
+        	int width = (int) PathwaysFrameConstants.BORDER_THICKNESS;
+    		int height = (int) PathwaysFrameConstants.BORDER_THICKNESS;
         	if (borderList.contains(name)) {
-        		width = (int) borderThickness;
-        		height = (int) borderThickness;
+        		width = (int) PathwaysFrameConstants.BORDER_THICKNESS;
+        		height = (int) PathwaysFrameConstants.BORDER_THICKNESS;
         	} else if (metabolites.contains(name)) {
-        		width = metaboliteNodeWidth;
-        		height = metaboliteNodeHeight;
+        		width = PathwaysFrameConstants.METABOLITE_NODE_WIDTH;
+        		height = PathwaysFrameConstants.METABOLITE_NODE_HEIGHT;
         	} else if (reactions.contains(name)) {
-        		width = reactionNodeWidth;
-        		height = reactionNodeHeight;
+        		width = PathwaysFrameConstants.REACTION_NODE_WIDTH;
+        		height = PathwaysFrameConstants.REACTION_NODE_HEIGHT;
         	}
         	// based on http://stackoverflow.com/questions/2736320/write-text-onto-image-in-java
         	BufferedImage bufferedImage = new BufferedImage(width, height,
@@ -509,9 +627,9 @@ public class PathwaysFrame extends JApplet {
             	graphics.drawString(name, 5, 15);
         	} else {
         		if (metabolites.contains(name)) {
-        			alignCenterString(graphics, abbr, width, metaboliteNodeXPos, metaboliteNodeYPos, metaboliteNodeFontSize);
+        			alignCenterString(graphics, abbr, width, PathwaysFrameConstants.METABOLITE_NODE_XPOS, PathwaysFrameConstants.METABOLITE_NODE_YPOS, PathwaysFrameConstants.METABOLITE_NODE_FONT_SIZE);
         		} else if (reactions.contains(name)) {
-        			alignCenterString(graphics, name, width, reactionNodeXPos, reactionNodeYPos, reactionNodeFontSize);
+        			alignCenterString(graphics, name, width, PathwaysFrameConstants.REACTION_NODE_XPOS, PathwaysFrameConstants.REACTION_NODE_YPOS, PathwaysFrameConstants.REACTION_NODE_FONT_SIZE);
         		}
         	}
         	if (metabolites.contains(name) || reactions.contains(name)) {
@@ -579,9 +697,10 @@ public class PathwaysFrame extends JApplet {
         
         final GraphZoomScrollPane panel = new GraphZoomScrollPane(vv);                                               
         add(panel);                                                                                                  
-        final AbstractModalGraphMouse graphMouse = new DefaultModalGraphMouse();                                     
-        vv.setGraphMouse(graphMouse);                                                                                
-                                                                                                                 
+        final AbstractModalGraphMouse graphMouse = new DefaultModalGraphMouse(); 
+		graphMouse.setMode(ModalGraphMouse.Mode.TRANSFORMING);
+        vv.setGraphMouse(graphMouse); 
+                                                                                                                
         final ScalingControl scaler = new CrossoverScalingControl();                                                 
            
         // not sure what this does
@@ -590,13 +709,13 @@ public class PathwaysFrame extends JApplet {
         JButton plus = new JButton("+");                                                                             
         plus.addActionListener(new ActionListener() {                                                                
             public void actionPerformed(ActionEvent e) {                                                             
-                scaler.scale(vv, scalingFactor, vv.getCenter()); 
+                scaler.scale(vv, PathwaysFrameConstants.SCALING_FACTOR, vv.getCenter()); 
             }                                                                                                        
         });                                                                                                          
         JButton minus = new JButton("-");                                                                            
         minus.addActionListener(new ActionListener() {                                                               
             public void actionPerformed(ActionEvent e) {                                                             
-                scaler.scale(vv, 1/scalingFactor, vv.getCenter());
+                scaler.scale(vv, 1/PathwaysFrameConstants.SCALING_FACTOR, vv.getCenter());
             }                                                                                                        
         });                                                                                                          
                                                                                                                      
@@ -622,7 +741,7 @@ public class PathwaysFrame extends JApplet {
      */                                                                                                              
     private void createVertices() {                                                                                  
         for (String met : metabPosMap.keySet()) {
-            graph.addVertex(met);   
+            graph.addVertex(met); 
         } 
     }                                                                                                                
                                                                                                                      
@@ -693,12 +812,12 @@ public class PathwaysFrame extends JApplet {
     		if (s.startsWith("<html>")) {
         		s = s.substring(6, s.indexOf("<p>"));
         	}
-    		if (s.length() > 11) {
-        		s = s.substring(0, 9) + "...";
+    		if (s.length() > PathwaysFrameConstants.REACTION_NODE_MAX_CHARS) {
+        		s = s.substring(0, PathwaysFrameConstants.REACTION_NODE_MAX_CHARS - PathwaysFrameConstants.REACTION_NODE_ELLIPSIS_CORRECTION) + "...";
         	}
     	} else {
-    		if (s.length() > 7) {
-        		s = s.substring(0, 5) + "...";
+    		if (s.length() > PathwaysFrameConstants.METABOLITE_NODE_MAX_CHARS) {
+        		s = s.substring(0, PathwaysFrameConstants.METABOLITE_NODE_MAX_CHARS - PathwaysFrameConstants.METABOLITE_NODE_ELLIPSIS_CORRECTION) + "...";
         	}
     	}
         int stringLen = (int)  
@@ -741,8 +860,8 @@ public class PathwaysFrame extends JApplet {
             if (edge_weight.containsKey(e)) {
             	double value = edge_weight.get(e).doubleValue();
                 if (value > 0.1) {
-                	if (value == borderThickness) {
-                		strokeWidth = (int) (borderThickness);
+                	if (value == PathwaysFrameConstants.BORDER_THICKNESS) {
+                		strokeWidth = (int) PathwaysFrameConstants.BORDER_THICKNESS;
                 	}
 //                	if (value < 1.0) {
 //                		strokeWidth = 1;
@@ -765,6 +884,21 @@ public class PathwaysFrame extends JApplet {
         }
     }
     
+    public void createNodeEditorDialog(Object arg0) {
+    	final ArrayList<Image> icons = new ArrayList<Image>(); 
+		icons.add(new ImageIcon("images/most16.jpg").getImage()); 
+		icons.add(new ImageIcon("images/most32.jpg").getImage());
+
+		NodeEditorDialog frame = new NodeEditorDialog();
+
+		frame.setIconImages(icons);
+		frame.setSize(350, 170);
+		//frame.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		frame.setLocationRelativeTo(null);
+		frame.setVisible(true);
+		frame.textField.setText(arg0.toString());
+    }
+    
     public static void main(String[] args) {                                                                         
         // create a frome to hold the graph                                                                          
 //        final JFrame frame = new JFrame();                                                                           
@@ -775,6 +909,4 @@ public class PathwaysFrame extends JApplet {
 //        frame.setLocationRelativeTo(null);
 //        frame.setVisible(true);                                                                                      
     }                                                                                                                
-}                                                                                                                    
-                                                                                                                     
-
+}  

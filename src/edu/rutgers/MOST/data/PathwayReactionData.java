@@ -18,8 +18,9 @@ public class PathwayReactionData {
 	// equation made up of metabolite node names
 	private String equation;
 	
-	// generic name used if reaction not found in model
 	private String name;
+	// generic name used if reaction not found in model = name + ec numbers
+	private String displayName;
 	
 	public String getPathwayId() {
 		return pathwayId;
@@ -87,6 +88,14 @@ public class PathwayReactionData {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public String getDisplayName() {
+		return displayName;
+	}
+
+	public void setDisplayName(String displayName) {
+		this.displayName = displayName;
 	}
 
 	public void setLevelPosition(double levelPosition) {

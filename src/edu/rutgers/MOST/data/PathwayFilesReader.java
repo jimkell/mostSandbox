@@ -203,6 +203,7 @@ public class PathwayFilesReader {
 						}
 						pr.writeReactionEquation();
 						pr.setName(pr.getEquation());
+						pr.setDisplayName("<html>" + pr.getEquation() +"<p> EC Number(s): " + pr.getEcNumbers());
 						//System.out.println(pr.getName());
 						//System.out.println(pr);
 						metabolicPathways.get(id).getReactionsData().put(pr.getReactionId(), pr);
@@ -371,6 +372,7 @@ public class PathwayFilesReader {
 						}
 						pc.writeReactionEquation();
 						pc.setName(pc.getEquation());
+						pc.setDisplayName("<html>" + pc.getEquation() +"<p> EC Number(s): " + pc.getEcNumbers());
 						//System.out.println(pc);
 						if (pc.getPositioning().equals("1")) {
 							pc.setDirection(pc.getDirection());

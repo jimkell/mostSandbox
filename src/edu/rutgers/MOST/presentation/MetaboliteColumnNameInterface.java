@@ -20,7 +20,7 @@ import javax.swing.JPanel;
 import edu.rutgers.MOST.config.LocalConfig;
 import edu.rutgers.MOST.data.TextMetabolitesModelReader;
 
-public class MetaboliteColumnNameInterface  extends JDialog {
+public class MetaboliteColumnNameInterface extends JDialog {
 
 	/**
 	 * 

@@ -11922,8 +11922,9 @@ public class GraphicalInterface extends JFrame {
         frame.setIconImages(icons);
         frame.setTitle(gi.getTitle());
         Container content = frame.getContentPane();                                                                  
-        content.add(new PathwaysFrame());                                                                        
-        frame.pack();                                                                                                
+        content.add(new PathwaysFrame());
+        frame.setSize(1300, 700);
+        //frame.pack();                                                                                                
         //frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
         frame.setLocationRelativeTo(null);
         frame.setVisible(true); 
