@@ -11,6 +11,18 @@ import edu.rutgers.MOST.config.LocalConfig;
 
 public class ECNumberMapCreator {
 
+	// need fluxes to get max and secondary max if there are infinite fluxes
+	// usually in column as something like 999999.0
+	private ArrayList<Double> fluxes = new ArrayList<Double>();
+	
+	public ArrayList<Double> getFluxes() {
+		return fluxes;
+	}
+
+	public void setFluxes(ArrayList<Double> fluxes) {
+		this.fluxes = fluxes;
+	}
+
 	/**
 	 * EC Number map created to be used for getting information from loaded
 	 * model by EC Number
@@ -38,6 +50,7 @@ public class ECNumberMapCreator {
 					}
 				}
 			}
+			fluxes.add(reaction.getFluxValue());
 		}
 		LocalConfig.getInstance().setEcNumberReactionMap(ecNumberReactionMap);
 		//System.out.println("ec " + ecNumberReactionMap);

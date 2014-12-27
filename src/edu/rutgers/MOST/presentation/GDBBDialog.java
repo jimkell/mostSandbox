@@ -3,19 +3,15 @@ package edu.rutgers.MOST.presentation;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
-import java.util.ArrayList;
-
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
@@ -25,7 +21,7 @@ import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-public class GDBBDialog  extends JDialog {
+public class GDBBDialog extends JDialog {
 
 	/**
 	 * 
@@ -102,10 +98,6 @@ public class GDBBDialog  extends JDialog {
 	}
 
 	public GDBBDialog() {
-		
-		final ArrayList<Image> icons = new ArrayList<Image>(); 
-		icons.add(new ImageIcon("etc/most16.jpg").getImage()); 
-		icons.add(new ImageIcon("etc/most32.jpg").getImage());
 		
 		getRootPane().setDefaultButton(startButton);
 

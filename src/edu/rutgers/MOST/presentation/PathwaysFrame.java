@@ -3,25 +3,21 @@ package edu.rutgers.MOST.presentation;
 import java.awt.BasicStroke;
 import java.awt.BorderLayout;                                                                                        
 import java.awt.Color;                                                                                               
-import java.awt.Container;                                                                                           
 import java.awt.Dimension;                                                                                           
 import java.awt.Font;
 import java.awt.Graphics;                                                                                            
 import java.awt.Graphics2D;                                                                                          
 import java.awt.Image;
+import java.awt.Shape;
 import java.awt.Stroke;
 import java.awt.event.ActionEvent;                                                                                   
 import java.awt.event.ActionListener;                                                                                
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.awt.geom.AffineTransform;                                                                                
 import java.awt.geom.Point2D;                                                                                        
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;                                                                                          
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;                                                                                            
 import java.util.List;                                                                                               
@@ -30,44 +26,18 @@ import java.util.Map;
 
 
 
-import java.util.Vector;
 
-import javax.swing.AbstractAction;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;                                                                                        
 import javax.swing.JApplet;                                                                                          
 import javax.swing.JButton;                                                                                          
 import javax.swing.JCheckBoxMenuItem;
-import javax.swing.JFrame;                                                                                           
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;                                                                                           
                                                                                                                      
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 import javax.swing.JPopupMenu;
-import javax.swing.KeyStroke;
-import javax.swing.table.DefaultTableModel;
 
 import org.apache.commons.collections15.Transformer;                                                                 
 import org.apache.commons.collections15.functors.ChainedTransformer;                                                 
@@ -75,36 +45,22 @@ import org.apache.commons.collections15.functors.ChainedTransformer;
 import org.apache.commons.collections15.functors.ConstantTransformer;
 
 import edu.rutgers.MOST.config.LocalConfig;
-import edu.rutgers.MOST.data.ECNumberMapCreator;
 import edu.rutgers.MOST.data.MetabolicPathway;
 import edu.rutgers.MOST.data.PathwayConnectionNode;
-import edu.rutgers.MOST.data.PathwayFilesReader;
 import edu.rutgers.MOST.data.PathwayMetaboliteNode;
 import edu.rutgers.MOST.data.PathwayReactionNode;
-import edu.rutgers.MOST.data.ReactionFactory;
-import edu.rutgers.MOST.data.ReactionUndoItem;
 import edu.rutgers.MOST.data.SBMLReaction;
-import edu.rutgers.MOST.data.UndoConstants;
-import edu.rutgers.MOST.presentation.GraphicalInterface.ClearAction;
-import edu.rutgers.MOST.presentation.GraphicalInterface.ExitAction;
-import edu.rutgers.MOST.presentation.GraphicalInterface.LoadCSVAction;
-import edu.rutgers.MOST.presentation.GraphicalInterface.LoadExistingItemAction;
-import edu.rutgers.MOST.presentation.GraphicalInterface.LoadSBMLAction;
-import edu.rutgers.MOST.presentation.GraphicalInterface.SaveCSVItemAction;
-import edu.rutgers.MOST.presentation.GraphicalInterface.SaveItemAction;
-import edu.rutgers.MOST.presentation.GraphicalInterface.SaveSBMLItemAction;
 import edu.uci.ics.jung.algorithms.layout.Layout;                                                                    
 import edu.uci.ics.jung.algorithms.layout.StaticLayout;                                                              
-import edu.uci.ics.jung.algorithms.layout3d.GraphElementAccessor;
 import edu.uci.ics.jung.graph.Graph;                                                                                 
 import edu.uci.ics.jung.graph.SparseMultigraph;
+import edu.uci.ics.jung.graph.util.Context;
 import edu.uci.ics.jung.graph.util.EdgeType;                                                                         
 import edu.uci.ics.jung.visualization.GraphZoomScrollPane;                                                           
 import edu.uci.ics.jung.visualization.Layer;                                                                         
 import edu.uci.ics.jung.visualization.RenderContext;
 import edu.uci.ics.jung.visualization.VisualizationViewer;                                                           
 import edu.uci.ics.jung.visualization.control.AbstractModalGraphMouse;                                               
-import edu.uci.ics.jung.visualization.control.AbstractPopupGraphMousePlugin;
 import edu.uci.ics.jung.visualization.control.CrossoverScalingControl;                                               
 import edu.uci.ics.jung.visualization.control.DefaultModalGraphMouse;                                                
 import edu.uci.ics.jung.visualization.control.GraphMouseListener;
@@ -115,8 +71,8 @@ import edu.uci.ics.jung.visualization.decorators.EdgeShape;
 import edu.uci.ics.jung.visualization.decorators.EllipseVertexShapeTransformer;
 import edu.uci.ics.jung.visualization.decorators.ToStringLabeller;                                                   
 import edu.uci.ics.jung.visualization.decorators.VertexIconShapeTransformer;
-import edu.uci.ics.jung.visualization.picking.PickedState;
-import edu.uci.ics.jung.visualization.renderers.DefaultVertexLabelRenderer;                           
+import edu.uci.ics.jung.visualization.renderers.DefaultVertexLabelRenderer;  
+import edu.uci.ics.jung.visualization.util.ArrowFactory;
                                                                                                                      
                                                                                                                      
 /**                                                                                                                  
@@ -160,6 +116,8 @@ public class PathwaysFrame extends JApplet {
    	public final JCheckBoxMenuItem transformItem = new JCheckBoxMenuItem("Transform");
    	
    	protected EdgeWeightStrokeFunction<Number> ewcs;
+   	@SuppressWarnings("rawtypes")
+	protected DirectionalEdgeArrowTransformer arrowTransformer;
    	protected Map<Number, Number> edge_weight = new HashMap<Number, Number>();
    	
    	private ArrayList<MetabolicPathway> pathwaysList;
@@ -179,7 +137,8 @@ public class PathwaysFrame extends JApplet {
      * demo the zoom features.                                                                                       
      *                                                                                                               
      */                                                                                                              
-    public PathwaysFrame() {                                                                                     
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+	public PathwaysFrame() {                                                                                     
         setLayout(new BorderLayout());  
         
         transformItem.setState(false);
@@ -379,14 +338,14 @@ public class PathwaysFrame extends JApplet {
 					String reac = pathway.getMetabolitesData().get((pathway.getReactionsData().get(Integer.toString(k)).getReactantIds().get(r))).getNames().get(0);
 					//if (!reactionMap.containsKey(displayName)) {
 						reactionMap.put(displayName + "reactant " + Integer.toString(r), new String[] {displayName, reac, reversible});
-						fluxMap.put(displayName + "reactant " + Integer.toString(r), 1.0);
+						fluxMap.put(displayName + "reactant " + Integer.toString(r), PathwaysFrameConstants.DEFAULT_EDGE_WIDTH);
 					//} 
 				}
 				for (int p = 0; p < pathway.getReactionsData().get(Integer.toString(k)).getProductIds().size(); p++) {
 					//System.out.println(pathway.getMetabolites().get((pathway.getReactionsData().get(Integer.toString(k)).getMainProducts().get(p))).getNames().get(0));
 					String prod = pathway.getMetabolitesData().get((pathway.getReactionsData().get(Integer.toString(k)).getProductIds().get(p))).getNames().get(0);
 					reactionMap.put(displayName + "product " + Integer.toString(p), new String[] {displayName, prod, "true"});
-					fluxMap.put(displayName + "product " + Integer.toString(p), 1.0);
+					fluxMap.put(displayName + "product " + Integer.toString(p), PathwaysFrameConstants.DEFAULT_EDGE_WIDTH);
 				}
 			}
 			//System.out.println("map " + LocalConfig.getInstance().getConnectionPositionMap());
@@ -504,12 +463,12 @@ public class PathwaysFrame extends JApplet {
 			for (int d = 0; d < connectionsNodelist.get(c).getMainPathwayReactants().size(); d++) {
 				String reac = connectionsNodelist.get(c).getMainPathwayReactants().get(d).getName();
 				reactionMap.put(connectionsNodelist.get(c).getReactionName() + "reactant " + Integer.toString(d), new String[] {connectionsNodelist.get(c).getReactionName(), reac, reversible});
-				fluxMap.put(connectionsNodelist.get(c).getReactionName() + "reactant " + Integer.toString(d), 1.0);
+				fluxMap.put(connectionsNodelist.get(c).getReactionName() + "reactant " + Integer.toString(d), PathwaysFrameConstants.DEFAULT_EDGE_WIDTH);
 			}
 			for (int e = 0; e < connectionsNodelist.get(c).getMainPathwayProducts().size(); e++) {
 				String prod = connectionsNodelist.get(c).getMainPathwayProducts().get(e).getName();
 				reactionMap.put(connectionsNodelist.get(c).getReactionName() + "product " + Integer.toString(e), new String[] {connectionsNodelist.get(c).getReactionName(), prod, "true"});
-				fluxMap.put(connectionsNodelist.get(c).getReactionName() + "product " + Integer.toString(e), 1.0);
+				fluxMap.put(connectionsNodelist.get(c).getReactionName() + "product " + Integer.toString(e), PathwaysFrameConstants.DEFAULT_EDGE_WIDTH);
 			}
 		}
 		                                                                                                 		
@@ -675,11 +634,13 @@ public class PathwaysFrame extends JApplet {
         });  
         
         ewcs = new EdgeWeightStrokeFunction<Number>(edge_weight);
+        arrowTransformer = new DirectionalEdgeArrowTransformer(PathwaysFrameConstants.ARROW_LENGTH, PathwaysFrameConstants.ARROW_WIDTH, PathwaysFrameConstants.ARROW_NOTCH); 
         
         vv.getRenderContext().setVertexLabelRenderer(new DefaultVertexLabelRenderer(Color.gray));
         vv.getRenderContext().setEdgeDrawPaintTransformer(new ConstantTransformer(Color.black));
         //vv.getRenderContext().setEdgeStrokeTransformer(new ConstantTransformer(new BasicStroke(2.5f)));
         vv.getRenderContext().setEdgeStrokeTransformer(ewcs);
+        vv.getRenderContext().setEdgeArrowTransformer(arrowTransformer);
         
         // add listeners for ToolTips  
         // may need to use abbreviations for labels
@@ -759,7 +720,7 @@ public class PathwaysFrame extends JApplet {
     		} else if (rev.equals("false")) {
     			graph.addEdge(new Double(i), info[0], info[1], EdgeType.UNDIRECTED); 
     		}
-    		String rxnName = "";
+    		//String rxnName = "";
     		double fluxValue = fluxMap.get(reactionList.get(i));
     		edge_weight.put(new Double(i), fluxValue);
     	} 
@@ -859,9 +820,12 @@ public class PathwaysFrame extends JApplet {
         	int strokeWidth = 1;
             if (edge_weight.containsKey(e)) {
             	double value = edge_weight.get(e).doubleValue();
+            	//System.out.println(value);
                 if (value > 0.1) {
                 	if (value == PathwaysFrameConstants.BORDER_THICKNESS) {
                 		strokeWidth = (int) PathwaysFrameConstants.BORDER_THICKNESS;
+                	} else {
+                		strokeWidth = (int) value;
                 	}
 //                	if (value < 1.0) {
 //                		strokeWidth = 1;
@@ -883,6 +847,45 @@ public class PathwaysFrame extends JApplet {
             }
         }
     }
+    
+    /**
+     * Returns wedge arrows for undirected edges and notched arrows
+     * for directed edges, of the specified dimensions.
+     *
+     * based on code from https://code.google.com/p/geoviz/source/browse/trunk/network/src/main/java/edu/uci/ics/jung/visualization/decorators/DirectionalEdgeArrowTransformer.java?r=774
+     * by Joshua O'Madadhain
+     */
+    public class DirectionalEdgeArrowTransformer<V,E> implements Transformer<Context<Graph<V,E>,E>,Shape> {
+        //protected Shape undirected_arrow;
+        protected Shape directed_arrow;
+       
+        public DirectionalEdgeArrowTransformer(int length, int width, int notch_depth)
+        {
+        	directed_arrow = ArrowFactory.getNotchedArrow(width, length, notch_depth);
+            //undirected_arrow = ArrowFactory.getWedgeArrow(width, length);
+            // no arrow for undirected edge
+            //undirected_arrow = ArrowFactory.getWedgeArrow(0, 0);
+            System.out.println("a " + width);
+        }
+       
+        /**
+         *
+         */
+        public Shape transform(Context<Graph<V,E>,E> context)
+        {
+        	return directed_arrow;
+//        	System.out.println("c " + context.graph.getEdgeType(context.element));
+//        	if (context.graph.getEdgeType(context.element) == EdgeType.DIRECTED) {
+//                return directed_arrow;
+//        	} else {
+//        		System.out.println("c " + context.element.toString());
+//        		return undirected_arrow;
+//        	} 
+        }
+
+    }
+
+
     
     public void createNodeEditorDialog(Object arg0) {
     	final ArrayList<Image> icons = new ArrayList<Image>(); 

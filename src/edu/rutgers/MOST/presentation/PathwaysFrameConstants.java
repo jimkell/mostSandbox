@@ -43,4 +43,9 @@ public class PathwaysFrameConstants {
 //	public static final int REACTION_NODE_YPOS = 18;
 	public static final int REACTION_NODE_YPOS = 28;
 	
+	public static final double DEFAULT_EDGE_WIDTH = 8.0; 
+	public static final int ARROW_LENGTH = 30;
+	public static final int ARROW_WIDTH = 25;
+	public static final int ARROW_NOTCH = 12;
+	
 }

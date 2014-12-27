@@ -639,6 +639,7 @@ public class GraphicalInterface extends JFrame {
 	public final JMenuItem gurobiParametersItem = new JMenuItem(GurobiParameters.GUROBI_PARAMETERS_MENU_ITEM);
 	public final JMenuItem glpkParametersItem = new JMenuItem( GLPKParameters.GLPK_PARAMETERS_MENU_ITEM );
 	public final JMenuItem ipOptParametersItem = new JMenuItem( IPoptParameters.IPOPT_PARAMETERS_MENU_ITEM );
+	public final JMenuItem visualizationOptionsItem = new JMenuItem(VisualizationOptionsConstants.VISUALIZATION_OPTIONS_MENU_ITEM_NAME);
 	
 	public final JMenuItem formulaBarCutItem = new JMenuItem("Cut");
 	public final JMenuItem formulaBarCopyItem = new JMenuItem("Copy");
@@ -2714,6 +2715,7 @@ public class GraphicalInterface extends JFrame {
 				
 				ECNumberMapCreator ecMapCreator = new ECNumberMapCreator();
 				ecMapCreator.createEcNumberReactionMap();
+				System.out.println(ecMapCreator.getFluxes());
 				
 				if (LocalConfig.getInstance().getEcNumberReactionMap().size() == 0) {
 					if (LocalConfig.getInstance().getEcNumberReactionMap().size() == 0) {
@@ -2827,6 +2829,25 @@ public class GraphicalInterface extends JFrame {
 			}
 		} );
 		
+		optionsMenu.addSeparator();
+		
+		optionsMenu.add(visualizationOptionsItem);
+		visualizationOptionsItem.setMnemonic(KeyEvent.VK_V);
+		visualizationOptionsItem.addActionListener(new ActionListener()
+		{
+			@Override
+			public void actionPerformed( ActionEvent evt )
+			{
+				VisualizationOptionsDialog d = new VisualizationOptionsDialog();
+				
+				d.setIconImages(icons);
+		    	d.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		    	//d.setSize(400, 300);
+		    	d.pack();
+		    	d.setLocationRelativeTo(null);
+		    	d.setVisible(true);
+			}
+		} );
 		
 		menuBar.add(optionsMenu);
 

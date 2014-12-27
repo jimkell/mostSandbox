@@ -990,4 +990,45 @@ public class LocalConfig {
 			ArrayList<PathwayConnectionNode> connectionsNodelist) {
 		this.connectionsNodelist = connectionsNodelist;
 	}
+	
+	// Visualization options
+	private boolean graphMissingReactionsSelected;
+	private boolean highlightMissingReactionsSelected;
+	private boolean gapFillingSelected;
+	private boolean scaleEdgeThicknessSelected;
+
+	public boolean isGraphMissingReactionsSelected() {
+		return graphMissingReactionsSelected;
+	}
+
+	public void setGraphMissingReactionsSelected(
+			boolean graphMissingReactionsSelected) {
+		this.graphMissingReactionsSelected = graphMissingReactionsSelected;
+	}
+
+	public boolean isHighlightMissingReactionsSelected() {
+		return highlightMissingReactionsSelected;
+	}
+
+	public void setHighlightMissingReactionsSelected(
+			boolean highlightMissingReactionsSelected) {
+		this.highlightMissingReactionsSelected = highlightMissingReactionsSelected;
+	}
+
+	public boolean isGapFillingSelected() {
+		return gapFillingSelected;
+	}
+
+	public void setGapFillingSelected(boolean gapFillingSelected) {
+		this.gapFillingSelected = gapFillingSelected;
+	}
+
+	public boolean isScaleEdgeThicknessSelected() {
+		return scaleEdgeThicknessSelected;
+	}
+
+	public void setScaleEdgeThicknessSelected(boolean scaleEdgeThicknessSelected) {
+		this.scaleEdgeThicknessSelected = scaleEdgeThicknessSelected;
+	}
+
 }
