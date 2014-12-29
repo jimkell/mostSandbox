@@ -17,6 +17,8 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import edu.rutgers.MOST.config.LocalConfig;
+
 public class VisualizationOptionsDialog extends JDialog {
 
 	/**
@@ -132,8 +134,16 @@ public class VisualizationOptionsDialog extends JDialog {
     	
     	ActionListener okButtonActionListener = new ActionListener() {
 			public void actionPerformed(ActionEvent prodActionEvent) {
+				LocalConfig.getInstance().setGraphMissingReactionsSelected(graphMissingReactionsCheckBox.isSelected());
+				LocalConfig.getInstance().setHighlightMissingReactionsSelected(highlightMissingReactionsCheckBox.isSelected());
+				LocalConfig.getInstance().setGapFillingSelected(gapFillingCheckBox.isSelected());
+				LocalConfig.getInstance().setScaleEdgeThicknessSelected(scaleEdgeThicknessCheckBox.isSelected());
 				setVisible(false);
 				dispose();
+//				System.out.println(LocalConfig.getInstance().isGraphMissingReactionsSelected());
+//				System.out.println(LocalConfig.getInstance().isHighlightMissingReactionsSelected());
+//				System.out.println(LocalConfig.getInstance().isGapFillingSelected());
+//				System.out.println(LocalConfig.getInstance().isScaleEdgeThicknessSelected());
 			}
 		}; 
 		
@@ -150,7 +160,9 @@ public class VisualizationOptionsDialog extends JDialog {
 		
 	}
 	
-	// if graphMissingReactions selection changed set defaults on sub topic check boxes
+	/**
+	 * Set sub topic check boxes to correct values based on main topic 
+	 */
 	public void setGraphMissingReactionsDefaults() {
 		if (graphMissingReactionsCheckBox.isSelected()) {
 			highlightMissingReactionsCheckBox.setSelected(VisualizationOptionsConstants.HIGHLIGHT_MISSING_REACTIONS_DEFAULT);
@@ -158,15 +170,20 @@ public class VisualizationOptionsDialog extends JDialog {
 			highlightMissingReactionsCheckBox.setEnabled(true);
 			gapFillingCheckBox.setEnabled(true);
 		} else {
-			highlightMissingReactionsCheckBox.setSelected(false);
-			gapFillingCheckBox.setSelected(false);
+			highlightMissingReactionsCheckBox.setSelected(VisualizationOptionsConstants.HIGHLIGHT_MISSING_REACTIONS_GRAYED_DEFAULT);
+			gapFillingCheckBox.setSelected(VisualizationOptionsConstants.USE_GAP_FILLING_GRAYED_DEFAULT);
 			highlightMissingReactionsCheckBox.setEnabled(false);
 			gapFillingCheckBox.setEnabled(false);
 		}
 	}
 	
+	/**
+	 * Left Justifies component in a panel
+	 * @param panel
+	 * @return
+	 */
 	// from http://stackoverflow.com/questions/9212155/java-boxlayout-panels-alignment
-	private Component leftJustify( JPanel panel )  {
+	private Component leftJustify(JPanel panel)  {
 	    Box  b = Box.createHorizontalBox();
 	    b.add( panel );
 	    b.add( Box.createHorizontalGlue() );

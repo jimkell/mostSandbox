@@ -27,6 +27,8 @@ import java.util.Map;
 
 
 
+
+
 import javax.swing.Icon;
 import javax.swing.ImageIcon;                                                                                        
 import javax.swing.JApplet;                                                                                          
@@ -93,6 +95,8 @@ public class PathwaysFrame extends JApplet {
      * the visual component and renderer for the graph                                                               
      */                                                                                                              
     VisualizationViewer<String, Number> vv;  
+    
+    public final JMenuItem visualizationOptionsItem = new JMenuItem(VisualizationOptionsConstants.VISUALIZATION_OPTIONS_MENU_ITEM_NAME);
                                                                                                                      
 	Map<String, String[]> metabPosMap = new HashMap<String, String[]>();                                                       
    	List<String> metaboliteList; 
@@ -252,6 +256,7 @@ public class PathwaysFrame extends JApplet {
 						ecNumbers.add(pathway.getReactionsData().get(Integer.toString(k)).getEcNumbers().get(m));
 						ArrayList<SBMLReaction> reac = LocalConfig.getInstance().getEcNumberReactionMap().get(pathway.getReactionsData().get(Integer.toString(k)).getEcNumbers().get(m));
 						for (int r = 0; r < reac.size(); r++) {
+							System.out.println(LocalConfig.getInstance().getReactionEquationMap().get(reac.get(r).getId()));
 							modelReactionNames.add(reac.get(r).getReactionName());
 							modelEquations.add(reac.get(r).getReactionEqunAbbr());
 							fluxes.add(reac.get(r).getFluxValue());
@@ -865,7 +870,6 @@ public class PathwaysFrame extends JApplet {
             //undirected_arrow = ArrowFactory.getWedgeArrow(width, length);
             // no arrow for undirected edge
             //undirected_arrow = ArrowFactory.getWedgeArrow(0, 0);
-            System.out.println("a " + width);
         }
        
         /**

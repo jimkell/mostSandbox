@@ -1030,5 +1030,67 @@ public class LocalConfig {
 	public void setScaleEdgeThicknessSelected(boolean scaleEdgeThicknessSelected) {
 		this.scaleEdgeThicknessSelected = scaleEdgeThicknessSelected;
 	}
+	
+	// compartment suffixes from metabolite abbreviations
+	private String cytosolSuffix;
+
+	public String getCytosolSuffix() {
+		return cytosolSuffix;
+	}
+
+	public void setCytosolSuffix(String cytosolSuffix) {
+		this.cytosolSuffix = cytosolSuffix;
+	}
+	
+	private String extraOrganismSuffix;
+	
+	public String getExtraOrganismSuffix() {
+		return extraOrganismSuffix;
+	}
+
+	public void setExtraOrganismSuffix(String extraOrganismSuffix) {
+		this.extraOrganismSuffix = extraOrganismSuffix;
+	}
+
+	private String periplasmSuffix;
+
+	public String getPeriplasmSuffix() {
+		return periplasmSuffix;
+	}
+
+	public void setPeriplasmSuffix(String periplasmSuffix) {
+		this.periplasmSuffix = periplasmSuffix;
+	}
+	
+	// compartment names from model
+	private String cytosolName;
+
+	public String getCytosolName() {
+		return cytosolName;
+	}
+
+	public void setCytosolName(String cytosolName) {
+		this.cytosolName = cytosolName;
+	}
+	
+	private String extraOrganismName;
+
+	public String getExtraOrganismName() {
+		return extraOrganismName;
+	}
+
+	public void setExtraOrganismName(String extraOrganismName) {
+		this.extraOrganismName = extraOrganismName;
+	}
+	
+	private String periplasmName;
+
+	public String getPeriplasmName() {
+		return periplasmName;
+	}
+
+	public void setPeriplasmName(String periplasmName) {
+		this.periplasmName = periplasmName;
+	}
 
 }

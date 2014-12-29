@@ -8,6 +8,8 @@ public class VisualizationOptionsConstants {
 	public static final boolean GRAPH_MISSING_REACTIONS_DEFAULT = false;
 	public static final boolean HIGHLIGHT_MISSING_REACTIONS_DEFAULT = true;
 	public static final boolean USE_GAP_FILLING_DEFAULT = false;
+	public static final boolean HIGHLIGHT_MISSING_REACTIONS_GRAYED_DEFAULT = false;
+	public static final boolean USE_GAP_FILLING_GRAYED_DEFAULT = false;
 	
 	public static final boolean SCALE_EDGE_THICKNESS_DEFAULT = true;
 	

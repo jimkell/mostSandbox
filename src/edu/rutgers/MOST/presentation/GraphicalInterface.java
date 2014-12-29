@@ -333,6 +333,17 @@ public class GraphicalInterface extends JFrame {
 			AddReactionRowsDialog addReactionRowsDialog) {
 		GraphicalInterface.addReactionRowsDialog = addReactionRowsDialog;
 	}
+	
+	private static CompartmentNameAbbreviationDialog compNameAbbrDialog;
+
+	public static CompartmentNameAbbreviationDialog getCompNameAbbrDialog() {
+		return compNameAbbrDialog;
+	}
+
+	public static void setCompNameAbbrDialog(
+			CompartmentNameAbbreviationDialog compNameAbbrDialog) {
+		GraphicalInterface.compNameAbbrDialog = compNameAbbrDialog;
+	}
 
 	private static CSVLoadInterface csvLoadInterface;
 	
@@ -1257,6 +1268,7 @@ public class GraphicalInterface extends JFrame {
 		});
 
 		setBooleanDefaults();
+		setVisualizationOptionsDefaults();
 		setSortDefault();
 		setUpCellSelectionMode();
 		setFileType(GraphicalInterfaceConstants.DEFAULT_FILE_TYPE);
@@ -1392,6 +1404,8 @@ public class GraphicalInterface extends JFrame {
 		// visualizations 
 		Map<String, ArrayList<SBMLReaction>> ecNumberReactionMap = new HashMap<String, ArrayList<SBMLReaction>>();
 		LocalConfig.getInstance().setEcNumberReactionMap(ecNumberReactionMap);
+		ArrayList<String> compartmentAbbreviationList = new ArrayList<String>();
+		LocalConfig.getInstance().setCompartmentAbbreviationList(compartmentAbbreviationList);
 
 		DynamicTreePanel.getTreePanel().deleteItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent a) {
@@ -2710,6 +2724,7 @@ public class GraphicalInterface extends JFrame {
 
 		visualizeMenu.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
+				System.out.println(LocalConfig.getInstance().getCompartmentAbbreviationList());
 				PathwayFilesReader reader = new PathwayFilesReader();
 				reader.readFiles();
 				
@@ -2736,7 +2751,11 @@ public class GraphicalInterface extends JFrame {
 					// interpret the user's choice	  
 					if (choice == JOptionPane.YES_OPTION)
 					{
-						createVisualizationsPane();
+						if (LocalConfig.getInstance().getCompartmentAbbreviationList().size() > 0) {
+							createCompartmentNameAbbrDialog();
+						} else {
+							createVisualizationsPane();
+						}
 					}
 					//No option actually corresponds to "Yes to All" button
 					if (choice == JOptionPane.NO_OPTION)
@@ -2744,7 +2763,11 @@ public class GraphicalInterface extends JFrame {
 						// option in future to graph unconstrained
 					}
 				} else {
-					createVisualizationsPane();
+					if (LocalConfig.getInstance().getCompartmentAbbreviationList().size() > 0) {
+						createCompartmentNameAbbrDialog();
+					} else {
+						createVisualizationsPane();
+					}
 				} 
 			}
 		});
@@ -2842,9 +2865,9 @@ public class GraphicalInterface extends JFrame {
 				
 				d.setIconImages(icons);
 		    	d.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-		    	//d.setSize(400, 300);
 		    	d.pack();
 		    	d.setLocationRelativeTo(null);
+		    	d.setModal(true);
 		    	d.setVisible(true);
 			}
 		} );
@@ -5637,6 +5660,22 @@ public class GraphicalInterface extends JFrame {
 		gdbbSelected = false;
 		gdbbRunning = false;
 		gdbbProcessed = false;
+	}
+	
+	/**
+	 * Sets Visualization Options defaults on startup of Graphical Interface
+	 */
+	public void setVisualizationOptionsDefaults() {
+		// may eventually get this from a config file
+		LocalConfig.getInstance().setGraphMissingReactionsSelected(VisualizationOptionsConstants.GRAPH_MISSING_REACTIONS_DEFAULT);
+		if (VisualizationOptionsConstants.GRAPH_MISSING_REACTIONS_DEFAULT) {
+			LocalConfig.getInstance().setHighlightMissingReactionsSelected(VisualizationOptionsConstants.HIGHLIGHT_MISSING_REACTIONS_DEFAULT);
+			LocalConfig.getInstance().setGapFillingSelected(VisualizationOptionsConstants.USE_GAP_FILLING_DEFAULT);
+		} else {
+			LocalConfig.getInstance().setHighlightMissingReactionsSelected(VisualizationOptionsConstants.HIGHLIGHT_MISSING_REACTIONS_GRAYED_DEFAULT);
+			LocalConfig.getInstance().setGapFillingSelected(VisualizationOptionsConstants.USE_GAP_FILLING_GRAYED_DEFAULT);
+		}
+		LocalConfig.getInstance().setScaleEdgeThicknessSelected(VisualizationOptionsConstants.SCALE_EDGE_THICKNESS_DEFAULT);
 	}
 
 	public void clearConfigLists() {	
@@ -11348,6 +11387,7 @@ public class GraphicalInterface extends JFrame {
 				enableOptionComponent(redoSplitButton, redoLabel, redoGrayedLabel);
 				redoItem.setEnabled(true);
 			}
+			visualizationOptionsItem.setEnabled(true);
 		} 
 	}
 	
@@ -11378,6 +11418,7 @@ public class GraphicalInterface extends JFrame {
 		disableOptionComponent(redoSplitButton, redoLabel, redoGrayedLabel);
 		undoItem.setEnabled(false);
 		redoItem.setEnabled(false);
+		visualizationOptionsItem.setEnabled(false);
 	}
 	
 	/**
@@ -11935,6 +11976,41 @@ public class GraphicalInterface extends JFrame {
 		} else {
 			LocalConfig.getInstance().fvaColumnsVisible = false;
 		}
+	}
+	
+	public void createCompartmentNameAbbrDialog() {
+		CompartmentNameAbbreviationDialog frame = new CompartmentNameAbbreviationDialog();
+		setCompNameAbbrDialog(frame);
+		frame.setIconImages(icons);
+		//frame.setSize(550, 270);
+		frame.pack();
+		frame.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		frame.setLocationRelativeTo(null);
+		frame.setVisible(true);
+		frame.okButton.addActionListener(compartmentNameAbbrOKActionListener);
+	}
+	
+	ActionListener compartmentNameAbbrOKActionListener = new ActionListener() {
+		public void actionPerformed(ActionEvent ae) {
+			LocalConfig.getInstance().setCytosolSuffix(compSuffixFromCombo(getCompNameAbbrDialog().cbCytosol));
+			LocalConfig.getInstance().setExtraOrganismSuffix(compSuffixFromCombo(getCompNameAbbrDialog().cbExtraOrganism));
+			LocalConfig.getInstance().setPeriplasmSuffix(compSuffixFromCombo(getCompNameAbbrDialog().cbPeriplasm));
+			LocalConfig.getInstance().setCytosolName(compSuffixFromCombo(getCompNameAbbrDialog().cbCytosolName));
+			LocalConfig.getInstance().setExtraOrganismName(compSuffixFromCombo(getCompNameAbbrDialog().cbExtraOrganismName));
+			LocalConfig.getInstance().setPeriplasmName(compSuffixFromCombo(getCompNameAbbrDialog().cbPeriplasmName));
+			getCompNameAbbrDialog().setVisible(false);
+			getCompNameAbbrDialog().dispose();
+			System.out.println(LocalConfig.getInstance().getCytosolSuffix());
+			createVisualizationsPane();
+		}
+	};
+	
+	public String compSuffixFromCombo(JComboBox<String> combo) {
+		String suffix = "";
+		if (combo.getSelectedIndex() > -1) {
+			suffix = (String) combo.getSelectedItem();
+		}
+		return suffix;
 	}
 	
 	public void createVisualizationsPane() {

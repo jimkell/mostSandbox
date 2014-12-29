@@ -47,7 +47,7 @@ public class SBMLMetabolite implements ModelMetabolite {
 	public void setCompartment(String compartment) {
 		this.compartment = compartment;
 	}
-	
+
 	public String getCharge() {
 		return charge;
 	}
