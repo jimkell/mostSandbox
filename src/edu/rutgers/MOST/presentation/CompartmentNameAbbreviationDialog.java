@@ -41,7 +41,7 @@ public class CompartmentNameAbbreviationDialog extends JDialog {
 
 		getRootPane().setDefaultButton(okButton);
 
-		setTitle(ColumnInterfaceConstants.METABOLITES_COLUMN_NAME_INTERFACE_TITLE);
+		setTitle(CompartmentNameAbbreviationConstants.DIALOG_TITLE);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		//setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 
@@ -100,7 +100,7 @@ public class CompartmentNameAbbreviationDialog extends JDialog {
 
 		//top label
 		JLabel topLabel = new JLabel();
-		topLabel.setText("Compartment                                 Abbreviation                                        Name                      ");
+		topLabel.setText(CompartmentNameAbbreviationConstants.TOP_LABEL);
 		topLabel.setSize(new Dimension(300, 30));
 		topLabel.setBorder(BorderFactory.createEmptyBorder(10,0,10,0));
 		//top, left, bottom. right
