@@ -13,9 +13,12 @@ public class PathwayConnectionNode {
 	private String reactionName;
 	// used for node text
 	private String modelReactionName;
+	private ArrayList<String> modelReactionNames;
 	private String dataId;
 	private String equation;
 	private String modelEquation;
+	private ArrayList<String> modelEquations;
+	private ArrayList<Double> fluxes;
 
 	// data from enzyme.dat
 	private ArrayList<String> enzymeDataEquations;
@@ -67,6 +70,12 @@ public class PathwayConnectionNode {
 	public void setModelReactionName(String modelReactionName) {
 		this.modelReactionName = modelReactionName;
 	}
+	public ArrayList<String> getModelReactionNames() {
+		return modelReactionNames;
+	}
+	public void setModelReactionNames(ArrayList<String> modelReactionNames) {
+		this.modelReactionNames = modelReactionNames;
+	}
 	public String getDataId() {
 		return dataId;
 	}
@@ -84,6 +93,18 @@ public class PathwayConnectionNode {
 	}
 	public void setModelEquation(String modelEquation) {
 		this.modelEquation = modelEquation;
+	}
+	public ArrayList<String> getModelEquations() {
+		return modelEquations;
+	}
+	public void setModelEquations(ArrayList<String> modelEquations) {
+		this.modelEquations = modelEquations;
+	}
+	public ArrayList<Double> getFluxes() {
+		return fluxes;
+	}
+	public void setFluxes(ArrayList<Double> fluxes) {
+		this.fluxes = fluxes;
 	}
 	public ArrayList<String> getEnzymeDataEquations() {
 		return enzymeDataEquations;

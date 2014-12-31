@@ -373,7 +373,6 @@ public class PathwayFilesReader {
 						pc.writeReactionEquation();
 						pc.setName(pc.getEquation());
 						pc.setDisplayName("<html>" + pc.getEquation() +"<p> EC Number(s): " + pc.getEcNumbers());
-						//System.out.println(pc);
 						if (pc.getPositioning().equals("1")) {
 							pc.setDirection(pc.getDirection());
 							if (connectionPositionMap.containsKey(pc.getReactantPathwaysIds().get(0).get(0))) {

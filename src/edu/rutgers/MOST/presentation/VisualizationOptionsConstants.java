@@ -5,7 +5,8 @@ public class VisualizationOptionsConstants {
 	public static final String VISUALIZATION_OPTIONS_DIALOG_TITLE = "Visualization Options";
 	public static final String VISUALIZATION_OPTIONS_MENU_ITEM_NAME = "Visualization Options";
 	
-	public static final boolean GRAPH_MISSING_REACTIONS_DEFAULT = false;
+	//public static final boolean GRAPH_MISSING_REACTIONS_DEFAULT = false;
+	public static final boolean GRAPH_MISSING_REACTIONS_DEFAULT = true;
 	public static final boolean HIGHLIGHT_MISSING_REACTIONS_DEFAULT = true;
 	public static final boolean USE_GAP_FILLING_DEFAULT = false;
 	public static final boolean HIGHLIGHT_MISSING_REACTIONS_GRAYED_DEFAULT = false;
