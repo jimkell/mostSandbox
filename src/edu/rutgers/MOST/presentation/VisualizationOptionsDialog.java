@@ -44,10 +44,13 @@ public class VisualizationOptionsDialog extends JDialog {
 		setTitle(VisualizationOptionsConstants.VISUALIZATION_OPTIONS_DIALOG_TITLE);
 		
 		// set check box defaults
-		// eventually store user options in config file?
-		graphMissingReactionsCheckBox.setSelected(VisualizationOptionsConstants.GRAPH_MISSING_REACTIONS_DEFAULT);
-		setGraphMissingReactionsDefaults();
-		scaleEdgeThicknessCheckBox.setSelected(VisualizationOptionsConstants.SCALE_EDGE_THICKNESS_DEFAULT);
+//		graphMissingReactionsCheckBox.setSelected(VisualizationOptionsConstants.GRAPH_MISSING_REACTIONS_DEFAULT);
+//		setGraphMissingReactionsDefaults();
+//		scaleEdgeThicknessCheckBox.setSelected(VisualizationOptionsConstants.SCALE_EDGE_THICKNESS_DEFAULT);
+		graphMissingReactionsCheckBox.setSelected(LocalConfig.getInstance().isGraphMissingReactionsSelected());
+		highlightMissingReactionsCheckBox.setSelected(LocalConfig.getInstance().isHighlightMissingReactionsSelected());
+		gapFillingCheckBox.setSelected(LocalConfig.getInstance().isGapFillingSelected());
+		scaleEdgeThicknessCheckBox.setSelected(LocalConfig.getInstance().isScaleEdgeThicknessSelected());
 		
 		graphMissingReactionsCheckBox.setMnemonic(KeyEvent.VK_G);
 		highlightMissingReactionsCheckBox.setMnemonic(KeyEvent.VK_H);

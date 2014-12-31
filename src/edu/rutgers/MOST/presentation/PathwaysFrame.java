@@ -308,6 +308,7 @@ public class PathwaysFrame extends JApplet {
 				pn.setEcNumbers(ecNumbers);
 				//System.out.println(pn);
 				String displayName = pathway.getReactionsData().get(Integer.toString(k)).getDisplayName();
+				boolean drawReaction = true;
 				if (modelReactionNames.size() > 0) {
 					String reacName = modelReactionNames.get(0);
 					if (modelReactionNames.size() > 1) {
@@ -337,35 +338,41 @@ public class PathwaysFrame extends JApplet {
 							+ "<p> Equation: " + pathway.getReactionsData().get(Integer.toString(k)).getName()
 							+ modelEquationString;
 					foundList.add(displayName);
-				} 
-				reactions.add(displayName);
-				double x = startX + PathwaysFrameConstants.HORIZONTAL_INCREMENT*pathway.getReactionsData().get(Integer.toString(k)).getLevel();
-				double y = startY + PathwaysFrameConstants.VERTICAL_INCREMENT*pathway.getReactionsData().get(Integer.toString(k)).getLevelPosition(); 
-				metabPosMap.put(displayName, new String[] {Double.toString(x), Double.toString(y)});  
-				pn.setDataId(pathway.getReactionsData().get(Integer.toString(k)).getReactionId());
-				pn.setxPosition(x);
-				pn.setyPosition(y);
-				pathway.getReactionsNodes().put(pn.getDataId(), pn);
-				String reversible = "";
-				if (pathway.getReactionsData().get(Integer.toString(k)).getReversible().equals("0")) {
-					reversible = "false";
-				} else if (pathway.getReactionsData().get(Integer.toString(k)).getReversible().equals("1")) {
-					reversible = "true";
+				} else {
+					if (!LocalConfig.getInstance().isGraphMissingReactionsSelected()) {
+						drawReaction = false;
+					}
 				}
-				//System.out.println(pathway.getReactionsData().get(Integer.toString(k)).getReactantIds());
-				for (int r = 0; r < pathway.getReactionsData().get(Integer.toString(k)).getReactantIds().size(); r++) {
-					//System.out.println(pathway.getMetabolites().get((pathway.getReactionsData().get(Integer.toString(k)).getMainReactants().get(r))).getNames().get(0));
-					String reac = pathway.getMetabolitesData().get((pathway.getReactionsData().get(Integer.toString(k)).getReactantIds().get(r))).getNames().get(0);
-					//if (!reactionMap.containsKey(displayName)) {
-						reactionMap.put(displayName + "reactant " + Integer.toString(r), new String[] {displayName, reac, reversible});
-						fluxMap.put(displayName + "reactant " + Integer.toString(r), PathwaysFrameConstants.DEFAULT_EDGE_WIDTH);
-					//} 
-				}
-				for (int p = 0; p < pathway.getReactionsData().get(Integer.toString(k)).getProductIds().size(); p++) {
-					//System.out.println(pathway.getMetabolites().get((pathway.getReactionsData().get(Integer.toString(k)).getMainProducts().get(p))).getNames().get(0));
-					String prod = pathway.getMetabolitesData().get((pathway.getReactionsData().get(Integer.toString(k)).getProductIds().get(p))).getNames().get(0);
-					reactionMap.put(displayName + "product " + Integer.toString(p), new String[] {displayName, prod, "true"});
-					fluxMap.put(displayName + "product " + Integer.toString(p), PathwaysFrameConstants.DEFAULT_EDGE_WIDTH);
+				if (drawReaction) {
+					reactions.add(displayName);
+					double x = startX + PathwaysFrameConstants.HORIZONTAL_INCREMENT*pathway.getReactionsData().get(Integer.toString(k)).getLevel();
+					double y = startY + PathwaysFrameConstants.VERTICAL_INCREMENT*pathway.getReactionsData().get(Integer.toString(k)).getLevelPosition(); 
+					metabPosMap.put(displayName, new String[] {Double.toString(x), Double.toString(y)});  
+					pn.setDataId(pathway.getReactionsData().get(Integer.toString(k)).getReactionId());
+					pn.setxPosition(x);
+					pn.setyPosition(y);
+					pathway.getReactionsNodes().put(pn.getDataId(), pn);
+					String reversible = "";
+					if (pathway.getReactionsData().get(Integer.toString(k)).getReversible().equals("0")) {
+						reversible = "false";
+					} else if (pathway.getReactionsData().get(Integer.toString(k)).getReversible().equals("1")) {
+						reversible = "true";
+					}
+					//System.out.println(pathway.getReactionsData().get(Integer.toString(k)).getReactantIds());
+					for (int r = 0; r < pathway.getReactionsData().get(Integer.toString(k)).getReactantIds().size(); r++) {
+						//System.out.println(pathway.getMetabolites().get((pathway.getReactionsData().get(Integer.toString(k)).getMainReactants().get(r))).getNames().get(0));
+						String reac = pathway.getMetabolitesData().get((pathway.getReactionsData().get(Integer.toString(k)).getReactantIds().get(r))).getNames().get(0);
+						//if (!reactionMap.containsKey(displayName)) {
+							reactionMap.put(displayName + "reactant " + Integer.toString(r), new String[] {displayName, reac, reversible});
+							fluxMap.put(displayName + "reactant " + Integer.toString(r), PathwaysFrameConstants.DEFAULT_EDGE_WIDTH);
+						//} 
+					}
+					for (int p = 0; p < pathway.getReactionsData().get(Integer.toString(k)).getProductIds().size(); p++) {
+						//System.out.println(pathway.getMetabolites().get((pathway.getReactionsData().get(Integer.toString(k)).getMainProducts().get(p))).getNames().get(0));
+						String prod = pathway.getMetabolitesData().get((pathway.getReactionsData().get(Integer.toString(k)).getProductIds().get(p))).getNames().get(0);
+						reactionMap.put(displayName + "product " + Integer.toString(p), new String[] {displayName, prod, "true"});
+						fluxMap.put(displayName + "product " + Integer.toString(p), PathwaysFrameConstants.DEFAULT_EDGE_WIDTH);
+					}
 				}
 			}
 			//System.out.println("map " + LocalConfig.getInstance().getConnectionPositionMap());
@@ -593,9 +600,8 @@ public class PathwaysFrame extends JApplet {
         	} else if (metabolites.contains(name)) {
         		graphics.setColor(Color.lightGray);
         	} else if (reactions.contains(name)) {
-        		if (foundList.contains(name)) {
-        			graphics.setColor(Color.white);
-        		} else {
+        		graphics.setColor(Color.white);
+        		if (!foundList.contains(name) && LocalConfig.getInstance().isHighlightMissingReactionsSelected()) {
         			graphics.setColor(Color.yellow);
         		}
         	}
