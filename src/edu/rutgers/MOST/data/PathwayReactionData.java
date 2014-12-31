@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import edu.rutgers.MOST.config.LocalConfig;
 import edu.rutgers.MOST.presentation.GraphicalInterfaceConstants;
 
+/**
+ * Data from pathway_reactions.csv file. Used to construct PathwayReactionNodes.
+ */
 public class PathwayReactionData {
 	// data from pathway_reactions.csv
 	private String pathwayId;

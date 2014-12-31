@@ -2,6 +2,9 @@ package edu.rutgers.MOST.data;
 
 import java.util.ArrayList;
 
+/**
+ * Data for each reaction node in graph
+ */
 public class PathwayReactionNode {
 	private String compartment;
 	private String pathwayId;
@@ -39,304 +42,204 @@ public class PathwayReactionNode {
 		return compartment;
 	}
 
-
-
 	public void setCompartment(String compartment) {
 		this.compartment = compartment;
 	}
-
-
 
 	public String getPathwayId() {
 		return pathwayId;
 	}
 
-
-
 	public void setPathwayId(String pathwayId) {
 		this.pathwayId = pathwayId;
 	}
-
-
 
 	public String getReactionName() {
 		return reactionName;
 	}
 
-
-
 	public void setReactionName(String reactionName) {
 		this.reactionName = reactionName;
 	}
-
-
 
 	public ArrayList<String> getModelReactionNames() {
 		return modelReactionNames;
 	}
 
-
-
 	public void setModelReactionNames(ArrayList<String> modelReactionNames) {
 		this.modelReactionNames = modelReactionNames;
 	}
-
-
 
 	public String getModelReactionName() {
 		return modelReactionName;
 	}
 
-
-
 	public void setModelReactionName(String modelReactionName) {
 		this.modelReactionName = modelReactionName;
 	}
-
-
 
 	public String getDataId() {
 		return dataId;
 	}
 
-
-
 	public void setDataId(String dataId) {
 		this.dataId = dataId;
 	}
-
-
 
 	public String getEquation() {
 		return equation;
 	}
 
-
-
 	public void setEquation(String equation) {
 		this.equation = equation;
 	}
-
-
 
 	public String getModelEquation() {
 		return modelEquation;
 	}
 
-
-
 	public void setModelEquation(String modelEquation) {
 		this.modelEquation = modelEquation;
 	}
-
-
 
 	public ArrayList<String> getModelEquations() {
 		return modelEquations;
 	}
 
-
-
 	public void setModelEquations(ArrayList<String> modelEquations) {
 		this.modelEquations = modelEquations;
 	}
-
-
 
 	public ArrayList<Double> getFluxes() {
 		return fluxes;
 	}
 
-
-
 	public void setFluxes(ArrayList<Double> fluxes) {
 		this.fluxes = fluxes;
 	}
-
-
 
 	public ArrayList<String> getEnzymeDataEquations() {
 		return enzymeDataEquations;
 	}
 
-
-
 	public void setEnzymeDataEquations(ArrayList<String> enzymeDataEquations) {
 		this.enzymeDataEquations = enzymeDataEquations;
 	}
-
-
 
 	public ArrayList<String> getMainReactants() {
 		return mainReactants;
 	}
 
-
-
 	public void setMainReactants(ArrayList<String> mainReactants) {
 		this.mainReactants = mainReactants;
 	}
-
-
 
 	public ArrayList<String> getMainProducts() {
 		return mainProducts;
 	}
 
-
-
 	public void setMainProducts(ArrayList<String> mainProducts) {
 		this.mainProducts = mainProducts;
 	}
-
-
 
 	public ArrayList<String> getSideReactants() {
 		return sideReactants;
 	}
 
-
-
 	public void setSideReactants(ArrayList<String> sideReactants) {
 		this.sideReactants = sideReactants;
 	}
-
-
 
 	public ArrayList<String> getSideProducts() {
 		return sideProducts;
 	}
 
-
-
 	public void setSideProducts(ArrayList<String> sideProducts) {
 		this.sideProducts = sideProducts;
 	}
 
-
-
 	public ArrayList<PathwayMetaboliteNode> getMainPathwayReactants() {
 		return mainPathwayReactants;
 	}
-
-
 
 	public void setMainPathwayReactants(
 			ArrayList<PathwayMetaboliteNode> mainPathwayReactants) {
 		this.mainPathwayReactants = mainPathwayReactants;
 	}
 
-
-
 	public ArrayList<PathwayMetaboliteNode> getMainPathwayProducts() {
 		return mainPathwayProducts;
 	}
-
-
 
 	public void setMainPathwayProducts(
 			ArrayList<PathwayMetaboliteNode> mainPathwayProducts) {
 		this.mainPathwayProducts = mainPathwayProducts;
 	}
 
-
-
 	public String getReversible() {
 		return reversible;
 	}
-
-
 
 	public void setReversible(String reversible) {
 		this.reversible = reversible;
 	}
 
-
-
 	public ArrayList<String> getEcNumbers() {
 		return ecNumbers;
 	}
-
-
 
 	public void setEcNumbers(ArrayList<String> ecNumbers) {
 		this.ecNumbers = ecNumbers;
 	}
 
-
-
 	public double getxPosition() {
 		return xPosition;
 	}
-
-
 
 	public void setxPosition(double xPosition) {
 		this.xPosition = xPosition;
 	}
 
-
-
 	public double getyPosition() {
 		return yPosition;
 	}
-
-
 
 	public void setyPosition(double yPosition) {
 		this.yPosition = yPosition;
 	}
 
-
-
 	public ArrayList<String> getCompartmentList() {
 		return compartmentList;
 	}
-
-
 
 	public void setCompartmentList(ArrayList<String> compartmentList) {
 		this.compartmentList = compartmentList;
 	}
 
-
-
 	public ArrayList<String> getCompartmentReactantsList() {
 		return compartmentReactantsList;
 	}
-
-
 
 	public void setCompartmentReactantsList(
 			ArrayList<String> compartmentReactantsList) {
 		this.compartmentReactantsList = compartmentReactantsList;
 	}
 
-
-
 	public ArrayList<String> getCompartmentProductsList() {
 		return compartmentProductsList;
 	}
-
-
 
 	public void setCompartmentProductsList(ArrayList<String> compartmentProductsList) {
 		this.compartmentProductsList = compartmentProductsList;
 	}
 
-
-
 	public String getSubsystem() {
 		return subsystem;
 	}
 
-
-
 	public void setSubsystem(String subsystem) {
 		this.subsystem = subsystem;
 	}
-
-
 
 	@Override
 	public String toString() {

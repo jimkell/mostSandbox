@@ -923,6 +923,16 @@ public class LocalConfig {
 	public void setListOfCompartments(ArrayList<String> listOfCompartments) {
 		this.listOfCompartments = listOfCompartments;
 	}
+	
+	private ArrayList<String> listOfCompartmentNames;
+
+	public ArrayList<String> getListOfCompartmentNames() {
+		return listOfCompartmentNames;
+	}
+
+	public void setListOfCompartmentNames(ArrayList<String> listOfCompartmentNames) {
+		this.listOfCompartmentNames = listOfCompartmentNames;
+	}
 
 	// list from metabolites table
 	private ArrayList<String> compartmentsList;

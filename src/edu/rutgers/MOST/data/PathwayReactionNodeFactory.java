@@ -6,7 +6,7 @@ import edu.rutgers.MOST.config.LocalConfig;
 
 public class PathwayReactionNodeFactory {
 
-	public PathwayReactionNode createPathwayReactionNode(PathwayReactionData data) {
+	public PathwayReactionNode createPathwayReactionNode(PathwayReactionData data, String compartment) {
 		PathwayReactionNode pn = new PathwayReactionNode();
 		ArrayList<String> sideReactants = new ArrayList<String>();
 		ArrayList<String> sideProducts = new ArrayList<String>();
@@ -21,9 +21,24 @@ public class PathwayReactionNodeFactory {
 				ecNumbers.add(data.getEcNumbers().get(m));
 				ArrayList<SBMLReaction> reac = LocalConfig.getInstance().getEcNumberReactionMap().get(data.getEcNumbers().get(m));
 				for (int r = 0; r < reac.size(); r++) {
-					modelReactionNames.add(reac.get(r).getReactionName());
-					modelEquations.add(reac.get(r).getReactionEqunAbbr());
-					fluxes.add(reac.get(r).getFluxValue());
+					// if compartment not defined, just draw everything for now
+					if (compartment != null && compartment.length() > 0) {
+						SBMLReactionEquation equn = (SBMLReactionEquation) LocalConfig.getInstance().getReactionEquationMap().get(reac.get(r).getId());
+						if (equn.getCompartmentList().size() == 1 && equn.getCompartmentList().contains(compartment)) {
+							modelReactionNames.add(reac.get(r).getReactionName());
+							modelEquations.add(reac.get(r).getReactionEqunAbbr());
+							fluxes.add(reac.get(r).getFluxValue());
+//							System.out.println("c " + equn.getCompartmentList());
+						} else {
+							// uncomment to show that reactions are eliminated if not correct compartment
+//							System.out.println("n c " + equn.getCompartmentList());
+//							System.out.println(data.getEcNumbers());
+						}
+					} else {
+						modelReactionNames.add(reac.get(r).getReactionName());
+						modelEquations.add(reac.get(r).getReactionEqunAbbr());
+						fluxes.add(reac.get(r).getFluxValue());
+					}
 				}
 				if (LocalConfig.getInstance().getEnzymeDataMap().get(data.getEcNumbers().get(m)).getCatalyticActivity() == null) {
 					// description can have alternate numbers. need to get these

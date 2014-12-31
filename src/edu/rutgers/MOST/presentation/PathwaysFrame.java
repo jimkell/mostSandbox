@@ -261,7 +261,9 @@ public class PathwaysFrame extends JApplet {
 			}
 			for (int k = 0; k < pathway.getReactionsData().size(); k++) {
 				PathwayReactionNodeFactory prnf = new PathwayReactionNodeFactory();
-				PathwayReactionNode pn = prnf.createPathwayReactionNode(pathway.getReactionsData().get(Integer.toString(k)));
+				// only draw cytosol for now
+				PathwayReactionNode pn = prnf.createPathwayReactionNode(pathway.getReactionsData().get(Integer.toString(k)),
+						LocalConfig.getInstance().getCytosolName());
 				String displayName = prnf.createDisplayName(pathway.getReactionsData().get(Integer.toString(k)), pn);
 				boolean drawReaction = true;
 				if (pn.getModelReactionNames().size() > 0) {

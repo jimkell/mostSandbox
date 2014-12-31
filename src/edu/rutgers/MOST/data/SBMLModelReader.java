@@ -68,10 +68,17 @@ public class SBMLModelReader {
 		
 		ArrayList<String> listOfCompartments = new ArrayList<String>();
 		for (int c = 0; c < doc.getModel().getListOfCompartments().size(); c++) {
-			listOfCompartments.add(doc.getModel().getCompartment(c).toString());
+			listOfCompartments.add(doc.getModel().getCompartment(c).getId().toString());
 		}
 		//System.out.println(listOfCompartments);
 		LocalConfig.getInstance().setListOfCompartments(listOfCompartments);
+		
+		ArrayList<String> listOfCompartmentNames = new ArrayList<String>();
+		for (int c = 0; c < doc.getModel().getListOfCompartments().size(); c++) {
+			listOfCompartmentNames.add(doc.getModel().getCompartment(c).toString());
+		}
+		System.out.println(listOfCompartmentNames);
+		LocalConfig.getInstance().setListOfCompartmentNames(listOfCompartmentNames);
 		
 		ArrayList<String> compartmentsList = new ArrayList<String>();
 
