@@ -30,6 +30,7 @@ import java.util.Map;
 
 
 
+
 import javax.swing.Icon;
 import javax.swing.ImageIcon;                                                                                        
 import javax.swing.JApplet;                                                                                          
@@ -41,6 +42,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;                                                                                           
                                                                                                                      
 import javax.swing.JPopupMenu;
+import javax.swing.WindowConstants;
 
 import org.apache.commons.collections15.Transformer;                                                                 
 import org.apache.commons.collections15.functors.ChainedTransformer;                                                 
@@ -119,9 +121,19 @@ public class PathwaysFrame extends JApplet {
    	String borderTopY = Integer.toString(PathwaysFrameConstants.BORDER_HEIGHT);
    	String borderBottomY = Integer.toString(PathwaysFrameConstants.GRAPH_HEIGHT - PathwaysFrameConstants.BORDER_HEIGHT);
    
-   	public final JCheckBoxMenuItem transformItem = new JCheckBoxMenuItem("Transform");
+   	private final JCheckBoxMenuItem transformItem = new JCheckBoxMenuItem("Transform");
    	
-   	protected EdgeWeightStrokeFunction<Number> ewcs;
+   	private NodeEditorDialog nodeEditor;
+   	
+   	public NodeEditorDialog getNodeEditor() {
+		return nodeEditor;
+	}
+
+	public void setNodeEditor(NodeEditorDialog nodeEditor) {
+		this.nodeEditor = nodeEditor;
+	}
+
+	protected EdgeWeightStrokeFunction<Number> ewcs;
    	@SuppressWarnings("rawtypes")
 	protected DirectionalEdgeArrowTransformer arrowTransformer;
    	protected Map<Number, Number> edge_weight = new HashMap<Number, Number>();
@@ -145,7 +157,7 @@ public class PathwaysFrame extends JApplet {
      */                                                                                                              
     @SuppressWarnings({ "rawtypes", "unchecked" })
 	public PathwaysFrame() {                                                                                     
-        setLayout(new BorderLayout());  
+        setLayout(new BorderLayout()); 
         
         transformItem.setState(false);
         
@@ -264,6 +276,8 @@ public class PathwaysFrame extends JApplet {
 				// only draw cytosol for now
 				PathwayReactionNode pn = prnf.createPathwayReactionNode(pathway.getReactionsData().get(Integer.toString(k)),
 						LocalConfig.getInstance().getCytosolName());
+//				PathwayReactionNode pn = prnf.createPathwayReactionNode(pathway.getReactionsData().get(Integer.toString(k)),
+//						LocalConfig.getInstance().getPeriplasmName());
 				String displayName = prnf.createDisplayName(pathway.getReactionsData().get(Integer.toString(k)), pn);
 				boolean drawReaction = true;
 				if (pn.getModelReactionNames().size() > 0) {
@@ -322,40 +336,23 @@ public class PathwaysFrame extends JApplet {
 			ArrayList<PathwayMetaboliteNode> mainPathwayProducts = new ArrayList<PathwayMetaboliteNode>();
 			pcn.setMainPathwayReactants(mainPathwayReactants);
 			pcn.setMainPathwayProducts(mainPathwayProducts);
-//			System.out.println(LocalConfig.getInstance().getConnectionslist().get(i).getName());
 			pcn.setReactionName(LocalConfig.getInstance().getConnectionslist().get(i).getName());
 			double avgReacX = 0;
 			double avgReacY = 0;
 			double avgProdX = 0;
 			double avgProdY = 0;
 			for (int j = 0; j < LocalConfig.getInstance().getConnectionslist().get(i).getReactantPathwaysIds().size(); j++) {
-//				System.out.println("rp " + LocalConfig.getInstance().getConnectionslist().get(i).getReactantPathwaysIds().get(j).get(0));
-//				System.out.println("rr " + LocalConfig.getInstance().getConnectionslist().get(i).getReactantPathwaysIds().get(j).get(1));
-//				System.out.println("rm " + LocalConfig.getInstance().getMetabolicPathways().get(LocalConfig.getInstance().getConnectionslist().get(i).getReactantPathwaysIds().get(j).get(0)).getMetabolitesNodes().get(LocalConfig.getInstance().getConnectionslist().get(i).getReactantPathwaysIds().get(j).get(1)));
-				PathwayMetaboliteNode reacNode = LocalConfig.getInstance().getMetabolicPathways().get(LocalConfig.getInstance().getConnectionslist().get(i).getReactantPathwaysIds().get(j).get(0)).getMetabolitesNodes().get(LocalConfig.getInstance().getConnectionslist().get(i).getReactantPathwaysIds().get(j).get(1));
-				
+				PathwayMetaboliteNode reacNode = LocalConfig.getInstance().getMetabolicPathways().get(LocalConfig.getInstance().getConnectionslist().get(i).getReactantPathwaysIds().get(j).get(0)).getMetabolitesNodes().get(LocalConfig.getInstance().getConnectionslist().get(i).getReactantPathwaysIds().get(j).get(1));				
 				pcn.getMainPathwayReactants().add(reacNode);
-//				System.out.println("rm " + reacNode);
-//				System.out.println("rn " + reacNode.getName());
-//				System.out.println("rm x " + reacNode.getxPosition());
 				avgReacX += reacNode.getxPosition();
-//				System.out.println("rm y " + reacNode.getyPosition());
 				avgReacY += reacNode.getyPosition();
 			}
 			avgReacX = avgReacX/LocalConfig.getInstance().getConnectionslist().get(i).getReactantPathwaysIds().size();
 			avgReacY = avgReacY/LocalConfig.getInstance().getConnectionslist().get(i).getReactantPathwaysIds().size();
-//			System.out.println("a x " + avgReacX);
 			for (int k = 0; k < LocalConfig.getInstance().getConnectionslist().get(i).getProductPathwaysIds().size(); k++) {
-//				System.out.println("pp " + LocalConfig.getInstance().getConnectionslist().get(i).getProductPathwaysIds().get(k).get(0));
-//				System.out.println("pr " + LocalConfig.getInstance().getConnectionslist().get(i).getProductPathwaysIds().get(k).get(1));
-//				System.out.println("pm " + LocalConfig.getInstance().getMetabolicPathways().get(LocalConfig.getInstance().getConnectionslist().get(i).getProductPathwaysIds().get(k).get(0)).getMetabolitesNodes().get(LocalConfig.getInstance().getConnectionslist().get(i).getProductPathwaysIds().get(k).get(1)));
 				PathwayMetaboliteNode prodNode = LocalConfig.getInstance().getMetabolicPathways().get(LocalConfig.getInstance().getConnectionslist().get(i).getProductPathwaysIds().get(k).get(0)).getMetabolitesNodes().get(LocalConfig.getInstance().getConnectionslist().get(i).getProductPathwaysIds().get(k).get(1));
 				pcn.getMainPathwayProducts().add(prodNode);
-//				System.out.println("pm " + prodNode);
-//				System.out.println("pn " + prodNode.getName());
-//				System.out.println("pm x " + prodNode.getxPosition());
 				avgProdX += prodNode.getxPosition();
-//				System.out.println("pm y " + prodNode.getyPosition());
 				avgProdY += prodNode.getyPosition();
 			}
 			avgProdX = avgProdX/LocalConfig.getInstance().getConnectionslist().get(i).getProductPathwaysIds().size();
@@ -378,9 +375,6 @@ public class PathwaysFrame extends JApplet {
 			metabPosMap.put(pcn.getReactionName(), new String[] {Double.toString(avgX), Double.toString(avgY)});  
 			pcn.setxPosition(avgX);
 			pcn.setyPosition(avgY);
-//			System.out.println("avgX" + avgX);
-//			System.out.println("avgY" + avgY);
-//			System.out.println("rev " + LocalConfig.getInstance().getConnectionslist().get(i).getReversible());
 			pcn.setReversible(LocalConfig.getInstance().getConnectionslist().get(i).getReversible());
 			connectionsNodelist.add(pcn);
 		}
@@ -450,7 +444,7 @@ public class PathwaysFrame extends JApplet {
 				// TODO Auto-generated method stub
 				if (me.getButton() == MouseEvent.BUTTON3) {
 					final VisualizationViewer<String,String> vv =(VisualizationViewer<String,String>)me.getSource();
-			        final Point2D p = me.getPoint();
+			        //final Point2D p = me.getPoint();
 			        JPopupMenu popup = new JPopupMenu();
 			        JMenuItem editNodeMenu = new JMenuItem("Edit");
 			        editNodeMenu.addActionListener(new ActionListener() {
@@ -824,7 +818,11 @@ public class PathwaysFrame extends JApplet {
 		icons.add(new ImageIcon("images/most16.jpg").getImage()); 
 		icons.add(new ImageIcon("images/most32.jpg").getImage());
 
+		if (getNodeEditor() != null) {
+			getNodeEditor().dispose();
+		}
 		NodeEditorDialog frame = new NodeEditorDialog();
+		setNodeEditor(frame);
 
 		frame.setIconImages(icons);
 		frame.setSize(350, 170);

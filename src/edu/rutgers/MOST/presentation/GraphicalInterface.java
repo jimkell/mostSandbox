@@ -646,6 +646,7 @@ public class GraphicalInterface extends JFrame {
 	public final JMenuItem editorMenu = new JMenuItem("Launch Reaction Editor");
 	public final JMenuItem unsortReacMenuItem = new JMenuItem("Unsort Reactions Table");
 	public final JMenuItem unsortMetabMenuItem = new JMenuItem("Unsort Metabolites Table");
+	public final JMenuItem visualizeMenu = new JMenuItem("Visualize");
 	public final JMenuItem setUpSolver = new JMenuItem("Select Solvers");
 	public final JMenuItem gurobiParametersItem = new JMenuItem(GurobiParameters.GUROBI_PARAMETERS_MENU_ITEM);
 	public final JMenuItem glpkParametersItem = new JMenuItem( GLPKParameters.GLPK_PARAMETERS_MENU_ITEM );
@@ -2718,7 +2719,7 @@ public class GraphicalInterface extends JFrame {
 
 		editMenu.addSeparator();
 
-		JMenuItem visualizeMenu = new JMenuItem("Visualize");
+		//JMenuItem visualizeMenu = new JMenuItem("Visualize");
 		editMenu.add(visualizeMenu);
 		visualizeMenu.setMnemonic(KeyEvent.VK_V);
 
@@ -12018,13 +12019,25 @@ public class GraphicalInterface extends JFrame {
         final JFrame frame = new JFrame();  
         frame.setIconImages(icons);
         frame.setTitle(gi.getTitle());
-        Container content = frame.getContentPane();                                                                  
-        content.add(new PathwaysFrame());
+        Container content = frame.getContentPane(); 
+        final PathwaysFrame pf = new PathwaysFrame();
+        content.add(pf);
+        //content.add(new PathwaysFrame());
         frame.setSize(1300, 700);
-        //frame.pack();                                                                                                
-        //frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
+        //frame.pack();  
+        frame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+        frame.addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent evt) {
+				if (pf.getNodeEditor() != null) {
+					pf.getNodeEditor().dispose();
+				}
+				frame.setVisible(false);
+				visualizeMenu.setEnabled(true);
+			}
+		});		
         frame.setLocationRelativeTo(null);
-        frame.setVisible(true); 
+        frame.setVisible(true);
+        visualizeMenu.setEnabled(false);
 	}
 	
 	public static void main(String[] args) {
