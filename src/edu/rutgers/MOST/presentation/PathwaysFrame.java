@@ -274,11 +274,14 @@ public class PathwaysFrame extends JApplet {
 			for (int k = 0; k < pathway.getReactionsData().size(); k++) {
 				PathwayReactionNodeFactory prnf = new PathwayReactionNodeFactory();
 				// only draw cytosol for now
-				PathwayReactionNode pn = prnf.createPathwayReactionNode(pathway.getReactionsData().get(Integer.toString(k)),
+				PathwayReactionNode pn = prnf.createPathwayReactionNode(pathway.getReactionsData().get(Integer.toString(k)).getEcNumbers(),
 						LocalConfig.getInstance().getCytosolName());
 //				PathwayReactionNode pn = prnf.createPathwayReactionNode(pathway.getReactionsData().get(Integer.toString(k)),
 //						LocalConfig.getInstance().getPeriplasmName());
-				String displayName = prnf.createDisplayName(pathway.getReactionsData().get(Integer.toString(k)), pn);
+				String displayName = prnf.createDisplayName(pathway.getReactionsData().get(Integer.toString(k)).getDisplayName(),
+						pathway.getReactionsData().get(Integer.toString(k)).getName(),
+						pn.getModelReactionNames(), pn.getEcNumbers(), pn.getModelEquations());
+				
 				boolean drawReaction = true;
 				if (pn.getModelReactionNames().size() > 0) {
 					foundList.add(displayName);
@@ -295,7 +298,7 @@ public class PathwaysFrame extends JApplet {
 					pn.setDataId(pathway.getReactionsData().get(Integer.toString(k)).getReactionId());
 					pn.setxPosition(x);
 					pn.setyPosition(y);
-					String reversible = prnf.reversibleString(pathway.getReactionsData().get(Integer.toString(k)));
+					String reversible = prnf.reversibleString(pathway.getReactionsData().get(Integer.toString(k)).getReversible());
 					pn.setReversible(reversible);
 					pathway.getReactionsNodes().put(pn.getDataId(), pn);
 					for (int r = 0; r < pathway.getReactionsData().get(Integer.toString(k)).getReactantIds().size(); r++) {
@@ -310,6 +313,7 @@ public class PathwaysFrame extends JApplet {
 					}
 				}
 			}
+			// update start position map if necessary
 			if (LocalConfig.getInstance().getConnectionPositionMap().get(pathway.getId()) != null) {
 				if (LocalConfig.getInstance().getConnectionPositionMap().get(pathway.getId()).get(0).getReactantPathwaysIds().get(0).get(0).equals(pathway.getId())) {
 					for (int p = 0; p < LocalConfig.getInstance().getConnectionPositionMap().get(pathway.getId()).size(); p++) {
@@ -331,7 +335,11 @@ public class PathwaysFrame extends JApplet {
 		
 		ArrayList<PathwayConnectionNode> connectionsNodelist = new ArrayList<PathwayConnectionNode>();
 		for (int i = 0; i < LocalConfig.getInstance().getConnectionslist().size(); i++) {
-			PathwayConnectionNode pcn = new PathwayConnectionNode();
+			PathwayReactionNodeFactory prnf = new PathwayReactionNodeFactory();
+			// only draw cytosol for now
+			PathwayReactionNode pn = prnf.createPathwayReactionNode(LocalConfig.getInstance().getConnectionslist().get(i).getEcNumbers(),
+					LocalConfig.getInstance().getCytosolName());
+			PathwayConnectionNode pcn = prnf.createPathwayConnectionNode(pn);
 			ArrayList<PathwayMetaboliteNode> mainPathwayReactants = new ArrayList<PathwayMetaboliteNode>();
 			ArrayList<PathwayMetaboliteNode> mainPathwayProducts = new ArrayList<PathwayMetaboliteNode>();
 			pcn.setMainPathwayReactants(mainPathwayReactants);
@@ -364,11 +372,13 @@ public class PathwaysFrame extends JApplet {
 			// length field set to -2 or 2 for second reaction if two reactions connect 
 			// connection nodes, negative and positive values allow control of relative 
 			// position to first connecting reaction
-			if (LocalConfig.getInstance().getConnectionslist().get(i).getLength() == -2) {
+			if (LocalConfig.getInstance().getConnectionslist().get(i).getLength() == -2 &&
+					LocalConfig.getInstance().getConnectionslist().get(i).getPositioning().equals("0")) {
 				avgX -= PathwaysFrameConstants.REACTION_NODE_WIDTH/2;
 				avgY -= PathwaysFrameConstants.REACTION_NODE_HEIGHT;
 			}
-			if (LocalConfig.getInstance().getConnectionslist().get(i).getLength() == 2) {
+			if (LocalConfig.getInstance().getConnectionslist().get(i).getLength() == 2 &&
+					LocalConfig.getInstance().getConnectionslist().get(i).getPositioning().equals("0")) {
 				avgX += PathwaysFrameConstants.REACTION_NODE_WIDTH/2;
 				avgY += PathwaysFrameConstants.REACTION_NODE_HEIGHT;
 			}

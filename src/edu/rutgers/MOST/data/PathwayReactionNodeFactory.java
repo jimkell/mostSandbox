@@ -6,7 +6,7 @@ import edu.rutgers.MOST.config.LocalConfig;
 
 public class PathwayReactionNodeFactory {
 
-	public PathwayReactionNode createPathwayReactionNode(PathwayReactionData data, String compartment) {
+	public PathwayReactionNode createPathwayReactionNode(ArrayList<String> ec, String compartment) {
 		PathwayReactionNode pn = new PathwayReactionNode();
 		ArrayList<String> sideReactants = new ArrayList<String>();
 		ArrayList<String> sideProducts = new ArrayList<String>();
@@ -16,10 +16,11 @@ public class PathwayReactionNodeFactory {
 		ArrayList<Double> fluxes = new ArrayList<Double>();
 		ArrayList<String> ecNumbers = new ArrayList<String>();
 		
-		for (int m = 0; m < data.getEcNumbers().size(); m++) {
-			if (LocalConfig.getInstance().getEcNumberReactionMap().containsKey(data.getEcNumbers().get(m))) {
-				ecNumbers.add(data.getEcNumbers().get(m));
-				ArrayList<SBMLReaction> reac = LocalConfig.getInstance().getEcNumberReactionMap().get(data.getEcNumbers().get(m));
+		for (int m = 0; m < ec.size(); m++) {
+			if (LocalConfig.getInstance().getEcNumberReactionMap().containsKey(ec.get(m))) {
+				ecNumbers.add(ec.get(m));
+				// attributes from SBML Reaction
+				ArrayList<SBMLReaction> reac = LocalConfig.getInstance().getEcNumberReactionMap().get(ec.get(m));
 				for (int r = 0; r < reac.size(); r++) {
 					// if compartment not defined, just draw everything for now
 					if (compartment != null && compartment.length() > 0) {
@@ -32,7 +33,7 @@ public class PathwayReactionNodeFactory {
 						} else {
 							// uncomment to show that reactions are eliminated if not correct compartment
 //							System.out.println("n c " + equn.getCompartmentList());
-//							System.out.println(data.getEcNumbers());
+//							System.out.println(ec);
 						}
 					} else {
 						modelReactionNames.add(reac.get(r).getReactionName());
@@ -40,12 +41,13 @@ public class PathwayReactionNodeFactory {
 						fluxes.add(reac.get(r).getFluxValue());
 					}
 				}
-				if (LocalConfig.getInstance().getEnzymeDataMap().get(data.getEcNumbers().get(m)).getCatalyticActivity() == null) {
+				// attributes from Enzyme.dat
+				if (LocalConfig.getInstance().getEnzymeDataMap().get(ec.get(m)).getCatalyticActivity() == null) {
 					// description can have alternate numbers. need to get these
 					//System.out.println(keys.get(j) + " " + LocalConfig.getInstance().getEnzymeDataMap().get(keys.get(j)).getDescription());
 				} else {
-					enzymeDataEquations.add(LocalConfig.getInstance().getEnzymeDataMap().get(data.getEcNumbers().get(m)).getCatalyticActivity());
-					String[] halfReactions = LocalConfig.getInstance().getEnzymeDataMap().get(data.getEcNumbers().get(m)).getCatalyticActivity().split(" = ");
+					enzymeDataEquations.add(LocalConfig.getInstance().getEnzymeDataMap().get(ec.get(m)).getCatalyticActivity());
+					String[] halfReactions = LocalConfig.getInstance().getEnzymeDataMap().get(ec.get(m)).getCatalyticActivity().split(" = ");
 					for (int n = 0; n < LocalConfig.getInstance().getSideSpeciesList().size(); n++) {
 						if (halfReactions[0].contains(LocalConfig.getInstance().getSideSpeciesList().get(n))) {
 							if (!sideReactants.contains(LocalConfig.getInstance().getSideSpeciesList().get(n))) {
@@ -73,53 +75,66 @@ public class PathwayReactionNodeFactory {
 		return pn;
 	}
 	
-	public String createDisplayName(PathwayReactionData data, PathwayReactionNode pn) {
-		String displayName = data.getDisplayName();
-		if (pn.getModelReactionNames().size() > 0) {
-			String reacName = pn.getModelReactionNames().get(0);
-			if (pn.getModelReactionNames().size() > 1) {
-				reacName = pn.getModelReactionNames().toString();
+	public PathwayConnectionNode createPathwayConnectionNode(PathwayReactionNode pn) {
+		PathwayConnectionNode pcn = new PathwayConnectionNode();
+		pcn.setSideReactants(pn.getSideReactants());
+		pcn.setSideProducts(pn.getSideProducts());
+		pcn.setEnzymeDataEquations(pn.getEnzymeDataEquations());
+		pcn.setModelEquations(pn.getModelEquations());
+		pcn.setModelReactionNames(pn.getModelReactionNames());
+		pcn.setFluxes(pn.getFluxes());
+		pcn.setEcNumbers(pn.getEcNumbers());
+		
+		return pcn;
+	}
+	
+	public String createDisplayName(String displayName, String name, ArrayList<String> modelReactionNames,
+			ArrayList<String> ecnumbers, ArrayList<String> equations) {
+		if (modelReactionNames.size() > 0) {
+			String reacName = modelReactionNames.get(0);
+			if (modelReactionNames.size() > 1) {
+				reacName = modelReactionNames.toString();
 			}
 			displayName = "<html>" + reacName
-					+ displayECNumber(pn)
-					+ "<p> Equation: " + data.getName()
-					+ displayModelEquation(pn);
+					+ displayECNumber(ecnumbers)
+					+ "<p> Equation: " + name
+					+ displayModelEquation(equations);
 		}
 		return displayName;
 	}
 	
-	public String displayECNumber(PathwayReactionNode pn) {
+	public String displayECNumber(ArrayList<String> ecnumbers) {
 		String ec = "";
-		if (pn.getEcNumbers().size() > 0) {
-			ec = "<p>EC Number: " + pn.getEcNumbers().get(0);
+		if (ecnumbers.size() > 0) {
+			ec = "<p>EC Number: " + ecnumbers.get(0);
 		}
-		if (pn.getEcNumbers().size() > 1) {
-			ec = "<p>EC Number(s): " + pn.getEcNumbers().toString();
+		if (ecnumbers.size() > 1) {
+			ec = "<p>EC Number(s): " + ecnumbers.toString();
 		}
 		return ec;
 	}
 	
-	public String displayModelEquation(PathwayReactionNode pn) {
+	public String displayModelEquation(ArrayList<String> equations) {
 		// since equations can be quite long and a list of reactions may not fit on screen,
 		// each reaction is put on a separate line
 		String modelEquationString = "";
-		if (pn.getModelEquations().size() > 0) {
-			modelEquationString = "<p>Equation from Model: " + pn.getModelEquations().get(0);
+		if (equations.size() > 0) {
+			modelEquationString = "<p>Equation from Model: " + equations.get(0);
 		}
-		if (pn.getModelEquations().size() > 1) {
-			modelEquationString = "<p>Equation(s) from Model: " + pn.getModelEquations().get(0);
-			for (int m = 1; m < pn.getModelEquations().size(); m++) {
-				modelEquationString += ", <p>" + pn.getModelEquations().get(m);
+		if (equations.size() > 1) {
+			modelEquationString = "<p>Equation(s) from Model: " + equations.get(0);
+			for (int m = 1; m < equations.size(); m++) {
+				modelEquationString += ", <p>" + equations.get(m);
 			}
 		}
 		return modelEquationString;
 	}
 	
-	public String reversibleString(PathwayReactionData data) {
+	public String reversibleString(String reversibleValue) {
 		String reversible = "";
-		if (data.getReversible().equals("0")) {
+		if (reversibleValue.equals("0")) {
 			reversible = "false";
-		} else if (data.getReversible().equals("1")) {
+		} else if (reversibleValue.equals("1")) {
 			reversible = "true";
 		}
 		return reversible;
