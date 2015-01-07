@@ -21,4 +21,5 @@ public class PathwayConnectionNode extends PathwayReactionNode {
 			ArrayList<ArrayList<String>> productPathwaysIds) {
 		this.productPathwaysIds = productPathwaysIds;
 	}
+	
 }

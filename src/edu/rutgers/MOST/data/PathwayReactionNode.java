@@ -37,6 +37,9 @@ public class PathwayReactionNode {
 	private ArrayList<String> compartmentReactantsList;
 	private ArrayList<String> compartmentProductsList;
 	private String subsystem;
+	
+	private String displayName;
+	private String name;
 
 	public String getCompartment() {
 		return compartment;
@@ -239,6 +242,22 @@ public class PathwayReactionNode {
 
 	public void setSubsystem(String subsystem) {
 		this.subsystem = subsystem;
+	}
+
+	public String getDisplayName() {
+		return displayName;
+	}
+
+	public void setDisplayName(String displayName) {
+		this.displayName = displayName;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	@Override
