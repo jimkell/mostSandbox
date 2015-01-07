@@ -267,8 +267,15 @@ public class PathwaysFrame extends JApplet {
 				metabolites.add(pathway.getMetabolitesData().get(Integer.toString(j)).getNames().get(0));
 				PathwayMetaboliteNode pn = new PathwayMetaboliteNode();
 				pn.setDataId(pathway.getMetabolitesData().get(Integer.toString(j)).getId());
-				double x = startX + PathwaysFrameConstants.HORIZONTAL_INCREMENT*pathway.getMetabolitesData().get(Integer.toString(j)).getLevel();
-				double y = startY + PathwaysFrameConstants.VERTICAL_INCREMENT*pathway.getMetabolitesData().get(Integer.toString(j)).getLevelPosition();
+				double x = 0;
+				double y = 0;
+				if (pathway.getDirection().equals("horizontal")) {
+					x = startX + PathwaysFrameConstants.HORIZONTAL_INCREMENT*pathway.getMetabolitesData().get(Integer.toString(j)).getLevel();
+					y = startY + PathwaysFrameConstants.VERTICAL_INCREMENT*pathway.getMetabolitesData().get(Integer.toString(j)).getLevelPosition();
+				} else if (pathway.getDirection().equals("vertical")) {
+					x = startX + PathwaysFrameConstants.HORIZONTAL_INCREMENT*pathway.getMetabolitesData().get(Integer.toString(j)).getLevelPosition();
+					y = startY + PathwaysFrameConstants.VERTICAL_INCREMENT*pathway.getMetabolitesData().get(Integer.toString(j)).getLevel();
+				}
 				pn.setxPosition(x);
 				pn.setyPosition(y);
 				pn.setAbbreviation(pathway.getMetabolitesData().get(Integer.toString(j)).getAbbreviation());
@@ -303,8 +310,15 @@ public class PathwaysFrame extends JApplet {
 				}
 				if (drawReaction) {
 					reactions.add(displayName);
-					double x = startX + PathwaysFrameConstants.HORIZONTAL_INCREMENT*pathway.getReactionsData().get(Integer.toString(k)).getLevel();
-					double y = startY + PathwaysFrameConstants.VERTICAL_INCREMENT*pathway.getReactionsData().get(Integer.toString(k)).getLevelPosition(); 
+					double x = 0;
+					double y = 0;
+					if (pathway.getDirection().equals("horizontal")) {
+						x = startX + PathwaysFrameConstants.HORIZONTAL_INCREMENT*pathway.getReactionsData().get(Integer.toString(k)).getLevel();
+						y = startY + PathwaysFrameConstants.VERTICAL_INCREMENT*pathway.getReactionsData().get(Integer.toString(k)).getLevelPosition();
+					} else if (pathway.getDirection().equals("vertical")) {
+						x = startX + PathwaysFrameConstants.HORIZONTAL_INCREMENT*pathway.getReactionsData().get(Integer.toString(k)).getLevelPosition();
+						y = startY + PathwaysFrameConstants.VERTICAL_INCREMENT*pathway.getReactionsData().get(Integer.toString(k)).getLevel();
+					}
 					metabPosMap.put(displayName, new String[] {Double.toString(x), Double.toString(y)});  
 					pn.setDataId(pathway.getReactionsData().get(Integer.toString(k)).getReactionId());
 					pn.setxPosition(x);
