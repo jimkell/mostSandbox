@@ -375,6 +375,16 @@ public class GraphicalInterface extends JFrame {
 		return findReplaceDialog;
 	}
 	
+	private JFrame visualizationsPane;
+	
+	public JFrame getVisualizationsPane() {
+		return visualizationsPane;
+	}
+
+	public void setVisualizationsPane(JFrame visualizationsPane) {
+		this.visualizationsPane = visualizationsPane;
+	}
+
 	private static GDBBDialog gdbbDialog;
 
 	public static GDBBDialog getGdbbDialog() {
@@ -2719,7 +2729,6 @@ public class GraphicalInterface extends JFrame {
 
 		editMenu.addSeparator();
 
-		//JMenuItem visualizeMenu = new JMenuItem("Visualize");
 		editMenu.add(visualizeMenu);
 		visualizeMenu.setMnemonic(KeyEvent.VK_V);
 
@@ -5586,6 +5595,11 @@ public class GraphicalInterface extends JFrame {
 			formulaBar.setText((String) reactionsTable.getModel().getValueAt(0, 1));  
 		} catch (Throwable t) {
 			
+		}
+		if (getVisualizationsPane() != null) {
+			getVisualizationsPane().setVisible(false);
+			getVisualizationsPane().dispose();
+			visualizeMenu.setEnabled(true);
 		}
 	}
 	
@@ -12016,7 +12030,8 @@ public class GraphicalInterface extends JFrame {
 	
 	public void createVisualizationsPane() {
 		// create a frome to hold the graph                                                                          
-        final JFrame frame = new JFrame();  
+        final JFrame frame = new JFrame(); 
+        setVisualizationsPane(frame);
         frame.setIconImages(icons);
         frame.setTitle(gi.getTitle());
         Container content = frame.getContentPane(); 

@@ -52,7 +52,7 @@ Pathway ID,Metabolite ID,Metabolite Level,Metabolite Level Position,Metabolite N
 1,10,4.5,-4.5,Succinate|succinate,Succinate
 1,11,3,-4.5,Fumarate|fumarate,Fumarate
 1,12,1.7,-3.5,(S)-Malate|(S)-malate,Malate
-24,0,0,0,Oxaloacetate,Oxaloacetate
-24,1,1,-0.5,L-Glutamine,Gln
-24,2,1,0.5,L-Glutamate,Glu
+1,14,3,2,Glyoxylate,Glyoxylate
+24,0,0,0,L-Glutamine,Gln
+24,1,0,2,L-Glutamate,Glu
 91,0,0,0,Acetyl phosphate,Ac-P
