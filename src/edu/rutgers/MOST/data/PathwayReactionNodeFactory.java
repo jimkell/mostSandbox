@@ -6,19 +6,23 @@ import edu.rutgers.MOST.config.LocalConfig;
 
 public class PathwayReactionNodeFactory {
 
+	/**
+	 * Creates PathwayReactionNode for a given compartment from list of EC Numbers.
+	 * If no compartment specified, node created for entire list of EC Numbers.
+	 * SBMLReactions and parameters from enzyme.dat attributes set. 
+	 * @param ec
+	 * @param compartment
+	 * @return
+	 */
 	public PathwayReactionNode createPathwayReactionNode(ArrayList<String> ec, String compartment) {
 		PathwayReactionNode pn = new PathwayReactionNode();
 		ArrayList<String> sideReactants = new ArrayList<String>();
 		ArrayList<String> sideProducts = new ArrayList<String>();
 		ArrayList<String> enzymeDataEquations = new ArrayList<String>();
-		ArrayList<String> modelReactionNames = new ArrayList<String>();
-		ArrayList<String> modelEquations = new ArrayList<String>();
-		ArrayList<Double> fluxes = new ArrayList<Double>();
-		ArrayList<String> ecNumbers = new ArrayList<String>();
+		ArrayList<SBMLReaction> reactions = new ArrayList<SBMLReaction>();
 		
 		for (int m = 0; m < ec.size(); m++) {
 			if (LocalConfig.getInstance().getEcNumberReactionMap().containsKey(ec.get(m))) {
-				ecNumbers.add(ec.get(m));
 				// attributes from SBML Reaction
 				ArrayList<SBMLReaction> reac = LocalConfig.getInstance().getEcNumberReactionMap().get(ec.get(m));
 				for (int r = 0; r < reac.size(); r++) {
@@ -26,19 +30,14 @@ public class PathwayReactionNodeFactory {
 					if (compartment != null && compartment.length() > 0) {
 						SBMLReactionEquation equn = (SBMLReactionEquation) LocalConfig.getInstance().getReactionEquationMap().get(reac.get(r).getId());
 						if (equn.getCompartmentList().size() == 1 && equn.getCompartmentList().contains(compartment)) {
-							modelReactionNames.add(reac.get(r).getReactionName());
-							modelEquations.add(reac.get(r).getReactionEqunAbbr());
-							fluxes.add(reac.get(r).getFluxValue());
-//							System.out.println("c " + equn.getCompartmentList());
+							reactions.add(reac.get(r));
 						} else {
 							// uncomment to show that reactions are eliminated if not correct compartment
 //							System.out.println("n c " + equn.getCompartmentList());
 //							System.out.println(ec);
 						}
 					} else {
-						modelReactionNames.add(reac.get(r).getReactionName());
-						modelEquations.add(reac.get(r).getReactionEqunAbbr());
-						fluxes.add(reac.get(r).getFluxValue());
+						reactions.add(reac.get(r));
 					}
 				}
 				// attributes from Enzyme.dat
@@ -67,51 +66,94 @@ public class PathwayReactionNodeFactory {
 		pn.setSideReactants(sideReactants);
 		pn.setSideProducts(sideProducts);
 		pn.setEnzymeDataEquations(enzymeDataEquations);
-		pn.setModelEquations(modelEquations);
-		pn.setModelReactionNames(modelReactionNames);
-		pn.setFluxes(fluxes);
-		pn.setEcNumbers(ecNumbers);
+		pn.setReactions(reactions);
 		
 		return pn;
 	}
 	
+	/**
+	 * PathwayConnectionNode created from PathwayReactionNode
+	 * @param pn
+	 * @return
+	 */
 	public PathwayConnectionNode createPathwayConnectionNode(PathwayReactionNode pn) {
 		PathwayConnectionNode pcn = new PathwayConnectionNode();
 		pcn.setSideReactants(pn.getSideReactants());
 		pcn.setSideProducts(pn.getSideProducts());
 		pcn.setEnzymeDataEquations(pn.getEnzymeDataEquations());
-		pcn.setModelEquations(pn.getModelEquations());
-		pcn.setModelReactionNames(pn.getModelReactionNames());
-		pcn.setFluxes(pn.getFluxes());
-		pcn.setEcNumbers(pn.getEcNumbers());
+		pcn.setReactions(pn.getReactions());
 		
 		return pcn;
 	}
 	
-	public String createDisplayName(String displayName, String name, ArrayList<String> modelReactionNames,
-			ArrayList<String> ecnumbers, ArrayList<String> equations) {
-		if (modelReactionNames.size() > 0) {
-			String reacName = modelReactionNames.get(0);
-			if (modelReactionNames.size() > 1) {
-				reacName = modelReactionNames.toString();
+	/** 
+	 * Display name for tooltip created from input names if length of list of SBMLReactions = 0.
+	 * Else display name created from SBMLReaction attributes.  
+	 * @param displayName
+	 * @param name
+	 * @param reactions
+	 * @return
+	 */
+	public String createDisplayName(String displayName, String name, ArrayList<SBMLReaction> reactions) {
+		ArrayList<String> reactionNames = new ArrayList<String>();
+		ArrayList<String> ecNumbers = new ArrayList<String>();
+		ArrayList<String> equations = new ArrayList<String>();
+		ArrayList<String> subsystems = new ArrayList<String>();
+		if (reactions.size() > 0) {
+			for (int i = 0; i < reactions.size(); i++) {
+				reactionNames.add(reactions.get(i).getReactionName());
+				if (!ecNumbers.contains(reactions.get(i).getEcNumber())) {
+					ecNumbers.add(reactions.get(i).getEcNumber());
+				}
+				equations.add(reactions.get(i).getReactionEqunAbbr());
+				if (!subsystems.contains(reactions.get(i).getSubsystem())) {
+					subsystems.add(reactions.get(i).getSubsystem());
+				}
 			}
-			displayName = "<html>" + reacName
-					+ displayECNumber(ecnumbers)
+			displayName = "<html>" + displayReactionName(reactionNames)
+					+ displayECNumber(ecNumbers)
 					+ "<p> Equation: " + name
+					+ displaySubsystem(subsystems)
 					+ displayModelEquation(equations);
 		}
 		return displayName;
 	}
 	
+	public String displayReactionName(ArrayList<String> reactionNames) {
+		String rn = "";
+		if (reactionNames.size() > 0) {
+			rn = reactionNames.get(0);
+		}
+		if (reactionNames.size() > 1) {
+			rn = reactionNames.toString();
+		}
+		return rn;
+	}
+	
 	public String displayECNumber(ArrayList<String> ecnumbers) {
-		String ec = "";
-		if (ecnumbers.size() > 0) {
-			ec = "<p>EC Number: " + ecnumbers.get(0);
+		return maybeMakeList(ecnumbers, "EC Number");
+	}
+	
+	public String displaySubsystem(ArrayList<String> subsystems) {
+		return maybeMakeList(subsystems, "Subsystem");
+	}
+	
+	/**
+	 * Returns plural heading plus list to String if length of input list > 1. 
+	 * Else returns singular heading plus input String.
+	 * @param items
+	 * @param heading
+	 * @return
+	 */
+	public String maybeMakeList(ArrayList<String> items, String heading) {
+		String item = "";
+		if (items.size() > 0) {
+			item = "<p>" + heading + ": " + items.get(0);
 		}
-		if (ecnumbers.size() > 1) {
-			ec = "<p>EC Number(s): " + ecnumbers.toString();
+		if (items.size() > 1) {
+			item = "<p>" + heading + "(s): " + items.toString();
 		}
-		return ec;
+		return item;
 	}
 	
 	public String displayModelEquation(ArrayList<String> equations) {

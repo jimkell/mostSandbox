@@ -12,12 +12,13 @@ public class PathwayReactionNode {
 	private String reactionName;
 	// used for node text
 	private String modelReactionName;
-	private ArrayList<String> modelReactionNames;
+//	private ArrayList<String> modelReactionNames;
 	private String dataId;
 	private String equation;
 	private String modelEquation;
-	private ArrayList<String> modelEquations;
-	private ArrayList<Double> fluxes;
+	private ArrayList<SBMLReaction> reactions;
+//	private ArrayList<String> modelEquations;
+//	private ArrayList<Double> fluxes;
 	
 	// data from enzyme.dat
 	private ArrayList<String> enzymeDataEquations;
@@ -29,7 +30,7 @@ public class PathwayReactionNode {
 	private ArrayList<PathwayMetaboliteNode> mainPathwayReactants;
 	private ArrayList<PathwayMetaboliteNode> mainPathwayProducts;
 	private String reversible;
-	private ArrayList<String> ecNumbers;
+	//private ArrayList<String> ecNumbers;
 	private double xPosition;
 	private double yPosition;
 	
@@ -65,13 +66,13 @@ public class PathwayReactionNode {
 		this.reactionName = reactionName;
 	}
 
-	public ArrayList<String> getModelReactionNames() {
-		return modelReactionNames;
-	}
-
-	public void setModelReactionNames(ArrayList<String> modelReactionNames) {
-		this.modelReactionNames = modelReactionNames;
-	}
+//	public ArrayList<String> getModelReactionNames() {
+//		return modelReactionNames;
+//	}
+//
+//	public void setModelReactionNames(ArrayList<String> modelReactionNames) {
+//		this.modelReactionNames = modelReactionNames;
+//	}
 
 	public String getModelReactionName() {
 		return modelReactionName;
@@ -105,20 +106,28 @@ public class PathwayReactionNode {
 		this.modelEquation = modelEquation;
 	}
 
-	public ArrayList<String> getModelEquations() {
-		return modelEquations;
+//	public ArrayList<String> getModelEquations() {
+//		return modelEquations;
+//	}
+//
+//	public void setModelEquations(ArrayList<String> modelEquations) {
+//		this.modelEquations = modelEquations;
+//	}
+//
+//	public ArrayList<Double> getFluxes() {
+//		return fluxes;
+//	}
+//
+//	public void setFluxes(ArrayList<Double> fluxes) {
+//		this.fluxes = fluxes;
+//	}
+
+	public ArrayList<SBMLReaction> getReactions() {
+		return reactions;
 	}
 
-	public void setModelEquations(ArrayList<String> modelEquations) {
-		this.modelEquations = modelEquations;
-	}
-
-	public ArrayList<Double> getFluxes() {
-		return fluxes;
-	}
-
-	public void setFluxes(ArrayList<Double> fluxes) {
-		this.fluxes = fluxes;
+	public void setReactions(ArrayList<SBMLReaction> reactions) {
+		this.reactions = reactions;
 	}
 
 	public ArrayList<String> getEnzymeDataEquations() {
@@ -187,13 +196,13 @@ public class PathwayReactionNode {
 		this.reversible = reversible;
 	}
 
-	public ArrayList<String> getEcNumbers() {
-		return ecNumbers;
-	}
-
-	public void setEcNumbers(ArrayList<String> ecNumbers) {
-		this.ecNumbers = ecNumbers;
-	}
+//	public ArrayList<String> getEcNumbers() {
+//		return ecNumbers;
+//	}
+//
+//	public void setEcNumbers(ArrayList<String> ecNumbers) {
+//		this.ecNumbers = ecNumbers;
+//	}
 
 	public double getxPosition() {
 		return xPosition;
@@ -266,12 +275,12 @@ public class PathwayReactionNode {
 		+ ", pathwayId=" + pathwayId
 		+ ", reactionName=" + reactionName
 		//+ ", modelReactionName=" + modelReactionName
-		+ ", modelReactionNames=" + modelReactionNames
+		//+ ", modelReactionNames=" + modelReactionNames
 		+ ", dataId=" + dataId
 		+ ", equation=" + equation
 		+ ", modelEquation=" + modelEquation
-		+ ", modelEquations=" + modelEquations
-		+ ", fluxes=" + fluxes
+		//+ ", modelEquations=" + modelEquations
+		//+ ", fluxes=" + fluxes
 		+ ", enzymeDataEquations=" + enzymeDataEquations
 		//+ ", mainReactants=" + mainReactants		
 		//+ ", mainProducts=" + mainProducts
@@ -280,7 +289,7 @@ public class PathwayReactionNode {
 		+ ", mainPathwayReactants=" + mainPathwayReactants		
 		+ ", mainPathwayProducts=" + mainPathwayProducts
 		+ ", reversible=" + reversible
-		+ ", ecNumbers=" + ecNumbers
+		//+ ", ecNumbers=" + ecNumbers
 		+ ", xPosition=" + xPosition
 		+ ", yPosition=" + yPosition + "]";
 	}

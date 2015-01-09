@@ -224,7 +224,7 @@ public class PathwaysFrame extends JApplet {
 		
 		// temporary lists to keep track of what ec numbers have been found
 		ArrayList<String> foundEcNumbers = new ArrayList<String>();
-		ArrayList<String> notFoundEcNumbers = new ArrayList<String>(LocalConfig.getInstance().getEcNumberReactionMap().keySet());
+	    ArrayList<String> notFoundEcNumbers = new ArrayList<String>(LocalConfig.getInstance().getEcNumberReactionMap().keySet());
 		
 		double startX = PathwaysFrameConstants.BORDER_WIDTH + PathwaysFrameConstants.HORIZONTAL_INCREMENT;
 		double startY = PathwaysFrameConstants.GRAPH_HEIGHT/2;
@@ -288,20 +288,20 @@ public class PathwaysFrame extends JApplet {
 				// only draw cytosol for now
 				PathwayReactionNode pn = prnf.createPathwayReactionNode(pathway.getReactionsData().get(Integer.toString(k)).getEcNumbers(),
 						LocalConfig.getInstance().getCytosolName());
-//				PathwayReactionNode pn = prnf.createPathwayReactionNode(pathway.getReactionsData().get(Integer.toString(k)),
-//						LocalConfig.getInstance().getPeriplasmName());
 				String displayName = prnf.createDisplayName(pathway.getReactionsData().get(Integer.toString(k)).getDisplayName(),
 						pathway.getReactionsData().get(Integer.toString(k)).getName(),
-						pn.getModelReactionNames(), pn.getEcNumbers(), pn.getModelEquations());
+						pn.getReactions());
 				// update temporary lists to keep track of what ec numbers have been found
-				for (int z = 0; z < pn.getEcNumbers().size(); z++) {
-					foundEcNumbers.add(pn.getEcNumbers().get(z));
-					if (notFoundEcNumbers.contains(pn.getEcNumbers().get(z))) {
-						notFoundEcNumbers.remove(notFoundEcNumbers.indexOf(pn.getEcNumbers().get(z)));
+				for (int z = 0; z < pn.getReactions().size(); z++) {
+					if (!foundEcNumbers.contains(pn.getReactions().get(z).getEcNumber())) {
+						foundEcNumbers.add(pn.getReactions().get(z).getEcNumber());
+					}
+					if (notFoundEcNumbers.contains(pn.getReactions().get(z).getEcNumber())) {
+						notFoundEcNumbers.remove(notFoundEcNumbers.indexOf(pn.getReactions().get(z).getEcNumber()));
 					}
 				}
 				boolean drawReaction = true;
-				if (pn.getModelReactionNames().size() > 0) {
+				if (pn.getReactions().size() > 0) {
 					foundList.add(displayName);
 				} else {
 					if (!LocalConfig.getInstance().isGraphMissingReactionsSelected()) {
@@ -369,7 +369,7 @@ public class PathwaysFrame extends JApplet {
 			pcn.setName(LocalConfig.getInstance().getConnectionslist().get(i).getEquation());
 			String displayName = prnf.createDisplayName(LocalConfig.getInstance().getConnectionslist().get(i).getDisplayName(),
 					LocalConfig.getInstance().getConnectionslist().get(i).getName(),
-					pcn.getModelReactionNames(), pcn.getEcNumbers(), pcn.getModelEquations());
+					pcn.getReactions());
 			pcn.setDisplayName(displayName);
 			ArrayList<PathwayMetaboliteNode> mainPathwayReactants = new ArrayList<PathwayMetaboliteNode>();
 			ArrayList<PathwayMetaboliteNode> mainPathwayProducts = new ArrayList<PathwayMetaboliteNode>();
@@ -425,18 +425,18 @@ public class PathwaysFrame extends JApplet {
 			String reversible = prnf.reversibleString(connectionsNodelist.get(c).getReversible());
 			String displayName = prnf.createDisplayName(connectionsNodelist.get(c).getDisplayName(),
 					connectionsNodelist.get(c).getName(),
-					connectionsNodelist.get(c).getModelReactionNames(), 
-					connectionsNodelist.get(c).getEcNumbers(), 
-					connectionsNodelist.get(c).getModelEquations());
+					connectionsNodelist.get(c).getReactions());
 			// update temporary lists to keep track of what ec numbers have been found
-			for (int z = 0; z < connectionsNodelist.get(c).getEcNumbers().size(); z++) {
-				foundEcNumbers.add(connectionsNodelist.get(c).getEcNumbers().get(z));
-				if (notFoundEcNumbers.contains(connectionsNodelist.get(c).getEcNumbers().get(z))) {
-					notFoundEcNumbers.remove(notFoundEcNumbers.indexOf(connectionsNodelist.get(c).getEcNumbers().get(z)));
+			for (int z = 0; z < connectionsNodelist.get(c).getReactions().size(); z++) {
+				if (!foundEcNumbers.contains(connectionsNodelist.get(c).getReactions().get(z).getEcNumber())) {
+					foundEcNumbers.add(connectionsNodelist.get(c).getReactions().get(z).getEcNumber());
+				}
+				if (notFoundEcNumbers.contains(connectionsNodelist.get(c).getReactions().get(z).getEcNumber())) {
+					notFoundEcNumbers.remove(notFoundEcNumbers.indexOf(connectionsNodelist.get(c).getReactions().get(z).getEcNumber()));
 				}
 			}
 			boolean drawReaction = true;
-			if (connectionsNodelist.get(c).getModelReactionNames().size() > 0) {
+			if (connectionsNodelist.get(c).getReactions().size() > 0) {
 				foundList.add(displayName);
 			} else {
 				if (!LocalConfig.getInstance().isGraphMissingReactionsSelected()) {
@@ -463,15 +463,6 @@ public class PathwaysFrame extends JApplet {
 		System.out.println("found " + foundEcNumbers);
 		Collections.sort(notFoundEcNumbers);
 		System.out.println("not found " + notFoundEcNumbers);
-		                                                                                                 		
-//   		metabPosMap.put("M01", new String[] {"1000", "100"});                                                         
-//   		
-//   		// labels
-//   		metabPosMap.put("R01", new String[] {"1000", "150"});
-//   		
-//   		metabPosMap.put("Pathway 1", new String[] {"850", "150"});  		
-
-//   		fluxMap.put("R01", 0.0);
                                                                                                                      
    		metaboliteList = new ArrayList<String>(metabPosMap.keySet()); 
    		Collections.sort(metaboliteList);

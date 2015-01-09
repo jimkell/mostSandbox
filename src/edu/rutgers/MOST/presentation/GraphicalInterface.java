@@ -656,6 +656,7 @@ public class GraphicalInterface extends JFrame {
 	public final JMenuItem editorMenu = new JMenuItem("Launch Reaction Editor");
 	public final JMenuItem unsortReacMenuItem = new JMenuItem("Unsort Reactions Table");
 	public final JMenuItem unsortMetabMenuItem = new JMenuItem("Unsort Metabolites Table");
+	public final JMenuItem arrangeCompMenu = new JMenuItem("Arrange Compartments");
 	public final JMenuItem visualizeMenu = new JMenuItem("Visualize");
 	public final JMenuItem setUpSolver = new JMenuItem("Select Solvers");
 	public final JMenuItem gurobiParametersItem = new JMenuItem(GurobiParameters.GUROBI_PARAMETERS_MENU_ITEM);
@@ -2095,6 +2096,68 @@ public class GraphicalInterface extends JFrame {
 			}
         });
         
+        //Visualization menu
+        JMenu visualizationMenu = new JMenu("Visualization");
+        visualizationMenu.setMnemonic(KeyEvent.VK_V);
+        
+        visualizationMenu.add(arrangeCompMenu);
+        arrangeCompMenu.setMnemonic(KeyEvent.VK_A);
+        
+        visualizationMenu.add(visualizeMenu);
+		visualizeMenu.setMnemonic(KeyEvent.VK_V);
+
+		visualizeMenu.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ae) {
+				System.out.println(LocalConfig.getInstance().getCompartmentAbbreviationList());
+				PathwayFilesReader reader = new PathwayFilesReader();
+				reader.readFiles();
+				
+				ECNumberMapCreator ecMapCreator = new ECNumberMapCreator();
+				ecMapCreator.createEcNumberReactionMap();
+				System.out.println(ecMapCreator.getFluxes());
+				
+				if (LocalConfig.getInstance().getEcNumberReactionMap().size() == 0) {
+					if (LocalConfig.getInstance().getEcNumberReactionMap().size() == 0) {
+
+					}
+					Object[] options = {"Yes",
+					"No"};
+					int choice = JOptionPane.showOptionDialog(null, 
+							"<html>Since there are no EC Numbers in the loaded model, <p>"
+									+ "MOST is unable to link reactions in model to reactions <p>"
+									+ "in the Visualizations database. Continue anyway?", 
+									"No EC Numbers in Model", 
+									JOptionPane.YES_NO_OPTION, 
+									JOptionPane.QUESTION_MESSAGE, 
+									null, options, options[0]);
+					//options[0] sets "Yes" as default button
+
+					// interpret the user's choice	  
+					if (choice == JOptionPane.YES_OPTION)
+					{
+						if (LocalConfig.getInstance().getCompartmentAbbreviationList().size() > 0) {
+							createCompartmentNameAbbrDialog();
+						} else {
+							createVisualizationsPane();
+						}
+					}
+					//No option actually corresponds to "Yes to All" button
+					if (choice == JOptionPane.NO_OPTION)
+					{
+						// option in future to graph unconstrained
+					}
+				} else {
+					if (LocalConfig.getInstance().getCompartmentAbbreviationList().size() > 0) {
+						createCompartmentNameAbbrDialog();
+					} else {
+						createVisualizationsPane();
+					}
+				} 
+			}
+		});
+        
+        menuBar.add(visualizationMenu);
+        
 		//Edit menu
 		JMenu editMenu = new JMenu("Edit");
 		editMenu.setMnemonic(KeyEvent.VK_E);
@@ -2724,61 +2787,6 @@ public class GraphicalInterface extends JFrame {
 				DefaultTableModel model = (DefaultTableModel) metabolitesTable.getModel();
 				setUpMetabolitesTable(model);
 				tabbedPane.setSelectedIndex(1);
-			}
-		});
-
-		editMenu.addSeparator();
-
-		editMenu.add(visualizeMenu);
-		visualizeMenu.setMnemonic(KeyEvent.VK_V);
-
-		visualizeMenu.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent ae) {
-				System.out.println(LocalConfig.getInstance().getCompartmentAbbreviationList());
-				PathwayFilesReader reader = new PathwayFilesReader();
-				reader.readFiles();
-				
-				ECNumberMapCreator ecMapCreator = new ECNumberMapCreator();
-				ecMapCreator.createEcNumberReactionMap();
-				System.out.println(ecMapCreator.getFluxes());
-				
-				if (LocalConfig.getInstance().getEcNumberReactionMap().size() == 0) {
-					if (LocalConfig.getInstance().getEcNumberReactionMap().size() == 0) {
-
-					}
-					Object[] options = {"Yes",
-					"No"};
-					int choice = JOptionPane.showOptionDialog(null, 
-							"<html>Since there are no EC Numbers in the loaded model, <p>"
-									+ "MOST is unable to link reactions in model to reactions <p>"
-									+ "in the Visualizations database. Continue anyway?", 
-									"No EC Numbers in Model", 
-									JOptionPane.YES_NO_OPTION, 
-									JOptionPane.QUESTION_MESSAGE, 
-									null, options, options[0]);
-					//options[0] sets "Yes" as default button
-
-					// interpret the user's choice	  
-					if (choice == JOptionPane.YES_OPTION)
-					{
-						if (LocalConfig.getInstance().getCompartmentAbbreviationList().size() > 0) {
-							createCompartmentNameAbbrDialog();
-						} else {
-							createVisualizationsPane();
-						}
-					}
-					//No option actually corresponds to "Yes to All" button
-					if (choice == JOptionPane.NO_OPTION)
-					{
-						// option in future to graph unconstrained
-					}
-				} else {
-					if (LocalConfig.getInstance().getCompartmentAbbreviationList().size() > 0) {
-						createCompartmentNameAbbrDialog();
-					} else {
-						createVisualizationsPane();
-					}
-				} 
 			}
 		});
 
