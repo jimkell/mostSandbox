@@ -956,6 +956,17 @@ public class LocalConfig {
 		this.biCompartmentReactionIds = biCompartmentReactionIds;
 	}
 	
+	private Map<String, ArrayList<String>> metaboliteNameCompartmentMap;
+	
+	public Map<String, ArrayList<String>> getMetaboliteNameCompartmentMap() {
+		return metaboliteNameCompartmentMap;
+	}
+
+	public void setMetaboliteNameCompartmentMap(
+			Map<String, ArrayList<String>> metaboliteNameCompartmentMap) {
+		this.metaboliteNameCompartmentMap = metaboliteNameCompartmentMap;
+	}
+
 	// contains metabolite abbreviations minus compartment suffix,
 	// suffixes in ArrayList
 	private Map<String, ArrayList<String>> metaboliteAbbreviationCompartmentMap;
@@ -1039,37 +1050,6 @@ public class LocalConfig {
 
 	public void setScaleEdgeThicknessSelected(boolean scaleEdgeThicknessSelected) {
 		this.scaleEdgeThicknessSelected = scaleEdgeThicknessSelected;
-	}
-	
-	// compartment suffixes from metabolite abbreviations
-	private String cytosolSuffix;
-
-	public String getCytosolSuffix() {
-		return cytosolSuffix;
-	}
-
-	public void setCytosolSuffix(String cytosolSuffix) {
-		this.cytosolSuffix = cytosolSuffix;
-	}
-	
-	private String extraOrganismSuffix;
-	
-	public String getExtraOrganismSuffix() {
-		return extraOrganismSuffix;
-	}
-
-	public void setExtraOrganismSuffix(String extraOrganismSuffix) {
-		this.extraOrganismSuffix = extraOrganismSuffix;
-	}
-
-	private String periplasmSuffix;
-
-	public String getPeriplasmSuffix() {
-		return periplasmSuffix;
-	}
-
-	public void setPeriplasmSuffix(String periplasmSuffix) {
-		this.periplasmSuffix = periplasmSuffix;
 	}
 	
 	// compartment names from model

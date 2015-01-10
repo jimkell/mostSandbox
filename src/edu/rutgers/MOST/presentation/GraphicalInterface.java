@@ -334,15 +334,14 @@ public class GraphicalInterface extends JFrame {
 		GraphicalInterface.addReactionRowsDialog = addReactionRowsDialog;
 	}
 	
-	private static CompartmentNameAbbreviationDialog compNameAbbrDialog;
+	private static CompartmentNameDialog compNameDialog;
 
-	public static CompartmentNameAbbreviationDialog getCompNameAbbrDialog() {
-		return compNameAbbrDialog;
+	public static CompartmentNameDialog getCompNameDialog() {
+		return compNameDialog;
 	}
 
-	public static void setCompNameAbbrDialog(
-			CompartmentNameAbbreviationDialog compNameAbbrDialog) {
-		GraphicalInterface.compNameAbbrDialog = compNameAbbrDialog;
+	public static void setCompNameDialog(CompartmentNameDialog compNameDialog) {
+		GraphicalInterface.compNameDialog = compNameDialog;
 	}
 
 	private static CSVLoadInterface csvLoadInterface;
@@ -1230,6 +1229,8 @@ public class GraphicalInterface extends JFrame {
 				loadExistingItem.setEnabled(true);
 				getModelCollectionTable().setVisible(false);
 				getModelCollectionTable().dispose();
+				enableLoadItems();
+				disableMenuItemsForFVA(false);
 			}
 		});	
 		
@@ -2136,7 +2137,7 @@ public class GraphicalInterface extends JFrame {
 					if (choice == JOptionPane.YES_OPTION)
 					{
 						if (LocalConfig.getInstance().getCompartmentAbbreviationList().size() > 0) {
-							createCompartmentNameAbbrDialog();
+							createCompartmentNameDialog();
 						} else {
 							createVisualizationsPane();
 						}
@@ -2148,7 +2149,7 @@ public class GraphicalInterface extends JFrame {
 					}
 				} else {
 					if (LocalConfig.getInstance().getCompartmentAbbreviationList().size() > 0) {
-						createCompartmentNameAbbrDialog();
+						createCompartmentNameDialog();
 					} else {
 						createVisualizationsPane();
 					}
@@ -4015,6 +4016,8 @@ public class GraphicalInterface extends JFrame {
 				if (!saveChangesOKClicked) {
 					getModelCollectionTable().setVisible(true);
 					loadExistingItem.setEnabled(false);
+					disableLoadItems();
+					disableMenuItemsForFVA(true);
 				} else {
 					loadExistingItem.setEnabled(true);
 				}
@@ -4030,7 +4033,6 @@ public class GraphicalInterface extends JFrame {
 				listModel.clear();
 				DynamicTreePanel.getTreePanel().clear();
 				saveEnabled = false;
-				enableSaveItems(false);
 				modelCollectionLoad = true;
 				if (getModelCollectionTable().getFileType().equals(GraphicalInterfaceConstants.SBML_FILE_TYPE)) {
 					setFileType(GraphicalInterfaceConstants.SBML_FILE_TYPE);
@@ -4040,6 +4042,7 @@ public class GraphicalInterface extends JFrame {
 					LocalConfig.getInstance().setModelName(getModelCollectionTable().getFileName());
 					LocalConfig.getInstance().setProgress(0);
 					disableLoadItems();
+					disableMenuItemsForFVA(true);
 					progressBar.setVisible(true);
 					progressBar.progress.setIndeterminate(true);
 
@@ -4060,7 +4063,9 @@ public class GraphicalInterface extends JFrame {
 
 	ActionListener modelCollectionCancelButtonActionListener = new ActionListener() {
 		public void actionPerformed(ActionEvent ae) {						
-			loadExistingItem.setEnabled(true);						
+			loadExistingItem.setEnabled(true);
+			enableLoadItems();
+			disableMenuItemsForFVA(false);
 		}
 	};
 
@@ -11356,6 +11361,9 @@ public class GraphicalInterface extends JFrame {
 		findReplaceItem.setEnabled(true);
 		selectAllItem.setEnabled(true);
 	    setUpSolver.setEnabled(true);
+	    gurobiParametersItem.setEnabled(true);
+		glpkParametersItem.setEnabled(true);
+		ipOptParametersItem.setEnabled(true);
 		enableMenuItems();
 	}
 	
@@ -11372,6 +11380,9 @@ public class GraphicalInterface extends JFrame {
 		findReplaceItem.setEnabled(false);	
 		selectAllItem.setEnabled(false);
 	    setUpSolver.setEnabled(false);
+	    gurobiParametersItem.setEnabled(false);
+		glpkParametersItem.setEnabled(false);
+		ipOptParametersItem.setEnabled(false);
 		disableMenuItems();
 	}
 
@@ -12001,9 +12012,9 @@ public class GraphicalInterface extends JFrame {
 		}
 	}
 	
-	public void createCompartmentNameAbbrDialog() {
-		CompartmentNameAbbreviationDialog frame = new CompartmentNameAbbreviationDialog();
-		setCompNameAbbrDialog(frame);
+	public void createCompartmentNameDialog() {
+		CompartmentNameDialog frame = new CompartmentNameDialog();
+		setCompNameDialog(frame);
 		frame.setIconImages(icons);
 		//frame.setSize(550, 270);
 		frame.pack();
@@ -12015,20 +12026,16 @@ public class GraphicalInterface extends JFrame {
 	
 	ActionListener compartmentNameAbbrOKActionListener = new ActionListener() {
 		public void actionPerformed(ActionEvent ae) {
-			LocalConfig.getInstance().setCytosolSuffix(compSuffixFromCombo(getCompNameAbbrDialog().cbCytosol));
-			LocalConfig.getInstance().setExtraOrganismSuffix(compSuffixFromCombo(getCompNameAbbrDialog().cbExtraOrganism));
-			LocalConfig.getInstance().setPeriplasmSuffix(compSuffixFromCombo(getCompNameAbbrDialog().cbPeriplasm));
-			LocalConfig.getInstance().setCytosolName(compSuffixFromCombo(getCompNameAbbrDialog().cbCytosolName));
-			LocalConfig.getInstance().setExtraOrganismName(compSuffixFromCombo(getCompNameAbbrDialog().cbExtraOrganismName));
-			LocalConfig.getInstance().setPeriplasmName(compSuffixFromCombo(getCompNameAbbrDialog().cbPeriplasmName));
-			getCompNameAbbrDialog().setVisible(false);
-			getCompNameAbbrDialog().dispose();
-			System.out.println(LocalConfig.getInstance().getCytosolSuffix());
+			LocalConfig.getInstance().setCytosolName(compNameFromCombo(getCompNameDialog().cbCytosolName));
+			LocalConfig.getInstance().setExtraOrganismName(compNameFromCombo(getCompNameDialog().cbExtraOrganismName));
+			LocalConfig.getInstance().setPeriplasmName(compNameFromCombo(getCompNameDialog().cbPeriplasmName));
+			getCompNameDialog().setVisible(false);
+			getCompNameDialog().dispose();
 			createVisualizationsPane();
 		}
 	};
 	
-	public String compSuffixFromCombo(JComboBox<String> combo) {
+	public String compNameFromCombo(JComboBox<String> combo) {
 		String suffix = "";
 		if (combo.getSelectedIndex() > -1) {
 			suffix = (String) combo.getSelectedItem();

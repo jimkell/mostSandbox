@@ -48,7 +48,8 @@ public class SBMLModelReader {
 	// id name map used only to set metabolite names in SBMLReactants and SBMLProducts
 	public static Map<Object, String> metaboliteIdNameMap = new HashMap<Object, String>();
 	public static Map<Object, String> metaboliteIdCompartmentMap = new HashMap<Object, String>();
-	private Map<String, ArrayList<String>> metaboliteBaseNameCompartmentMap = new HashMap<String, ArrayList<String>>(); 
+	private Map<String, ArrayList<String>> metaboliteBaseNameCompartmentMap = new HashMap<String, ArrayList<String>>();
+	private Map<String, ArrayList<String>> metaboliteNameCompartmentMap = new HashMap<String, ArrayList<String>>();
 	private ArrayList<String> compartmentAbbreviationList = new ArrayList<String>();
 	
 	private static Map<Object, ModelReactionEquation> reactionEquationMap = new HashMap<Object, ModelReactionEquation>();
@@ -120,7 +121,19 @@ public class SBMLModelReader {
 				}
 			}
 			metaboliteAbbreviationIdMap.put(metabolites.get(i).getId(), new Integer(i));
-			metabRow.add(metabolites.get(i).getName());	
+			String metabName = metabolites.get(i).getName();
+			metabRow.add(metabName);	
+			if (metabName != null && metabName.length() > 0) {
+				if (!metaboliteNameCompartmentMap.containsKey(metabName)) {
+					ArrayList<String> compList = new ArrayList<String>();
+					compList.add(metabolites.get(i).getCompartment());
+					metaboliteNameCompartmentMap.put(metabName, compList);
+				} else {
+					ArrayList<String> compList = metaboliteNameCompartmentMap.get(metabName);
+					compList.add(metabolites.get(i).getCompartment());
+					metaboliteNameCompartmentMap.put(metabName, compList);
+				}
+			}
 			metaboliteIdNameMap.put(new Integer(i), metabolites.get(i).getName());
 			metaboliteIdCompartmentMap.put(new Integer(i), metabolites.get(i).getCompartment());
 			metaboliteNameIdMap.put(metabolites.get(i).getId(), new Integer(i));
@@ -278,7 +291,9 @@ public class SBMLModelReader {
 		//System.out.println(compartmentAbbreviationList);
 		//System.out.println(compartmentsList);
 		LocalConfig.getInstance().setMetaboliteBaseNameCompartmentMap(metaboliteBaseNameCompartmentMap);
+		LocalConfig.getInstance().setMetaboliteNameCompartmentMap(metaboliteNameCompartmentMap);
         System.out.println(metaboliteBaseNameCompartmentMap);
+        System.out.println(metaboliteNameCompartmentMap);
 		// end metabolites read
 		
 		boolean containsMinFlux = false;

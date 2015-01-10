@@ -1,6 +1,5 @@
 package edu.rutgers.MOST.presentation;
 
-import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
@@ -15,13 +14,12 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import edu.rutgers.MOST.config.LocalConfig;
 
-public class CompartmentNameAbbreviationDialog extends JDialog {
+public class CompartmentNameDialog extends JDialog {
 
 	/**
 	 * 
@@ -30,14 +28,11 @@ public class CompartmentNameAbbreviationDialog extends JDialog {
 	public JComboBox<String> cbCytosolName = new JComboBox<String>();
 	public JComboBox<String> cbPeriplasmName = new JComboBox<String>();
 	public JComboBox<String> cbExtraOrganismName = new JComboBox<String>();
-	public JComboBox<String> cbCytosol = new JComboBox<String>();
-	public JComboBox<String> cbPeriplasm = new JComboBox<String>();
-	public JComboBox<String> cbExtraOrganism = new JComboBox<String>();
-
+	
 	public JButton okButton = new JButton("     OK     ");
 	public JButton cancelButton = new JButton("  Cancel  ");
 
-	public CompartmentNameAbbreviationDialog() {
+	public CompartmentNameDialog() {
 
 		getRootPane().setDefaultButton(okButton);
 
@@ -45,37 +40,21 @@ public class CompartmentNameAbbreviationDialog extends JDialog {
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		//setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 
-		cbCytosol.setEditable(false);	
-		cbPeriplasm.setEditable(false);
-		cbExtraOrganism.setEditable(false);	
-		
 		cbCytosolName.setEditable(false);	
 		cbPeriplasmName.setEditable(false);
 		cbExtraOrganismName.setEditable(false);	
 
-		cbCytosol.setPreferredSize(new Dimension(150, 25));
-		cbCytosol.setMaximumSize(new Dimension(150, 25));
-		cbCytosol.setMinimumSize(new Dimension(150, 25));
-		
-		cbCytosolName.setPreferredSize(new Dimension(150, 25));
-		cbCytosolName.setMaximumSize(new Dimension(150, 25));
-		cbCytosolName.setMinimumSize(new Dimension(150, 25));
+		cbCytosolName.setPreferredSize(new Dimension(250, 25));
+		cbCytosolName.setMaximumSize(new Dimension(250, 25));
+		cbCytosolName.setMinimumSize(new Dimension(250, 25));
 
-		cbPeriplasm.setPreferredSize(new Dimension(150, 25));
-		cbPeriplasm.setMaximumSize(new Dimension(150, 25));
-		cbPeriplasm.setMinimumSize(new Dimension(150, 25));
-		
-		cbPeriplasmName.setPreferredSize(new Dimension(150, 25));
-		cbPeriplasmName.setMaximumSize(new Dimension(150, 25));
-		cbPeriplasmName.setMinimumSize(new Dimension(150, 25));
-
-		cbExtraOrganism.setPreferredSize(new Dimension(150, 25));
-		cbExtraOrganism.setMaximumSize(new Dimension(150, 25));
-		cbExtraOrganism.setMinimumSize(new Dimension(150, 25));
-		
-		cbExtraOrganismName.setPreferredSize(new Dimension(150, 25));
-		cbExtraOrganismName.setMaximumSize(new Dimension(150, 25));
-		cbExtraOrganismName.setMinimumSize(new Dimension(150, 25));
+		cbPeriplasmName.setPreferredSize(new Dimension(250, 25));
+		cbPeriplasmName.setMaximumSize(new Dimension(250, 25));
+		cbPeriplasmName.setMinimumSize(new Dimension(250, 25));
+	
+		cbExtraOrganismName.setPreferredSize(new Dimension(250, 25));
+		cbExtraOrganismName.setMaximumSize(new Dimension(250, 25));
+		cbExtraOrganismName.setMinimumSize(new Dimension(250, 25));
 
 		populateComboBoxes();
 		
@@ -103,10 +82,7 @@ public class CompartmentNameAbbreviationDialog extends JDialog {
 		topLabel.setText(CompartmentNameAbbreviationConstants.TOP_LABEL);
 		topLabel.setSize(new Dimension(300, 30));
 		topLabel.setBorder(BorderFactory.createEmptyBorder(10,0,10,0));
-		//top, left, bottom. right
-		//topLabel.setBorder(BorderFactory.createEmptyBorder(20,30,20,200));
-		//topLabel.setAlignmentX(LEFT_ALIGNMENT);
-
+		
 		hbTop.add(topLabel);	
 		hbTop.setAlignmentX(LEFT_ALIGNMENT);
 
@@ -132,9 +108,6 @@ public class CompartmentNameAbbreviationDialog extends JDialog {
 
 		JPanel panelCytosol = new JPanel();
 		panelCytosol.setLayout(new BoxLayout(panelCytosol, BoxLayout.X_AXIS));
-		panelCytosol.add(cbCytosol);
-		JLabel cytosolBlankLabel = new JLabel("     ");
-		panelCytosol.add(cytosolBlankLabel);
 		panelCytosol.add(cbCytosolName);
 		panelCytosol.setBorder(BorderFactory.createEmptyBorder(0,0,10,10));
 		panelCytosol.setAlignmentX(RIGHT_ALIGNMENT);
@@ -166,9 +139,6 @@ public class CompartmentNameAbbreviationDialog extends JDialog {
 
 		JPanel panelPeriplasm = new JPanel();
 		panelPeriplasm.setLayout(new BoxLayout(panelPeriplasm, BoxLayout.X_AXIS));
-		panelPeriplasm.add(cbPeriplasm);
-		JLabel periplasmBlankLabel = new JLabel("     ");
-		panelPeriplasm.add(periplasmBlankLabel);
 		panelPeriplasm.add(cbPeriplasmName);
 		panelPeriplasm.setBorder(BorderFactory.createEmptyBorder(0,0,10,10));
 		panelPeriplasm.setAlignmentX(RIGHT_ALIGNMENT);
@@ -200,9 +170,6 @@ public class CompartmentNameAbbreviationDialog extends JDialog {
 
 		JPanel panelExtraOrganism = new JPanel();
 		panelExtraOrganism.setLayout(new BoxLayout(panelExtraOrganism, BoxLayout.X_AXIS));
-		panelExtraOrganism.add(cbExtraOrganism);
-		JLabel extraOrgBlankLabel = new JLabel("     ");
-		panelExtraOrganism.add(extraOrgBlankLabel);
 		panelExtraOrganism.add(cbExtraOrganismName);
 		panelExtraOrganism.setBorder(BorderFactory.createEmptyBorder(0,0,10,10));
 		panelExtraOrganism.setAlignmentX(RIGHT_ALIGNMENT);
@@ -257,21 +224,8 @@ public class CompartmentNameAbbreviationDialog extends JDialog {
 	} 
 	
     public void populateComboBoxes() {
-    	if (LocalConfig.getInstance().getCompartmentAbbreviationList().size() > 0) {
-    		cbCytosol.removeAllItems();
-    		cbPeriplasm.removeAllItems();
-    		cbExtraOrganism.removeAllItems();
-    		//add all column names to from file comboboxes
-    		for (int c = 0; c < LocalConfig.getInstance().getCompartmentAbbreviationList().size(); c++) { 
-    			cbCytosol.addItem(LocalConfig.getInstance().getCompartmentAbbreviationList().get(c));
-    			cbPeriplasm.addItem(LocalConfig.getInstance().getCompartmentAbbreviationList().get(c));
-    			cbExtraOrganism.addItem(LocalConfig.getInstance().getCompartmentAbbreviationList().get(c));
-    		}
-    		cbCytosol.setSelectedIndex(-1);
-    		cbPeriplasm.setSelectedIndex(-1);
-    		cbExtraOrganism.setSelectedIndex(-1);
-    	}
-    	if (LocalConfig.getInstance().getListOfCompartments().size() > 0) {
+    	if (LocalConfig.getInstance().getListOfCompartments() != null && 
+    			LocalConfig.getInstance().getListOfCompartments().size() > 0) {
     		cbCytosolName.removeAllItems();
     		cbPeriplasmName.removeAllItems();
     		cbExtraOrganismName.removeAllItems();
@@ -289,18 +243,18 @@ public class CompartmentNameAbbreviationDialog extends JDialog {
 	
 	public static void main(String[] args) throws Exception {
 		//based on code from http://stackoverflow.com/questions/6403821/how-to-add-an-image-to-a-jframe-title-bar
-//		final ArrayList<Image> icons = new ArrayList<Image>(); 
-//		icons.add(new ImageIcon("images/most16.jpg").getImage()); 
-//		icons.add(new ImageIcon("images/most32.jpg").getImage());
-//
-//		CompartmentNameAbbreviationDialog frame = new CompartmentNameAbbreviationDialog();
-//
-//		frame.setIconImages(icons);
-//		//frame.setSize(550, 270);
-//		frame.pack();
-//		frame.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-//		frame.setLocationRelativeTo(null);
-//		frame.setVisible(true);
+		final ArrayList<Image> icons = new ArrayList<Image>(); 
+		icons.add(new ImageIcon("images/most16.jpg").getImage()); 
+		icons.add(new ImageIcon("images/most32.jpg").getImage());
+
+		CompartmentNameDialog frame = new CompartmentNameDialog();
+
+		frame.setIconImages(icons);
+		//frame.setSize(550, 270);
+		frame.pack();
+		frame.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		frame.setLocationRelativeTo(null);
+		frame.setVisible(true);
 	}
 }
 
