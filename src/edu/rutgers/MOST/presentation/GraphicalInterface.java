@@ -11365,6 +11365,7 @@ public class GraphicalInterface extends JFrame {
 		glpkParametersItem.setEnabled(true);
 		ipOptParametersItem.setEnabled(true);
 		enableMenuItems();
+		enableVisualizationItems(true);
 	}
 	
 	// grays out load items so user cannot load a model while a model is loading.
@@ -11384,6 +11385,7 @@ public class GraphicalInterface extends JFrame {
 		glpkParametersItem.setEnabled(false);
 		ipOptParametersItem.setEnabled(false);
 		disableMenuItems();
+		enableVisualizationItems(false);
 	}
 
 	// enables menu items when main file is selected in analysis pane
@@ -11453,6 +11455,11 @@ public class GraphicalInterface extends JFrame {
 		undoItem.setEnabled(false);
 		redoItem.setEnabled(false);
 		visualizationOptionsItem.setEnabled(false);
+	}
+	
+	public void enableVisualizationItems(boolean state) {
+		arrangeCompMenu.setEnabled(state);
+		visualizeMenu.setEnabled(state);
 	}
 	
 	/**
@@ -12062,12 +12069,12 @@ public class GraphicalInterface extends JFrame {
 					pf.getNodeEditor().dispose();
 				}
 				frame.setVisible(false);
-				visualizeMenu.setEnabled(true);
+				enableVisualizationItems(true);
 			}
 		});		
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
-        visualizeMenu.setEnabled(false);
+        enableVisualizationItems(false);
 	}
 	
 	public static void main(String[] args) {
