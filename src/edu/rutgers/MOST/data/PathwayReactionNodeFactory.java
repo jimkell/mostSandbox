@@ -41,25 +41,28 @@ public class PathwayReactionNodeFactory {
 					}
 				}
 				// attributes from Enzyme.dat
-				if (LocalConfig.getInstance().getEnzymeDataMap().get(ec.get(m)).getCatalyticActivity() == null) {
-					// description can have alternate numbers. need to get these
-					//System.out.println(keys.get(j) + " " + LocalConfig.getInstance().getEnzymeDataMap().get(keys.get(j)).getDescription());
-				} else {
-					enzymeDataEquations.add(LocalConfig.getInstance().getEnzymeDataMap().get(ec.get(m)).getCatalyticActivity());
-					String[] halfReactions = LocalConfig.getInstance().getEnzymeDataMap().get(ec.get(m)).getCatalyticActivity().split(" = ");
-					for (int n = 0; n < LocalConfig.getInstance().getSideSpeciesList().size(); n++) {
-						if (halfReactions[0].contains(LocalConfig.getInstance().getSideSpeciesList().get(n))) {
-							if (!sideReactants.contains(LocalConfig.getInstance().getSideSpeciesList().get(n))) {
-								sideReactants.add(LocalConfig.getInstance().getSideSpeciesList().get(n));
+				if (LocalConfig.getInstance().getEnzymeDataMap().containsKey(ec.get(m))) {
+					if (LocalConfig.getInstance().getEnzymeDataMap().get(ec.get(m)).getCatalyticActivity() == null) {
+						// description can have alternate numbers. need to get these
+						//System.out.println(keys.get(j) + " " + LocalConfig.getInstance().getEnzymeDataMap().get(keys.get(j)).getDescription());
+					} else {
+						enzymeDataEquations.add(LocalConfig.getInstance().getEnzymeDataMap().get(ec.get(m)).getCatalyticActivity());
+						String[] halfReactions = LocalConfig.getInstance().getEnzymeDataMap().get(ec.get(m)).getCatalyticActivity().split(" = ");
+						for (int n = 0; n < LocalConfig.getInstance().getSideSpeciesList().size(); n++) {
+							if (halfReactions[0].contains(LocalConfig.getInstance().getSideSpeciesList().get(n))) {
+								if (!sideReactants.contains(LocalConfig.getInstance().getSideSpeciesList().get(n))) {
+									sideReactants.add(LocalConfig.getInstance().getSideSpeciesList().get(n));
+								}
 							}
-						}
-						if (halfReactions[1].contains(LocalConfig.getInstance().getSideSpeciesList().get(n))) {
-							if (!sideProducts.contains(LocalConfig.getInstance().getSideSpeciesList().get(n))) {
-								sideProducts.add(LocalConfig.getInstance().getSideSpeciesList().get(n));
+							if (halfReactions[1].contains(LocalConfig.getInstance().getSideSpeciesList().get(n))) {
+								if (!sideProducts.contains(LocalConfig.getInstance().getSideSpeciesList().get(n))) {
+									sideProducts.add(LocalConfig.getInstance().getSideSpeciesList().get(n));
+								}
 							}
 						}
 					}
 				}
+						
 			}
 		}
 		//pn.setPathwayId(pathway.getId());
@@ -101,11 +104,15 @@ public class PathwayReactionNodeFactory {
 		ArrayList<String> subsystems = new ArrayList<String>();
 		if (reactions.size() > 0) {
 			for (int i = 0; i < reactions.size(); i++) {
-				reactionNames.add(reactions.get(i).getReactionName());
+				if (!reactionNames.contains(reactions.get(i).getReactionName())) {
+					reactionNames.add(reactions.get(i).getReactionName());
+				}
 				if (!ecNumbers.contains(reactions.get(i).getEcNumber())) {
 					ecNumbers.add(reactions.get(i).getEcNumber());
 				}
-				equations.add(reactions.get(i).getReactionEqunAbbr());
+				if (!equations.contains(reactions.get(i).getReactionEqunAbbr())) {
+					equations.add(reactions.get(i).getReactionEqunAbbr());
+				}
 				if (!subsystems.contains(reactions.get(i).getSubsystem())) {
 					subsystems.add(reactions.get(i).getSubsystem());
 				}

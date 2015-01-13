@@ -18,11 +18,13 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;                                                                                        
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;                                                                                          
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;                                                                                            
 import java.util.List;                                                                                               
 import java.util.Map;                                                                                                
                                                                                                                      
+
 
 
 
@@ -293,11 +295,14 @@ public class PathwaysFrame extends JApplet {
 						pn.getReactions());
 				// update temporary lists to keep track of what ec numbers have been found
 				for (int z = 0; z < pn.getReactions().size(); z++) {
-					if (!foundEcNumbers.contains(pn.getReactions().get(z).getEcNumber())) {
-						foundEcNumbers.add(pn.getReactions().get(z).getEcNumber());
-					}
-					if (notFoundEcNumbers.contains(pn.getReactions().get(z).getEcNumber())) {
-						notFoundEcNumbers.remove(notFoundEcNumbers.indexOf(pn.getReactions().get(z).getEcNumber()));
+					java.util.List<String> ecNumbers = Arrays.asList(pn.getReactions().get(z).getEcNumber().split("\\s"));
+					for (int y = 0; y < ecNumbers.size(); y++) {
+						if (!foundEcNumbers.contains(ecNumbers.get(y))) {
+							foundEcNumbers.add(ecNumbers.get(y));
+						}
+						if (notFoundEcNumbers.contains(ecNumbers.get(y))) {
+							notFoundEcNumbers.remove(ecNumbers.get(y));
+						}
 					}
 				}
 				boolean drawReaction = true;
@@ -428,11 +433,14 @@ public class PathwaysFrame extends JApplet {
 					connectionsNodelist.get(c).getReactions());
 			// update temporary lists to keep track of what ec numbers have been found
 			for (int z = 0; z < connectionsNodelist.get(c).getReactions().size(); z++) {
-				if (!foundEcNumbers.contains(connectionsNodelist.get(c).getReactions().get(z).getEcNumber())) {
-					foundEcNumbers.add(connectionsNodelist.get(c).getReactions().get(z).getEcNumber());
-				}
-				if (notFoundEcNumbers.contains(connectionsNodelist.get(c).getReactions().get(z).getEcNumber())) {
-					notFoundEcNumbers.remove(notFoundEcNumbers.indexOf(connectionsNodelist.get(c).getReactions().get(z).getEcNumber()));
+				java.util.List<String> ecNumbers = Arrays.asList(connectionsNodelist.get(c).getReactions().get(z).getEcNumber().split("\\s"));
+				for (int y = 0; y < ecNumbers.size(); y++) {
+					if (!foundEcNumbers.contains(ecNumbers.get(y))) {
+						foundEcNumbers.add(ecNumbers.get(y));
+					}
+					if (notFoundEcNumbers.contains(ecNumbers.get(y))) {
+						notFoundEcNumbers.remove(ecNumbers.get(y));
+					}
 				}
 			}
 			boolean drawReaction = true;

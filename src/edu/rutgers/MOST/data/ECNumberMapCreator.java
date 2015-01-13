@@ -56,7 +56,7 @@ public class ECNumberMapCreator {
 		//System.out.println("ec " + ecNumberReactionMap);
 		ArrayList<String> keys = new ArrayList<String>(ecNumberReactionMap.keySet());
 		Collections.sort(keys);
-		//System.out.println(keys);
+		System.out.println(keys);
 		for (int j = 0; j < keys.size(); j++) {
 			ArrayList<String> sideReactants = new ArrayList<String>();
 			ArrayList<String> sideProducts = new ArrayList<String>();
