@@ -1,15 +1,15 @@
 Pathway ID,Metabolite ID,Metabolite Level,Metabolite Level Position,Metabolite Names,Metabolite Abbreviation
-0,0,0,0,a-D-Glucose|D-glucose|D-hexose|Alpha-D-glucose,a-D-Glc
-0,1,1,0,a-D-Glucose-6P|D-Glucose-6P|D-hexose 6-phosphate|D-glucose 6-phosphate|alpha-D-glucose 6-phosphate,a-D-G6P
+0,0,0,0,a-D-Glucose|D-glucose|D-hexose|Alpha-D-glucose,a-Glc
+0,1,1,0,a-D-Glucose-6P|D-Glucose-6P|D-hexose 6-phosphate|D-glucose 6-phosphate|alpha-D-glucose 6-phosphate,a-G6P
 0,2,2,0,B-D-Fructose-6P|D-fructose 6-phosphate,F6P
-0,3,3,0,"B-D-Fructose-1,6P2|D-fructose 1,6-bisphosphate",F1P
+0,3,3,0,"B-D-Fructose-1,6P2|D-fructose 1,6-bisphosphate",F16P
 0,4,4,0,Glyceraldehyde-3P|D-glyceraldehyde3-phosphate|D-glyceraldehyde 3-phosphate|D-glyceraldehyde-3-phosphate,GAPD
 0,5,4,1,Glycerone-P|glycerone phosphate,DHAP
 0,6,5,0,"Glycerate-1,3P2|3-phospho-D-glyceroyl phosphate",13BPG
-0,7,6,0,Glycerate-3P|3-phospho-D-glycerate,3PG
-0,8,7,0,Glycerate-2P|2-phospho-D-glycerate,2PG
+0,7,6,0,Glycerate-3P|3-phospho-D-glycerate,3PGA
+0,8,7,0,Glycerate-2P|2-phospho-D-glycerate,2PGA
 0,9,8,0,Phosphoenol-pyruvate|phosphoenolpyruvate,PEP
-0,10,9,0,Pyruvate|pyruvate,Pyruvate
+0,10,9,0,Pyruvate|pyruvate,PYR
 0,11,0,-1,B-D-Glucose|beta-D-glucose,B-Glc
 0,12,1,1,a-D-Glucose-1P|Alpha-D-glucose 1-phosphate,a-G1P
 0,13,1,-1,B-D-Glucose-6P,B-G6P
@@ -25,10 +25,10 @@ Pathway ID,Metabolite ID,Metabolite Level,Metabolite Level Position,Metabolite N
 2,3,3,-1,D-Ribose-5P|D-ribose 5-phosphate,R5P
 2,4,3,1,D-Xylulose-5P|,Xu5P
 2,5,4.5,4,D Sedoheptulose 7P,S7P
-2,6,2,3.5,D-Erythrose-4P,Eryth4P
+2,6,2,3.5,D-Erythrose-4P,E4P
 2,7,3,-2,D-Ribose,Ribose
 2,8,4,-1,D-Ribose-1P,R1P
-2,9,5,-1,"D-Ribose-1,5P","R1,5P"
+2,9,5,-1,"D-Ribose-1,5P",R15P
 2,10,5,-2,5-Phospho-alpha-D-ribose 1-diphosphate,PRPP
 2,11,0.5,4,"D-Glucono-1,5-lactone",Glu15lac
 2,12,1.5,4,D-Gluconate,Gluconate
@@ -38,17 +38,17 @@ Pathway ID,Metabolite ID,Metabolite Level,Metabolite Level Position,Metabolite N
 2,16,5.8,2.7,2-Dehydro-3-deoxy-D-gluconate-6P,2H3OGlu6P
 2,17,6.5,3,D-Glyceraldehyde,Glyceraldehyde
 2,18,6.5,4.2,Glycerate,Glycerate
-1,10,1,-1.2,Oxaloacteate|oxaloacetate,Oxaloacteate
+1,10,1,-1.2,Oxaloacteate|oxaloacetate,OAA
 1,0,0,0,Acetyl-CoA|acetyl-CoA,AcCoA
 1,1,1,2.7,Citrate|citrate,Citrate
 1,2,1.7,4.5,cis-Aconitate,cisAcon
-1,3,3,5.5,Isocitrate|isocitrate,Isocitrate
+1,3,3,5.5,Isocitrate|isocitrate,ICI
 1,4,4.5,5.5,Oxalosuccinate,Oxalosuccinate
-1,5,5.8,3.5,2-Oxoglutarate|2-oxoglutarate,2Oxoglu
+1,5,5.8,3.5,2-Oxoglutarate|2-oxoglutarate,AKG
 1,6,5.8,-2.5,Succinyl-CoA|succinyl-CoA,SucCoA
-1,7,4.5,-4.5,Succinate|succinate,Succinate
-1,8,3,-4.5,Fumarate|fumarate,Fumarate
-1,9,1.7,-3.5,(S)-Malate|(S)-malate,Malate
+1,7,4.5,-4.5,Succinate|succinate,SUC
+1,8,3,-4.5,Fumarate|fumarate,FUM
+1,9,1.7,-3.5,(S)-Malate|(S)-malate,MAL
 1,11,3,2,Glyoxylate,Glyoxylate
 24,0,0,0,L-Glutamine,Gln
 24,1,0,2,L-Glutamate,Glu

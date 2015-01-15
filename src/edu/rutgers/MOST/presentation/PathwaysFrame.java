@@ -228,6 +228,8 @@ public class PathwaysFrame extends JApplet {
 		ArrayList<String> foundEcNumbers = new ArrayList<String>();
 	    ArrayList<String> notFoundEcNumbers = new ArrayList<String>(LocalConfig.getInstance().getEcNumberReactionMap().keySet());
 		
+	    ArrayList<Double> fluxLogs = new ArrayList<Double>();
+	    
 		double startX = PathwaysFrameConstants.BORDER_WIDTH + PathwaysFrameConstants.HORIZONTAL_INCREMENT;
 		double startY = PathwaysFrameConstants.GRAPH_HEIGHT/2;
 		if (LocalConfig.getInstance().getPeriplasmName() != null && LocalConfig.getInstance().getPeriplasmName().length() > 0) {
@@ -304,6 +306,7 @@ public class PathwaysFrame extends JApplet {
 							notFoundEcNumbers.remove(ecNumbers.get(y));
 						}
 					}
+					fluxLogs.add(Math.log(Math.abs(pn.getReactions().get(z).getFluxValue())));
 				}
 				boolean drawReaction = true;
 				if (pn.getReactions().size() > 0) {
@@ -343,6 +346,7 @@ public class PathwaysFrame extends JApplet {
 					}
 				}
 			}
+			
 			// update start position map if necessary
 			if (LocalConfig.getInstance().getConnectionPositionMap().get(pathway.getId()) != null) {
 				if (LocalConfig.getInstance().getConnectionPositionMap().get(pathway.getId()).get(0).getReactantPathwaysIds().get(0).get(0).equals(pathway.getId())) {
@@ -442,6 +446,7 @@ public class PathwaysFrame extends JApplet {
 						notFoundEcNumbers.remove(ecNumbers.get(y));
 					}
 				}
+				fluxLogs.add(Math.log(Math.abs(connectionsNodelist.get(c).getReactions().get(z).getFluxValue())));
 			}
 			boolean drawReaction = true;
 			if (connectionsNodelist.get(c).getReactions().size() > 0) {
@@ -471,6 +476,8 @@ public class PathwaysFrame extends JApplet {
 		System.out.println("found " + foundEcNumbers);
 		Collections.sort(notFoundEcNumbers);
 		System.out.println("not found " + notFoundEcNumbers);
+		Collections.sort(fluxLogs);
+		System.out.println("flux logs " + fluxLogs);
                                                                                                                      
    		metaboliteList = new ArrayList<String>(metabPosMap.keySet()); 
    		Collections.sort(metaboliteList);

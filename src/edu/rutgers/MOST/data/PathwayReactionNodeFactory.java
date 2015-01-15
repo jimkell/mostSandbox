@@ -1,6 +1,7 @@
 package edu.rutgers.MOST.data;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import edu.rutgers.MOST.config.LocalConfig;
 
@@ -102,6 +103,7 @@ public class PathwayReactionNodeFactory {
 		ArrayList<String> ecNumbers = new ArrayList<String>();
 		ArrayList<String> equations = new ArrayList<String>();
 		ArrayList<String> subsystems = new ArrayList<String>();
+		ArrayList<Double> fluxes = new ArrayList<Double>();
 		if (reactions.size() > 0) {
 			for (int i = 0; i < reactions.size(); i++) {
 				if (!reactionNames.contains(reactions.get(i).getReactionName())) {
@@ -116,12 +118,17 @@ public class PathwayReactionNodeFactory {
 				if (!subsystems.contains(reactions.get(i).getSubsystem())) {
 					subsystems.add(reactions.get(i).getSubsystem());
 				}
+				if (!fluxes.contains(reactions.get(i).getFluxValue())) {
+					fluxes.add(reactions.get(i).getFluxValue());
+				}
+				//System.out.println("flux " + reactions.get(i).getFluxValue() + " log " + Math.log10(Math.abs(reactions.get(i).getFluxValue())));
 			}
 			displayName = "<html>" + displayReactionName(reactionNames)
 					+ displayECNumber(ecNumbers)
 					+ "<p> Equation: " + name
 					+ displaySubsystem(subsystems)
-					+ displayModelEquation(equations);
+					+ displayModelEquation(equations)
+					+ "<p> Fluxes: " + fluxes.toString();
 		}
 		return displayName;
 	}

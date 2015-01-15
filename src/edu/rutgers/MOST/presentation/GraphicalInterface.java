@@ -2115,6 +2115,7 @@ public class GraphicalInterface extends JFrame {
 				
 				ECNumberMapCreator ecMapCreator = new ECNumberMapCreator();
 				ecMapCreator.createEcNumberReactionMap();
+				Collections.sort(ecMapCreator.getFluxes());
 				System.out.println(ecMapCreator.getFluxes());
 				
 				if (LocalConfig.getInstance().getEcNumberReactionMap().size() == 0) {
