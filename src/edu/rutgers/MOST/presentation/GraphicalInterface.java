@@ -11489,6 +11489,8 @@ public class GraphicalInterface extends JFrame {
 		gdbbItem.setEnabled( expr );
 		eflux2Item.setEnabled( expr );
 		spotItem.setEnabled( expr );
+		exitItem.setEnabled( expr );
+		aboutBox.setEnabled( expr );
 	}
 	
 	public void maybeDisplaySuspiciousMetabMessage(String row) {
