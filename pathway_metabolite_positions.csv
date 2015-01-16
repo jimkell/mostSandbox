@@ -50,6 +50,6 @@ Pathway ID,Metabolite ID,Metabolite Level,Metabolite Level Position,Metabolite N
 1,8,3,-4.5,Fumarate|fumarate,FUM
 1,9,1.7,-3.5,(S)-Malate|(S)-malate,MAL
 1,11,3,2,Glyoxylate,Glyoxylate
-24,0,0,0,L-Glutamine,Gln
+24,0,1,0,L-Glutamine,Gln
 24,1,0,2,L-Glutamate,Glu
 91,0,0,0,Acetyl phosphate,Ac-P

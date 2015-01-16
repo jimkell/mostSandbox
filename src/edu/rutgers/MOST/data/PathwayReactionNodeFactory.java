@@ -99,6 +99,7 @@ public class PathwayReactionNodeFactory {
 	 * @return
 	 */
 	public String createDisplayName(String displayName, String name, ArrayList<SBMLReaction> reactions) {
+		ArrayList<String> reactionAbbrevations = new ArrayList<String>();
 		ArrayList<String> reactionNames = new ArrayList<String>();
 		ArrayList<String> ecNumbers = new ArrayList<String>();
 		ArrayList<String> equations = new ArrayList<String>();
@@ -106,6 +107,9 @@ public class PathwayReactionNodeFactory {
 		ArrayList<Double> fluxes = new ArrayList<Double>();
 		if (reactions.size() > 0) {
 			for (int i = 0; i < reactions.size(); i++) {
+				if (!reactionAbbrevations.contains(reactions.get(i).getReactionAbbreviation())) {
+					reactionAbbrevations.add(reactions.get(i).getReactionAbbreviation());
+				}
 				if (!reactionNames.contains(reactions.get(i).getReactionName())) {
 					reactionNames.add(reactions.get(i).getReactionName());
 				}
@@ -123,7 +127,9 @@ public class PathwayReactionNodeFactory {
 				}
 				//System.out.println("flux " + reactions.get(i).getFluxValue() + " log " + Math.log10(Math.abs(reactions.get(i).getFluxValue())));
 			}
-			displayName = "<html>" + displayReactionName(reactionNames)
+			displayName = "<html>" + displayName(reactionNames)
+					+ displayReactionName(reactionNames)
+					+ displayReactionAbbreviation(reactionAbbrevations)
 					+ displayECNumber(ecNumbers)
 					+ "<p> Equation: " + name
 					+ displaySubsystem(subsystems)
@@ -133,7 +139,7 @@ public class PathwayReactionNodeFactory {
 		return displayName;
 	}
 	
-	public String displayReactionName(ArrayList<String> reactionNames) {
+	public String displayName(ArrayList<String> reactionNames) {
 		String rn = "";
 		if (reactionNames.size() > 0) {
 			rn = reactionNames.get(0);
@@ -142,6 +148,14 @@ public class PathwayReactionNodeFactory {
 			rn = reactionNames.toString();
 		}
 		return rn;
+	}
+	
+	public String displayReactionAbbreviation(ArrayList<String> reactionAbbrevations) {
+		return maybeMakeList(reactionAbbrevations, "Reaction Abbreviation");
+	}
+	
+	public String displayReactionName(ArrayList<String> reactionNames) {
+		return maybeMakeList(reactionNames, "Reaction Name");
 	}
 	
 	public String displayECNumber(ArrayList<String> ecnumbers) {

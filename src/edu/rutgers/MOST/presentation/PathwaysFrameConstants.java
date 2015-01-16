@@ -3,14 +3,18 @@ package edu.rutgers.MOST.presentation;
 public class PathwaysFrameConstants {
 
 	public static final float SCALING_FACTOR = (float) 1.2;
-	public static final int  GRAPH_WIDTH = 10000;
-	public static final int  GRAPH_HEIGHT = 8000;
-	public static final int  BORDER_WIDTH = 100;
-	public static final int  BORDER_HEIGHT = 100;
-	public static final int  PERIPLASM_WIDTH = 200;
-	public static final int  PERIPLASM_HEIGHT = 200;
+	public static final int GRAPH_WIDTH = 10000;
+	public static final int GRAPH_HEIGHT = 8000;
+	public static final int BORDER_WIDTH = 100;
+	public static final int BORDER_HEIGHT = 100;
+	public static final int PERIPLASM_WIDTH = 200;
+	public static final int PERIPLASM_HEIGHT = 200;
 	
 	public static final double BORDER_THICKNESS = 4;
+	
+	public static final int TOP_SPACE = 300;
+	public static final int BOTTOM_SPACE = 300;
+	public static final int START_Y = 3000;
    	
 	public static final int HORIZONTAL_INCREMENT = 350;
 	public static final int VERTICAL_INCREMENT = 175;

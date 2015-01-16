@@ -119,10 +119,10 @@ public class PathwaysFrame extends JApplet {
    	ArrayList<String> reactions = new ArrayList<String>();
    	Map<String, Double> fluxMap = new HashMap<String, Double>(); 
   
-   	String borderLeftX = Integer.toString(PathwaysFrameConstants.BORDER_WIDTH);
-   	String borderRightX = Integer.toString(PathwaysFrameConstants.GRAPH_WIDTH - PathwaysFrameConstants.BORDER_WIDTH);
-   	String borderTopY = Integer.toString(PathwaysFrameConstants.BORDER_HEIGHT);
-   	String borderBottomY = Integer.toString(PathwaysFrameConstants.GRAPH_HEIGHT - PathwaysFrameConstants.BORDER_HEIGHT);
+   	//String borderLeftX = Integer.toString(PathwaysFrameConstants.BORDER_WIDTH);
+   	//String borderRightX = Integer.toString(PathwaysFrameConstants.GRAPH_WIDTH - PathwaysFrameConstants.BORDER_WIDTH);
+   	//String borderTopY = Integer.toString(PathwaysFrameConstants.BORDER_HEIGHT);
+   	//String borderBottomY = Integer.toString(PathwaysFrameConstants.GRAPH_HEIGHT - PathwaysFrameConstants.BORDER_HEIGHT);
    
    	private final JCheckBoxMenuItem transformItem = new JCheckBoxMenuItem("Transform");
    	
@@ -203,59 +203,21 @@ public class PathwaysFrame extends JApplet {
     	/**************************************************************************/
     	// end create menu bar
     	/**************************************************************************/
-       
-		// draw cell border
-		metabPosMap.put("1", new String[] {borderLeftX, borderTopY});                                                        
-		metabPosMap.put("2", new String[] {borderRightX, borderTopY}); 
-		metabPosMap.put("3", new String[] {borderRightX, borderBottomY});
-		metabPosMap.put("4", new String[] {borderLeftX, borderBottomY});                                                         
-		
-		reactionMap.put("1", new String[] {"1", "2", "false"});
-		reactionMap.put("2", new String[] {"2", "3", "false"});
-		reactionMap.put("3", new String[] {"3", "4", "false"});
-		reactionMap.put("4", new String[] {"4", "1", "false"});
-		
-		fluxMap.put("1", PathwaysFrameConstants.BORDER_THICKNESS);
-		fluxMap.put("2", PathwaysFrameConstants.BORDER_THICKNESS);
-		fluxMap.put("3", PathwaysFrameConstants.BORDER_THICKNESS);
-		fluxMap.put("4", PathwaysFrameConstants.BORDER_THICKNESS);
-		
-		for (int b = 1; b < 5; b++) {
-			borderList.add(Integer.toString(b));
-		}
-		
+    	
 		// temporary lists to keep track of what ec numbers have been found
 		ArrayList<String> foundEcNumbers = new ArrayList<String>();
 	    ArrayList<String> notFoundEcNumbers = new ArrayList<String>(LocalConfig.getInstance().getEcNumberReactionMap().keySet());
 		
 	    ArrayList<Double> fluxLogs = new ArrayList<Double>();
 	    
-		double startX = PathwaysFrameConstants.BORDER_WIDTH + PathwaysFrameConstants.HORIZONTAL_INCREMENT;
-		double startY = PathwaysFrameConstants.GRAPH_HEIGHT/2;
-		if (LocalConfig.getInstance().getPeriplasmName() != null && LocalConfig.getInstance().getPeriplasmName().length() > 0) {
-			String borderLeftX = Integer.toString(PathwaysFrameConstants.BORDER_WIDTH + PathwaysFrameConstants.PERIPLASM_WIDTH);
-		   	String borderRightX = Integer.toString(PathwaysFrameConstants.GRAPH_WIDTH - (PathwaysFrameConstants.BORDER_WIDTH + PathwaysFrameConstants.PERIPLASM_WIDTH));
-		   	String borderTopY = Integer.toString(PathwaysFrameConstants.BORDER_HEIGHT + PathwaysFrameConstants.PERIPLASM_HEIGHT);
-		   	String borderBottomY = Integer.toString(PathwaysFrameConstants.GRAPH_HEIGHT - (PathwaysFrameConstants.BORDER_HEIGHT + PathwaysFrameConstants.PERIPLASM_HEIGHT));
-		   	metabPosMap.put("5", new String[] {borderLeftX, borderTopY});                                                        
-			metabPosMap.put("6", new String[] {borderRightX, borderTopY}); 
-			metabPosMap.put("7", new String[] {borderRightX, borderBottomY});
-			metabPosMap.put("8", new String[] {borderLeftX, borderBottomY});                                                         
-			
-			reactionMap.put("5", new String[] {"5", "6", "false"});
-			reactionMap.put("6", new String[] {"6", "7", "false"});
-			reactionMap.put("7", new String[] {"7", "8", "false"});
-			reactionMap.put("8", new String[] {"8", "5", "false"});
-			
-			fluxMap.put("5", PathwaysFrameConstants.BORDER_THICKNESS);
-			fluxMap.put("6", PathwaysFrameConstants.BORDER_THICKNESS);
-			fluxMap.put("7", PathwaysFrameConstants.BORDER_THICKNESS);
-			fluxMap.put("8", PathwaysFrameConstants.BORDER_THICKNESS);
-			
-			for (int b = 5; b < 9; b++) {
-				borderList.add(Integer.toString(b));
-			}
-		}
+	    double startX = PathwaysFrameConstants.BORDER_WIDTH + PathwaysFrameConstants.HORIZONTAL_INCREMENT;
+		double startY = PathwaysFrameConstants.START_Y;
+		double maxX = 0;
+		double maxY = 0;
+	    if (LocalConfig.getInstance().getPeriplasmName() != null && LocalConfig.getInstance().getPeriplasmName().length() > 0) {
+	    	startX += PathwaysFrameConstants.PERIPLASM_WIDTH;
+	    	startY += PathwaysFrameConstants.PERIPLASM_HEIGHT;
+	    }
 		
 		ArrayList<String> foundList = new ArrayList<String>();
 	
@@ -282,11 +244,18 @@ public class PathwaysFrame extends JApplet {
 				}
 				pn.setxPosition(x);
 				pn.setyPosition(y);
+				if (x > maxX) {
+					maxX = x;
+				}
+				if (y > maxY) {
+					maxY = y;
+				}
 				pn.setAbbreviation(pathway.getMetabolitesData().get(Integer.toString(j)).getAbbreviation());
 				pn.setName(pathway.getMetabolitesData().get(Integer.toString(j)).getNames().get(0));
 				pathway.getMetabolitesNodes().put(pn.getDataId(), pn);
 				metabPosMap.put(pathway.getMetabolitesData().get(Integer.toString(j)).getNames().get(0), new String[] {Double.toString(x), Double.toString(y)});  
 			}
+			System.out.println("max x " + maxX + " max y " + maxY);
 			for (int k = 0; k < pathway.getReactionsData().size(); k++) {
 				PathwayReactionNodeFactory prnf = new PathwayReactionNodeFactory();
 				// only draw cytosol for now
@@ -469,6 +438,67 @@ public class PathwaysFrame extends JApplet {
 					reactionMap.put(displayName + "product " + Integer.toString(e), new String[] {displayName, prod, "true"});
 					fluxMap.put(displayName + "product " + Integer.toString(e), PathwaysFrameConstants.DEFAULT_EDGE_WIDTH);
 				}
+			}
+		}
+		
+		if (LocalConfig.getInstance().getPeriplasmName() != null && LocalConfig.getInstance().getPeriplasmName().length() > 0) {
+	    	maxX += PathwaysFrameConstants.PERIPLASM_WIDTH;
+	    	maxY += PathwaysFrameConstants.PERIPLASM_HEIGHT;
+	    }
+		
+		String borderLeftX = Integer.toString(PathwaysFrameConstants.BORDER_WIDTH);
+		String borderRightX = Double.toString(maxX + PathwaysFrameConstants.HORIZONTAL_INCREMENT + PathwaysFrameConstants.METABOLITE_NODE_WIDTH);
+		String borderTopY = Integer.toString(PathwaysFrameConstants.BORDER_HEIGHT);
+		String borderBottomY = Double.toString(maxY + PathwaysFrameConstants.BOTTOM_SPACE + PathwaysFrameConstants.METABOLITE_NODE_HEIGHT);
+		
+		// draw cell border
+		metabPosMap.put("1", new String[] {borderLeftX, borderTopY}); 
+		metabPosMap.put("2", new String[] {borderRightX, borderTopY}); 
+		metabPosMap.put("3", new String[] {borderRightX, borderBottomY});
+//		metabPosMap.put("2", new String[] {borderRightX, borderTopY}); 
+//		metabPosMap.put("3", new String[] {borderRightX, borderBottomY});
+		metabPosMap.put("4", new String[] {borderLeftX, borderBottomY});                                                         
+
+		reactionMap.put("1", new String[] {"1", "2", "false"});
+		reactionMap.put("2", new String[] {"2", "3", "false"});
+		reactionMap.put("3", new String[] {"3", "4", "false"});
+		reactionMap.put("4", new String[] {"4", "1", "false"});
+
+		fluxMap.put("1", PathwaysFrameConstants.BORDER_THICKNESS);
+		fluxMap.put("2", PathwaysFrameConstants.BORDER_THICKNESS);
+		fluxMap.put("3", PathwaysFrameConstants.BORDER_THICKNESS);
+		fluxMap.put("4", PathwaysFrameConstants.BORDER_THICKNESS);
+
+		for (int b = 1; b < 5; b++) {
+			borderList.add(Integer.toString(b));
+		}
+		
+		if (LocalConfig.getInstance().getPeriplasmName() != null && LocalConfig.getInstance().getPeriplasmName().length() > 0) {
+			borderLeftX = Integer.toString(PathwaysFrameConstants.BORDER_WIDTH + PathwaysFrameConstants.PERIPLASM_WIDTH);
+			borderRightX = Double.toString(maxX + PathwaysFrameConstants.HORIZONTAL_INCREMENT + PathwaysFrameConstants.METABOLITE_NODE_WIDTH - PathwaysFrameConstants.PERIPLASM_WIDTH);
+			borderTopY = Integer.toString(PathwaysFrameConstants.BORDER_HEIGHT + PathwaysFrameConstants.PERIPLASM_HEIGHT);
+			borderBottomY = Double.toString(maxY + PathwaysFrameConstants.BOTTOM_SPACE + PathwaysFrameConstants.METABOLITE_NODE_HEIGHT - PathwaysFrameConstants.PERIPLASM_HEIGHT);
+			//String borderLeftX = Integer.toString(PathwaysFrameConstants.BORDER_WIDTH + PathwaysFrameConstants.PERIPLASM_WIDTH);
+		   	//String borderRightX = Integer.toString(PathwaysFrameConstants.GRAPH_WIDTH - (PathwaysFrameConstants.BORDER_WIDTH + PathwaysFrameConstants.PERIPLASM_WIDTH));
+		   	//String borderTopY = Integer.toString(PathwaysFrameConstants.BORDER_HEIGHT + PathwaysFrameConstants.PERIPLASM_HEIGHT);
+		   	//String borderBottomY = Integer.toString(PathwaysFrameConstants.GRAPH_HEIGHT - (PathwaysFrameConstants.BORDER_HEIGHT + PathwaysFrameConstants.PERIPLASM_HEIGHT));
+		   	metabPosMap.put("5", new String[] {borderLeftX, borderTopY});                                                        
+			metabPosMap.put("6", new String[] {borderRightX, borderTopY}); 
+			metabPosMap.put("7", new String[] {borderRightX, borderBottomY});
+			metabPosMap.put("8", new String[] {borderLeftX, borderBottomY});                                                         
+			
+			reactionMap.put("5", new String[] {"5", "6", "false"});
+			reactionMap.put("6", new String[] {"6", "7", "false"});
+			reactionMap.put("7", new String[] {"7", "8", "false"});
+			reactionMap.put("8", new String[] {"8", "5", "false"});
+			
+			fluxMap.put("5", PathwaysFrameConstants.BORDER_THICKNESS);
+			fluxMap.put("6", PathwaysFrameConstants.BORDER_THICKNESS);
+			fluxMap.put("7", PathwaysFrameConstants.BORDER_THICKNESS);
+			fluxMap.put("8", PathwaysFrameConstants.BORDER_THICKNESS);
+			
+			for (int b = 5; b < 9; b++) {
+				borderList.add(Integer.toString(b));
 			}
 		}
 		
