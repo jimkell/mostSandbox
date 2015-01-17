@@ -47,6 +47,9 @@ public class PathwayFilesReader {
 							if (s == PathwaysCSVFileConstants.PATHWAYS_DIRECTION_COLUMN) {
 								pathway.setDirection(dataArray[s]);
 							}
+							if (s == PathwaysCSVFileConstants.PATHWAYS_COMPONENT_COLUMN) {
+								pathway.setComponent(Integer.parseInt(dataArray[s]));
+							}
 						}
 						metabolicPathways.put(pathway.getId(), pathway);
 					}

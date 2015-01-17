@@ -114,6 +114,7 @@ public class PathwaysFrame extends JApplet {
    	
    	// lists used to distinguish node types
    	ArrayList<String> borderList = new ArrayList<String>();
+   	ArrayList<String> noBorderList = new ArrayList<String>();
    	ArrayList<String> pathwayNames = new ArrayList<String>();
    	ArrayList<String> metabolites = new ArrayList<String>();
    	ArrayList<String> reactions = new ArrayList<String>();
@@ -208,6 +209,7 @@ public class PathwaysFrame extends JApplet {
 		ArrayList<String> foundEcNumbers = new ArrayList<String>();
 	    ArrayList<String> notFoundEcNumbers = new ArrayList<String>(LocalConfig.getInstance().getEcNumberReactionMap().keySet());
 		
+	    
 	    ArrayList<Double> fluxLogs = new ArrayList<Double>();
 	    
 	    double startX = PathwaysFrameConstants.BORDER_WIDTH + PathwaysFrameConstants.HORIZONTAL_INCREMENT;
@@ -221,16 +223,30 @@ public class PathwaysFrame extends JApplet {
 		
 		ArrayList<String> foundList = new ArrayList<String>();
 	
-		startX += PathwaysFrameConstants.PERIPLASM_WIDTH;
 		for (int i = 0; i < LocalConfig.getInstance().getDrawOrder().size(); i++) {
 			MetabolicPathway pathway = LocalConfig.getInstance().getMetabolicPathways().get(LocalConfig.getInstance().getDrawOrder().get(i));
-			if (startPosMap.containsKey(pathway.getId())) {
-				startX = startPosMap.get(pathway.getId()).get(0);
-				startY = startPosMap.get(pathway.getId()).get(1);
+			if (pathway.getComponent() == PathwaysFrameConstants.MAIN_COMPONENT) {
+				if (startPosMap.containsKey(pathway.getId())) {
+					startX = startPosMap.get(pathway.getId()).get(0);
+					startY = startPosMap.get(pathway.getId()).get(1);
+				}
+			} else if (pathway.getComponent() == PathwaysFrameConstants.PHOSPHORYLATION_COMPONENT) {
+				// max will already be set at this time
+				startX = maxX - PathwaysFrameConstants.PHOSPHORYLATION_X_OFFSET;
+				startY = PathwaysFrameConstants.PHOSPHORYLATION_Y_OFFSET;
+				if (LocalConfig.getInstance().getPeriplasmName() != null && LocalConfig.getInstance().getPeriplasmName().length() > 0) {
+					startX += PathwaysFrameConstants.PERIPLASM_WIDTH;
+					startY += PathwaysFrameConstants.PERIPLASM_HEIGHT;
+				}	
+				System.out.println("start " + startX + " " + startY);
 			}
 
 			for (int j = 0; j < pathway.getMetabolitesData().size(); j++) {
 				metabolites.add(pathway.getMetabolitesData().get(Integer.toString(j)).getNames().get(0));
+				if (pathway.getComponent() == PathwaysFrameConstants.PHOSPHORYLATION_COMPONENT ||
+						LocalConfig.getInstance().getSideSpeciesList().contains(pathway.getMetabolitesData().get(Integer.toString(j)).getAbbreviation())) {
+					noBorderList.add(pathway.getMetabolitesData().get(Integer.toString(j)).getNames().get(0));
+				}
 				PathwayMetaboliteNode pn = new PathwayMetaboliteNode();
 				pn.setDataId(pathway.getMetabolitesData().get(Integer.toString(j)).getId());
 				double x = 0;
@@ -255,8 +271,9 @@ public class PathwaysFrame extends JApplet {
 				pathway.getMetabolitesNodes().put(pn.getDataId(), pn);
 				metabPosMap.put(pathway.getMetabolitesData().get(Integer.toString(j)).getNames().get(0), new String[] {Double.toString(x), Double.toString(y)});  
 			}
-			System.out.println("max x " + maxX + " max y " + maxY);
+			//System.out.println("max x " + maxX + " max y " + maxY);
 			for (int k = 0; k < pathway.getReactionsData().size(); k++) {
+				//System.out.println(pathway.getReactionsData().get(Integer.toString(k)).getEcNumbers());
 				PathwayReactionNodeFactory prnf = new PathwayReactionNodeFactory();
 				// only draw cytosol for now
 				PathwayReactionNode pn = prnf.createPathwayReactionNode(pathway.getReactionsData().get(Integer.toString(k)).getEcNumbers(),
@@ -268,6 +285,7 @@ public class PathwaysFrame extends JApplet {
 				for (int z = 0; z < pn.getReactions().size(); z++) {
 					java.util.List<String> ecNumbers = Arrays.asList(pn.getReactions().get(z).getEcNumber().split("\\s"));
 					for (int y = 0; y < ecNumbers.size(); y++) {
+						//System.out.println(ecNumbers.get(y));
 						if (!foundEcNumbers.contains(ecNumbers.get(y))) {
 							foundEcNumbers.add(ecNumbers.get(y));
 						}
@@ -447,7 +465,7 @@ public class PathwaysFrame extends JApplet {
 	    }
 		
 		String borderLeftX = Integer.toString(PathwaysFrameConstants.BORDER_WIDTH);
-		String borderRightX = Double.toString(maxX + PathwaysFrameConstants.HORIZONTAL_INCREMENT + PathwaysFrameConstants.METABOLITE_NODE_WIDTH);
+		String borderRightX = Double.toString(maxX + PathwaysFrameConstants.RIGHT_BORDER_INCREMENT + PathwaysFrameConstants.METABOLITE_NODE_WIDTH);
 		String borderTopY = Integer.toString(PathwaysFrameConstants.BORDER_HEIGHT);
 		String borderBottomY = Double.toString(maxY + PathwaysFrameConstants.BOTTOM_SPACE + PathwaysFrameConstants.METABOLITE_NODE_HEIGHT);
 		
@@ -475,7 +493,7 @@ public class PathwaysFrame extends JApplet {
 		
 		if (LocalConfig.getInstance().getPeriplasmName() != null && LocalConfig.getInstance().getPeriplasmName().length() > 0) {
 			borderLeftX = Integer.toString(PathwaysFrameConstants.BORDER_WIDTH + PathwaysFrameConstants.PERIPLASM_WIDTH);
-			borderRightX = Double.toString(maxX + PathwaysFrameConstants.HORIZONTAL_INCREMENT + PathwaysFrameConstants.METABOLITE_NODE_WIDTH - PathwaysFrameConstants.PERIPLASM_WIDTH);
+			borderRightX = Double.toString(maxX + PathwaysFrameConstants.RIGHT_BORDER_INCREMENT + PathwaysFrameConstants.METABOLITE_NODE_WIDTH - PathwaysFrameConstants.PERIPLASM_WIDTH);
 			borderTopY = Integer.toString(PathwaysFrameConstants.BORDER_HEIGHT + PathwaysFrameConstants.PERIPLASM_HEIGHT);
 			borderBottomY = Double.toString(maxY + PathwaysFrameConstants.BOTTOM_SPACE + PathwaysFrameConstants.METABOLITE_NODE_HEIGHT - PathwaysFrameConstants.PERIPLASM_HEIGHT);
 			//String borderLeftX = Integer.toString(PathwaysFrameConstants.BORDER_WIDTH + PathwaysFrameConstants.PERIPLASM_WIDTH);
@@ -599,7 +617,11 @@ public class PathwaysFrame extends JApplet {
         	if (borderList.contains(name)) {
         		graphics.setColor(Color.black);
         	} else if (metabolites.contains(name)) {
-        		graphics.setColor(Color.lightGray);
+        		if (!noBorderList.contains(name)) {
+        			graphics.setColor(Color.lightGray);
+        		} else {
+        			graphics.setColor(Color.white);
+        		}
         	} else if (reactions.contains(name)) {
         		graphics.setColor(Color.white);
         		if (!foundList.contains(name) && LocalConfig.getInstance().isHighlightMissingReactionsSelected()) {
@@ -609,7 +631,7 @@ public class PathwaysFrame extends JApplet {
         	graphics.fillRect(0, 0, width, height);
         	graphics.setColor(Color.BLACK);
         	if (pathwayNames.contains(name)) {
-        		graphics.setFont(new Font("Arial", Font.BOLD, 20));
+        		graphics.setFont(new Font("Arial", Font.BOLD, PathwaysFrameConstants.PATHWAY_NAME_NODE_FONT_SIZE));
             	graphics.drawString(name, 5, 15);
         	} else {
         		if (metabolites.contains(name)) {
@@ -619,7 +641,9 @@ public class PathwaysFrame extends JApplet {
         		}
         	}
         	if (metabolites.contains(name) || reactions.contains(name)) {
-        		drawBorder(graphics, width, height, 4);
+        		if (!noBorderList.contains(name)) {
+        			drawBorder(graphics, width, height, 4);
+        		}
         	}
         	Icon icon = new ImageIcon(bufferedImage);
         	iconMap.put(name, icon);                                                                                                                                         

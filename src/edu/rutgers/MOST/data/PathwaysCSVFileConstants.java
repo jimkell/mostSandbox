@@ -13,7 +13,7 @@ public class PathwaysCSVFileConstants {
 	
 	public static final String[] PATHWAYS_COLUMN_NAMES = 
 		{
-		"Pathway ID", "Pathway Name", "Direction"
+		"Pathway ID", "Pathway Name", "Direction", "Component"
 		};
 	
 	public static final String[] PATHWAY_METABOLITE_POSITIONS_COLUMN_NAMES = 
@@ -51,6 +51,7 @@ public class PathwaysCSVFileConstants {
 	public static final int PATHWAYS_ID_COLUMN = pathwayColumnsList.indexOf("Pathway ID");
 	public static final int PATHWAYS_NAME_COLUMN = pathwayColumnsList.indexOf("Pathway Name");
 	public static final int PATHWAYS_DIRECTION_COLUMN = pathwayColumnsList.indexOf("Direction");
+	public static final int PATHWAYS_COMPONENT_COLUMN = pathwayColumnsList.indexOf("Component");
 	
 	public static final int PATHWAY_METABOLITE_POSITIONS_ID_COLUMN = pathwayMetabolitePositionsList.indexOf("Pathway ID");
 	public static final int PATHWAY_METABOLITE_POSITIONS_METABOLITE_ID_COLUMN = pathwayMetabolitePositionsList.indexOf("Metabolite ID");

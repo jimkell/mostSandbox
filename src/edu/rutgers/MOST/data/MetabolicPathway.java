@@ -15,6 +15,7 @@ public class MetabolicPathway {
 	private ArrayList<ArrayList<String>> ecNumbers = new ArrayList<ArrayList<String>>();
 	// horizontal or vertical
 	private String direction;
+	private int component;
 	
 	public String getId() {
 		return id;
@@ -73,6 +74,12 @@ public class MetabolicPathway {
 		this.direction = direction;
 	}
 	
+	public int getComponent() {
+		return component;
+	}
+	public void setComponent(int component) {
+		this.component = component;
+	}
 	@Override
 	public String toString() {
 		return "Metabolic Pathway [id=" + id
@@ -82,7 +89,8 @@ public class MetabolicPathway {
 		+ ", reactionsNodes=" + reactionsNodes
 		+ ", edges=" + edges
 		+ ", ecNumbers=" + ecNumbers
-		+ ", direction=" + direction + "]\n";
+		+ ", direction=" + direction
+		+ ", component=" + component + "]\n";
 	}
 
 	public static void main(String[] args) {
