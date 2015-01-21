@@ -34,6 +34,7 @@ import java.util.Map;
 
 
 
+
 import javax.swing.Icon;
 import javax.swing.ImageIcon;                                                                                        
 import javax.swing.JApplet;                                                                                          
@@ -242,11 +243,12 @@ public class PathwaysFrame extends JApplet {
 			}
 
 			for (int j = 0; j < pathway.getMetabolitesData().size(); j++) {
-				metabolites.add(pathway.getMetabolitesData().get(Integer.toString(j)).getNames().get(0));
-				if (pathway.getComponent() == PathwaysFrameConstants.PHOSPHORYLATION_COMPONENT ||
-						LocalConfig.getInstance().getSideSpeciesList().contains(pathway.getMetabolitesData().get(Integer.toString(j)).getAbbreviation())) {
-					noBorderList.add(pathway.getMetabolitesData().get(Integer.toString(j)).getNames().get(0));
+				String metabName = pathway.getMetabolitesData().get(Integer.toString(j)).getName();
+				//if (pathway.getComponent() == PathwaysFrameConstants.PHOSPHORYLATION_COMPONENT ||
+				if (LocalConfig.getInstance().getSideSpeciesList().contains(pathway.getMetabolitesData().get(Integer.toString(j)).getAbbreviation())) {
+					noBorderList.add(pathway.getMetabolitesData().get(Integer.toString(j)).getName());
 				}
+				metabolites.add(metabName);
 				PathwayMetaboliteNode pn = new PathwayMetaboliteNode();
 				pn.setDataId(pathway.getMetabolitesData().get(Integer.toString(j)).getId());
 				double x = 0;
@@ -267,9 +269,9 @@ public class PathwaysFrame extends JApplet {
 					maxY = y;
 				}
 				pn.setAbbreviation(pathway.getMetabolitesData().get(Integer.toString(j)).getAbbreviation());
-				pn.setName(pathway.getMetabolitesData().get(Integer.toString(j)).getNames().get(0));
+				pn.setName(pathway.getMetabolitesData().get(Integer.toString(j)).getName());
 				pathway.getMetabolitesNodes().put(pn.getDataId(), pn);
-				metabPosMap.put(pathway.getMetabolitesData().get(Integer.toString(j)).getNames().get(0), new String[] {Double.toString(x), Double.toString(y)});  
+				metabPosMap.put(metabName, new String[] {Double.toString(x), Double.toString(y)});  
 			}
 			//System.out.println("max x " + maxX + " max y " + maxY);
 			for (int k = 0; k < pathway.getReactionsData().size(); k++) {
@@ -322,12 +324,12 @@ public class PathwaysFrame extends JApplet {
 					pn.setReversible(reversible);
 					pathway.getReactionsNodes().put(pn.getDataId(), pn);
 					for (int r = 0; r < pathway.getReactionsData().get(Integer.toString(k)).getReactantIds().size(); r++) {
-						String reac = pathway.getMetabolitesData().get((pathway.getReactionsData().get(Integer.toString(k)).getReactantIds().get(r))).getNames().get(0);
+						String reac = pathway.getMetabolitesData().get((pathway.getReactionsData().get(Integer.toString(k)).getReactantIds().get(r))).getName();
 						reactionMap.put(displayName + "reactant " + Integer.toString(r), new String[] {displayName, reac, reversible});
 						fluxMap.put(displayName + "reactant " + Integer.toString(r), PathwaysFrameConstants.DEFAULT_EDGE_WIDTH);
 					}
 					for (int p = 0; p < pathway.getReactionsData().get(Integer.toString(k)).getProductIds().size(); p++) {
-						String prod = pathway.getMetabolitesData().get((pathway.getReactionsData().get(Integer.toString(k)).getProductIds().get(p))).getNames().get(0);
+						String prod = pathway.getMetabolitesData().get((pathway.getReactionsData().get(Integer.toString(k)).getProductIds().get(p))).getName();
 						reactionMap.put(displayName + "product " + Integer.toString(p), new String[] {displayName, prod, "true"});
 						fluxMap.put(displayName + "product " + Integer.toString(p), PathwaysFrameConstants.DEFAULT_EDGE_WIDTH);
 					}

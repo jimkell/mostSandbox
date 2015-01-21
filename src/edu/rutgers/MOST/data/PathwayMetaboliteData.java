@@ -6,6 +6,7 @@ public class PathwayMetaboliteData {
 
 	private String id;
 	private ArrayList<String> names = new ArrayList<String>();
+	private String name;
 	private String abbreviation;
 	private double level;
 	private double levelPosition;
@@ -24,6 +25,14 @@ public class PathwayMetaboliteData {
 
 	public void setNames(ArrayList<String> names) {
 		this.names = names;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public String getAbbreviation() {

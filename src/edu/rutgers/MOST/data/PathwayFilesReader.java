@@ -12,6 +12,7 @@ import java.util.Map;
 import javax.swing.JOptionPane;
 
 import edu.rutgers.MOST.config.LocalConfig;
+import edu.rutgers.MOST.presentation.GraphicalInterfaceConstants;
 import au.com.bytecode.opencsv.CSVReader;
 
 public class PathwayFilesReader {
@@ -113,7 +114,12 @@ public class PathwayFilesReader {
 						}
 						//System.out.println(pm);
 						metabolicPathways.get(id).getMetabolitesData().put(pm.getId(), pm);
-						metaboliteNameAbbrMap.put(pm.getNames().get(0), pm.getAbbreviation());
+						String name = pm.getNames().get(0);
+						if (metaboliteNameAbbrMap.containsKey(name)) {
+							name = name + duplicateSuffix(name, metaboliteNameAbbrMap);
+						}
+						pm.setName(name);
+						metaboliteNameAbbrMap.put(name, pm.getAbbreviation());
 					}
 					count += 1;
 				}
@@ -429,6 +435,18 @@ public class PathwayFilesReader {
 		reader.readDrawOrderFile(drawOrder);
 		reader.readSideSpeciesFile(sideSpecies);
 		reader.readPathwayConnectionsFile(pathwayConnections);
+	}
+	
+	public String duplicateSuffix(String value, Map<String, String> metaboliteNameAbbrMap) {
+		String duplicateSuffix = GraphicalInterfaceConstants.DUPLICATE_SUFFIX;
+		if (metaboliteNameAbbrMap.containsKey(value + duplicateSuffix)) {
+			int duplicateCount = Integer.valueOf(duplicateSuffix.substring(1, duplicateSuffix.length() - 1));
+			while (metaboliteNameAbbrMap.containsKey(value + duplicateSuffix.replace("1", Integer.toString(duplicateCount + 1)))) {
+				duplicateCount += 1;
+			}
+			duplicateSuffix = duplicateSuffix.replace("1", Integer.toString(duplicateCount + 1));
+		}
+		return duplicateSuffix;
 	}
 	
 	public static void main( String args[] )
