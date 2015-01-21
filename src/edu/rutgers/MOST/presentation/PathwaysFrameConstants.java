@@ -24,6 +24,8 @@ public class PathwaysFrameConstants {
 //	public static final int VERTICAL_INCREMENT = 175;
 	public static final int PATHWAY_NAME_NODE_WIDTH = 120;
 	public static final int PATHWAY_NAME_NODE_HEIGHT = 50;
+	public static final int SIDE_NODE_WIDTH = 90;
+	public static final int SIDE_NODE_HEIGHT = 28;
 	//public static final int METABOLITE_NODE_WIDTH = 75;
 	public static final int METABOLITE_NODE_WIDTH = 110;
 //	public static final int METABOLITE_NODE_HEIGHT = 25;
@@ -37,6 +39,7 @@ public class PathwaysFrameConstants {
 //	public static final int REACTION_NODE_FONT_SIZE = 16;
 	public static final int METABOLITE_NODE_FONT_SIZE = 32;
 	public static final int REACTION_NODE_FONT_SIZE = 32;
+	public static final int SIDE_NODE_FONT_SIZE = 24;
 	public static final int METABOLITE_NODE_MAX_CHARS = 6;
 	public static final int REACTION_NODE_MAX_CHARS = 7;
 	public static final int METABOLITE_NODE_ELLIPSIS_CORRECTION = 2;
@@ -50,6 +53,8 @@ public class PathwaysFrameConstants {
 	public static final int REACTION_NODE_XPOS = 0;
 //	public static final int REACTION_NODE_YPOS = 18;
 	public static final int REACTION_NODE_YPOS = 28;
+	public static final int SIDE_NODE_XPOS = 0;
+	public static final int SIDE_NODE_YPOS = 23;
 	
 	public static final double DEFAULT_EDGE_WIDTH = 8.0; 
 	public static final int ARROW_LENGTH = 30;

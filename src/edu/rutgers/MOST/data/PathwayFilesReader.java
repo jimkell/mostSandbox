@@ -437,6 +437,12 @@ public class PathwayFilesReader {
 		reader.readPathwayConnectionsFile(pathwayConnections);
 	}
 	
+	/**
+	 * Adds suffix to duplicate names
+	 * @param value
+	 * @param metaboliteNameAbbrMap
+	 * @return
+	 */
 	public String duplicateSuffix(String value, Map<String, String> metaboliteNameAbbrMap) {
 		String duplicateSuffix = GraphicalInterfaceConstants.DUPLICATE_SUFFIX;
 		if (metaboliteNameAbbrMap.containsKey(value + duplicateSuffix)) {

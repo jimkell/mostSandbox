@@ -127,7 +127,7 @@ public class PathwayReactionNodeFactory {
 				}
 				//System.out.println("flux " + reactions.get(i).getFluxValue() + " log " + Math.log10(Math.abs(reactions.get(i).getFluxValue())));
 			}
-			displayName = "<html>" + displayName(reactionNames)
+			displayName = "<html>" + displayName(reactionAbbrevations)
 					+ displayReactionName(reactionNames)
 					+ displayReactionAbbreviation(reactionAbbrevations)
 					+ displayECNumber(ecNumbers)
