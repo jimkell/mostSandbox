@@ -21,7 +21,7 @@ public class PathwaysFrameConstants {
 	public static final int HORIZONTAL_INCREMENT = 350;
 	public static final int VERTICAL_INCREMENT = 175;
 //	public static final int HORIZONTAL_INCREMENT = 350;
-//	public static final int VERTICAL_INCREMENT = 175;
+//	public static final int VERTICAL_INCREMENT = 225;
 	public static final int PATHWAY_NAME_NODE_WIDTH = 120;
 	public static final int PATHWAY_NAME_NODE_HEIGHT = 50;
 	public static final int SIDE_NODE_WIDTH = 90;

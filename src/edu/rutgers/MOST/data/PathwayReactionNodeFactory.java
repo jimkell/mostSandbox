@@ -33,6 +33,21 @@ public class PathwayReactionNodeFactory {
 						if (equn.getCompartmentList().size() == 1 && equn.getCompartmentList().contains(compartment)) {
 							reactions.add(reac.get(r));
 						} else {
+							// if compartment is cytosol draw periplasm nodes if exist, then draw extra organism if exists
+							if (compartment.equals(LocalConfig.getInstance().getCytosolName())) {
+								if (LocalConfig.getInstance().getPeriplasmName() != null && 
+										LocalConfig.getInstance().getPeriplasmName().length() > 0 &&
+										equn.getCompartmentList().contains(LocalConfig.getInstance().getPeriplasmName())) {
+									reactions.add(reac.get(r));
+								}
+								if (LocalConfig.getInstance().getExtraOrganismName() != null && 
+										LocalConfig.getInstance().getExtraOrganismName().length() > 0 &&
+										equn.getCompartmentList().contains(LocalConfig.getInstance().getExtraOrganismName())) {
+									reactions.add(reac.get(r));
+//									System.out.println(reac.get(r).getReactionEqunAbbr());
+//									System.out.println(reac.get(r).getEcNumber());
+								}
+							}
 							// uncomment to show that reactions are eliminated if not correct compartment
 //							System.out.println("n c " + equn.getCompartmentList());
 //							System.out.println(ec);

@@ -418,6 +418,66 @@ public class PathwayFilesReader {
 		}	
 	}
 	
+	public void readExternalMetabolitesFile(File externalMetabolites) {
+		CSVReader reader;
+
+		int count = 0;
+		ArrayList<ExternalMetaboliteData> externalMetabolitesList = new ArrayList<ExternalMetaboliteData>();
+
+		try {
+			reader = new CSVReader(new FileReader(externalMetabolites), ',');
+			String [] dataArray;
+			try {
+				while ((dataArray = reader.readNext()) != null) {
+					if (count > 0) {
+						ExternalMetaboliteData em = new ExternalMetaboliteData();
+						for (int s = 0; s < dataArray.length; s++) {	
+							if (s == PathwaysCSVFileConstants.EXTERNAL_METABOLITE_ID_COLUMN) {
+								em.setId(dataArray[s]);
+							}
+							if (s == PathwaysCSVFileConstants.EXTERNAL_METABOLITE_ABBR_COLUMN) {
+								em.setAbbreviation(dataArray[s]);
+							}
+							if (s == PathwaysCSVFileConstants.EXTERNAL_METABOLITE_NAME_COLUMN) {
+								// need to escape pipe: http://stackoverflow.com/questions/21524642/splitting-string-with-pipe-character
+								String[] names = dataArray[s].split("\\|");
+								ArrayList<String> namesList = new ArrayList<String>();
+								for (int i = 0; i < names.length; i++) {
+									namesList.add(names[i]);
+								}
+								em.setNames(namesList);
+							}
+							if (s == PathwaysCSVFileConstants.EXTERNAL_METABOLITE_POSITION_COLUMN) {
+								em.setPosition(dataArray[s]);
+							}
+							if (s == PathwaysCSVFileConstants.EXTERNAL_METABOLITE_OFFSET_COLUMN) {
+								em.setOffset(Double.parseDouble(dataArray[s]));
+							}
+						}
+						externalMetabolitesList.add(em);
+					}
+					count += 1;
+				}
+				reader.close();
+				//System.out.println(sideSpeciesList);
+				LocalConfig.getInstance().setExternalMetabolites(externalMetabolitesList);
+				System.out.println("external " + externalMetabolitesList);
+			} catch (IOException e) {
+				JOptionPane.showMessageDialog(null,                
+						"File Not Found Error.",                
+						"Error",                                
+						JOptionPane.ERROR_MESSAGE);
+				//e.printStackTrace();
+			}
+		} catch (FileNotFoundException e) {
+			JOptionPane.showMessageDialog(null,                
+					"File Not Found Error.",                
+					"Error",                                
+					JOptionPane.ERROR_MESSAGE);
+			//e.printStackTrace();
+		}	
+	}
+	
 	public void readFiles() {
 		EnzymeDataReader r = new EnzymeDataReader();
 		r.readFile();
@@ -428,6 +488,7 @@ public class PathwayFilesReader {
 		File drawOrder = new File(PathwaysCSVFileConstants.PATHWAY_DRAW_ORDER_FILE_NAME);
 		File sideSpecies = new File(PathwaysCSVFileConstants.PATHWAY_SIDE_SPECIES_FILE_NAME);
 		File pathwayConnections = new File(PathwaysCSVFileConstants.PATHWAY_CONNECTIONS_FILE_NAME);
+		File externalMetabolites = new File(PathwaysCSVFileConstants.EXTERNAL_METABOLITES_FILE_NAME);
 		PathwayFilesReader reader = new PathwayFilesReader();
 		reader.readPathwaysFile(pathways);
 		reader.readPathwayMetabolitesFile(pathwayMetabolites);
@@ -435,6 +496,7 @@ public class PathwayFilesReader {
 		reader.readDrawOrderFile(drawOrder);
 		reader.readSideSpeciesFile(sideSpecies);
 		reader.readPathwayConnectionsFile(pathwayConnections);
+		reader.readExternalMetabolitesFile(externalMetabolites);
 	}
 	
 	/**

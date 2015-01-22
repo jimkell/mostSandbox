@@ -10,6 +10,7 @@ public class PathwaysCSVFileConstants {
 	public static final String PATHWAY_DRAW_ORDER_FILE_NAME = "pathway_draw_order.csv";
 	public static final String PATHWAY_CONNECTIONS_FILE_NAME = "pathway_connections.csv";
 	public static final String PATHWAY_SIDE_SPECIES_FILE_NAME = "pathway_side_species.csv";
+	public static final String EXTERNAL_METABOLITES_FILE_NAME = "external_metabolites.csv";
 	
 	public static final String[] PATHWAYS_COLUMN_NAMES = 
 		{
@@ -41,12 +42,18 @@ public class PathwaysCSVFileConstants {
 		"Species Name"
 		};
 	
+	public static final String[] EXTERNAL_METABOLITES_COLUMN_NAMES = 
+		{
+		"Metabolite ID", "Metabolite Names", "Metabolite Abbreviation", "Position", "Offset"
+		};
+	
 	private static java.util.List<String> pathwayColumnsList = Arrays.asList(PATHWAYS_COLUMN_NAMES);
 	private static java.util.List<String> pathwayMetabolitePositionsList = Arrays.asList(PATHWAY_METABOLITE_POSITIONS_COLUMN_NAMES);
 	private static java.util.List<String> pathwayReactionsColumnsList = Arrays.asList(PATHWAY_REACTIONS_COLUMN_NAMES);
 	private static java.util.List<String> pathwayDrawOrderColumnsList = Arrays.asList(PATHWAY_DRAW_ORDER_COLUMN_NAMES);
 	private static java.util.List<String> pathwayConnectionsColumnsList = Arrays.asList(PATHWAY_CONNECTIONS_COLUMN_NAMES);
 	private static java.util.List<String> pathwaySideSpeciesColumnsList = Arrays.asList(PATHWAY_SIDE_SPECIES_COLUMN_NAMES);
+	private static java.util.List<String> externalMetabolitesColumnsList = Arrays.asList(EXTERNAL_METABOLITES_COLUMN_NAMES);
 	
 	public static final int PATHWAYS_ID_COLUMN = pathwayColumnsList.indexOf("Pathway ID");
 	public static final int PATHWAYS_NAME_COLUMN = pathwayColumnsList.indexOf("Pathway Name");
@@ -80,5 +87,11 @@ public class PathwaysCSVFileConstants {
 	public static final int PATHWAY_CONNECTIONS_DIRECTION_COLUMN = pathwayConnectionsColumnsList.indexOf("Direction");
 	
 	public static final int PATHWAY_SIDE_SPECIES_NAME_COLUMN = pathwaySideSpeciesColumnsList.indexOf("Species Name");
+	
+	public static final int EXTERNAL_METABOLITE_ID_COLUMN = externalMetabolitesColumnsList.indexOf("Metabolite ID");
+	public static final int EXTERNAL_METABOLITE_NAME_COLUMN = externalMetabolitesColumnsList.indexOf("Metabolite Names");
+	public static final int EXTERNAL_METABOLITE_ABBR_COLUMN = externalMetabolitesColumnsList.indexOf("Metabolite Abbreviation");
+	public static final int EXTERNAL_METABOLITE_POSITION_COLUMN = externalMetabolitesColumnsList.indexOf("Position");
+	public static final int EXTERNAL_METABOLITE_OFFSET_COLUMN = externalMetabolitesColumnsList.indexOf("Offset");
 	
 }

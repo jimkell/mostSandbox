@@ -323,6 +323,8 @@ public class PathwaysFrame extends JApplet {
 					String reversible = prnf.reversibleString(pathway.getReactionsData().get(Integer.toString(k)).getReversible());
 					pn.setReversible(reversible);
 					pathway.getReactionsNodes().put(pn.getDataId(), pn);
+//					System.out.println(pn.getSideReactants());
+//					System.out.println(pn.getSideProducts());
 					for (int r = 0; r < pathway.getReactionsData().get(Integer.toString(k)).getReactantIds().size(); r++) {
 						String reac = pathway.getMetabolitesData().get((pathway.getReactionsData().get(Integer.toString(k)).getReactantIds().get(r))).getName();
 						reactionMap.put(displayName + "reactant " + Integer.toString(r), new String[] {displayName, reac, reversible});

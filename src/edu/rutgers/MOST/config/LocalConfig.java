@@ -9,6 +9,7 @@ import javax.swing.SortOrder;
 import javax.swing.table.DefaultTableModel;
 
 import edu.rutgers.MOST.data.EnzymeData;
+import edu.rutgers.MOST.data.ExternalMetaboliteData;
 import edu.rutgers.MOST.data.MetabolicPathway;
 import edu.rutgers.MOST.data.ModelReactionEquation;
 import edu.rutgers.MOST.data.PathwayConnectionData;
@@ -980,7 +981,7 @@ public class LocalConfig {
 		this.metaboliteAbbreviationCompartmentMap = metaboliteAbbreviationCompartmentMap;
 	}
 	
-	Map<String, ArrayList<PathwayConnectionData>> connectionPositionMap;
+	private Map<String, ArrayList<PathwayConnectionData>> connectionPositionMap;
 
 	public Map<String, ArrayList<PathwayConnectionData>> getConnectionPositionMap() {
 		return connectionPositionMap;
@@ -991,7 +992,7 @@ public class LocalConfig {
 		this.connectionPositionMap = connectionPositionMap;
 	}
 
-	ArrayList<PathwayConnectionData> connectionslist;
+	private ArrayList<PathwayConnectionData> connectionslist;
 
 	public ArrayList<PathwayConnectionData> getConnectionslist() {
 		return connectionslist;
@@ -1001,7 +1002,7 @@ public class LocalConfig {
 		this.connectionslist = connectionslist;
 	}
 	
-	ArrayList<PathwayConnectionNode> connectionsNodelist;
+	private ArrayList<PathwayConnectionNode> connectionsNodelist;
 
 	public ArrayList<PathwayConnectionNode> getConnectionsNodelist() {
 		return connectionsNodelist;
@@ -1012,6 +1013,17 @@ public class LocalConfig {
 		this.connectionsNodelist = connectionsNodelist;
 	}
 	
+	private ArrayList<ExternalMetaboliteData> externalMetabolites;
+	
+	public ArrayList<ExternalMetaboliteData> getExternalMetabolites() {
+		return externalMetabolites;
+	}
+
+	public void setExternalMetabolites(
+			ArrayList<ExternalMetaboliteData> externalMetabolites) {
+		this.externalMetabolites = externalMetabolites;
+	}
+
 	// Visualization options
 	private boolean graphMissingReactionsSelected;
 	private boolean highlightMissingReactionsSelected;
