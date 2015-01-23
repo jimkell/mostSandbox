@@ -57,8 +57,6 @@ public class PathwayFilesReader {
 					count += 1;
 				}
 				reader.close();
-//				System.out.println(pathwaysList);
-//				System.out.println(metabolicPathways);
 			} catch (IOException e) {
 				JOptionPane.showMessageDialog(null,                
 						"File Not Found Error.",                
@@ -88,7 +86,6 @@ public class PathwayFilesReader {
 					if (count > 0) {
 						PathwayMetaboliteData pm = new PathwayMetaboliteData();
 						String id = dataArray[PathwaysCSVFileConstants.PATHWAY_METABOLITE_POSITIONS_ID_COLUMN];
-						//System.out.println("id " + id);
 						for (int s = 0; s < dataArray.length; s++) {
 							if (s == PathwaysCSVFileConstants.PATHWAY_METABOLITE_POSITIONS_METABOLITE_ID_COLUMN) {
 								pm.setId(dataArray[s]);
@@ -112,7 +109,6 @@ public class PathwayFilesReader {
 								pm.setAbbreviation(dataArray[s]);
 							}
 						}
-						//System.out.println(pm);
 						metabolicPathways.get(id).getMetabolitesData().put(pm.getId(), pm);
 						String name = pm.getNames().get(0);
 						if (metaboliteNameAbbrMap.containsKey(name)) {
@@ -124,10 +120,8 @@ public class PathwayFilesReader {
 					count += 1;
 				}
 				reader.close();
-				//System.out.println(metabolicPathways);
 				LocalConfig.getInstance().setMetabolicPathways(metabolicPathways);
 				LocalConfig.getInstance().setMetaboliteNameAbbrMap(metaboliteNameAbbrMap);
-				//System.out.println(metaboliteNameAbbrMap);
 			} catch (IOException e) {
 				JOptionPane.showMessageDialog(null,                
 						"File Not Found Error.",                
@@ -148,9 +142,6 @@ public class PathwayFilesReader {
 		CSVReader reader;
 		
 		int count = 0;
-		String eq = "Equation: ";
-		//ArrayList<String> namesList = new ArrayList<String>();
-		//System.out.println("mp " + metabolicPathways);
 		
 		try {
 			reader = new CSVReader(new FileReader(pathwayReactions), ',');
@@ -160,17 +151,14 @@ public class PathwayFilesReader {
 					if (count > 0) {
 						PathwayReactionData pr = new PathwayReactionData();
 						String id = dataArray[PathwaysCSVFileConstants.PATHWAY_REACTIONS_PATHWAY_ID_COLUMN];
-						//System.out.println("id " + id);
 						for (int s = 0; s < dataArray.length; s++) {
 							if (s == PathwaysCSVFileConstants.PATHWAY_REACTIONS_PATHWAY_ID_COLUMN) {
 								pr.setPathwayId(dataArray[s]);
 							}
 							if (s == PathwaysCSVFileConstants.PATHWAY_REACTIONS_REACTION_ID_COLUMN) {
 								pr.setReactionId(dataArray[s]);
-							}
-							//System.out.println("map " + metabolicPathways.get(id));		
+							}	
 							if (s == PathwaysCSVFileConstants.PATHWAY_REACTIONS_REACTANTS_COLUMN) {
-								//System.out.println(dataArray[s]);
 								String[] reac = dataArray[s].split("\\|");
 								ArrayList<String> reactantIds = new ArrayList<String>();
 								for (int i = 0; i < reac.length; i++) {
@@ -179,7 +167,6 @@ public class PathwayFilesReader {
 								pr.setReactantIds(reactantIds);
 							}
 							if (s == PathwaysCSVFileConstants.PATHWAY_REACTIONS_PRODUCTS_COLUMN) {
-								//System.out.println(dataArray[s]);
 								String[] prod = dataArray[s].split("\\|");
 								ArrayList<String> productIds = new ArrayList<String>();
 								for (int i = 0; i < prod.length; i++) {
@@ -191,37 +178,29 @@ public class PathwayFilesReader {
 								pr.setReversible(dataArray[s]);
 							}
 							if (s == PathwaysCSVFileConstants.PATHWAY_REACTIONS_EC_NUM_LIST_COLUMN) {
-								//System.out.println(dataArray[s]);
 								String[] ecNumbers = dataArray[s].split("\\|");
 								ArrayList<String> ec = new ArrayList<String>();
 								for (int i = 0; i < ecNumbers.length; i++) {
 									ec.add(ecNumbers[i]);
 								}
-								//System.out.println(pr.getName());
 								pr.setEcNumbers(ec);
 								metabolicPathways.get(id).getEcNumbers().add(ec);
 							}
 							if (s == PathwaysCSVFileConstants.PATHWAY_REACTIONS_LEVEL_COLUMN) {
-								//System.out.println(dataArray[s]);
 								pr.setLevel(Double.parseDouble(dataArray[s]));
 							}
 							if (s == PathwaysCSVFileConstants.PATHWAY_REACTIONS_POSITION_COLUMN) {
-								//System.out.println(dataArray[s]);
 								pr.setLevelPosition(Double.parseDouble(dataArray[s]));
 							}
 						}
 						pr.writeReactionEquation();
 						pr.setName(pr.getEquation());
 						pr.setDisplayName("<html>" + pr.getEquation() +"<p> EC Number(s): " + pr.getEcNumbers());
-						//System.out.println(pr.getName());
-						//System.out.println(pr);
 						metabolicPathways.get(id).getReactionsData().put(pr.getReactionId(), pr);
 					}
 					count += 1;
 				}
 				reader.close();
-				//System.out.println(metabolicPathways);
-				//System.out.println(ecMap);
 			} catch (IOException e) {
 				JOptionPane.showMessageDialog(null,                
 						"File Not Found Error.",                
@@ -259,7 +238,6 @@ public class PathwayFilesReader {
 					count += 1;
 				}
 				reader.close();
-				//System.out.println(drawOrderList);
 				LocalConfig.getInstance().setDrawOrder(drawOrderList);
 			} catch (IOException e) {
 				JOptionPane.showMessageDialog(null,                
@@ -298,7 +276,6 @@ public class PathwayFilesReader {
 					count += 1;
 				}
 				reader.close();
-				//System.out.println(sideSpeciesList);
 				LocalConfig.getInstance().setSideSpeciesList(sideSpeciesList);
 			} catch (IOException e) {
 				JOptionPane.showMessageDialog(null,                
@@ -398,9 +375,7 @@ public class PathwayFilesReader {
 					count += 1;
 				}
 				LocalConfig.getInstance().setConnectionPositionMap(connectionPositionMap);
-				System.out.println(connectionPositionMap);
 				LocalConfig.getInstance().setConnectionslist(connectionslist);
-				System.out.println(connectionslist);
 				reader.close();
 			} catch (IOException e) {
 				JOptionPane.showMessageDialog(null,                
@@ -459,9 +434,8 @@ public class PathwayFilesReader {
 					count += 1;
 				}
 				reader.close();
-				//System.out.println(sideSpeciesList);
 				LocalConfig.getInstance().setExternalMetabolites(externalMetabolitesList);
-				System.out.println("external " + externalMetabolitesList);
+				//System.out.println("external " + externalMetabolitesList);
 			} catch (IOException e) {
 				JOptionPane.showMessageDialog(null,                
 						"File Not Found Error.",                
@@ -481,7 +455,6 @@ public class PathwayFilesReader {
 	public void readFiles() {
 		EnzymeDataReader r = new EnzymeDataReader();
 		r.readFile();
-		//System.out.println(LocalConfig.getInstance().getEnzymeDataMap().get("1.1.1.1"));
 		File pathways = new File(PathwaysCSVFileConstants.PATHWAYS_FILE_NAME);
 		File pathwayMetabolites = new File(PathwaysCSVFileConstants.PATHWAY_METABOLITE_POSITIONS_FILE_NAME);
 		File pathwayReactions = new File(PathwaysCSVFileConstants.PATHWAY_REACTIONS_FILE_NAME);

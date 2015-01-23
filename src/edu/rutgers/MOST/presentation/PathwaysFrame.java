@@ -239,7 +239,7 @@ public class PathwaysFrame extends JApplet {
 					startX += PathwaysFrameConstants.PERIPLASM_WIDTH;
 					startY += PathwaysFrameConstants.PERIPLASM_HEIGHT;
 				}	
-				System.out.println("start " + startX + " " + startY);
+				//System.out.println("start " + startX + " " + startY);
 			}
 
 			for (int j = 0; j < pathway.getMetabolitesData().size(); j++) {
@@ -524,12 +524,16 @@ public class PathwaysFrame extends JApplet {
 			}
 		}
 		
+		for (int e = 0; e < LocalConfig.getInstance().getExternalMetabolites().size(); e++) {
+			//System.out.println(LocalConfig.getInstance().getExternalMetabolites().get(e));
+		}
+		
 		Collections.sort(foundEcNumbers);
 		System.out.println("found " + foundEcNumbers);
 		Collections.sort(notFoundEcNumbers);
 		System.out.println("not found " + notFoundEcNumbers);
 		Collections.sort(fluxLogs);
-		System.out.println("flux logs " + fluxLogs);
+		//System.out.println("flux logs " + fluxLogs);
                                                                                                                      
    		metaboliteList = new ArrayList<String>(metabPosMap.keySet()); 
    		Collections.sort(metaboliteList);

@@ -2109,14 +2109,13 @@ public class GraphicalInterface extends JFrame {
 
 		visualizeMenu.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
-				System.out.println(LocalConfig.getInstance().getCompartmentAbbreviationList());
 				PathwayFilesReader reader = new PathwayFilesReader();
 				reader.readFiles();
 				
 				ECNumberMapCreator ecMapCreator = new ECNumberMapCreator();
 				ecMapCreator.createEcNumberReactionMap();
 				Collections.sort(ecMapCreator.getFluxes());
-				System.out.println(ecMapCreator.getFluxes());
+				//System.out.println("fluxes " + ecMapCreator.getFluxes());
 				
 				if (LocalConfig.getInstance().getEcNumberReactionMap().size() == 0) {
 					if (LocalConfig.getInstance().getEcNumberReactionMap().size() == 0) {

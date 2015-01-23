@@ -255,6 +255,13 @@ public class SBMLModelReader {
 				}
 				//System.out.println(metabolitesMetaColumnMap);
 			} 
+			
+			if (metabolites.get(i).isSetAnnotation()) {
+				if (metabolites.get(i).getAnnotationString().contains("kegg.compound")) {
+					System.out.println(metabolites.get(i).getAnnotationString().substring(metabolites.get(i).getAnnotationString().indexOf("kegg.compound") + 14, metabolites.get(i).getAnnotationString().indexOf("kegg.compound") + 20));
+				}
+			}
+			
 			metabRow.add(charge);	
 			metabRow.add(metabolites.get(i).getCompartment());
 			if (!compartmentsList.contains(metabolites.get(i).getCompartment())) {
@@ -374,6 +381,12 @@ public class SBMLModelReader {
 				//System.out.println("mod " + reactions.get(j).getListOfModifiers().get(z).getAnnotationString());
 				if (reactions.get(j).getListOfModifiers().get(z).getAnnotationString().contains("http")) {
 					System.out.println("mod " + reactions.get(j).getListOfModifiers().get(z).getAnnotationString());
+				}
+			}
+			
+			if (reactions.get(j).isSetAnnotation()) {
+				if (reactions.get(j).getAnnotationString().contains("kegg.reaction")) {
+					System.out.println(reactions.get(j).getAnnotationString().substring(reactions.get(j).getAnnotationString().indexOf("kegg.reaction") + 14, reactions.get(j).getAnnotationString().indexOf("kegg.reaction") + 20));
 				}
 			}
 		
@@ -763,14 +776,14 @@ public class SBMLModelReader {
 		//System.out.println(metaboliteNameIdMap);
 		LocalConfig.getInstance().setMetaboliteIdNameMap(metaboliteIdNameMap);
 		LocalConfig.getInstance().setMetaboliteIdCompartmentMap(metaboliteIdCompartmentMap);
-		System.out.println("id comp " + LocalConfig.getInstance().getMetaboliteIdCompartmentMap());
+		//System.out.println("id comp " + LocalConfig.getInstance().getMetaboliteIdCompartmentMap());
 		//System.out.println(LocalConfig.getInstance().getMetaboliteUsedMap());
 		LocalConfig.getInstance().setReactionEquationMap(reactionEquationMap);
 		//System.out.println(LocalConfig.getInstance().getReactionEquationMap());
 		LocalConfig.getInstance().setReactionAbbreviationIdMap(reactionAbbreviationIdMap);
 		//System.out.println(reactionAbbreviationIdMap);
 		LocalConfig.getInstance().setBiCompartmentReactionIds(biCompartmentReactionIds);
-		System.out.println("bicompartment ids " + biCompartmentReactionIds);
+		//System.out.println("bicompartment ids " + biCompartmentReactionIds);
 		LocalConfig.getInstance().setProgress(100);	
 		if (containsMinFlux && containsMaxFlux) {
 			LocalConfig.getInstance().getShowFVAColumnsList().add(LocalConfig.getInstance().getModelName());
