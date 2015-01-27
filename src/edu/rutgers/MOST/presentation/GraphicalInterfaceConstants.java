@@ -276,6 +276,14 @@ public class GraphicalInterfaceConstants {
         {"EC", "EC Number"
         };
     
+    public static final String[] KEGG_ID_REACTIONS_COLUMN_NAMES = 
+        {"kegg id"
+        };
+    
+    public static final String[] KEGG_ID_METABOLITES_COLUMN_NAMES = 
+        {"kegg id"
+        };
+    
     // messages box titles and messages
     // general 
     public static final String NUMERIC_VALUE_ERROR_TITLE = "Invalid numeric entry.";

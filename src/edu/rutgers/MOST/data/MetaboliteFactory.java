@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
 
+import edu.rutgers.MOST.config.LocalConfig;
 import edu.rutgers.MOST.presentation.GraphicalInterface;
 import edu.rutgers.MOST.presentation.GraphicalInterfaceConstants;
 
@@ -167,7 +168,13 @@ public class MetaboliteFactory {
 					Integer.valueOf((String) GraphicalInterface.metabolitesTable.getModel().getValueAt(i, GraphicalInterfaceConstants.METABOLITE_ID_COLUMN));	
 					SBMLMetabolite metabolite = new SBMLMetabolite();
 					metabolite.setId(Integer.valueOf((String) GraphicalInterface.metabolitesTable.getModel().getValueAt(i, GraphicalInterfaceConstants.METABOLITE_ID_COLUMN)));
+					metabolite.setMetaboliteAbbreviation((String) GraphicalInterface.metabolitesTable.getModel().getValueAt(i, GraphicalInterfaceConstants.METABOLITE_ABBREVIATION_COLUMN));
+					metabolite.setMetaboliteName((String) GraphicalInterface.metabolitesTable.getModel().getValueAt(i, GraphicalInterfaceConstants.METABOLITE_NAME_COLUMN));
+					metabolite.setCharge((String) GraphicalInterface.metabolitesTable.getModel().getValueAt(i, GraphicalInterfaceConstants.CHARGE_COLUMN));
 					metabolite.setBoundary((String) GraphicalInterface.metabolitesTable.getModel().getValueAt(i, GraphicalInterfaceConstants.BOUNDARY_COLUMN));
+					if (getKeggIdColumnIndex() > -1) {
+						metabolite.setKeggId((String) GraphicalInterface.metabolitesTable.getModel().getValueAt(i, getKeggIdColumnIndex()));
+					}
 					metabolites.add(metabolite);
 				}													
 			}
@@ -175,6 +182,18 @@ public class MetaboliteFactory {
 		}
 		
 		return metabolites;
+	}
+	
+	// get index of column with Kegg Id
+	public Integer getKeggIdColumnIndex() {
+		int index = -1;
+		for (int i = 0; i < LocalConfig.getInstance().getMetabolitesMetaColumnNames().size(); i++) {
+			if (LocalConfig.getInstance().getMetabolitesMetaColumnNames().get(i).toLowerCase().equals(GraphicalInterfaceConstants.KEGG_ID_METABOLITES_COLUMN_NAMES[0].toLowerCase())) {
+				index = GraphicalInterfaceConstants.METABOLITES_COLUMN_NAMES.length + LocalConfig.getInstance().getMetabolitesMetaColumnNames().indexOf(GraphicalInterfaceConstants.KEGG_ID_METABOLITES_COLUMN_NAMES[0].toLowerCase());
+			} 
+		}
+
+		return index;
 	}
 	
 	public static void main(String[] args) {
