@@ -4,6 +4,10 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.swing.JOptionPane;
 
 import au.com.bytecode.opencsv.CSVReader;
@@ -11,12 +15,27 @@ import edu.rutgers.MOST.config.LocalConfig;
 
 public class MetaboliteSupplementaryMaterialReader {
 
-	public void readFile(File file, String abbreviationColumnName, String keggIDColumnName) {
+	/**
+	 * 
+	 * @param file
+	 * @param abbreviationColumnName
+	 * @param keggIDColumnName
+	 * @param trimStartIndex
+	 * @param trimEndIndex
+	 * Trim start index and end index used to match format of metabolite abbreviations in model
+	 * with abbreviations in supplementary material
+	 */
+	public void readFile(File file, String abbreviationColumnName, String keggIDColumnName,
+			int trimStartIndex, int trimEndIndex) {
 		CSVReader reader;
 
 		int count = 0;
 		int abbreviationColumnIndex = 0;
 		int keggIDColumnIndex = 0;
+		String metabAbbr = "";
+		String keggId = "";
+		
+		Map<String, String> metaboliteAbbrKeggIdMap = new HashMap<String, String>();
 
 		try {
 			reader = new CSVReader(new FileReader(file), ',');
@@ -37,17 +56,28 @@ public class MetaboliteSupplementaryMaterialReader {
 					} else if (count > 0) {
 						for (int s = 0; s < dataArray.length; s++) {	
 							if (s == abbreviationColumnIndex) {
-								System.out.println(dataArray[s]);
+								//System.out.println(dataArray[s]);
+								if (dataArray[s] != null && dataArray[s].length() > trimStartIndex && dataArray[s].length() > trimEndIndex) {
+									metabAbbr = dataArray[s].substring(trimStartIndex, dataArray[s].length() - trimEndIndex);
+									if (metabAbbr.contains("-")) {
+										metabAbbr = metabAbbr.replace("-", "_");
+									}
+								}
 							}
 							if (s == keggIDColumnIndex) {
-								System.out.println(dataArray[s]);
+								//System.out.println(dataArray[s]);
+								keggId = dataArray[s];
 							}
+						}
+						if (metabAbbr !=  null && metabAbbr.length() > 0 && keggId != null && keggId.length() > 0) {
+							metaboliteAbbrKeggIdMap.put(metabAbbr, keggId);
 						}
 					}
 					count += 1;
 				}
 				reader.close();
-				//System.out.println("external " + externalMetabolitesList);
+				LocalConfig.getInstance().setMetaboliteAbbrKeggIdMap(metaboliteAbbrKeggIdMap);
+				System.out.println(metaboliteAbbrKeggIdMap);
 			} catch (IOException e) {
 				JOptionPane.showMessageDialog(null,                
 						"File Not Found Error.",                
@@ -67,10 +97,10 @@ public class MetaboliteSupplementaryMaterialReader {
 	public static void main( String args[] )
 	{
 		MetaboliteSupplementaryMaterialReader reader = new MetaboliteSupplementaryMaterialReader();
-//		File iaf1260 = new File("etc/sbml/E. Coli/iAF1260/inline-supplementary-material-3.csv");
-//		reader.readFile(iaf1260, "abbreviation", "KeggID");
-		File ijo1366 = new File("etc/sbml/E. Coli/iJO1366/inline-supplementary-material-2.csv");
-		reader.readFile(ijo1366, "Metabolite Abbreviation", "KEGG ID");
+		File iaf1260 = new File("etc/sbml/E. Coli/iAF1260/inline-supplementary-material-3.csv");
+		reader.readFile(iaf1260, "abbreviation", "KeggID", 0, 0);
+//		File ijo1366 = new File("etc/sbml/E. Coli/iJO1366/inline-supplementary-material-2.csv");
+//		reader.readFile(ijo1366, "Metabolite Abbreviation", "KEGG ID", 0, 3);
 	}
 	
 }

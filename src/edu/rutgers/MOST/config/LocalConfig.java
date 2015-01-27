@@ -1023,6 +1023,17 @@ public class LocalConfig {
 			ArrayList<ExternalMetaboliteData> externalMetabolites) {
 		this.externalMetabolites = externalMetabolites;
 	}
+	
+	private Map<String, String> metaboliteAbbrKeggIdMap;
+
+	public Map<String, String> getMetaboliteAbbrKeggIdMap() {
+		return metaboliteAbbrKeggIdMap;
+	}
+
+	public void setMetaboliteAbbrKeggIdMap(
+			Map<String, String> metaboliteAbbrKeggIdMap) {
+		this.metaboliteAbbrKeggIdMap = metaboliteAbbrKeggIdMap;
+	}
 
 	// Visualization options
 	private boolean graphMissingReactionsSelected;

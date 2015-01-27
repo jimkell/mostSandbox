@@ -1,5 +1,6 @@
 package edu.rutgers.MOST.data;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -62,6 +63,11 @@ public class SBMLModelReader {
 
 	@SuppressWarnings("deprecation")
 	public void load(){
+		MetaboliteSupplementaryMaterialReader reader = new MetaboliteSupplementaryMaterialReader();
+//		File iaf1260 = new File("etc/sbml/E. Coli/iAF1260/inline-supplementary-material-3.csv");
+//		reader.readFile(iaf1260, "abbreviation", "KeggID", 0, 0);
+		File ijo1366 = new File("etc/sbml/E. Coli/iJO1366/inline-supplementary-material-2.csv");
+		reader.readFile(ijo1366, "Metabolite Abbreviation", "KEGG ID", 0, 3);
 		//String id = doc.getModel().getId(); 
 		//System.out.println(id);
 		
@@ -104,6 +110,12 @@ public class SBMLModelReader {
 			Vector <String> metabRow = new Vector<String>();
 			metabRow.add(Integer.toString(i));
 			String metabAbbr = metabolites.get(i).getId();
+			// works for M_abbr_x format
+			String trimmedAbbr = metabAbbr.substring(2, metabAbbr.length() - 2);
+			System.out.println(trimmedAbbr);
+			if (LocalConfig.getInstance().getMetaboliteAbbrKeggIdMap().containsKey(trimmedAbbr)) {
+				System.out.println(LocalConfig.getInstance().getMetaboliteAbbrKeggIdMap().get(trimmedAbbr));
+			}
 			metabRow.add(metabAbbr);
 			if(metabolites.get(i).getId().substring(metabolites.get(i).getId().length() - 2, metabolites.get(i).getId().length() - 1).equals("_")) {
 				String metabPrefix = metabolites.get(i).getId().substring(0, metabolites.get(i).getId().length() - 2);
