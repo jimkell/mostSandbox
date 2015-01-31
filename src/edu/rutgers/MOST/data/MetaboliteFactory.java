@@ -190,7 +190,9 @@ public class MetaboliteFactory {
 		for (int i = 0; i < LocalConfig.getInstance().getMetabolitesMetaColumnNames().size(); i++) {
 			if (LocalConfig.getInstance().getMetabolitesMetaColumnNames().get(i).toLowerCase().equals(GraphicalInterfaceConstants.KEGG_ID_METABOLITES_COLUMN_NAMES[0].toLowerCase())) {
 				index = GraphicalInterfaceConstants.METABOLITES_COLUMN_NAMES.length + LocalConfig.getInstance().getMetabolitesMetaColumnNames().indexOf(GraphicalInterfaceConstants.KEGG_ID_METABOLITES_COLUMN_NAMES[0].toLowerCase());
-			} 
+			} else if (LocalConfig.getInstance().getMetabolitesMetaColumnNames().get(i).toLowerCase().equals(GraphicalInterfaceConstants.KEGG_ID_METABOLITES_COLUMN_NAMES[1].toLowerCase())) {
+				index = GraphicalInterfaceConstants.METABOLITES_COLUMN_NAMES.length + LocalConfig.getInstance().getMetabolitesMetaColumnNames().indexOf(GraphicalInterfaceConstants.KEGG_ID_METABOLITES_COLUMN_NAMES[1].toLowerCase());
+			}
 		}
 
 		return index;

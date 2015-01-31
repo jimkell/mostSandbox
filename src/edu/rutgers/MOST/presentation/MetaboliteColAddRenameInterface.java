@@ -22,7 +22,7 @@ import javax.swing.table.DefaultTableModel;
 
 import edu.rutgers.MOST.config.LocalConfig;
 
-public class MetaboliteColAddRenameInterface  extends JDialog {
+public class MetaboliteColAddRenameInterface extends JDialog {
 
 	/**
 	 * 

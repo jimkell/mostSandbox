@@ -1,6 +1,5 @@
 package edu.rutgers.MOST.data;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -35,71 +34,8 @@ public class TextMetabolitesModelReader {
 	public static Map<Object, String> metaboliteIdCompartmentMap = new HashMap<Object, String>();
 	
 	public ArrayList<String> columnNamesFromFile(File file, int row) {
-		ArrayList<String> columnNamesFromFile = new ArrayList<String>();
-
-		String[] dataArray = null;
-
-		//use fileReader to read first line to get headers
-		BufferedReader CSVFile;
-		try {
-			CSVFile = new BufferedReader(new FileReader(file));
-			String dataRow = CSVFile.readLine();
-			dataArray = dataRow.split(",");				
-
-			//add all column names to list			
-			for (int h = 0; h < dataArray.length; h++) { 
-
-				//remove quotes if exist
-				if (dataArray[h].startsWith("\"")) {
-					//removes " " and null strings
-					if (dataArray[h].compareTo("\" \"") != 0 && dataArray[h].trim().length() > 0) {
-						columnNamesFromFile.add(dataArray[h].substring(1, dataArray[h].length() - 1));
-					}					
-				} else {
-					if (dataArray[h].trim().length() > 0) {
-						columnNamesFromFile.add(dataArray[h]);
-					}					
-				}			
-			} 	
-
-			if (row > 0) {
-				for (int i = 0; i < row; i++) {
-					dataRow = CSVFile.readLine();
-					dataArray = dataRow.split(",");				
-
-					columnNamesFromFile.clear();
-					//add all column names to list			
-					for (int h = 0; h < dataArray.length; h++) { 
-						//remove quotes if exist
-						if (dataArray[h].startsWith("\"")) {
-							//removes " " and null strings
-							if (dataArray[h].compareTo("\" \"") != 0 && dataArray[h].trim().length() > 0) {
-								columnNamesFromFile.add(dataArray[h].substring(1, dataArray[h].length() - 1));
-							}					
-						} else {
-							if (dataArray[h].trim().length() > 0) {
-								columnNamesFromFile.add(dataArray[h]);
-							}					
-						}			
-					} 
-				}				
-			}
-
-			CSVFile.close();
-
-		} catch (FileNotFoundException e1) {
-			JOptionPane.showMessageDialog(null,                
-					"File Not Found Error.",                
-					"Error",                                
-					JOptionPane.ERROR_MESSAGE);
-			//e1.printStackTrace();							
-		} catch (IOException e1) {
-			JOptionPane.showMessageDialog(null,                
-					"File Not Found Error.",                
-					"Error",                                
-					JOptionPane.ERROR_MESSAGE);
-			//e1.printStackTrace();
-		} 		
+		TextModelReader textReader = new TextModelReader();
+		ArrayList<String> columnNamesFromFile = textReader.columnNamesFromFile(file, row);	
 		return columnNamesFromFile;
 	}
 

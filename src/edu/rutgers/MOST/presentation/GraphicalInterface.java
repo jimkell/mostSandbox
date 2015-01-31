@@ -35,6 +35,7 @@ import edu.rutgers.MOST.data.ECNumberMapCreator;
 import edu.rutgers.MOST.data.GDBBModel;
 import edu.rutgers.MOST.data.JSBMLWriter;
 import edu.rutgers.MOST.data.MetaboliteFactory;
+import edu.rutgers.MOST.data.MetaboliteSupplementaryMaterialReader;
 import edu.rutgers.MOST.data.MetaboliteUndoItem;
 import edu.rutgers.MOST.data.Model;
 import edu.rutgers.MOST.data.ModelReactionEquation;
@@ -225,6 +226,7 @@ public class GraphicalInterface extends JFrame {
 	public static boolean includeMtbColumnNames;
 	// load values
 	public static boolean isCSVFile;
+	// TODO: see if variable is necessary
 	public static boolean validFile;
 	// highlighting
 	public static boolean highlightUnusedMetabolites;	
@@ -429,6 +431,17 @@ public class GraphicalInterface extends JFrame {
 
 	public static MetaboliteRenameInterface getMetaboliteRenameInterface() {
 		return metaboliteRenameInterface;
+	}
+	
+	private MetabolitesSupplementalDataDialog metabolitesSupplementalDataDialog;
+
+	public MetabolitesSupplementalDataDialog getMetabolitesSupplementalDataDialog() {
+		return metabolitesSupplementalDataDialog;
+	}
+
+	public void setMetabolitesSupplementalDataDialog(
+			MetabolitesSupplementalDataDialog metabolitesSupplementalDataDialog) {
+		this.metabolitesSupplementalDataDialog = metabolitesSupplementalDataDialog;
 	}
 
 	private static ModelCollectionTable modelCollectionTable;
@@ -655,6 +668,7 @@ public class GraphicalInterface extends JFrame {
 	public final JMenuItem editorMenu = new JMenuItem("Launch Reaction Editor");
 	public final JMenuItem unsortReacMenuItem = new JMenuItem("Unsort Reactions Table");
 	public final JMenuItem unsortMetabMenuItem = new JMenuItem("Unsort Metabolites Table");
+	public final JMenuItem loadMetabSuppDataItem = new JMenuItem("Load Metabolites Supplementary Data");
 	public final JMenuItem arrangeCompMenu = new JMenuItem("Arrange Compartments");
 	public final JMenuItem visualizeMenu = new JMenuItem("Visualize");
 	public final JMenuItem setUpSolver = new JMenuItem("Select Solvers");
@@ -2101,6 +2115,56 @@ public class GraphicalInterface extends JFrame {
         JMenu visualizationMenu = new JMenu("Visualization");
         visualizationMenu.setMnemonic(KeyEvent.VK_V);
         
+        visualizationMenu.add(loadMetabSuppDataItem);
+        loadMetabSuppDataItem.setMnemonic(KeyEvent.VK_M);
+        
+        loadMetabSuppDataItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ae) {
+				JTextArea output = null;
+				JFileChooser fileChooser = new JFileChooser();
+				fileChooser.setDialogTitle("Load CSV File"); 
+				fileChooser.setFileFilter(new CSVFileFilter());
+				fileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);			
+
+				String lastSuppData_path = curSettings.get("LastSuppData");
+				Utilities u = new Utilities();
+				// if path is null or does not exist, default used, else last path used
+				fileChooser.setCurrentDirectory(new File(u.lastPath(lastSuppData_path, fileChooser)));					
+ 
+				//... Open a file dialog.
+				int retval = fileChooser.showOpenDialog(output);
+				if (retval == JFileChooser.APPROVE_OPTION) {
+					loadSetUp();
+					//... The user selected a file, get it, use it.
+					File file = fileChooser.getSelectedFile();
+					String rawPathName = file.getAbsolutePath();
+					curSettings.add("LastSuppData", rawPathName);
+
+					String rawFilename = file.getName();				
+					if (!rawFilename.endsWith(".csv")) {
+						JOptionPane.showMessageDialog(null,                
+								"Not a Valid CSV File.",                
+								"Invalid CSV File",                                
+								JOptionPane.ERROR_MESSAGE);
+					} else {
+						MetaboliteSupplementaryMaterialReader reader = 
+								new MetaboliteSupplementaryMaterialReader();
+						ArrayList<String> columnNames = reader.columnNamesFromFile(file, 0);
+						MetabolitesSupplementalDataDialog frame = new MetabolitesSupplementalDataDialog(columnNames);
+						setMetabolitesSupplementalDataDialog(frame);
+						getMetabolitesSupplementalDataDialog().okButton.addActionListener(okButtonMetabSuppDataActionListener);
+						getMetabolitesSupplementalDataDialog().setLoadedFile(file);
+						frame.setIconImages(icons);
+						frame.setSize(600, 400);
+						frame.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+						frame.setLocationRelativeTo(null);
+						frame.setModal(true);
+						frame.setVisible(true);
+					}
+				}
+			}
+		});
+        
         visualizationMenu.add(arrangeCompMenu);
         arrangeCompMenu.setMnemonic(KeyEvent.VK_A);
         
@@ -2608,7 +2672,7 @@ public class GraphicalInterface extends JFrame {
 					ReactionUndoItem undoItem = createReactionUndoItem("", "", getCurrentReactionsRow(), getCurrentReactionsColumn(), 0, UndoConstants.ADD_COLUMN, UndoConstants.REACTION_UNDO_ITEM_TYPE);
 					setOldUsedMap(undoItem);
 					undoItem.setTableCopyIndex(LocalConfig.getInstance().getNumReactionTablesCopied());
-					undoItem.setAddedColumnIndex(LocalConfig.getInstance().getReactionsMetaColumnNames().size() + GraphicalInterfaceConstants.REACTIONS_COLUMN_NAMES.length);
+					undoItem.setAddedColumnIndex(LocalConfig.getInstance().getReactionsMetaColumnNames().size() + GraphicalInterfaceConstants.REACTIONS_COLUMN_NAMES.length - 1);
 					ArrayList<String> oldMetaCol = new ArrayList<String>();
 					ArrayList<String> newMetaCol = new ArrayList<String>();
 					for (int i = 0; i < LocalConfig.getInstance().getReactionsMetaColumnNames().size(); i++) {
@@ -2685,35 +2749,13 @@ public class GraphicalInterface extends JFrame {
 //					metaboliteColAddRenameInterface.setAlwaysOnTop(true);
 //					metaboliteColAddRenameInterface.setModal(true);
 				} else {
-					// copy old model for undo/redo
-					DefaultTableModel oldMetabolitesModel = copyMetabolitesTableModel((DefaultTableModel) metabolitesTable.getModel());			
-					copyMetabolitesTableModels(oldMetabolitesModel);
-					LocalConfig.getInstance().getMetabolitesMetaColumnNames().add(MetaboliteColAddRenameInterface.textField.getText());
-					MetaboliteUndoItem undoItem = createMetaboliteUndoItem("", "", getCurrentMetabolitesRow(), getCurrentMetabolitesColumn(), 0, UndoConstants.ADD_COLUMN, UndoConstants.METABOLITE_UNDO_ITEM_TYPE);		
-					undoItem.setTableCopyIndex(LocalConfig.getInstance().getNumMetabolitesTableCopied());
-					undoItem.setAddedColumnIndex(LocalConfig.getInstance().getMetabolitesMetaColumnNames().size() + GraphicalInterfaceConstants.METABOLITES_COLUMN_NAMES.length);
-					setUndoOldCollections(undoItem);
-					ArrayList<String> oldMetaCol = new ArrayList<String>();
-					ArrayList<String> newMetaCol = new ArrayList<String>();
-					for (int i = 0; i < LocalConfig.getInstance().getMetabolitesMetaColumnNames().size(); i++) {
-						oldMetaCol.add(LocalConfig.getInstance().getMetabolitesMetaColumnNames().get(i));
-					}
-					undoItem.setOldMetaColumnNames(oldMetaCol);
-					getMetaboliteColAddRenameInterface().addColumn();
+					String columnName = MetaboliteColAddRenameInterface.textField.getText();
 					
 					MetaboliteColAddRenameInterface.textField.setText("");
 					getMetaboliteColAddRenameInterface().setVisible(false);
 					getMetaboliteColAddRenameInterface().dispose();
-					setUpMetabolitesTable(LocalConfig.getInstance().getMetabolitesTableModelMap().get(LocalConfig.getInstance().getModelName()));					
-					DefaultTableModel newMetabolitesModel = copyMetabolitesTableModel((DefaultTableModel) metabolitesTable.getModel());			
-					copyMetabolitesTableModels(newMetabolitesModel);
-					for (int i = 0; i < LocalConfig.getInstance().getMetabolitesMetaColumnNames().size(); i++) {
-						newMetaCol.add(LocalConfig.getInstance().getMetabolitesMetaColumnNames().get(i));
-					}
-					undoItem.setNewMetaColumnNames(newMetaCol);
-					setUndoNewCollections(undoItem);
-					setUpMetabolitesUndo(undoItem);					
-					addMetabColumn = false;
+					
+					addMetabolitesColumn(columnName);
 					addMetaboliteColumnCloseAction();
 				}								
 			}
@@ -4069,6 +4111,34 @@ public class GraphicalInterface extends JFrame {
 		}
 	};
 
+	ActionListener okButtonMetabSuppDataActionListener = new ActionListener() {
+		public void actionPerformed(ActionEvent ae) {
+			int abbreviationColumnIndex = getMetabolitesSupplementalDataDialog().cbMetaboliteAbbreviation.getSelectedIndex();
+			int keggIDColumnIndex = getMetabolitesSupplementalDataDialog().cbKeggId.getSelectedIndex();
+			int filetrimStartIndex = Integer.parseInt((String) getMetabolitesSupplementalDataDialog().cbTrimBeginFromFile.getSelectedItem());
+			int filetrimEndIndex = Integer.parseInt((String) getMetabolitesSupplementalDataDialog().cbTrimEndFromFile.getSelectedItem());
+//			cbTrimBeginFromModel.setEditable(false);
+//			cbTrimEndFromModel.setEd
+			MetaboliteSupplementaryMaterialReader reader = 
+					new MetaboliteSupplementaryMaterialReader();
+			reader.readFile(getMetabolitesSupplementalDataDialog().getLoadedFile(), abbreviationColumnIndex, keggIDColumnIndex, filetrimStartIndex, filetrimEndIndex);
+			getMetabolitesSupplementalDataDialog().setVisible(false);
+			getMetabolitesSupplementalDataDialog().dispose();	
+			
+			MetaboliteFactory f = new MetaboliteFactory("SBML");
+			if (f.getKeggIdColumnIndex() > -1) {
+				// prompt to update current column
+			} else {
+				setCurrentMetabolitesRow(metabolitesTable.getSelectedRow());
+				setCurrentMetabolitesColumn(metabolitesTable.getSelectedColumn());
+				tabbedPane.setSelectedIndex(1);
+				// add kegg id column and update with values from hashmap
+				addMetabolitesColumn(GraphicalInterfaceConstants.METABOLITE_KEGG_ID_COLUMN_NAME);
+				// add kegg ids from hashmap to table
+			}
+		}
+	}; 
+	
 	/*******************************************************************************/
 	//end load methods and actions
 	/*******************************************************************************/
@@ -5874,6 +5944,37 @@ public class GraphicalInterface extends JFrame {
 		LocalConfig.getInstance().getMetabolitesTableModelMap().put(solutionName, metabolitesOptModel);
 		
 		LocalConfig.getInstance().getOptimizationFilesList().add(solutionName);
+	}
+	
+	public void addMetabolitesColumn(String columnName) {
+		DefaultTableModel oldMetabolitesModel = copyMetabolitesTableModel((DefaultTableModel) metabolitesTable.getModel());			
+		copyMetabolitesTableModels(oldMetabolitesModel);
+		LocalConfig.getInstance().getMetabolitesMetaColumnNames().add(columnName);
+		MetaboliteUndoItem undoItem = createMetaboliteUndoItem("", "", getCurrentMetabolitesRow(), getCurrentMetabolitesColumn(), 0, UndoConstants.ADD_COLUMN, UndoConstants.METABOLITE_UNDO_ITEM_TYPE);		
+		undoItem.setTableCopyIndex(LocalConfig.getInstance().getNumMetabolitesTableCopied());
+		undoItem.setAddedColumnIndex(LocalConfig.getInstance().getMetabolitesMetaColumnNames().size() + GraphicalInterfaceConstants.METABOLITES_COLUMN_NAMES.length - 1);
+		setUndoOldCollections(undoItem);
+		ArrayList<String> oldMetaCol = new ArrayList<String>();
+		ArrayList<String> newMetaCol = new ArrayList<String>();
+		for (int i = 0; i < LocalConfig.getInstance().getMetabolitesMetaColumnNames().size(); i++) {
+			oldMetaCol.add(LocalConfig.getInstance().getMetabolitesMetaColumnNames().get(i));
+		}
+		undoItem.setOldMetaColumnNames(oldMetaCol);
+		
+		DefaultTableModel model = (DefaultTableModel) metabolitesTable.getModel();
+		model.addColumn(columnName);
+		LocalConfig.getInstance().getMetabolitesTableModelMap().put(LocalConfig.getInstance().getModelName(), model);
+
+		setUpMetabolitesTable(LocalConfig.getInstance().getMetabolitesTableModelMap().get(LocalConfig.getInstance().getModelName()));					
+		DefaultTableModel newMetabolitesModel = copyMetabolitesTableModel((DefaultTableModel) metabolitesTable.getModel());			
+		copyMetabolitesTableModels(newMetabolitesModel);
+		for (int i = 0; i < LocalConfig.getInstance().getMetabolitesMetaColumnNames().size(); i++) {
+			newMetaCol.add(LocalConfig.getInstance().getMetabolitesMetaColumnNames().get(i));
+		}
+		undoItem.setNewMetaColumnNames(newMetaCol);
+		setUndoNewCollections(undoItem);
+		setUpMetabolitesUndo(undoItem);					
+		addMetabColumn = false;
 	}
 
 	/******************************************************************************/

@@ -20,7 +20,7 @@ import javax.swing.JPanel;
 import edu.rutgers.MOST.config.LocalConfig;
 import edu.rutgers.MOST.data.TextReactionsModelReader;
 
-public class ReactionColumnNameInterface  extends JDialog {
+public class ReactionColumnNameInterface extends JDialog {
 
 	/**
 	 * 

@@ -63,11 +63,7 @@ public class SBMLModelReader {
 
 	@SuppressWarnings("deprecation")
 	public void load(){
-		MetaboliteSupplementaryMaterialReader reader = new MetaboliteSupplementaryMaterialReader();
-//		File iaf1260 = new File("etc/sbml/E. Coli/iAF1260/inline-supplementary-material-3.csv");
-//		reader.readFile(iaf1260, "abbreviation", "KeggID", 0, 0);
-		File ijo1366 = new File("etc/sbml/E. Coli/iJO1366/inline-supplementary-material-2.csv");
-		reader.readFile(ijo1366, "Metabolite Abbreviation", "KEGG ID", 0, 3);
+
 		//String id = doc.getModel().getId(); 
 		//System.out.println(id);
 		
