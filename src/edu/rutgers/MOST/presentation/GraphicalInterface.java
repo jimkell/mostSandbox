@@ -44,6 +44,7 @@ import edu.rutgers.MOST.data.PathwayFilesReader;
 import edu.rutgers.MOST.data.ReactionEquationUpdater;
 import edu.rutgers.MOST.data.ReactionFactory;
 import edu.rutgers.MOST.data.ReactionUndoItem;
+import edu.rutgers.MOST.data.SBMLMetabolite;
 import edu.rutgers.MOST.data.SBMLModelReader;
 import edu.rutgers.MOST.data.SBMLProduct;
 import edu.rutgers.MOST.data.SBMLReactant;
@@ -4117,8 +4118,8 @@ public class GraphicalInterface extends JFrame {
 			int keggIDColumnIndex = getMetabolitesSupplementalDataDialog().cbKeggId.getSelectedIndex();
 			int filetrimStartIndex = Integer.parseInt((String) getMetabolitesSupplementalDataDialog().cbTrimBeginFromFile.getSelectedItem());
 			int filetrimEndIndex = Integer.parseInt((String) getMetabolitesSupplementalDataDialog().cbTrimEndFromFile.getSelectedItem());
-//			cbTrimBeginFromModel.setEditable(false);
-//			cbTrimEndFromModel.setEd
+			int modeltrimStartIndex = Integer.parseInt((String) getMetabolitesSupplementalDataDialog().cbTrimBeginFromModel.getSelectedItem());
+			int modeltrimEndIndex = Integer.parseInt((String) getMetabolitesSupplementalDataDialog().cbTrimEndFromModel.getSelectedItem());
 			MetaboliteSupplementaryMaterialReader reader = 
 					new MetaboliteSupplementaryMaterialReader();
 			reader.readFile(getMetabolitesSupplementalDataDialog().getLoadedFile(), abbreviationColumnIndex, keggIDColumnIndex, filetrimStartIndex, filetrimEndIndex);
@@ -4135,6 +4136,21 @@ public class GraphicalInterface extends JFrame {
 				// add kegg id column and update with values from hashmap
 				addMetabolitesColumn(GraphicalInterfaceConstants.METABOLITE_KEGG_ID_COLUMN_NAME);
 				// add kegg ids from hashmap to table
+				Vector<SBMLMetabolite> metabolites = f.getAllMetabolites();
+				// works for M_abbr_x format
+				for (int i = 0; i < metabolites.size(); i++) {
+					int totalTrimLength = modeltrimStartIndex + modeltrimEndIndex;
+					String abbr = metabolites.get(i).getMetaboliteAbbreviation();
+					if (abbr != null && abbr.length() > totalTrimLength) {
+						String trimmedAbbr = abbr.substring(modeltrimStartIndex, abbr.length() - modeltrimEndIndex);
+						System.out.println("model " + trimmedAbbr);
+						if (LocalConfig.getInstance().getMetaboliteAbbrKeggIdMap().containsKey(trimmedAbbr)) {
+							System.out.println(LocalConfig.getInstance().getMetaboliteAbbrKeggIdMap().get(trimmedAbbr));
+						}
+					}
+					
+				}
+				
 			}
 		}
 	}; 

@@ -33,7 +33,7 @@ public class MetaboliteSupplementaryMaterialReader {
 	 */
 	//public void readFile(File file, String abbreviationColumnName, String keggIDColumnName,
 	public void readFile(File file, int abbreviationColumnIndex, int keggIDColumnIndex,
-			int filetrimStartIndex, int fileTrimEndIndex) {
+			int filetrimStartIndex, int filetrimEndIndex) {
 		CSVReader reader;
 
 		int count = 0;
@@ -65,8 +65,10 @@ public class MetaboliteSupplementaryMaterialReader {
 						for (int s = 0; s < dataArray.length; s++) {	
 							if (s == abbreviationColumnIndex) {
 								//System.out.println(dataArray[s]);
-								if (dataArray[s] != null && dataArray[s].length() > filetrimStartIndex && dataArray[s].length() > fileTrimEndIndex) {
-									metabAbbr = dataArray[s].substring(filetrimStartIndex, dataArray[s].length() - fileTrimEndIndex);
+								int totalTrimLength = filetrimStartIndex + filetrimEndIndex;
+								if (dataArray[s] != null && dataArray[s].length() > totalTrimLength) {
+								//if (dataArray[s] != null && dataArray[s].length() > filetrimStartIndex && dataArray[s].length() > fileTrimEndIndex) {
+									metabAbbr = dataArray[s].substring(filetrimStartIndex, dataArray[s].length() - filetrimEndIndex);
 									if (metabAbbr.contains("-")) {
 										metabAbbr = metabAbbr.replace("-", "_");
 									}
