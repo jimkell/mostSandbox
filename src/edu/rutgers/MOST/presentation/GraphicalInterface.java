@@ -4150,7 +4150,7 @@ public class GraphicalInterface extends JFrame {
 				//No option actually corresponds to "Yes to All" button
 				if (choice == JOptionPane.NO_OPTION)
 				{
-					// option in future to graph unconstrained
+					
 				}
 			} else {
 				setCurrentMetabolitesRow(metabolitesTable.getSelectedRow());
