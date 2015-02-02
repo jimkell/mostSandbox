@@ -2148,6 +2148,7 @@ public class GraphicalInterface extends JFrame {
 								"Invalid CSV File",                                
 								JOptionPane.ERROR_MESSAGE);
 					} else {
+						tabbedPane.setSelectedIndex(1);
 						MetaboliteSupplementaryMaterialReader reader = 
 								new MetaboliteSupplementaryMaterialReader();
 						ArrayList<String> columnNames = reader.columnNamesFromFile(file, 0);
@@ -2183,9 +2184,6 @@ public class GraphicalInterface extends JFrame {
 				//System.out.println("fluxes " + ecMapCreator.getFluxes());
 				
 				if (LocalConfig.getInstance().getEcNumberReactionMap().size() == 0) {
-					if (LocalConfig.getInstance().getEcNumberReactionMap().size() == 0) {
-
-					}
 					Object[] options = {"Yes",
 					"No"};
 					int choice = JOptionPane.showOptionDialog(null, 
@@ -2665,6 +2663,11 @@ public class GraphicalInterface extends JFrame {
 //					reactionColAddRenameInterface.setAlwaysOnTop(true);
 //					reactionColAddRenameInterface.setModal(true);
 				} else {
+					// copy old meta column list
+					ArrayList<String> oldMetaCol = new ArrayList<String>();
+					for (int i = 0; i < LocalConfig.getInstance().getReactionsMetaColumnNames().size(); i++) {
+						oldMetaCol.add(LocalConfig.getInstance().getReactionsMetaColumnNames().get(i));
+					}
 					// copy old model for undo/redo
 					DefaultTableModel oldReactionsModel = copyReactionsTableModel((DefaultTableModel) reactionsTable.getModel());			
 					copyReactionsTableModels(oldReactionsModel);
@@ -2674,11 +2677,7 @@ public class GraphicalInterface extends JFrame {
 					setOldUsedMap(undoItem);
 					undoItem.setTableCopyIndex(LocalConfig.getInstance().getNumReactionTablesCopied());
 					undoItem.setAddedColumnIndex(LocalConfig.getInstance().getReactionsMetaColumnNames().size() + GraphicalInterfaceConstants.REACTIONS_COLUMN_NAMES.length - 1);
-					ArrayList<String> oldMetaCol = new ArrayList<String>();
-					ArrayList<String> newMetaCol = new ArrayList<String>();
-					for (int i = 0; i < LocalConfig.getInstance().getReactionsMetaColumnNames().size(); i++) {
-						oldMetaCol.add(LocalConfig.getInstance().getReactionsMetaColumnNames().get(i));
-					}
+					
 					undoItem.setOldMetaColumnNames(oldMetaCol);
 					getReactionColAddRenameInterface().addColumn();
 					
@@ -2688,6 +2687,8 @@ public class GraphicalInterface extends JFrame {
 					setUpReactionsTable(LocalConfig.getInstance().getReactionsTableModelMap().get(LocalConfig.getInstance().getModelName()));
 					DefaultTableModel newReactionsModel = copyReactionsTableModel((DefaultTableModel) reactionsTable.getModel());			
 					copyReactionsTableModels(newReactionsModel);
+					// copy new meta column list
+					ArrayList<String> newMetaCol = new ArrayList<String>();
 					for (int i = 0; i < LocalConfig.getInstance().getReactionsMetaColumnNames().size(); i++) {
 						newMetaCol.add(LocalConfig.getInstance().getReactionsMetaColumnNames().get(i));
 					}
@@ -4127,8 +4128,30 @@ public class GraphicalInterface extends JFrame {
 			getMetabolitesSupplementalDataDialog().dispose();	
 			
 			MetaboliteFactory f = new MetaboliteFactory("SBML");
+			Vector<SBMLMetabolite> metabolites = f.getAllMetabolites();
 			if (f.getKeggIdColumnIndex() > -1) {
 				// prompt to update current column
+				Object[] options = {"Yes",
+				"No"};
+				int choice = JOptionPane.showOptionDialog(null, 
+						"<html>KEGG ID Column Already Exists. <p>"
+								+ "Update Values in Column?", 
+								"KEGG ID Column Exists", 
+								JOptionPane.YES_NO_OPTION, 
+								JOptionPane.QUESTION_MESSAGE, 
+								null, options, options[0]);
+				//options[0] sets "Yes" as default button
+
+				// interpret the user's choice	  
+				if (choice == JOptionPane.YES_OPTION)
+				{
+					updateKeggIdColumn(metabolites, modeltrimStartIndex, modeltrimEndIndex);
+				}
+				//No option actually corresponds to "Yes to All" button
+				if (choice == JOptionPane.NO_OPTION)
+				{
+					// option in future to graph unconstrained
+				}
 			} else {
 				setCurrentMetabolitesRow(metabolitesTable.getSelectedRow());
 				setCurrentMetabolitesColumn(metabolitesTable.getSelectedColumn());
@@ -4136,24 +4159,41 @@ public class GraphicalInterface extends JFrame {
 				// add kegg id column and update with values from hashmap
 				addMetabolitesColumn(GraphicalInterfaceConstants.METABOLITE_KEGG_ID_COLUMN_NAME);
 				// add kegg ids from hashmap to table
-				Vector<SBMLMetabolite> metabolites = f.getAllMetabolites();
-				// works for M_abbr_x format
-				for (int i = 0; i < metabolites.size(); i++) {
-					int totalTrimLength = modeltrimStartIndex + modeltrimEndIndex;
-					String abbr = metabolites.get(i).getMetaboliteAbbreviation();
-					if (abbr != null && abbr.length() > totalTrimLength) {
-						String trimmedAbbr = abbr.substring(modeltrimStartIndex, abbr.length() - modeltrimEndIndex);
-						System.out.println("model " + trimmedAbbr);
-						if (LocalConfig.getInstance().getMetaboliteAbbrKeggIdMap().containsKey(trimmedAbbr)) {
-							System.out.println(LocalConfig.getInstance().getMetaboliteAbbrKeggIdMap().get(trimmedAbbr));
-						}
-					}
-					
-				}
-				
+				updateKeggIdColumn(metabolites, modeltrimStartIndex, modeltrimEndIndex);
 			}
 		}
 	}; 
+	
+	public void updateKeggIdColumn(Vector<SBMLMetabolite> metabolites, int modeltrimStartIndex, int modeltrimEndIndex) {
+		int count = 0;
+		// add kegg ids from hashmap to table
+		for (int i = 0; i < metabolites.size(); i++) {
+			int totalTrimLength = modeltrimStartIndex + modeltrimEndIndex;
+			String abbr = metabolites.get(i).getMetaboliteAbbreviation();
+			if (abbr != null && abbr.length() > totalTrimLength) {
+				String trimmedAbbr = abbr.substring(modeltrimStartIndex, abbr.length() - modeltrimEndIndex);
+				System.out.println("model " + trimmedAbbr);
+				if (LocalConfig.getInstance().getMetaboliteAbbrKeggIdMap().containsKey(trimmedAbbr)) {
+					count += 1;
+					System.out.println("count " + count);
+					System.out.println(metabolites.get(i).getId());
+					System.out.println(LocalConfig.getInstance().getMetaboliteAbbrKeggIdMap().get(trimmedAbbr));
+				}
+			}
+		}
+		// if 0 or a small number of matches found, file or matching
+		// parameters probably wrong. show warning dialog.
+		if (count < metabolites.size()*0.2) {
+			String message1 = "<html>" + count + " Abbreviation Matches Were Found. <p>";
+			if (count == 1) {
+				message1 = "<html>" + count + " Abbreviation Match Was Found. <p>";
+			}
+			JOptionPane.showMessageDialog(null,                
+					message1 + "Data File or Matching Parameters May Be Incorrrect.",                
+					"Metabolite Abbreviation Matching Warning",                                
+					JOptionPane.WARNING_MESSAGE);
+		}
+	}
 	
 	/*******************************************************************************/
 	//end load methods and actions
@@ -5963,6 +6003,11 @@ public class GraphicalInterface extends JFrame {
 	}
 	
 	public void addMetabolitesColumn(String columnName) {
+		// copy old meta column list
+		ArrayList<String> oldMetaCol = new ArrayList<String>();
+		for (int i = 0; i < LocalConfig.getInstance().getMetabolitesMetaColumnNames().size(); i++) {
+			oldMetaCol.add(LocalConfig.getInstance().getMetabolitesMetaColumnNames().get(i));
+		}
 		DefaultTableModel oldMetabolitesModel = copyMetabolitesTableModel((DefaultTableModel) metabolitesTable.getModel());			
 		copyMetabolitesTableModels(oldMetabolitesModel);
 		LocalConfig.getInstance().getMetabolitesMetaColumnNames().add(columnName);
@@ -5970,11 +6015,6 @@ public class GraphicalInterface extends JFrame {
 		undoItem.setTableCopyIndex(LocalConfig.getInstance().getNumMetabolitesTableCopied());
 		undoItem.setAddedColumnIndex(LocalConfig.getInstance().getMetabolitesMetaColumnNames().size() + GraphicalInterfaceConstants.METABOLITES_COLUMN_NAMES.length - 1);
 		setUndoOldCollections(undoItem);
-		ArrayList<String> oldMetaCol = new ArrayList<String>();
-		ArrayList<String> newMetaCol = new ArrayList<String>();
-		for (int i = 0; i < LocalConfig.getInstance().getMetabolitesMetaColumnNames().size(); i++) {
-			oldMetaCol.add(LocalConfig.getInstance().getMetabolitesMetaColumnNames().get(i));
-		}
 		undoItem.setOldMetaColumnNames(oldMetaCol);
 		
 		DefaultTableModel model = (DefaultTableModel) metabolitesTable.getModel();
@@ -5984,6 +6024,8 @@ public class GraphicalInterface extends JFrame {
 		setUpMetabolitesTable(LocalConfig.getInstance().getMetabolitesTableModelMap().get(LocalConfig.getInstance().getModelName()));					
 		DefaultTableModel newMetabolitesModel = copyMetabolitesTableModel((DefaultTableModel) metabolitesTable.getModel());			
 		copyMetabolitesTableModels(newMetabolitesModel);
+		// copy new meta column list
+		ArrayList<String> newMetaCol = new ArrayList<String>();
 		for (int i = 0; i < LocalConfig.getInstance().getMetabolitesMetaColumnNames().size(); i++) {
 			newMetaCol.add(LocalConfig.getInstance().getMetabolitesMetaColumnNames().get(i));
 		}
