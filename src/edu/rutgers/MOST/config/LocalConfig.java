@@ -1034,6 +1034,17 @@ public class LocalConfig {
 			Map<String, String> metaboliteAbbrKeggIdMap) {
 		this.metaboliteAbbrKeggIdMap = metaboliteAbbrKeggIdMap;
 	}
+	
+	private Map<String, String> reactionAbbrECNumberMap;
+
+	public Map<String, String> getReactionAbbrECNumberMap() {
+		return reactionAbbrECNumberMap;
+	}
+
+	public void setReactionAbbrECNumberMap(
+			Map<String, String> reactionAbbrECNumberMap) {
+		this.reactionAbbrECNumberMap = reactionAbbrECNumberMap;
+	}
 
 	// Visualization options
 	private boolean graphMissingReactionsSelected;

@@ -13,7 +13,7 @@ import javax.swing.JOptionPane;
 import au.com.bytecode.opencsv.CSVReader;
 import edu.rutgers.MOST.config.LocalConfig;
 
-public class MetaboliteSupplementaryMaterialReader {
+public class ReactionSupplementaryMaterialReader {
 	
 	public ArrayList<String> columnNamesFromFile(File file, int row) {
 		TextModelReader textReader = new TextModelReader();
@@ -25,21 +25,21 @@ public class MetaboliteSupplementaryMaterialReader {
 	 * 
 	 * @param file
 	 * @param abbreviationColumnName
-	 * @param keggIDColumnName
+	 * @param ecNumberColumnName
 	 * @param trimStartIndex
 	 * @param trimEndIndex
-	 * Trim start index and end index used to match format of metabolite abbreviations in model
+	 * Trim start index and end index used to match format of reaction abbreviations in model
 	 * with abbreviations in supplementary material
 	 */
-	public void readFile(File file, int abbreviationColumnIndex, int keggIDColumnIndex,
+	public void readFile(File file, int abbreviationColumnIndex, int ecNumberColumnIndex,
 			int filetrimStartIndex, int filetrimEndIndex) {
 		CSVReader reader;
 
 		int count = 0;
-		String metabAbbr = "";
-		String keggId = "";
+		String reacAbbr = "";
+		String ecNumber = "";
 		
-		Map<String, String> metaboliteAbbrKeggIdMap = new HashMap<String, String>();
+		Map<String, String> reactionAbbrECNumberMap = new HashMap<String, String>();
 
 		try {
 			reader = new CSVReader(new FileReader(file), ',');
@@ -49,28 +49,32 @@ public class MetaboliteSupplementaryMaterialReader {
 					if (count > 0) {
 						for (int s = 0; s < dataArray.length; s++) {	
 							if (s == abbreviationColumnIndex) {
-								//System.out.println(dataArray[s]);
+								System.out.println(dataArray[s]);
 								int totalTrimLength = filetrimStartIndex + filetrimEndIndex;
 								if (dataArray[s] != null && dataArray[s].length() > totalTrimLength) {
-									metabAbbr = dataArray[s].substring(filetrimStartIndex, dataArray[s].length() - filetrimEndIndex);
-									if (metabAbbr.contains("-")) {
-										metabAbbr = metabAbbr.replace("-", "_");
+									reacAbbr = dataArray[s].substring(filetrimStartIndex, dataArray[s].length() - filetrimEndIndex);
+									if (reacAbbr.contains("-")) {
+										reacAbbr = reacAbbr.replace("-", "_");
 									}
 								}
 							}
-							if (s == keggIDColumnIndex) {
-								keggId = dataArray[s];
+							if (s == ecNumberColumnIndex) {
+								ecNumber = dataArray[s];
+								if (ecNumber.startsWith("EC-")) {
+									ecNumber = ecNumber.substring(3);
+								}
+								System.out.println(dataArray[s]);
 							}
 						}
-						if (metabAbbr !=  null && metabAbbr.length() > 0 && keggId != null && keggId.length() > 0) {
-							metaboliteAbbrKeggIdMap.put(metabAbbr, keggId);
+						if (reacAbbr !=  null && reacAbbr.length() > 0 && ecNumber != null && ecNumber.length() > 0) {
+							reactionAbbrECNumberMap.put(reacAbbr, ecNumber);
 						}
 					}
 					count += 1;
 				}
 				reader.close();
-				LocalConfig.getInstance().setMetaboliteAbbrKeggIdMap(metaboliteAbbrKeggIdMap);
-				System.out.println(metaboliteAbbrKeggIdMap);
+				LocalConfig.getInstance().setReactionAbbrECNumberMap(reactionAbbrECNumberMap);
+				System.out.println(reactionAbbrECNumberMap);
 			} catch (IOException e) {
 				JOptionPane.showMessageDialog(null,                
 						"File Not Found Error.",                
@@ -89,11 +93,10 @@ public class MetaboliteSupplementaryMaterialReader {
 	
 	public static void main( String args[] )
 	{
-		MetaboliteSupplementaryMaterialReader reader = new MetaboliteSupplementaryMaterialReader();
-		File iaf1260 = new File("etc/sbml/E. Coli/iAF1260/inline-supplementary-material-3.csv");
-		reader.readFile(iaf1260, 0, 7, 0, 0);
-//		File ijo1366 = new File("etc/sbml/E. Coli/iJO1366/inline-supplementary-material-2.csv");
-//		reader.readFile(ijo1366, 0, 6, 0, 3);
+		ReactionSupplementaryMaterialReader reader = new ReactionSupplementaryMaterialReader();
+		File iJR904 = new File("etc/sbml/E. Coli/iJR904/gb-2003-4-9-r54-s1.csv");
+		reader.readFile(iJR904, 0, 4, 0, 0);
 	}
 	
 }
+
