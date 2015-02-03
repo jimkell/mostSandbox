@@ -4129,7 +4129,8 @@ public class GraphicalInterface extends JFrame {
 			
 			MetaboliteFactory f = new MetaboliteFactory("SBML");
 			Vector<SBMLMetabolite> metabolites = f.getAllMetabolites();
-			if (f.getKeggIdColumnIndex() > -1) {
+			int keggIdCol = f.getKeggIdColumnIndex();
+			if (keggIdCol > -1) {
 				// prompt to update current column
 				Object[] options = {"Yes",
 				"No"};
@@ -4145,7 +4146,7 @@ public class GraphicalInterface extends JFrame {
 				// interpret the user's choice	  
 				if (choice == JOptionPane.YES_OPTION)
 				{
-					updateKeggIdColumn(metabolites, modeltrimStartIndex, modeltrimEndIndex);
+					updateKeggIdColumn(metabolites, modeltrimStartIndex, modeltrimEndIndex, keggIdCol);
 				}
 				//No option actually corresponds to "Yes to All" button
 				if (choice == JOptionPane.NO_OPTION)
@@ -4159,12 +4160,17 @@ public class GraphicalInterface extends JFrame {
 				// add kegg id column and update with values from hashmap
 				addMetabolitesColumn(GraphicalInterfaceConstants.METABOLITE_KEGG_ID_COLUMN_NAME);
 				// add kegg ids from hashmap to table
-				updateKeggIdColumn(metabolites, modeltrimStartIndex, modeltrimEndIndex);
+				int keggIdIndex = GraphicalInterfaceConstants.METABOLITES_COLUMN_NAMES.length + LocalConfig.getInstance().getMetabolitesMetaColumnNames().indexOf(GraphicalInterfaceConstants.METABOLITE_KEGG_ID_COLUMN_NAME);
+				updateKeggIdColumn(metabolites, modeltrimStartIndex, modeltrimEndIndex, keggIdIndex);
 			}
 		}
 	}; 
 	
-	public void updateKeggIdColumn(Vector<SBMLMetabolite> metabolites, int modeltrimStartIndex, int modeltrimEndIndex) {
+	public void updateKeggIdColumn(Vector<SBMLMetabolite> metabolites, int modeltrimStartIndex, int modeltrimEndIndex, int keggIdColumn) {
+		Map<String, Object> metabolitesIdRowMap = new HashMap<String, Object>();
+		for (int i = 0; i < GraphicalInterface.metabolitesTable.getRowCount(); i++) {
+			metabolitesIdRowMap.put((String) metabolitesTable.getModel().getValueAt(i, GraphicalInterfaceConstants.METABOLITE_ID_COLUMN), i);
+		}
 		int count = 0;
 		// add kegg ids from hashmap to table
 		for (int i = 0; i < metabolites.size(); i++) {
@@ -4172,12 +4178,17 @@ public class GraphicalInterface extends JFrame {
 			String abbr = metabolites.get(i).getMetaboliteAbbreviation();
 			if (abbr != null && abbr.length() > totalTrimLength) {
 				String trimmedAbbr = abbr.substring(modeltrimStartIndex, abbr.length() - modeltrimEndIndex);
-				System.out.println("model " + trimmedAbbr);
+//				System.out.println("model " + trimmedAbbr);
+				String row = (metabolitesIdRowMap.get(Integer.toString(metabolites.get(i).getId()))).toString();
+				int rowNum = Integer.valueOf(row);
 				if (LocalConfig.getInstance().getMetaboliteAbbrKeggIdMap().containsKey(trimmedAbbr)) {
 					count += 1;
-					System.out.println("count " + count);
-					System.out.println(metabolites.get(i).getId());
-					System.out.println(LocalConfig.getInstance().getMetaboliteAbbrKeggIdMap().get(trimmedAbbr));
+//					System.out.println("count " + count);
+//					System.out.println(metabolites.get(i).getId());
+//					System.out.println(LocalConfig.getInstance().getMetaboliteAbbrKeggIdMap().get(trimmedAbbr));
+					metabolitesTable.getModel().setValueAt(LocalConfig.getInstance().getMetaboliteAbbrKeggIdMap().get(trimmedAbbr), rowNum, keggIdColumn);
+				} else {
+					metabolitesTable.getModel().setValueAt("", rowNum, keggIdColumn);
 				}
 			}
 		}

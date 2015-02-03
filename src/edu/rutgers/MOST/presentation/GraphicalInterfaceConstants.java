@@ -279,11 +279,11 @@ public class GraphicalInterfaceConstants {
         };
     
     public static final String[] KEGG_ID_REACTIONS_COLUMN_NAMES = 
-        {"kegg id", "keggid"
+        {"KEGG", "Kegg"
         };
     
     public static final String[] KEGG_ID_METABOLITES_COLUMN_NAMES = 
-        {"kegg id", "keggid"
+    	{"KEGG", "Kegg"
         };
     
     // messages box titles and messages

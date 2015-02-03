@@ -286,8 +286,8 @@ public class MetabolitesSupplementalDataDialog extends JDialog {
 		}
 		for (int c = 0; c < columnNamesFromFile.size(); c++) { 
 			//filters to match column names from file to required column names in table		
-			if((columnNamesFromFile.get(c).toLowerCase()).contains(GraphicalInterfaceConstants.KEGG_ID_METABOLITES_COLUMN_NAMES[0]) ||
-					(columnNamesFromFile.get(c).toLowerCase()).contains(GraphicalInterfaceConstants.KEGG_ID_METABOLITES_COLUMN_NAMES[1])) {
+			if(columnNamesFromFile.get(c).contains(GraphicalInterfaceConstants.KEGG_ID_METABOLITES_COLUMN_NAMES[0]) ||
+					columnNamesFromFile.get(c).contains(GraphicalInterfaceConstants.KEGG_ID_METABOLITES_COLUMN_NAMES[1])) {
 				cbKeggId.setSelectedIndex(c);	
 			} 
 		}
