@@ -19,15 +19,15 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-public class MetabolitesSupplementalDataDialog extends JDialog {
+public class ReactionsSupplementalDataDialog extends JDialog {
 	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public JComboBox<String> cbMetaboliteAbbreviation = new JComboBox<String>();
-	public JComboBox<String> cbKeggId = new JComboBox<String>();
+	public JComboBox<String> cbReactionAbbreviation = new JComboBox<String>();
+	public JComboBox<String> cbECNumber = new JComboBox<String>();
 	public JCheckBox replaceCheckBox = new JCheckBox("Replace Illegal Characters with Underscore");
 	public JComboBox<String> cbTrimBeginFromFile = new JComboBox<String>();
 	public JComboBox<String> cbTrimEndFromFile = new JComboBox<String>();
@@ -38,7 +38,7 @@ public class MetabolitesSupplementalDataDialog extends JDialog {
 	public JButton cancelButton = new JButton("  Cancel  ");
 	
 	private File loadedFile;
-	
+
 	public File getLoadedFile() {
 		return loadedFile;
 	}
@@ -47,27 +47,27 @@ public class MetabolitesSupplementalDataDialog extends JDialog {
 		this.loadedFile = loadedFile;
 	}
 
-	public MetabolitesSupplementalDataDialog(ArrayList<String> columnNamesFromFile) {
+	public ReactionsSupplementalDataDialog(ArrayList<String> columnNamesFromFile) {
 		
 		getRootPane().setDefaultButton(okButton);
 		
-		setTitle("Metabolites Supplemental Data Dialog");
+		setTitle("Reactions Supplemental Data Dialog");
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		
-		cbMetaboliteAbbreviation.setEditable(false);	
-		cbKeggId.setEditable(false);
+		cbReactionAbbreviation.setEditable(false);	
+		cbECNumber.setEditable(false);
 		cbTrimBeginFromFile.setEditable(false);
 		cbTrimEndFromFile.setEditable(false);
 		cbTrimBeginFromModel.setEditable(false);
 		cbTrimEndFromModel.setEditable(false);
 
-		cbMetaboliteAbbreviation.setPreferredSize(new Dimension(250, 25));
-		cbMetaboliteAbbreviation.setMaximumSize(new Dimension(250, 25));
-		cbMetaboliteAbbreviation.setMinimumSize(new Dimension(250, 25));
+		cbReactionAbbreviation.setPreferredSize(new Dimension(250, 25));
+		cbReactionAbbreviation.setMaximumSize(new Dimension(250, 25));
+		cbReactionAbbreviation.setMinimumSize(new Dimension(250, 25));
 
-		cbKeggId.setPreferredSize(new Dimension(250, 25));
-		cbKeggId.setMaximumSize(new Dimension(250, 25));
-		cbKeggId.setMinimumSize(new Dimension(250, 25));
+		cbECNumber.setPreferredSize(new Dimension(250, 25));
+		cbECNumber.setMaximumSize(new Dimension(250, 25));
+		cbECNumber.setMinimumSize(new Dimension(250, 25));
 		
 		cbTrimBeginFromFile.setPreferredSize(new Dimension(40, 25));
 		cbTrimBeginFromFile.setMaximumSize(new Dimension(40, 25));
@@ -101,16 +101,16 @@ public class MetabolitesSupplementalDataDialog extends JDialog {
 
 		Box hbLabels = Box.createHorizontalBox();
 		Box hbTop = Box.createHorizontalBox();	 
-		Box hbMetaboliteAbbreviationLabel = Box.createHorizontalBox();	    
-		Box hbMetaboliteAbbreviation = Box.createHorizontalBox();
-		Box hbKeggIdLabel = Box.createHorizontalBox();	    
-		Box hbKeggId = Box.createHorizontalBox();
+		Box hbReactionAbbreviationLabel = Box.createHorizontalBox();	    
+		Box hbReactionAbbreviation = Box.createHorizontalBox();
+		Box hbECNumberLabel = Box.createHorizontalBox();	    
+		Box hbECNumber = Box.createHorizontalBox();
 		
 		Box vbLabels = Box.createVerticalBox();
 		Box vbCombos = Box.createVerticalBox();
 
 		Box hbLabeledCombos = Box.createHorizontalBox();
-		Box hbMetabAbbrParametersLabel = Box.createHorizontalBox();
+		Box hbReacAbbrParametersLabel = Box.createHorizontalBox();
 		Box hbReplaceBox = Box.createHorizontalBox();
 		Box hbTrimFromFileBox = Box.createHorizontalBox();
 		Box hbTrimFromModelBox = Box.createHorizontalBox();
@@ -129,70 +129,70 @@ public class MetabolitesSupplementalDataDialog extends JDialog {
 
 		hbLabels.add(hbTop);
 		
-		//metabolite Abbreviation Label and combo
-		JLabel metaboliteAbbreviationLabel = new JLabel();
-		metaboliteAbbreviationLabel.setText("Metabolite Abbreviation Column");
-		metaboliteAbbreviationLabel.setPreferredSize(new Dimension(250, 25));
-		metaboliteAbbreviationLabel.setMaximumSize(new Dimension(250, 25));
-		metaboliteAbbreviationLabel.setMinimumSize(new Dimension(250, 25));
-		metaboliteAbbreviationLabel.setBorder(BorderFactory.createEmptyBorder(10,0,ColumnInterfaceConstants.LABEL_BOTTOM_BORDER_SIZE,10));
-		metaboliteAbbreviationLabel.setAlignmentX(LEFT_ALIGNMENT);  	    
+		//reaction Abbreviation Label and combo
+		JLabel reactionAbbreviationLabel = new JLabel();
+		reactionAbbreviationLabel.setText("Reaction Abbreviation Column");
+		reactionAbbreviationLabel.setPreferredSize(new Dimension(250, 25));
+		reactionAbbreviationLabel.setMaximumSize(new Dimension(250, 25));
+		reactionAbbreviationLabel.setMinimumSize(new Dimension(250, 25));
+		reactionAbbreviationLabel.setBorder(BorderFactory.createEmptyBorder(10,0,ColumnInterfaceConstants.LABEL_BOTTOM_BORDER_SIZE,10));
+		reactionAbbreviationLabel.setAlignmentX(LEFT_ALIGNMENT);  	    
 
-		JPanel panelMetaboliteAbbreviationLabel = new JPanel();
-		panelMetaboliteAbbreviationLabel.setLayout(new BoxLayout(panelMetaboliteAbbreviationLabel, BoxLayout.X_AXIS));
-		panelMetaboliteAbbreviationLabel.add(metaboliteAbbreviationLabel);
-		panelMetaboliteAbbreviationLabel.setBorder(BorderFactory.createEmptyBorder(0,0,10,0));
+		JPanel panelReactionAbbreviationLabel = new JPanel();
+		panelReactionAbbreviationLabel.setLayout(new BoxLayout(panelReactionAbbreviationLabel, BoxLayout.X_AXIS));
+		panelReactionAbbreviationLabel.add(reactionAbbreviationLabel);
+		panelReactionAbbreviationLabel.setBorder(BorderFactory.createEmptyBorder(0,0,10,0));
 
-		hbMetaboliteAbbreviationLabel.add(panelMetaboliteAbbreviationLabel);
-		hbMetaboliteAbbreviationLabel.setAlignmentX(LEFT_ALIGNMENT);
+		hbReactionAbbreviationLabel.add(panelReactionAbbreviationLabel);
+		hbReactionAbbreviationLabel.setAlignmentX(LEFT_ALIGNMENT);
 
-		JPanel panelMetaboliteAbbreviation = new JPanel();
-		panelMetaboliteAbbreviation.setLayout(new BoxLayout(panelMetaboliteAbbreviation, BoxLayout.X_AXIS));
-		panelMetaboliteAbbreviation.add(cbMetaboliteAbbreviation);
-		panelMetaboliteAbbreviation.setBorder(BorderFactory.createEmptyBorder(0,0,10,0));
-		panelMetaboliteAbbreviation.setAlignmentX(RIGHT_ALIGNMENT);
+		JPanel panelReactionAbbreviation = new JPanel();
+		panelReactionAbbreviation.setLayout(new BoxLayout(panelReactionAbbreviation, BoxLayout.X_AXIS));
+		panelReactionAbbreviation.add(cbReactionAbbreviation);
+		panelReactionAbbreviation.setBorder(BorderFactory.createEmptyBorder(0,0,10,0));
+		panelReactionAbbreviation.setAlignmentX(RIGHT_ALIGNMENT);
 
-		hbMetaboliteAbbreviation.add(panelMetaboliteAbbreviation);
-		hbMetaboliteAbbreviation.setAlignmentX(RIGHT_ALIGNMENT);
+		hbReactionAbbreviation.add(panelReactionAbbreviation);
+		hbReactionAbbreviation.setAlignmentX(RIGHT_ALIGNMENT);
 
-		vbLabels.add(hbMetaboliteAbbreviationLabel);
+		vbLabels.add(hbReactionAbbreviationLabel);
 		JLabel blankLabel1 = new JLabel("");
 		vbLabels.add(blankLabel1);
-		vbCombos.add(hbMetaboliteAbbreviation);
+		vbCombos.add(hbReactionAbbreviation);
 
-		//Kegg Label and combo Id
-		JLabel keggIdLabel = new JLabel();
-		keggIdLabel.setText("KEGG ID Column");
-		keggIdLabel.setPreferredSize(new Dimension(250, 25));
-		keggIdLabel.setMaximumSize(new Dimension(250, 25));
-		keggIdLabel.setMinimumSize(new Dimension(250, 25));
-		keggIdLabel.setBorder(BorderFactory.createEmptyBorder(10,0,ColumnInterfaceConstants.LABEL_BOTTOM_BORDER_SIZE,10));
-		keggIdLabel.setAlignmentX(LEFT_ALIGNMENT);    	    
+		//EC Number Label and combo Id
+		JLabel ecNumberLabel = new JLabel();
+		ecNumberLabel.setText("EC Number Column");
+		ecNumberLabel.setPreferredSize(new Dimension(250, 25));
+		ecNumberLabel.setMaximumSize(new Dimension(250, 25));
+		ecNumberLabel.setMinimumSize(new Dimension(250, 25));
+		ecNumberLabel.setBorder(BorderFactory.createEmptyBorder(10,0,ColumnInterfaceConstants.LABEL_BOTTOM_BORDER_SIZE,10));
+		ecNumberLabel.setAlignmentX(LEFT_ALIGNMENT);    	    
 
-		JPanel panelKeggIdLabel = new JPanel();
-		panelKeggIdLabel.setLayout(new BoxLayout(panelKeggIdLabel, BoxLayout.X_AXIS));
-		panelKeggIdLabel.add(keggIdLabel);
-		panelKeggIdLabel.setBorder(BorderFactory.createEmptyBorder(0,0,20,0));
+		JPanel panelECNumberLabel = new JPanel();
+		panelECNumberLabel.setLayout(new BoxLayout(panelECNumberLabel, BoxLayout.X_AXIS));
+		panelECNumberLabel.add(ecNumberLabel);
+		panelECNumberLabel.setBorder(BorderFactory.createEmptyBorder(0,0,20,0));
 
-		hbKeggIdLabel.add(panelKeggIdLabel);
-		hbKeggIdLabel.setAlignmentX(LEFT_ALIGNMENT);
+		hbECNumberLabel.add(panelECNumberLabel);
+		hbECNumberLabel.setAlignmentX(LEFT_ALIGNMENT);
 
-		JPanel panelKeggId = new JPanel();
-		panelKeggId.setLayout(new BoxLayout(panelKeggId, BoxLayout.X_AXIS));
-		panelKeggId.add(cbKeggId);
-		panelKeggId.setBorder(BorderFactory.createEmptyBorder(0,0,20,0));
-		panelKeggId.setAlignmentX(RIGHT_ALIGNMENT);
+		JPanel panelECNumber = new JPanel();
+		panelECNumber.setLayout(new BoxLayout(panelECNumber, BoxLayout.X_AXIS));
+		panelECNumber.add(cbECNumber);
+		panelECNumber.setBorder(BorderFactory.createEmptyBorder(0,0,20,0));
+		panelECNumber.setAlignmentX(RIGHT_ALIGNMENT);
 
-		hbKeggId.add(panelKeggId);
-		hbKeggId.setAlignmentX(RIGHT_ALIGNMENT);
+		hbECNumber.add(panelECNumber);
+		hbECNumber.setAlignmentX(RIGHT_ALIGNMENT);
 
-		vbLabels.add(hbKeggIdLabel);
+		vbLabels.add(hbECNumberLabel);
 		JLabel blankLabel2 = new JLabel("");
 		vbLabels.add(blankLabel2);
-		vbCombos.add(hbKeggId);
+		vbCombos.add(hbECNumber);
 		
-		JLabel metabAbbrParameters = new JLabel("Metabolite Abbreviation String Matching Parameters");
-		hbMetabAbbrParametersLabel.add(metabAbbrParameters);
+		JLabel reacAbbrParameters = new JLabel("Reaction Abbreviation String Matching Parameters");
+		hbReacAbbrParametersLabel.add(reacAbbrParameters);
 		
 		JPanel panelReplaceBox = new JPanel();
 		panelReplaceBox.setLayout(new BoxLayout(panelReplaceBox, BoxLayout.X_AXIS));
@@ -246,7 +246,7 @@ public class MetabolitesSupplementalDataDialog extends JDialog {
 		hbLabeledCombos.add(vbLabels);
 		hbLabeledCombos.add(vbCombos);
 		vb.add(hbLabeledCombos);
-		vb.add(hbMetabAbbrParametersLabel);
+		vb.add(hbReacAbbrParametersLabel);
 		vb.add(hbReplaceBox);
 		vb.add(hbTrimFromFileBox);
 		vb.add(hbTrimFromModelBox);
@@ -275,21 +275,24 @@ public class MetabolitesSupplementalDataDialog extends JDialog {
 	
 	public void populateNamesFromFileBoxes(ArrayList<String> columnNamesFromFile) {
 
-		cbMetaboliteAbbreviation.removeAllItems();
-		cbKeggId.removeAllItems();
+		cbReactionAbbreviation.removeAllItems();
+		cbECNumber.removeAllItems();
 		//add all column names to from file comboboxes
 		for (int c = 0; c < columnNamesFromFile.size(); c++) { 
-			cbMetaboliteAbbreviation.addItem(columnNamesFromFile.get(c));
-			cbKeggId.addItem(columnNamesFromFile.get(c));
+			cbReactionAbbreviation.addItem(columnNamesFromFile.get(c));
+			cbECNumber.addItem(columnNamesFromFile.get(c));
 		}
 		for (int c = 0; c < columnNamesFromFile.size(); c++) { 
 			//filters to match column names from file to required column names in table		
-			if(columnNamesFromFile.get(c).contains(GraphicalInterfaceConstants.KEGG_ID_METABOLITES_COLUMN_NAMES[0]) ||
-					columnNamesFromFile.get(c).contains(GraphicalInterfaceConstants.KEGG_ID_METABOLITES_COLUMN_NAMES[1])) {
-				cbKeggId.setSelectedIndex(c);	
-			} 
+			if(columnNamesFromFile.get(c).equals(GraphicalInterfaceConstants.EC_NUMBER_COLUMN_NAMES[0]) ||
+					columnNamesFromFile.get(c).equals(GraphicalInterfaceConstants.EC_NUMBER_COLUMN_NAMES[1])) {
+				cbECNumber.setSelectedIndex(c);	
+			} else if (columnNamesFromFile.get(c).toLowerCase().contains(GraphicalInterfaceConstants.PROTEIN_CLASS_COLUMN_FILTER[0]) &&
+					columnNamesFromFile.get(c).toLowerCase().contains(GraphicalInterfaceConstants.PROTEIN_CLASS_COLUMN_FILTER[1])) {
+				cbECNumber.setSelectedIndex(c);	
+			}
 		}
-		cbMetaboliteAbbreviation.setSelectedIndex(0);
+		cbReactionAbbreviation.setSelectedIndex(0);
 	}
 	
 	public static void main(String[] args) throws Exception {
@@ -301,9 +304,9 @@ public class MetabolitesSupplementalDataDialog extends JDialog {
 		ArrayList<String> list = new ArrayList<String>();
 		list.add("test1");
 		list.add("test2");
-		list.add("kegg id");
+		list.add("ProteinClassDescription");
 		
-		MetabolitesSupplementalDataDialog frame = new MetabolitesSupplementalDataDialog(list);
+		ReactionsSupplementalDataDialog frame = new ReactionsSupplementalDataDialog(list);
 
 		frame.setIconImages(icons);
 		frame.setSize(600, 400);
@@ -313,3 +316,4 @@ public class MetabolitesSupplementalDataDialog extends JDialog {
 	}
 
 }
+

@@ -49,7 +49,7 @@ public class ReactionSupplementaryMaterialReader {
 					if (count > 0) {
 						for (int s = 0; s < dataArray.length; s++) {	
 							if (s == abbreviationColumnIndex) {
-								System.out.println(dataArray[s]);
+								//System.out.println(dataArray[s]);
 								int totalTrimLength = filetrimStartIndex + filetrimEndIndex;
 								if (dataArray[s] != null && dataArray[s].length() > totalTrimLength) {
 									reacAbbr = dataArray[s].substring(filetrimStartIndex, dataArray[s].length() - filetrimEndIndex);
@@ -63,7 +63,7 @@ public class ReactionSupplementaryMaterialReader {
 								if (ecNumber.startsWith("EC-")) {
 									ecNumber = ecNumber.substring(3);
 								}
-								System.out.println(dataArray[s]);
+								//System.out.println(dataArray[s]);
 							}
 						}
 						if (reacAbbr !=  null && reacAbbr.length() > 0 && ecNumber != null && ecNumber.length() > 0) {

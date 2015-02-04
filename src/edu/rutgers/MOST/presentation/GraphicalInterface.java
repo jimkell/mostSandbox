@@ -43,6 +43,7 @@ import edu.rutgers.MOST.data.ObjectCloner;
 import edu.rutgers.MOST.data.PathwayFilesReader;
 import edu.rutgers.MOST.data.ReactionEquationUpdater;
 import edu.rutgers.MOST.data.ReactionFactory;
+import edu.rutgers.MOST.data.ReactionSupplementaryMaterialReader;
 import edu.rutgers.MOST.data.ReactionUndoItem;
 import edu.rutgers.MOST.data.SBMLMetabolite;
 import edu.rutgers.MOST.data.SBMLModelReader;
@@ -505,6 +506,17 @@ public class GraphicalInterface extends JFrame {
 	public static ReactionEditor getReactionEditor() {
 		return reactionEditor;
 	}
+	
+	private static ReactionsSupplementalDataDialog reactionsSupplementalDataDialog;
+
+	public static ReactionsSupplementalDataDialog getReactionsSupplementalDataDialog() {
+		return reactionsSupplementalDataDialog;
+	}
+
+	public static void setReactionsSupplementalDataDialog(
+			ReactionsSupplementalDataDialog reactionsSupplementalDataDialog) {
+		GraphicalInterface.reactionsSupplementalDataDialog = reactionsSupplementalDataDialog;
+	}
 
 	private static SuspiciousMetabolitesDialog suspiciousMetabolitesDialog = new SuspiciousMetabolitesDialog();
 
@@ -670,6 +682,7 @@ public class GraphicalInterface extends JFrame {
 	public final JMenuItem unsortReacMenuItem = new JMenuItem("Unsort Reactions Table");
 	public final JMenuItem unsortMetabMenuItem = new JMenuItem("Unsort Metabolites Table");
 	public final JMenuItem loadMetabSuppDataItem = new JMenuItem("Load Metabolites Supplementary Data");
+	public final JMenuItem loadReacSuppDataItem = new JMenuItem("Load Reactions Supplementary Data");
 	public final JMenuItem arrangeCompMenu = new JMenuItem("Arrange Compartments");
 	public final JMenuItem visualizeMenu = new JMenuItem("Visualize");
 	public final JMenuItem setUpSolver = new JMenuItem("Select Solvers");
@@ -2156,6 +2169,57 @@ public class GraphicalInterface extends JFrame {
 						setMetabolitesSupplementalDataDialog(frame);
 						getMetabolitesSupplementalDataDialog().okButton.addActionListener(okButtonMetabSuppDataActionListener);
 						getMetabolitesSupplementalDataDialog().setLoadedFile(file);
+						frame.setIconImages(icons);
+						frame.setSize(600, 400);
+						frame.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+						frame.setLocationRelativeTo(null);
+						frame.setModal(true);
+						frame.setVisible(true);
+					}
+				}
+			}
+		});
+        
+        visualizationMenu.add(loadReacSuppDataItem);
+        loadReacSuppDataItem.setMnemonic(KeyEvent.VK_R);
+        
+        loadReacSuppDataItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ae) {
+				JTextArea output = null;
+				JFileChooser fileChooser = new JFileChooser();
+				fileChooser.setDialogTitle("Load CSV File"); 
+				fileChooser.setFileFilter(new CSVFileFilter());
+				fileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);			
+
+				String lastSuppData_path = curSettings.get("LastSuppData");
+				Utilities u = new Utilities();
+				// if path is null or does not exist, default used, else last path used
+				fileChooser.setCurrentDirectory(new File(u.lastPath(lastSuppData_path, fileChooser)));					
+ 
+				//... Open a file dialog.
+				int retval = fileChooser.showOpenDialog(output);
+				if (retval == JFileChooser.APPROVE_OPTION) {
+					loadSetUp();
+					//... The user selected a file, get it, use it.
+					File file = fileChooser.getSelectedFile();
+					String rawPathName = file.getAbsolutePath();
+					curSettings.add("LastSuppData", rawPathName);
+
+					String rawFilename = file.getName();				
+					if (!rawFilename.endsWith(".csv")) {
+						JOptionPane.showMessageDialog(null,                
+								"Not a Valid CSV File.",                
+								"Invalid CSV File",                                
+								JOptionPane.ERROR_MESSAGE);
+					} else {
+						tabbedPane.setSelectedIndex(0);
+						ReactionSupplementaryMaterialReader reader = 
+								new ReactionSupplementaryMaterialReader();
+						ArrayList<String> columnNames = reader.columnNamesFromFile(file, 0);
+						ReactionsSupplementalDataDialog frame = new ReactionsSupplementalDataDialog(columnNames);
+						setReactionsSupplementalDataDialog(frame);
+						getReactionsSupplementalDataDialog().okButton.addActionListener(okButtonReacSuppDataActionListener);
+						getReactionsSupplementalDataDialog().setLoadedFile(file);
 						frame.setIconImages(icons);
 						frame.setSize(600, 400);
 						frame.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -4202,6 +4266,110 @@ public class GraphicalInterface extends JFrame {
 			JOptionPane.showMessageDialog(null,                
 					message1 + "Data File or Matching Parameters May Be Incorrrect.",                
 					"Metabolite Abbreviation Matching Warning",                                
+					JOptionPane.WARNING_MESSAGE);
+		}
+	}
+	
+	ActionListener okButtonReacSuppDataActionListener = new ActionListener() {
+		public void actionPerformed(ActionEvent ae) {
+			int abbreviationColumnIndex = getReactionsSupplementalDataDialog().cbReactionAbbreviation.getSelectedIndex();
+			int ecNumberColumnIndex = getReactionsSupplementalDataDialog().cbECNumber.getSelectedIndex();
+			int filetrimStartIndex = Integer.parseInt((String) getReactionsSupplementalDataDialog().cbTrimBeginFromFile.getSelectedItem());
+			int filetrimEndIndex = Integer.parseInt((String) getReactionsSupplementalDataDialog().cbTrimEndFromFile.getSelectedItem());
+			int modeltrimStartIndex = Integer.parseInt((String) getReactionsSupplementalDataDialog().cbTrimBeginFromModel.getSelectedItem());
+			int modeltrimEndIndex = Integer.parseInt((String) getReactionsSupplementalDataDialog().cbTrimEndFromModel.getSelectedItem());
+			ReactionSupplementaryMaterialReader reader = 
+					new ReactionSupplementaryMaterialReader();
+			reader.readFile(getReactionsSupplementalDataDialog().getLoadedFile(), abbreviationColumnIndex, ecNumberColumnIndex, filetrimStartIndex, filetrimEndIndex);
+			getReactionsSupplementalDataDialog().setVisible(false);
+			getReactionsSupplementalDataDialog().dispose();	
+			
+			ReactionFactory f = new ReactionFactory("SBML");
+			Vector<SBMLReaction> reactions = f.getAllReactions();
+			int ecNumberColumn = f.getECColumnColumnIndex();
+			String ecColumnName = "Protein Class";
+			if (ecNumberColumn != GraphicalInterfaceConstants.PROTEIN_CLASS_COLUMN &&
+					ecNumberColumn > -1) {
+				ecColumnName = LocalConfig.getInstance().getReactionsMetaColumnNames().get(ecNumberColumn - GraphicalInterfaceConstants.REACTIONS_COLUMN_NAMES.length);
+			}
+			// check if ec numbers exist in model
+			boolean ecNumFound = false;
+			for (int r = 0; r < reactions.size(); r++) {
+				SBMLReaction reaction = (SBMLReaction) reactions.get(r);
+				String ecString = reaction.getEcNumber();
+				if (ecString != null && ecString.length() > 0) {
+					ecNumFound = true;
+					break;
+				}
+			}
+			// get ec number column index and use method below
+			// if exist prompt overwrite y/n
+			// else add ec numbers to protein class column
+			if (ecNumFound) {
+				// prompt to update current column
+				Object[] options = {"Yes",
+				"No"};
+				int choice = JOptionPane.showOptionDialog(null, 
+						"<html>EC Numbers Already Exist in " + ecColumnName + " Column. <p>"
+								+ "Update Values in Column?",
+								"EC Numbers Exist", 
+								JOptionPane.YES_NO_OPTION, 
+								JOptionPane.QUESTION_MESSAGE, 
+								null, options, options[0]);
+				//options[0] sets "Yes" as default button
+
+				// interpret the user's choice	  
+				if (choice == JOptionPane.YES_OPTION)
+				{
+					updateECNumberColumn(reactions, modeltrimStartIndex, modeltrimEndIndex, ecNumberColumn);
+				}
+				//No option actually corresponds to "Yes to All" button
+				if (choice == JOptionPane.NO_OPTION)
+				{
+					
+				}
+			} else {
+				updateECNumberColumn(reactions, modeltrimStartIndex, modeltrimEndIndex, ecNumberColumn);
+			}
+		}
+	}; 
+	
+	public void updateECNumberColumn(Vector<SBMLReaction> reactions, int modeltrimStartIndex, int modeltrimEndIndex, int ecNumberColumn) {
+		Map<String, Object> reactionsIdRowMap = new HashMap<String, Object>();
+		for (int i = 0; i < GraphicalInterface.reactionsTable.getRowCount(); i++) {
+			reactionsIdRowMap.put((String) reactionsTable.getModel().getValueAt(i, GraphicalInterfaceConstants.REACTIONS_ID_COLUMN), i);
+		}
+		int count = 0;
+		// add ec numbers from hashmap to table
+		for (int i = 0; i < reactions.size(); i++) {
+			int totalTrimLength = modeltrimStartIndex + modeltrimEndIndex;
+			String abbr = reactions.get(i).getReactionAbbreviation();
+			if (abbr != null && abbr.length() > totalTrimLength) {
+				String trimmedAbbr = abbr.substring(modeltrimStartIndex, abbr.length() - modeltrimEndIndex);
+//				System.out.println("model " + trimmedAbbr);
+				String row = (reactionsIdRowMap.get(Integer.toString(reactions.get(i).getId()))).toString();
+				int rowNum = Integer.valueOf(row);
+				if (LocalConfig.getInstance().getReactionAbbrECNumberMap().containsKey(trimmedAbbr)) {
+					count += 1;
+//					System.out.println("count " + count);
+//					System.out.println(reactions.get(i).getId());
+//					System.out.println(LocalConfig.getInstance().getReactionAbbrECNumberMap().get(trimmedAbbr));
+					reactionsTable.getModel().setValueAt(LocalConfig.getInstance().getReactionAbbrECNumberMap().get(trimmedAbbr), rowNum, ecNumberColumn);
+				} else {
+					reactionsTable.getModel().setValueAt("", rowNum, ecNumberColumn);
+				}
+			}
+		}
+		// if 0 or a small number of matches found, file or matching
+		// parameters probably wrong. show warning dialog.
+		if (count < reactions.size()*0.2) {
+			String message1 = "<html>" + count + " Abbreviation Matches Were Found. <p>";
+			if (count == 1) {
+				message1 = "<html>" + count + " Abbreviation Match Was Found. <p>";
+			}
+			JOptionPane.showMessageDialog(null,                
+					message1 + "Data File or Matching Parameters May Be Incorrrect.",                
+					"Reaction Abbreviation Matching Warning",                                
 					JOptionPane.WARNING_MESSAGE);
 		}
 	}

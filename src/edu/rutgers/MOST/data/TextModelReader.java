@@ -6,8 +6,13 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.JOptionPane;
+
+import au.com.bytecode.opencsv.CSVReader;
+import edu.rutgers.MOST.config.LocalConfig;
 
 public class TextModelReader {
 	
@@ -20,47 +25,79 @@ public class TextModelReader {
 	public ArrayList<String> columnNamesFromFile(File file, int row) {
 		ArrayList<String> columnNamesFromFile = new ArrayList<String>();
 		
-		String[] dataArray = null;
+		CSVReader reader;
 
-		//use fileReader to read first line to get headers
-		BufferedReader CSVFile;
+		int count = 0;
+		
 		try {
-			CSVFile = new BufferedReader(new FileReader(file));
-			String dataRow = CSVFile.readLine();
-			dataArray = dataRow.split(",");				
-
-			//add all column names to list			
-			for (int h = 0; h < dataArray.length; h++) { 
-				addColumnName(dataArray[h], columnNamesFromFile);		
+			reader = new CSVReader(new FileReader(file), ',');
+			String [] dataArray;
+			try {
+				while ((dataArray = reader.readNext()) != null) {
+					if (count == row) {
+						for (int s = 0; s < dataArray.length; s++) {	
+							addColumnName(dataArray[s], columnNamesFromFile);
+						}
+					}
+					count += 1;
+				}
+				reader.close();
+			} catch (IOException e) {
+				JOptionPane.showMessageDialog(null,                
+						"File Not Found Error.",                
+						"Error",                                
+						JOptionPane.ERROR_MESSAGE);
+				//e.printStackTrace();
 			}
-
-			if (row > 0) {
-				for (int i = 0; i < row; i++) {
-					dataRow = CSVFile.readLine();
-					dataArray = dataRow.split(",");								
-					columnNamesFromFile.clear();
-					//add all column names to list			
-					for (int h = 0; h < dataArray.length; h++) { 
-						addColumnName(dataArray[h], columnNamesFromFile);	
-					} 
-				}				
-			}
-
-			CSVFile.close();
-
-		} catch (FileNotFoundException e1) {
+		} catch (FileNotFoundException e) {
 			JOptionPane.showMessageDialog(null,                
 					"File Not Found Error.",                
 					"Error",                                
 					JOptionPane.ERROR_MESSAGE);
-			//e1.printStackTrace();							
-		} catch (IOException e1) {
-			JOptionPane.showMessageDialog(null,                
-					"File Not Found Error.",                
-					"Error",                                
-					JOptionPane.ERROR_MESSAGE);
-			//e1.printStackTrace();
-		} 
+			//e.printStackTrace();
+		}	
+		
+//		String[] dataArray = null;
+//
+//		//use fileReader to read first line to get headers
+//		BufferedReader CSVFile;
+//		try {
+//			CSVFile = new BufferedReader(new FileReader(file));
+//			String dataRow = CSVFile.readLine();
+//			dataArray = dataRow.split(",");				
+//
+//			//add all column names to list			
+//			for (int h = 0; h < dataArray.length; h++) { 
+//				addColumnName(dataArray[h], columnNamesFromFile);		
+//			}
+//
+//			if (row > 0) {
+//				for (int i = 0; i < row; i++) {
+//					dataRow = CSVFile.readLine();
+//					dataArray = dataRow.split(",");								
+//					columnNamesFromFile.clear();
+//					//add all column names to list			
+//					for (int h = 0; h < dataArray.length; h++) { 
+//						addColumnName(dataArray[h], columnNamesFromFile);	
+//					} 
+//				}				
+//			}
+//
+//			CSVFile.close();
+//
+//		} catch (FileNotFoundException e1) {
+//			JOptionPane.showMessageDialog(null,                
+//					"File Not Found Error.",                
+//					"Error",                                
+//					JOptionPane.ERROR_MESSAGE);
+//			//e1.printStackTrace();							
+//		} catch (IOException e1) {
+//			JOptionPane.showMessageDialog(null,                
+//					"File Not Found Error.",                
+//					"Error",                                
+//					JOptionPane.ERROR_MESSAGE);
+//			//e1.printStackTrace();
+//		} 
 
 		return columnNamesFromFile;
 	}	
