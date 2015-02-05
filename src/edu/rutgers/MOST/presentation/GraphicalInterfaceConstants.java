@@ -80,6 +80,7 @@ public class GraphicalInterfaceConstants {
 	
 	public static final String METABOLITE_KEGG_ID_COLUMN_NAME = "KEGG ID";
 	public static final String REACTION_KEGG_ID_COLUMN_NAME = "KEGG ID";
+	public static final String CHEBI_ID_COLUMN_NAME = "CHEBI ID";
 	
 	//reactions table column numbers and associated widths
 	public static final int DEFAULT_WIDTH = 90; //columns with no assigned width use default	

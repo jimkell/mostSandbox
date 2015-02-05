@@ -86,9 +86,11 @@ public class SBMLModelReader {
 		ArrayList<String> compartmentsList = new ArrayList<String>();
 		ArrayList<String> metabKeggIds = new ArrayList<String>();
 		ArrayList<String> reacKeggIds = new ArrayList<String>();
+		ArrayList<String> chebiIds = new ArrayList<String>();
 		
 		boolean metabKeggIdAnnotationSet = false;
 		boolean reacKeggIdAnnotationSet = false;
+		boolean chebiIdAnnotationSet = false;
 
 		DefaultTableModel metabTableModel = new DefaultTableModel();
 		for (int m = 0; m < GraphicalInterfaceConstants.METABOLITES_COLUMN_NAMES.length; m++) {
@@ -290,17 +292,36 @@ public class SBMLModelReader {
 			}	
 			
 			String keggId = "";
+			String chebiId = "";
 			if (metabolites.get(i).isSetAnnotation()) {
-				metabKeggIdAnnotationSet = true;
+				//metabKeggIdAnnotationSet = true;
 				if (metabolites.get(i).getAnnotationString().contains("kegg.compound")) {
-					if (i == 0) {
+					metabKeggIdAnnotationSet = true;
+					// first species may not contain kegg id, later species may
+					if (!metabolitesMetaColumnNames.contains(GraphicalInterfaceConstants.METABOLITE_KEGG_ID_COLUMN_NAME)) {
+					//if (i == 0) {
 						metabolitesMetaColumnNames.add(GraphicalInterfaceConstants.METABOLITE_KEGG_ID_COLUMN_NAME);
 						metabTableModel.addColumn(GraphicalInterfaceConstants.METABOLITE_KEGG_ID_COLUMN_NAME);
 					} 
 					keggId = metabolites.get(i).getAnnotationString().substring(metabolites.get(i).getAnnotationString().indexOf("kegg.compound") + 14, metabolites.get(i).getAnnotationString().indexOf("kegg.compound") + 20);
 				} 
+				if (metabolites.get(i).getAnnotationString().contains("chebi/CHEBI")) {
+					chebiIdAnnotationSet = true;
+					// first species may not contain chebi id, later species may
+					if (!metabolitesMetaColumnNames.contains(GraphicalInterfaceConstants.CHEBI_ID_COLUMN_NAME)) {
+//					//if (i == 0) {
+						metabolitesMetaColumnNames.add(GraphicalInterfaceConstants.CHEBI_ID_COLUMN_NAME);
+						metabTableModel.addColumn(GraphicalInterfaceConstants.CHEBI_ID_COLUMN_NAME);
+					} 
+					chebiId = metabolites.get(i).getAnnotationString().substring(metabolites.get(i).getAnnotationString().indexOf("chebi/CHEBI") + 12, metabolites.get(i).getAnnotationString().indexOf("chebi/CHEBI") + 17);
+					if (chebiId.endsWith("\"")) {
+						chebiId = chebiId.replace("\"", "");
+					}
+					System.out.println(chebiId);
+				} 
 			}
 			metabKeggIds.add(keggId);
+			chebiIds.add(chebiId);
 			
 			metabTableModel.addRow(metabRow);
 		}
@@ -309,6 +330,12 @@ public class SBMLModelReader {
 			int keggIdColIndex = GraphicalInterfaceConstants.METABOLITES_COLUMN_NAMES.length + metabolitesMetaColumnNames.indexOf(GraphicalInterfaceConstants.METABOLITE_KEGG_ID_COLUMN_NAME);
 			for (int k = 0; k < metabKeggIds.size(); k++) {
 				metabTableModel.setValueAt(metabKeggIds.get(k), k, keggIdColIndex);
+			}
+		}
+		if (chebiIdAnnotationSet) {
+			int chebiIdColIndex = GraphicalInterfaceConstants.METABOLITES_COLUMN_NAMES.length + metabolitesMetaColumnNames.indexOf(GraphicalInterfaceConstants.CHEBI_ID_COLUMN_NAME);
+			for (int k = 0; k < chebiIds.size(); k++) {
+				metabTableModel.setValueAt(chebiIds.get(k), k, chebiIdColIndex);
 			}
 		}
 		
@@ -788,13 +815,15 @@ public class SBMLModelReader {
 			if (reactions.get(j).isSetAnnotation()) {
 				reacKeggIdAnnotationSet = true;
 				if (reactions.get(j).getAnnotationString().contains("kegg.reaction")) {
-					if (j == 0) {
+					// first reaction may not contain kegg id, later reactions may
+					if (!reactionsMetaColumnNames.contains(GraphicalInterfaceConstants.REACTION_KEGG_ID_COLUMN_NAME)) {
+					//if (j == 0) {
 						reactionsMetaColumnNames.add(GraphicalInterfaceConstants.REACTION_KEGG_ID_COLUMN_NAME);
 						reacTableModel.addColumn(GraphicalInterfaceConstants.REACTION_KEGG_ID_COLUMN_NAME);
 					} 
-					System.out.println(j);
+					//System.out.println(j);
 					keggId = reactions.get(j).getAnnotationString().substring(reactions.get(j).getAnnotationString().indexOf("kegg.reaction") + 14, reactions.get(j).getAnnotationString().indexOf("kegg.reaction") + 20);
-					System.out.println(keggId);
+					//System.out.println(keggId);
 				}
 			}
 			reacKeggIds.add(keggId);
