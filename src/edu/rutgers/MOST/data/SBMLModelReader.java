@@ -84,6 +84,11 @@ public class SBMLModelReader {
 		LocalConfig.getInstance().setListOfCompartmentNames(listOfCompartmentNames);
 		
 		ArrayList<String> compartmentsList = new ArrayList<String>();
+		ArrayList<String> metabKeggIds = new ArrayList<String>();
+		ArrayList<String> reacKeggIds = new ArrayList<String>();
+		
+		boolean metabKeggIdAnnotationSet = false;
+		boolean reacKeggIdAnnotationSet = false;
 
 		DefaultTableModel metabTableModel = new DefaultTableModel();
 		for (int m = 0; m < GraphicalInterfaceConstants.METABOLITES_COLUMN_NAMES.length; m++) {
@@ -258,12 +263,6 @@ public class SBMLModelReader {
 				//System.out.println(metabolitesMetaColumnMap);
 			} 
 			
-			if (metabolites.get(i).isSetAnnotation()) {
-				if (metabolites.get(i).getAnnotationString().contains("kegg.compound")) {
-					System.out.println(metabolites.get(i).getAnnotationString().substring(metabolites.get(i).getAnnotationString().indexOf("kegg.compound") + 14, metabolites.get(i).getAnnotationString().indexOf("kegg.compound") + 20));
-				}
-			}
-			
 			metabRow.add(charge);	
 			metabRow.add(metabolites.get(i).getCompartment());
 			if (!compartmentsList.contains(metabolites.get(i).getCompartment())) {
@@ -288,14 +287,36 @@ public class SBMLModelReader {
 				System.out.println(reactionsMetaColumnNames2.get(m));
 				System.out.println(reactionsMetaColumnMap.get(reactionsMetaColumnNames2.get(m)));
 				*/
-			}		
+			}	
+			
+			String keggId = "";
+			if (metabolites.get(i).isSetAnnotation()) {
+				metabKeggIdAnnotationSet = true;
+				if (metabolites.get(i).getAnnotationString().contains("kegg.compound")) {
+					if (i == 0) {
+						metabolitesMetaColumnNames.add(GraphicalInterfaceConstants.METABOLITE_KEGG_ID_COLUMN_NAME);
+						metabTableModel.addColumn(GraphicalInterfaceConstants.METABOLITE_KEGG_ID_COLUMN_NAME);
+					} 
+					keggId = metabolites.get(i).getAnnotationString().substring(metabolites.get(i).getAnnotationString().indexOf("kegg.compound") + 14, metabolites.get(i).getAnnotationString().indexOf("kegg.compound") + 20);
+				} 
+			}
+			metabKeggIds.add(keggId);
 			
 			metabTableModel.addRow(metabRow);
 		}
+
+		if (metabKeggIdAnnotationSet) {
+			int keggIdColIndex = GraphicalInterfaceConstants.METABOLITES_COLUMN_NAMES.length + metabolitesMetaColumnNames.indexOf(GraphicalInterfaceConstants.METABOLITE_KEGG_ID_COLUMN_NAME);
+			for (int k = 0; k < metabKeggIds.size(); k++) {
+				metabTableModel.setValueAt(metabKeggIds.get(k), k, keggIdColIndex);
+			}
+		}
+		
 		setMetabolitesTableModel(metabTableModel);
 		LocalConfig.getInstance().setMaxMetabolite(metabolites.size());
 		LocalConfig.getInstance().setMaxMetaboliteId(metabolites.size());
 		LocalConfig.getInstance().setMetabolitesMetaColumnNames(metabolitesMetaColumnNames);
+		System.out.println(metabolitesMetaColumnNames);
 		LocalConfig.getInstance().setCompartmentsList(compartmentsList);
 		LocalConfig.getInstance().setCompartmentAbbreviationList(compartmentAbbreviationList);
 		//System.out.println(compartmentAbbreviationList);
@@ -379,18 +400,12 @@ public class SBMLModelReader {
 			ArrayList<String> compartmentReactantsList = new ArrayList<String>();
 			ArrayList<String> compartmentProductsList = new ArrayList<String>();
 			
-			for (int z = 0; z < reactions.get(j).getListOfModifiers().size(); z++) {
-				//System.out.println("mod " + reactions.get(j).getListOfModifiers().get(z).getAnnotationString());
-				if (reactions.get(j).getListOfModifiers().get(z).getAnnotationString().contains("http")) {
-					System.out.println("mod " + reactions.get(j).getListOfModifiers().get(z).getAnnotationString());
-				}
-			}
-			
-			if (reactions.get(j).isSetAnnotation()) {
-				if (reactions.get(j).getAnnotationString().contains("kegg.reaction")) {
-					System.out.println(reactions.get(j).getAnnotationString().substring(reactions.get(j).getAnnotationString().indexOf("kegg.reaction") + 14, reactions.get(j).getAnnotationString().indexOf("kegg.reaction") + 20));
-				}
-			}
+//			for (int z = 0; z < reactions.get(j).getListOfModifiers().size(); z++) {
+//				//System.out.println("mod " + reactions.get(j).getListOfModifiers().get(z).getAnnotationString());
+//				if (reactions.get(j).getListOfModifiers().get(z).getAnnotationString().contains("http")) {
+//					System.out.println("mod " + reactions.get(j).getListOfModifiers().get(z).getAnnotationString());
+//				}
+//			}
 		
 			ListOf<SpeciesReference> reactants = reactions.get(j).getListOfReactants();
 			
@@ -767,10 +782,34 @@ public class SBMLModelReader {
 //					System.out.println(reactionsMetaColumnNames2.get(m));
 //					System.out.println(reactionsMetaColumnMap.get(reactionsMetaColumnNames2.get(m)));
 				}
-			}		
+			}
+			
+			String keggId = "";
+			if (reactions.get(j).isSetAnnotation()) {
+				reacKeggIdAnnotationSet = true;
+				if (reactions.get(j).getAnnotationString().contains("kegg.reaction")) {
+					if (j == 0) {
+						reactionsMetaColumnNames.add(GraphicalInterfaceConstants.REACTION_KEGG_ID_COLUMN_NAME);
+						reacTableModel.addColumn(GraphicalInterfaceConstants.REACTION_KEGG_ID_COLUMN_NAME);
+					} 
+					System.out.println(j);
+					keggId = reactions.get(j).getAnnotationString().substring(reactions.get(j).getAnnotationString().indexOf("kegg.reaction") + 14, reactions.get(j).getAnnotationString().indexOf("kegg.reaction") + 20);
+					System.out.println(keggId);
+				}
+			}
+			reacKeggIds.add(keggId);
 			
 			reacTableModel.addRow(reacRow);
+			
 		}
+		
+		if (reacKeggIdAnnotationSet) {
+			int keggIdColIndex = GraphicalInterfaceConstants.REACTIONS_COLUMN_NAMES.length + reactionsMetaColumnNames.indexOf(GraphicalInterfaceConstants.REACTION_KEGG_ID_COLUMN_NAME);
+			for (int k = 0; k < reacKeggIds.size(); k++) {
+				reacTableModel.setValueAt(reacKeggIds.get(k), k, keggIdColIndex);
+			}
+		}
+		
 		setReactionsTableModel(reacTableModel);
 		LocalConfig.getInstance().setMaxReactionId(reactions.size());
 		LocalConfig.getInstance().setReactionsMetaColumnNames(reactionsMetaColumnNames);

@@ -4335,6 +4335,11 @@ public class GraphicalInterface extends JFrame {
 	}; 
 	
 	public void updateECNumberColumn(Vector<SBMLReaction> reactions, int modeltrimStartIndex, int modeltrimEndIndex, int ecNumberColumn) {
+		// copy old model for undo/redo
+		DefaultTableModel oldReactionsModel = copyReactionsTableModel((DefaultTableModel) reactionsTable.getModel());	
+		copyReactionsTableModels(oldReactionsModel); 
+		ReactionUndoItem undoItem = createReactionUndoItem("", "", reactionsTable.getSelectedRow(), ecNumberColumn, 0, UndoConstants.ADD_SUPP_DATA, UndoConstants.REACTION_UNDO_ITEM_TYPE);
+		undoItem.setTableCopyIndex(LocalConfig.getInstance().getNumReactionTablesCopied()); 
 		Map<String, Object> reactionsIdRowMap = new HashMap<String, Object>();
 		for (int i = 0; i < GraphicalInterface.reactionsTable.getRowCount(); i++) {
 			reactionsIdRowMap.put((String) reactionsTable.getModel().getValueAt(i, GraphicalInterfaceConstants.REACTIONS_ID_COLUMN), i);
@@ -4372,6 +4377,9 @@ public class GraphicalInterface extends JFrame {
 					"Reaction Abbreviation Matching Warning",                                
 					JOptionPane.WARNING_MESSAGE);
 		}
+		DefaultTableModel newReactionsModel = copyReactionsTableModel((DefaultTableModel) reactionsTable.getModel());			
+		copyReactionsTableModels(newReactionsModel); 
+		setUpReactionsUndo(undoItem);
 	}
 	
 	/*******************************************************************************/

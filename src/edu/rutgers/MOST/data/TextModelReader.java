@@ -1,18 +1,17 @@
 package edu.rutgers.MOST.data;
 
-import java.io.BufferedReader;
+//import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+//import java.util.HashMap;
+//import java.util.Map;
 
 import javax.swing.JOptionPane;
 
 import au.com.bytecode.opencsv.CSVReader;
-import edu.rutgers.MOST.config.LocalConfig;
 
 public class TextModelReader {
 	

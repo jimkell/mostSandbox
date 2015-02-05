@@ -79,6 +79,7 @@ public class GraphicalInterfaceConstants {
 	private static java.util.List<String> metabolitesList = Arrays.asList(METABOLITES_COLUMN_NAMES);
 	
 	public static final String METABOLITE_KEGG_ID_COLUMN_NAME = "KEGG ID";
+	public static final String REACTION_KEGG_ID_COLUMN_NAME = "KEGG ID";
 	
 	//reactions table column numbers and associated widths
 	public static final int DEFAULT_WIDTH = 90; //columns with no assigned width use default	

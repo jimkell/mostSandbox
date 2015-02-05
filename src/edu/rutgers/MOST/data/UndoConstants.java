@@ -23,6 +23,7 @@ public class UndoConstants {
 	public static final String DELETE_ROW = "Delete Row(s)";
 	public static final String DELETE_UNUSED = "Delete All Unused Metabolites";
 	public static final String REPLACE_ALL = "Replace All";
+	public static final String ADD_SUPP_DATA = "Add Supplemental Data";
 	
 	// sort
 	public static final String SORT = "Sort";
