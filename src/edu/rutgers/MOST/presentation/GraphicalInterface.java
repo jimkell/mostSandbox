@@ -2148,7 +2148,6 @@ public class GraphicalInterface extends JFrame {
 				//... Open a file dialog.
 				int retval = fileChooser.showOpenDialog(output);
 				if (retval == JFileChooser.APPROVE_OPTION) {
-					loadSetUp();
 					//... The user selected a file, get it, use it.
 					File file = fileChooser.getSelectedFile();
 					String rawPathName = file.getAbsolutePath();
@@ -2199,7 +2198,6 @@ public class GraphicalInterface extends JFrame {
 				//... Open a file dialog.
 				int retval = fileChooser.showOpenDialog(output);
 				if (retval == JFileChooser.APPROVE_OPTION) {
-					loadSetUp();
 					//... The user selected a file, get it, use it.
 					File file = fileChooser.getSelectedFile();
 					String rawPathName = file.getAbsolutePath();
@@ -11762,6 +11760,8 @@ public class GraphicalInterface extends JFrame {
 			addMetabRowsItem.setEnabled(true);
 			addReacColumnItem.setEnabled(true);
 			addMetabColumnItem.setEnabled(true);
+			loadMetabSuppDataItem.setEnabled(true);
+			loadReacSuppDataItem.setEnabled(true);
 			reactionsTableEditable = true;
 			saveOptFile = false;
 			formulaBar.setEditable(true);		
@@ -11791,6 +11791,8 @@ public class GraphicalInterface extends JFrame {
 		addMetabRowsItem.setEnabled(false);
 		addReacColumnItem.setEnabled(false);
 		addMetabColumnItem.setEnabled(false);
+		loadMetabSuppDataItem.setEnabled(false);
+		loadReacSuppDataItem.setEnabled(false);
 		reactionsTableEditable = false;
 		tabbedPane.setSelectedIndex(0);
 		formulaBar.setEditable(false);

@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8' standalone='no'?>
-<!-- Created by MOST version 1.0 on 2015-02-06 13:47 with jsbml version 0.8. -->
+<!-- Created by MOST version 1.0 on 2015-02-07 14:42 with jsbml version 0.8. -->
 <sbml xmlns="http://www.sbml.org/sbml/level2" level="2" version="1">
-  <model id="M_e">
+  <model id="M_ecoli_core_model_annotations">
     <listOfUnitDefinitions>
       <unitDefinition id="mmol_per_gDW_per_hr" name="mmol_per_gDW_per_hr">
         <listOfUnits>
@@ -625,7 +625,7 @@
   
      <p>FORMULA: C7H13O10P</p>
   
-     <p>KEGG ID: C05382</p>
+     <p>KEGG ID: C00281</p>
   </body></notes>
       </species>
       <species id="M_succ_c" name="Succinate" boundaryCondition="false" compartment="C_c">
@@ -860,7 +860,17 @@
   
      <p>GENE_LIST: b0351 b1241</p>
   </body></notes>
-              <kineticLaw>
+              <listOfReactants>
+          <speciesReference species="M_acald_c" stoichiometry="1"/>
+          <speciesReference species="M_coa_c" stoichiometry="1"/>
+          <speciesReference species="M_nad_c" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_accoa_c" stoichiometry="1"/>
+          <speciesReference species="M_h_c" stoichiometry="1"/>
+          <speciesReference species="M_nadh_c" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
           <math xmlns="http://www.w3.org/1998/Math/MathML">          
             <apply>
               <ci> FLUX_VALUE </ci>
@@ -889,7 +899,13 @@
   
      <p>GENE_LIST: s0001</p>
   </body></notes>
-              <kineticLaw>
+              <listOfReactants>
+          <speciesReference species="M_acald_e" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_acald_c" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
           <math xmlns="http://www.w3.org/1998/Math/MathML">          
             <apply>
               <ci> FLUX_VALUE </ci>
@@ -918,7 +934,15 @@
   
      <p>GENE_LIST: b1849 b2296 b3115</p>
   </body></notes>
-              <kineticLaw>
+              <listOfReactants>
+          <speciesReference species="M_ac_c" stoichiometry="1"/>
+          <speciesReference species="M_atp_c" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_actp_c" stoichiometry="1"/>
+          <speciesReference species="M_adp_c" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
           <math xmlns="http://www.w3.org/1998/Math/MathML">          
             <apply>
               <ci> FLUX_VALUE </ci>
@@ -947,7 +971,14 @@
   
      <p>GENE_LIST: b0118 b1276</p>
   </body></notes>
-              <kineticLaw>
+              <listOfReactants>
+          <speciesReference species="M_cit_c" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_acon_C_c" stoichiometry="1"/>
+          <speciesReference species="M_h2o_c" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
           <math xmlns="http://www.w3.org/1998/Math/MathML">          
             <apply>
               <ci> FLUX_VALUE </ci>
@@ -976,7 +1007,14 @@
   
      <p>GENE_LIST: b0118 b1276</p>
   </body></notes>
-              <kineticLaw>
+              <listOfReactants>
+          <speciesReference species="M_acon_C_c" stoichiometry="1"/>
+          <speciesReference species="M_h2o_c" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_icit_c" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
           <math xmlns="http://www.w3.org/1998/Math/MathML">          
             <apply>
               <ci> FLUX_VALUE </ci>
@@ -1005,7 +1043,15 @@
   
      <p>GENE_LIST: </p>
   </body></notes>
-              <kineticLaw>
+              <listOfReactants>
+          <speciesReference species="M_ac_e" stoichiometry="1"/>
+          <speciesReference species="M_h_e" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_ac_c" stoichiometry="1"/>
+          <speciesReference species="M_h_c" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
           <math xmlns="http://www.w3.org/1998/Math/MathML">          
             <apply>
               <ci> FLUX_VALUE </ci>
@@ -1034,7 +1080,14 @@
   
      <p>GENE_LIST: b0474</p>
   </body></notes>
-              <kineticLaw>
+              <listOfReactants>
+          <speciesReference species="M_amp_c" stoichiometry="1"/>
+          <speciesReference species="M_atp_c" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_adp_c" stoichiometry="2"/>
+        </listOfProducts>
+        <kineticLaw>
           <math xmlns="http://www.w3.org/1998/Math/MathML">          
             <apply>
               <ci> FLUX_VALUE </ci>
@@ -1063,7 +1116,17 @@
   
      <p>GENE_LIST: b0116 b0726 b0727</p>
   </body></notes>
-              <kineticLaw>
+              <listOfReactants>
+          <speciesReference species="M_akg_c" stoichiometry="1"/>
+          <speciesReference species="M_coa_c" stoichiometry="1"/>
+          <speciesReference species="M_nad_c" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_co2_c" stoichiometry="1"/>
+          <speciesReference species="M_nadh_c" stoichiometry="1"/>
+          <speciesReference species="M_succoa_c" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
           <math xmlns="http://www.w3.org/1998/Math/MathML">          
             <apply>
               <ci> FLUX_VALUE </ci>
@@ -1092,7 +1155,15 @@
   
      <p>GENE_LIST: b2587</p>
   </body></notes>
-              <kineticLaw>
+              <listOfReactants>
+          <speciesReference species="M_akg_e" stoichiometry="1"/>
+          <speciesReference species="M_h_e" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_akg_c" stoichiometry="1"/>
+          <speciesReference species="M_h_c" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
           <math xmlns="http://www.w3.org/1998/Math/MathML">          
             <apply>
               <ci> FLUX_VALUE </ci>
@@ -1121,7 +1192,16 @@
   
      <p>GENE_LIST: b0356 b1241 b1478</p>
   </body></notes>
-              <kineticLaw>
+              <listOfReactants>
+          <speciesReference species="M_etoh_c" stoichiometry="1"/>
+          <speciesReference species="M_nad_c" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_acald_c" stoichiometry="1"/>
+          <speciesReference species="M_h_c" stoichiometry="1"/>
+          <speciesReference species="M_nadh_c" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
           <math xmlns="http://www.w3.org/1998/Math/MathML">          
             <apply>
               <ci> FLUX_VALUE </ci>
@@ -1150,7 +1230,16 @@
   
      <p>GENE_LIST: </p>
   </body></notes>
-              <kineticLaw>
+              <listOfReactants>
+          <speciesReference species="M_atp_c" stoichiometry="1"/>
+          <speciesReference species="M_h2o_c" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_adp_c" stoichiometry="1"/>
+          <speciesReference species="M_h_c" stoichiometry="1"/>
+          <speciesReference species="M_pi_c" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
           <math xmlns="http://www.w3.org/1998/Math/MathML">          
             <apply>
               <ci> FLUX_VALUE </ci>
@@ -1179,7 +1268,17 @@
   
      <p>GENE_LIST: b3731 b3732 b3733 b3734 b3735 b3736 b3737 b3738 b3739</p>
   </body></notes>
-              <kineticLaw>
+              <listOfReactants>
+          <speciesReference species="M_adp_c" stoichiometry="1"/>
+          <speciesReference species="M_h_e" stoichiometry="4"/>
+          <speciesReference species="M_pi_c" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_atp_c" stoichiometry="1"/>
+          <speciesReference species="M_h2o_c" stoichiometry="1"/>
+          <speciesReference species="M_h_c" stoichiometry="3"/>
+        </listOfProducts>
+        <kineticLaw>
           <math xmlns="http://www.w3.org/1998/Math/MathML">          
             <apply>
               <ci> FLUX_VALUE </ci>
@@ -1208,7 +1307,34 @@
   
      <p>GENE_LIST: </p>
   </body></notes>
-              <kineticLaw>
+              <listOfReactants>
+          <speciesReference species="M_3pg_c" stoichiometry="1.496"/>
+          <speciesReference species="M_accoa_c" stoichiometry="3.7478"/>
+          <speciesReference species="M_atp_c" stoichiometry="59.81"/>
+          <speciesReference species="M_e4p_c" stoichiometry="0.361"/>
+          <speciesReference species="M_f6p_c" stoichiometry="0.0709"/>
+          <speciesReference species="M_g3p_c" stoichiometry="0.129"/>
+          <speciesReference species="M_g6p_c" stoichiometry="0.205"/>
+          <speciesReference species="M_gln_L_c" stoichiometry="0.2557"/>
+          <speciesReference species="M_glu_L_c" stoichiometry="4.9414"/>
+          <speciesReference species="M_h2o_c" stoichiometry="59.81"/>
+          <speciesReference species="M_nad_c" stoichiometry="3.547"/>
+          <speciesReference species="M_nadph_c" stoichiometry="13.0279"/>
+          <speciesReference species="M_oaa_c" stoichiometry="1.7867"/>
+          <speciesReference species="M_pep_c" stoichiometry="0.5191"/>
+          <speciesReference species="M_pyr_c" stoichiometry="2.8328"/>
+          <speciesReference species="M_r5p_c" stoichiometry="0.8977"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_adp_c" stoichiometry="59.81"/>
+          <speciesReference species="M_akg_c" stoichiometry="4.1182"/>
+          <speciesReference species="M_coa_c" stoichiometry="3.7478"/>
+          <speciesReference species="M_h_c" stoichiometry="59.81"/>
+          <speciesReference species="M_nadh_c" stoichiometry="3.547"/>
+          <speciesReference species="M_nadp_c" stoichiometry="13.0279"/>
+          <speciesReference species="M_pi_c" stoichiometry="59.81"/>
+        </listOfProducts>
+        <kineticLaw>
           <math xmlns="http://www.w3.org/1998/Math/MathML">          
             <apply>
               <ci> FLUX_VALUE </ci>
@@ -1237,7 +1363,13 @@
   
      <p>GENE_LIST: s0001</p>
   </body></notes>
-              <kineticLaw>
+              <listOfReactants>
+          <speciesReference species="M_co2_e" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_co2_c" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
           <math xmlns="http://www.w3.org/1998/Math/MathML">          
             <apply>
               <ci> FLUX_VALUE </ci>
@@ -1266,7 +1398,17 @@
   
      <p>GENE_LIST: b0720</p>
   </body></notes>
-              <kineticLaw>
+              <listOfReactants>
+          <speciesReference species="M_accoa_c" stoichiometry="1"/>
+          <speciesReference species="M_h2o_c" stoichiometry="1"/>
+          <speciesReference species="M_oaa_c" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_cit_c" stoichiometry="1"/>
+          <speciesReference species="M_coa_c" stoichiometry="1"/>
+          <speciesReference species="M_h_c" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
           <math xmlns="http://www.w3.org/1998/Math/MathML">          
             <apply>
               <ci> FLUX_VALUE </ci>
@@ -1295,7 +1437,17 @@
   
      <p>GENE_LIST: b0733 b0734 b0978 b0979</p>
   </body></notes>
-              <kineticLaw>
+              <listOfReactants>
+          <speciesReference species="M_h_c" stoichiometry="2"/>
+          <speciesReference species="M_o2_c" stoichiometry="0.5"/>
+          <speciesReference species="M_q8h2_c" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_h2o_c" stoichiometry="1"/>
+          <speciesReference species="M_h_e" stoichiometry="2"/>
+          <speciesReference species="M_q8_c" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
           <math xmlns="http://www.w3.org/1998/Math/MathML">          
             <apply>
               <ci> FLUX_VALUE </ci>
@@ -1324,7 +1476,15 @@
   
      <p>GENE_LIST: b2975 b3603</p>
   </body></notes>
-              <kineticLaw>
+              <listOfReactants>
+          <speciesReference species="M_h_e" stoichiometry="1"/>
+          <speciesReference species="M_lac_D_e" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_h_c" stoichiometry="1"/>
+          <speciesReference species="M_lac_D_c" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
           <math xmlns="http://www.w3.org/1998/Math/MathML">          
             <apply>
               <ci> FLUX_VALUE </ci>
@@ -1353,7 +1513,14 @@
   
      <p>GENE_LIST: b2779</p>
   </body></notes>
-              <kineticLaw>
+              <listOfReactants>
+          <speciesReference species="M_2pg_c" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_h2o_c" stoichiometry="1"/>
+          <speciesReference species="M_pep_c" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
           <math xmlns="http://www.w3.org/1998/Math/MathML">          
             <apply>
               <ci> FLUX_VALUE </ci>
@@ -1382,7 +1549,15 @@
   
      <p>GENE_LIST: </p>
   </body></notes>
-              <kineticLaw>
+              <listOfReactants>
+          <speciesReference species="M_etoh_e" stoichiometry="1"/>
+          <speciesReference species="M_h_e" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_etoh_c" stoichiometry="1"/>
+          <speciesReference species="M_h_c" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
           <math xmlns="http://www.w3.org/1998/Math/MathML">          
             <apply>
               <ci> FLUX_VALUE </ci>
@@ -1411,7 +1586,13 @@
   
      <p>GENE_LIST: </p>
   </body></notes>
-              <kineticLaw>
+              <listOfReactants>
+          <speciesReference species="M_ac_e" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_ac_b" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
           <math xmlns="http://www.w3.org/1998/Math/MathML">          
             <apply>
               <ci> FLUX_VALUE </ci>
@@ -1440,7 +1621,13 @@
   
      <p>GENE_LIST: </p>
   </body></notes>
-              <kineticLaw>
+              <listOfReactants>
+          <speciesReference species="M_acald_e" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_acald_b" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
           <math xmlns="http://www.w3.org/1998/Math/MathML">          
             <apply>
               <ci> FLUX_VALUE </ci>
@@ -1469,7 +1656,13 @@
   
      <p>GENE_LIST: </p>
   </body></notes>
-              <kineticLaw>
+              <listOfReactants>
+          <speciesReference species="M_akg_e" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_akg_b" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
           <math xmlns="http://www.w3.org/1998/Math/MathML">          
             <apply>
               <ci> FLUX_VALUE </ci>
@@ -1498,7 +1691,13 @@
   
      <p>GENE_LIST: </p>
   </body></notes>
-              <kineticLaw>
+              <listOfReactants>
+          <speciesReference species="M_co2_e" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_co2_b" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
           <math xmlns="http://www.w3.org/1998/Math/MathML">          
             <apply>
               <ci> FLUX_VALUE </ci>
@@ -1527,7 +1726,13 @@
   
      <p>GENE_LIST: </p>
   </body></notes>
-              <kineticLaw>
+              <listOfReactants>
+          <speciesReference species="M_etoh_e" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_etoh_b" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
           <math xmlns="http://www.w3.org/1998/Math/MathML">          
             <apply>
               <ci> FLUX_VALUE </ci>
@@ -1556,7 +1761,13 @@
   
      <p>GENE_LIST: </p>
   </body></notes>
-              <kineticLaw>
+              <listOfReactants>
+          <speciesReference species="M_for_e" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_for_b" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
           <math xmlns="http://www.w3.org/1998/Math/MathML">          
             <apply>
               <ci> FLUX_VALUE </ci>
@@ -1585,7 +1796,13 @@
   
      <p>GENE_LIST: </p>
   </body></notes>
-              <kineticLaw>
+              <listOfReactants>
+          <speciesReference species="M_fru_e" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_fru_b" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
           <math xmlns="http://www.w3.org/1998/Math/MathML">          
             <apply>
               <ci> FLUX_VALUE </ci>
@@ -1614,7 +1831,13 @@
   
      <p>GENE_LIST: </p>
   </body></notes>
-              <kineticLaw>
+              <listOfReactants>
+          <speciesReference species="M_fum_e" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_fum_b" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
           <math xmlns="http://www.w3.org/1998/Math/MathML">          
             <apply>
               <ci> FLUX_VALUE </ci>
@@ -1643,7 +1866,13 @@
   
      <p>GENE_LIST: </p>
   </body></notes>
-              <kineticLaw>
+              <listOfReactants>
+          <speciesReference species="M_glc_D_e" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_glc_D_b" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
           <math xmlns="http://www.w3.org/1998/Math/MathML">          
             <apply>
               <ci> FLUX_VALUE </ci>
@@ -1672,7 +1901,13 @@
   
      <p>GENE_LIST: </p>
   </body></notes>
-              <kineticLaw>
+              <listOfReactants>
+          <speciesReference species="M_gln_L_e" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_gln_L_b" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
           <math xmlns="http://www.w3.org/1998/Math/MathML">          
             <apply>
               <ci> FLUX_VALUE </ci>
@@ -1701,7 +1936,13 @@
   
      <p>GENE_LIST: </p>
   </body></notes>
-              <kineticLaw>
+              <listOfReactants>
+          <speciesReference species="M_glu_L_e" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_glu_L_b" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
           <math xmlns="http://www.w3.org/1998/Math/MathML">          
             <apply>
               <ci> FLUX_VALUE </ci>
@@ -1730,7 +1971,13 @@
   
      <p>GENE_LIST: </p>
   </body></notes>
-              <kineticLaw>
+              <listOfReactants>
+          <speciesReference species="M_h_e" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_h2o_b" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
           <math xmlns="http://www.w3.org/1998/Math/MathML">          
             <apply>
               <ci> FLUX_VALUE </ci>
@@ -1759,7 +2006,13 @@
   
      <p>GENE_LIST: </p>
   </body></notes>
-              <kineticLaw>
+              <listOfReactants>
+          <speciesReference species="M_h2o_e" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_h_b" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
           <math xmlns="http://www.w3.org/1998/Math/MathML">          
             <apply>
               <ci> FLUX_VALUE </ci>
@@ -1788,7 +2041,13 @@
   
      <p>GENE_LIST: </p>
   </body></notes>
-              <kineticLaw>
+              <listOfReactants>
+          <speciesReference species="M_lac_D_e" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_lac_D_b" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
           <math xmlns="http://www.w3.org/1998/Math/MathML">          
             <apply>
               <ci> FLUX_VALUE </ci>
@@ -1817,7 +2076,13 @@
   
      <p>GENE_LIST: </p>
   </body></notes>
-              <kineticLaw>
+              <listOfReactants>
+          <speciesReference species="M_mal_L_e" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_mal_L_b" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
           <math xmlns="http://www.w3.org/1998/Math/MathML">          
             <apply>
               <ci> FLUX_VALUE </ci>
@@ -1846,7 +2111,13 @@
   
      <p>GENE_LIST: </p>
   </body></notes>
-              <kineticLaw>
+              <listOfReactants>
+          <speciesReference species="M_nh4_e" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_nh4_b" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
           <math xmlns="http://www.w3.org/1998/Math/MathML">          
             <apply>
               <ci> FLUX_VALUE </ci>
@@ -1875,7 +2146,13 @@
   
      <p>GENE_LIST: </p>
   </body></notes>
-              <kineticLaw>
+              <listOfReactants>
+          <speciesReference species="M_o2_e" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_o2_b" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
           <math xmlns="http://www.w3.org/1998/Math/MathML">          
             <apply>
               <ci> FLUX_VALUE </ci>
@@ -1904,7 +2181,13 @@
   
      <p>GENE_LIST: </p>
   </body></notes>
-              <kineticLaw>
+              <listOfReactants>
+          <speciesReference species="M_pi_e" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_pi_b" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
           <math xmlns="http://www.w3.org/1998/Math/MathML">          
             <apply>
               <ci> FLUX_VALUE </ci>
@@ -1933,7 +2216,13 @@
   
      <p>GENE_LIST: </p>
   </body></notes>
-              <kineticLaw>
+              <listOfReactants>
+          <speciesReference species="M_pyr_e" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_pyr_b" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
           <math xmlns="http://www.w3.org/1998/Math/MathML">          
             <apply>
               <ci> FLUX_VALUE </ci>
@@ -1962,7 +2251,13 @@
   
      <p>GENE_LIST: </p>
   </body></notes>
-              <kineticLaw>
+              <listOfReactants>
+          <speciesReference species="M_succ_e" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_succ_b" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
           <math xmlns="http://www.w3.org/1998/Math/MathML">          
             <apply>
               <ci> FLUX_VALUE </ci>
@@ -1991,7 +2286,14 @@
   
      <p>GENE_LIST: b1773 b2097 b2925</p>
   </body></notes>
-              <kineticLaw>
+              <listOfReactants>
+          <speciesReference species="M_fdp_c" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_dhap_c" stoichiometry="1"/>
+          <speciesReference species="M_g3p_c" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
           <math xmlns="http://www.w3.org/1998/Math/MathML">          
             <apply>
               <ci> FLUX_VALUE </ci>
@@ -2020,7 +2322,15 @@
   
      <p>GENE_LIST: b3925 b4232</p>
   </body></notes>
-              <kineticLaw>
+              <listOfReactants>
+          <speciesReference species="M_fdp_c" stoichiometry="1"/>
+          <speciesReference species="M_h2o_c" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_f6p_c" stoichiometry="1"/>
+          <speciesReference species="M_pi_c" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
           <math xmlns="http://www.w3.org/1998/Math/MathML">          
             <apply>
               <ci> FLUX_VALUE </ci>
@@ -2049,7 +2359,15 @@
   
      <p>GENE_LIST: b0904 b2492</p>
   </body></notes>
-              <kineticLaw>
+              <listOfReactants>
+          <speciesReference species="M_for_e" stoichiometry="1"/>
+          <speciesReference species="M_h_e" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_for_c" stoichiometry="1"/>
+          <speciesReference species="M_h_c" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
           <math xmlns="http://www.w3.org/1998/Math/MathML">          
             <apply>
               <ci> FLUX_VALUE </ci>
@@ -2078,7 +2396,13 @@
   
      <p>GENE_LIST: b0904 b2492</p>
   </body></notes>
-              <kineticLaw>
+              <listOfReactants>
+          <speciesReference species="M_for_c" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_for_e" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
           <math xmlns="http://www.w3.org/1998/Math/MathML">          
             <apply>
               <ci> FLUX_VALUE </ci>
@@ -2107,7 +2431,15 @@
   
      <p>GENE_LIST: b4151 b4152 b4153 b4154</p>
   </body></notes>
-              <kineticLaw>
+              <listOfReactants>
+          <speciesReference species="M_fum_c" stoichiometry="1"/>
+          <speciesReference species="M_q8h2_c" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_q8_c" stoichiometry="1"/>
+          <speciesReference species="M_succ_c" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
           <math xmlns="http://www.w3.org/1998/Math/MathML">          
             <apply>
               <ci> FLUX_VALUE </ci>
@@ -2136,7 +2468,15 @@
   
      <p>GENE_LIST: b1817 b1818 b1819 b2415 b2416</p>
   </body></notes>
-              <kineticLaw>
+              <listOfReactants>
+          <speciesReference species="M_fru_e" stoichiometry="1"/>
+          <speciesReference species="M_pep_c" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_f6p_c" stoichiometry="1"/>
+          <speciesReference species="M_pyr_c" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
           <math xmlns="http://www.w3.org/1998/Math/MathML">          
             <apply>
               <ci> FLUX_VALUE </ci>
@@ -2165,7 +2505,14 @@
   
      <p>GENE_LIST: b1611 b1612 b4122</p>
   </body></notes>
-              <kineticLaw>
+              <listOfReactants>
+          <speciesReference species="M_fum_c" stoichiometry="1"/>
+          <speciesReference species="M_h2o_c" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_mal_L_c" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
           <math xmlns="http://www.w3.org/1998/Math/MathML">          
             <apply>
               <ci> FLUX_VALUE </ci>
@@ -2194,7 +2541,15 @@
   
      <p>GENE_LIST: b3528</p>
   </body></notes>
-              <kineticLaw>
+              <listOfReactants>
+          <speciesReference species="M_fum_e" stoichiometry="1"/>
+          <speciesReference species="M_h_e" stoichiometry="2"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_fum_c" stoichiometry="1"/>
+          <speciesReference species="M_h_c" stoichiometry="2"/>
+        </listOfProducts>
+        <kineticLaw>
           <math xmlns="http://www.w3.org/1998/Math/MathML">          
             <apply>
               <ci> FLUX_VALUE </ci>
@@ -2223,7 +2578,16 @@
   
      <p>GENE_LIST: b1852</p>
   </body></notes>
-              <kineticLaw>
+              <listOfReactants>
+          <speciesReference species="M_g6p_c" stoichiometry="1"/>
+          <speciesReference species="M_nadp_c" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_6pgl_c" stoichiometry="1"/>
+          <speciesReference species="M_h_c" stoichiometry="1"/>
+          <speciesReference species="M_nadph_c" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
           <math xmlns="http://www.w3.org/1998/Math/MathML">          
             <apply>
               <ci> FLUX_VALUE </ci>
@@ -2252,7 +2616,17 @@
   
      <p>GENE_LIST: b1779</p>
   </body></notes>
-              <kineticLaw>
+              <listOfReactants>
+          <speciesReference species="M_g3p_c" stoichiometry="1"/>
+          <speciesReference species="M_nad_c" stoichiometry="1"/>
+          <speciesReference species="M_pi_c" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_13dpg_c" stoichiometry="1"/>
+          <speciesReference species="M_h_c" stoichiometry="1"/>
+          <speciesReference species="M_nadh_c" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
           <math xmlns="http://www.w3.org/1998/Math/MathML">          
             <apply>
               <ci> FLUX_VALUE </ci>
@@ -2281,7 +2655,15 @@
   
      <p>GENE_LIST: b1101 b1621 b1817 b1818 b1819 b2415 b2416 b2417</p>
   </body></notes>
-              <kineticLaw>
+              <listOfReactants>
+          <speciesReference species="M_glc_D_e" stoichiometry="1"/>
+          <speciesReference species="M_pep_c" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_g6p_c" stoichiometry="1"/>
+          <speciesReference species="M_pyr_c" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
           <math xmlns="http://www.w3.org/1998/Math/MathML">          
             <apply>
               <ci> FLUX_VALUE </ci>
@@ -2310,7 +2692,18 @@
   
      <p>GENE_LIST: b1297 b3870</p>
   </body></notes>
-              <kineticLaw>
+              <listOfReactants>
+          <speciesReference species="M_atp_c" stoichiometry="1"/>
+          <speciesReference species="M_glu_L_c" stoichiometry="1"/>
+          <speciesReference species="M_nh4_c" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_adp_c" stoichiometry="1"/>
+          <speciesReference species="M_gln_L_c" stoichiometry="1"/>
+          <speciesReference species="M_h_c" stoichiometry="1"/>
+          <speciesReference species="M_pi_c" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
           <math xmlns="http://www.w3.org/1998/Math/MathML">          
             <apply>
               <ci> FLUX_VALUE </ci>
@@ -2339,7 +2732,18 @@
   
      <p>GENE_LIST: b0809 b0810 b0811</p>
   </body></notes>
-              <kineticLaw>
+              <listOfReactants>
+          <speciesReference species="M_atp_c" stoichiometry="1"/>
+          <speciesReference species="M_gln_L_e" stoichiometry="1"/>
+          <speciesReference species="M_h2o_c" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_adp_c" stoichiometry="1"/>
+          <speciesReference species="M_gln_L_c" stoichiometry="1"/>
+          <speciesReference species="M_h_c" stoichiometry="1"/>
+          <speciesReference species="M_pi_c" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
           <math xmlns="http://www.w3.org/1998/Math/MathML">          
             <apply>
               <ci> FLUX_VALUE </ci>
@@ -2368,7 +2772,18 @@
   
      <p>GENE_LIST: b1761</p>
   </body></notes>
-              <kineticLaw>
+              <listOfReactants>
+          <speciesReference species="M_glu_L_c" stoichiometry="1"/>
+          <speciesReference species="M_h2o_c" stoichiometry="1"/>
+          <speciesReference species="M_nadp_c" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_akg_c" stoichiometry="1"/>
+          <speciesReference species="M_h_c" stoichiometry="1"/>
+          <speciesReference species="M_nadph_c" stoichiometry="1"/>
+          <speciesReference species="M_nh4_c" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
           <math xmlns="http://www.w3.org/1998/Math/MathML">          
             <apply>
               <ci> FLUX_VALUE </ci>
@@ -2397,7 +2812,15 @@
   
      <p>GENE_LIST: b0485 b1524 b1812</p>
   </body></notes>
-              <kineticLaw>
+              <listOfReactants>
+          <speciesReference species="M_gln_L_c" stoichiometry="1"/>
+          <speciesReference species="M_h2o_c" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_glu_L_c" stoichiometry="1"/>
+          <speciesReference species="M_nh4_c" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
           <math xmlns="http://www.w3.org/1998/Math/MathML">          
             <apply>
               <ci> FLUX_VALUE </ci>
@@ -2426,7 +2849,17 @@
   
      <p>GENE_LIST: b3212 b3213</p>
   </body></notes>
-              <kineticLaw>
+              <listOfReactants>
+          <speciesReference species="M_akg_c" stoichiometry="1"/>
+          <speciesReference species="M_gln_L_c" stoichiometry="1"/>
+          <speciesReference species="M_h_c" stoichiometry="1"/>
+          <speciesReference species="M_nadph_c" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_glu_L_c" stoichiometry="2"/>
+          <speciesReference species="M_nadp_c" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
           <math xmlns="http://www.w3.org/1998/Math/MathML">          
             <apply>
               <ci> FLUX_VALUE </ci>
@@ -2455,7 +2888,15 @@
   
      <p>GENE_LIST: b4077</p>
   </body></notes>
-              <kineticLaw>
+              <listOfReactants>
+          <speciesReference species="M_glu_L_e" stoichiometry="1"/>
+          <speciesReference species="M_h_e" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_glu_L_c" stoichiometry="1"/>
+          <speciesReference species="M_h_c" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
           <math xmlns="http://www.w3.org/1998/Math/MathML">          
             <apply>
               <ci> FLUX_VALUE </ci>
@@ -2484,7 +2925,16 @@
   
      <p>GENE_LIST: b2029</p>
   </body></notes>
-              <kineticLaw>
+              <listOfReactants>
+          <speciesReference species="M_6pgc_c" stoichiometry="1"/>
+          <speciesReference species="M_nadp_c" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_co2_c" stoichiometry="1"/>
+          <speciesReference species="M_nadph_c" stoichiometry="1"/>
+          <speciesReference species="M_ru5p_D_c" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
           <math xmlns="http://www.w3.org/1998/Math/MathML">          
             <apply>
               <ci> FLUX_VALUE </ci>
@@ -2513,7 +2963,13 @@
   
      <p>GENE_LIST: b0875 s0001</p>
   </body></notes>
-              <kineticLaw>
+              <listOfReactants>
+          <speciesReference species="M_h2o_e" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_h2o_c" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
           <math xmlns="http://www.w3.org/1998/Math/MathML">          
             <apply>
               <ci> FLUX_VALUE </ci>
@@ -2542,7 +2998,16 @@
   
      <p>GENE_LIST: b1136</p>
   </body></notes>
-              <kineticLaw>
+              <listOfReactants>
+          <speciesReference species="M_icit_c" stoichiometry="1"/>
+          <speciesReference species="M_nadp_c" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_akg_c" stoichiometry="1"/>
+          <speciesReference species="M_co2_c" stoichiometry="1"/>
+          <speciesReference species="M_nadph_c" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
           <math xmlns="http://www.w3.org/1998/Math/MathML">          
             <apply>
               <ci> FLUX_VALUE </ci>
@@ -2571,7 +3036,14 @@
   
      <p>GENE_LIST: b4015</p>
   </body></notes>
-              <kineticLaw>
+              <listOfReactants>
+          <speciesReference species="M_icit_c" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_glx_c" stoichiometry="1"/>
+          <speciesReference species="M_succ_c" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
           <math xmlns="http://www.w3.org/1998/Math/MathML">          
             <apply>
               <ci> FLUX_VALUE </ci>
@@ -2600,7 +3072,16 @@
   
      <p>GENE_LIST: b1380 b2133</p>
   </body></notes>
-              <kineticLaw>
+              <listOfReactants>
+          <speciesReference species="M_lac_D_c" stoichiometry="1"/>
+          <speciesReference species="M_nad_c" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_h_c" stoichiometry="1"/>
+          <speciesReference species="M_nadh_c" stoichiometry="1"/>
+          <speciesReference species="M_pyr_c" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
           <math xmlns="http://www.w3.org/1998/Math/MathML">          
             <apply>
               <ci> FLUX_VALUE </ci>
@@ -2629,7 +3110,17 @@
   
      <p>GENE_LIST: b2976 b4014</p>
   </body></notes>
-              <kineticLaw>
+              <listOfReactants>
+          <speciesReference species="M_accoa_c" stoichiometry="1"/>
+          <speciesReference species="M_glx_c" stoichiometry="1"/>
+          <speciesReference species="M_h2o_c" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_coa_c" stoichiometry="1"/>
+          <speciesReference species="M_h_c" stoichiometry="1"/>
+          <speciesReference species="M_mal_L_c" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
           <math xmlns="http://www.w3.org/1998/Math/MathML">          
             <apply>
               <ci> FLUX_VALUE </ci>
@@ -2658,7 +3149,15 @@
   
      <p>GENE_LIST: b3528</p>
   </body></notes>
-              <kineticLaw>
+              <listOfReactants>
+          <speciesReference species="M_h_e" stoichiometry="2"/>
+          <speciesReference species="M_mal_L_e" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_h_c" stoichiometry="2"/>
+          <speciesReference species="M_mal_L_c" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
           <math xmlns="http://www.w3.org/1998/Math/MathML">          
             <apply>
               <ci> FLUX_VALUE </ci>
@@ -2687,7 +3186,16 @@
   
      <p>GENE_LIST: b3236</p>
   </body></notes>
-              <kineticLaw>
+              <listOfReactants>
+          <speciesReference species="M_mal_L_c" stoichiometry="1"/>
+          <speciesReference species="M_nad_c" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_h_c" stoichiometry="1"/>
+          <speciesReference species="M_nadh_c" stoichiometry="1"/>
+          <speciesReference species="M_oaa_c" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
           <math xmlns="http://www.w3.org/1998/Math/MathML">          
             <apply>
               <ci> FLUX_VALUE </ci>
@@ -2716,7 +3224,16 @@
   
      <p>GENE_LIST: b1479</p>
   </body></notes>
-              <kineticLaw>
+              <listOfReactants>
+          <speciesReference species="M_mal_L_c" stoichiometry="1"/>
+          <speciesReference species="M_nad_c" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_co2_c" stoichiometry="1"/>
+          <speciesReference species="M_nadh_c" stoichiometry="1"/>
+          <speciesReference species="M_pyr_c" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
           <math xmlns="http://www.w3.org/1998/Math/MathML">          
             <apply>
               <ci> FLUX_VALUE </ci>
@@ -2745,7 +3262,16 @@
   
      <p>GENE_LIST: b2463</p>
   </body></notes>
-              <kineticLaw>
+              <listOfReactants>
+          <speciesReference species="M_mal_L_c" stoichiometry="1"/>
+          <speciesReference species="M_nadp_c" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_co2_c" stoichiometry="1"/>
+          <speciesReference species="M_nadph_c" stoichiometry="1"/>
+          <speciesReference species="M_pyr_c" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
           <math xmlns="http://www.w3.org/1998/Math/MathML">          
             <apply>
               <ci> FLUX_VALUE </ci>
@@ -2774,7 +3300,17 @@
   
      <p>GENE_LIST: b2276 b2277 b2278 b2279 b2280 b2281 b2282 b2283 b2284 b2285 b2286 b2287 b2288</p>
   </body></notes>
-              <kineticLaw>
+              <listOfReactants>
+          <speciesReference species="M_h_c" stoichiometry="4"/>
+          <speciesReference species="M_nadh_c" stoichiometry="1"/>
+          <speciesReference species="M_q8_c" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_h_e" stoichiometry="3"/>
+          <speciesReference species="M_nad_c" stoichiometry="1"/>
+          <speciesReference species="M_q8h2_c" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
           <math xmlns="http://www.w3.org/1998/Math/MathML">          
             <apply>
               <ci> FLUX_VALUE </ci>
@@ -2803,7 +3339,15 @@
   
      <p>GENE_LIST: b1602 b1603 b3962</p>
   </body></notes>
-              <kineticLaw>
+              <listOfReactants>
+          <speciesReference species="M_nad_c" stoichiometry="1"/>
+          <speciesReference species="M_nadph_c" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_nadh_c" stoichiometry="1"/>
+          <speciesReference species="M_nadp_c" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
           <math xmlns="http://www.w3.org/1998/Math/MathML">          
             <apply>
               <ci> FLUX_VALUE </ci>
@@ -2832,7 +3376,13 @@
   
      <p>GENE_LIST: b0451 s0001</p>
   </body></notes>
-              <kineticLaw>
+              <listOfReactants>
+          <speciesReference species="M_nh4_e" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_nh4_c" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
           <math xmlns="http://www.w3.org/1998/Math/MathML">          
             <apply>
               <ci> FLUX_VALUE </ci>
@@ -2861,7 +3411,13 @@
   
      <p>GENE_LIST: s0001</p>
   </body></notes>
-              <kineticLaw>
+              <listOfReactants>
+          <speciesReference species="M_o2_e" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_o2_c" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
           <math xmlns="http://www.w3.org/1998/Math/MathML">          
             <apply>
               <ci> FLUX_VALUE </ci>
@@ -2890,7 +3446,17 @@
   
      <p>GENE_LIST: b0114 b0115 b0116</p>
   </body></notes>
-              <kineticLaw>
+              <listOfReactants>
+          <speciesReference species="M_coa_c" stoichiometry="1"/>
+          <speciesReference species="M_nad_c" stoichiometry="1"/>
+          <speciesReference species="M_pyr_c" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_accoa_c" stoichiometry="1"/>
+          <speciesReference species="M_co2_c" stoichiometry="1"/>
+          <speciesReference species="M_nadh_c" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
           <math xmlns="http://www.w3.org/1998/Math/MathML">          
             <apply>
               <ci> FLUX_VALUE </ci>
@@ -2919,7 +3485,16 @@
   
      <p>GENE_LIST: b1723 b3916</p>
   </body></notes>
-              <kineticLaw>
+              <listOfReactants>
+          <speciesReference species="M_atp_c" stoichiometry="1"/>
+          <speciesReference species="M_f6p_c" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_adp_c" stoichiometry="1"/>
+          <speciesReference species="M_fdp_c" stoichiometry="1"/>
+          <speciesReference species="M_h_c" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
           <math xmlns="http://www.w3.org/1998/Math/MathML">          
             <apply>
               <ci> FLUX_VALUE </ci>
@@ -2948,7 +3523,15 @@
   
      <p>GENE_LIST: b0902 b0903 b2579 b3114 b3951 b3952</p>
   </body></notes>
-              <kineticLaw>
+              <listOfReactants>
+          <speciesReference species="M_coa_c" stoichiometry="1"/>
+          <speciesReference species="M_pyr_c" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_accoa_c" stoichiometry="1"/>
+          <speciesReference species="M_for_c" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
           <math xmlns="http://www.w3.org/1998/Math/MathML">          
             <apply>
               <ci> FLUX_VALUE </ci>
@@ -2977,7 +3560,13 @@
   
      <p>GENE_LIST: b4025</p>
   </body></notes>
-              <kineticLaw>
+              <listOfReactants>
+          <speciesReference species="M_g6p_c" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_f6p_c" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
           <math xmlns="http://www.w3.org/1998/Math/MathML">          
             <apply>
               <ci> FLUX_VALUE </ci>
@@ -3006,7 +3595,15 @@
   
      <p>GENE_LIST: b2926</p>
   </body></notes>
-              <kineticLaw>
+              <listOfReactants>
+          <speciesReference species="M_3pg_c" stoichiometry="1"/>
+          <speciesReference species="M_atp_c" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_13dpg_c" stoichiometry="1"/>
+          <speciesReference species="M_adp_c" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
           <math xmlns="http://www.w3.org/1998/Math/MathML">          
             <apply>
               <ci> FLUX_VALUE </ci>
@@ -3035,7 +3632,15 @@
   
      <p>GENE_LIST: b0767</p>
   </body></notes>
-              <kineticLaw>
+              <listOfReactants>
+          <speciesReference species="M_6pgl_c" stoichiometry="1"/>
+          <speciesReference species="M_h2o_c" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_6pgc_c" stoichiometry="1"/>
+          <speciesReference species="M_h_c" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
           <math xmlns="http://www.w3.org/1998/Math/MathML">          
             <apply>
               <ci> FLUX_VALUE </ci>
@@ -3064,7 +3669,13 @@
   
      <p>GENE_LIST: b0755 b3612 b4395</p>
   </body></notes>
-              <kineticLaw>
+              <listOfReactants>
+          <speciesReference species="M_2pg_c" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_3pg_c" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
           <math xmlns="http://www.w3.org/1998/Math/MathML">          
             <apply>
               <ci> FLUX_VALUE </ci>
@@ -3093,7 +3704,15 @@
   
      <p>GENE_LIST: b2987 b3493</p>
   </body></notes>
-              <kineticLaw>
+              <listOfReactants>
+          <speciesReference species="M_h_e" stoichiometry="1"/>
+          <speciesReference species="M_pi_e" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_h_c" stoichiometry="1"/>
+          <speciesReference species="M_pi_c" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
           <math xmlns="http://www.w3.org/1998/Math/MathML">          
             <apply>
               <ci> FLUX_VALUE </ci>
@@ -3122,7 +3741,17 @@
   
      <p>GENE_LIST: b3956</p>
   </body></notes>
-              <kineticLaw>
+              <listOfReactants>
+          <speciesReference species="M_co2_c" stoichiometry="1"/>
+          <speciesReference species="M_h2o_c" stoichiometry="1"/>
+          <speciesReference species="M_pep_c" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_h_c" stoichiometry="1"/>
+          <speciesReference species="M_oaa_c" stoichiometry="1"/>
+          <speciesReference species="M_pi_c" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
           <math xmlns="http://www.w3.org/1998/Math/MathML">          
             <apply>
               <ci> FLUX_VALUE </ci>
@@ -3151,7 +3780,16 @@
   
      <p>GENE_LIST: b3403</p>
   </body></notes>
-              <kineticLaw>
+              <listOfReactants>
+          <speciesReference species="M_atp_c" stoichiometry="1"/>
+          <speciesReference species="M_oaa_c" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_adp_c" stoichiometry="1"/>
+          <speciesReference species="M_co2_c" stoichiometry="1"/>
+          <speciesReference species="M_pep_c" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
           <math xmlns="http://www.w3.org/1998/Math/MathML">          
             <apply>
               <ci> FLUX_VALUE </ci>
@@ -3180,7 +3818,18 @@
   
      <p>GENE_LIST: b1702</p>
   </body></notes>
-              <kineticLaw>
+              <listOfReactants>
+          <speciesReference species="M_atp_c" stoichiometry="1"/>
+          <speciesReference species="M_h2o_c" stoichiometry="1"/>
+          <speciesReference species="M_pyr_c" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_amp_c" stoichiometry="1"/>
+          <speciesReference species="M_h_c" stoichiometry="2"/>
+          <speciesReference species="M_pep_c" stoichiometry="1"/>
+          <speciesReference species="M_pi_c" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
           <math xmlns="http://www.w3.org/1998/Math/MathML">          
             <apply>
               <ci> FLUX_VALUE </ci>
@@ -3209,7 +3858,15 @@
   
      <p>GENE_LIST: b2297 b2458</p>
   </body></notes>
-              <kineticLaw>
+              <listOfReactants>
+          <speciesReference species="M_accoa_c" stoichiometry="1"/>
+          <speciesReference species="M_pi_c" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_actp_c" stoichiometry="1"/>
+          <speciesReference species="M_coa_c" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
           <math xmlns="http://www.w3.org/1998/Math/MathML">          
             <apply>
               <ci> FLUX_VALUE </ci>
@@ -3238,7 +3895,16 @@
   
      <p>GENE_LIST: b1676 b1854</p>
   </body></notes>
-              <kineticLaw>
+              <listOfReactants>
+          <speciesReference species="M_adp_c" stoichiometry="1"/>
+          <speciesReference species="M_h_c" stoichiometry="1"/>
+          <speciesReference species="M_pep_c" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_atp_c" stoichiometry="1"/>
+          <speciesReference species="M_pyr_c" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
           <math xmlns="http://www.w3.org/1998/Math/MathML">          
             <apply>
               <ci> FLUX_VALUE </ci>
@@ -3267,7 +3933,15 @@
   
      <p>GENE_LIST: </p>
   </body></notes>
-              <kineticLaw>
+              <listOfReactants>
+          <speciesReference species="M_h_e" stoichiometry="1"/>
+          <speciesReference species="M_pyr_e" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_h_c" stoichiometry="1"/>
+          <speciesReference species="M_pyr_c" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
           <math xmlns="http://www.w3.org/1998/Math/MathML">          
             <apply>
               <ci> FLUX_VALUE </ci>
@@ -3296,7 +3970,13 @@
   
      <p>GENE_LIST: b3386 b4301</p>
   </body></notes>
-              <kineticLaw>
+              <listOfReactants>
+          <speciesReference species="M_ru5p_D_c" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_xu5p_D_c" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
           <math xmlns="http://www.w3.org/1998/Math/MathML">          
             <apply>
               <ci> FLUX_VALUE </ci>
@@ -3325,7 +4005,13 @@
   
      <p>GENE_LIST: b2914 b4090</p>
   </body></notes>
-              <kineticLaw>
+              <listOfReactants>
+          <speciesReference species="M_r5p_c" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_ru5p_D_c" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
           <math xmlns="http://www.w3.org/1998/Math/MathML">          
             <apply>
               <ci> FLUX_VALUE </ci>
@@ -3354,7 +4040,15 @@
   
      <p>GENE_LIST: b3528</p>
   </body></notes>
-              <kineticLaw>
+              <listOfReactants>
+          <speciesReference species="M_h_e" stoichiometry="2"/>
+          <speciesReference species="M_succ_e" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_h_c" stoichiometry="2"/>
+          <speciesReference species="M_succ_c" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
           <math xmlns="http://www.w3.org/1998/Math/MathML">          
             <apply>
               <ci> FLUX_VALUE </ci>
@@ -3383,7 +4077,15 @@
   
      <p>GENE_LIST: </p>
   </body></notes>
-              <kineticLaw>
+              <listOfReactants>
+          <speciesReference species="M_h_e" stoichiometry="1"/>
+          <speciesReference species="M_succ_c" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_h_c" stoichiometry="1"/>
+          <speciesReference species="M_succ_e" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
           <math xmlns="http://www.w3.org/1998/Math/MathML">          
             <apply>
               <ci> FLUX_VALUE </ci>
@@ -3412,7 +4114,15 @@
   
      <p>GENE_LIST: b0721 b0722 b0723 b0724</p>
   </body></notes>
-              <kineticLaw>
+              <listOfReactants>
+          <speciesReference species="M_q8_c" stoichiometry="1"/>
+          <speciesReference species="M_succ_c" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_fum_c" stoichiometry="1"/>
+          <speciesReference species="M_q8h2_c" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
           <math xmlns="http://www.w3.org/1998/Math/MathML">          
             <apply>
               <ci> FLUX_VALUE </ci>
@@ -3441,7 +4151,17 @@
   
      <p>GENE_LIST: b0728 b0729</p>
   </body></notes>
-              <kineticLaw>
+              <listOfReactants>
+          <speciesReference species="M_atp_c" stoichiometry="1"/>
+          <speciesReference species="M_coa_c" stoichiometry="1"/>
+          <speciesReference species="M_succ_c" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_adp_c" stoichiometry="1"/>
+          <speciesReference species="M_pi_c" stoichiometry="1"/>
+          <speciesReference species="M_succoa_c" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
           <math xmlns="http://www.w3.org/1998/Math/MathML">          
             <apply>
               <ci> FLUX_VALUE </ci>
@@ -3470,7 +4190,15 @@
   
      <p>GENE_LIST: b0008 b2464</p>
   </body></notes>
-              <kineticLaw>
+              <listOfReactants>
+          <speciesReference species="M_g3p_c" stoichiometry="1"/>
+          <speciesReference species="M_s7p_c" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_e4p_c" stoichiometry="1"/>
+          <speciesReference species="M_f6p_c" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
           <math xmlns="http://www.w3.org/1998/Math/MathML">          
             <apply>
               <ci> FLUX_VALUE </ci>
@@ -3499,7 +4227,17 @@
   
      <p>GENE_LIST: b1602 b1603</p>
   </body></notes>
-              <kineticLaw>
+              <listOfReactants>
+          <speciesReference species="M_h_e" stoichiometry="2"/>
+          <speciesReference species="M_nadh_c" stoichiometry="1"/>
+          <speciesReference species="M_nadp_c" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_h_c" stoichiometry="2"/>
+          <speciesReference species="M_nad_c" stoichiometry="1"/>
+          <speciesReference species="M_nadph_c" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
           <math xmlns="http://www.w3.org/1998/Math/MathML">          
             <apply>
               <ci> FLUX_VALUE </ci>
@@ -3528,7 +4266,15 @@
   
      <p>GENE_LIST: b2465 b2935</p>
   </body></notes>
-              <kineticLaw>
+              <listOfReactants>
+          <speciesReference species="M_r5p_c" stoichiometry="1"/>
+          <speciesReference species="M_xu5p_D_c" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_g3p_c" stoichiometry="1"/>
+          <speciesReference species="M_s7p_c" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
           <math xmlns="http://www.w3.org/1998/Math/MathML">          
             <apply>
               <ci> FLUX_VALUE </ci>
@@ -3557,7 +4303,15 @@
   
      <p>GENE_LIST: b2465 b2935</p>
   </body></notes>
-              <kineticLaw>
+              <listOfReactants>
+          <speciesReference species="M_e4p_c" stoichiometry="1"/>
+          <speciesReference species="M_xu5p_D_c" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_f6p_c" stoichiometry="1"/>
+          <speciesReference species="M_g3p_c" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
           <math xmlns="http://www.w3.org/1998/Math/MathML">          
             <apply>
               <ci> FLUX_VALUE </ci>
@@ -3586,7 +4340,13 @@
   
      <p>GENE_LIST: b3919</p>
   </body></notes>
-              <kineticLaw>
+              <listOfReactants>
+          <speciesReference species="M_dhap_c" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="M_g3p_c" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
           <math xmlns="http://www.w3.org/1998/Math/MathML">          
             <apply>
               <ci> FLUX_VALUE </ci>
