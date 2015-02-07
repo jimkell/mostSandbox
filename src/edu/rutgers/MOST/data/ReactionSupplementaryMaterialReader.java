@@ -66,7 +66,7 @@ public class ReactionSupplementaryMaterialReader {
 								//System.out.println(dataArray[s]);
 							}
 						}
-						if (reacAbbr !=  null && reacAbbr.length() > 0 && ecNumber != null && ecNumber.length() > 0) {
+						if (reacAbbr != null && reacAbbr.length() > 0 && ecNumber != null && ecNumber.length() > 0) {
 							reactionAbbrECNumberMap.put(reacAbbr, ecNumber);
 						}
 					}

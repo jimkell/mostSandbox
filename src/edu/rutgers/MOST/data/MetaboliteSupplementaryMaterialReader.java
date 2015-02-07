@@ -62,7 +62,7 @@ public class MetaboliteSupplementaryMaterialReader {
 								keggId = dataArray[s];
 							}
 						}
-						if (metabAbbr !=  null && metabAbbr.length() > 0 && keggId != null && keggId.length() > 0) {
+						if (metabAbbr != null && metabAbbr.length() > 0 && keggId != null && keggId.length() > 0) {
 							metaboliteAbbrKeggIdMap.put(metabAbbr, keggId);
 						}
 					}

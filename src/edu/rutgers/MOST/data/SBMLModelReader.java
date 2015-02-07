@@ -343,7 +343,7 @@ public class SBMLModelReader {
 		LocalConfig.getInstance().setMaxMetabolite(metabolites.size());
 		LocalConfig.getInstance().setMaxMetaboliteId(metabolites.size());
 		LocalConfig.getInstance().setMetabolitesMetaColumnNames(metabolitesMetaColumnNames);
-		System.out.println(metabolitesMetaColumnNames);
+		//System.out.println(metabolitesMetaColumnNames);
 		LocalConfig.getInstance().setCompartmentsList(compartmentsList);
 		LocalConfig.getInstance().setCompartmentAbbreviationList(compartmentAbbreviationList);
 		//System.out.println(compartmentAbbreviationList);
