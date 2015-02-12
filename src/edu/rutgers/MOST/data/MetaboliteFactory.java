@@ -171,6 +171,7 @@ public class MetaboliteFactory {
 					metabolite.setMetaboliteAbbreviation((String) GraphicalInterface.metabolitesTable.getModel().getValueAt(i, GraphicalInterfaceConstants.METABOLITE_ABBREVIATION_COLUMN));
 					metabolite.setMetaboliteName((String) GraphicalInterface.metabolitesTable.getModel().getValueAt(i, GraphicalInterfaceConstants.METABOLITE_NAME_COLUMN));
 					metabolite.setCharge((String) GraphicalInterface.metabolitesTable.getModel().getValueAt(i, GraphicalInterfaceConstants.CHARGE_COLUMN));
+					metabolite.setCompartment((String) GraphicalInterface.metabolitesTable.getModel().getValueAt(i, GraphicalInterfaceConstants.COMPARTMENT_COLUMN));
 					metabolite.setBoundary((String) GraphicalInterface.metabolitesTable.getModel().getValueAt(i, GraphicalInterfaceConstants.BOUNDARY_COLUMN));
 					if (getKeggIdColumnIndex() > -1) {
 						metabolite.setKeggId((String) GraphicalInterface.metabolitesTable.getModel().getValueAt(i, getKeggIdColumnIndex()));

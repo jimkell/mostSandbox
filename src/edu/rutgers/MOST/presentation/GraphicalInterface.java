@@ -1445,8 +1445,8 @@ public class GraphicalInterface extends JFrame {
 		// visualizations 
 		Map<String, ArrayList<SBMLReaction>> ecNumberReactionMap = new HashMap<String, ArrayList<SBMLReaction>>();
 		LocalConfig.getInstance().setEcNumberReactionMap(ecNumberReactionMap);
-		ArrayList<String> compartmentAbbreviationList = new ArrayList<String>();
-		LocalConfig.getInstance().setCompartmentAbbreviationList(compartmentAbbreviationList);
+		Map<String, ArrayList<String>> keggIdCompartmentMap = new HashMap<String, ArrayList<String>>();
+		LocalConfig.getInstance().setKeggIdCompartmentMap(keggIdCompartmentMap);
 
 		DynamicTreePanel.getTreePanel().deleteItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent a) {
@@ -2245,12 +2245,51 @@ public class GraphicalInterface extends JFrame {
 				Collections.sort(ecMapCreator.getFluxes());
 				//System.out.println("fluxes " + ecMapCreator.getFluxes());
 				
-				if (LocalConfig.getInstance().getEcNumberReactionMap().size() == 0) {
+				String missingItem = "";
+				String missingData = "";
+				boolean showMissingItemMessage = true;
+				MetaboliteFactory f = new MetaboliteFactory("SBML");
+				if (f.getKeggIdColumnIndex() > -1) {
+					Vector<SBMLMetabolite> metabolites = f.getAllMetabolites();
+					for (int i = 0; i < metabolites.size(); i++) {
+						if (metabolites.get(i).getMetaboliteAbbreviation() != null &&
+								metabolites.get(i).getMetaboliteAbbreviation().length() > 0 &&
+								!metabolites.get(i).getMetaboliteAbbreviation().endsWith("_b") &&
+								metabolites.get(i).getKeggId() != null &&
+								metabolites.get(i).getKeggId().length() > 0) {
+							String keggId = metabolites.get(i).getKeggId();
+							if (!LocalConfig.getInstance().getKeggIdCompartmentMap().containsKey(keggId)) {
+								ArrayList<String> compList = new ArrayList<String>();
+								compList.add(metabolites.get(i).getCompartment());
+								LocalConfig.getInstance().getKeggIdCompartmentMap().put(keggId, compList);
+							} else {
+								ArrayList<String> compList = LocalConfig.getInstance().getKeggIdCompartmentMap().get(keggId);
+								compList.add(metabolites.get(i).getCompartment());
+								LocalConfig.getInstance().getKeggIdCompartmentMap().put(keggId, compList);
+							}
+						}
+					}
+					System.out.println(LocalConfig.getInstance().getKeggIdCompartmentMap());
+				}
+				if (LocalConfig.getInstance().getEcNumberReactionMap().size() == 0 &&
+						f.getKeggIdColumnIndex() == -1) {
+					missingItem = "EC Numbers or KEGG IDs";
+					missingData = "reactions or metabolites in model to items";
+				} else if (LocalConfig.getInstance().getEcNumberReactionMap().size() == 0) {
+					missingItem = "EC Numbers";
+					missingData = "reactions in model to items";
+				} else if (f.getKeggIdColumnIndex() == -1) {
+					missingItem = "KEGG IDs";
+					missingData = "metabolites in model to items";
+				} else {
+					showMissingItemMessage = false;
+				} 
+				if (showMissingItemMessage) {
 					Object[] options = {"Yes",
 					"No"};
 					int choice = JOptionPane.showOptionDialog(null, 
-							"<html>Since there are no EC Numbers in the loaded model, <p>"
-									+ "MOST is unable to link reactions in model to reactions <p>"
+							"<html>Since there are no " + missingItem + " in the loaded model, <p>"
+									+ "MOST is unable to link " + missingData + " <p>"
 									+ "in the Visualizations database. Continue anyway?", 
 									"No EC Numbers in Model", 
 									JOptionPane.YES_NO_OPTION, 
@@ -2261,7 +2300,7 @@ public class GraphicalInterface extends JFrame {
 					// interpret the user's choice	  
 					if (choice == JOptionPane.YES_OPTION)
 					{
-						if (LocalConfig.getInstance().getCompartmentAbbreviationList().size() > 0) {
+						if (LocalConfig.getInstance().getListOfCompartments().size() > 0) {
 							createCompartmentNameDialog();
 						} else {
 							createVisualizationsPane();
@@ -2273,12 +2312,12 @@ public class GraphicalInterface extends JFrame {
 						// option in future to graph unconstrained
 					}
 				} else {
-					if (LocalConfig.getInstance().getCompartmentAbbreviationList().size() > 0) {
+					if (LocalConfig.getInstance().getListOfCompartments().size() > 0) {
 						createCompartmentNameDialog();
 					} else {
 						createVisualizationsPane();
 					}
-				} 
+				}
 			}
 		});
         

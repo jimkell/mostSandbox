@@ -45,6 +45,9 @@ public class CSVCombiner {
 							}
 							if (s == valueColumnIndex) {
 								value = dataArray[s];
+								if (value.startsWith("EC-")) {
+									value = value.substring(3);
+								}
 							}
 						}
 						if (key != null && key.length() > 0 && value != null && value.length() > 0) {
@@ -117,14 +120,32 @@ public class CSVCombiner {
 	public static void main( String args[] )
 	{
 		CSVCombiner c = new CSVCombiner();
-		File iaf1260 = new File("etc/sbml/E. Coli/iAF1260/inline-supplementary-material-3.csv");
-		c.readFile(iaf1260, 0, 7, 0, 0);
-		File ijo1366 = new File("etc/sbml/E. Coli/iJO1366/inline-supplementary-material-2.csv");
-		c.readFile(ijo1366, 0, 6, 0, 3);
+		// write kegg id combined file
+//		File iaf1260 = new File("etc/sbml/E. Coli/iAF1260/inline-supplementary-material-3.csv");
+//		c.readFile(iaf1260, 0, 7, 0, 0);
+//		File ijo1366 = new File("etc/sbml/E. Coli/iJO1366/inline-supplementary-material-2.csv");
+//		c.readFile(ijo1366, 0, 6, 0, 3);
+//		System.out.println(map);
+//		ArrayList<String> columns = new ArrayList<String>();
+//		columns.add("KEGG ID");
+//		c.write("test.csv", "Metabolite Abbreviation", columns);
+		// write ec number combined file
+//		File iaf1260 = new File("etc/sbml/E. Coli/iAF1260/iAF1260_ec_num.csv");
+//		c.readFile(iaf1260, 0, 1, 0, 0);
+//		File ijo1366 = new File("etc/sbml/E. Coli/iJO1366/iJO1366_ec_num.csv");
+//		c.readFile(ijo1366, 0, 1, 0, 0);
+//		System.out.println(map);
+//		ArrayList<String> columns = new ArrayList<String>();
+//		columns.add("EC Number");
+//		c.write("iAF1260_iJO1366_Combined_EC_Numbers.csv", "Reaction Abbreviation", columns);
+		File iaf1260_iJO1366 = new File("iAF1260_iJO1366_Combined_EC_Numbers.csv");
+		c.readFile(iaf1260_iJO1366, 0, 1, 2, 0);
+		File iJR904 = new File("etc/sbml/E. Coli/iJR904/gb-2003-4-9-r54-s1.csv");
+		c.readFile(iJR904, 0, 4, 0, 0);
 		System.out.println(map);
 		ArrayList<String> columns = new ArrayList<String>();
-		columns.add("KEGG ID");
-		c.write("test.csv", "Metabolite Abbreviation", columns);
+		columns.add("EC Number");
+		c.write("iAF1260_iJO1366_iJR904_Combined_EC_Numbers.csv", "Reaction Abbreviation", columns);
 	}
 
 }

@@ -200,28 +200,6 @@ public class LocalConfig {
 		this.metaboliteIdCompartmentMap = metaboliteIdCompartmentMap;
 	}
 
-	private Map<String, ArrayList<String>> metaboliteBaseNameCompartmentMap;
-	
-	public Map<String, ArrayList<String>> getMetaboliteBaseNameCompartmentMap() {
-		return metaboliteBaseNameCompartmentMap;
-	}
-
-	public void setMetaboliteBaseNameCompartmentMap(
-			Map<String, ArrayList<String>> metaboliteBaseNameCompartmentMap) {
-		this.metaboliteBaseNameCompartmentMap = metaboliteBaseNameCompartmentMap;
-	}
-
-	private ArrayList<String> compartmentAbbreviationList;
-
-	public ArrayList<String> getCompartmentAbbreviationList() {
-		return compartmentAbbreviationList;
-	}
-
-	public void setCompartmentAbbreviationList(
-			ArrayList<String> compartmentAbbreviationList) {
-		this.compartmentAbbreviationList = compartmentAbbreviationList;
-	}
-
 	//used for determining id when adding a metabolite when a reaction is
 	//read and metabolite is not present
 	private Integer maxMetabolite;
@@ -957,30 +935,17 @@ public class LocalConfig {
 		this.biCompartmentReactionIds = biCompartmentReactionIds;
 	}
 	
-	private Map<String, ArrayList<String>> metaboliteNameCompartmentMap;
-	
-	public Map<String, ArrayList<String>> getMetaboliteNameCompartmentMap() {
-		return metaboliteNameCompartmentMap;
+	private Map<String, ArrayList<String>> keggIdCompartmentMap;
+
+	public Map<String, ArrayList<String>> getKeggIdCompartmentMap() {
+		return keggIdCompartmentMap;
 	}
 
-	public void setMetaboliteNameCompartmentMap(
-			Map<String, ArrayList<String>> metaboliteNameCompartmentMap) {
-		this.metaboliteNameCompartmentMap = metaboliteNameCompartmentMap;
+	public void setKeggIdCompartmentMap(
+			Map<String, ArrayList<String>> keggIdCompartmentMap) {
+		this.keggIdCompartmentMap = keggIdCompartmentMap;
 	}
 
-	// contains metabolite abbreviations minus compartment suffix,
-	// suffixes in ArrayList
-	private Map<String, ArrayList<String>> metaboliteAbbreviationCompartmentMap;
-
-	public Map<String, ArrayList<String>> getMetaboliteAbbreviationCompartmentMap() {
-		return metaboliteAbbreviationCompartmentMap;
-	}
-
-	public void setMetaboliteAbbreviationCompartmentMap(
-			Map<String, ArrayList<String>> metaboliteAbbreviationCompartmentMap) {
-		this.metaboliteAbbreviationCompartmentMap = metaboliteAbbreviationCompartmentMap;
-	}
-	
 	private Map<String, ArrayList<PathwayConnectionData>> connectionPositionMap;
 
 	public Map<String, ArrayList<PathwayConnectionData>> getConnectionPositionMap() {
