@@ -14,9 +14,12 @@ Ec_iAF1260_anaerobic_glc10_succinate,Escherichia coli K-12 MG1655,1260,2382,1972
 Ec_iAF1260_anaerobic_glc10_succinate_ec_num,Escherichia coli K-12 MG1655,1260,2382,1972,"Egen and Lun, 2012",sbml/E. Coli,sbml,http://dx.doi.org/10.1093/bioinformatics/bts255
 iAF1260,Escherichia coli K-12 MG1655,1260,2077,1039,"Feist et al., 2007",sbml/E. Coli,sbml,http://dx.doi.org/10.1038%2Fmsb4100155
 iAF1260_ec_num,Escherichia coli K-12 MG1655,1260,2077,1039,"Feist et al., 2007",sbml/E. Coli,sbml,http://dx.doi.org/10.1038%2Fmsb4100155
+iAF1260_annotated,Escherichia coli K-12 MG1655,1260,2077,1039,"Feist et al., 2007",sbml/E. Coli,sbml,http://dx.doi.org/10.1038%2Fmsb4100155
 iJO1366,Escherichia coli K-12 MG1655,1366,2583,1805,"Orth et al, 2011",sbml/E. Coli,sbml,http://dx.doi.org/10.1038/msb.2011.65
 iJO1366_ec_num,Escherichia coli K-12 MG1655,1366,2583,1805,"Orth et al, 2011",sbml/E. Coli,sbml,http://dx.doi.org/10.1038/msb.2011.65
+iJO1366_annotated,Escherichia coli K-12 MG1655,1366,2583,1805,"Orth et al, 2011",sbml/E. Coli,sbml,http://dx.doi.org/10.1038/msb.2011.65
 iJR904,Escherichia coli K-12 MG1655,904,1075,904,"Reed et al., 2003",sbml/E. Coli,sbml,http://dx.doi.org/10.1186/gb-2003-4-9-r54
+iJR904_annotated,Escherichia coli K-12 MG1655,904,1075,904,"Reed et al., 2003",sbml/E. Coli,sbml,http://dx.doi.org/10.1186/gb-2003-4-9-r54
 iCA1273,Escherichia coli W (ATCC 9637),1273,2477,2062,"Archer et al., 2011",sbml/E. Coli,sbml,http://dx.doi.org/10.1186/1471-2164-12-9
 textbook-09120008,Escherichia coli,134,95,92,"Orth et al, 2010",sbml/E. Coli,sbml,http://dx.doi.org/10.1128/ecosalplus.10.2.1 
 textbook-09120008-ec,Escherichia coli,134,95,92,"Orth et al, 2010",sbml/E. Coli,sbml,http://dx.doi.org/10.1128/ecosalplus.10.2.1 
