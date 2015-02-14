@@ -106,6 +106,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.Vector;
 
 import layout.TableLayout;
@@ -1443,6 +1444,16 @@ public class GraphicalInterface extends JFrame {
 		LocalConfig.getInstance().setAddedMetabolites(addedMetabolites);
 		
 		// visualizations 
+		ArrayList<String> listOfCompartmentNames = new ArrayList<String>();
+		LocalConfig.getInstance().setListOfCompartmentNames(listOfCompartmentNames);
+		ArrayList<String> listOfCompartments = new ArrayList<String>();
+		LocalConfig.getInstance().setListOfCompartments(listOfCompartments);
+		ArrayList<Integer> cytosolExtraOrganismIds = new ArrayList<Integer>();
+		LocalConfig.getInstance().setCytosolExtraOrganismIds(cytosolExtraOrganismIds);
+		ArrayList<Integer> cytosolPeriplasmIds = new ArrayList<Integer>();
+		LocalConfig.getInstance().setCytosolPeriplasmIds(cytosolPeriplasmIds);
+		ArrayList<Integer> periplasmExtraOrganismIds = new ArrayList<Integer>();
+		LocalConfig.getInstance().setPeriplasmExtraOrganismIds(periplasmExtraOrganismIds);
 		Map<String, ArrayList<SBMLReaction>> ecNumberReactionMap = new HashMap<String, ArrayList<SBMLReaction>>();
 		LocalConfig.getInstance().setEcNumberReactionMap(ecNumberReactionMap);
 		Map<String, ArrayList<String>> keggIdCompartmentMap = new HashMap<String, ArrayList<String>>();
@@ -2239,6 +2250,13 @@ public class GraphicalInterface extends JFrame {
 			public void actionPerformed(ActionEvent ae) {
 				PathwayFilesReader reader = new PathwayFilesReader();
 				reader.readFiles();
+				
+				ArrayList<Object> unplottedReactions = new ArrayList<Object>(LocalConfig.getInstance().getReactionEquationMap().keySet());
+				ArrayList<Integer> unplottedReactionIds = new ArrayList<Integer>();
+				for (int i = 0; i < unplottedReactions.size(); i++) {
+					unplottedReactionIds.add((int) unplottedReactions.get(i));
+				}
+				LocalConfig.getInstance().setUnplottedReactionIds(unplottedReactionIds);
 				
 				ECNumberMapCreator ecMapCreator = new ECNumberMapCreator();
 				ecMapCreator.createEcNumberReactionMap();
@@ -12433,6 +12451,7 @@ public class GraphicalInterface extends JFrame {
 			LocalConfig.getInstance().setPeriplasmName(compNameFromCombo(getCompNameDialog().cbPeriplasmName));
 			getCompNameDialog().setVisible(false);
 			getCompNameDialog().dispose();
+			categorizeReactions();
 			createVisualizationsPane();
 		}
 	};
@@ -12443,6 +12462,168 @@ public class GraphicalInterface extends JFrame {
 			suffix = (String) combo.getSelectedItem();
 		}
 		return suffix;
+	}
+	
+	public void removeExternalReactions() {
+		ArrayList<Integer> externalReactionIds = new ArrayList<Integer>();
+		MetaboliteFactory f = new MetaboliteFactory("SBML");
+		ArrayList<Integer> metaboliteExternalIdList = f.metaboliteExternalIdList();
+		System.out.println("unpl " + LocalConfig.getInstance().getUnplottedReactionIds());
+		for (int j = 0; j < LocalConfig.getInstance().getUnplottedReactionIds().size(); j++) {
+			int id = LocalConfig.getInstance().getUnplottedReactionIds().get(j);
+			SBMLReactionEquation equn = (SBMLReactionEquation) LocalConfig.getInstance().getReactionEquationMap().get(id);
+			//System.out.println("eq " + equn);
+			// get external reactions, not plotted
+			ArrayList<SBMLReactant> reactants = equn.getReactants();
+			for (int r = 0; r < reactants.size(); r++) {
+				int metabId = reactants.get(r).getMetaboliteId();
+				if (metaboliteExternalIdList.contains(metabId)) {
+					if (!externalReactionIds.contains(id)) {
+						externalReactionIds.add(id);
+					}
+				}
+			}
+			ArrayList<SBMLProduct> products = equn.getProducts();
+			for (int p = 0; p < products.size(); p++) {
+				int metabId = products.get(p).getMetaboliteId();
+				if (metaboliteExternalIdList.contains(metabId)) {
+					if (!externalReactionIds.contains(id)) {
+						externalReactionIds.add(id);
+					}
+				}
+			}
+		}
+		System.out.println("ext rxns " + externalReactionIds);
+		for (int n = 0; n < externalReactionIds.size(); n++) {
+			if (LocalConfig.getInstance().getUnplottedReactionIds().contains(externalReactionIds.get(n))) {
+				LocalConfig.getInstance().getUnplottedReactionIds().remove(LocalConfig.getInstance().getUnplottedReactionIds().indexOf(externalReactionIds.get(n)));
+			}
+		}
+		Collections.sort(LocalConfig.getInstance().getUnplottedReactionIds());
+		//System.out.println("not plotted no ext " + LocalConfig.getInstance().getUnplottedReactionIds());
+	}
+	
+	public void categorizeReactions() {
+		// get reactions with no ec number
+		removeExternalReactions();
+		//System.out.println("no ext " + LocalConfig.getInstance().getUnplottedReactionIds());
+		// unnecessary to categorize reactions if compartment names not defined
+		if (LocalConfig.getInstance().getCytosolName() != null &&
+				LocalConfig.getInstance().getCytosolName().length() > 0 &&
+				LocalConfig.getInstance().getExtraOrganismName() != null &&
+				LocalConfig.getInstance().getExtraOrganismName().length() > 0) {
+			ArrayList<Integer> cytosolExtraOrganismIds = new ArrayList<Integer>();
+			ArrayList<Integer> cytosolPeriplasmIds = new ArrayList<Integer>();
+			ArrayList<Integer> periplasmExtraOrganismIds = new ArrayList<Integer>();
+			// reactants or products in two compartments
+			ArrayList<Integer> cytosolExtraOrganismIds2 = new ArrayList<Integer>();
+			ArrayList<Integer> cytosolPeriplasmIds2 = new ArrayList<Integer>();
+			ArrayList<Integer> periplasmExtraOrganismIds2 = new ArrayList<Integer>();
+			for (int j = 0; j < LocalConfig.getInstance().getUnplottedReactionIds().size(); j++) {
+				int id = LocalConfig.getInstance().getUnplottedReactionIds().get(j);
+				SBMLReactionEquation equn = (SBMLReactionEquation) LocalConfig.getInstance().getReactionEquationMap().get(id);
+				//System.out.println("eq " + equn);
+				if (equn.getCompartmentList().size() == 2) { 
+					// get periplasm to cytosol and periplasm to extra organism exchange and transport reactions
+					if (LocalConfig.getInstance().getPeriplasmName() != null &&
+							LocalConfig.getInstance().getPeriplasmName().length() > 0) {
+						if (equn.getCompartmentList().contains(LocalConfig.getInstance().getCytosolName())
+								&& equn.getCompartmentList().contains(LocalConfig.getInstance().getPeriplasmName())) {
+							//System.out.println("ex " + equn.getCompartmentList() + "id " + id);
+							if (LocalConfig.getInstance().getUnplottedReactionIds().contains(id)) {
+//								LocalConfig.getInstance().getUnplottedReactionIds().remove(LocalConfig.getInstance().getUnplottedReactionIds().indexOf(id));
+								if (equn.getCompartmentReactantsList().size() == 2 || equn.getCompartmentProductsList().size() == 2) {
+									cytosolPeriplasmIds2.add(id);
+									System.out.println("id " + id + "\t" + equn.equationAbbreviations + "\t" + "Cytosol Periplasm2");
+								} else {
+									cytosolPeriplasmIds.add(id);
+									System.out.println("id " + id + "\t" + equn.equationAbbreviations + "\t" + "Cytosol Periplasm");
+								}
+							}
+						}
+						if (equn.getCompartmentList().contains(LocalConfig.getInstance().getExtraOrganismName())
+								&& equn.getCompartmentList().contains(LocalConfig.getInstance().getPeriplasmName())) {
+							//System.out.println("ex " + equn.getCompartmentList() + "id " + id);
+							if (LocalConfig.getInstance().getUnplottedReactionIds().contains(id)) {
+//								LocalConfig.getInstance().getUnplottedReactionIds().remove(LocalConfig.getInstance().getUnplottedReactionIds().indexOf(id));
+								if (equn.getCompartmentReactantsList().size() == 2 || equn.getCompartmentProductsList().size() == 2) {
+									periplasmExtraOrganismIds2.add(id);
+									System.out.println("id " + id + "\t" + equn.equationAbbreviations + "\t" + "Extraorganism Periplasm2");
+								} else {
+									periplasmExtraOrganismIds.add(id);
+									System.out.println("id " + id + "\t" + equn.equationAbbreviations + "\t" + "Extraorganism Periplasm");
+								}
+							}
+						}
+					}
+					// get cytosol to extraorganism exchange and transport reactions
+					if (equn.getCompartmentList().contains(LocalConfig.getInstance().getCytosolName())
+							&& equn.getCompartmentList().contains(LocalConfig.getInstance().getExtraOrganismName())) {
+						//System.out.println("ex " + equn.getCompartmentList() + "id " + id);
+						if (LocalConfig.getInstance().getUnplottedReactionIds().contains(id)) {
+//							LocalConfig.getInstance().getUnplottedReactionIds().remove(LocalConfig.getInstance().getUnplottedReactionIds().indexOf(id));
+							if (equn.getCompartmentReactantsList().size() == 2 || equn.getCompartmentProductsList().size() == 2) {
+								cytosolExtraOrganismIds2.add(id);
+								System.out.println("id " + id + "\t" + equn.equationAbbreviations + "\t" + "Cytosol Extraorganism2");
+							} else {
+								cytosolExtraOrganismIds.add(id);
+								System.out.println("id " + id + "\t" + equn.equationAbbreviations + "\t" + "Cytosol Extraorganism");
+							}
+						}
+					} 
+				} else {
+					//System.out.println("comp list != 2 " + equn.getCompartmentList() + "id " + id);
+				}
+			}
+			LocalConfig.getInstance().setCytosolExtraOrganismIds(cytosolExtraOrganismIds);
+			System.out.println("ce " + cytosolExtraOrganismIds);
+			System.out.println("cp " + cytosolPeriplasmIds);
+			System.out.println("pe " + periplasmExtraOrganismIds);
+			// for some unknown reason, if it is attempted to remove these ids in if statements
+			// where added to this list (above), it skips some ids. commented out
+			for (int k = 0; k < cytosolExtraOrganismIds.size(); k++) {
+				if (LocalConfig.getInstance().getUnplottedReactionIds().contains(cytosolExtraOrganismIds.get(k))) {
+					LocalConfig.getInstance().getUnplottedReactionIds().remove(LocalConfig.getInstance().getUnplottedReactionIds().indexOf(cytosolExtraOrganismIds.get(k)));
+				}
+			}
+			for (int k = 0; k < cytosolExtraOrganismIds2.size(); k++) {
+				if (LocalConfig.getInstance().getUnplottedReactionIds().contains(cytosolExtraOrganismIds2.get(k))) {
+					LocalConfig.getInstance().getUnplottedReactionIds().remove(LocalConfig.getInstance().getUnplottedReactionIds().indexOf(cytosolExtraOrganismIds2.get(k)));
+				}
+			}
+			for (int m = 0; m < cytosolPeriplasmIds.size(); m++) {
+				if (LocalConfig.getInstance().getUnplottedReactionIds().contains(cytosolPeriplasmIds.get(m))) {
+					LocalConfig.getInstance().getUnplottedReactionIds().remove(LocalConfig.getInstance().getUnplottedReactionIds().indexOf(cytosolPeriplasmIds.get(m)));
+				}
+			}
+			for (int m = 0; m < cytosolPeriplasmIds2.size(); m++) {
+				if (LocalConfig.getInstance().getUnplottedReactionIds().contains(cytosolPeriplasmIds2.get(m))) {
+					LocalConfig.getInstance().getUnplottedReactionIds().remove(LocalConfig.getInstance().getUnplottedReactionIds().indexOf(cytosolPeriplasmIds2.get(m)));
+				}
+			}
+			for (int n = 0; n < periplasmExtraOrganismIds.size(); n++) {
+				if (LocalConfig.getInstance().getUnplottedReactionIds().contains(periplasmExtraOrganismIds.get(n))) {
+					LocalConfig.getInstance().getUnplottedReactionIds().remove(LocalConfig.getInstance().getUnplottedReactionIds().indexOf(periplasmExtraOrganismIds.get(n)));
+				}
+			}
+			for (int n = 0; n < periplasmExtraOrganismIds2.size(); n++) {
+				if (LocalConfig.getInstance().getUnplottedReactionIds().contains(periplasmExtraOrganismIds2.get(n))) {
+					LocalConfig.getInstance().getUnplottedReactionIds().remove(LocalConfig.getInstance().getUnplottedReactionIds().indexOf(periplasmExtraOrganismIds2.get(n)));
+				}
+			}
+			Collections.sort(LocalConfig.getInstance().getUnplottedReactionIds());
+			System.out.println("not plotted " + LocalConfig.getInstance().getUnplottedReactionIds());
+//			ReactionFactory rf = new ReactionFactory("SBML");
+//			Vector<SBMLReaction> reactions = rf.getAllReactions();
+//			for (int i = 0; i < reactions.size(); i++) {
+//				for (int j = 0; j < LocalConfig.getInstance().getUnplottedReactionIds().size(); j++) {
+//					int id = LocalConfig.getInstance().getUnplottedReactionIds().get(j);
+//					if (reactions.get(i).getId() == id) {
+//						System.out.println("id " + id + "\t" + reactions.get(i).getReactionEqunAbbr() + "\t" + reactions.get(i).getEcNumber() + "\t" + reactions.get(i).getSubsystem());
+//					}
+//				}
+//			}
+		}
 	}
 	
 	public void createVisualizationsPane() {

@@ -126,6 +126,25 @@ public class MetaboliteFactory {
 		return metaboliteInternalIdList;
 	}
 	
+	public ArrayList<Integer> metaboliteExternalIdList() {
+		ArrayList<Integer> metaboliteExternalIdList = new ArrayList<Integer>();
+
+		if("SBML".equals(sourceType)){
+			for (int i = 0; i < GraphicalInterface.metabolitesTable.getRowCount(); i++) {
+				if (GraphicalInterface.metabolitesTable.getModel().getValueAt(i, GraphicalInterfaceConstants.METABOLITE_ABBREVIATION_COLUMN) != null &&
+						((String) GraphicalInterface.metabolitesTable.getModel().getValueAt(i, GraphicalInterfaceConstants.METABOLITE_ABBREVIATION_COLUMN)).trim().length() > 0) {
+					String boundary = (String) GraphicalInterface.metabolitesTable.getModel().getValueAt(i, GraphicalInterfaceConstants.BOUNDARY_COLUMN);
+					if (boundary.equals(GraphicalInterfaceConstants.BOOLEAN_VALUES[1])) {
+						int id = Integer.valueOf((String) GraphicalInterface.metabolitesTable.getModel().getValueAt(i, GraphicalInterfaceConstants.METABOLITE_ID_COLUMN));
+						metaboliteExternalIdList.add(id);
+					}
+				}				
+			}
+		}
+		
+		return metaboliteExternalIdList;
+	}
+	
 	public ArrayList<Integer> metaboliteIdList() {
 		ArrayList<Integer> metaboliteIdList = new ArrayList<Integer>();
 

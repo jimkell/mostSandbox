@@ -1,6 +1,5 @@
 package edu.rutgers.MOST.data;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -443,9 +442,9 @@ public class SBMLModelReader {
 				if (!compartmentReactantsList.contains(metaboliteIdCompartmentMap.get(id))) {
 					compartmentReactantsList.add(metaboliteIdCompartmentMap.get(id));
 				}
-				if (!compartmentProductsList.contains(metaboliteIdCompartmentMap.get(id))) {
-					compartmentProductsList.add(metaboliteIdCompartmentMap.get(id));
-				}
+//				if (!compartmentProductsList.contains(metaboliteIdCompartmentMap.get(id))) {
+//					compartmentProductsList.add(metaboliteIdCompartmentMap.get(id));
+//				}
 				//System.out.println(reactant.toString());
 				equnReactants.add(reactant);
 			}
@@ -490,9 +489,9 @@ public class SBMLModelReader {
 				if (!compartmentList.contains(metaboliteIdCompartmentMap.get(id))) {
 					compartmentList.add(metaboliteIdCompartmentMap.get(id));
 				}
-				if (!compartmentReactantsList.contains(metaboliteIdCompartmentMap.get(id))) {
-					compartmentReactantsList.add(metaboliteIdCompartmentMap.get(id));
-				}
+//				if (!compartmentReactantsList.contains(metaboliteIdCompartmentMap.get(id))) {
+//					compartmentReactantsList.add(metaboliteIdCompartmentMap.get(id));
+//				}
 				if (!compartmentProductsList.contains(metaboliteIdCompartmentMap.get(id))) {
 					compartmentProductsList.add(metaboliteIdCompartmentMap.get(id));
 				}

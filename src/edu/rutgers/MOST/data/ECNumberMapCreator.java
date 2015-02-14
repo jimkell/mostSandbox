@@ -34,6 +34,7 @@ public class ECNumberMapCreator {
 		for (int r = 0; r < rxns.size(); r++) {
 			SBMLReaction reaction = (SBMLReaction) rxns.get(r);
 			String ecString = reaction.getEcNumber();
+			int id = reaction.getId();
 			if (ecString != null && ecString.length() > 0) {
 				// model may contain more than one EC number, separated by white space
 				// AraGEM model has this condition
@@ -49,9 +50,14 @@ public class ECNumberMapCreator {
 						ecNumberReactionMap.put(ecNumbers.get(i), rxnsList);
 					}
 				}
+				if (LocalConfig.getInstance().getUnplottedReactionIds().contains(id)) {
+					LocalConfig.getInstance().getUnplottedReactionIds().remove(LocalConfig.getInstance().getUnplottedReactionIds().indexOf(id));
+				}
 			}
 			fluxes.add(reaction.getFluxValue());
 		}
+		Collections.sort(LocalConfig.getInstance().getUnplottedReactionIds());
+		System.out.println("not plotted " + LocalConfig.getInstance().getUnplottedReactionIds());
 		LocalConfig.getInstance().setEcNumberReactionMap(ecNumberReactionMap);
 		//System.out.println("ec " + ecNumberReactionMap);
 		ArrayList<String> keys = new ArrayList<String>(ecNumberReactionMap.keySet());

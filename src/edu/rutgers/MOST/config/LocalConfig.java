@@ -1010,6 +1010,48 @@ public class LocalConfig {
 			Map<String, String> reactionAbbrECNumberMap) {
 		this.reactionAbbrECNumberMap = reactionAbbrECNumberMap;
 	}
+	
+	private ArrayList<Integer> unplottedReactionIds;
+
+	public ArrayList<Integer> getUnplottedReactionIds() {
+		return unplottedReactionIds;
+	}
+
+	public void setUnplottedReactionIds(ArrayList<Integer> unplottedReactionIds) {
+		this.unplottedReactionIds = unplottedReactionIds;
+	}
+	
+	private ArrayList<Integer> cytosolExtraOrganismIds;
+
+	public ArrayList<Integer> getCytosolExtraOrganismIds() {
+		return cytosolExtraOrganismIds;
+	}
+
+	public void setCytosolExtraOrganismIds(
+			ArrayList<Integer> cytosolExtraOrganismIds) {
+		this.cytosolExtraOrganismIds = cytosolExtraOrganismIds;
+	}
+	
+	private ArrayList<Integer> cytosolPeriplasmIds;
+
+	public ArrayList<Integer> getCytosolPeriplasmIds() {
+		return cytosolPeriplasmIds;
+	}
+
+	public void setCytosolPeriplasmIds(ArrayList<Integer> cytosolPeriplasmIds) {
+		this.cytosolPeriplasmIds = cytosolPeriplasmIds;
+	}
+	
+	private ArrayList<Integer> periplasmExtraOrganismIds;
+
+	public ArrayList<Integer> getPeriplasmExtraOrganismIds() {
+		return periplasmExtraOrganismIds;
+	}
+
+	public void setPeriplasmExtraOrganismIds(
+			ArrayList<Integer> periplasmExtraOrganismIds) {
+		this.periplasmExtraOrganismIds = periplasmExtraOrganismIds;
+	}
 
 	// Visualization options
 	private boolean graphMissingReactionsSelected;
