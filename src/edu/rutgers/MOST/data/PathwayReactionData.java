@@ -14,6 +14,9 @@ public class PathwayReactionData {
 	private String reactionId;
 	private ArrayList<String> reactantIds;
 	private ArrayList<String> productIds;
+	private ArrayList<String> keggReactantIds;
+	private ArrayList<String> keggProductIds;
+	private ArrayList<String> keggIds;
 	private String reversible;
 	private ArrayList<String> ecNumbers;
 	private double level;
@@ -154,6 +157,9 @@ public class PathwayReactionData {
 		+ ", reactionId=" + reactionId
 		+ ", reactantIds=" + reactantIds
 		+ ", productIds=" + productIds
+		+ ", keggReactantIds=" + keggReactantIds
+		+ ", keggProductIds=" + keggProductIds
+		+ ", keggIds=" + keggIds
 		+ ", reversible=" + reversible
 		+ ", ecNumbers=" + ecNumbers
 		+ ", level=" + level

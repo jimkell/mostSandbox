@@ -5,6 +5,8 @@ import java.util.ArrayList;
 public class PathwayMetaboliteData {
 
 	private String id;
+	private String keggId;
+	private int occurence;
 	private ArrayList<String> names = new ArrayList<String>();
 	private String name;
 	private String abbreviation;
@@ -17,6 +19,22 @@ public class PathwayMetaboliteData {
 
 	public void setId(String id) {
 		this.id = id;
+	}
+
+	public String getKeggId() {
+		return keggId;
+	}
+
+	public void setKeggId(String keggId) {
+		this.keggId = keggId;
+	}
+
+	public int getOccurence() {
+		return occurence;
+	}
+
+	public void setOccurence(int occurence) {
+		this.occurence = occurence;
 	}
 
 	public ArrayList<String> getNames() {
@@ -62,6 +80,8 @@ public class PathwayMetaboliteData {
 	@Override
 	public String toString() {
 		return "PathwayMetabolite Data [id=" + id
+		+ ", keggId=" + keggId
+		+ ", occurence=" + occurence
 		+ ", names=" + names
 		+ ", abbreviation=" + abbreviation
 		+ ", level=" + level

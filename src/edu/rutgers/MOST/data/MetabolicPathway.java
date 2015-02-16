@@ -7,6 +7,7 @@ import java.util.Map;
 public class MetabolicPathway {
 	private String id;
 	private String name;
+	private String keggId;
 	private Map<String, PathwayMetaboliteData> metabolitesData = new HashMap<String, PathwayMetaboliteData>();
 	private Map<String, PathwayMetaboliteNode> metabolitesNodes = new HashMap<String, PathwayMetaboliteNode>();
 	private Map<String, PathwayReactionData> reactionsData = new HashMap<String, PathwayReactionData>();
@@ -28,6 +29,12 @@ public class MetabolicPathway {
 	}
 	public void setName(String name) {
 		this.name = name;
+	}
+	public String getKeggId() {
+		return keggId;
+	}
+	public void setKeggId(String keggId) {
+		this.keggId = keggId;
 	}
 	public Map<String, PathwayMetaboliteData> getMetabolitesData() {
 		return metabolitesData;
@@ -83,7 +90,8 @@ public class MetabolicPathway {
 	@Override
 	public String toString() {
 		return "Metabolic Pathway [id=" + id
-		+ ", name=" + name		
+		+ ", name=" + name	
+		+ ", keggId=" + keggId
 		+ ", metabolitesData=" + metabolitesData
 		+ ", reactionsData=" + reactionsData
 		+ ", reactionsNodes=" + reactionsNodes
