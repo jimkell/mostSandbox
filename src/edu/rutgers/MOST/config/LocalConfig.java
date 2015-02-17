@@ -15,6 +15,7 @@ import edu.rutgers.MOST.data.ModelReactionEquation;
 import edu.rutgers.MOST.data.PathwayConnectionData;
 import edu.rutgers.MOST.data.PathwayConnectionNode;
 import edu.rutgers.MOST.data.PathwayMetaboliteData;
+import edu.rutgers.MOST.data.PathwayReactionData;
 import edu.rutgers.MOST.data.SBMLReaction;
 
 public class LocalConfig {	
@@ -1010,6 +1011,28 @@ public class LocalConfig {
 	public void setMetaboliteDataKeggIdMap(
 			Map<String, PathwayMetaboliteData> metaboliteDataKeggIdMap) {
 		this.metaboliteDataKeggIdMap = metaboliteDataKeggIdMap;
+	}
+	
+	private Map<String, PathwayReactionData> reactionDataKeggIdMap;
+
+	public Map<String, PathwayReactionData> getReactionDataKeggIdMap() {
+		return reactionDataKeggIdMap;
+	}
+
+	public void setReactionDataKeggIdMap(
+			Map<String, PathwayReactionData> reactionDataKeggIdMap) {
+		this.reactionDataKeggIdMap = reactionDataKeggIdMap;
+	}
+	
+	private Map<String, ArrayList<String>> ecNumberKeggReactionIdMap;
+
+	public Map<String, ArrayList<String>> getEcNumberKeggReactionIdMap() {
+		return ecNumberKeggReactionIdMap;
+	}
+
+	public void setEcNumberKeggReactionIdMap(
+			Map<String, ArrayList<String>> ecNumberKeggReactionIdMap) {
+		this.ecNumberKeggReactionIdMap = ecNumberKeggReactionIdMap;
 	}
 
 	private Map<String, String> reactionAbbrECNumberMap;

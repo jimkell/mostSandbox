@@ -19,6 +19,8 @@ public class PathwayFilesReader {
 	Map<String, MetabolicPathway> metabolicPathways = new HashMap<String, MetabolicPathway>();
 	Map<String, PathwayMetaboliteData> metaboliteDataKeggIdMap = new HashMap<String, PathwayMetaboliteData>();
 	Map<String, String> metaboliteNameAbbrMap = new HashMap<String, String>();
+	Map<String, PathwayReactionData> reactionDataKeggIdMap = new HashMap<String, PathwayReactionData>();
+	Map<String, ArrayList<String>> ecNumberKeggReactionIdMap = new HashMap<String, ArrayList<String>>();
 	
 	public PathwayFilesReader() {
 		
@@ -116,26 +118,24 @@ public class PathwayFilesReader {
 		}
 	}
 	
-	public void readPathwayMetabolitesFile(File pathwayMetabolites) {
+	public void readMetabolitesFile(File metabolites) {
 		CSVReader reader;
 		
 		int count = 0;
 		
 		try {
-			reader = new CSVReader(new FileReader(pathwayMetabolites), ',');
+			reader = new CSVReader(new FileReader(metabolites), ',');
 			String [] dataArray;
 			try {
 				while ((dataArray = reader.readNext()) != null) {
 					if (count > 0) {
 						PathwayMetaboliteData pm = new PathwayMetaboliteData();
 						for (int s = 0; s < dataArray.length; s++) {
-							System.out.println(dataArray[s]);
-							//String keggId = "";
-							if (s == PathwaysCSVFileConstants.PATHWAY_METABOLITES_KEGG_ID_COLUMN) {
-								//keggId = dataArray[s];
+							//System.out.println(dataArray[s]);
+							if (s == PathwaysCSVFileConstants.METABOLITES_KEGG_ID_COLUMN) {
 								pm.setKeggId(dataArray[s]);
 							}
-							if (s == PathwaysCSVFileConstants.PATHWAY_METABOLITES_NAMES_COLUMN) {
+							if (s == PathwaysCSVFileConstants.METABOLITES_NAMES_COLUMN) {
 								// need to escape pipe: http://stackoverflow.com/questions/21524642/splitting-string-with-pipe-character
 								String[] names = dataArray[s].split("\\|");
 								ArrayList<String> namesList = new ArrayList<String>();
@@ -144,7 +144,7 @@ public class PathwayFilesReader {
 								}
 								pm.setNames(namesList);
 							}
-							if (s == PathwaysCSVFileConstants.PATHWAY_METABOLITES_OCCURENCE_COLUMN) {
+							if (s == PathwaysCSVFileConstants.METABOLITES_OCCURENCE_COLUMN) {
 								pm.setOccurence(Integer.valueOf(dataArray[s]));
 							}
 						}
@@ -171,30 +171,30 @@ public class PathwayFilesReader {
 		}	
 	}
 	
-	public void readPathwayMetabolitePositionsFile(File pathwayMetabolitePos) {
+	public void readMetabolitePositionsFile(File metabolitePositions) {
 		CSVReader reader;
 		
 		int count = 0;
 		
 		try {
-			reader = new CSVReader(new FileReader(pathwayMetabolitePos), ',');
+			reader = new CSVReader(new FileReader(metabolitePositions), ',');
 			String [] dataArray;
 			try {
 				while ((dataArray = reader.readNext()) != null) {
 					if (count > 0) {
 						PathwayMetaboliteData pm = new PathwayMetaboliteData();
-						String id = dataArray[PathwaysCSVFileConstants.PATHWAY_METABOLITE_POSITIONS_ID_COLUMN];
+						String id = dataArray[PathwaysCSVFileConstants.METABOLITE_POSITIONS_ID_COLUMN];
 						for (int s = 0; s < dataArray.length; s++) {
-							if (s == PathwaysCSVFileConstants.PATHWAY_METABOLITE_POSITIONS_METABOLITE_ID_COLUMN) {
+							if (s == PathwaysCSVFileConstants.METABOLITE_POSITIONS_METABOLITE_ID_COLUMN) {
 								pm.setId(dataArray[s]);
 							}
-							if (s == PathwaysCSVFileConstants.PATHWAY_METABOLITE_POSITIONS_LEVEL_COLUMN) {
+							if (s == PathwaysCSVFileConstants.METABOLITE_POSITIONS_LEVEL_COLUMN) {
 								pm.setLevel(Double.parseDouble(dataArray[s]));
 							}
-							if (s == PathwaysCSVFileConstants.PATHWAY_METABOLITE_POSITIONS_POSITION_COLUMN) {
+							if (s == PathwaysCSVFileConstants.METABOLITE_POSITIONS_POSITION_COLUMN) {
 								pm.setLevelPosition(Double.parseDouble(dataArray[s]));
 							}
-							if (s == PathwaysCSVFileConstants.PATHWAY_METABOLITE_POSITIONS_NAME_COLUMN) {
+							if (s == PathwaysCSVFileConstants.METABOLITE_POSITIONS_NAME_COLUMN) {
 								// need to escape pipe: http://stackoverflow.com/questions/21524642/splitting-string-with-pipe-character
 								String[] names = dataArray[s].split("\\|");
 								ArrayList<String> namesList = new ArrayList<String>();
@@ -203,7 +203,7 @@ public class PathwayFilesReader {
 								}
 								pm.setNames(namesList);
 							}
-							if (s == PathwaysCSVFileConstants.PATHWAY_METABOLITE_POSITIONS_ABBR_COLUMN) {
+							if (s == PathwaysCSVFileConstants.METABOLITE_POSITIONS_ABBR_COLUMN) {
 								pm.setAbbreviation(dataArray[s]);
 							}
 						}
@@ -236,69 +236,92 @@ public class PathwayFilesReader {
 		}	
 	}
 	
-	public void readPathwayReactionsFile(File pathwayReactions) {
+	public void readReactionsFile(File reactions) {
 		CSVReader reader;
 		
 		int count = 0;
 		
 		try {
-			reader = new CSVReader(new FileReader(pathwayReactions), ',');
+			reader = new CSVReader(new FileReader(reactions), ',');
 			String [] dataArray;
 			try {
 				while ((dataArray = reader.readNext()) != null) {
 					if (count > 0) {
 						PathwayReactionData pr = new PathwayReactionData();
-						String id = dataArray[PathwaysCSVFileConstants.PATHWAY_REACTIONS_PATHWAY_ID_COLUMN];
+						ArrayList<String> keggIdsList = new ArrayList<String>();
+						String keggReactionId = dataArray[PathwaysCSVFileConstants.REACTIONS_KEGG_ID_COLUMN];
+						pr.setKeggReactionId(keggReactionId);
 						for (int s = 0; s < dataArray.length; s++) {
-							if (s == PathwaysCSVFileConstants.PATHWAY_REACTIONS_PATHWAY_ID_COLUMN) {
-								pr.setPathwayId(dataArray[s]);
-							}
-							if (s == PathwaysCSVFileConstants.PATHWAY_REACTIONS_REACTION_ID_COLUMN) {
-								pr.setReactionId(dataArray[s]);
-							}	
-							if (s == PathwaysCSVFileConstants.PATHWAY_REACTIONS_REACTANTS_COLUMN) {
-								String[] reac = dataArray[s].split("\\|");
-								ArrayList<String> reactantIds = new ArrayList<String>();
-								for (int i = 0; i < reac.length; i++) {
-									reactantIds.add(reac[i]);
+							//System.out.println(dataArray[s]);
+							if (s == PathwaysCSVFileConstants.REACTIONS_KEGG_REACTANTS_COLUMN) {
+								// need to escape pipe: http://stackoverflow.com/questions/21524642/splitting-string-with-pipe-character
+								String[] reactants = dataArray[s].split("\\|");
+								ArrayList<String> reactantsList = new ArrayList<String>();
+								for (int i = 0; i < reactants.length; i++) {
+									reactantsList.add(reactants[i]);
+									keggIdsList.add(reactants[i]);
 								}
-								pr.setReactantIds(reactantIds);
+								pr.setKeggReactantIds(reactantsList);
 							}
-							if (s == PathwaysCSVFileConstants.PATHWAY_REACTIONS_PRODUCTS_COLUMN) {
-								String[] prod = dataArray[s].split("\\|");
-								ArrayList<String> productIds = new ArrayList<String>();
-								for (int i = 0; i < prod.length; i++) {
-									productIds.add(prod[i]);
+							if (s == PathwaysCSVFileConstants.REACTIONS_KEGG_PRODUCTS_COLUMN) {
+								// need to escape pipe: http://stackoverflow.com/questions/21524642/splitting-string-with-pipe-character
+								String[] products = dataArray[s].split("\\|");
+								ArrayList<String> productsList = new ArrayList<String>();
+								for (int i = 0; i < products.length; i++) {
+									productsList.add(products[i]);
+									if (!keggIdsList.contains(products[i])) {
+										keggIdsList.add(products[i]);
+									}
 								}
-								pr.setProductIds(productIds);
+								pr.setKeggProductIds(productsList);
 							}
-							if (s == PathwaysCSVFileConstants.PATHWAY_REACTIONS_REVERSIBLE_COLUMN) {
-								pr.setReversible(dataArray[s]);
-							}
-							if (s == PathwaysCSVFileConstants.PATHWAY_REACTIONS_EC_NUM_LIST_COLUMN) {
+							pr.setKeggIds(keggIdsList);
+							// reversibility data currently not correct in this file
+//							if (s == PathwaysCSVFileConstants.REACTIONS_REVERSABILITY_COLUMN) {
+//								pr.setReversible(dataArray[s]);
+//							}
+							if (s == PathwaysCSVFileConstants.REACTIONS_EC_LIST_COLUMN) {
+								// need to escape pipe: http://stackoverflow.com/questions/21524642/splitting-string-with-pipe-character
 								String[] ecNumbers = dataArray[s].split("\\|");
-								ArrayList<String> ec = new ArrayList<String>();
+								ArrayList<String> ecNumbersList = new ArrayList<String>();
 								for (int i = 0; i < ecNumbers.length; i++) {
-									ec.add(ecNumbers[i]);
+									ecNumbersList.add(ecNumbers[i]);
+									if (ecNumbers[i] != null && ecNumbers[i].length() > 0) {
+										if (ecNumberKeggReactionIdMap.containsKey(ecNumbers[i])) {
+											ArrayList<String> r = ecNumberKeggReactionIdMap.get(ecNumbers[i]);
+											r.add(keggReactionId);
+											ecNumberKeggReactionIdMap.put(ecNumbers[i], r);
+										} else {
+											ArrayList<String> r = new ArrayList<String>();
+											r.add(keggReactionId);
+											ecNumberKeggReactionIdMap.put(ecNumbers[i], r);
+										}
+									}
 								}
-								pr.setEcNumbers(ec);
-								metabolicPathways.get(id).getEcNumbers().add(ec);
+								pr.setEcNumbers(ecNumbersList);
 							}
-							if (s == PathwaysCSVFileConstants.PATHWAY_REACTIONS_LEVEL_COLUMN) {
-								pr.setLevel(Double.parseDouble(dataArray[s]));
+							if (s == PathwaysCSVFileConstants.REACTIONS_OCCURENCES_COLUMN) {
+								pr.setOccurences(Integer.valueOf(dataArray[s]));
 							}
-							if (s == PathwaysCSVFileConstants.PATHWAY_REACTIONS_POSITION_COLUMN) {
-								pr.setLevelPosition(Double.parseDouble(dataArray[s]));
+							if (s == PathwaysCSVFileConstants.REACTIONS_NAMES_COLUMN) {
+								// need to escape pipe: http://stackoverflow.com/questions/21524642/splitting-string-with-pipe-character
+								String[] names = dataArray[s].split("\\|");
+								ArrayList<String> namesList = new ArrayList<String>();
+								for (int i = 0; i < names.length; i++) {
+									namesList.add(names[i]);
+								}
+								pr.setNames(namesList);
 							}
 						}
-						pr.writeReactionEquation();
-						pr.setName(pr.getEquation());
-						pr.setDisplayName("<html>" + pr.getEquation() +"<p> EC Number(s): " + pr.getEcNumbers());
-						metabolicPathways.get(id).getReactionsData().put(pr.getReactionId(), pr);
+						reactionDataKeggIdMap.put(pr.getKeggReactionId(), pr);
 					}
 					count += 1;
 				}
 				reader.close();
+				LocalConfig.getInstance().setReactionDataKeggIdMap(reactionDataKeggIdMap);
+				//System.out.println(reactionDataKeggIdMap);
+				LocalConfig.getInstance().setEcNumberKeggReactionIdMap(ecNumberKeggReactionIdMap);
+				//System.out.println(ecNumberKeggReactionIdMap);
 			} catch (IOException e) {
 				JOptionPane.showMessageDialog(null,                
 						"File Not Found Error.",                
@@ -315,27 +338,27 @@ public class PathwayFilesReader {
 		}	
 	}
 	
-	public void readPathwayReactionPositionsFile(File pathwayReactionPositions) {
+	public void readReactionPositionsFile(File reactionPositions) {
 		CSVReader reader;
 		
 		int count = 0;
 		
 		try {
-			reader = new CSVReader(new FileReader(pathwayReactionPositions), ',');
+			reader = new CSVReader(new FileReader(reactionPositions), ',');
 			String [] dataArray;
 			try {
 				while ((dataArray = reader.readNext()) != null) {
 					if (count > 0) {
 						PathwayReactionData pr = new PathwayReactionData();
-						String id = dataArray[PathwaysCSVFileConstants.PATHWAY_REACTIONS_PATHWAY_ID_COLUMN];
+						String id = dataArray[PathwaysCSVFileConstants.REACTIONS_PATHWAY_ID_COLUMN];
 						for (int s = 0; s < dataArray.length; s++) {
-							if (s == PathwaysCSVFileConstants.PATHWAY_REACTIONS_PATHWAY_ID_COLUMN) {
+							if (s == PathwaysCSVFileConstants.REACTIONS_PATHWAY_ID_COLUMN) {
 								pr.setPathwayId(dataArray[s]);
 							}
-							if (s == PathwaysCSVFileConstants.PATHWAY_REACTIONS_REACTION_ID_COLUMN) {
+							if (s == PathwaysCSVFileConstants.REACTIONS_REACTION_ID_COLUMN) {
 								pr.setReactionId(dataArray[s]);
 							}	
-							if (s == PathwaysCSVFileConstants.PATHWAY_REACTIONS_REACTANTS_COLUMN) {
+							if (s == PathwaysCSVFileConstants.REACTIONS_REACTANTS_COLUMN) {
 								String[] reac = dataArray[s].split("\\|");
 								ArrayList<String> reactantIds = new ArrayList<String>();
 								for (int i = 0; i < reac.length; i++) {
@@ -343,7 +366,7 @@ public class PathwayFilesReader {
 								}
 								pr.setReactantIds(reactantIds);
 							}
-							if (s == PathwaysCSVFileConstants.PATHWAY_REACTIONS_PRODUCTS_COLUMN) {
+							if (s == PathwaysCSVFileConstants.REACTIONS_PRODUCTS_COLUMN) {
 								String[] prod = dataArray[s].split("\\|");
 								ArrayList<String> productIds = new ArrayList<String>();
 								for (int i = 0; i < prod.length; i++) {
@@ -351,10 +374,10 @@ public class PathwayFilesReader {
 								}
 								pr.setProductIds(productIds);
 							}
-							if (s == PathwaysCSVFileConstants.PATHWAY_REACTIONS_REVERSIBLE_COLUMN) {
+							if (s == PathwaysCSVFileConstants.REACTIONS_REVERSIBLE_COLUMN) {
 								pr.setReversible(dataArray[s]);
 							}
-							if (s == PathwaysCSVFileConstants.PATHWAY_REACTIONS_EC_NUM_LIST_COLUMN) {
+							if (s == PathwaysCSVFileConstants.REACTIONS_EC_NUM_LIST_COLUMN) {
 								String[] ecNumbers = dataArray[s].split("\\|");
 								ArrayList<String> ec = new ArrayList<String>();
 								for (int i = 0; i < ecNumbers.length; i++) {
@@ -363,10 +386,10 @@ public class PathwayFilesReader {
 								pr.setEcNumbers(ec);
 								metabolicPathways.get(id).getEcNumbers().add(ec);
 							}
-							if (s == PathwaysCSVFileConstants.PATHWAY_REACTIONS_LEVEL_COLUMN) {
+							if (s == PathwaysCSVFileConstants.REACTIONS_LEVEL_COLUMN) {
 								pr.setLevel(Double.parseDouble(dataArray[s]));
 							}
-							if (s == PathwaysCSVFileConstants.PATHWAY_REACTIONS_POSITION_COLUMN) {
+							if (s == PathwaysCSVFileConstants.REACTIONS_POSITION_COLUMN) {
 								pr.setLevelPosition(Double.parseDouble(dataArray[s]));
 							}
 						}
@@ -634,10 +657,10 @@ public class PathwayFilesReader {
 		r.readFile();
 		File pathways = new File(PathwaysCSVFileConstants.PATHWAYS_FILE_NAME);
 		File pathwayGraph = new File(PathwaysCSVFileConstants.PATHWAY_GRAPH_FILE_NAME);
-		File pathwayMetabolites = new File(PathwaysCSVFileConstants.METABOLITES_FILE_NAME);
-		File pathwayMetabolitePositions = new File(PathwaysCSVFileConstants.METABOLITE_POSITIONS_FILE_NAME);
-		//File pathwayReactions = new File(PathwaysCSVFileConstants.REACTIONS_FILE_NAME);
-		File pathwayReactionPositions = new File(PathwaysCSVFileConstants.REACTION_POSITIONS_FILE_NAME);
+		File metabolites = new File(PathwaysCSVFileConstants.METABOLITES_FILE_NAME);
+		File metabolitePositions = new File(PathwaysCSVFileConstants.METABOLITE_POSITIONS_FILE_NAME);
+		File reactions = new File(PathwaysCSVFileConstants.REACTIONS_FILE_NAME);
+		File reactionPositions = new File(PathwaysCSVFileConstants.REACTION_POSITIONS_FILE_NAME);
 		File drawOrder = new File(PathwaysCSVFileConstants.PATHWAY_DRAW_ORDER_FILE_NAME);
 		File sideSpecies = new File(PathwaysCSVFileConstants.PATHWAY_SIDE_SPECIES_FILE_NAME);
 		File pathwayConnections = new File(PathwaysCSVFileConstants.PATHWAY_CONNECTIONS_FILE_NAME);
@@ -645,10 +668,10 @@ public class PathwayFilesReader {
 		PathwayFilesReader reader = new PathwayFilesReader();
 		reader.readPathwaysFile(pathways);
 		reader.readPathwayGraphFile(pathwayGraph);
-		reader.readPathwayMetabolitesFile(pathwayMetabolites);
-		reader.readPathwayMetabolitePositionsFile(pathwayMetabolitePositions);
-		//reader.readPathwayReactionsFile(pathwayReactions);
-		reader.readPathwayReactionPositionsFile(pathwayReactionPositions);
+		reader.readMetabolitesFile(metabolites);
+		reader.readMetabolitePositionsFile(metabolitePositions);
+		reader.readReactionsFile(reactions);
+		reader.readReactionPositionsFile(reactionPositions);
 		reader.readDrawOrderFile(drawOrder);
 		reader.readSideSpeciesFile(sideSpecies);
 		reader.readPathwayConnectionsFile(pathwayConnections);

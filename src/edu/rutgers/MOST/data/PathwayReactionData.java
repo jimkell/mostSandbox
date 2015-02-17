@@ -12,6 +12,7 @@ public class PathwayReactionData {
 	// data from pathway_reactions.csv
 	private String pathwayId;
 	private String reactionId;
+	private String keggReactionId;
 	private ArrayList<String> reactantIds;
 	private ArrayList<String> productIds;
 	private ArrayList<String> keggReactantIds;
@@ -24,9 +25,11 @@ public class PathwayReactionData {
 	// equation made up of metabolite node names
 	private String equation;
 	
-	private String name;
 	// generic name used if reaction not found in model = name + ec numbers
+	private String name;
+	private ArrayList<String> names;
 	private String displayName;
+	private int occurences;
 	
 	public String getPathwayId() {
 		return pathwayId;
@@ -44,6 +47,14 @@ public class PathwayReactionData {
 		this.reactionId = reactionId;
 	}
 
+	public String getKeggReactionId() {
+		return keggReactionId;
+	}
+
+	public void setKeggReactionId(String keggReactionId) {
+		this.keggReactionId = keggReactionId;
+	}
+
 	public ArrayList<String> getReactantIds() {
 		return reactantIds;
 	}
@@ -58,6 +69,30 @@ public class PathwayReactionData {
 
 	public void setProductIds(ArrayList<String> productIds) {
 		this.productIds = productIds;
+	}
+
+	public ArrayList<String> getKeggReactantIds() {
+		return keggReactantIds;
+	}
+
+	public void setKeggReactantIds(ArrayList<String> keggReactantIds) {
+		this.keggReactantIds = keggReactantIds;
+	}
+
+	public ArrayList<String> getKeggProductIds() {
+		return keggProductIds;
+	}
+
+	public void setKeggProductIds(ArrayList<String> keggProductIds) {
+		this.keggProductIds = keggProductIds;
+	}
+
+	public ArrayList<String> getKeggIds() {
+		return keggIds;
+	}
+
+	public void setKeggIds(ArrayList<String> keggIds) {
+		this.keggIds = keggIds;
 	}
 
 	public String getReversible() {
@@ -96,12 +131,28 @@ public class PathwayReactionData {
 		this.name = name;
 	}
 
+	public ArrayList<String> getNames() {
+		return names;
+	}
+
+	public void setNames(ArrayList<String> names) {
+		this.names = names;
+	}
+
 	public String getDisplayName() {
 		return displayName;
 	}
 
 	public void setDisplayName(String displayName) {
 		this.displayName = displayName;
+	}
+
+	public int getOccurences() {
+		return occurences;
+	}
+
+	public void setOccurences(int occurences) {
+		this.occurences = occurences;
 	}
 
 	public void setLevelPosition(double levelPosition) {
@@ -155,6 +206,7 @@ public class PathwayReactionData {
 	public String toString() {
 		return "Pathway Reaction Data [pathwayId=" + pathwayId
 		+ ", reactionId=" + reactionId
+		+ ", keggReactionId=" + keggReactionId
 		+ ", reactantIds=" + reactantIds
 		+ ", productIds=" + productIds
 		+ ", keggReactantIds=" + keggReactantIds
@@ -165,6 +217,8 @@ public class PathwayReactionData {
 		+ ", level=" + level
 		+ ", levelPosition=" + levelPosition
 		+ ", name=" + name
+		+ ", names=" + names
+		+ ", occurences=" + occurences
 		+ ", equation=" + equation + "]";
 	}
 
