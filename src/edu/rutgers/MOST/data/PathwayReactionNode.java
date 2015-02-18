@@ -19,6 +19,7 @@ public class PathwayReactionNode {
 	private ArrayList<SBMLReaction> reactions;
 //	private ArrayList<String> modelEquations;
 //	private ArrayList<Double> fluxes;
+	private double fluxValue;
 	
 	// data from enzyme.dat
 	private ArrayList<String> enzymeDataEquations;
@@ -128,6 +129,14 @@ public class PathwayReactionNode {
 
 	public void setReactions(ArrayList<SBMLReaction> reactions) {
 		this.reactions = reactions;
+	}
+
+	public double getFluxValue() {
+		return fluxValue;
+	}
+
+	public void setFluxValue(double fluxValue) {
+		this.fluxValue = fluxValue;
 	}
 
 	public ArrayList<String> getEnzymeDataEquations() {

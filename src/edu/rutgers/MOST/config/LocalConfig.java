@@ -1158,5 +1158,37 @@ public class LocalConfig {
 	public void setPeriplasmName(String periplasmName) {
 		this.periplasmName = periplasmName;
 	}
+	
+	private ArrayList<Double> fluxes = new ArrayList<Double>();
+	
+	public ArrayList<Double> getFluxes() {
+		return fluxes;
+	}
+
+	public void setFluxes(ArrayList<Double> fluxes) {
+		this.fluxes = fluxes;
+	}
+	
+	private double maxUpperBound;
+
+	public double getMaxUpperBound() {
+		return maxUpperBound;
+	}
+
+	public void setMaxUpperBound(double maxUpperBound) {
+		this.maxUpperBound = maxUpperBound;
+	}
+	
+	private double secondaryMaxFlux;
+
+	public double getSecondaryMaxFlux() {
+		return secondaryMaxFlux;
+	}
+
+	public void setSecondaryMaxFlux(double secondaryMaxFlux) {
+		this.secondaryMaxFlux = secondaryMaxFlux;
+	}
+	
+	
 
 }

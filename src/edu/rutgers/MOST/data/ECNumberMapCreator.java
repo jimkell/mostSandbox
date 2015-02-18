@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Vector;
 
 import edu.rutgers.MOST.config.LocalConfig;
+import edu.rutgers.MOST.presentation.PathwaysFrameConstants;
 
 public class ECNumberMapCreator {
 
@@ -15,13 +16,8 @@ public class ECNumberMapCreator {
 	// usually in column as something like 999999.0
 	private ArrayList<Double> fluxes = new ArrayList<Double>();
 	
-	public ArrayList<Double> getFluxes() {
-		return fluxes;
-	}
-
-	public void setFluxes(ArrayList<Double> fluxes) {
-		this.fluxes = fluxes;
-	}
+	private double maxUpperBound;
+	private double secondaryMaxFlux;
 
 	/**
 	 * EC Number map created to be used for getting information from loaded
@@ -31,6 +27,7 @@ public class ECNumberMapCreator {
 		Map<String, ArrayList<SBMLReaction>> ecNumberReactionMap = new HashMap<String, ArrayList<SBMLReaction>>();
 		ReactionFactory rf = new ReactionFactory("SBML");
 		Vector<SBMLReaction> rxns = rf.getAllReactions();
+		maxUpperBound = 0;
 		for (int r = 0; r < rxns.size(); r++) {
 			SBMLReaction reaction = (SBMLReaction) rxns.get(r);
 			String ecString = reaction.getEcNumber();
@@ -55,10 +52,23 @@ public class ECNumberMapCreator {
 				}
 			}
 			fluxes.add(reaction.getFluxValue());
+			if (reaction.getUpperBound() > maxUpperBound) {
+				maxUpperBound = reaction.getUpperBound();
+			}
+		}
+		for (int j = 0; j< fluxes.size(); j++) {
+			if (Math.abs(fluxes.get(j)) <= PathwaysFrameConstants.INFINITE_FLUX_RATIO*maxUpperBound) {
+				if (Math.abs(fluxes.get(j)) > secondaryMaxFlux) {
+					secondaryMaxFlux = Math.abs(fluxes.get(j));
+				}
+			}
 		}
 		Collections.sort(LocalConfig.getInstance().getUnplottedReactionIds());
 		System.out.println("not plotted " + LocalConfig.getInstance().getUnplottedReactionIds());
 		LocalConfig.getInstance().setEcNumberReactionMap(ecNumberReactionMap);
+		LocalConfig.getInstance().setFluxes(fluxes);
+		LocalConfig.getInstance().setMaxUpperBound(maxUpperBound);
+		LocalConfig.getInstance().setSecondaryMaxFlux(secondaryMaxFlux);
 		//System.out.println("ec " + ecNumberReactionMap);
 		ArrayList<String> keys = new ArrayList<String>(ecNumberReactionMap.keySet());
 		Collections.sort(keys);

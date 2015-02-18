@@ -211,7 +211,7 @@ public class PathwaysFrame extends JApplet {
 	    ArrayList<String> notFoundEcNumbers = new ArrayList<String>(LocalConfig.getInstance().getEcNumberReactionMap().keySet());
 		
 	    
-	    ArrayList<Double> fluxLogs = new ArrayList<Double>();
+	    //ArrayList<Double> fluxLogs = new ArrayList<Double>();
 	    
 	    double startX = PathwaysFrameConstants.BORDER_WIDTH + PathwaysFrameConstants.HORIZONTAL_INCREMENT;
 		double startY = PathwaysFrameConstants.START_Y;
@@ -295,7 +295,9 @@ public class PathwaysFrame extends JApplet {
 							notFoundEcNumbers.remove(ecNumbers.get(y));
 						}
 					}
-					fluxLogs.add(Math.log(Math.abs(pn.getReactions().get(z).getFluxValue())));
+					// set last one for now
+					pn.setFluxValue(pn.getReactions().get(z).getFluxValue());
+					//fluxLogs.add(Math.log(Math.abs(pn.getReactions().get(z).getFluxValue())));
 				}
 				boolean drawReaction = true;
 				if (pn.getReactions().size() > 0) {
@@ -325,15 +327,18 @@ public class PathwaysFrame extends JApplet {
 					pathway.getReactionsNodes().put(pn.getDataId(), pn);
 //					System.out.println(pn.getSideReactants());
 //					System.out.println(pn.getSideProducts());
+					//System.out.println("max ub " + LocalConfig.getInstance().getMaxUpperBound());
 					for (int r = 0; r < pathway.getReactionsData().get(Integer.toString(k)).getReactantIds().size(); r++) {
 						String reac = pathway.getMetabolitesData().get((pathway.getReactionsData().get(Integer.toString(k)).getReactantIds().get(r))).getName();
 						reactionMap.put(displayName + "reactant " + Integer.toString(r), new String[] {displayName, reac, reversible});
-						fluxMap.put(displayName + "reactant " + Integer.toString(r), PathwaysFrameConstants.DEFAULT_EDGE_WIDTH);
+						fluxMap.put(displayName + "reactant " + Integer.toString(r), edgeThickness(pn.getFluxValue()));
+						//fluxMap.put(displayName + "reactant " + Integer.toString(r), thickness);
 					}
 					for (int p = 0; p < pathway.getReactionsData().get(Integer.toString(k)).getProductIds().size(); p++) {
 						String prod = pathway.getMetabolitesData().get((pathway.getReactionsData().get(Integer.toString(k)).getProductIds().get(p))).getName();
 						reactionMap.put(displayName + "product " + Integer.toString(p), new String[] {displayName, prod, "true"});
-						fluxMap.put(displayName + "product " + Integer.toString(p), PathwaysFrameConstants.DEFAULT_EDGE_WIDTH);
+						//fluxMap.put(displayName + "product " + Integer.toString(p), PathwaysFrameConstants.DEFAULT_EDGE_WIDTH);
+						fluxMap.put(displayName + "product " + Integer.toString(p), edgeThickness(pn.getFluxValue()));
 					}
 				}
 			}
@@ -437,7 +442,9 @@ public class PathwaysFrame extends JApplet {
 						notFoundEcNumbers.remove(ecNumbers.get(y));
 					}
 				}
-				fluxLogs.add(Math.log(Math.abs(connectionsNodelist.get(c).getReactions().get(z).getFluxValue())));
+				// set last one for now
+				connectionsNodelist.get(c).setFluxValue(connectionsNodelist.get(c).getReactions().get(z).getFluxValue());
+				//fluxLogs.add(Math.log(Math.abs(connectionsNodelist.get(c).getReactions().get(z).getFluxValue())));
 			}
 			boolean drawReaction = true;
 			if (connectionsNodelist.get(c).getReactions().size() > 0) {
@@ -453,12 +460,14 @@ public class PathwaysFrame extends JApplet {
 				for (int d = 0; d < connectionsNodelist.get(c).getMainPathwayReactants().size(); d++) {
 					String reac = connectionsNodelist.get(c).getMainPathwayReactants().get(d).getName();
 					reactionMap.put(displayName + "reactant " + Integer.toString(d), new String[] {displayName, reac, reversible});
-					fluxMap.put(displayName + "reactant " + Integer.toString(d), PathwaysFrameConstants.DEFAULT_EDGE_WIDTH);
+					//fluxMap.put(displayName + "reactant " + Integer.toString(d), PathwaysFrameConstants.DEFAULT_EDGE_WIDTH);
+					fluxMap.put(displayName + "reactant " + Integer.toString(d), edgeThickness(connectionsNodelist.get(c).getFluxValue()));
 				}
 				for (int e = 0; e < connectionsNodelist.get(c).getMainPathwayProducts().size(); e++) {
 					String prod = connectionsNodelist.get(c).getMainPathwayProducts().get(e).getName();
 					reactionMap.put(displayName + "product " + Integer.toString(e), new String[] {displayName, prod, "true"});
-					fluxMap.put(displayName + "product " + Integer.toString(e), PathwaysFrameConstants.DEFAULT_EDGE_WIDTH);
+					//fluxMap.put(displayName + "product " + Integer.toString(e), PathwaysFrameConstants.DEFAULT_EDGE_WIDTH);
+					fluxMap.put(displayName + "product " + Integer.toString(e), edgeThickness(connectionsNodelist.get(c).getFluxValue()));
 				}
 			}
 		}
@@ -532,7 +541,7 @@ public class PathwaysFrame extends JApplet {
 		System.out.println("found " + foundEcNumbers);
 		Collections.sort(notFoundEcNumbers);
 		System.out.println("not found " + notFoundEcNumbers);
-		Collections.sort(fluxLogs);
+		//Collections.sort(fluxLogs);
 		//System.out.println("flux logs " + fluxLogs);
                                                                                                                      
    		metaboliteList = new ArrayList<String>(metabPosMap.keySet()); 
@@ -971,6 +980,28 @@ public class PathwaysFrame extends JApplet {
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
 		frame.textField.setText(arg0.toString());
+    }
+    
+    public double edgeThickness(double fluxValue) {
+    	double thickness = PathwaysFrameConstants.DEFAULT_EDGE_WIDTH;
+    	if (Math.abs(fluxValue) > PathwaysFrameConstants.INFINITE_FLUX_RATIO*LocalConfig.getInstance().getMaxUpperBound()) {
+			//System.out.println("flux " + pn.getFluxValue());
+			thickness = PathwaysFrameConstants.INFINITE_FLUX_WIDTH;
+    	} else if (Math.abs(fluxValue) > 0) {
+    		if (Math.abs(fluxValue) < PathwaysFrameConstants.MINIMUM_FLUX_RATIO*LocalConfig.getInstance().getSecondaryMaxFlux()) {
+        		thickness = PathwaysFrameConstants.MINIMUM_FLUX_WIDTH;
+    		} else if (Math.abs(fluxValue) < PathwaysFrameConstants.LOWER_MID_FLUX_RATIO*LocalConfig.getInstance().getSecondaryMaxFlux()) {
+    			thickness = PathwaysFrameConstants.LOW_MID_FLUX_WIDTH;
+    		} else if (Math.abs(fluxValue) < PathwaysFrameConstants.LOWER_MID_FLUX_RATIO*LocalConfig.getInstance().getSecondaryMaxFlux()) {
+    			thickness = PathwaysFrameConstants.MID_FLUX_WIDTH;
+    		} else if (Math.abs(fluxValue) < PathwaysFrameConstants.LOWER_MID_FLUX_RATIO*LocalConfig.getInstance().getSecondaryMaxFlux()) {
+    			thickness = PathwaysFrameConstants.MID_FLUX_WIDTH;
+    		} else if (Math.abs(fluxValue) <= PathwaysFrameConstants.TOP_FLUX_RATIO*LocalConfig.getInstance().getSecondaryMaxFlux()) {
+    			thickness = PathwaysFrameConstants.TOP_FLUX_WIDTH;
+    		}
+    	}
+    		
+		return thickness;
     }
     
     public static void main(String[] args) {                                                                         

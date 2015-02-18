@@ -2260,8 +2260,14 @@ public class GraphicalInterface extends JFrame {
 				
 				ECNumberMapCreator ecMapCreator = new ECNumberMapCreator();
 				ecMapCreator.createEcNumberReactionMap();
-				Collections.sort(ecMapCreator.getFluxes());
-				//System.out.println("fluxes " + ecMapCreator.getFluxes());
+//				Collections.sort(LocalConfig.getInstance().getFluxes());
+//				System.out.println("fluxes " + LocalConfig.getInstance().getFluxes());
+//				System.out.println("max ub " + LocalConfig.getInstance().getMaxUpperBound());
+//				for (int i = 0; i < LocalConfig.getInstance().getFluxes().size(); i++) {
+//					if (Math.abs(LocalConfig.getInstance().getFluxes().get(i)) > 0.95*LocalConfig.getInstance().getMaxUpperBound()) {
+//						System.out.println(LocalConfig.getInstance().getFluxes().get(i));
+//					}
+//				}
 				
 				String missingItem = "";
 				String missingData = "";
@@ -11771,6 +11777,7 @@ public class GraphicalInterface extends JFrame {
 	    gurobiParametersItem.setEnabled(true);
 		glpkParametersItem.setEnabled(true);
 		ipOptParametersItem.setEnabled(true);
+		visualizationOptionsItem.setEnabled(true);
 		enableMenuItems();
 		enableVisualizationItems(true);
 	}
@@ -11791,6 +11798,7 @@ public class GraphicalInterface extends JFrame {
 	    gurobiParametersItem.setEnabled(false);
 		glpkParametersItem.setEnabled(false);
 		ipOptParametersItem.setEnabled(false);
+		visualizationOptionsItem.setEnabled(false);
 		disableMenuItems();
 		enableVisualizationItems(false);
 	}
@@ -11832,7 +11840,6 @@ public class GraphicalInterface extends JFrame {
 				enableOptionComponent(redoSplitButton, redoLabel, redoGrayedLabel);
 				redoItem.setEnabled(true);
 			}
-			visualizationOptionsItem.setEnabled(true);
 		} 
 	}
 	
@@ -11865,7 +11872,6 @@ public class GraphicalInterface extends JFrame {
 		disableOptionComponent(redoSplitButton, redoLabel, redoGrayedLabel);
 		undoItem.setEnabled(false);
 		redoItem.setEnabled(false);
-		visualizationOptionsItem.setEnabled(false);
 	}
 	
 	public void enableVisualizationItems(boolean state) {
@@ -12439,6 +12445,7 @@ public class GraphicalInterface extends JFrame {
 		//frame.setSize(550, 270);
 		frame.pack();
 		frame.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		//frame.setModal(true);
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
 		frame.okButton.addActionListener(compartmentNameAbbrOKActionListener);
@@ -12468,7 +12475,7 @@ public class GraphicalInterface extends JFrame {
 		ArrayList<Integer> externalReactionIds = new ArrayList<Integer>();
 		MetaboliteFactory f = new MetaboliteFactory("SBML");
 		ArrayList<Integer> metaboliteExternalIdList = f.metaboliteExternalIdList();
-		System.out.println("unpl " + LocalConfig.getInstance().getUnplottedReactionIds());
+		//System.out.println("unpl " + LocalConfig.getInstance().getUnplottedReactionIds());
 		for (int j = 0; j < LocalConfig.getInstance().getUnplottedReactionIds().size(); j++) {
 			int id = LocalConfig.getInstance().getUnplottedReactionIds().get(j);
 			SBMLReactionEquation equn = (SBMLReactionEquation) LocalConfig.getInstance().getReactionEquationMap().get(id);
@@ -12493,7 +12500,7 @@ public class GraphicalInterface extends JFrame {
 				}
 			}
 		}
-		System.out.println("ext rxns " + externalReactionIds);
+		//System.out.println("ext rxns " + externalReactionIds);
 		for (int n = 0; n < externalReactionIds.size(); n++) {
 			if (LocalConfig.getInstance().getUnplottedReactionIds().contains(externalReactionIds.get(n))) {
 				LocalConfig.getInstance().getUnplottedReactionIds().remove(LocalConfig.getInstance().getUnplottedReactionIds().indexOf(externalReactionIds.get(n)));
@@ -12534,10 +12541,10 @@ public class GraphicalInterface extends JFrame {
 //								LocalConfig.getInstance().getUnplottedReactionIds().remove(LocalConfig.getInstance().getUnplottedReactionIds().indexOf(id));
 								if (equn.getCompartmentReactantsList().size() == 2 || equn.getCompartmentProductsList().size() == 2) {
 									cytosolPeriplasmIds2.add(id);
-									System.out.println("id " + id + "\t" + equn.equationAbbreviations + "\t" + "Cytosol Periplasm2");
+									//System.out.println("id " + id + "\t" + equn.equationAbbreviations + "\t" + "Cytosol Periplasm2");
 								} else {
 									cytosolPeriplasmIds.add(id);
-									System.out.println("id " + id + "\t" + equn.equationAbbreviations + "\t" + "Cytosol Periplasm");
+									//System.out.println("id " + id + "\t" + equn.equationAbbreviations + "\t" + "Cytosol Periplasm");
 								}
 							}
 						}
@@ -12548,10 +12555,10 @@ public class GraphicalInterface extends JFrame {
 //								LocalConfig.getInstance().getUnplottedReactionIds().remove(LocalConfig.getInstance().getUnplottedReactionIds().indexOf(id));
 								if (equn.getCompartmentReactantsList().size() == 2 || equn.getCompartmentProductsList().size() == 2) {
 									periplasmExtraOrganismIds2.add(id);
-									System.out.println("id " + id + "\t" + equn.equationAbbreviations + "\t" + "Extraorganism Periplasm2");
+									//System.out.println("id " + id + "\t" + equn.equationAbbreviations + "\t" + "Extraorganism Periplasm2");
 								} else {
 									periplasmExtraOrganismIds.add(id);
-									System.out.println("id " + id + "\t" + equn.equationAbbreviations + "\t" + "Extraorganism Periplasm");
+									//System.out.println("id " + id + "\t" + equn.equationAbbreviations + "\t" + "Extraorganism Periplasm");
 								}
 							}
 						}
@@ -12564,10 +12571,10 @@ public class GraphicalInterface extends JFrame {
 //							LocalConfig.getInstance().getUnplottedReactionIds().remove(LocalConfig.getInstance().getUnplottedReactionIds().indexOf(id));
 							if (equn.getCompartmentReactantsList().size() == 2 || equn.getCompartmentProductsList().size() == 2) {
 								cytosolExtraOrganismIds2.add(id);
-								System.out.println("id " + id + "\t" + equn.equationAbbreviations + "\t" + "Cytosol Extraorganism2");
+								//System.out.println("id " + id + "\t" + equn.equationAbbreviations + "\t" + "Cytosol Extraorganism2");
 							} else {
 								cytosolExtraOrganismIds.add(id);
-								System.out.println("id " + id + "\t" + equn.equationAbbreviations + "\t" + "Cytosol Extraorganism");
+								//System.out.println("id " + id + "\t" + equn.equationAbbreviations + "\t" + "Cytosol Extraorganism");
 							}
 						}
 					} 
@@ -12576,9 +12583,9 @@ public class GraphicalInterface extends JFrame {
 				}
 			}
 			LocalConfig.getInstance().setCytosolExtraOrganismIds(cytosolExtraOrganismIds);
-			System.out.println("ce " + cytosolExtraOrganismIds);
-			System.out.println("cp " + cytosolPeriplasmIds);
-			System.out.println("pe " + periplasmExtraOrganismIds);
+//			System.out.println("ce " + cytosolExtraOrganismIds);
+//			System.out.println("cp " + cytosolPeriplasmIds);
+//			System.out.println("pe " + periplasmExtraOrganismIds);
 			// for some unknown reason, if it is attempted to remove these ids in if statements
 			// where added to this list (above), it skips some ids. commented out
 			for (int k = 0; k < cytosolExtraOrganismIds.size(); k++) {
@@ -12637,7 +12644,7 @@ public class GraphicalInterface extends JFrame {
         content.add(pf);
         //content.add(new PathwaysFrame());
         frame.setSize(1300, 700);
-        //frame.pack();  
+        //frame.pack(); 
         frame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         frame.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent evt) {
