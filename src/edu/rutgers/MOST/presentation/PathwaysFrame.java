@@ -996,8 +996,10 @@ public class PathwaysFrame extends JApplet {
     			thickness = PathwaysFrameConstants.MID_FLUX_WIDTH;
     		} else if (Math.abs(fluxValue) < PathwaysFrameConstants.LOWER_MID_FLUX_RATIO*LocalConfig.getInstance().getSecondaryMaxFlux()) {
     			thickness = PathwaysFrameConstants.MID_FLUX_WIDTH;
-    		} else if (Math.abs(fluxValue) <= PathwaysFrameConstants.TOP_FLUX_RATIO*LocalConfig.getInstance().getSecondaryMaxFlux()) {
+    		} else if (Math.abs(fluxValue) < PathwaysFrameConstants.TOP_FLUX_RATIO*LocalConfig.getInstance().getSecondaryMaxFlux()) {
     			thickness = PathwaysFrameConstants.TOP_FLUX_WIDTH;
+    		} else if (Math.abs(fluxValue) <= LocalConfig.getInstance().getSecondaryMaxFlux()) {
+    			thickness = PathwaysFrameConstants.SECONDARY_MAX_FLUX_WIDTH;
     		}
     	}
     		

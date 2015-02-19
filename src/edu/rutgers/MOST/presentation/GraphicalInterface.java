@@ -12445,8 +12445,8 @@ public class GraphicalInterface extends JFrame {
 		//frame.setSize(550, 270);
 		frame.pack();
 		frame.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-		//frame.setModal(true);
 		frame.setLocationRelativeTo(null);
+		frame.setAlwaysOnTop(true);
 		frame.setVisible(true);
 		frame.okButton.addActionListener(compartmentNameAbbrOKActionListener);
 	}

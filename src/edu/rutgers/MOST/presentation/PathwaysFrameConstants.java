@@ -65,6 +65,7 @@ public class PathwaysFrameConstants {
 	public static final int ARROW_NOTCH = 15;
 	public static final double INFINITE_FLUX_RATIO = 0.95;
 	public static final double INFINITE_FLUX_WIDTH = 16.0;
+	public static final double SECONDARY_MAX_FLUX_WIDTH = 8.0;
 	public static final double TOP_FLUX_RATIO = 0.5;
 	public static final double TOP_FLUX_WIDTH = 6.0;
 	public static final double MID_FLUX_RATIO = 0.25;
