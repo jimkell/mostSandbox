@@ -1458,6 +1458,8 @@ public class GraphicalInterface extends JFrame {
 		LocalConfig.getInstance().setEcNumberReactionMap(ecNumberReactionMap);
 		Map<String, ArrayList<String>> keggIdCompartmentMap = new HashMap<String, ArrayList<String>>();
 		LocalConfig.getInstance().setKeggIdCompartmentMap(keggIdCompartmentMap);
+		Map<String, String> metaboliteIdKeggIdMap = new HashMap<String, String>();
+		LocalConfig.getInstance().setMetaboliteIdKeggIdMap(metaboliteIdKeggIdMap);
 
 		DynamicTreePanel.getTreePanel().deleteItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent a) {
@@ -2281,7 +2283,11 @@ public class GraphicalInterface extends JFrame {
 								!metabolites.get(i).getMetaboliteAbbreviation().endsWith("_b") &&
 								metabolites.get(i).getKeggId() != null &&
 								metabolites.get(i).getKeggId().length() > 0) {
+							String metabId = Integer.toString(metabolites.get(i).getId());
 							String keggId = metabolites.get(i).getKeggId();
+							if (keggId != null && keggId.length() > 0) {
+								LocalConfig.getInstance().getMetaboliteIdKeggIdMap().put(metabId, keggId);
+							}
 							if (!LocalConfig.getInstance().getKeggIdCompartmentMap().containsKey(keggId)) {
 								ArrayList<String> compList = new ArrayList<String>();
 								compList.add(metabolites.get(i).getCompartment());
@@ -2294,7 +2300,20 @@ public class GraphicalInterface extends JFrame {
 						}
 					}
 					System.out.println(LocalConfig.getInstance().getKeggIdCompartmentMap());
+					System.out.println(LocalConfig.getInstance().getMetaboliteIdKeggIdMap());
 				}
+				
+				for (int j = 0; j < LocalConfig.getInstance().getReactionEquationMap().size(); j++) {
+					for (int r = 0; r < ((SBMLReactionEquation) LocalConfig.getInstance().getReactionEquationMap().get(j)).getReactants().size(); r++) {
+						int metabId = ((SBMLReactionEquation) LocalConfig.getInstance().getReactionEquationMap().get(j)).getReactants().get(r).getMetaboliteId();
+						System.out.println(LocalConfig.getInstance().getMetaboliteIdKeggIdMap().get(Integer.toString(metabId)));
+					}
+					for (int p = 0; p < ((SBMLReactionEquation) LocalConfig.getInstance().getReactionEquationMap().get(j)).getProducts().size(); p++) {
+						int metabId = ((SBMLReactionEquation) LocalConfig.getInstance().getReactionEquationMap().get(j)).getProducts().get(p).getMetaboliteId();
+						System.out.println(LocalConfig.getInstance().getMetaboliteIdKeggIdMap().get(Integer.toString(metabId)));
+					}
+				}
+				
 				if (LocalConfig.getInstance().getEcNumberReactionMap().size() == 0 &&
 						f.getKeggIdColumnIndex() == -1) {
 					missingItem = "EC Numbers or KEGG IDs";

@@ -947,6 +947,16 @@ public class LocalConfig {
 			Map<String, ArrayList<String>> keggIdCompartmentMap) {
 		this.keggIdCompartmentMap = keggIdCompartmentMap;
 	}
+	
+	private Map<String, String> metaboliteIdKeggIdMap;
+
+	public Map<String, String> getMetaboliteIdKeggIdMap() {
+		return metaboliteIdKeggIdMap;
+	}
+
+	public void setMetaboliteIdKeggIdMap(Map<String, String> metaboliteIdKeggIdMap) {
+		this.metaboliteIdKeggIdMap = metaboliteIdKeggIdMap;
+	}
 
 	private Map<String, ArrayList<PathwayConnectionData>> connectionPositionMap;
 
