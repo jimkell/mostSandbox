@@ -58,7 +58,7 @@ public class SBMLReactionEquation implements ModelReactionEquation {
 	public void setIrreversibleArrow(String irreversibleArrow) {
 		this.irreversibleArrow = irreversibleArrow;
 	}
-	
+
 	public ArrayList<String> getCompartmentList() {
 		return compartmentList;
 	}
