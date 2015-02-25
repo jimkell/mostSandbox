@@ -957,6 +957,17 @@ public class LocalConfig {
 	public void setMetaboliteIdKeggIdMap(Map<String, String> metaboliteIdKeggIdMap) {
 		this.metaboliteIdKeggIdMap = metaboliteIdKeggIdMap;
 	}
+	
+	private Map<String, PathwayReactionData> modelKeggEquationMap;
+
+	public Map<String, PathwayReactionData> getModelKeggEquationMap() {
+		return modelKeggEquationMap;
+	}
+
+	public void setModelKeggEquationMap(
+			Map<String, PathwayReactionData> modelKeggEquationMap) {
+		this.modelKeggEquationMap = modelKeggEquationMap;
+	}
 
 	private Map<String, ArrayList<PathwayConnectionData>> connectionPositionMap;
 
