@@ -103,13 +103,10 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 import java.util.Vector;
 
 import layout.TableLayout;
@@ -12785,38 +12782,38 @@ public class GraphicalInterface extends JFrame {
 	}
 	
 	public void assignKeggReactionIdsFromECNumbers() {
-		ArrayList<String> reactionDataKeggIds = new ArrayList<String>(LocalConfig.getInstance().getReactionDataKeggIdMap().keySet());
-		ArrayList<String> ecnumberReactions = new ArrayList<String>(LocalConfig.getInstance().getEcNumberReactionMap().keySet());
-		for (int i = 0; i < ecnumberReactions.size(); i++) {
-			ArrayList<SBMLReaction> reactions = LocalConfig.getInstance().getEcNumberReactionMap().get(ecnumberReactions.get(i));
-			for (int j = 0; j < reactions.size(); j++) {
-				int id = reactions.get(j).getId();
-				if (LocalConfig.getInstance().getModelKeggEquationMap().containsKey(Integer.toString(id))) {
-					PathwayReactionData pr = LocalConfig.getInstance().getModelKeggEquationMap().get(Integer.toString(id));
-					for (int k = 0; k < reactionDataKeggIds.size(); k++) {
-						PathwayReactionData prd = LocalConfig.getInstance().getReactionDataKeggIdMap().get(reactionDataKeggIds.get(k));
-						if (keggReactionIdFound(prd.getKeggReactantIds(), prd.getKeggProductIds(), 
-								pr.getKeggReactantIds(), pr.getKeggProductIds(), "forward")) {
-							//System.out.println(pr.getReactionId());
-							System.out.println(ecnumberReactions.get(i));
-							System.out.println(prd.getKeggReactionId());
-							if (LocalConfig.getInstance().getUnplottedReactionIds().contains(Integer.parseInt(pr.getReactionId()))) {
-								LocalConfig.getInstance().getUnplottedReactionIds().remove(LocalConfig.getInstance().getUnplottedReactionIds().indexOf(Integer.parseInt(pr.getReactionId())));
-							}
-						} else {
-							if (keggReactionIdFound(prd.getKeggReactantIds(), prd.getKeggProductIds(), 
-									pr.getKeggProductIds(), pr.getKeggReactantIds(), "reverse")) {
-								//System.out.println(pr.getReactionId());
-								System.out.println(ecnumberReactions.get(i));
-								System.out.println(prd.getKeggReactionId());
-								if (LocalConfig.getInstance().getUnplottedReactionIds().contains(Integer.parseInt(pr.getReactionId()))) {
-									LocalConfig.getInstance().getUnplottedReactionIds().remove(LocalConfig.getInstance().getUnplottedReactionIds().indexOf(Integer.parseInt(pr.getReactionId())));
-								}
+		ArrayList<String> ecNumbersFromModel = new ArrayList<String>(LocalConfig.getInstance().getEcNumberReactionMap().keySet());
+		for (int r = 0; r < ecNumbersFromModel.size(); r++) {
+			System.out.println(ecNumbersFromModel.get(r));
+			ArrayList<SBMLReaction> ecSBMLReactions = LocalConfig.getInstance().getEcNumberReactionMap().get(ecNumbersFromModel.get(r));
+			for (int s = 0; s < ecSBMLReactions.size(); s++) {
+				System.out.println(ecSBMLReactions.get(s).getId());
+				if (LocalConfig.getInstance().getModelKeggEquationMap().containsKey(Integer.toString(ecSBMLReactions.get(s).getId()))) {
+					PathwayReactionData prd = LocalConfig.getInstance().getModelKeggEquationMap().get(Integer.toString(ecSBMLReactions.get(s).getId()));
+					System.out.println(prd.getKeggReactantIds());
+					System.out.println(prd.getKeggProductIds());
+					if (LocalConfig.getInstance().getEcNumberKeggReactionIdMap().containsKey(ecNumbersFromModel.get(r))) {
+						ArrayList<String> keggReactionIds = LocalConfig.getInstance().getEcNumberKeggReactionIdMap().get(ecNumbersFromModel.get(r));
+						for (int j = 0; j < keggReactionIds.size(); j++) {
+							if (LocalConfig.getInstance().getReactionDataKeggIdMap().containsKey(keggReactionIds.get(j))) {
+								PathwayReactionData pd = LocalConfig.getInstance().getReactionDataKeggIdMap().get(keggReactionIds.get(j));
+								System.out.println("");
+								System.out.println(pd.getKeggReactantIds());
+								System.out.println(pd.getKeggProductIds());
+							} else {
+								// is this possible?
+								System.out.println(keggReactionIds.get(j) + "not found in file");
 							}
 						}
+					} else {
+						// ec number not present in file
+						// consider same as not having ec number?
+						// need to search entire file here
+						System.out.println(ecNumbersFromModel.get(r) + " not found in file");
 					}
 				} else {
-					System.out.println(ecnumberReactions.get(i) + " not found");
+					// this happens for reactions containing metabolites that have no kegg ids
+					System.out.println("not found in model equns");
 				}
 			}
 		}
