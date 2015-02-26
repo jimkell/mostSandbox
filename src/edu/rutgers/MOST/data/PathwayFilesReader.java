@@ -321,7 +321,7 @@ public class PathwayFilesReader {
 				LocalConfig.getInstance().setReactionDataKeggIdMap(reactionDataKeggIdMap);
 				//System.out.println(reactionDataKeggIdMap);
 				LocalConfig.getInstance().setEcNumberKeggReactionIdMap(ecNumberKeggReactionIdMap);
-				//System.out.println(ecNumberKeggReactionIdMap);
+				System.out.println(ecNumberKeggReactionIdMap);
 			} catch (IOException e) {
 				JOptionPane.showMessageDialog(null,                
 						"File Not Found Error.",                

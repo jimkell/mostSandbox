@@ -65,7 +65,7 @@ public class ECNumberMapCreator {
 		}
 		//System.out.println("sec " + secondaryMaxFlux);
 		Collections.sort(LocalConfig.getInstance().getUnplottedReactionIds());
-		System.out.println("not plotted " + LocalConfig.getInstance().getUnplottedReactionIds());
+		//System.out.println("not plotted " + LocalConfig.getInstance().getUnplottedReactionIds());
 		LocalConfig.getInstance().setEcNumberReactionMap(ecNumberReactionMap);
 		LocalConfig.getInstance().setFluxes(fluxes);
 		LocalConfig.getInstance().setMaxUpperBound(maxUpperBound);
