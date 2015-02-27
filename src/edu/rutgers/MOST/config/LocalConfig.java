@@ -255,6 +255,16 @@ public class LocalConfig {
 	public void setReactionsIdRowMap(Map<String, Object> reactionsIdRowMap) {
 		this.reactionsIdRowMap = reactionsIdRowMap;
 	}
+	
+	private Map<String, Object> metabolitesIdRowMap;
+
+	public Map<String, Object> getMetabolitesIdRowMap() {
+		return metabolitesIdRowMap;
+	}
+
+	public void setMetabolitesIdRowMap(Map<String, Object> metabolitesIdRowMap) {
+		this.metabolitesIdRowMap = metabolitesIdRowMap;
+	}
 
 	private ArrayList<String> metabolitesMetaColumnNames;
 

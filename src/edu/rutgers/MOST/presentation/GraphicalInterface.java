@@ -1392,6 +1392,8 @@ public class GraphicalInterface extends JFrame {
 
 		Map<Object, ModelReactionEquation> reactionEquationMap = new HashMap<Object, ModelReactionEquation>();
 		LocalConfig.getInstance().setReactionEquationMap(reactionEquationMap);
+		Map<String, Object> metabolitesIdRowMap = new HashMap<String, Object>();
+		LocalConfig.getInstance().setMetabolitesIdRowMap(metabolitesIdRowMap);
 		Map<String, Object> reactionsIdRowMap = new HashMap<String, Object>();
 		LocalConfig.getInstance().setReactionsIdRowMap(reactionsIdRowMap);
 
@@ -2832,48 +2834,18 @@ public class GraphicalInterface extends JFrame {
 				// allows table to scroll to make added column visible
 				addReacColumn = true;
 				if (getReactionColAddRenameInterface().isColumnDuplicate()) {
-//					reactionColAddRenameInterface.setAlwaysOnTop(false);
-//					reactionColAddRenameInterface.setModal(false);
 					JOptionPane.showMessageDialog(null,                
 							"Column Name Already Exists.",                
 							"Duplicate ColumnName",                                
 							JOptionPane.ERROR_MESSAGE);
-//					reactionColAddRenameInterface.setAlwaysOnTop(true);
-//					reactionColAddRenameInterface.setModal(true);
 				} else {
-					// copy old meta column list
-					ArrayList<String> oldMetaCol = new ArrayList<String>();
-					for (int i = 0; i < LocalConfig.getInstance().getReactionsMetaColumnNames().size(); i++) {
-						oldMetaCol.add(LocalConfig.getInstance().getReactionsMetaColumnNames().get(i));
-					}
-					// copy old model for undo/redo
-					DefaultTableModel oldReactionsModel = copyReactionsTableModel((DefaultTableModel) reactionsTable.getModel());			
-					copyReactionsTableModels(oldReactionsModel);
+					String columnName = getReactionColAddRenameInterface().textField.getText();
 					
-					LocalConfig.getInstance().getReactionsMetaColumnNames().add(ReactionColAddRenameInterface.textField.getText());
-					ReactionUndoItem undoItem = createReactionUndoItem("", "", getCurrentReactionsRow(), getCurrentReactionsColumn(), 0, UndoConstants.ADD_COLUMN, UndoConstants.REACTION_UNDO_ITEM_TYPE);
-					setOldUsedMap(undoItem);
-					undoItem.setTableCopyIndex(LocalConfig.getInstance().getNumReactionTablesCopied());
-					undoItem.setAddedColumnIndex(LocalConfig.getInstance().getReactionsMetaColumnNames().size() + GraphicalInterfaceConstants.REACTIONS_COLUMN_NAMES.length - 1);
-					
-					undoItem.setOldMetaColumnNames(oldMetaCol);
-					getReactionColAddRenameInterface().addColumn();
-					
-					ReactionColAddRenameInterface.textField.setText("");
+					getReactionColAddRenameInterface().textField.setText("");
 					getReactionColAddRenameInterface().setVisible(false);
 					getReactionColAddRenameInterface().dispose();
-					setUpReactionsTable(LocalConfig.getInstance().getReactionsTableModelMap().get(LocalConfig.getInstance().getModelName()));
-					DefaultTableModel newReactionsModel = copyReactionsTableModel((DefaultTableModel) reactionsTable.getModel());			
-					copyReactionsTableModels(newReactionsModel);
-					// copy new meta column list
-					ArrayList<String> newMetaCol = new ArrayList<String>();
-					for (int i = 0; i < LocalConfig.getInstance().getReactionsMetaColumnNames().size(); i++) {
-						newMetaCol.add(LocalConfig.getInstance().getReactionsMetaColumnNames().get(i));
-					}
-					undoItem.setNewMetaColumnNames(newMetaCol);
-					setNewUsedMap(undoItem);
-					setUpReactionsUndo(undoItem);
-					addReacColumn = false;
+					
+					addReactionsColumn(columnName);
 					addReactionColumnCloseAction();
 				}							
 			}
@@ -2920,18 +2892,14 @@ public class GraphicalInterface extends JFrame {
 				// allows table to scroll to make added column visible
 				addMetabColumn = true;
 				if (getMetaboliteColAddRenameInterface().isColumnDuplicate()) {
-//					metaboliteColAddRenameInterface.setAlwaysOnTop(false);
-//					metaboliteColAddRenameInterface.setModal(false);
 					JOptionPane.showMessageDialog(null,                
 							"Column Name Already Exists.",                
 							"Duplicate ColumnName",                                
 							JOptionPane.ERROR_MESSAGE);
-//					metaboliteColAddRenameInterface.setAlwaysOnTop(true);
-//					metaboliteColAddRenameInterface.setModal(true);
 				} else {
-					String columnName = MetaboliteColAddRenameInterface.textField.getText();
+					String columnName = getMetaboliteColAddRenameInterface().textField.getText();
 					
-					MetaboliteColAddRenameInterface.textField.setText("");
+					getMetaboliteColAddRenameInterface().textField.setText("");
 					getMetaboliteColAddRenameInterface().setVisible(false);
 					getMetaboliteColAddRenameInterface().dispose();
 					
@@ -4345,10 +4313,7 @@ public class GraphicalInterface extends JFrame {
 	}; 
 	
 	public void updateKeggIdColumn(Vector<SBMLMetabolite> metabolites, int modeltrimStartIndex, int modeltrimEndIndex, int keggIdColumn) {
-		Map<String, Object> metabolitesIdRowMap = new HashMap<String, Object>();
-		for (int i = 0; i < GraphicalInterface.metabolitesTable.getRowCount(); i++) {
-			metabolitesIdRowMap.put((String) metabolitesTable.getModel().getValueAt(i, GraphicalInterfaceConstants.METABOLITE_ID_COLUMN), i);
-		}
+		createMetabolitesIdRowMap();
 		int count = 0;
 		// add kegg ids from hashmap to table
 		for (int i = 0; i < metabolites.size(); i++) {
@@ -4357,7 +4322,7 @@ public class GraphicalInterface extends JFrame {
 			if (abbr != null && abbr.length() > totalTrimLength) {
 				String trimmedAbbr = abbr.substring(modeltrimStartIndex, abbr.length() - modeltrimEndIndex);
 //				System.out.println("model " + trimmedAbbr);
-				String row = (metabolitesIdRowMap.get(Integer.toString(metabolites.get(i).getId()))).toString();
+				String row = (LocalConfig.getInstance().getMetabolitesIdRowMap().get(Integer.toString(metabolites.get(i).getId()))).toString();
 				int rowNum = Integer.valueOf(row);
 				if (LocalConfig.getInstance().getMetaboliteAbbrKeggIdMap().containsKey(trimmedAbbr)) {
 					count += 1;
@@ -4454,10 +4419,7 @@ public class GraphicalInterface extends JFrame {
 		copyReactionsTableModels(oldReactionsModel); 
 		ReactionUndoItem undoItem = createReactionUndoItem("", "", reactionsTable.getSelectedRow(), ecNumberColumn, 0, UndoConstants.ADD_SUPP_DATA, UndoConstants.REACTION_UNDO_ITEM_TYPE);
 		undoItem.setTableCopyIndex(LocalConfig.getInstance().getNumReactionTablesCopied()); 
-		Map<String, Object> reactionsIdRowMap = new HashMap<String, Object>();
-		for (int i = 0; i < GraphicalInterface.reactionsTable.getRowCount(); i++) {
-			reactionsIdRowMap.put((String) reactionsTable.getModel().getValueAt(i, GraphicalInterfaceConstants.REACTIONS_ID_COLUMN), i);
-		}
+		createReactionsIdRowMap();
 		int count = 0;
 		// add ec numbers from hashmap to table
 		for (int i = 0; i < reactions.size(); i++) {
@@ -4466,7 +4428,7 @@ public class GraphicalInterface extends JFrame {
 			if (abbr != null && abbr.length() > totalTrimLength) {
 				String trimmedAbbr = abbr.substring(modeltrimStartIndex, abbr.length() - modeltrimEndIndex);
 //				System.out.println("model " + trimmedAbbr);
-				String row = (reactionsIdRowMap.get(Integer.toString(reactions.get(i).getId()))).toString();
+				String row = (LocalConfig.getInstance().getReactionsIdRowMap().get(Integer.toString(reactions.get(i).getId()))).toString();
 				int rowNum = Integer.valueOf(row);
 				if (LocalConfig.getInstance().getReactionAbbrECNumberMap().containsKey(trimmedAbbr)) {
 					count += 1;
@@ -5852,23 +5814,31 @@ public class GraphicalInterface extends JFrame {
 			deleteUnusedItem.setEnabled(false);
 		}
 	}
-
-	public static void updateReactionsCellById(String value, int id, int col) {
+	
+	public void createReactionsIdRowMap() {
 		Map<String, Object> reactionsIdRowMap = new HashMap<String, Object>();
 		for (int i = 0; i < reactionsTable.getRowCount(); i++) {
 			reactionsIdRowMap.put((String) reactionsTable.getModel().getValueAt(i, GraphicalInterfaceConstants.REACTIONS_ID_COLUMN), i);
 		}
-		String row = (reactionsIdRowMap.get(Integer.toString(id))).toString();
+		LocalConfig.getInstance().setReactionsIdRowMap(reactionsIdRowMap);
+	}
+	
+	public void createMetabolitesIdRowMap() {
+		Map<String, Object> metabolitesIdRowMap = new HashMap<String, Object>();
+		for (int i = 0; i < metabolitesTable.getRowCount(); i++) {
+			metabolitesIdRowMap.put((String) metabolitesTable.getModel().getValueAt(i, GraphicalInterfaceConstants.REACTIONS_ID_COLUMN), i);
+		}
+		LocalConfig.getInstance().setMetabolitesIdRowMap(metabolitesIdRowMap);
+	}
+
+	public static void updateReactionsCellById(String value, int id, int col) {
+		String row = (LocalConfig.getInstance().getReactionsIdRowMap().get(Integer.toString(id))).toString();
 		int rowNum = Integer.valueOf(row);
 		reactionsTable.getModel().setValueAt(value, rowNum, col);
 	}
 	
 	public static void updateMetabolitesCellById(String value, int id, int col) {
-		Map<String, Object> metabolitesIdRowMap = new HashMap<String, Object>();
-		for (int i = 0; i < metabolitesTable.getRowCount(); i++) {
-			metabolitesIdRowMap.put((String) metabolitesTable.getModel().getValueAt(i, GraphicalInterfaceConstants.REACTIONS_ID_COLUMN), i);
-		}
-		String row = (metabolitesIdRowMap.get(Integer.toString(id))).toString();
+		String row = (LocalConfig.getInstance().getMetabolitesIdRowMap().get(Integer.toString(id))).toString();
 		int rowNum = Integer.valueOf(row);
 		metabolitesTable.getModel().setValueAt(value, rowNum, col);
 	}
@@ -6301,6 +6271,39 @@ public class GraphicalInterface extends JFrame {
 		LocalConfig.getInstance().getMetabolitesTableModelMap().put(solutionName, metabolitesOptModel);
 		
 		LocalConfig.getInstance().getOptimizationFilesList().add(solutionName);
+	}
+	
+	public void addReactionsColumn(String columnName) {
+		// copy old meta column list
+		ArrayList<String> oldMetaCol = new ArrayList<String>();
+		for (int i = 0; i < LocalConfig.getInstance().getReactionsMetaColumnNames().size(); i++) {
+			oldMetaCol.add(LocalConfig.getInstance().getReactionsMetaColumnNames().get(i));
+		}
+		DefaultTableModel oldReactionsModel = copyReactionsTableModel((DefaultTableModel) reactionsTable.getModel());			
+		copyReactionsTableModels(oldReactionsModel);
+		LocalConfig.getInstance().getReactionsMetaColumnNames().add(columnName);
+		ReactionUndoItem undoItem = createReactionUndoItem("", "", getCurrentReactionsRow(), getCurrentReactionsColumn(), 0, UndoConstants.ADD_COLUMN, UndoConstants.REACTION_UNDO_ITEM_TYPE);		
+		setOldUsedMap(undoItem);
+		undoItem.setTableCopyIndex(LocalConfig.getInstance().getNumReactionTablesCopied());
+		undoItem.setAddedColumnIndex(LocalConfig.getInstance().getReactionsMetaColumnNames().size() + GraphicalInterfaceConstants.REACTIONS_COLUMN_NAMES.length - 1);
+		undoItem.setOldMetaColumnNames(oldMetaCol);
+		
+		DefaultTableModel model = (DefaultTableModel) reactionsTable.getModel();
+		model.addColumn(columnName);
+		LocalConfig.getInstance().getReactionsTableModelMap().put(LocalConfig.getInstance().getModelName(), model);
+
+		setUpReactionsTable(LocalConfig.getInstance().getReactionsTableModelMap().get(LocalConfig.getInstance().getModelName()));					
+		DefaultTableModel newReactionsModel = copyReactionsTableModel((DefaultTableModel) reactionsTable.getModel());			
+		copyReactionsTableModels(newReactionsModel);
+		// copy new meta column list
+		ArrayList<String> newMetaCol = new ArrayList<String>();
+		for (int i = 0; i < LocalConfig.getInstance().getReactionsMetaColumnNames().size(); i++) {
+			newMetaCol.add(LocalConfig.getInstance().getReactionsMetaColumnNames().get(i));
+		}
+		undoItem.setNewMetaColumnNames(newMetaCol);
+		setNewUsedMap(undoItem);
+		setUpReactionsUndo(undoItem);					
+		addReacColumn = false;
 	}
 	
 	public void addMetabolitesColumn(String columnName) {
@@ -8268,6 +8271,7 @@ public class GraphicalInterface extends JFrame {
 							null, options, options[0]);
 					if (choice == JOptionPane.YES_OPTION) {	
 						value = value + u.duplicateSuffix(value, LocalConfig.getInstance().getReactionAbbreviationIdMap());
+						createReactionsIdRowMap();
 						updateReactionsCellById(value, id, col);
 						LocalConfig.getInstance().getReactionAbbreviationIdMap().remove(reacAbbrev);
 						LocalConfig.getInstance().getReactionAbbreviationIdMap().put(value, id);
@@ -8281,6 +8285,7 @@ public class GraphicalInterface extends JFrame {
 				} else {
 					if (duplicateReacOK) {
 						value = value + u.duplicateSuffix(value, LocalConfig.getInstance().getReactionAbbreviationIdMap());
+						createReactionsIdRowMap();
 						updateReactionsCellById(value, id, col);
 						//reactionsTable.setValueAt(value, viewRow, col);
 						if (LocalConfig.getInstance().getReactionAbbreviationIdMap().containsKey(reacAbbrev)) {
@@ -8613,6 +8618,7 @@ public class GraphicalInterface extends JFrame {
 					}
 				}
 				equn.writeReactionEquation();
+				createReactionsIdRowMap();
 				updateReactionsCellById(equn.equationAbbreviations, participatingReactions.get(i), GraphicalInterfaceConstants.REACTION_EQUN_ABBR_COLUMN);
 			} else if (columnIndex == GraphicalInterfaceConstants.METABOLITE_NAME_COLUMN) {
 				//if (metabName != null && metabName.length() > 0) {
@@ -8631,6 +8637,7 @@ public class GraphicalInterface extends JFrame {
 //				}
 				 
 				equn.writeReactionEquation();
+				createReactionsIdRowMap();
 				updateReactionsCellById(equn.equationNames, participatingReactions.get(i), GraphicalInterfaceConstants.REACTION_EQUN_NAMES_COLUMN);
 			}								
 		}
@@ -8659,6 +8666,7 @@ public class GraphicalInterface extends JFrame {
 				}
 			}
 			equn.writeReactionEquation();
+			createReactionsIdRowMap();
 			updateReactionsCellById(equn.equationNames, participatingReactions.get(i), GraphicalInterfaceConstants.REACTION_EQUN_NAMES_COLUMN);								
 		}
 	}
@@ -9414,6 +9422,7 @@ public class GraphicalInterface extends JFrame {
 									null, options, options[0]);
 							if (choice == JOptionPane.YES_OPTION) {	
 								value = value + u.duplicateSuffix(value, LocalConfig.getInstance().getMetaboliteAbbreviationIdMap());
+								createMetabolitesIdRowMap();
 								updateMetabolitesCellById(value, id, col);
 								LocalConfig.getInstance().getMetaboliteAbbreviationIdMap().remove(metabAbbrev);
 								LocalConfig.getInstance().getMetaboliteAbbreviationIdMap().put(value, id);
@@ -9427,6 +9436,7 @@ public class GraphicalInterface extends JFrame {
 						} else {
 							if (duplicateMetabOK) {
 								value = value + u.duplicateSuffix(value, LocalConfig.getInstance().getMetaboliteAbbreviationIdMap());
+								createMetabolitesIdRowMap();
 								updateMetabolitesCellById(value, id, col);
 								//metabolitesTable.setValueAt(value, viewRow, col);
 								if (LocalConfig.getInstance().getMetaboliteAbbreviationIdMap().containsKey(metabAbbrev)) {
@@ -11994,14 +12004,14 @@ public class GraphicalInterface extends JFrame {
 
 	public void addReactionColumnCloseAction() {
     	
-		ReactionColAddRenameInterface.textField.setText("");
+		getReactionColAddRenameInterface().textField.setText("");
     	getReactionColAddRenameInterface().setVisible(false);
     	getReactionColAddRenameInterface().dispose();
 	}
 
 	public void addMetaboliteColumnCloseAction() {
     	
-		MetaboliteColAddRenameInterface.textField.setText("");
+		getMetaboliteColAddRenameInterface().textField.setText("");
     	getMetaboliteColAddRenameInterface().setVisible(false);
     	getMetaboliteColAddRenameInterface().dispose();
 	}
@@ -12690,62 +12700,33 @@ public class GraphicalInterface extends JFrame {
 	}
 	
 	public void assignKeggReactionIds() {
+		setCurrentReactionsRow(reactionsTable.getSelectedRow());
+		setCurrentReactionsColumn(reactionsTable.getSelectedColumn());
+		addReactionsColumn(GraphicalInterfaceConstants.REACTION_KEGG_ID_COLUMN_NAME);
+		ReactionFactory rf = new ReactionFactory("SBML");
+		createReactionsIdRowMap();
 		ArrayList<String> reactionDataKeggIds = new ArrayList<String>(LocalConfig.getInstance().getReactionDataKeggIdMap().keySet());
 		for (int i = 0; i < LocalConfig.getInstance().getUnplottedReactionIds().size(); i++) {
 			if (LocalConfig.getInstance().getModelKeggEquationMap().containsKey(Integer.toString(LocalConfig.getInstance().getUnplottedReactionIds().get(i)))) {
-				PathwayReactionData pr = LocalConfig.getInstance().getModelKeggEquationMap().get(Integer.toString(LocalConfig.getInstance().getUnplottedReactionIds().get(i)));
-				//System.out.println(pr);
+				// data from model
+				PathwayReactionData modelData = LocalConfig.getInstance().getModelKeggEquationMap().get(Integer.toString(LocalConfig.getInstance().getUnplottedReactionIds().get(i)));
 				for (int k = 0; k < reactionDataKeggIds.size(); k++) {
-//					boolean reactantMatch = false;
-//					boolean productMatch = false;
-					PathwayReactionData prd = LocalConfig.getInstance().getReactionDataKeggIdMap().get(reactionDataKeggIds.get(k));
-//					Collections.sort(pr.getKeggReactantIds());
-//					Collections.sort(pr.getKeggProductIds());
-//					Collections.sort(prd.getKeggReactantIds());
-//					Collections.sort(prd.getKeggProductIds());
-//					if (pr.getKeggReactantIds().equals(prd.getKeggReactantIds())) {
-//						reactantMatch = true;
-//					}
-//					if (pr.getKeggProductIds().equals(prd.getKeggProductIds())) {
-//						productMatch = true;
-//					}
-//					if (reactantMatch && productMatch) {
-//						System.out.println(pr.getReactionId());
-//						System.out.println(prd.getKeggReactionId());
-//						System.out.println("model reac " + pr.getKeggReactantIds());
-//						System.out.println("model prod " + pr.getKeggProductIds());
-//						System.out.println("forward");
-//					} else {
-//						reactantMatch = false;
-//						productMatch = false;
-//						if (pr.getKeggReactantIds().equals(prd.getKeggProductIds())) {
-//							reactantMatch = true;
-//						}
-//						if (pr.getKeggProductIds().equals(prd.getKeggReactantIds())) {
-//							productMatch = true;
-//						}
-//						if (reactantMatch && productMatch) {
-//							System.out.println(pr.getReactionId());
-//							System.out.println(prd.getKeggReactionId());
-//							System.out.println("model reac " + pr.getKeggReactantIds());
-//							System.out.println("model prod " + pr.getKeggProductIds());
-//							System.out.println("reverse");
-//						} 
-//					}
-					if (keggReactionIdFound(prd.getKeggReactantIds(), prd.getKeggProductIds(), 
-							pr.getKeggReactantIds(), pr.getKeggProductIds(), "forward")) {
-//						System.out.println(pr.getReactionId());
-//						System.out.println(prd.getKeggReactionId());
-						if (LocalConfig.getInstance().getUnplottedReactionIds().contains(Integer.parseInt(pr.getReactionId()))) {
-							LocalConfig.getInstance().getUnplottedReactionIds().remove(LocalConfig.getInstance().getUnplottedReactionIds().indexOf(Integer.parseInt(pr.getReactionId())));
+					// data from reactions.csv file
+					PathwayReactionData fileData = LocalConfig.getInstance().getReactionDataKeggIdMap().get(reactionDataKeggIds.get(k));
+					// compare metabolite kegg id reactant and product lists from reaction equations 
+					// from model with reactant and product lists in file
+					if (keggReactionIdFound(fileData.getKeggReactantIds(), fileData.getKeggProductIds(), 
+							modelData.getKeggReactantIds(), modelData.getKeggProductIds(), "forward")) {
+						updateReactionsCellById(fileData.getKeggReactionId(), Integer.valueOf(modelData.getReactionId()), rf.getKeggIdColumnIndex());
+						if (LocalConfig.getInstance().getUnplottedReactionIds().contains(Integer.parseInt(modelData.getReactionId()))) {
+							LocalConfig.getInstance().getUnplottedReactionIds().remove(LocalConfig.getInstance().getUnplottedReactionIds().indexOf(Integer.parseInt(modelData.getReactionId())));
 						}
 					} else {
-						if (keggReactionIdFound(prd.getKeggReactantIds(), prd.getKeggProductIds(), 
-								pr.getKeggProductIds(), pr.getKeggReactantIds(), "reverse")) {
-//							System.out.println(pr.getReactionId());
-//							System.out.println(prd.getKeggReactionId());
-							if (LocalConfig.getInstance().getUnplottedReactionIds().contains(Integer.parseInt(pr.getReactionId()))) {
-								LocalConfig.getInstance().getUnplottedReactionIds().remove(LocalConfig.getInstance().getUnplottedReactionIds().indexOf(Integer.parseInt(pr.getReactionId())));
+						if (keggReactionIdFound(fileData.getKeggReactantIds(), fileData.getKeggProductIds(), 
+								modelData.getKeggProductIds(), modelData.getKeggReactantIds(), "reverse")) {
+							updateReactionsCellById(fileData.getKeggReactionId(), Integer.valueOf(modelData.getReactionId()), rf.getKeggIdColumnIndex());
+							if (LocalConfig.getInstance().getUnplottedReactionIds().contains(Integer.parseInt(modelData.getReactionId()))) {
+								LocalConfig.getInstance().getUnplottedReactionIds().remove(LocalConfig.getInstance().getUnplottedReactionIds().indexOf(Integer.parseInt(modelData.getReactionId())));
 							}
 						}
 					}
@@ -12776,30 +12757,56 @@ public class GraphicalInterface extends JFrame {
 //			System.out.println("model prod " + modelProductKeggIds);
 //			System.out.println(direction);
 			return true;
-		} 
-		
-		return false;
+		} else if (modelReactantKeggIds.contains("C00080") && modelProductKeggIds.contains("C00080")) {
+//				System.out.println("b " + modelReactantKeggIds);
+//				System.out.println("b " + modelProductKeggIds);
+				modelReactantKeggIds.remove(modelReactantKeggIds.indexOf("C00080"));
+				modelProductKeggIds.remove(modelProductKeggIds.indexOf("C00080"));
+//				System.out.println("a " + modelReactantKeggIds);
+//				System.out.println("a " + modelProductKeggIds);
+				return keggReactionIdFound(dataKeggReactantIds, dataKeggProductIds, modelReactantKeggIds, 
+						modelProductKeggIds, direction);
+		} else {
+			return false;
+		}
 	}
 	
 	public void assignKeggReactionIdsFromECNumbers() {
+		// this method would appear to be O(n^3), but the two inner loops are very small, 
+		// the number of reactions that map to the same ec number in the file is small ~<= 2 and
+		// the maximum number of kegg reaction ids that map to one EC Number from the  
+		// reactions.csv is 26 and most are < 4
 		ArrayList<String> ecNumbersFromModel = new ArrayList<String>(LocalConfig.getInstance().getEcNumberReactionMap().keySet());
+		ReactionFactory rf = new ReactionFactory("SBML");
+		//System.out.println("ec from model " + ecNumbersFromModel.size());
+		// ec numbers found in model
 		for (int r = 0; r < ecNumbersFromModel.size(); r++) {
-			System.out.println(ecNumbersFromModel.get(r));
+			//System.out.println(ecNumbersFromModel.get(r));
 			ArrayList<SBMLReaction> ecSBMLReactions = LocalConfig.getInstance().getEcNumberReactionMap().get(ecNumbersFromModel.get(r));
+			//System.out.println("reactions from ec number " + ecSBMLReactions.size());
 			for (int s = 0; s < ecSBMLReactions.size(); s++) {
-				System.out.println(ecSBMLReactions.get(s).getId());
+//				System.out.println("reac id " + ecSBMLReactions.get(s).getId());
 				if (LocalConfig.getInstance().getModelKeggEquationMap().containsKey(Integer.toString(ecSBMLReactions.get(s).getId()))) {
-					PathwayReactionData prd = LocalConfig.getInstance().getModelKeggEquationMap().get(Integer.toString(ecSBMLReactions.get(s).getId()));
-					System.out.println(prd.getKeggReactantIds());
-					System.out.println(prd.getKeggProductIds());
+					// data from model
+					PathwayReactionData modelData = LocalConfig.getInstance().getModelKeggEquationMap().get(Integer.toString(ecSBMLReactions.get(s).getId()));
+//					System.out.println(prd.getKeggReactantIds());
+//					System.out.println(prd.getKeggProductIds());
 					if (LocalConfig.getInstance().getEcNumberKeggReactionIdMap().containsKey(ecNumbersFromModel.get(r))) {
 						ArrayList<String> keggReactionIds = LocalConfig.getInstance().getEcNumberKeggReactionIdMap().get(ecNumbersFromModel.get(r));
+						//System.out.println("ec num kegg id from file " + keggReactionIds.size());
 						for (int j = 0; j < keggReactionIds.size(); j++) {
 							if (LocalConfig.getInstance().getReactionDataKeggIdMap().containsKey(keggReactionIds.get(j))) {
-								PathwayReactionData pd = LocalConfig.getInstance().getReactionDataKeggIdMap().get(keggReactionIds.get(j));
-								System.out.println("");
-								System.out.println(pd.getKeggReactantIds());
-								System.out.println(pd.getKeggProductIds());
+								// data from reactions.csv file
+								PathwayReactionData fileData = LocalConfig.getInstance().getReactionDataKeggIdMap().get(keggReactionIds.get(j));
+								if (keggReactionIdFound(fileData.getKeggReactantIds(), fileData.getKeggProductIds(), 
+										modelData.getKeggReactantIds(), modelData.getKeggProductIds(), "forward")) {
+									updateReactionsCellById(fileData.getKeggReactionId(), ecSBMLReactions.get(s).getId(), rf.getKeggIdColumnIndex());
+								} else {
+									if (keggReactionIdFound(fileData.getKeggReactantIds(), fileData.getKeggProductIds(), 
+											modelData.getKeggProductIds(), modelData.getKeggReactantIds(), "reverse")) {
+										updateReactionsCellById(fileData.getKeggReactionId(), ecSBMLReactions.get(s).getId(), rf.getKeggIdColumnIndex());
+									}
+								}
 							} else {
 								// is this possible?
 								System.out.println(keggReactionIds.get(j) + "not found in file");
@@ -12809,11 +12816,34 @@ public class GraphicalInterface extends JFrame {
 						// ec number not present in file
 						// consider same as not having ec number?
 						// need to search entire file here
-						System.out.println(ecNumbersFromModel.get(r) + " not found in file");
+//						System.out.println("reac id " + ecSBMLReactions.get(s).getId());
+//						System.out.println(modelData.getKeggReactantIds());
+//						System.out.println(modelData.getKeggProductIds());
+//						System.out.println(ecNumbersFromModel.get(r) + " not found in file");
+						ArrayList<String> reactionDataKeggIds = new ArrayList<String>(LocalConfig.getInstance().getReactionDataKeggIdMap().keySet());
+						for (int d = 0; d < reactionDataKeggIds.size(); d++) {
+							PathwayReactionData fileData = LocalConfig.getInstance().getReactionDataKeggIdMap().get(reactionDataKeggIds.get(d));
+//							System.out.println(fileData.getKeggReactionId());
+//							System.out.println(fileData.getKeggReactantIds());
+//							System.out.println(fileData.getKeggProductIds());
+							if (keggReactionIdFound(fileData.getKeggReactantIds(), fileData.getKeggProductIds(), 
+									modelData.getKeggReactantIds(), modelData.getKeggProductIds(), "forward")) {
+//								System.out.println(ecNumbersFromModel.get(r));
+//								System.out.println("id " + fileData.getKeggReactionId());
+								updateReactionsCellById(fileData.getKeggReactionId(), ecSBMLReactions.get(s).getId(), rf.getKeggIdColumnIndex());
+							} else {
+								if (keggReactionIdFound(fileData.getKeggReactantIds(), fileData.getKeggProductIds(), 
+										modelData.getKeggProductIds(), modelData.getKeggReactantIds(), "reverse")) {
+//									System.out.println(ecNumbersFromModel.get(r));
+//									System.out.println("id " + fileData.getKeggReactionId());
+									updateReactionsCellById(fileData.getKeggReactionId(), ecSBMLReactions.get(s).getId(), rf.getKeggIdColumnIndex());
+								}
+							}
+						}
 					}
 				} else {
 					// this happens for reactions containing metabolites that have no kegg ids
-					System.out.println("not found in model equns");
+					//System.out.println("not found in model equns");
 				}
 			}
 		}

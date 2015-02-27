@@ -412,6 +412,20 @@ public class ReactionFactory {
 
 		return index;
 	}
+	
+	// get index of column with Kegg Id
+	public Integer getKeggIdColumnIndex() {
+		int index = -1;
+		for (int i = 0; i < LocalConfig.getInstance().getReactionsMetaColumnNames().size(); i++) {
+			if (LocalConfig.getInstance().getReactionsMetaColumnNames().get(i).contains(GraphicalInterfaceConstants.KEGG_ID_REACTIONS_COLUMN_NAMES[0])) {
+				index = GraphicalInterfaceConstants.REACTIONS_COLUMN_NAMES.length + i;
+			} else if (LocalConfig.getInstance().getReactionsMetaColumnNames().get(i).contains(GraphicalInterfaceConstants.KEGG_ID_REACTIONS_COLUMN_NAMES[1])) {
+				index = GraphicalInterfaceConstants.REACTIONS_COLUMN_NAMES.length + i;
+			}
+		}
+
+		return index;
+	}
 
 	private void processStackTrace( Exception e ) {
 		//e.printStackTrace();
