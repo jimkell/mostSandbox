@@ -1462,6 +1462,8 @@ public class GraphicalInterface extends JFrame {
 		LocalConfig.getInstance().setKeggIdCompartmentMap(keggIdCompartmentMap);
 		Map<String, String> metaboliteIdKeggIdMap = new HashMap<String, String>();
 		LocalConfig.getInstance().setMetaboliteIdKeggIdMap(metaboliteIdKeggIdMap);
+		Map<String, ArrayList<SBMLMetabolite>> keggIdMetaboliteMap = new HashMap<String, ArrayList<SBMLMetabolite>>();
+		LocalConfig.getInstance().setKeggIdMetaboliteMap(keggIdMetaboliteMap);
 		
 		DynamicTreePanel.getTreePanel().deleteItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent a) {
@@ -2252,6 +2254,47 @@ public class GraphicalInterface extends JFrame {
 
 		visualizeMenu.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
+				String missingItem = "";
+				String missingData = "";
+				boolean showMissingItemMessage = true;
+				MetaboliteFactory f = new MetaboliteFactory("SBML");
+				if (f.getKeggIdColumnIndex() > -1) {
+					Vector<SBMLMetabolite> metabolites = f.getAllMetabolites();
+					for (int i = 0; i < metabolites.size(); i++) {
+						if (metabolites.get(i).getMetaboliteAbbreviation() != null &&
+								metabolites.get(i).getMetaboliteAbbreviation().length() > 0 &&
+								!metabolites.get(i).getMetaboliteAbbreviation().endsWith("_b") &&
+								metabolites.get(i).getKeggId() != null &&
+								metabolites.get(i).getKeggId().length() > 0) {
+							String metabId = Integer.toString(metabolites.get(i).getId());
+							String keggId = metabolites.get(i).getKeggId();
+							if (keggId != null && keggId.length() > 0) {
+								LocalConfig.getInstance().getMetaboliteIdKeggIdMap().put(metabId, keggId);
+								if (LocalConfig.getInstance().getKeggIdMetaboliteMap().containsKey(keggId)) {
+									ArrayList<SBMLMetabolite> metabolitesList = LocalConfig.getInstance().getKeggIdMetaboliteMap().get(keggId);
+									metabolitesList.add(metabolites.get(i));
+									LocalConfig.getInstance().getKeggIdMetaboliteMap().put(keggId, metabolitesList);
+								} else {
+									ArrayList<SBMLMetabolite> metabolitesList = new ArrayList<SBMLMetabolite>();
+									metabolitesList.add(metabolites.get(i));
+									LocalConfig.getInstance().getKeggIdMetaboliteMap().put(keggId, metabolitesList);
+								}
+							}
+							if (!LocalConfig.getInstance().getKeggIdCompartmentMap().containsKey(keggId)) {
+								ArrayList<String> compList = new ArrayList<String>();
+								compList.add(metabolites.get(i).getCompartment());
+								LocalConfig.getInstance().getKeggIdCompartmentMap().put(keggId, compList);
+							} else {
+								ArrayList<String> compList = LocalConfig.getInstance().getKeggIdCompartmentMap().get(keggId);
+								compList.add(metabolites.get(i).getCompartment());
+								LocalConfig.getInstance().getKeggIdCompartmentMap().put(keggId, compList);
+							}
+						}
+					}
+					//System.out.println(LocalConfig.getInstance().getKeggIdCompartmentMap());
+					//System.out.println(LocalConfig.getInstance().getMetaboliteIdKeggIdMap());
+					System.out.println(LocalConfig.getInstance().getKeggIdMetaboliteMap());
+				}
 				PathwayFilesReader reader = new PathwayFilesReader();
 				reader.readFiles();
 				
@@ -2274,37 +2317,46 @@ public class GraphicalInterface extends JFrame {
 //					}
 //				}
 				
-				String missingItem = "";
-				String missingData = "";
-				boolean showMissingItemMessage = true;
-				MetaboliteFactory f = new MetaboliteFactory("SBML");
-				if (f.getKeggIdColumnIndex() > -1) {
-					Vector<SBMLMetabolite> metabolites = f.getAllMetabolites();
-					for (int i = 0; i < metabolites.size(); i++) {
-						if (metabolites.get(i).getMetaboliteAbbreviation() != null &&
-								metabolites.get(i).getMetaboliteAbbreviation().length() > 0 &&
-								!metabolites.get(i).getMetaboliteAbbreviation().endsWith("_b") &&
-								metabolites.get(i).getKeggId() != null &&
-								metabolites.get(i).getKeggId().length() > 0) {
-							String metabId = Integer.toString(metabolites.get(i).getId());
-							String keggId = metabolites.get(i).getKeggId();
-							if (keggId != null && keggId.length() > 0) {
-								LocalConfig.getInstance().getMetaboliteIdKeggIdMap().put(metabId, keggId);
-							}
-							if (!LocalConfig.getInstance().getKeggIdCompartmentMap().containsKey(keggId)) {
-								ArrayList<String> compList = new ArrayList<String>();
-								compList.add(metabolites.get(i).getCompartment());
-								LocalConfig.getInstance().getKeggIdCompartmentMap().put(keggId, compList);
-							} else {
-								ArrayList<String> compList = LocalConfig.getInstance().getKeggIdCompartmentMap().get(keggId);
-								compList.add(metabolites.get(i).getCompartment());
-								LocalConfig.getInstance().getKeggIdCompartmentMap().put(keggId, compList);
-							}
-						}
-					}
-					//System.out.println(LocalConfig.getInstance().getKeggIdCompartmentMap());
-					//System.out.println(LocalConfig.getInstance().getMetaboliteIdKeggIdMap());
-				}
+//				String missingItem = "";
+//				String missingData = "";
+//				boolean showMissingItemMessage = true;
+//				MetaboliteFactory f = new MetaboliteFactory("SBML");
+//				if (f.getKeggIdColumnIndex() > -1) {
+//					Vector<SBMLMetabolite> metabolites = f.getAllMetabolites();
+//					for (int i = 0; i < metabolites.size(); i++) {
+//						if (metabolites.get(i).getMetaboliteAbbreviation() != null &&
+//								metabolites.get(i).getMetaboliteAbbreviation().length() > 0 &&
+//								!metabolites.get(i).getMetaboliteAbbreviation().endsWith("_b") &&
+//								metabolites.get(i).getKeggId() != null &&
+//								metabolites.get(i).getKeggId().length() > 0) {
+//							String metabId = Integer.toString(metabolites.get(i).getId());
+//							String keggId = metabolites.get(i).getKeggId();
+//							if (keggId != null && keggId.length() > 0) {
+//								LocalConfig.getInstance().getMetaboliteIdKeggIdMap().put(metabId, keggId);
+//								if (LocalConfig.getInstance().getKeggIdMetaboliteMap().containsKey(keggId)) {
+//									ArrayList<SBMLMetabolite> metabolitesList = LocalConfig.getInstance().getKeggIdMetaboliteMap().get(keggId);
+//									metabolitesList.add(metabolites.get(i));
+//									LocalConfig.getInstance().getKeggIdMetaboliteMap().put(keggId, metabolitesList);
+//								} else {
+//									ArrayList<SBMLMetabolite> metabolitesList = new ArrayList<SBMLMetabolite>();
+//									metabolitesList.add(metabolites.get(i));
+//									LocalConfig.getInstance().getKeggIdMetaboliteMap().put(keggId, metabolitesList);
+//								}
+//							}
+//							if (!LocalConfig.getInstance().getKeggIdCompartmentMap().containsKey(keggId)) {
+//								ArrayList<String> compList = new ArrayList<String>();
+//								compList.add(metabolites.get(i).getCompartment());
+//								LocalConfig.getInstance().getKeggIdCompartmentMap().put(keggId, compList);
+//							} else {
+//								ArrayList<String> compList = LocalConfig.getInstance().getKeggIdCompartmentMap().get(keggId);
+//								compList.add(metabolites.get(i).getCompartment());
+//								LocalConfig.getInstance().getKeggIdCompartmentMap().put(keggId, compList);
+//							}
+//						}
+//					}
+//					//System.out.println(LocalConfig.getInstance().getKeggIdCompartmentMap());
+//					//System.out.println(LocalConfig.getInstance().getMetaboliteIdKeggIdMap());
+//				}
 				
 				ModelKeggEquationMapCreator modelKeggEquationMapCreator = new ModelKeggEquationMapCreator();
 				modelKeggEquationMapCreator.createKeggEquationMap();
@@ -6099,6 +6151,12 @@ public class GraphicalInterface extends JFrame {
 		} else {
 			LocalConfig.getInstance().setHighlightMissingReactionsSelected(VisualizationOptionsConstants.HIGHLIGHT_MISSING_REACTIONS_GRAYED_DEFAULT);
 			LocalConfig.getInstance().setGapFillingSelected(VisualizationOptionsConstants.USE_GAP_FILLING_GRAYED_DEFAULT);
+		}
+		LocalConfig.getInstance().setGraphMissingMetabolitesSelected(VisualizationOptionsConstants.GRAPH_MISSING_REACTIONS_DEFAULT);
+		if (VisualizationOptionsConstants.GRAPH_MISSING_METABOLITES_DEFAULT) {
+			LocalConfig.getInstance().setHighlightMissingMetabolitesSelected(VisualizationOptionsConstants.HIGHLIGHT_MISSING_METABOLITES_DEFAULT);
+		} else {
+			LocalConfig.getInstance().setHighlightMissingMetabolitesSelected(VisualizationOptionsConstants.HIGHLIGHT_MISSING_METABOLITES_GRAYED_DEFAULT);
 		}
 		LocalConfig.getInstance().setScaleEdgeThicknessSelected(VisualizationOptionsConstants.SCALE_EDGE_THICKNESS_DEFAULT);
 	}

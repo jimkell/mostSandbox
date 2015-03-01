@@ -32,7 +32,8 @@ public class PathwaysCSVFileConstants {
 	
 	public static final String[] METABOLITE_POSITIONS_COLUMN_NAMES = 
 		{
-		"Pathway ID", "Metabolite ID", "Metabolite Level", "Metabolite Level Position", "Metabolite Names", "Metabolite Abbreviation"
+		"Pathway ID", "Metabolite ID", "Metabolite Level", "Metabolite Level Position", 
+		"Metabolite Names", "Metabolite Abbreviation", "KEGG ID"
 		};
 	
 	public static final String[] REACTIONS_COLUMN_NAMES = 
@@ -42,7 +43,8 @@ public class PathwaysCSVFileConstants {
 	
 	public static final String[] REACTION_POSITIONS_COLUMN_NAMES = 
 		{
-		"Pathway ID", "Reaction ID", "Reactants", "Products", "Reversible", "EC # List", "Level", "Level Position"
+		"Pathway ID", "Reaction ID", "Reactants", "Products", "Reversible", "EC # List", 
+		"Level", "Level Position", "KEGG IDs"
 		};
 	
 	public static final String[] PATHWAY_DRAW_ORDER_COLUMN_NAMES = 
@@ -100,6 +102,7 @@ public class PathwaysCSVFileConstants {
 	public static final int METABOLITE_POSITIONS_NAME_COLUMN = metabolitePositionsList.indexOf("Metabolite Names");
 	// abbreviation still used if metabolite not found in model
 	public static final int METABOLITE_POSITIONS_ABBR_COLUMN = metabolitePositionsList.indexOf("Metabolite Abbreviation");
+	public static final int METABOLITE_POSITIONS_KEGG_ID_COLUMN = metabolitePositionsList.indexOf("KEGG ID");
 	
 	public static final int REACTIONS_KEGG_ID_COLUMN = reactionsColumnsList.indexOf("Reaction KEGG ID");
 	public static final int REACTIONS_KEGG_REACTANTS_COLUMN = reactionsColumnsList.indexOf("Reactants");
@@ -117,6 +120,7 @@ public class PathwaysCSVFileConstants {
 	public static final int REACTIONS_EC_NUM_LIST_COLUMN = reactionPositionsColumnsList.indexOf("EC # List");
 	public static final int REACTIONS_LEVEL_COLUMN = reactionPositionsColumnsList.indexOf("Level");
 	public static final int REACTIONS_POSITION_COLUMN = reactionPositionsColumnsList.indexOf("Level Position");
+	public static final int REACTIONS_POSITION_KEGG_IDS_COLUMN = reactionPositionsColumnsList.indexOf("KEGG IDs");
 	
 	public static final int PATHWAY_DRAW_ORDER_PATHWAY_ID_COLUMN = pathwayDrawOrderColumnsList.indexOf("Pathway ID");
 	

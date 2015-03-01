@@ -40,7 +40,7 @@ public class PathwaysFrameConstants {
 	public static final int METABOLITE_NODE_FONT_SIZE = 32;
 	public static final int REACTION_NODE_FONT_SIZE = 32;
 	public static final int SIDE_NODE_FONT_SIZE = 24;
-	public static final int METABOLITE_NODE_MAX_CHARS = 6;
+	public static final int METABOLITE_NODE_MAX_CHARS = 5;
 	public static final int REACTION_NODE_MAX_CHARS = 7;
 	public static final int METABOLITE_NODE_ELLIPSIS_CORRECTION = 2;
 	public static final int REACTION_NODE_ELLIPSIS_CORRECTION = 2;

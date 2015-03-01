@@ -32,6 +32,10 @@ public class VisualizationOptionsDialog extends JDialog {
 	// only enabled if graphMissingReactions is checked
 	private JCheckBox gapFillingCheckBox = new JCheckBox("Use Gap Filling for Missing Reactions");
 	
+	private JCheckBox graphMissingMetabolitesCheckBox = new JCheckBox("Graph Missing Metabolites");
+	// only enabled if graphMissingReactions is checked
+	private JCheckBox highlightMissingMetabolitesCheckBox = new JCheckBox("Highlight Missing Metabolites");
+	
 	private JCheckBox scaleEdgeThicknessCheckBox = new JCheckBox("Scale Edge Thickness Using Flux Values");
 	
 	public JButton okButton = new JButton("    OK    ");
@@ -50,11 +54,15 @@ public class VisualizationOptionsDialog extends JDialog {
 		graphMissingReactionsCheckBox.setSelected(LocalConfig.getInstance().isGraphMissingReactionsSelected());
 		highlightMissingReactionsCheckBox.setSelected(LocalConfig.getInstance().isHighlightMissingReactionsSelected());
 		gapFillingCheckBox.setSelected(LocalConfig.getInstance().isGapFillingSelected());
+		graphMissingMetabolitesCheckBox.setSelected(LocalConfig.getInstance().isGraphMissingMetabolitesSelected());
+		highlightMissingMetabolitesCheckBox.setSelected(LocalConfig.getInstance().isHighlightMissingMetabolitesSelected());
 		scaleEdgeThicknessCheckBox.setSelected(LocalConfig.getInstance().isScaleEdgeThicknessSelected());
 		
 		graphMissingReactionsCheckBox.setMnemonic(KeyEvent.VK_G);
 		highlightMissingReactionsCheckBox.setMnemonic(KeyEvent.VK_H);
 		gapFillingCheckBox.setMnemonic(KeyEvent.VK_F);
+		graphMissingMetabolitesCheckBox.setMnemonic(KeyEvent.VK_R);
+		highlightMissingMetabolitesCheckBox.setMnemonic(KeyEvent.VK_I);
 		scaleEdgeThicknessCheckBox.setMnemonic(KeyEvent.VK_S);
 		
 		//box layout
@@ -63,6 +71,8 @@ public class VisualizationOptionsDialog extends JDialog {
 		Box hbGraphMissingReactions = Box.createHorizontalBox();
 		Box hbHighlightMissingReactions = Box.createHorizontalBox();
 		Box hbGapFilling = Box.createHorizontalBox();
+		Box hbGraphMissingMetabolites = Box.createHorizontalBox();
+		Box hbHighlightMissingMetabolites = Box.createHorizontalBox();
 		Box hbScaleEdgeThickness = Box.createHorizontalBox();
 		Box hbButton = Box.createHorizontalBox();
 		
@@ -97,6 +107,27 @@ public class VisualizationOptionsDialog extends JDialog {
 
 		hbGapFilling.add(leftJustify(hbGapFillingPanel));
 		
+		JPanel hbGraphMissingMetabolitesPanel = new JPanel();
+		hbGraphMissingMetabolitesPanel.setLayout(new BoxLayout(hbGraphMissingMetabolitesPanel, BoxLayout.X_AXIS));
+		hbGraphMissingMetabolitesPanel.add(graphMissingMetabolitesCheckBox);
+		hbGraphMissingMetabolitesPanel.setBorder(BorderFactory.createEmptyBorder(
+				VisualizationOptionsConstants.TOP_BORDER, 
+				VisualizationOptionsConstants.LEFT_BORDER, 
+				VisualizationOptionsConstants.SUB_TOPIC_GAP, 
+				VisualizationOptionsConstants.RIGHT_BORDER));
+
+		hbGraphMissingMetabolites.add(leftJustify(hbGraphMissingMetabolitesPanel));
+		
+		JPanel hbHighlightMissingMetabolitesPanel = new JPanel();
+		hbHighlightMissingMetabolitesPanel.setLayout(new BoxLayout(hbHighlightMissingMetabolitesPanel, BoxLayout.X_AXIS));
+		hbHighlightMissingMetabolitesPanel.add(highlightMissingMetabolitesCheckBox);
+		hbHighlightMissingMetabolitesPanel.setBorder(BorderFactory.createEmptyBorder(0, 
+				VisualizationOptionsConstants.LEFT_BORDER + VisualizationOptionsConstants.LEFT_INDENT, 
+				VisualizationOptionsConstants.MAIN_TOPIC_GAP, 
+				VisualizationOptionsConstants.RIGHT_BORDER));
+
+		hbHighlightMissingMetabolites.add(leftJustify(hbHighlightMissingMetabolitesPanel));
+		
 		JPanel hbScaleEdgeThicknessPanel = new JPanel();
 		hbScaleEdgeThicknessPanel.setLayout(new BoxLayout(hbScaleEdgeThicknessPanel, BoxLayout.X_AXIS));
 		hbScaleEdgeThicknessPanel.add(scaleEdgeThicknessCheckBox);
@@ -123,6 +154,8 @@ public class VisualizationOptionsDialog extends JDialog {
 		vb.add(hbGraphMissingReactions);
 		vb.add(hbHighlightMissingReactions);
 		vb.add(hbGapFilling);
+		vb.add(hbGraphMissingMetabolites);
+		vb.add(hbHighlightMissingMetabolites);
 		vb.add(hbScaleEdgeThickness);
 		vb.add(hbButton);
 		add(vb);
@@ -135,11 +168,21 @@ public class VisualizationOptionsDialog extends JDialog {
     	
     	graphMissingReactionsCheckBox.addActionListener(graphMissingReactionsActionListener);
     	
+    	ActionListener graphMissingMetabolitesActionListener = new ActionListener() {
+    		public void actionPerformed(ActionEvent actionEvent) {
+    			setGraphMissingMetabolitesDefaults();							
+    		}
+    	};
+    	
+    	graphMissingMetabolitesCheckBox.addActionListener(graphMissingMetabolitesActionListener);
+    	
     	ActionListener okButtonActionListener = new ActionListener() {
 			public void actionPerformed(ActionEvent prodActionEvent) {
 				LocalConfig.getInstance().setGraphMissingReactionsSelected(graphMissingReactionsCheckBox.isSelected());
 				LocalConfig.getInstance().setHighlightMissingReactionsSelected(highlightMissingReactionsCheckBox.isSelected());
 				LocalConfig.getInstance().setGapFillingSelected(gapFillingCheckBox.isSelected());
+				LocalConfig.getInstance().setGraphMissingMetabolitesSelected(graphMissingMetabolitesCheckBox.isSelected());
+				LocalConfig.getInstance().setHighlightMissingMetabolitesSelected(highlightMissingMetabolitesCheckBox.isSelected());
 				LocalConfig.getInstance().setScaleEdgeThicknessSelected(scaleEdgeThicknessCheckBox.isSelected());
 				setVisible(false);
 				dispose();
@@ -177,6 +220,16 @@ public class VisualizationOptionsDialog extends JDialog {
 			gapFillingCheckBox.setSelected(VisualizationOptionsConstants.USE_GAP_FILLING_GRAYED_DEFAULT);
 			highlightMissingReactionsCheckBox.setEnabled(false);
 			gapFillingCheckBox.setEnabled(false);
+		}
+	}
+	
+	public void setGraphMissingMetabolitesDefaults() {
+		if (graphMissingMetabolitesCheckBox.isSelected()) {
+			highlightMissingMetabolitesCheckBox.setSelected(VisualizationOptionsConstants.HIGHLIGHT_MISSING_METABOLITES_DEFAULT);
+			highlightMissingMetabolitesCheckBox.setEnabled(true);
+		} else {
+			highlightMissingMetabolitesCheckBox.setSelected(VisualizationOptionsConstants.HIGHLIGHT_MISSING_METABOLITES_GRAYED_DEFAULT);
+			highlightMissingMetabolitesCheckBox.setEnabled(false);
 		}
 	}
 	

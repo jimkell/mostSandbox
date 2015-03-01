@@ -9,7 +9,7 @@ import edu.rutgers.MOST.presentation.GraphicalInterfaceConstants;
  * Data from pathway_reactions.csv file. Used to construct PathwayReactionNodes.
  */
 public class PathwayReactionData {
-	// data from pathway_reactions.csv
+	// data from reactions.csv
 	private String pathwayId;
 	private String reactionId;
 	private String keggReactionId;
@@ -30,6 +30,11 @@ public class PathwayReactionData {
 	private ArrayList<String> names;
 	private String displayName;
 	private int occurences;
+	
+	// data from pathway_reaction_positions, currently using same class for storing
+	// data from reactions.csv and pathway_reaction_positions. may consider using
+	// two different classes in future
+	private ArrayList<String> keggReactionIds;
 	
 	public String getPathwayId() {
 		return pathwayId;
@@ -53,6 +58,14 @@ public class PathwayReactionData {
 
 	public void setKeggReactionId(String keggReactionId) {
 		this.keggReactionId = keggReactionId;
+	}
+
+	public ArrayList<String> getKeggReactionIds() {
+		return keggReactionIds;
+	}
+
+	public void setKeggReactionIds(ArrayList<String> keggReactionIds) {
+		this.keggReactionIds = keggReactionIds;
 	}
 
 	public ArrayList<String> getReactantIds() {
@@ -207,6 +220,7 @@ public class PathwayReactionData {
 		return "Pathway Reaction Data [pathwayId=" + pathwayId
 		+ ", reactionId=" + reactionId
 		+ ", keggReactionId=" + keggReactionId
+		+ ", keggReactionIds=" + keggReactionIds
 		+ ", reactantIds=" + reactantIds
 		+ ", productIds=" + productIds
 		+ ", keggReactantIds=" + keggReactantIds

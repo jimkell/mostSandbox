@@ -8,6 +8,7 @@ import edu.rutgers.MOST.presentation.GraphicalInterfaceConstants;
 
 public class PathwayConnectionData {
 	// data from pathway_connections.csv
+	private ArrayList<String> keggReactionIds;
 	// for each ArrayList, first entry will be pathway id, second metabolite id
 	private ArrayList<ArrayList<String>> reactantPathwaysIds;
 	private ArrayList<ArrayList<String>> productPathwaysIds;
@@ -23,6 +24,14 @@ public class PathwayConnectionData {
 	private String name;
 	// generic name used if reaction not found in model = name + ec numbers
 	private String displayName;
+
+	public ArrayList<String> getKeggReactionIds() {
+		return keggReactionIds;
+	}
+
+	public void setKeggReactionIds(ArrayList<String> keggReactionIds) {
+		this.keggReactionIds = keggReactionIds;
+	}
 
 	public ArrayList<ArrayList<String>> getReactantPathwaysIds() {
 		return reactantPathwaysIds;
@@ -150,10 +159,11 @@ public class PathwayConnectionData {
 		this.equation = rxnBfr.toString();
 		//System.out.println(this.equation);
 	}
-
+	
 	@Override
 	public String toString() {
-		return "Pathway Connection Data [reactantPathwaysIds=" + reactantPathwaysIds
+		return "Pathway Connection Data [keggReactionIds=" + keggReactionIds
+				+ ", reactantPathwaysIds=" + reactantPathwaysIds
 				+ ", productPathwaysIds=" + productPathwaysIds
 				+ ", reversible=" + reversible
 				+ ", ecNumbers=" + ecNumbers

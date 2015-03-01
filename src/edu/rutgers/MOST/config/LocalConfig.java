@@ -16,6 +16,7 @@ import edu.rutgers.MOST.data.PathwayConnectionData;
 import edu.rutgers.MOST.data.PathwayConnectionNode;
 import edu.rutgers.MOST.data.PathwayMetaboliteData;
 import edu.rutgers.MOST.data.PathwayReactionData;
+import edu.rutgers.MOST.data.SBMLMetabolite;
 import edu.rutgers.MOST.data.SBMLReaction;
 
 public class LocalConfig {	
@@ -968,6 +969,17 @@ public class LocalConfig {
 		this.metaboliteIdKeggIdMap = metaboliteIdKeggIdMap;
 	}
 	
+	private Map<String, ArrayList<SBMLMetabolite>> keggIdMetaboliteMap;
+
+	public Map<String, ArrayList<SBMLMetabolite>> getKeggIdMetaboliteMap() {
+		return keggIdMetaboliteMap;
+	}
+
+	public void setKeggIdMetaboliteMap(
+			Map<String, ArrayList<SBMLMetabolite>> keggIdMetaboliteMap) {
+		this.keggIdMetaboliteMap = keggIdMetaboliteMap;
+	}
+
 	private Map<String, PathwayReactionData> modelKeggEquationMap;
 
 	public Map<String, PathwayReactionData> getModelKeggEquationMap() {
@@ -1123,6 +1135,8 @@ public class LocalConfig {
 	private boolean graphMissingReactionsSelected;
 	private boolean highlightMissingReactionsSelected;
 	private boolean gapFillingSelected;
+	private boolean graphMissingMetabolitesSelected;
+	private boolean highlightMissingMetabolitesSelected;
 	private boolean scaleEdgeThicknessSelected;
 
 	public boolean isGraphMissingReactionsSelected() {
@@ -1149,6 +1163,24 @@ public class LocalConfig {
 
 	public void setGapFillingSelected(boolean gapFillingSelected) {
 		this.gapFillingSelected = gapFillingSelected;
+	}
+
+	public boolean isGraphMissingMetabolitesSelected() {
+		return graphMissingMetabolitesSelected;
+	}
+
+	public void setGraphMissingMetabolitesSelected(
+			boolean graphMissingMetabolitesSelected) {
+		this.graphMissingMetabolitesSelected = graphMissingMetabolitesSelected;
+	}
+
+	public boolean isHighlightMissingMetabolitesSelected() {
+		return highlightMissingMetabolitesSelected;
+	}
+
+	public void setHighlightMissingMetabolitesSelected(
+			boolean highlightMissingMetabolitesSelected) {
+		this.highlightMissingMetabolitesSelected = highlightMissingMetabolitesSelected;
 	}
 
 	public boolean isScaleEdgeThicknessSelected() {

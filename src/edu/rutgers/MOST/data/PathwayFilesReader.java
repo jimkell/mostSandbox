@@ -206,14 +206,25 @@ public class PathwayFilesReader {
 							if (s == PathwaysCSVFileConstants.METABOLITE_POSITIONS_ABBR_COLUMN) {
 								pm.setAbbreviation(dataArray[s]);
 							}
+							if (s == PathwaysCSVFileConstants.METABOLITE_POSITIONS_KEGG_ID_COLUMN) {
+								pm.setKeggId(dataArray[s]);
+							}
 						}
 						metabolicPathways.get(id).getMetabolitesData().put(pm.getId(), pm);
 						String name = pm.getNames().get(0);
+						String abbr = pm.getAbbreviation();
+						if (LocalConfig.getInstance().getKeggIdMetaboliteMap().containsKey(pm.getKeggId())) {
+							String metabAbbr = LocalConfig.getInstance().getKeggIdMetaboliteMap().get(pm.getKeggId()).get(0).getMetaboliteAbbreviation();
+							abbr = metabAbbr.substring(2, metabAbbr.length() - 2);
+							name += " " + metabAbbr;
+							//System.out.println(abbr);
+						}
 						if (metaboliteNameAbbrMap.containsKey(name)) {
 							name = name + duplicateSuffix(name, metaboliteNameAbbrMap);
 						}
 						pm.setName(name);
-						metaboliteNameAbbrMap.put(name, pm.getAbbreviation());
+						//metaboliteNameAbbrMap.put(name, pm.getAbbreviation());
+						metaboliteNameAbbrMap.put(name, abbr);
 					}
 					count += 1;
 				}
@@ -392,11 +403,20 @@ public class PathwayFilesReader {
 							if (s == PathwaysCSVFileConstants.REACTIONS_POSITION_COLUMN) {
 								pr.setLevelPosition(Double.parseDouble(dataArray[s]));
 							}
+							if (s == PathwaysCSVFileConstants.REACTIONS_POSITION_KEGG_IDS_COLUMN) {
+								String[] keggIds = dataArray[s].split("\\|");
+								ArrayList<String> kegg = new ArrayList<String>();
+								for (int i = 0; i < keggIds.length; i++) {
+									kegg.add(keggIds[i]);
+								}
+								pr.setKeggReactionIds(kegg);
+							}
 						}
 						pr.writeReactionEquation();
 						pr.setName(pr.getEquation());
 						pr.setDisplayName("<html>" + pr.getEquation() +"<p> EC Number(s): " + pr.getEcNumbers());
 						metabolicPathways.get(id).getReactionsData().put(pr.getReactionId(), pr);
+						//System.out.println(pr.getKeggReactionIds());
 					}
 					count += 1;
 				}
