@@ -3,5 +3,5 @@ Pathway ID,Pathway Name,Direction,Component
 2,Pentose Phosphate Pathway,horizontal,0
 1,Citrate cycle (TCA cycle),horizontal,0
 24," Alanine, Aspartate and Glutamate metabolism",vertical,0
-91,Pyruvate Metabolism,vertical,0
+90,Pyruvate Metabolism,vertical,0
 17,Oxidative phosphorylation,vertical,1
