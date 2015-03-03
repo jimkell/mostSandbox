@@ -617,8 +617,7 @@ public class PathwayFilesReader {
 		CSVReader reader;
 
 		int count = 0;
-		ArrayList<ExternalMetaboliteData> externalMetabolitesList = new ArrayList<ExternalMetaboliteData>();
-
+		
 		try {
 			reader = new CSVReader(new FileReader(externalMetabolites), ',');
 			String [] dataArray;
@@ -626,7 +625,17 @@ public class PathwayFilesReader {
 				while ((dataArray = reader.readNext()) != null) {
 					if (count > 0) {
 						ExternalMetaboliteData em = new ExternalMetaboliteData();
-						for (int s = 0; s < dataArray.length; s++) {	
+						String id = dataArray[PathwaysCSVFileConstants.EXTERNAL_METABOLITE_PATHWAY_ID_COLUMN];
+						for (int s = 0; s < dataArray.length; s++) {
+							if (s == PathwaysCSVFileConstants.EXTERNAL_METABOLITE_PATHWAY_ID_COLUMN) {
+								em.setPathwayId(dataArray[s]);
+							}
+							if (s == PathwaysCSVFileConstants.EXTERNAL_METABOLITE_REACTION_ID_COLUMN) {
+								em.setReactionId(dataArray[s]);
+							}
+							if (s == PathwaysCSVFileConstants.EXTERNAL_METABOLITE_DIRECTION_COLUMN) {
+								em.setDirection(Integer.valueOf(dataArray[s]));
+							}
 							if (s == PathwaysCSVFileConstants.EXTERNAL_METABOLITE_ID_COLUMN) {
 								em.setId(dataArray[s]);
 							}
@@ -648,14 +657,22 @@ public class PathwayFilesReader {
 							if (s == PathwaysCSVFileConstants.EXTERNAL_METABOLITE_OFFSET_COLUMN) {
 								em.setOffset(Double.parseDouble(dataArray[s]));
 							}
+							if (s == PathwaysCSVFileConstants.EXTERNAL_KEGG_METABOLITE_ID_COLUMN) {
+								em.setKeggMetaboliteId(dataArray[s]);
+							}
+							if (s == PathwaysCSVFileConstants.EXTERNAL_EC_NUMBER_COLUMN) {
+								em.setEcNumber(dataArray[s]);
+							}
+							if (s == PathwaysCSVFileConstants.EXTERNAL_KEGG_REACTION_ID_COLUMN) {
+								em.setKeggReactionId(dataArray[s]);
+							}
 						}
-						externalMetabolitesList.add(em);
+						metabolicPathways.get(id).getExternalMetabolitesData().put(em.getReactionId(), em);
+						System.out.println("external " + em);
 					}
 					count += 1;
 				}
 				reader.close();
-				LocalConfig.getInstance().setExternalMetabolites(externalMetabolitesList);
-				//System.out.println("external " + externalMetabolitesList);
 			} catch (IOException e) {
 				JOptionPane.showMessageDialog(null,                
 						"File Not Found Error.",                

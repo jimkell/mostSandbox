@@ -533,10 +533,6 @@ public class PathwaysFrame extends JApplet {
 			}
 		}
 		
-		for (int e = 0; e < LocalConfig.getInstance().getExternalMetabolites().size(); e++) {
-			//System.out.println(LocalConfig.getInstance().getExternalMetabolites().get(e));
-		}
-		
 		Collections.sort(foundEcNumbers);
 		System.out.println("found " + foundEcNumbers);
 		Collections.sort(notFoundEcNumbers);

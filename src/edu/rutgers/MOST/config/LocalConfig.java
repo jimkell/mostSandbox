@@ -1023,17 +1023,6 @@ public class LocalConfig {
 		this.connectionsNodelist = connectionsNodelist;
 	}
 	
-	private ArrayList<ExternalMetaboliteData> externalMetabolites;
-	
-	public ArrayList<ExternalMetaboliteData> getExternalMetabolites() {
-		return externalMetabolites;
-	}
-
-	public void setExternalMetabolites(
-			ArrayList<ExternalMetaboliteData> externalMetabolites) {
-		this.externalMetabolites = externalMetabolites;
-	}
-	
 	private Map<String, String> metaboliteAbbrKeggIdMap;
 
 	public Map<String, String> getMetaboliteAbbrKeggIdMap() {
