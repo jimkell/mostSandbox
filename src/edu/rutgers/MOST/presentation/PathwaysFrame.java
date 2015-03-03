@@ -352,6 +352,7 @@ public class PathwaysFrame extends JApplet {
 						emn.setKeggId(emd.getKeggMetaboliteId());
 						emn.setPosition(emd.getPosition());
 						emn.setOffset(emd.getOffset());
+						emn.setReversible(reversible);
 						System.out.println(emn);
 						externalMetaboliteNodeList.add(emn);
 					}
@@ -572,13 +573,41 @@ public class PathwaysFrame extends JApplet {
    				externalMetaboliteNodeList.get(e).setxPosition(Double.parseDouble(borderRightX) + PathwaysFrameConstants.BORDER_WIDTH);
    			}
    			System.out.println(externalMetaboliteNodeList.get(e));
-   			LocalConfig.getInstance().getMetaboliteNameAbbrMap().put(externalMetaboliteNodeList.get(e).getName(), externalMetaboliteNodeList.get(e).getAbbreviation());
-   			metabolites.add(externalMetaboliteNodeList.get(e).getName());
-   			metabPosMap.put(externalMetaboliteNodeList.get(e).getName(), new String[] {Double.toString(externalMetaboliteNodeList.get(e).getxPosition()), 
-   				Double.toString(externalMetaboliteNodeList.get(e).getyPosition())}); 
+   			if (LocalConfig.getInstance().getPeriplasmName() != null && LocalConfig.getInstance().getPeriplasmName().length() > 0) {
+   				LocalConfig.getInstance().getMetaboliteNameAbbrMap().put(externalMetaboliteNodeList.get(e).getName() + " Periplasm", externalMetaboliteNodeList.get(e).getAbbreviation() + "_p");
+   				if (LocalConfig.getInstance().getSideSpeciesList().contains(externalMetaboliteNodeList.get(e).getAbbreviation())) {
+					noBorderList.add(externalMetaboliteNodeList.get(e).getName() + " Periplasm");
+				}
+   	   			metabolites.add(externalMetaboliteNodeList.get(e).getName() + " Periplasm");
+   	   			metabPosMap.put(externalMetaboliteNodeList.get(e).getName() + " Periplasm", new String[] {Double.toString(externalMetaboliteNodeList.get(e).getxPosition()), 
+   	   				Double.toString(externalMetaboliteNodeList.get(e).getyPosition())});
+   	   			if (((ExternalMetaboliteNode) externalMetaboliteNodeList.get(e)).getPosition().equals("t")) {
+   	   				externalMetaboliteNodeList.get(e).setyPosition(Double.parseDouble(borderTopY) - 3*PathwaysFrameConstants.BORDER_HEIGHT);
+   	   			} else if (((ExternalMetaboliteNode) externalMetaboliteNodeList.get(e)).getPosition().equals("b")) {
+   	   				externalMetaboliteNodeList.get(e).setyPosition(Double.parseDouble(borderBottomY) + 3*PathwaysFrameConstants.BORDER_HEIGHT);
+   	   			} else if (((ExternalMetaboliteNode) externalMetaboliteNodeList.get(e)).getPosition().equals("l")) {
+   	   				externalMetaboliteNodeList.get(e).setxPosition(Double.parseDouble(borderLeftX) - 3*PathwaysFrameConstants.BORDER_WIDTH);
+   	   			} else if (((ExternalMetaboliteNode) externalMetaboliteNodeList.get(e)).getPosition().equals("r")) {
+   	   				externalMetaboliteNodeList.get(e).setxPosition(Double.parseDouble(borderRightX) + 3*PathwaysFrameConstants.BORDER_WIDTH);
+   	   			}
+   	   			LocalConfig.getInstance().getMetaboliteNameAbbrMap().put(externalMetaboliteNodeList.get(e).getName() + " ExtraOrganism", externalMetaboliteNodeList.get(e).getAbbreviation() + "_e");
+   	   			if (LocalConfig.getInstance().getSideSpeciesList().contains(externalMetaboliteNodeList.get(e).getAbbreviation())) {
+   	   				noBorderList.add(externalMetaboliteNodeList.get(e).getName() + " ExtraOrganism");
+   	   			}
+	   			metabolites.add(externalMetaboliteNodeList.get(e).getName() + " ExtraOrganism");
+	   			metabPosMap.put(externalMetaboliteNodeList.get(e).getName() + " ExtraOrganism", new String[] {Double.toString(externalMetaboliteNodeList.get(e).getxPosition()), 
+	   				Double.toString(externalMetaboliteNodeList.get(e).getyPosition())});
+   			} else {
+   				LocalConfig.getInstance().getMetaboliteNameAbbrMap().put(externalMetaboliteNodeList.get(e).getName() + " ExtraOrganism", externalMetaboliteNodeList.get(e).getAbbreviation() + "_e");
+   				if (LocalConfig.getInstance().getSideSpeciesList().contains(externalMetaboliteNodeList.get(e).getAbbreviation())) {
+   	   				noBorderList.add(externalMetaboliteNodeList.get(e).getName() + " ExtraOrganism");
+   	   			}
+   	   			metabolites.add(externalMetaboliteNodeList.get(e).getName() + " ExtraOrganism");
+   	   			metabPosMap.put(externalMetaboliteNodeList.get(e).getName() + " ExtraOrganism", new String[] {Double.toString(externalMetaboliteNodeList.get(e).getxPosition()), 
+   	   				Double.toString(externalMetaboliteNodeList.get(e).getyPosition())});
+   			}
    		}
-   		
-   		
+   		System.out.println(noBorderList);
 		
 		Collections.sort(foundEcNumbers);
 		System.out.println("found " + foundEcNumbers);
