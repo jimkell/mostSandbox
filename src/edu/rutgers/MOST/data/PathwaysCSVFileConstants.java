@@ -64,7 +64,7 @@ public class PathwaysCSVFileConstants {
 
 	public static final String[] EXTERNAL_METABOLITES_COLUMN_NAMES = 
 		{
-		"Pathway ID", "Reaction ID", "Metabolite ID", "Metabolite Names", "Metabolite Abbreviation", "Position", "Offset",
+		"Pathway ID", "Metabolite ID", "Reaction ID", "Metabolite Name", "Metabolite Abbreviation", "Position", "Offset",
 		"Direction", "KEGG Metabolite ID", "EC Number", "KEGG Reaction ID"
 		};
 	
@@ -136,9 +136,9 @@ public class PathwaysCSVFileConstants {
 	public static final int PATHWAY_SIDE_SPECIES_NAME_COLUMN = pathwaySideSpeciesColumnsList.indexOf("Species Name");
 	
 	public static final int EXTERNAL_METABOLITE_PATHWAY_ID_COLUMN = externalMetabolitesColumnsList.indexOf("Pathway ID");
-	public static final int EXTERNAL_METABOLITE_REACTION_ID_COLUMN = externalMetabolitesColumnsList.indexOf("Reaction ID");
 	public static final int EXTERNAL_METABOLITE_ID_COLUMN = externalMetabolitesColumnsList.indexOf("Metabolite ID");
-	public static final int EXTERNAL_METABOLITE_NAME_COLUMN = externalMetabolitesColumnsList.indexOf("Metabolite Names");
+	public static final int EXTERNAL_METABOLITE_REACTION_ID_COLUMN = externalMetabolitesColumnsList.indexOf("Reaction ID");
+	public static final int EXTERNAL_METABOLITE_NAME_COLUMN = externalMetabolitesColumnsList.indexOf("Metabolite Name");
 	public static final int EXTERNAL_METABOLITE_ABBR_COLUMN = externalMetabolitesColumnsList.indexOf("Metabolite Abbreviation");
 	public static final int EXTERNAL_METABOLITE_POSITION_COLUMN = externalMetabolitesColumnsList.indexOf("Position");
 	public static final int EXTERNAL_METABOLITE_OFFSET_COLUMN = externalMetabolitesColumnsList.indexOf("Offset");

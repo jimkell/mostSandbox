@@ -35,6 +35,9 @@ import java.util.Map;
 
 
 
+
+
+
 import javax.swing.Icon;
 import javax.swing.ImageIcon;                                                                                        
 import javax.swing.JApplet;                                                                                          
@@ -54,8 +57,11 @@ import org.apache.commons.collections15.functors.ChainedTransformer;
 import org.apache.commons.collections15.functors.ConstantTransformer;
 
 import edu.rutgers.MOST.config.LocalConfig;
+import edu.rutgers.MOST.data.ExternalMetaboliteData;
+import edu.rutgers.MOST.data.ExternalMetaboliteNode;
 import edu.rutgers.MOST.data.MetabolicPathway;
 import edu.rutgers.MOST.data.PathwayConnectionNode;
+import edu.rutgers.MOST.data.PathwayMetaboliteData;
 import edu.rutgers.MOST.data.PathwayMetaboliteNode;
 import edu.rutgers.MOST.data.PathwayReactionNode;
 import edu.rutgers.MOST.data.PathwayReactionNodeFactory;
@@ -223,6 +229,7 @@ public class PathwaysFrame extends JApplet {
 	    }
 		
 		ArrayList<String> foundList = new ArrayList<String>();
+		ArrayList<PathwayMetaboliteNode> externalMetaboliteNodeList = new ArrayList<PathwayMetaboliteNode>();
 	
 		for (int i = 0; i < LocalConfig.getInstance().getDrawOrder().size(); i++) {
 			MetabolicPathway pathway = LocalConfig.getInstance().getMetabolicPathways().get(LocalConfig.getInstance().getDrawOrder().get(i));
@@ -328,6 +335,26 @@ public class PathwaysFrame extends JApplet {
 //					System.out.println(pn.getSideReactants());
 //					System.out.println(pn.getSideProducts());
 					//System.out.println("max ub " + LocalConfig.getInstance().getMaxUpperBound());
+					//System.out.println(pathway.getReactionsData().get(Integer.toString(k)).getReactionId());
+					// create external metabolite nodes
+					if (pathway.getExternalMetabolitesData().containsKey(pathway.getReactionsData().get(Integer.toString(k)).getReactionId())) {
+						//System.out.println("e " + pathway.getExternalMetabolitesData().get(pathway.getReactionsData().get(Integer.toString(k)).getReactionId()));
+						ExternalMetaboliteNode emn = new ExternalMetaboliteNode();
+						ExternalMetaboliteData emd = pathway.getExternalMetabolitesData().get(pathway.getReactionsData().get(Integer.toString(k)).getReactionId());
+//						emn.setAbbreviation(emd.getAbbreviation());
+//						emn.setName(emd.getName());
+//						emn.setKeggId(emd.getKeggMetaboliteId());
+						System.out.println("emd " + emd);
+						emn.setxPosition(pn.getxPosition());
+						emn.setyPosition(pn.getyPosition());
+						emn.setAbbreviation(emd.getAbbreviation());
+						emn.setName(emd.getName());
+						emn.setKeggId(emd.getKeggMetaboliteId());
+						emn.setPosition(emd.getPosition());
+						emn.setOffset(emd.getOffset());
+						System.out.println(emn);
+						externalMetaboliteNodeList.add(emn);
+					}
 					for (int r = 0; r < pathway.getReactionsData().get(Integer.toString(k)).getReactantIds().size(); r++) {
 						String reac = pathway.getMetabolitesData().get((pathway.getReactionsData().get(Integer.toString(k)).getReactantIds().get(r))).getName();
 						reactionMap.put(displayName + "reactant " + Integer.toString(r), new String[] {displayName, reac, reversible});
@@ -533,6 +560,26 @@ public class PathwaysFrame extends JApplet {
 			}
 		}
 		
+		System.out.println(externalMetaboliteNodeList);
+   		for (int e = 0; e < externalMetaboliteNodeList.size(); e++) {
+   			if (((ExternalMetaboliteNode) externalMetaboliteNodeList.get(e)).getPosition().equals("t")) {
+   				externalMetaboliteNodeList.get(e).setyPosition(Double.parseDouble(borderTopY) - PathwaysFrameConstants.BORDER_HEIGHT);
+   			} else if (((ExternalMetaboliteNode) externalMetaboliteNodeList.get(e)).getPosition().equals("b")) {
+   				externalMetaboliteNodeList.get(e).setyPosition(Double.parseDouble(borderBottomY) + PathwaysFrameConstants.BORDER_HEIGHT);
+   			} else if (((ExternalMetaboliteNode) externalMetaboliteNodeList.get(e)).getPosition().equals("l")) {
+   				externalMetaboliteNodeList.get(e).setxPosition(Double.parseDouble(borderLeftX) - PathwaysFrameConstants.BORDER_WIDTH);
+   			} else if (((ExternalMetaboliteNode) externalMetaboliteNodeList.get(e)).getPosition().equals("r")) {
+   				externalMetaboliteNodeList.get(e).setxPosition(Double.parseDouble(borderRightX) + PathwaysFrameConstants.BORDER_WIDTH);
+   			}
+   			System.out.println(externalMetaboliteNodeList.get(e));
+   			LocalConfig.getInstance().getMetaboliteNameAbbrMap().put(externalMetaboliteNodeList.get(e).getName(), externalMetaboliteNodeList.get(e).getAbbreviation());
+   			metabolites.add(externalMetaboliteNodeList.get(e).getName());
+   			metabPosMap.put(externalMetaboliteNodeList.get(e).getName(), new String[] {Double.toString(externalMetaboliteNodeList.get(e).getxPosition()), 
+   				Double.toString(externalMetaboliteNodeList.get(e).getyPosition())}); 
+   		}
+   		
+   		
+		
 		Collections.sort(foundEcNumbers);
 		System.out.println("found " + foundEcNumbers);
 		Collections.sort(notFoundEcNumbers);
@@ -548,7 +595,7 @@ public class PathwaysFrame extends JApplet {
    		Collections.sort(reactionList);
    		//System.out.println(reactionList);
                                                                                                                      
-        // create a simple graph for the demo      
+        // create graph     
         graph = new SparseMultigraph<String, Number>();  
         createVertices();                                                                                            
         createEdges();                                                                                               
@@ -744,12 +791,16 @@ public class PathwaysFrame extends JApplet {
         plus.addActionListener(new ActionListener() {                                                                
             public void actionPerformed(ActionEvent e) {                                                             
                 scaler.scale(vv, PathwaysFrameConstants.SCALING_FACTOR, vv.getCenter()); 
+//              System.out.println("layout scale " + vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.LAYOUT).getScale());
+//				System.out.println("view scale " + vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.VIEW).getScale());
             }                                                                                                        
         });                                                                                                          
         JButton minus = new JButton("-");                                                                            
         minus.addActionListener(new ActionListener() {                                                               
             public void actionPerformed(ActionEvent e) {                                                             
                 scaler.scale(vv, 1/PathwaysFrameConstants.SCALING_FACTOR, vv.getCenter());
+//              System.out.println("layout scale " + vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.LAYOUT).getScale());
+//				System.out.println("view scale " + vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.VIEW).getScale());
             }                                                                                                        
         });                                                                                                          
                                                                                                                      
@@ -758,7 +809,9 @@ public class PathwaysFrame extends JApplet {
                                                                                                                      
 			public void actionPerformed(ActionEvent e) {                                                             
 				vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.LAYOUT).setToIdentity();       
-				vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.VIEW).setToIdentity();         
+				vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.VIEW).setToIdentity();  
+//				System.out.println("layout scale " + vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.LAYOUT).getScale());
+//				System.out.println("view scale " + vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.VIEW).getScale());
 			}});                                                                                                     
                                                                                                                      
         JPanel controls = new JPanel();                                                                              

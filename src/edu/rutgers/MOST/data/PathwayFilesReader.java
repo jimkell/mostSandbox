@@ -630,26 +630,24 @@ public class PathwayFilesReader {
 							if (s == PathwaysCSVFileConstants.EXTERNAL_METABOLITE_PATHWAY_ID_COLUMN) {
 								em.setPathwayId(dataArray[s]);
 							}
-							if (s == PathwaysCSVFileConstants.EXTERNAL_METABOLITE_REACTION_ID_COLUMN) {
-								em.setReactionId(dataArray[s]);
-							}
 							if (s == PathwaysCSVFileConstants.EXTERNAL_METABOLITE_DIRECTION_COLUMN) {
 								em.setDirection(Integer.valueOf(dataArray[s]));
 							}
-							if (s == PathwaysCSVFileConstants.EXTERNAL_METABOLITE_ID_COLUMN) {
-								em.setId(dataArray[s]);
+							if (s == PathwaysCSVFileConstants.EXTERNAL_METABOLITE_REACTION_ID_COLUMN) {
+								em.setReactionId(dataArray[s]);
 							}
 							if (s == PathwaysCSVFileConstants.EXTERNAL_METABOLITE_ABBR_COLUMN) {
 								em.setAbbreviation(dataArray[s]);
 							}
 							if (s == PathwaysCSVFileConstants.EXTERNAL_METABOLITE_NAME_COLUMN) {
 								// need to escape pipe: http://stackoverflow.com/questions/21524642/splitting-string-with-pipe-character
-								String[] names = dataArray[s].split("\\|");
-								ArrayList<String> namesList = new ArrayList<String>();
-								for (int i = 0; i < names.length; i++) {
-									namesList.add(names[i]);
-								}
-								em.setNames(namesList);
+//								String[] names = dataArray[s].split("\\|");
+//								ArrayList<String> namesList = new ArrayList<String>();
+//								for (int i = 0; i < names.length; i++) {
+//									namesList.add(names[i]);
+//								}
+//								em.setNames(namesList);
+								em.setName(dataArray[s]);
 							}
 							if (s == PathwaysCSVFileConstants.EXTERNAL_METABOLITE_POSITION_COLUMN) {
 								em.setPosition(dataArray[s]);
@@ -668,7 +666,7 @@ public class PathwayFilesReader {
 							}
 						}
 						metabolicPathways.get(id).getExternalMetabolitesData().put(em.getReactionId(), em);
-						System.out.println("external " + em);
+						//System.out.println(em);
 					}
 					count += 1;
 				}
