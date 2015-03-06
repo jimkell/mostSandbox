@@ -12632,6 +12632,12 @@ public class GraphicalInterface extends JFrame {
 	}
 	
 	public void categorizeReactions() {
+		ReactionFactory rf = new ReactionFactory("SBML");
+		Vector<SBMLReaction> reactions = rf.getAllReactions();
+		Map<Integer, SBMLReaction> idReactionMap = new HashMap<Integer, SBMLReaction>();
+		for (int i = 0; i < reactions.size(); i++) {
+			idReactionMap.put(reactions.get(i).getId(), reactions.get(i));
+		}
 		// get reactions with no ec number
 		removeExternalReactions();
 		//System.out.println("no ext " + LocalConfig.getInstance().getUnplottedReactionIds());
@@ -12704,12 +12710,16 @@ public class GraphicalInterface extends JFrame {
 				}
 			}
 			LocalConfig.getInstance().setCytosolExtraOrganismIds(cytosolExtraOrganismIds);
-//			System.out.println("ce " + cytosolExtraOrganismIds);
-//			System.out.println("cp " + cytosolPeriplasmIds);
-//			System.out.println("pe " + periplasmExtraOrganismIds);
 			// for some unknown reason, if it is attempted to remove these ids in if statements
 			// where added to this list (above), it skips some ids. commented out
+			//System.out.println(LocalConfig.getInstance().getModelKeggEquationMap());
+			System.out.println("ce " + cytosolExtraOrganismIds);
 			for (int k = 0; k < cytosolExtraOrganismIds.size(); k++) {
+				if (transportReactionAbbreviation(cytosolExtraOrganismIds.get(k), idReactionMap) != null) {
+					System.out.println(transportReactionAbbreviation(cytosolExtraOrganismIds.get(k), idReactionMap));
+				} else {
+					System.out.println(idReactionMap.get(cytosolExtraOrganismIds.get(k)).getReactionEqunAbbr());
+				}
 				if (LocalConfig.getInstance().getUnplottedReactionIds().contains(cytosolExtraOrganismIds.get(k))) {
 					LocalConfig.getInstance().getUnplottedReactionIds().remove(LocalConfig.getInstance().getUnplottedReactionIds().indexOf(cytosolExtraOrganismIds.get(k)));
 				}
@@ -12719,7 +12729,13 @@ public class GraphicalInterface extends JFrame {
 					LocalConfig.getInstance().getUnplottedReactionIds().remove(LocalConfig.getInstance().getUnplottedReactionIds().indexOf(cytosolExtraOrganismIds2.get(k)));
 				}
 			}
+			System.out.println("cp " + cytosolPeriplasmIds);
 			for (int m = 0; m < cytosolPeriplasmIds.size(); m++) {
+				if (transportReactionAbbreviation(cytosolPeriplasmIds.get(m), idReactionMap) != null) {
+					System.out.println(transportReactionAbbreviation(cytosolPeriplasmIds.get(m), idReactionMap));
+				} else {
+					System.out.println(idReactionMap.get(cytosolPeriplasmIds.get(m)).getReactionEqunAbbr());
+				}
 				if (LocalConfig.getInstance().getUnplottedReactionIds().contains(cytosolPeriplasmIds.get(m))) {
 					LocalConfig.getInstance().getUnplottedReactionIds().remove(LocalConfig.getInstance().getUnplottedReactionIds().indexOf(cytosolPeriplasmIds.get(m)));
 				}
@@ -12729,7 +12745,13 @@ public class GraphicalInterface extends JFrame {
 					LocalConfig.getInstance().getUnplottedReactionIds().remove(LocalConfig.getInstance().getUnplottedReactionIds().indexOf(cytosolPeriplasmIds2.get(m)));
 				}
 			}
+			System.out.println("pe " + periplasmExtraOrganismIds);
 			for (int n = 0; n < periplasmExtraOrganismIds.size(); n++) {
+				if (transportReactionAbbreviation(periplasmExtraOrganismIds.get(n), idReactionMap) != null) {
+					System.out.println(transportReactionAbbreviation(periplasmExtraOrganismIds.get(n), idReactionMap));
+				} else {
+					System.out.println(idReactionMap.get(periplasmExtraOrganismIds.get(n)).getReactionEqunAbbr());
+				}
 				if (LocalConfig.getInstance().getUnplottedReactionIds().contains(periplasmExtraOrganismIds.get(n))) {
 					LocalConfig.getInstance().getUnplottedReactionIds().remove(LocalConfig.getInstance().getUnplottedReactionIds().indexOf(periplasmExtraOrganismIds.get(n)));
 				}
@@ -12755,6 +12777,26 @@ public class GraphicalInterface extends JFrame {
 //				}
 //			}
 		}
+	}
+	
+	public String transportReactionAbbreviation(int id, Map<Integer, SBMLReaction> idReactionMap) {
+		//System.out.println(idReactionMap.get(id).getReactionAbbreviation());
+		if (LocalConfig.getInstance().getModelKeggEquationMap().containsKey(Integer.toString(id))) {
+			ArrayList<String> keggReactantIds = LocalConfig.getInstance().getModelKeggEquationMap().get(Integer.toString(id)).getKeggReactantIds();
+			ArrayList<String> keggProductIds = LocalConfig.getInstance().getModelKeggEquationMap().get(Integer.toString(id)).getKeggProductIds();
+			//System.out.println(keggReactantIds);
+			//System.out.println(keggProductIds);
+			if (keggReactantIds.contains("C00080") && keggProductIds.contains("C00080")) {
+				keggReactantIds.remove(keggReactantIds.indexOf("C00080"));
+				keggProductIds.remove(keggProductIds.indexOf("C00080"));
+			}
+			//System.out.println(keggReactantIds);
+			//System.out.println(keggProductIds);
+			if (keggReactantIds.equals(keggProductIds)) {
+				return idReactionMap.get(id).getReactionAbbreviation();
+			}
+		}
+		return null;
 	}
 	
 	public void assignKeggReactionIds() {

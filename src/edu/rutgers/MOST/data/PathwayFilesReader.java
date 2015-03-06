@@ -689,7 +689,6 @@ public class PathwayFilesReader {
 	
 	public void readTransportMetabolitesFile(File transportMetabolites) {
 		CSVReader reader;
-		System.out.println("i " + PathwaysCSVFileConstants.EXTERNAL_METABOLITE_DIRECTION_COLUMN);
 
 		int count = 0;
 		

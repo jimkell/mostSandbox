@@ -64,7 +64,6 @@ public class PathwayReactionNodeFactory {
 					} else {
 						enzymeDataEquations.add(LocalConfig.getInstance().getEnzymeDataMap().get(ec.get(m)).getCatalyticActivity());
 						String[] halfReactions = LocalConfig.getInstance().getEnzymeDataMap().get(ec.get(m)).getCatalyticActivity().split(" = ");
-						System.out.println(halfReactions.length);
 						for (int n = 0; n < LocalConfig.getInstance().getSideSpeciesList().size(); n++) {
 							if (halfReactions[0].contains(LocalConfig.getInstance().getSideSpeciesList().get(n))) {
 								if (!sideReactants.contains(LocalConfig.getInstance().getSideSpeciesList().get(n))) {
