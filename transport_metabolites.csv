@@ -1,0 +1,14 @@
+Pathway ID,Metabolite ID,Metabolite Name,Metabolite Abbreviation,Position,Offset,Direction,KEGG Metabolite ID
+0,0,Acetate,OAc,b,0,-1,C00033
+0,1,Acetaldehyde,HAc,b,0,1,C00084
+0,2,Ethanol,EtOH,b,0,-1,C00469
+0,3,Pyruvate,PYR,b,-2,-1,C00022
+0,4,L-Lactate,L-Lac,b,-0.5,-1,C00186
+0,5,D-Lactate,D-Lac,b,1,-1,C00256
+1,0,Succinate,SUC,r,0,-1,C00042
+1,1,(S)-Malate,MAL,t,0,-1,C00149
+1,2,2-Oxoglutarate,AKG,r,0,-1,C00026
+1,3,Fumarate,FUM,t,0,-1,C00122
+17,0,Orthophosphate,Pi,t,0,-1,C00009
+24,0,L-Glutamine,Gln,b,0,-1,C00064
+24,1,L-Glutamate,Glu,b,0,-1,C00025

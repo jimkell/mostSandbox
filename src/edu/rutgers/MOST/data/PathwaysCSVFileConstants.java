@@ -14,6 +14,7 @@ public class PathwaysCSVFileConstants {
 	public static final String PATHWAY_CONNECTIONS_FILE_NAME = "pathway_connections.csv";
 	public static final String PATHWAY_SIDE_SPECIES_FILE_NAME = "pathway_side_species.csv";
 	public static final String EXTERNAL_METABOLITES_FILE_NAME = "external_metabolites.csv";
+	public static final String TRANSPORT_METABOLITES_FILE_NAME = "transport_metabolites.csv";
 	
 	public static final String[] PATHWAYS_COLUMN_NAMES = 
 		{
@@ -68,6 +69,12 @@ public class PathwaysCSVFileConstants {
 		"Direction", "KEGG Metabolite ID", "EC Number", "KEGG Reaction ID"
 		};
 	
+	public static final String[] TRANSPORT_METABOLITES_COLUMN_NAMES = 
+		{
+		"Pathway ID", "Metabolite ID", "Metabolite Name", "Metabolite Abbreviation", "Position", "Offset",
+		"Direction", "KEGG Metabolite ID"
+		};
+	
 	private static java.util.List<String> pathwayColumnsList = Arrays.asList(PATHWAYS_COLUMN_NAMES);
 	private static java.util.List<String> pathwayGraphColumnsList = Arrays.asList(PATHWAY_GRAPH_COLUMN_NAMES);
 	private static java.util.List<String> metabolitesList = Arrays.asList(METABOLITES_COLUMN_NAMES);
@@ -78,6 +85,7 @@ public class PathwaysCSVFileConstants {
 	private static java.util.List<String> pathwayConnectionsColumnsList = Arrays.asList(PATHWAY_CONNECTIONS_COLUMN_NAMES);
 	private static java.util.List<String> pathwaySideSpeciesColumnsList = Arrays.asList(PATHWAY_SIDE_SPECIES_COLUMN_NAMES);
 	private static java.util.List<String> externalMetabolitesColumnsList = Arrays.asList(EXTERNAL_METABOLITES_COLUMN_NAMES);
+	private static java.util.List<String> transportMetabolitesColumnsList = Arrays.asList(TRANSPORT_METABOLITES_COLUMN_NAMES);
 
 	public static final int PATHWAYS_ID_COLUMN = pathwayColumnsList.indexOf("Pathway ID");
 	public static final int PATHWAYS_NAME_COLUMN = pathwayColumnsList.indexOf("Pathway Name");
@@ -149,5 +157,14 @@ public class PathwaysCSVFileConstants {
 	public static final int EXTERNAL_EC_NUMBER_COLUMN = externalMetabolitesColumnsList.indexOf("EC Number");
 	public static final int EXTERNAL_KEGG_REACTION_ID_COLUMN = externalMetabolitesColumnsList.indexOf("KEGG Reaction ID");
 	
+	public static final int TRANSPORT_METABOLITE_PATHWAY_ID_COLUMN = transportMetabolitesColumnsList.indexOf("Pathway ID");
+	public static final int TRANSPORT_METABOLITE_ID_COLUMN = transportMetabolitesColumnsList.indexOf("Metabolite ID");
+	public static final int TRANSPORT_METABOLITE_NAME_COLUMN = transportMetabolitesColumnsList.indexOf("Metabolite Name");
+	public static final int TRANSPORT_METABOLITE_ABBR_COLUMN = transportMetabolitesColumnsList.indexOf("Metabolite Abbreviation");
+	public static final int TRANSPORT_METABOLITE_POSITION_COLUMN = transportMetabolitesColumnsList.indexOf("Position");
+	public static final int TRANSPORT_METABOLITE_OFFSET_COLUMN = transportMetabolitesColumnsList.indexOf("Offset");
+	// -1 if reactant, 1 if product
+	public static final int TRANSPORT_METABOLITE_DIRECTION_COLUMN = transportMetabolitesColumnsList.indexOf("Direction");
+	public static final int TRANSPORT_KEGG_METABOLITE_ID_COLUMN = transportMetabolitesColumnsList.indexOf("KEGG Metabolite ID");
 
 }

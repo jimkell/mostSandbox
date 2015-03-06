@@ -630,9 +630,6 @@ public class PathwayFilesReader {
 							if (s == PathwaysCSVFileConstants.EXTERNAL_METABOLITE_PATHWAY_ID_COLUMN) {
 								em.setPathwayId(dataArray[s]);
 							}
-							if (s == PathwaysCSVFileConstants.EXTERNAL_METABOLITE_DIRECTION_COLUMN) {
-								em.setDirection(Integer.valueOf(dataArray[s]));
-							}
 							if (s == PathwaysCSVFileConstants.EXTERNAL_METABOLITE_REACTION_ID_COLUMN) {
 								em.setReactionId(dataArray[s]);
 							}
@@ -655,6 +652,9 @@ public class PathwayFilesReader {
 							if (s == PathwaysCSVFileConstants.EXTERNAL_METABOLITE_OFFSET_COLUMN) {
 								em.setOffset(Double.parseDouble(dataArray[s]));
 							}
+							if (s == PathwaysCSVFileConstants.EXTERNAL_METABOLITE_DIRECTION_COLUMN) {
+								em.setDirection(Integer.valueOf(dataArray[s]));
+							}
 							if (s == PathwaysCSVFileConstants.EXTERNAL_KEGG_METABOLITE_ID_COLUMN) {
 								em.setKeggMetaboliteId(dataArray[s]);
 							}
@@ -666,6 +666,65 @@ public class PathwayFilesReader {
 							}
 						}
 						metabolicPathways.get(id).getExternalMetabolitesData().put(em.getReactionId(), em);
+						//System.out.println(em);
+					}
+					count += 1;
+				}
+				reader.close();
+			} catch (IOException e) {
+				JOptionPane.showMessageDialog(null,                
+						"File Not Found Error.",                
+						"Error",                                
+						JOptionPane.ERROR_MESSAGE);
+				//e.printStackTrace();
+			}
+		} catch (FileNotFoundException e) {
+			JOptionPane.showMessageDialog(null,                
+					"File Not Found Error.",                
+					"Error",                                
+					JOptionPane.ERROR_MESSAGE);
+			//e.printStackTrace();
+		}	
+	}
+	
+	public void readTransportMetabolitesFile(File transportMetabolites) {
+		CSVReader reader;
+		System.out.println("i " + PathwaysCSVFileConstants.EXTERNAL_METABOLITE_DIRECTION_COLUMN);
+
+		int count = 0;
+		
+		try {
+			reader = new CSVReader(new FileReader(transportMetabolites), ',');
+			String [] dataArray;
+			try {
+				while ((dataArray = reader.readNext()) != null) {
+					if (count > 0) {
+						ExternalMetaboliteData em = new ExternalMetaboliteData();
+						String id = dataArray[PathwaysCSVFileConstants.TRANSPORT_METABOLITE_PATHWAY_ID_COLUMN];
+						for (int s = 0; s < dataArray.length; s++) {
+							if (s == PathwaysCSVFileConstants.TRANSPORT_METABOLITE_PATHWAY_ID_COLUMN) {
+								em.setPathwayId(dataArray[s]);
+							}
+							if (s == PathwaysCSVFileConstants.TRANSPORT_METABOLITE_ABBR_COLUMN) {
+								em.setAbbreviation(dataArray[s]);
+							}
+							if (s == PathwaysCSVFileConstants.TRANSPORT_METABOLITE_NAME_COLUMN) {
+								em.setName(dataArray[s]);
+							}
+							if (s == PathwaysCSVFileConstants.TRANSPORT_METABOLITE_POSITION_COLUMN) {
+								em.setPosition(dataArray[s]);
+							}
+							if (s == PathwaysCSVFileConstants.TRANSPORT_METABOLITE_OFFSET_COLUMN) {
+								em.setOffset(Double.parseDouble(dataArray[s]));
+							}
+							if (s == PathwaysCSVFileConstants.TRANSPORT_METABOLITE_DIRECTION_COLUMN) {
+								em.setDirection(Integer.valueOf(dataArray[s]));
+							}
+							if (s == PathwaysCSVFileConstants.TRANSPORT_KEGG_METABOLITE_ID_COLUMN) {
+								em.setKeggMetaboliteId(dataArray[s]);
+							}
+						}
+						metabolicPathways.get(id).getTransportMetabolitesData().put(em.getKeggMetaboliteId(), em);
 						//System.out.println(em);
 					}
 					count += 1;
@@ -700,6 +759,7 @@ public class PathwayFilesReader {
 		File sideSpecies = new File(PathwaysCSVFileConstants.PATHWAY_SIDE_SPECIES_FILE_NAME);
 		File pathwayConnections = new File(PathwaysCSVFileConstants.PATHWAY_CONNECTIONS_FILE_NAME);
 		File externalMetabolites = new File(PathwaysCSVFileConstants.EXTERNAL_METABOLITES_FILE_NAME);
+		File transportMetabolites = new File(PathwaysCSVFileConstants.TRANSPORT_METABOLITES_FILE_NAME);
 		PathwayFilesReader reader = new PathwayFilesReader();
 		reader.readPathwaysFile(pathways);
 		reader.readPathwayGraphFile(pathwayGraph);
@@ -711,6 +771,7 @@ public class PathwayFilesReader {
 		reader.readSideSpeciesFile(sideSpecies);
 		reader.readPathwayConnectionsFile(pathwayConnections);
 		reader.readExternalMetabolitesFile(externalMetabolites);
+		reader.readTransportMetabolitesFile(transportMetabolites);
 	}
 	
 	/**
