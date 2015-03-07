@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8' standalone='no'?>
-<!-- Created by MOST version 1.0 on 2015-02-11 19:52 with jsbml version 0.8. -->
+<!-- Created by MOST version 1.0 on 2015-03-07 14:53 with jsbml version 0.8. -->
 <sbml xmlns="http://www.sbml.org/sbml/level2" level="2" version="1">
-  <model id="M_iJR904_annotated">
+  <model id="M_iJR904_annotations">
     <listOfUnitDefinitions>
       <unitDefinition id="mmol_per_gDW_per_hr" name="mmol_per_gDW_per_hr">
         <listOfUnits>
@@ -40,7 +40,7 @@
   
      <p>FORMULA: C3H8O2</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C02917</p>
   </body></notes>
       </species>
       <species id="M_12ppd_DASH_S_e" name="(S)-Propane-1,2-diol" boundaryCondition="false" compartment="C_e">
@@ -49,7 +49,7 @@
   
      <p>FORMULA: C3H8O2</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C02917</p>
   </body></notes>
       </species>
       <species id="M_13dpg_c" name="_3-Phospho-D-glyceroyl phosphate" boundaryCondition="false" compartment="C_c">
@@ -148,7 +148,7 @@
   
      <p>FORMULA: C6H7O7</p>
   
-     <p>KEGG ID: C04575</p>
+     <p>KEGG ID: C05409</p>
   </body></notes>
       </species>
       <species id="M_25aics_c" name="(S)-2-[5-Amino-1-(5-phospho-D-ribosyl)imidazole-4-carboxamido]succinate" boundaryCondition="false" compartment="C_c">
@@ -175,7 +175,7 @@
   
      <p>FORMULA: C9H14N5O8P</p>
   
-     <p>KEGG ID: C01304</p>
+     <p>KEGG ID: </p>
   </body></notes>
       </species>
       <species id="M_26dap_DASH_LL_c" name="LL-2,6-Diaminoheptanedioate" boundaryCondition="false" compartment="C_c">
@@ -184,7 +184,7 @@
   
      <p>FORMULA: C7H14N2O4</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C00666</p>
   </body></notes>
       </species>
       <species id="M_26dap_DASH_M_c" name="meso-2,6-Diaminoheptanedioate" boundaryCondition="false" compartment="C_c">
@@ -193,7 +193,7 @@
   
      <p>FORMULA: C7H14N2O4</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C00680</p>
   </body></notes>
       </species>
       <species id="M_26dap_DASH_M_e" name="meso-2,6-Diaminoheptanedioate" boundaryCondition="false" compartment="C_e">
@@ -202,7 +202,7 @@
   
      <p>FORMULA: C7H14N2O4</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C00680</p>
   </body></notes>
       </species>
       <species id="M_2ahbut_c" name="(S)-2-Aceto-2-hydroxybutanoate" boundaryCondition="false" compartment="C_c">
@@ -301,7 +301,7 @@
   
      <p>FORMULA: C6H9O7</p>
   
-     <p>KEGG ID: C06473</p>
+     <p>KEGG ID: </p>
   </body></notes>
       </species>
       <species id="M_2dhp_c" name="_2-Dehydropantoate" boundaryCondition="false" compartment="C_c">
@@ -490,7 +490,7 @@
   
      <p>FORMULA: C14H22N3O17P3</p>
   
-     <p>KEGG ID: C11436</p>
+     <p>KEGG ID: </p>
   </body></notes>
       </species>
       <species id="M_2pg_c" name="D-Glycerate 2-phosphate" boundaryCondition="false" compartment="C_c">
@@ -571,7 +571,7 @@
   
      <p>FORMULA: C6H8O10P</p>
   
-     <p>KEGG ID: C14899</p>
+     <p>KEGG ID: </p>
   </body></notes>
       </species>
       <species id="M_3dhq_c" name="_3-Dehydroquinate" boundaryCondition="false" compartment="C_c">
@@ -625,7 +625,7 @@
   
      <p>FORMULA: C9H9O3</p>
   
-     <p>KEGG ID: C11457</p>
+     <p>KEGG ID: </p>
   </body></notes>
       </species>
       <species id="M_3hpppn_e" name="_3-(3-hydroxy-phenyl)propionate" boundaryCondition="false" compartment="C_e">
@@ -634,7 +634,7 @@
   
      <p>FORMULA: C9H9O3</p>
   
-     <p>KEGG ID: C11457</p>
+     <p>KEGG ID: </p>
   </body></notes>
       </species>
       <species id="M_3ig3p_c" name="C'-(3-Indolyl)-glycerol 3-phosphate" boundaryCondition="false" compartment="C_c">
@@ -922,7 +922,7 @@
   
      <p>FORMULA: C9H11N3O9P</p>
   
-     <p>KEGG ID: C15667</p>
+     <p>KEGG ID: </p>
   </body></notes>
       </species>
       <species id="M_5dglcn_c" name="_5-Dehydro-D-gluconate" boundaryCondition="false" compartment="C_c">
@@ -1084,7 +1084,7 @@
   
      <p>FORMULA: C13H23N2O8PRS</p>
   
-     <p>KEGG ID: C03939</p>
+     <p>KEGG ID: </p>
   </body></notes>
       </species>
       <species id="M_ac_c" name="Acetate" boundaryCondition="false" compartment="C_c">
@@ -1255,7 +1255,7 @@
   
      <p>FORMULA: C6H3O6</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C02341</p>
   </body></notes>
       </species>
       <species id="M_aconm_c" name="E-3-carboxy-2-pentenedioate 6-methyl ester" boundaryCondition="false" compartment="C_c">
@@ -1264,7 +1264,7 @@
   
      <p>FORMULA: C7H6O6</p>
   
-     <p>KEGG ID: C11514</p>
+     <p>KEGG ID: </p>
   </body></notes>
       </species>
       <species id="M_acorn_c" name="N2-Acetyl-L-ornithine" boundaryCondition="false" compartment="C_c">
@@ -1390,7 +1390,7 @@
   
      <p>FORMULA: C17H25N5O16P2</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C06397</p>
   </body></notes>
       </species>
       <species id="M_adphep_DASH_LD_c" name="ADP-L-glycero-D-manno-heptose" boundaryCondition="false" compartment="C_c">
@@ -1399,7 +1399,7 @@
   
      <p>FORMULA: C17H25N5O16P2</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C06398</p>
   </body></notes>
       </species>
       <species id="M_agdpcbi_c" name="Adenosine-GDP-cobinamide" boundaryCondition="false" compartment="C_c">
@@ -1507,7 +1507,7 @@
   
      <p>FORMULA: C3H7NO2</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C00099</p>
   </body></notes>
       </species>
       <species id="M_ala_DASH_D_c" name="D-Alanine" boundaryCondition="false" compartment="C_c">
@@ -1516,7 +1516,7 @@
   
      <p>FORMULA: C3H7NO2</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C00133</p>
   </body></notes>
       </species>
       <species id="M_ala_DASH_D_e" name="D-Alanine" boundaryCondition="false" compartment="C_e">
@@ -1525,7 +1525,7 @@
   
      <p>FORMULA: C3H7NO2</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C00133</p>
   </body></notes>
       </species>
       <species id="M_ala_DASH_L_c" name="L-Alanine" boundaryCondition="false" compartment="C_c">
@@ -1534,7 +1534,7 @@
   
      <p>FORMULA: C3H7NO2</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C00041</p>
   </body></notes>
       </species>
       <species id="M_ala_DASH_L_e" name="L-Alanine" boundaryCondition="false" compartment="C_e">
@@ -1543,7 +1543,7 @@
   
      <p>FORMULA: C3H7NO2</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C00041</p>
   </body></notes>
       </species>
       <species id="M_alaala_c" name="D-Alanyl-D-alanine" boundaryCondition="false" compartment="C_c">
@@ -1561,7 +1561,7 @@
   
      <p>FORMULA: C5H7O4</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C06010</p>
   </body></notes>
       </species>
       <species id="M_alltn_c" name="Allantoin" boundaryCondition="false" compartment="C_c">
@@ -1687,7 +1687,7 @@
   
      <p>FORMULA: RHO</p>
   
-     <p>KEGG ID: C03688</p>
+     <p>KEGG ID: </p>
   </body></notes>
       </species>
       <species id="M_aps_c" name="Adenosine 5'-phosphosulfate" boundaryCondition="false" compartment="C_c">
@@ -1714,7 +1714,7 @@
   
      <p>FORMULA: C5H10O5</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C00259</p>
   </body></notes>
       </species>
       <species id="M_arab_DASH_L_e" name="L-Arabinose" boundaryCondition="false" compartment="C_e">
@@ -1723,7 +1723,7 @@
   
      <p>FORMULA: C5H10O5</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C00259</p>
   </body></notes>
       </species>
       <species id="M_arbt6p_c" name="Arbutin 6-phosphate" boundaryCondition="false" compartment="C_c">
@@ -1741,7 +1741,7 @@
   
      <p>FORMULA: C6H15N4O2</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C00062</p>
   </body></notes>
       </species>
       <species id="M_arg_DASH_L_e" name="L-Arginine" boundaryCondition="false" compartment="C_e">
@@ -1750,7 +1750,7 @@
   
      <p>FORMULA: C6H15N4O2</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C00062</p>
   </body></notes>
       </species>
       <species id="M_argsuc_c" name="N(omega)-(L-Arginino)succinate" boundaryCondition="false" compartment="C_c">
@@ -1768,7 +1768,7 @@
   
      <p>FORMULA: C4H8N2O3</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C00152</p>
   </body></notes>
       </species>
       <species id="M_asn_DASH_L_e" name="L-Asparagine" boundaryCondition="false" compartment="C_e">
@@ -1777,7 +1777,7 @@
   
      <p>FORMULA: C4H8N2O3</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C00152</p>
   </body></notes>
       </species>
       <species id="M_asp_DASH_L_c" name="L-Aspartate" boundaryCondition="false" compartment="C_c">
@@ -1786,7 +1786,7 @@
   
      <p>FORMULA: C4H6NO4</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C00049</p>
   </body></notes>
       </species>
       <species id="M_asp_DASH_L_e" name="L-Aspartate" boundaryCondition="false" compartment="C_e">
@@ -1795,7 +1795,7 @@
   
      <p>FORMULA: C4H6NO4</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C00049</p>
   </body></notes>
       </species>
       <species id="M_aspsa_c" name="L-Aspartate 4-semialdehyde" boundaryCondition="false" compartment="C_c">
@@ -1975,7 +1975,7 @@
   
      <p>FORMULA: C9H9O4</p>
   
-     <p>KEGG ID: C12622</p>
+     <p>KEGG ID: </p>
   </body></notes>
       </species>
       <species id="M_chol_c" name="Choline" boundaryCondition="false" compartment="C_c">
@@ -2038,7 +2038,7 @@
   
      <p>FORMULA: C6H13N3O3</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C00327</p>
   </body></notes>
       </species>
       <species id="M_ckdo_c" name="CMP-3-deoxy-D-manno-octulosonate" boundaryCondition="false" compartment="C_c">
@@ -2209,7 +2209,7 @@
   
      <p>FORMULA: C3H7NO2S</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C00097</p>
   </body></notes>
       </species>
       <species id="M_cys_DASH_L_e" name="L-Cysteine" boundaryCondition="false" compartment="C_e">
@@ -2218,7 +2218,7 @@
   
      <p>FORMULA: C3H7NO2S</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C00097</p>
   </body></notes>
       </species>
       <species id="M_cyst_DASH_L_c" name="L-Cystathionine" boundaryCondition="false" compartment="C_c">
@@ -2227,7 +2227,7 @@
   
      <p>FORMULA: C7H14N2O4S</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C02291</p>
   </body></notes>
       </species>
       <species id="M_cytd_c" name="Cytidine" boundaryCondition="false" compartment="C_c">
@@ -2254,7 +2254,7 @@
   
      <p>FORMULA: C10H13N5O3</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C00559</p>
   </body></notes>
       </species>
       <species id="M_dad_DASH_2_e" name="Deoxyadenosine" boundaryCondition="false" compartment="C_e">
@@ -2263,7 +2263,7 @@
   
      <p>FORMULA: C10H13N5O3</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C00559</p>
   </body></notes>
       </species>
       <species id="M_dadp_c" name="dADP" boundaryCondition="false" compartment="C_c">
@@ -2308,7 +2308,7 @@
   
      <p>FORMULA: C4H7O6P</p>
   
-     <p>KEGG ID: C15556</p>
+     <p>KEGG ID: </p>
   </body></notes>
       </species>
       <species id="M_dcamp_c" name="N6-(1,2-Dicarboxyethyl)-AMP" boundaryCondition="false" compartment="C_c">
@@ -2452,7 +2452,7 @@
   
      <p>FORMULA: C9H7O4</p>
   
-     <p>KEGG ID: C12623</p>
+     <p>KEGG ID: </p>
   </body></notes>
       </species>
       <species id="M_dhf_c" name="_7,8-Dihydrofolate" boundaryCondition="false" compartment="C_c">
@@ -2488,7 +2488,7 @@
   
      <p>FORMULA: C5H5N2O4</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C00337</p>
   </body></notes>
       </species>
       <species id="M_dhpmp_c" name="Dihydroneopterin monophosphate" boundaryCondition="false" compartment="C_c">
@@ -2830,7 +2830,7 @@
   
      <p>FORMULA: C30H27N3O15</p>
   
-     <p>KEGG ID: C05821</p>
+     <p>KEGG ID: </p>
   </body></notes>
       </species>
       <species id="M_etha_c" name="Ethanolamine" boundaryCondition="false" compartment="C_c">
@@ -2911,7 +2911,7 @@
   
      <p>FORMULA: C6H12O5</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C01721</p>
   </body></notes>
       </species>
       <species id="M_fdp_c" name="D-Fructose 1,6-bisphosphate" boundaryCondition="false" compartment="C_c">
@@ -3055,7 +3055,7 @@
   
      <p>FORMULA: C6H12O5</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C01019</p>
   </body></notes>
       </species>
       <species id="M_fuc_DASH_L_e" name="L-Fucose" boundaryCondition="false" compartment="C_e">
@@ -3064,7 +3064,7 @@
   
      <p>FORMULA: C6H12O5</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C01019</p>
   </body></notes>
       </species>
       <species id="M_fum_c" name="Fumarate" boundaryCondition="false" compartment="C_c">
@@ -3199,7 +3199,7 @@
   
      <p>FORMULA: C6H8O8</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C00879</p>
   </body></notes>
       </species>
       <species id="M_galct_DASH_D_e" name="D-Galactarate" boundaryCondition="false" compartment="C_e">
@@ -3208,7 +3208,7 @@
   
      <p>FORMULA: C6H8O8</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C00879</p>
   </body></notes>
       </species>
       <species id="M_galctn_DASH_D_c" name="D-Galactonate" boundaryCondition="false" compartment="C_c">
@@ -3217,7 +3217,7 @@
   
      <p>FORMULA: C6H11O7</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C00880</p>
   </body></notes>
       </species>
       <species id="M_galctn_DASH_D_e" name="D-Galactonate" boundaryCondition="false" compartment="C_e">
@@ -3226,7 +3226,7 @@
   
      <p>FORMULA: C6H11O7</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C00880</p>
   </body></notes>
       </species>
       <species id="M_galt1p_c" name="Galactitol 1-phosphate" boundaryCondition="false" compartment="C_c">
@@ -3307,7 +3307,7 @@
   
      <p>FORMULA: C7H15NO2</p>
   
-     <p>KEGG ID: C01181</p>
+     <p>KEGG ID: </p>
   </body></notes>
       </species>
       <species id="M_gbbtn_e" name="gamma-butyrobetaine" boundaryCondition="false" compartment="C_e">
@@ -3316,7 +3316,7 @@
   
      <p>FORMULA: C7H15NO2</p>
   
-     <p>KEGG ID: C01181</p>
+     <p>KEGG ID: </p>
   </body></notes>
       </species>
       <species id="M_gcald_c" name="Glycolaldehyde" boundaryCondition="false" compartment="C_c">
@@ -3379,7 +3379,7 @@
   
      <p>FORMULA: C6H12O6</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C00031</p>
   </body></notes>
       </species>
       <species id="M_glc_DASH_D_e" name="D-Glucose" boundaryCondition="false" compartment="C_e">
@@ -3388,7 +3388,7 @@
   
      <p>FORMULA: C6H12O6</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C00031</p>
   </body></notes>
       </species>
       <species id="M_glcn_c" name="D-Gluconate" boundaryCondition="false" compartment="C_c">
@@ -3451,7 +3451,7 @@
   
      <p>FORMULA: C5H10N2O3</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C00064</p>
   </body></notes>
       </species>
       <species id="M_gln_DASH_L_e" name="L-Glutamine" boundaryCondition="false" compartment="C_e">
@@ -3460,7 +3460,7 @@
   
      <p>FORMULA: C5H10N2O3</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C00064</p>
   </body></notes>
       </species>
       <species id="M_glu1sa_c" name="L-Glutamate 1-semialdehyde" boundaryCondition="false" compartment="C_c">
@@ -3496,7 +3496,7 @@
   
      <p>FORMULA: C5H8NO4</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C00217</p>
   </body></notes>
       </species>
       <species id="M_glu_DASH_L_c" name="L-Glutamate" boundaryCondition="false" compartment="C_c">
@@ -3505,7 +3505,7 @@
   
      <p>FORMULA: C5H8NO4</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C00025</p>
   </body></notes>
       </species>
       <species id="M_glu_DASH_L_e" name="L-Glutamate" boundaryCondition="false" compartment="C_e">
@@ -3514,7 +3514,7 @@
   
      <p>FORMULA: C5H8NO4</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C00025</p>
   </body></notes>
       </species>
       <species id="M_glucys_c" name="gamma-L-Glutamyl-L-cysteine" boundaryCondition="false" compartment="C_c">
@@ -3622,7 +3622,7 @@
   
      <p>FORMULA: C3H5O4</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C00258</p>
   </body></notes>
       </species>
       <species id="M_glyc_c" name="Glycerol" boundaryCondition="false" compartment="C_c">
@@ -3883,7 +3883,7 @@
   
      <p>FORMULA: C4H9NO2S</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C00155</p>
   </body></notes>
       </species>
       <species id="M_hdca_c" name="Hexadecanoate (n-C16:0)" boundaryCondition="false" compartment="C_c">
@@ -3910,7 +3910,7 @@
   
      <p>FORMULA: C16H29O2</p>
   
-     <p>KEGG ID: C08362</p>
+     <p>KEGG ID: </p>
   </body></notes>
       </species>
       <species id="M_hdeACP_c" name="cis-hexadec-9-enoyl-[acyl-carrier protein] (n-C16:1)" boundaryCondition="false" compartment="C_c">
@@ -3928,7 +3928,7 @@
   
      <p>FORMULA: C49H56FeN4O5</p>
   
-     <p>KEGG ID: C15672</p>
+     <p>KEGG ID: </p>
   </body></notes>
       </species>
       <species id="M_his_DASH_L_c" name="L-Histidine" boundaryCondition="false" compartment="C_c">
@@ -3937,7 +3937,7 @@
   
      <p>FORMULA: C6H9N3O2</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C00135</p>
   </body></notes>
       </species>
       <species id="M_his_DASH_L_e" name="L-Histidine" boundaryCondition="false" compartment="C_e">
@@ -3946,7 +3946,7 @@
   
      <p>FORMULA: C6H9N3O2</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C00135</p>
   </body></notes>
       </species>
       <species id="M_hisp_c" name="L-Histidinol phosphate" boundaryCondition="false" compartment="C_c">
@@ -3982,7 +3982,7 @@
   
      <p>FORMULA: C9H6O6</p>
   
-     <p>KEGG ID: C12624</p>
+     <p>KEGG ID: </p>
   </body></notes>
       </species>
       <species id="M_hmbil_c" name="Hydroxymethylbilane" boundaryCondition="false" compartment="C_c">
@@ -4009,7 +4009,7 @@
   
      <p>FORMULA: C4H9NO3</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C00263</p>
   </body></notes>
       </species>
       <species id="M_hpyr_c" name="Hydroxypyruvate" boundaryCondition="false" compartment="C_c">
@@ -4081,7 +4081,7 @@
   
      <p>FORMULA: C6H11O7</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C00770</p>
   </body></notes>
       </species>
       <species id="M_idon_DASH_L_e" name="L-Idonate" boundaryCondition="false" compartment="C_e">
@@ -4090,7 +4090,7 @@
   
      <p>FORMULA: C6H11O7</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C00770</p>
   </body></notes>
       </species>
       <species id="M_idp_c" name="IDP" boundaryCondition="false" compartment="C_c">
@@ -4108,7 +4108,7 @@
   
      <p>FORMULA: C6H13NO2</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C00407</p>
   </body></notes>
       </species>
       <species id="M_ile_DASH_L_e" name="L-Isoleucine" boundaryCondition="false" compartment="C_e">
@@ -4117,7 +4117,7 @@
   
      <p>FORMULA: C6H13NO2</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C00407</p>
   </body></notes>
       </species>
       <species id="M_imacp_c" name="_3-(Imidazol-4-yl)-2-oxopropyl phosphate" boundaryCondition="false" compartment="C_c">
@@ -4279,7 +4279,7 @@
   
      <p>FORMULA: C3H5O3</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C00256</p>
   </body></notes>
       </species>
       <species id="M_lac_DASH_D_e" name="D-Lactate" boundaryCondition="false" compartment="C_e">
@@ -4288,7 +4288,7 @@
   
      <p>FORMULA: C3H5O3</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C00256</p>
   </body></notes>
       </species>
       <species id="M_lac_DASH_L_c" name="L-Lactate" boundaryCondition="false" compartment="C_c">
@@ -4297,7 +4297,7 @@
   
      <p>FORMULA: C3H5O3</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C00186</p>
   </body></notes>
       </species>
       <species id="M_lac_DASH_L_e" name="L-Lactate" boundaryCondition="false" compartment="C_e">
@@ -4306,7 +4306,7 @@
   
      <p>FORMULA: C3H5O3</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C00186</p>
   </body></notes>
       </species>
       <species id="M_lald_DASH_L_c" name="L-Lactaldehyde" boundaryCondition="false" compartment="C_c">
@@ -4315,7 +4315,7 @@
   
      <p>FORMULA: C3H6O2</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C00424</p>
   </body></notes>
       </species>
       <species id="M_lcts_c" name="Lactose" boundaryCondition="false" compartment="C_c">
@@ -4342,7 +4342,7 @@
   
      <p>FORMULA: C6H13NO2</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C00123</p>
   </body></notes>
       </species>
       <species id="M_leu_DASH_L_e" name="L-Leucine" boundaryCondition="false" compartment="C_e">
@@ -4351,7 +4351,7 @@
   
      <p>FORMULA: C6H13NO2</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C00123</p>
   </body></notes>
       </species>
       <species id="M_lgt_DASH_S_c" name="(R)-S-Lactoylglutathione" boundaryCondition="false" compartment="C_c">
@@ -4360,7 +4360,7 @@
   
      <p>FORMULA: C13H20N3O8S</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C03451</p>
   </body></notes>
       </species>
       <species id="M_lipa_c" name="KDO(2)-lipid (A)" boundaryCondition="false" compartment="C_c">
@@ -4423,7 +4423,7 @@
   
      <p>FORMULA: C6H15N2O2</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C00047</p>
   </body></notes>
       </species>
       <species id="M_lys_DASH_L_e" name="L-Lysine" boundaryCondition="false" compartment="C_e">
@@ -4432,7 +4432,7 @@
   
      <p>FORMULA: C6H15N2O2</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C00047</p>
   </body></notes>
       </species>
       <species id="M_malACP_c" name="Malonyl-[acyl-carrier protein]" boundaryCondition="false" compartment="C_c">
@@ -4450,7 +4450,7 @@
   
      <p>FORMULA: C4H4O5</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C00149</p>
   </body></notes>
       </species>
       <species id="M_mal_DASH_L_e" name="L-Malate" boundaryCondition="false" compartment="C_e">
@@ -4459,7 +4459,7 @@
   
      <p>FORMULA: C4H4O5</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C00149</p>
   </body></notes>
       </species>
       <species id="M_malcoa_c" name="Malonyl-CoA" boundaryCondition="false" compartment="C_c">
@@ -4585,7 +4585,7 @@
   
      <p>FORMULA: C6H11O9P</p>
   
-     <p>KEGG ID: C00636</p>
+     <p>KEGG ID: C03812</p>
   </body></notes>
       </species>
       <species id="M_man6p_c" name="D-Mannose 6-phosphate" boundaryCondition="false" compartment="C_c">
@@ -4648,7 +4648,7 @@
   
      <p>FORMULA: C5H10NO2S</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C00855</p>
   </body></notes>
       </species>
       <species id="M_met_DASH_D_e" name="D-Methionine" boundaryCondition="false" compartment="C_e">
@@ -4657,7 +4657,7 @@
   
      <p>FORMULA: C5H10NO2S</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C00855</p>
   </body></notes>
       </species>
       <species id="M_met_DASH_L_c" name="L-Methionine" boundaryCondition="false" compartment="C_c">
@@ -4666,7 +4666,7 @@
   
      <p>FORMULA: C5H11NO2S</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C00073</p>
   </body></notes>
       </species>
       <species id="M_met_DASH_L_e" name="L-Methionine" boundaryCondition="false" compartment="C_e">
@@ -4675,7 +4675,7 @@
   
      <p>FORMULA: C5H11NO2S</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C00073</p>
   </body></notes>
       </species>
       <species id="M_methf_c" name="_5,10-Methenyltetrahydrofolate" boundaryCondition="false" compartment="C_c">
@@ -4693,7 +4693,7 @@
   
      <p>FORMULA: C6H11O9P</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C01177</p>
   </body></notes>
       </species>
       <species id="M_micit_c" name="methylisocitrate" boundaryCondition="false" compartment="C_c">
@@ -4720,7 +4720,7 @@
   
      <p>FORMULA: C25H35N7O19P3S</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C01213</p>
   </body></notes>
       </species>
       <species id="M_mmcoa_DASH_S_c" name="(S)-Methylmalonyl-CoA" boundaryCondition="false" compartment="C_c">
@@ -4729,7 +4729,7 @@
   
      <p>FORMULA: C25H35N7O19P3S</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C00683</p>
   </body></notes>
       </species>
       <species id="M_mnl1p_c" name="D-Mannitol 1-phosphate" boundaryCondition="false" compartment="C_c">
@@ -5026,7 +5026,7 @@
   
      <p>FORMULA: C18H33O2</p>
   
-     <p>KEGG ID: C00712</p>
+     <p>KEGG ID: </p>
   </body></notes>
       </species>
       <species id="M_octdp_c" name="all-trans-Octaprenyl diphosphate" boundaryCondition="false" compartment="C_c">
@@ -5152,7 +5152,7 @@
   
      <p>FORMULA: C6H11O4</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C00522</p>
   </body></notes>
       </species>
       <species id="M_pap_c" name="Adenosine 3',5'-bisphosphate" boundaryCondition="false" compartment="C_c">
@@ -5260,7 +5260,7 @@
   
      <p>FORMULA: C9H11NO2</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C00079</p>
   </body></notes>
       </species>
       <species id="M_phe_DASH_L_e" name="L-Phenylalanine" boundaryCondition="false" compartment="C_e">
@@ -5269,7 +5269,7 @@
   
      <p>FORMULA: C9H11NO2</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C00079</p>
   </body></notes>
       </species>
       <species id="M_pheme_c" name="Protoheme" boundaryCondition="false" compartment="C_c">
@@ -5341,7 +5341,7 @@
   
      <p>FORMULA: C9H16NO5</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C00864</p>
   </body></notes>
       </species>
       <species id="M_pnto_DASH_R_e" name="(R)-Pantothenate" boundaryCondition="false" compartment="C_e">
@@ -5350,7 +5350,7 @@
   
      <p>FORMULA: C9H16NO5</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C00864</p>
   </body></notes>
       </species>
       <species id="M_ppa_c" name="Propionate (n-C3:0)" boundaryCondition="false" compartment="C_c">
@@ -5431,7 +5431,7 @@
   
      <p>FORMULA: HO10P3</p>
   
-     <p>KEGG ID: C00536</p>
+     <p>KEGG ID: C03279</p>
   </body></notes>
       </species>
       <species id="M_pppn_c" name="Phenylpropanoate" boundaryCondition="false" compartment="C_c">
@@ -5512,7 +5512,7 @@
   
      <p>FORMULA: C5H9NO2</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C00148</p>
   </body></notes>
       </species>
       <species id="M_pro_DASH_L_e" name="L-Proline" boundaryCondition="false" compartment="C_e">
@@ -5521,7 +5521,7 @@
   
      <p>FORMULA: C5H9NO2</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C00148</p>
   </body></notes>
       </species>
       <species id="M_prpp_c" name="_5-Phospho-alpha-D-ribose 1-diphosphate" boundaryCondition="false" compartment="C_c">
@@ -5548,7 +5548,7 @@
   
      <p>FORMULA: C3H6NO6P</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C01005</p>
   </body></notes>
       </species>
       <species id="M_ptrc_c" name="Putrescine" boundaryCondition="false" compartment="C_c">
@@ -5683,7 +5683,7 @@
   
      <p>FORMULA: C5H10O5</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C00508</p>
   </body></notes>
       </species>
       <species id="M_rdmbzi_c" name="N1-(alpha-D-ribosyl)-5,6-dimethylbenzimidazole" boundaryCondition="false" compartment="C_c">
@@ -5710,7 +5710,7 @@
   
      <p>FORMULA: C5H10O5</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C00121</p>
   </body></notes>
       </species>
       <species id="M_rib_DASH_D_e" name="D-Ribose" boundaryCondition="false" compartment="C_e">
@@ -5719,7 +5719,7 @@
   
      <p>FORMULA: C5H10O5</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C00121</p>
   </body></notes>
       </species>
       <species id="M_ribflv_c" name="Riboflavin" boundaryCondition="false" compartment="C_c">
@@ -5773,7 +5773,7 @@
   
      <p>FORMULA: C5H9O8P</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C00199</p>
   </body></notes>
       </species>
       <species id="M_ru5p_DASH_L_c" name="L-Ribulose 5-phosphate" boundaryCondition="false" compartment="C_c">
@@ -5782,7 +5782,7 @@
   
      <p>FORMULA: C5H9O8P</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C01101</p>
   </body></notes>
       </species>
       <species id="M_s7p_c" name="Sedoheptulose 7-phosphate" boundaryCondition="false" compartment="C_c">
@@ -5791,7 +5791,7 @@
   
      <p>FORMULA: C7H13O10P</p>
   
-     <p>KEGG ID: C05382</p>
+     <p>KEGG ID: C00281</p>
   </body></notes>
       </species>
       <species id="M_sbt6p_c" name="D-Sorbitol 6-phosphate" boundaryCondition="false" compartment="C_c">
@@ -5809,7 +5809,7 @@
   
      <p>FORMULA: C6H14O6</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C00794</p>
   </body></notes>
       </species>
       <species id="M_sbzcoa_c" name="O-Succinylbenzoyl-CoA" boundaryCondition="false" compartment="C_c">
@@ -5854,7 +5854,7 @@
   
      <p>FORMULA: C3H7NO3</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C00740</p>
   </body></notes>
       </species>
       <species id="M_ser_DASH_D_e" name="D-Serine" boundaryCondition="false" compartment="C_e">
@@ -5863,7 +5863,7 @@
   
      <p>FORMULA: C3H7NO3</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C00740</p>
   </body></notes>
       </species>
       <species id="M_ser_DASH_L_c" name="L-Serine" boundaryCondition="false" compartment="C_c">
@@ -5872,7 +5872,7 @@
   
      <p>FORMULA: C3H7NO3</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C00065</p>
   </body></notes>
       </species>
       <species id="M_ser_DASH_L_e" name="L-Serine" boundaryCondition="false" compartment="C_e">
@@ -5881,7 +5881,7 @@
   
      <p>FORMULA: C3H7NO3</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C00065</p>
   </body></notes>
       </species>
       <species id="M_seramp_c" name="L-seryl-AMP" boundaryCondition="false" compartment="C_c">
@@ -5890,7 +5890,7 @@
   
      <p>FORMULA: C13H19N6O9P</p>
   
-     <p>KEGG ID: C05820</p>
+     <p>KEGG ID: </p>
   </body></notes>
       </species>
       <species id="M_sheme_c" name="Siroheme" boundaryCondition="false" compartment="C_c">
@@ -6106,7 +6106,7 @@
   
      <p>FORMULA: C6H11O9P</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C01097</p>
   </body></notes>
       </species>
       <species id="M_tagdp_DASH_D_c" name="D-Tagatose 1,6-biphosphate" boundaryCondition="false" compartment="C_c">
@@ -6115,7 +6115,7 @@
   
      <p>FORMULA: C6H10O12P2</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C03785</p>
   </body></notes>
       </species>
       <species id="M_tagur_c" name="D-Tagaturonate" boundaryCondition="false" compartment="C_c">
@@ -6133,7 +6133,7 @@
   
      <p>FORMULA: C4H4O6</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C00898</p>
   </body></notes>
       </species>
       <species id="M_tartr_DASH_L_e" name="L-tartrate" boundaryCondition="false" compartment="C_e">
@@ -6142,7 +6142,7 @@
   
      <p>FORMULA: C4H4O6</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C00898</p>
   </body></notes>
       </species>
       <species id="M_taur_c" name="Taurine" boundaryCondition="false" compartment="C_c">
@@ -6241,7 +6241,7 @@
   
      <p>FORMULA: C4H9NO3</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C00188</p>
   </body></notes>
       </species>
       <species id="M_thr_DASH_L_e" name="L-Threonine" boundaryCondition="false" compartment="C_e">
@@ -6250,7 +6250,7 @@
   
      <p>FORMULA: C4H9NO3</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C00188</p>
   </body></notes>
       </species>
       <species id="M_thym_c" name="Thymine" boundaryCondition="false" compartment="C_c">
@@ -6376,7 +6376,7 @@
   
      <p>FORMULA: C11H12N2O2</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C00078</p>
   </body></notes>
       </species>
       <species id="M_trp_DASH_L_e" name="L-Tryptophan" boundaryCondition="false" compartment="C_e">
@@ -6385,7 +6385,7 @@
   
      <p>FORMULA: C11H12N2O2</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C00078</p>
   </body></notes>
       </species>
       <species id="M_tsul_c" name="Thiosulfate" boundaryCondition="false" compartment="C_c">
@@ -6439,7 +6439,7 @@
   
      <p>FORMULA: C9H11NO3</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C00082</p>
   </body></notes>
       </species>
       <species id="M_tyr_DASH_L_e" name="L-Tyrosine" boundaryCondition="false" compartment="C_e">
@@ -6448,7 +6448,7 @@
   
      <p>FORMULA: C9H11NO3</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C00082</p>
   </body></notes>
       </species>
       <species id="M_u23ga_c" name="UDP-2,3-bis(3-hydroxytetradecanoyl)glucosamine" boundaryCondition="false" compartment="C_c">
@@ -6565,7 +6565,7 @@
   
      <p>FORMULA: C55H89O7P2</p>
   
-     <p>KEGG ID: C04574</p>
+     <p>KEGG ID: C03543</p>
   </body></notes>
       </species>
       <species id="M_udcpp_c" name="Undecaprenyl phosphate" boundaryCondition="false" compartment="C_c">
@@ -6655,7 +6655,7 @@
   
      <p>FORMULA: C63H103NO12P2</p>
   
-     <p>KEGG ID: C01289</p>
+     <p>KEGG ID: </p>
   </body></notes>
       </species>
       <species id="M_unagamu_c" name="Undecaprenyl-diphospho-N-acetylglucosamine-N-acetylmannosaminuronate" boundaryCondition="false" compartment="C_c">
@@ -6763,7 +6763,7 @@
   
      <p>FORMULA: C5H11NO2</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C00183</p>
   </body></notes>
       </species>
       <species id="M_val_DASH_L_e" name="L-Valine" boundaryCondition="false" compartment="C_e">
@@ -6772,7 +6772,7 @@
   
      <p>FORMULA: C5H11NO2</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C00183</p>
   </body></notes>
       </species>
       <species id="M_xan_c" name="Xanthine" boundaryCondition="false" compartment="C_c">
@@ -6826,7 +6826,7 @@
   
      <p>FORMULA: C5H9O8P</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C00231</p>
   </body></notes>
       </species>
       <species id="M_xu5p_DASH_L_c" name="L-Xylulose 5-phosphate" boundaryCondition="false" compartment="C_c">
@@ -6835,7 +6835,7 @@
   
      <p>FORMULA: C5H9O8P</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C03291</p>
   </body></notes>
       </species>
       <species id="M_xyl_DASH_D_c" name="D-Xylose" boundaryCondition="false" compartment="C_c">
@@ -6844,7 +6844,7 @@
   
      <p>FORMULA: C5H10O5</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C00181</p>
   </body></notes>
       </species>
       <species id="M_xyl_DASH_D_e" name="D-Xylose" boundaryCondition="false" compartment="C_e">
@@ -6853,7 +6853,7 @@
   
      <p>FORMULA: C5H10O5</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C00181</p>
   </body></notes>
       </species>
       <species id="M_xylu_DASH_D_c" name="D-Xylulose" boundaryCondition="false" compartment="C_c">
@@ -6862,7 +6862,7 @@
   
      <p>FORMULA: C5H10O5</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C00310</p>
   </body></notes>
       </species>
       <species id="M_12ppd_DASH_S_b" name="(S)-Propane-1,2-diol" boundaryCondition="true" compartment="C_e">
@@ -6871,7 +6871,7 @@
   
      <p>FORMULA: C3H8O2</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C02917</p>
   </body></notes>
       </species>
       <species id="M_15dap_b" name="_1,5-Diaminopentane" boundaryCondition="true" compartment="C_e">
@@ -6889,7 +6889,7 @@
   
      <p>FORMULA: C7H14N2O4</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C00680</p>
   </body></notes>
       </species>
       <species id="M_2ddglcn_b" name="_2-Dehydro-3-deoxy-D-gluconate" boundaryCondition="true" compartment="C_e">
@@ -6916,7 +6916,7 @@
   
      <p>FORMULA: C9H9O3</p>
   
-     <p>KEGG ID: C11457</p>
+     <p>KEGG ID: </p>
   </body></notes>
       </species>
       <species id="M_4abut_b" name="_4-Aminobutanoate" boundaryCondition="true" compartment="C_e">
@@ -7015,7 +7015,7 @@
   
      <p>FORMULA: C3H7NO2</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C00133</p>
   </body></notes>
       </species>
       <species id="M_ala_DASH_L_b" name="L-Alanine" boundaryCondition="true" compartment="C_e">
@@ -7024,7 +7024,7 @@
   
      <p>FORMULA: C3H7NO2</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C00041</p>
   </body></notes>
       </species>
       <species id="M_alltn_b" name="Allantoin" boundaryCondition="true" compartment="C_e">
@@ -7051,7 +7051,7 @@
   
      <p>FORMULA: C5H10O5</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C00259</p>
   </body></notes>
       </species>
       <species id="M_arg_DASH_L_b" name="L-Arginine" boundaryCondition="true" compartment="C_e">
@@ -7060,7 +7060,7 @@
   
      <p>FORMULA: C6H15N4O2</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C00062</p>
   </body></notes>
       </species>
       <species id="M_asn_DASH_L_b" name="L-Asparagine" boundaryCondition="true" compartment="C_e">
@@ -7069,7 +7069,7 @@
   
      <p>FORMULA: C4H8N2O3</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C00152</p>
   </body></notes>
       </species>
       <species id="M_asp_DASH_L_b" name="L-Aspartate" boundaryCondition="true" compartment="C_e">
@@ -7078,7 +7078,7 @@
   
      <p>FORMULA: C4H6NO4</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C00049</p>
   </body></notes>
       </species>
       <species id="M_but_b" name="Butyrate (n-C4:0)" boundaryCondition="true" compartment="C_e">
@@ -7159,7 +7159,7 @@
   
      <p>FORMULA: C3H7NO2S</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C00097</p>
   </body></notes>
       </species>
       <species id="M_cytd_b" name="Cytidine" boundaryCondition="true" compartment="C_e">
@@ -7177,7 +7177,7 @@
   
      <p>FORMULA: C10H13N5O3</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C00559</p>
   </body></notes>
       </species>
       <species id="M_dcyt_b" name="Deoxycytidine" boundaryCondition="true" compartment="C_e">
@@ -7294,7 +7294,7 @@
   
      <p>FORMULA: C6H12O5</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C01019</p>
   </body></notes>
       </species>
       <species id="M_fum_b" name="Fumarate" boundaryCondition="true" compartment="C_e">
@@ -7330,7 +7330,7 @@
   
      <p>FORMULA: C6H8O8</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C00879</p>
   </body></notes>
       </species>
       <species id="M_galctn_DASH_D_b" name="D-Galactonate" boundaryCondition="true" compartment="C_e">
@@ -7339,7 +7339,7 @@
   
      <p>FORMULA: C6H11O7</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C00880</p>
   </body></notes>
       </species>
       <species id="M_galt_b" name="Galactitol" boundaryCondition="true" compartment="C_e">
@@ -7375,7 +7375,7 @@
   
      <p>FORMULA: C7H15NO2</p>
   
-     <p>KEGG ID: C01181</p>
+     <p>KEGG ID: </p>
   </body></notes>
       </species>
       <species id="M_glc_DASH_D_b" name="D-Glucose" boundaryCondition="true" compartment="C_e">
@@ -7384,7 +7384,7 @@
   
      <p>FORMULA: C6H12O6</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C00031</p>
   </body></notes>
       </species>
       <species id="M_glcn_b" name="D-Gluconate" boundaryCondition="true" compartment="C_e">
@@ -7420,7 +7420,7 @@
   
      <p>FORMULA: C5H10N2O3</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C00064</p>
   </body></notes>
       </species>
       <species id="M_glu_DASH_L_b" name="L-Glutamate" boundaryCondition="true" compartment="C_e">
@@ -7429,7 +7429,7 @@
   
      <p>FORMULA: C5H8NO4</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C00025</p>
   </body></notes>
       </species>
       <species id="M_gly_b" name="Glycine" boundaryCondition="true" compartment="C_e">
@@ -7537,7 +7537,7 @@
   
      <p>FORMULA: C6H9N3O2</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C00135</p>
   </body></notes>
       </species>
       <species id="M_hxan_b" name="Hypoxanthine" boundaryCondition="true" compartment="C_e">
@@ -7555,7 +7555,7 @@
   
      <p>FORMULA: C6H11O7</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C00770</p>
   </body></notes>
       </species>
       <species id="M_ile_DASH_L_b" name="L-Isoleucine" boundaryCondition="true" compartment="C_e">
@@ -7564,7 +7564,7 @@
   
      <p>FORMULA: C6H13NO2</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C00407</p>
   </body></notes>
       </species>
       <species id="M_indole_b" name="Indole" boundaryCondition="true" compartment="C_e">
@@ -7600,7 +7600,7 @@
   
      <p>FORMULA: C3H5O3</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C00256</p>
   </body></notes>
       </species>
       <species id="M_lac_DASH_L_b" name="L-Lactate" boundaryCondition="true" compartment="C_e">
@@ -7609,7 +7609,7 @@
   
      <p>FORMULA: C3H5O3</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C00186</p>
   </body></notes>
       </species>
       <species id="M_lcts_b" name="Lactose" boundaryCondition="true" compartment="C_e">
@@ -7627,7 +7627,7 @@
   
      <p>FORMULA: C6H13NO2</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C00123</p>
   </body></notes>
       </species>
       <species id="M_lys_DASH_L_b" name="L-Lysine" boundaryCondition="true" compartment="C_e">
@@ -7636,7 +7636,7 @@
   
      <p>FORMULA: C6H15N2O2</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C00047</p>
   </body></notes>
       </species>
       <species id="M_mal_DASH_L_b" name="L-Malate" boundaryCondition="true" compartment="C_e">
@@ -7645,7 +7645,7 @@
   
      <p>FORMULA: C4H4O5</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C00149</p>
   </body></notes>
       </species>
       <species id="M_malt_b" name="Maltose" boundaryCondition="true" compartment="C_e">
@@ -7726,7 +7726,7 @@
   
      <p>FORMULA: C5H10NO2S</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C00855</p>
   </body></notes>
       </species>
       <species id="M_met_DASH_L_b" name="L-Methionine" boundaryCondition="true" compartment="C_e">
@@ -7735,7 +7735,7 @@
   
      <p>FORMULA: C5H11NO2S</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C00073</p>
   </body></notes>
       </species>
       <species id="M_mnl_b" name="D-Mannitol" boundaryCondition="true" compartment="C_e">
@@ -7843,7 +7843,7 @@
   
      <p>FORMULA: C9H11NO2</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C00079</p>
   </body></notes>
       </species>
       <species id="M_pi_b" name="Phosphate" boundaryCondition="true" compartment="C_e">
@@ -7861,7 +7861,7 @@
   
      <p>FORMULA: C9H16NO5</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C00864</p>
   </body></notes>
       </species>
       <species id="M_pppn_b" name="Phenylpropanoate" boundaryCondition="true" compartment="C_e">
@@ -7879,7 +7879,7 @@
   
      <p>FORMULA: C5H9NO2</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C00148</p>
   </body></notes>
       </species>
       <species id="M_ptrc_b" name="Putrescine" boundaryCondition="true" compartment="C_e">
@@ -7906,7 +7906,7 @@
   
      <p>FORMULA: C5H10O5</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C00121</p>
   </body></notes>
       </species>
       <species id="M_rmn_b" name="L-Rhamnose" boundaryCondition="true" compartment="C_e">
@@ -7924,7 +7924,7 @@
   
      <p>FORMULA: C6H14O6</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C00794</p>
   </body></notes>
       </species>
       <species id="M_ser_DASH_D_b" name="D-Serine" boundaryCondition="true" compartment="C_e">
@@ -7933,7 +7933,7 @@
   
      <p>FORMULA: C3H7NO3</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C00740</p>
   </body></notes>
       </species>
       <species id="M_ser_DASH_L_b" name="L-Serine" boundaryCondition="true" compartment="C_e">
@@ -7942,7 +7942,7 @@
   
      <p>FORMULA: C3H7NO3</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C00065</p>
   </body></notes>
       </species>
       <species id="M_so4_b" name="Sulfate" boundaryCondition="true" compartment="C_e">
@@ -7987,7 +7987,7 @@
   
      <p>FORMULA: C4H4O6</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C00898</p>
   </body></notes>
       </species>
       <species id="M_taur_b" name="Taurine" boundaryCondition="true" compartment="C_e">
@@ -8014,7 +8014,7 @@
   
      <p>FORMULA: C4H9NO3</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C00188</p>
   </body></notes>
       </species>
       <species id="M_thymd_b" name="Thymidine" boundaryCondition="true" compartment="C_e">
@@ -8059,7 +8059,7 @@
   
      <p>FORMULA: C11H12N2O2</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C00078</p>
   </body></notes>
       </species>
       <species id="M_tsul_b" name="Thiosulfate" boundaryCondition="true" compartment="C_e">
@@ -8086,7 +8086,7 @@
   
      <p>FORMULA: C9H11NO3</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C00082</p>
   </body></notes>
       </species>
       <species id="M_ura_b" name="Uracil" boundaryCondition="true" compartment="C_e">
@@ -8122,7 +8122,7 @@
   
      <p>FORMULA: C5H11NO2</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C00183</p>
   </body></notes>
       </species>
       <species id="M_xan_b" name="Xanthine" boundaryCondition="true" compartment="C_e">
@@ -8149,7 +8149,7 @@
   
      <p>FORMULA: C5H10O5</p>
   
-     <p>KEGG ID: </p>
+     <p>KEGG ID: C00181</p>
   </body></notes>
       </species>
     </listOfSpecies>
@@ -11355,7 +11355,7 @@
   
      <p>SUBSYSTEM: Citric Acid Cycle</p>
   
-     <p>PROTEIN_CLASS: 1.8.1.4 1.2.4.2 2.3.1.61</p>
+     <p>PROTEIN_CLASS: </p>
   
      <p>SYNTHETIC_OBJECTIVE: 0.0</p>
   
@@ -15762,7 +15762,7 @@
   
      <p>SUBSYSTEM: Citric Acid Cycle</p>
   
-     <p>PROTEIN_CLASS: 2.3.3.1 4.1.3.7</p>
+     <p>PROTEIN_CLASS: 4.1.3.7</p>
   
      <p>SYNTHETIC_OBJECTIVE: 0.0</p>
   
@@ -16059,7 +16059,7 @@
   
      <p>SUBSYSTEM: Cysteine Metabolism</p>
   
-     <p>PROTEIN_CLASS: 4.1.99.1</p>
+     <p>PROTEIN_CLASS: </p>
   
      <p>SYNTHETIC_OBJECTIVE: 0.0</p>
   
@@ -18262,7 +18262,7 @@
   
      <p>SUBSYSTEM: Cofactor and Prosthetic Group Biosynthesis</p>
   
-     <p>PROTEIN_CLASS: 2.5.1.15</p>
+     <p>PROTEIN_CLASS: </p>
   
      <p>SYNTHETIC_OBJECTIVE: 0.0</p>
   
@@ -18384,7 +18384,7 @@
   
      <p>SUBSYSTEM: Tyrosine, Tryptophan, and Phenylalanine Metabolism</p>
   
-     <p>PROTEIN_CLASS: 4.2.3.4</p>
+     <p>PROTEIN_CLASS: </p>
   
      <p>SYNTHETIC_OBJECTIVE: 0.0</p>
   
@@ -19760,7 +19760,7 @@
   
      <p>SUBSYSTEM: Pentose Phosphate Pathway</p>
   
-     <p>PROTEIN_CLASS: 4.2.1.12</p>
+     <p>PROTEIN_CLASS: </p>
   
      <p>SYNTHETIC_OBJECTIVE: 0.0</p>
   
@@ -29964,7 +29964,7 @@
   
      <p>SUBSYSTEM: Glyoxylate Metabolism</p>
   
-     <p>PROTEIN_CLASS: 1.1.1.26</p>
+     <p>PROTEIN_CLASS: </p>
   
      <p>SYNTHETIC_OBJECTIVE: 0.0</p>
   
@@ -31386,7 +31386,7 @@
   
      <p>SUBSYSTEM: Nucleotide Salvage Pathway</p>
   
-     <p>PROTEIN_CLASS: 2.4.2.8</p>
+     <p>PROTEIN_CLASS: </p>
   
      <p>SYNTHETIC_OBJECTIVE: 0.0</p>
   
@@ -31706,7 +31706,7 @@
   
      <p>SUBSYSTEM: Unassigned</p>
   
-     <p>PROTEIN_CLASS: 4.2.1.1</p>
+     <p>PROTEIN_CLASS: </p>
   
      <p>SYNTHETIC_OBJECTIVE: 0.0</p>
   
@@ -32290,7 +32290,7 @@
   
      <p>SUBSYSTEM: Cofactor and Prosthetic Group Biosynthesis</p>
   
-     <p>PROTEIN_CLASS: 2.7.6.3</p>
+     <p>PROTEIN_CLASS: </p>
   
      <p>SYNTHETIC_OBJECTIVE: 0.0</p>
   
@@ -34066,7 +34066,7 @@
   
      <p>SUBSYSTEM: Membrane Lipid Metabolism</p>
   
-     <p>PROTEIN_CLASS: 2.3.1.41</p>
+     <p>PROTEIN_CLASS: </p>
   
      <p>SYNTHETIC_OBJECTIVE: 0.0</p>
   
@@ -34574,7 +34574,7 @@
   
      <p>SUBSYSTEM: Alternate Carbon Metabolism</p>
   
-     <p>PROTEIN_CLASS: 1.1.1.77</p>
+     <p>PROTEIN_CLASS: </p>
   
      <p>SYNTHETIC_OBJECTIVE: 0.0</p>
   
@@ -37826,7 +37826,7 @@
   
      <p>SUBSYSTEM: Folate Metabolism</p>
   
-     <p>PROTEIN_CLASS: 1.5.1.20</p>
+     <p>PROTEIN_CLASS: </p>
   
      <p>SYNTHETIC_OBJECTIVE: 0.0</p>
   
@@ -38495,7 +38495,7 @@
   
      <p>SUBSYSTEM: Oxidative Phosphorylation</p>
   
-     <p>PROTEIN_CLASS: 1.6.1.2 1.6.1.1</p>
+     <p>PROTEIN_CLASS: </p>
   
      <p>SYNTHETIC_OBJECTIVE: 0.0</p>
   
@@ -38536,7 +38536,7 @@
   
      <p>SUBSYSTEM: Cofactor and Prosthetic Group Biosynthesis</p>
   
-     <p>PROTEIN_CLASS: 2.4.2.11</p>
+     <p>PROTEIN_CLASS: </p>
   
      <p>SYNTHETIC_OBJECTIVE: 0.0</p>
   
@@ -41730,7 +41730,7 @@
   
      <p>SUBSYSTEM: Glycolysis/Gluconeogenesis</p>
   
-     <p>PROTEIN_CLASS: 1.2.4.1 2.3.1.12 1.8.1.4</p>
+     <p>PROTEIN_CLASS: </p>
   
      <p>SYNTHETIC_OBJECTIVE: 0.0</p>
   
@@ -42112,7 +42112,7 @@
   
      <p>SUBSYSTEM: Pyruvate Metabolism</p>
   
-     <p>PROTEIN_CLASS: 1.97.1.4 2.3.1.54</p>
+     <p>PROTEIN_CLASS: Undetermined</p>
   
      <p>SYNTHETIC_OBJECTIVE: 0.0</p>
   
@@ -43149,7 +43149,7 @@
   
      <p>SUBSYSTEM: Alternate Carbon Metabolism</p>
   
-     <p>PROTEIN_CLASS: 2.7.2.1</p>
+     <p>PROTEIN_CLASS: </p>
   
      <p>SYNTHETIC_OBJECTIVE: 0.0</p>
   
@@ -44732,7 +44732,7 @@
   
      <p>SUBSYSTEM: Arginine and Proline Metabolism</p>
   
-     <p>PROTEIN_CLASS: 2.6.1.29</p>
+     <p>PROTEIN_CLASS: </p>
   
      <p>SYNTHETIC_OBJECTIVE: 0.0</p>
   
@@ -46928,7 +46928,7 @@
   
      <p>SUBSYSTEM: Glycine and Serine Metabolism</p>
   
-     <p>PROTEIN_CLASS: 4.3.1.17</p>
+     <p>PROTEIN_CLASS: Undetermined</p>
   
      <p>SYNTHETIC_OBJECTIVE: 0.0</p>
   
@@ -49099,7 +49099,7 @@
   
      <p>SUBSYSTEM: Valine, Leucine, and Isoleucine Metabolism</p>
   
-     <p>PROTEIN_CLASS: 4.3.1.19</p>
+     <p>PROTEIN_CLASS: </p>
   
      <p>SYNTHETIC_OBJECTIVE: 0.0</p>
   
@@ -51436,7 +51436,7 @@
   
      <p>SUBSYSTEM: Nucleotide Salvage Pathway</p>
   
-     <p>PROTEIN_CLASS: 2.7.4.14</p>
+     <p>PROTEIN_CLASS: </p>
   
      <p>SYNTHETIC_OBJECTIVE: 0.0</p>
   

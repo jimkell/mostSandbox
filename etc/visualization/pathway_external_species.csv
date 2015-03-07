@@ -3,5 +3,5 @@ Pathway ID,Reaction ID,Direction,Position,Offset,Metabolite Names,Metabolite Abb
 17,2,0,t,0,H  e  3.6.3.14,H e
 17,4,1,r,0,H e 1.6.5.3,H e
 17,5,1,r,0,"H e 1.9.3.-, 1.10.3.-",H e
-0,24,-1,l,0,D-Glucose,D-Glc e
-0,25,-1,l,0,D-Frutose,Fru
+0,25,-1,l,0,D-Glucose,D-Glc e
+0,26,-1,l,0,D-Frutose,Fru

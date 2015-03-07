@@ -10,11 +10,11 @@ public class PathwaysCSVFileConstants {
 	public static final String METABOLITE_POSITIONS_FILE_NAME = "etc/visualization/pathway_metabolite_positions.csv";
 	public static final String REACTIONS_FILE_NAME = "etc/visualization/reactions.csv";
 	public static final String REACTION_POSITIONS_FILE_NAME = "etc/visualization/pathways_reaction_positions.csv";
-	public static final String PATHWAY_DRAW_ORDER_FILE_NAME = "pathway_draw_order.csv";
-	public static final String PATHWAY_CONNECTIONS_FILE_NAME = "pathway_connections.csv";
-	public static final String PATHWAY_SIDE_SPECIES_FILE_NAME = "pathway_side_species.csv";
-	public static final String EXTERNAL_METABOLITES_FILE_NAME = "external_metabolites.csv";
-	public static final String TRANSPORT_METABOLITES_FILE_NAME = "transport_metabolites.csv";
+	public static final String PATHWAY_DRAW_ORDER_FILE_NAME = "etc/visualization/pathway_draw_order.csv";
+	public static final String PATHWAY_CONNECTIONS_FILE_NAME = "etc/visualization/pathway_connections.csv";
+	public static final String PATHWAY_SIDE_SPECIES_FILE_NAME = "etc/visualization/pathway_side_species.csv";
+	public static final String EXTERNAL_METABOLITES_FILE_NAME = "etc/visualization/external_metabolites.csv";
+	public static final String TRANSPORT_METABOLITES_FILE_NAME = "etc/visualization/transport_metabolites.csv";
 	
 	public static final String[] PATHWAYS_COLUMN_NAMES = 
 		{

@@ -4374,6 +4374,11 @@ public class GraphicalInterface extends JFrame {
 			if (abbr != null && abbr.length() > totalTrimLength) {
 				String trimmedAbbr = abbr.substring(modeltrimStartIndex, abbr.length() - modeltrimEndIndex);
 //				System.out.println("model " + trimmedAbbr);
+				if (trimmedAbbr.contains("DASH_")) {
+					//System.out.println("model " + trimmedAbbr);
+					trimmedAbbr = trimmedAbbr.replace("DASH_", "");
+					//System.out.println("model " + trimmedAbbr);
+				}
 				String row = (LocalConfig.getInstance().getMetabolitesIdRowMap().get(Integer.toString(metabolites.get(i).getId()))).toString();
 				int rowNum = Integer.valueOf(row);
 				if (LocalConfig.getInstance().getMetaboliteAbbrKeggIdMap().containsKey(trimmedAbbr)) {
