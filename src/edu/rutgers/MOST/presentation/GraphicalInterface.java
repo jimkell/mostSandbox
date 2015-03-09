@@ -12721,9 +12721,9 @@ public class GraphicalInterface extends JFrame {
 			System.out.println("ce " + cytosolExtraOrganismIds);
 			for (int k = 0; k < cytosolExtraOrganismIds.size(); k++) {
 				if (transportReactionAbbreviation(cytosolExtraOrganismIds.get(k), idReactionMap) != null) {
-					System.out.println(transportReactionAbbreviation(cytosolExtraOrganismIds.get(k), idReactionMap));
+					//System.out.println(transportReactionAbbreviation(cytosolExtraOrganismIds.get(k), idReactionMap));
 				} else {
-					System.out.println(idReactionMap.get(cytosolExtraOrganismIds.get(k)).getReactionEqunAbbr());
+					//System.out.println(idReactionMap.get(cytosolExtraOrganismIds.get(k)).getReactionEqunAbbr());
 				}
 				if (LocalConfig.getInstance().getUnplottedReactionIds().contains(cytosolExtraOrganismIds.get(k))) {
 					LocalConfig.getInstance().getUnplottedReactionIds().remove(LocalConfig.getInstance().getUnplottedReactionIds().indexOf(cytosolExtraOrganismIds.get(k)));
@@ -12737,9 +12737,9 @@ public class GraphicalInterface extends JFrame {
 			System.out.println("cp " + cytosolPeriplasmIds);
 			for (int m = 0; m < cytosolPeriplasmIds.size(); m++) {
 				if (transportReactionAbbreviation(cytosolPeriplasmIds.get(m), idReactionMap) != null) {
-					System.out.println(transportReactionAbbreviation(cytosolPeriplasmIds.get(m), idReactionMap));
+					//System.out.println(transportReactionAbbreviation(cytosolPeriplasmIds.get(m), idReactionMap));
 				} else {
-					System.out.println(idReactionMap.get(cytosolPeriplasmIds.get(m)).getReactionEqunAbbr());
+					//System.out.println(idReactionMap.get(cytosolPeriplasmIds.get(m)).getReactionEqunAbbr());
 				}
 				if (LocalConfig.getInstance().getUnplottedReactionIds().contains(cytosolPeriplasmIds.get(m))) {
 					LocalConfig.getInstance().getUnplottedReactionIds().remove(LocalConfig.getInstance().getUnplottedReactionIds().indexOf(cytosolPeriplasmIds.get(m)));
@@ -12753,9 +12753,9 @@ public class GraphicalInterface extends JFrame {
 			System.out.println("pe " + periplasmExtraOrganismIds);
 			for (int n = 0; n < periplasmExtraOrganismIds.size(); n++) {
 				if (transportReactionAbbreviation(periplasmExtraOrganismIds.get(n), idReactionMap) != null) {
-					System.out.println(transportReactionAbbreviation(periplasmExtraOrganismIds.get(n), idReactionMap));
+					//System.out.println(transportReactionAbbreviation(periplasmExtraOrganismIds.get(n), idReactionMap));
 				} else {
-					System.out.println(idReactionMap.get(periplasmExtraOrganismIds.get(n)).getReactionEqunAbbr());
+					//System.out.println(idReactionMap.get(periplasmExtraOrganismIds.get(n)).getReactionEqunAbbr());
 				}
 				if (LocalConfig.getInstance().getUnplottedReactionIds().contains(periplasmExtraOrganismIds.get(n))) {
 					LocalConfig.getInstance().getUnplottedReactionIds().remove(LocalConfig.getInstance().getUnplottedReactionIds().indexOf(periplasmExtraOrganismIds.get(n)));
@@ -12792,12 +12792,21 @@ public class GraphicalInterface extends JFrame {
 			//System.out.println(keggReactantIds);
 			//System.out.println(keggProductIds);
 			if (keggReactantIds.contains("C00080") && keggProductIds.contains("C00080")) {
-				keggReactantIds.remove(keggReactantIds.indexOf("C00080"));
-				keggProductIds.remove(keggProductIds.indexOf("C00080"));
+				if (keggReactantIds.size() > 1 && keggProductIds.size() > 1) {
+					keggReactantIds.remove(keggReactantIds.indexOf("C00080"));
+					keggProductIds.remove(keggProductIds.indexOf("C00080"));
+				} else {
+					System.out.println(idReactionMap.get(id).getReactionAbbreviation());
+				}
 			}
 			//System.out.println(keggReactantIds);
 			//System.out.println(keggProductIds);
 			if (keggReactantIds.equals(keggProductIds)) {
+				if (LocalConfig.getInstance().getSideSpeciesList().contains(keggReactantIds.get(0))) {
+					System.out.println(idReactionMap.get(id).getReactionAbbreviation());
+				} else {
+					
+				}
 				return idReactionMap.get(id).getReactionAbbreviation();
 			}
 		}

@@ -253,7 +253,8 @@ public class PathwaysFrame extends JApplet {
 			for (int j = 0; j < pathway.getMetabolitesData().size(); j++) {
 				String metabName = pathway.getMetabolitesData().get(Integer.toString(j)).getName();
 				//if (pathway.getComponent() == PathwaysFrameConstants.PHOSPHORYLATION_COMPONENT ||
-				if (LocalConfig.getInstance().getSideSpeciesList().contains(pathway.getMetabolitesData().get(Integer.toString(j)).getAbbreviation())) {
+				if (LocalConfig.getInstance().getSideSpeciesList().contains(pathway.getMetabolitesData().get(Integer.toString(j)).getKeggId())) {
+				//if (LocalConfig.getInstance().getSideSpeciesList().contains(pathway.getMetabolitesData().get(Integer.toString(j)).getAbbreviation())) {
 					noBorderList.add(pathway.getMetabolitesData().get(Integer.toString(j)).getName());
 				}
 				metabolites.add(metabName);
@@ -585,7 +586,8 @@ public class PathwaysFrame extends JApplet {
    			}
    			if (LocalConfig.getInstance().getPeriplasmName() != null && LocalConfig.getInstance().getPeriplasmName().length() > 0) {
    				LocalConfig.getInstance().getMetaboliteNameAbbrMap().put(externalMetaboliteNodeList.get(e).getName() + " Periplasm", externalMetaboliteNodeList.get(e).getAbbreviation() + "_p");
-   				if (LocalConfig.getInstance().getSideSpeciesList().contains(externalMetaboliteNodeList.get(e).getAbbreviation())) {
+   				if (LocalConfig.getInstance().getSideSpeciesList().contains(externalMetaboliteNodeList.get(e).getKeggId())) {
+   				//if (LocalConfig.getInstance().getSideSpeciesList().contains(externalMetaboliteNodeList.get(e).getAbbreviation())) {
    					noBorderList.add(externalMetaboliteNodeList.get(e).getName() + " Periplasm");
    				}
    				metabolites.add(externalMetaboliteNodeList.get(e).getName() + " Periplasm");
@@ -612,7 +614,8 @@ public class PathwaysFrame extends JApplet {
    	   		    		PathwaysFrameConstants.TRANSPORT_HEIGHT_INCREMENT + PathwaysFrameConstants.PERIPLASM_HEIGHT, 
    	   		    		PathwaysFrameConstants.TRANSPORT_WIDTH_INCREMENT + PathwaysFrameConstants.PERIPLASM_WIDTH);
    	   			LocalConfig.getInstance().getMetaboliteNameAbbrMap().put(externalMetaboliteNodeList.get(e).getName() + " ExtraOrganism", externalMetaboliteNodeList.get(e).getAbbreviation() + "_e");
-   	   			if (LocalConfig.getInstance().getSideSpeciesList().contains(externalMetaboliteNodeList.get(e).getAbbreviation())) {
+   	   			if (LocalConfig.getInstance().getSideSpeciesList().contains(externalMetaboliteNodeList.get(e).getKeggId())) {
+   	   			//if (LocalConfig.getInstance().getSideSpeciesList().contains(externalMetaboliteNodeList.get(e).getAbbreviation())) {
    	   				noBorderList.add(externalMetaboliteNodeList.get(e).getName() + " ExtraOrganism");
    	   			}
 	   			metabolites.add(externalMetaboliteNodeList.get(e).getName() + " ExtraOrganism");
@@ -620,7 +623,8 @@ public class PathwaysFrame extends JApplet {
 	   				Double.toString(externalMetaboliteNodeList.get(e).getyPosition())});
    			} else {
    				LocalConfig.getInstance().getMetaboliteNameAbbrMap().put(externalMetaboliteNodeList.get(e).getName() + " ExtraOrganism", externalMetaboliteNodeList.get(e).getAbbreviation() + "_e");
-   				if (LocalConfig.getInstance().getSideSpeciesList().contains(externalMetaboliteNodeList.get(e).getAbbreviation())) {
+   				if (LocalConfig.getInstance().getSideSpeciesList().contains(externalMetaboliteNodeList.get(e).getKeggId())) {
+   				//if (LocalConfig.getInstance().getSideSpeciesList().contains(externalMetaboliteNodeList.get(e).getAbbreviation())) {
    	   				noBorderList.add(externalMetaboliteNodeList.get(e).getName() + " ExtraOrganism");
    	   			}
    	   			metabolites.add(externalMetaboliteNodeList.get(e).getName() + " ExtraOrganism");
@@ -653,7 +657,8 @@ public class PathwaysFrame extends JApplet {
    			}
    			if (LocalConfig.getInstance().getPeriplasmName() != null && LocalConfig.getInstance().getPeriplasmName().length() > 0) {
    				LocalConfig.getInstance().getMetaboliteNameAbbrMap().put(transportMetaboliteNodeList.get(t).getName() + " Periplasm", transportMetaboliteNodeList.get(t).getAbbreviation() + "_p");
-   				if (LocalConfig.getInstance().getSideSpeciesList().contains(transportMetaboliteNodeList.get(t).getAbbreviation())) {
+   				if (LocalConfig.getInstance().getSideSpeciesList().contains(transportMetaboliteNodeList.get(t).getKeggId())) {
+   				//if (LocalConfig.getInstance().getSideSpeciesList().contains(transportMetaboliteNodeList.get(t).getAbbreviation())) {
    					noBorderList.add(transportMetaboliteNodeList.get(t).getName() + " Periplasm");
    				}
    				metabolites.add(transportMetaboliteNodeList.get(t).getName() + " Periplasm");
@@ -665,7 +670,8 @@ public class PathwaysFrame extends JApplet {
    	   		    		PathwaysFrameConstants.TRANSPORT_HEIGHT_INCREMENT + PathwaysFrameConstants.PERIPLASM_HEIGHT, 
    	   		    		PathwaysFrameConstants.TRANSPORT_WIDTH_INCREMENT + PathwaysFrameConstants.PERIPLASM_WIDTH);
    	   			LocalConfig.getInstance().getMetaboliteNameAbbrMap().put(transportMetaboliteNodeList.get(t).getName() + " ExtraOrganism", transportMetaboliteNodeList.get(t).getAbbreviation() + "_e");
-   	   			if (LocalConfig.getInstance().getSideSpeciesList().contains(transportMetaboliteNodeList.get(t).getAbbreviation())) {
+   	   			if (LocalConfig.getInstance().getSideSpeciesList().contains(transportMetaboliteNodeList.get(t).getKeggId())) {
+   	   			//if (LocalConfig.getInstance().getSideSpeciesList().contains(transportMetaboliteNodeList.get(t).getAbbreviation())) {
    	   				noBorderList.add(transportMetaboliteNodeList.get(t).getName() + " ExtraOrganism");
    	   			}
 	   			metabolites.add(transportMetaboliteNodeList.get(t).getName() + " ExtraOrganism");
@@ -673,7 +679,8 @@ public class PathwaysFrame extends JApplet {
 	   				Double.toString(transportMetaboliteNodeList.get(t).getyPosition())});
    			} else {
    				LocalConfig.getInstance().getMetaboliteNameAbbrMap().put(transportMetaboliteNodeList.get(t).getName() + " ExtraOrganism", transportMetaboliteNodeList.get(t).getAbbreviation() + "_e");
-   				if (LocalConfig.getInstance().getSideSpeciesList().contains(transportMetaboliteNodeList.get(t).getAbbreviation())) {
+   				if (LocalConfig.getInstance().getSideSpeciesList().contains(transportMetaboliteNodeList.get(t).getKeggId())) {
+   				//if (LocalConfig.getInstance().getSideSpeciesList().contains(transportMetaboliteNodeList.get(t).getAbbreviation())) {
    	   				noBorderList.add(transportMetaboliteNodeList.get(t).getName() + " ExtraOrganism");
    	   			}
    	   			metabolites.add(transportMetaboliteNodeList.get(t).getName() + " ExtraOrganism");

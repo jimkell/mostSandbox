@@ -9,7 +9,6 @@ import javax.swing.SortOrder;
 import javax.swing.table.DefaultTableModel;
 
 import edu.rutgers.MOST.data.EnzymeData;
-import edu.rutgers.MOST.data.ExternalMetaboliteData;
 import edu.rutgers.MOST.data.MetabolicPathway;
 import edu.rutgers.MOST.data.ModelReactionEquation;
 import edu.rutgers.MOST.data.PathwayConnectionData;
