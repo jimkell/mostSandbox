@@ -632,6 +632,11 @@ public class PathwayFilesReader {
 		}	
 	}
 	
+	/**
+	 * processes data for metabolites in periplasm or
+	 * extraorganism compartments that participate in reactions
+	 * @param externalMetabolites
+	 */
 	public void readExternalMetabolitesFile(File externalMetabolites) {
 		CSVReader reader;
 
@@ -676,6 +681,18 @@ public class PathwayFilesReader {
 							}
 							if (s == PathwaysCSVFileConstants.EXTERNAL_KEGG_METABOLITE_ID_COLUMN) {
 								em.setKeggMetaboliteId(dataArray[s]);
+								Map<String, PathwayReactionData> reactionsData = LocalConfig.getInstance().getMetabolicPathways().get(em.getPathwayId()).getReactionsData();
+								if (em.getDirection() == -1) {
+									ArrayList<String> keggReactantIds = reactionsData.get(em.getReactionId()).getKeggReactantIds();
+									keggReactantIds.add(dataArray[s]);
+									reactionsData.get(em.getReactionId()).setKeggReactantIds(keggReactantIds);
+									//System.out.println(reactionsData.get(em.getReactionId()).getKeggReactantIds());
+								} else if (em.getDirection() == 1) {
+									ArrayList<String> keggProductIds = reactionsData.get(em.getReactionId()).getKeggProductIds();
+									keggProductIds.add(dataArray[s]);
+									reactionsData.get(em.getReactionId()).setKeggProductIds(keggProductIds);
+									//System.out.println(reactionsData.get(em.getReactionId()).getKeggProductIds());
+								}
 							}
 							if (s == PathwaysCSVFileConstants.EXTERNAL_EC_NUMBER_COLUMN) {
 								em.setEcNumber(dataArray[s]);
