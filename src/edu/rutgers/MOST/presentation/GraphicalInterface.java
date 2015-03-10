@@ -12795,18 +12795,16 @@ public class GraphicalInterface extends JFrame {
 				if (keggReactantIds.size() > 1 && keggProductIds.size() > 1) {
 					keggReactantIds.remove(keggReactantIds.indexOf("C00080"));
 					keggProductIds.remove(keggProductIds.indexOf("C00080"));
-				} else {
-					System.out.println(idReactionMap.get(id).getReactionAbbreviation());
-				}
+				} 
 			}
 			//System.out.println(keggReactantIds);
 			//System.out.println(keggProductIds);
 			if (keggReactantIds.equals(keggProductIds)) {
 				if (LocalConfig.getInstance().getSideSpeciesList().contains(keggReactantIds.get(0))) {
-					System.out.println(idReactionMap.get(id).getReactionAbbreviation());
-				} else {
-					
-				}
+					if (!LocalConfig.getInstance().getTransportMetaboliteIds().contains(keggReactantIds.get(0))) {
+						//System.out.println(idReactionMap.get(id).getReactionAbbreviation());
+					}
+				} 
 				return idReactionMap.get(id).getReactionAbbreviation();
 			}
 		}

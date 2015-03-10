@@ -38,6 +38,7 @@ import java.util.Map;
 
 
 
+
 import javax.swing.Icon;
 import javax.swing.ImageIcon;                                                                                        
 import javax.swing.JApplet;                                                                                          
@@ -66,6 +67,7 @@ import edu.rutgers.MOST.data.PathwayMetaboliteNode;
 import edu.rutgers.MOST.data.PathwayReactionNode;
 import edu.rutgers.MOST.data.PathwayReactionNodeFactory;
 import edu.rutgers.MOST.data.SBMLReaction;
+import edu.rutgers.MOST.data.TransportReactionNode;
 import edu.uci.ics.jung.algorithms.layout.Layout;                                                                    
 import edu.uci.ics.jung.algorithms.layout.StaticLayout;                                                              
 import edu.uci.ics.jung.graph.Graph;                                                                                 
@@ -126,6 +128,9 @@ public class PathwaysFrame extends JApplet {
    	ArrayList<String> metabolites = new ArrayList<String>();
    	ArrayList<String> reactions = new ArrayList<String>();
    	Map<String, Double> fluxMap = new HashMap<String, Double>(); 
+   	
+   	private double layoutScale;
+   	private double viewScale;
   
    	//String borderLeftX = Integer.toString(PathwaysFrameConstants.BORDER_WIDTH);
    	//String borderRightX = Integer.toString(PathwaysFrameConstants.GRAPH_WIDTH - PathwaysFrameConstants.BORDER_WIDTH);
@@ -215,10 +220,7 @@ public class PathwaysFrame extends JApplet {
 		// temporary lists to keep track of what ec numbers have been found
 		ArrayList<String> foundEcNumbers = new ArrayList<String>();
 	    ArrayList<String> notFoundEcNumbers = new ArrayList<String>(LocalConfig.getInstance().getEcNumberReactionMap().keySet());
-		
-	    
-	    //ArrayList<Double> fluxLogs = new ArrayList<Double>();
-	    
+		 
 	    double startX = PathwaysFrameConstants.BORDER_WIDTH + PathwaysFrameConstants.HORIZONTAL_INCREMENT;
 		double startY = PathwaysFrameConstants.START_Y;
 		double maxX = 0;
@@ -325,7 +327,6 @@ public class PathwaysFrame extends JApplet {
 					}
 					// set last one for now
 					pn.setFluxValue(pn.getReactions().get(z).getFluxValue());
-					//fluxLogs.add(Math.log(Math.abs(pn.getReactions().get(z).getFluxValue())));
 				}
 				boolean drawReaction = true;
 				if (pn.getReactions().size() > 0) {
@@ -489,7 +490,6 @@ public class PathwaysFrame extends JApplet {
 				}
 				// set last one for now
 				connectionsNodelist.get(c).setFluxValue(connectionsNodelist.get(c).getReactions().get(z).getFluxValue());
-				//fluxLogs.add(Math.log(Math.abs(connectionsNodelist.get(c).getReactions().get(z).getFluxValue())));
 			}
 			boolean drawReaction = true;
 			if (connectionsNodelist.get(c).getReactions().size() > 0) {
@@ -587,7 +587,6 @@ public class PathwaysFrame extends JApplet {
    			if (LocalConfig.getInstance().getPeriplasmName() != null && LocalConfig.getInstance().getPeriplasmName().length() > 0) {
    				LocalConfig.getInstance().getMetaboliteNameAbbrMap().put(externalMetaboliteNodeList.get(e).getName() + " Periplasm", externalMetaboliteNodeList.get(e).getAbbreviation() + "_p");
    				if (LocalConfig.getInstance().getSideSpeciesList().contains(externalMetaboliteNodeList.get(e).getKeggId())) {
-   				//if (LocalConfig.getInstance().getSideSpeciesList().contains(externalMetaboliteNodeList.get(e).getAbbreviation())) {
    					noBorderList.add(externalMetaboliteNodeList.get(e).getName() + " Periplasm");
    				}
    				metabolites.add(externalMetaboliteNodeList.get(e).getName() + " Periplasm");
@@ -615,7 +614,6 @@ public class PathwaysFrame extends JApplet {
    	   		    		PathwaysFrameConstants.TRANSPORT_WIDTH_INCREMENT + PathwaysFrameConstants.PERIPLASM_WIDTH);
    	   			LocalConfig.getInstance().getMetaboliteNameAbbrMap().put(externalMetaboliteNodeList.get(e).getName() + " ExtraOrganism", externalMetaboliteNodeList.get(e).getAbbreviation() + "_e");
    	   			if (LocalConfig.getInstance().getSideSpeciesList().contains(externalMetaboliteNodeList.get(e).getKeggId())) {
-   	   			//if (LocalConfig.getInstance().getSideSpeciesList().contains(externalMetaboliteNodeList.get(e).getAbbreviation())) {
    	   				noBorderList.add(externalMetaboliteNodeList.get(e).getName() + " ExtraOrganism");
    	   			}
 	   			metabolites.add(externalMetaboliteNodeList.get(e).getName() + " ExtraOrganism");
@@ -624,7 +622,6 @@ public class PathwaysFrame extends JApplet {
    			} else {
    				LocalConfig.getInstance().getMetaboliteNameAbbrMap().put(externalMetaboliteNodeList.get(e).getName() + " ExtraOrganism", externalMetaboliteNodeList.get(e).getAbbreviation() + "_e");
    				if (LocalConfig.getInstance().getSideSpeciesList().contains(externalMetaboliteNodeList.get(e).getKeggId())) {
-   				//if (LocalConfig.getInstance().getSideSpeciesList().contains(externalMetaboliteNodeList.get(e).getAbbreviation())) {
    	   				noBorderList.add(externalMetaboliteNodeList.get(e).getName() + " ExtraOrganism");
    	   			}
    	   			metabolites.add(externalMetaboliteNodeList.get(e).getName() + " ExtraOrganism");
@@ -649,6 +646,8 @@ public class PathwaysFrame extends JApplet {
    		}
    		
    		for (int t = 0; t < transportMetaboliteNodeList.size(); t++) {
+   			System.out.println(transportMetaboliteNodeList.get(t).getKeggId());
+   			System.out.println(LocalConfig.getInstance().getKeggIdCompartmentMap().get(transportMetaboliteNodeList.get(t).getKeggId()));
    			updateExternalMetabolitePosition(transportMetaboliteNodeList.get(t), 
    		    		borderTopY, borderBottomY, borderLeftX, borderRightX, 
    		    		PathwaysFrameConstants.TRANSPORT_HEIGHT_INCREMENT, PathwaysFrameConstants.TRANSPORT_WIDTH_INCREMENT);
@@ -658,7 +657,6 @@ public class PathwaysFrame extends JApplet {
    			if (LocalConfig.getInstance().getPeriplasmName() != null && LocalConfig.getInstance().getPeriplasmName().length() > 0) {
    				LocalConfig.getInstance().getMetaboliteNameAbbrMap().put(transportMetaboliteNodeList.get(t).getName() + " Periplasm", transportMetaboliteNodeList.get(t).getAbbreviation() + "_p");
    				if (LocalConfig.getInstance().getSideSpeciesList().contains(transportMetaboliteNodeList.get(t).getKeggId())) {
-   				//if (LocalConfig.getInstance().getSideSpeciesList().contains(transportMetaboliteNodeList.get(t).getAbbreviation())) {
    					noBorderList.add(transportMetaboliteNodeList.get(t).getName() + " Periplasm");
    				}
    				metabolites.add(transportMetaboliteNodeList.get(t).getName() + " Periplasm");
@@ -671,7 +669,6 @@ public class PathwaysFrame extends JApplet {
    	   		    		PathwaysFrameConstants.TRANSPORT_WIDTH_INCREMENT + PathwaysFrameConstants.PERIPLASM_WIDTH);
    	   			LocalConfig.getInstance().getMetaboliteNameAbbrMap().put(transportMetaboliteNodeList.get(t).getName() + " ExtraOrganism", transportMetaboliteNodeList.get(t).getAbbreviation() + "_e");
    	   			if (LocalConfig.getInstance().getSideSpeciesList().contains(transportMetaboliteNodeList.get(t).getKeggId())) {
-   	   			//if (LocalConfig.getInstance().getSideSpeciesList().contains(transportMetaboliteNodeList.get(t).getAbbreviation())) {
    	   				noBorderList.add(transportMetaboliteNodeList.get(t).getName() + " ExtraOrganism");
    	   			}
 	   			metabolites.add(transportMetaboliteNodeList.get(t).getName() + " ExtraOrganism");
@@ -680,7 +677,6 @@ public class PathwaysFrame extends JApplet {
    			} else {
    				LocalConfig.getInstance().getMetaboliteNameAbbrMap().put(transportMetaboliteNodeList.get(t).getName() + " ExtraOrganism", transportMetaboliteNodeList.get(t).getAbbreviation() + "_e");
    				if (LocalConfig.getInstance().getSideSpeciesList().contains(transportMetaboliteNodeList.get(t).getKeggId())) {
-   				//if (LocalConfig.getInstance().getSideSpeciesList().contains(transportMetaboliteNodeList.get(t).getAbbreviation())) {
    	   				noBorderList.add(transportMetaboliteNodeList.get(t).getName() + " ExtraOrganism");
    	   			}
    	   			metabolites.add(transportMetaboliteNodeList.get(t).getName() + " ExtraOrganism");
@@ -693,8 +689,6 @@ public class PathwaysFrame extends JApplet {
 		System.out.println("found " + foundEcNumbers);
 		Collections.sort(notFoundEcNumbers);
 		System.out.println("not found " + notFoundEcNumbers);
-		//Collections.sort(fluxLogs);
-		//System.out.println("flux logs " + fluxLogs);
                                                                                                                      
    		metaboliteList = new ArrayList<String>(metabPosMap.keySet()); 
    		Collections.sort(metaboliteList);
@@ -900,16 +894,20 @@ public class PathwaysFrame extends JApplet {
         plus.addActionListener(new ActionListener() {                                                                
             public void actionPerformed(ActionEvent e) {                                                             
                 scaler.scale(vv, PathwaysFrameConstants.SCALING_FACTOR, vv.getCenter()); 
-//              System.out.println("layout scale " + vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.LAYOUT).getScale());
-//				System.out.println("view scale " + vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.VIEW).getScale());
+                System.out.println("layout scale " + vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.LAYOUT).getScale());
+				System.out.println("view scale " + vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.VIEW).getScale());
+                layoutScale = vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.LAYOUT).getScale();
+				viewScale = vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.VIEW).getScale();
             }                                                                                                        
         });                                                                                                          
         JButton minus = new JButton("-");                                                                            
         minus.addActionListener(new ActionListener() {                                                               
             public void actionPerformed(ActionEvent e) {                                                             
                 scaler.scale(vv, 1/PathwaysFrameConstants.SCALING_FACTOR, vv.getCenter());
-//              System.out.println("layout scale " + vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.LAYOUT).getScale());
-//				System.out.println("view scale " + vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.VIEW).getScale());
+                System.out.println("layout scale " + vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.LAYOUT).getScale());
+				System.out.println("view scale " + vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.VIEW).getScale());
+                layoutScale = vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.LAYOUT).getScale();
+				viewScale = vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.VIEW).getScale();
             }                                                                                                        
         });                                                                                                          
                                                                                                                      
@@ -919,8 +917,10 @@ public class PathwaysFrame extends JApplet {
 			public void actionPerformed(ActionEvent e) {                                                             
 				vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.LAYOUT).setToIdentity();       
 				vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.VIEW).setToIdentity();  
-//				System.out.println("layout scale " + vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.LAYOUT).getScale());
-//				System.out.println("view scale " + vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.VIEW).getScale());
+				System.out.println("layout scale " + vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.LAYOUT).getScale());
+				System.out.println("view scale " + vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.VIEW).getScale());
+				layoutScale = vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.LAYOUT).getScale();
+				viewScale = vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.VIEW).getScale();
 			}});                                                                                                     
                                                                                                                      
         JPanel controls = new JPanel();                                                                              

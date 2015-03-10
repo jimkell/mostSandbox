@@ -690,6 +690,7 @@ public class PathwayFilesReader {
 	public void readTransportMetabolitesFile(File transportMetabolites) {
 		CSVReader reader;
 
+		ArrayList<String> transportMetaboliteIds = new ArrayList<String>();
 		int count = 0;
 		
 		try {
@@ -721,6 +722,9 @@ public class PathwayFilesReader {
 							}
 							if (s == PathwaysCSVFileConstants.TRANSPORT_KEGG_METABOLITE_ID_COLUMN) {
 								em.setKeggMetaboliteId(dataArray[s]);
+								if (!transportMetaboliteIds.contains(dataArray[s])) {
+									transportMetaboliteIds.add(dataArray[s]);
+								}
 							}
 						}
 						metabolicPathways.get(id).getTransportMetabolitesData().put(em.getKeggMetaboliteId(), em);
@@ -729,6 +733,7 @@ public class PathwayFilesReader {
 					count += 1;
 				}
 				reader.close();
+				LocalConfig.getInstance().setTransportMetaboliteIds(transportMetaboliteIds);
 			} catch (IOException e) {
 				JOptionPane.showMessageDialog(null,                
 						"File Not Found Error.",                

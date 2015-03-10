@@ -1077,6 +1077,16 @@ public class LocalConfig {
 		this.reactionAbbrECNumberMap = reactionAbbrECNumberMap;
 	}
 	
+	private ArrayList<String> transportMetaboliteIds;
+	
+	public ArrayList<String> getTransportMetaboliteIds() {
+		return transportMetaboliteIds;
+	}
+
+	public void setTransportMetaboliteIds(ArrayList<String> transportMetaboliteIds) {
+		this.transportMetaboliteIds = transportMetaboliteIds;
+	}
+
 	private ArrayList<Integer> unplottedReactionIds;
 
 	public ArrayList<Integer> getUnplottedReactionIds() {

@@ -283,8 +283,7 @@ public class PathwayReactionNode {
 		return "Pathway Reaction Node [compartment=" + compartment
 		+ ", pathwayId=" + pathwayId
 		+ ", reactionName=" + reactionName
-		//+ ", modelReactionName=" + modelReactionName
-		//+ ", modelReactionNames=" + modelReactionNames
+		+ ", modelReactionName=" + modelReactionName
 		+ ", dataId=" + dataId
 		+ ", equation=" + equation
 		+ ", modelEquation=" + modelEquation
