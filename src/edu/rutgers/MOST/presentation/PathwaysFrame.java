@@ -646,8 +646,10 @@ public class PathwaysFrame extends JApplet {
    		}
    		
    		for (int t = 0; t < transportMetaboliteNodeList.size(); t++) {
-   			System.out.println(transportMetaboliteNodeList.get(t).getKeggId());
-   			System.out.println(LocalConfig.getInstance().getKeggIdCompartmentMap().get(transportMetaboliteNodeList.get(t).getKeggId()));
+   			//System.out.println("transport " + transportMetaboliteNodeList.get(t).getKeggId());
+   			if (LocalConfig.getInstance().getKeggIdCompartmentMap().containsKey(transportMetaboliteNodeList.get(t).getKeggId())) {
+   				//System.out.println("transport " + LocalConfig.getInstance().getKeggIdCompartmentMap().get(transportMetaboliteNodeList.get(t).getKeggId()));
+   			}
    			updateExternalMetabolitePosition(transportMetaboliteNodeList.get(t), 
    		    		borderTopY, borderBottomY, borderLeftX, borderRightX, 
    		    		PathwaysFrameConstants.TRANSPORT_HEIGHT_INCREMENT, PathwaysFrameConstants.TRANSPORT_WIDTH_INCREMENT);

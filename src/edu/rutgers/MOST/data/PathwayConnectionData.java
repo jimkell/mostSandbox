@@ -12,6 +12,8 @@ public class PathwayConnectionData {
 	// for each ArrayList, first entry will be pathway id, second metabolite id
 	private ArrayList<ArrayList<String>> reactantPathwaysIds;
 	private ArrayList<ArrayList<String>> productPathwaysIds;
+	private ArrayList<String> keggReactantIds;
+	private ArrayList<String> keggProductIds;
 	private String reversible;
 	private ArrayList<String> ecNumbers;
 	private double length;
@@ -44,6 +46,22 @@ public class PathwayConnectionData {
 
 	public ArrayList<ArrayList<String>> getProductPathwaysIds() {
 		return productPathwaysIds;
+	}
+
+	public ArrayList<String> getKeggReactantIds() {
+		return keggReactantIds;
+	}
+
+	public void setKeggReactantIds(ArrayList<String> keggReactantIds) {
+		this.keggReactantIds = keggReactantIds;
+	}
+
+	public ArrayList<String> getKeggProductIds() {
+		return keggProductIds;
+	}
+
+	public void setKeggProductIds(ArrayList<String> keggProductIds) {
+		this.keggProductIds = keggProductIds;
 	}
 
 	public void setProductPathwaysIds(
@@ -165,6 +183,8 @@ public class PathwayConnectionData {
 		return "Pathway Connection Data [keggReactionIds=" + keggReactionIds
 				+ ", reactantPathwaysIds=" + reactantPathwaysIds
 				+ ", productPathwaysIds=" + productPathwaysIds
+				+ ", keggReactantIds=" + keggReactantIds
+				+ ", keggProductIds=" + keggProductIds
 				+ ", reversible=" + reversible
 				+ ", ecNumbers=" + ecNumbers
 				+ ", length=" + length

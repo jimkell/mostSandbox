@@ -12717,13 +12717,12 @@ public class GraphicalInterface extends JFrame {
 			LocalConfig.getInstance().setCytosolExtraOrganismIds(cytosolExtraOrganismIds);
 			// for some unknown reason, if it is attempted to remove these ids in if statements
 			// where added to this list (above), it skips some ids. commented out
-			//System.out.println(LocalConfig.getInstance().getModelKeggEquationMap());
 			System.out.println("ce " + cytosolExtraOrganismIds);
 			for (int k = 0; k < cytosolExtraOrganismIds.size(); k++) {
 				if (transportReactionAbbreviation(cytosolExtraOrganismIds.get(k), idReactionMap) != null) {
 					//System.out.println(transportReactionAbbreviation(cytosolExtraOrganismIds.get(k), idReactionMap));
 				} else {
-					//System.out.println(idReactionMap.get(cytosolExtraOrganismIds.get(k)).getReactionEqunAbbr());
+					//System.out.println("no kegg id " + idReactionMap.get(cytosolExtraOrganismIds.get(k)).getReactionEqunAbbr());
 				}
 				if (LocalConfig.getInstance().getUnplottedReactionIds().contains(cytosolExtraOrganismIds.get(k))) {
 					LocalConfig.getInstance().getUnplottedReactionIds().remove(LocalConfig.getInstance().getUnplottedReactionIds().indexOf(cytosolExtraOrganismIds.get(k)));
@@ -12739,7 +12738,7 @@ public class GraphicalInterface extends JFrame {
 				if (transportReactionAbbreviation(cytosolPeriplasmIds.get(m), idReactionMap) != null) {
 					//System.out.println(transportReactionAbbreviation(cytosolPeriplasmIds.get(m), idReactionMap));
 				} else {
-					//System.out.println(idReactionMap.get(cytosolPeriplasmIds.get(m)).getReactionEqunAbbr());
+					//System.out.println("no kegg id " + idReactionMap.get(cytosolPeriplasmIds.get(m)).getReactionEqunAbbr());
 				}
 				if (LocalConfig.getInstance().getUnplottedReactionIds().contains(cytosolPeriplasmIds.get(m))) {
 					LocalConfig.getInstance().getUnplottedReactionIds().remove(LocalConfig.getInstance().getUnplottedReactionIds().indexOf(cytosolPeriplasmIds.get(m)));
@@ -12755,7 +12754,7 @@ public class GraphicalInterface extends JFrame {
 				if (transportReactionAbbreviation(periplasmExtraOrganismIds.get(n), idReactionMap) != null) {
 					//System.out.println(transportReactionAbbreviation(periplasmExtraOrganismIds.get(n), idReactionMap));
 				} else {
-					//System.out.println(idReactionMap.get(periplasmExtraOrganismIds.get(n)).getReactionEqunAbbr());
+					//System.out.println("no kegg id " + idReactionMap.get(periplasmExtraOrganismIds.get(n)).getReactionEqunAbbr());
 				}
 				if (LocalConfig.getInstance().getUnplottedReactionIds().contains(periplasmExtraOrganismIds.get(n))) {
 					LocalConfig.getInstance().getUnplottedReactionIds().remove(LocalConfig.getInstance().getUnplottedReactionIds().indexOf(periplasmExtraOrganismIds.get(n)));

@@ -332,7 +332,7 @@ public class PathwayFilesReader {
 				LocalConfig.getInstance().setReactionDataKeggIdMap(reactionDataKeggIdMap);
 				//System.out.println(reactionDataKeggIdMap);
 				LocalConfig.getInstance().setEcNumberKeggReactionIdMap(ecNumberKeggReactionIdMap);
-				System.out.println(ecNumberKeggReactionIdMap);
+				//System.out.println("ec num kegg rxn " + ecNumberKeggReactionIdMap);
 			} catch (IOException e) {
 				JOptionPane.showMessageDialog(null,                
 						"File Not Found Error.",                
@@ -362,6 +362,9 @@ public class PathwayFilesReader {
 					if (count > 0) {
 						PathwayReactionData pr = new PathwayReactionData();
 						String id = dataArray[PathwaysCSVFileConstants.REACTIONS_PATHWAY_ID_COLUMN];
+						Map<String, PathwayMetaboliteData> metabolitesData = LocalConfig.getInstance().getMetabolicPathways().get(id).getMetabolitesData();
+						ArrayList<String> keggReactantIds = new ArrayList<String>();
+						ArrayList<String> keggProductIds = new ArrayList<String>();
 						for (int s = 0; s < dataArray.length; s++) {
 							if (s == PathwaysCSVFileConstants.REACTIONS_PATHWAY_ID_COLUMN) {
 								pr.setPathwayId(dataArray[s]);
@@ -374,16 +377,20 @@ public class PathwayFilesReader {
 								ArrayList<String> reactantIds = new ArrayList<String>();
 								for (int i = 0; i < reac.length; i++) {
 									reactantIds.add(reac[i]);
+									keggReactantIds.add(metabolitesData.get(reac[i]).getKeggId());
 								}
 								pr.setReactantIds(reactantIds);
+								//System.out.println(keggReactantIds);
 							}
 							if (s == PathwaysCSVFileConstants.REACTIONS_PRODUCTS_COLUMN) {
 								String[] prod = dataArray[s].split("\\|");
 								ArrayList<String> productIds = new ArrayList<String>();
 								for (int i = 0; i < prod.length; i++) {
 									productIds.add(prod[i]);
+									keggProductIds.add(metabolitesData.get(prod[i]).getKeggId());
 								}
 								pr.setProductIds(productIds);
+								//System.out.println(keggProductIds);
 							}
 							if (s == PathwaysCSVFileConstants.REACTIONS_REVERSIBLE_COLUMN) {
 								pr.setReversible(dataArray[s]);
@@ -415,6 +422,8 @@ public class PathwayFilesReader {
 						pr.writeReactionEquation();
 						pr.setName(pr.getEquation());
 						pr.setDisplayName("<html>" + pr.getEquation() +"<p> EC Number(s): " + pr.getEcNumbers());
+						pr.setKeggReactantIds(keggReactantIds);
+						pr.setKeggProductIds(keggProductIds);
 						metabolicPathways.get(id).getReactionsData().put(pr.getReactionId(), pr);
 						//System.out.println(pr.getKeggReactionIds());
 					}
@@ -531,6 +540,8 @@ public class PathwayFilesReader {
 						PathwayConnectionData pc = new PathwayConnectionData();
 						ArrayList<ArrayList<String>> reactantPathwaysIds = new ArrayList<ArrayList<String>>();
 						ArrayList<ArrayList<String>> productPathwaysIds = new ArrayList<ArrayList<String>>();
+						ArrayList<String> keggReactantIds = new ArrayList<String>();
+						ArrayList<String> keggProductIds = new ArrayList<String>();
 						for (int s = 0; s < dataArray.length; s++) {	
 							if (s == PathwaysCSVFileConstants.PATHWAY_CONNECTIONS_REACTANTS_COLUMN) {
 								String[] reactants = dataArray[s].split("\\|");
@@ -538,10 +549,13 @@ public class PathwayFilesReader {
 									ArrayList<String> item = new ArrayList<String>();
 									String[] pathwayId = reactants[t].split(" ");
 									item.add(pathwayId[0]);
+									Map<String, PathwayMetaboliteData> metabolitesData = LocalConfig.getInstance().getMetabolicPathways().get(pathwayId[0]).getMetabolitesData();
 									item.add(pathwayId[1]);
+									keggReactantIds.add(metabolitesData.get(pathwayId[1]).getKeggId());
 									reactantPathwaysIds.add(item);
 								}
 								pc.setReactantPathwaysIds(reactantPathwaysIds);
+								//System.out.println(keggReactantIds);
 							}
 							if (s == PathwaysCSVFileConstants.PATHWAY_CONNECTIONS_PRODUCTS_COLUMN) {
 								String[] products = dataArray[s].split("\\|");
@@ -549,10 +563,13 @@ public class PathwayFilesReader {
 									ArrayList<String> item = new ArrayList<String>();
 									String[] pathwayId = products[t].split(" ");
 									item.add(pathwayId[0]);
+									Map<String, PathwayMetaboliteData> metabolitesData = LocalConfig.getInstance().getMetabolicPathways().get(pathwayId[0]).getMetabolitesData();
 									item.add(pathwayId[1]);
+									keggProductIds.add(metabolitesData.get(pathwayId[1]).getKeggId());
 									productPathwaysIds.add(item);
 								}
 								pc.setProductPathwaysIds(productPathwaysIds);
+								//System.out.println(keggProductIds);
 							}
 							if (s == PathwaysCSVFileConstants.PATHWAY_CONNECTIONS_REVERSIBLE_COLUMN) {
 								pc.setReversible(dataArray[s]);
@@ -579,6 +596,8 @@ public class PathwayFilesReader {
 						pc.writeReactionEquation();
 						pc.setName(pc.getEquation());
 						pc.setDisplayName("<html>" + pc.getEquation() +"<p> EC Number(s): " + pc.getEcNumbers());
+						pc.setKeggReactantIds(keggReactantIds);
+						pc.setKeggProductIds(keggProductIds);
 						if (pc.getPositioning().equals("1")) {
 							pc.setDirection(pc.getDirection());
 							if (connectionPositionMap.containsKey(pc.getReactantPathwaysIds().get(0).get(0))) {
