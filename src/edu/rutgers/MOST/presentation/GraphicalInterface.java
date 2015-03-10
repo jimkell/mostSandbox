@@ -1139,7 +1139,6 @@ public class GraphicalInterface extends JFrame {
 									ReactionFactory rFactory = new ReactionFactory("SBML");
 								    rFactory.setFluxes(getGdbbFluxesMap().get(nodeInfo.getSolutionName()), GraphicalInterfaceConstants.FLUX_VALUE_COLUMN,
 								    		LocalConfig.getInstance().getReactionsTableModelMap().get(solutionName));
-									//System.out.println(LocalConfig.getInstance().getGdbbKnockoutsMap().get(nodeInfo.getSolutionName()));
 									rFactory.updateKnockouts(LocalConfig.getInstance().getGdbbKnockoutsMap().get(nodeInfo.getSolutionName()));
 								}								
 								loadOutputPane(u.createLogFileName(databaseName + ".log"));
@@ -1148,36 +1147,11 @@ public class GraphicalInterface extends JFrame {
 								setTitle(GraphicalInterfaceConstants.TITLE + " - " + databaseName);
 								if (getPopout() != null) {
 									getPopout().load(u.createLogFileName(databaseName + ".log"), gi.getTitle());
-								}
-//								if (nodeInfo.getIndex() > -1) {
-//									setTitle(GraphicalInterfaceConstants.TITLE + " - " + nodeInfo.getDatabaseName() + "_[" + nodeInfo.getIndex() + "]");
-//									if (getPopout() != null) {
-//										getPopout().load(u.createLogFileName(nodeInfo.getSolutionName() + ".log"), gi.getTitle());
-//									}
-//								} else {
-//									setTitle(GraphicalInterfaceConstants.TITLE + " - " + solutionName);
-//									if (getPopout() != null) {
-//										getPopout().load(u.createLogFileName(solutionName + ".log"), gi.getTitle());
-//									}
-//								}																				
+								}																			
 							}
 						}		
 					}								
-				} else {
-					// do nothing when folder is clicked
-//					saveOptFile = true;
-//					if (node.getUserObject().toString() != null) {
-//						setUpReactionsTable(LocalConfig.getInstance().getReactionsTableModelMap().get(solutionName));
-//						setUpMetabolitesTable(LocalConfig.getInstance().getMetabolitesTableModelMap().get(solutionName));
-//						setTitle(GraphicalInterfaceConstants.TITLE + " - " + solutionName);
-//						loadOutputPane(u.createLogFileName(databaseName + ".log"));
-//						if (getPopout() != null) {
-//							getPopout().load(u.createLogFileName(databaseName + ".log"), gi.getTitle());
-//						}										
-//						disableMenuItems();						
-//						isRoot = false;	
-//					}					
-				}
+				} 
 			}
 		});
 
@@ -1465,10 +1439,11 @@ public class GraphicalInterface extends JFrame {
 		Map<String, ArrayList<SBMLMetabolite>> keggIdMetaboliteMap = new HashMap<String, ArrayList<SBMLMetabolite>>();
 		LocalConfig.getInstance().setKeggIdMetaboliteMap(keggIdMetaboliteMap);
 		
+		LocalConfig.getInstance().setKeggReactionIdColumnName("");
+		
 		DynamicTreePanel.getTreePanel().deleteItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent a) {
 				deleteItemFromDynamicTree();
-				
 			}
 		});
 
@@ -2306,102 +2281,14 @@ public class GraphicalInterface extends JFrame {
 				LocalConfig.getInstance().setUnplottedReactionIds(unplottedReactionIds);
 				//System.out.println(unplottedReactionIds);
 				
+				// should only run this if ec number column exists
 				ECNumberMapCreator ecMapCreator = new ECNumberMapCreator();
 				ecMapCreator.createEcNumberReactionMap();
-//				Collections.sort(LocalConfig.getInstance().getFluxes());
-//				System.out.println("fluxes " + LocalConfig.getInstance().getFluxes());
-//				System.out.println("max ub " + LocalConfig.getInstance().getMaxUpperBound());
-//				for (int i = 0; i < LocalConfig.getInstance().getFluxes().size(); i++) {
-//					if (Math.abs(LocalConfig.getInstance().getFluxes().get(i)) > 0.95*LocalConfig.getInstance().getMaxUpperBound()) {
-//						System.out.println(LocalConfig.getInstance().getFluxes().get(i));
-//					}
-//				}
-				
-//				String missingItem = "";
-//				String missingData = "";
-//				boolean showMissingItemMessage = true;
-//				MetaboliteFactory f = new MetaboliteFactory("SBML");
-//				if (f.getKeggIdColumnIndex() > -1) {
-//					Vector<SBMLMetabolite> metabolites = f.getAllMetabolites();
-//					for (int i = 0; i < metabolites.size(); i++) {
-//						if (metabolites.get(i).getMetaboliteAbbreviation() != null &&
-//								metabolites.get(i).getMetaboliteAbbreviation().length() > 0 &&
-//								!metabolites.get(i).getMetaboliteAbbreviation().endsWith("_b") &&
-//								metabolites.get(i).getKeggId() != null &&
-//								metabolites.get(i).getKeggId().length() > 0) {
-//							String metabId = Integer.toString(metabolites.get(i).getId());
-//							String keggId = metabolites.get(i).getKeggId();
-//							if (keggId != null && keggId.length() > 0) {
-//								LocalConfig.getInstance().getMetaboliteIdKeggIdMap().put(metabId, keggId);
-//								if (LocalConfig.getInstance().getKeggIdMetaboliteMap().containsKey(keggId)) {
-//									ArrayList<SBMLMetabolite> metabolitesList = LocalConfig.getInstance().getKeggIdMetaboliteMap().get(keggId);
-//									metabolitesList.add(metabolites.get(i));
-//									LocalConfig.getInstance().getKeggIdMetaboliteMap().put(keggId, metabolitesList);
-//								} else {
-//									ArrayList<SBMLMetabolite> metabolitesList = new ArrayList<SBMLMetabolite>();
-//									metabolitesList.add(metabolites.get(i));
-//									LocalConfig.getInstance().getKeggIdMetaboliteMap().put(keggId, metabolitesList);
-//								}
-//							}
-//							if (!LocalConfig.getInstance().getKeggIdCompartmentMap().containsKey(keggId)) {
-//								ArrayList<String> compList = new ArrayList<String>();
-//								compList.add(metabolites.get(i).getCompartment());
-//								LocalConfig.getInstance().getKeggIdCompartmentMap().put(keggId, compList);
-//							} else {
-//								ArrayList<String> compList = LocalConfig.getInstance().getKeggIdCompartmentMap().get(keggId);
-//								compList.add(metabolites.get(i).getCompartment());
-//								LocalConfig.getInstance().getKeggIdCompartmentMap().put(keggId, compList);
-//							}
-//						}
-//					}
-//					//System.out.println(LocalConfig.getInstance().getKeggIdCompartmentMap());
-//					//System.out.println(LocalConfig.getInstance().getMetaboliteIdKeggIdMap());
-//				}
 				
 				ModelKeggEquationMapCreator modelKeggEquationMapCreator = new ModelKeggEquationMapCreator();
 				modelKeggEquationMapCreator.createKeggEquationMap();
 				
-//				ArrayList<String> reactionDataKeggIds = new ArrayList<String>(LocalConfig.getInstance().getReactionDataKeggIdMap().keySet());
-//				
-//				for (int m = 0; m < LocalConfig.getInstance().getModelKeggEquationLists().size(); m++) {
-//					Collections.sort(LocalConfig.getInstance().getModelKeggEquationLists().get(m).getKeggReactantIds());
-//					Collections.sort(LocalConfig.getInstance().getModelKeggEquationLists().get(m).getKeggProductIds());
-//					for (int k = 0; k < reactionDataKeggIds.size(); k++) {
-//						boolean reactantMatch = false;
-//						boolean productMatch = false;
-//						PathwayReactionData pr = LocalConfig.getInstance().getReactionDataKeggIdMap().get(reactionDataKeggIds.get(k));
-//						Collections.sort(pr.getKeggReactantIds());
-//						Collections.sort(pr.getKeggProductIds());
-//						if (LocalConfig.getInstance().getModelKeggEquationLists().get(m).getKeggReactantIds().equals(pr.getKeggReactantIds())) {
-//							reactantMatch = true;
-//						}
-//						if (LocalConfig.getInstance().getModelKeggEquationLists().get(m).getKeggProductIds().equals(pr.getKeggProductIds())) {
-//							productMatch = true;
-//						}
-//						if (reactantMatch && productMatch) {
-//							System.out.println(pr.getKeggReactionId());
-//							System.out.println("model reac " + LocalConfig.getInstance().getModelKeggEquationLists().get(m).getKeggReactantIds());
-//							System.out.println("model prod " + LocalConfig.getInstance().getModelKeggEquationLists().get(m).getKeggProductIds());
-//							System.out.println("forward");
-//						} else {
-//							reactantMatch = false;
-//							productMatch = false;
-//							if (LocalConfig.getInstance().getModelKeggEquationLists().get(m).getKeggReactantIds().equals(pr.getKeggProductIds())) {
-//								reactantMatch = true;
-//							}
-//							if (LocalConfig.getInstance().getModelKeggEquationLists().get(m).getKeggProductIds().equals(pr.getKeggReactantIds())) {
-//								productMatch = true;
-//							}
-//							if (reactantMatch && productMatch) {
-//								System.out.println(pr.getKeggReactionId());
-//								System.out.println("model reac " + LocalConfig.getInstance().getModelKeggEquationLists().get(m).getKeggReactantIds());
-//								System.out.println("model prod " + LocalConfig.getInstance().getModelKeggEquationLists().get(m).getKeggProductIds());
-//								System.out.println("reverse");
-//							}
-//						}
-//					}
-//				}
-				
+				// comment this out and uncomment out below after removing ec number requirement
 				if (LocalConfig.getInstance().getEcNumberReactionMap().size() == 0 &&
 						f.getKeggIdColumnIndex() == -1) {
 					missingItem = "EC Numbers or KEGG IDs";
@@ -2415,6 +2302,14 @@ public class GraphicalInterface extends JFrame {
 				} else {
 					showMissingItemMessage = false;
 				} 
+				
+//				if (f.getKeggIdColumnIndex() == -1) {
+//					missingItem = "KEGG IDs";
+//					missingData = "metabolites in model to items";
+//				} else {
+//					showMissingItemMessage = false;
+//				} 
+				
 				if (showMissingItemMessage) {
 					Object[] options = {"Yes",
 					"No"};
@@ -12767,19 +12662,11 @@ public class GraphicalInterface extends JFrame {
 			}
 			Collections.sort(LocalConfig.getInstance().getUnplottedReactionIds());
 			System.out.println("not plotted " + LocalConfig.getInstance().getUnplottedReactionIds());
-			assignKeggReactionIds();
-			System.out.println("not plotted " + LocalConfig.getInstance().getUnplottedReactionIds());
-			assignKeggReactionIdsFromECNumbers();
-//			ReactionFactory rf = new ReactionFactory("SBML");
-//			Vector<SBMLReaction> reactions = rf.getAllReactions();
-//			for (int i = 0; i < reactions.size(); i++) {
-//				for (int j = 0; j < LocalConfig.getInstance().getUnplottedReactionIds().size(); j++) {
-//					int id = LocalConfig.getInstance().getUnplottedReactionIds().get(j);
-//					if (reactions.get(i).getId() == id) {
-//						System.out.println("id " + id + "\t" + reactions.get(i).getReactionEqunAbbr() + "\t" + reactions.get(i).getEcNumber() + "\t" + reactions.get(i).getSubsystem());
-//					}
-//				}
-//			}
+			if (LocalConfig.getInstance().getKeggReactionIdColumnName().equals("")) {
+				assignKeggReactionIds();
+				System.out.println("not plotted " + LocalConfig.getInstance().getUnplottedReactionIds());
+				assignKeggReactionIdsFromECNumbers();
+			}
 		}
 	}
 	
@@ -12814,6 +12701,7 @@ public class GraphicalInterface extends JFrame {
 		setCurrentReactionsRow(reactionsTable.getSelectedRow());
 		setCurrentReactionsColumn(reactionsTable.getSelectedColumn());
 		addReactionsColumn(GraphicalInterfaceConstants.REACTION_KEGG_ID_COLUMN_NAME);
+		LocalConfig.getInstance().setKeggReactionIdColumnName(GraphicalInterfaceConstants.REACTION_KEGG_ID_COLUMN_NAME);
 		ReactionFactory rf = new ReactionFactory("SBML");
 		createReactionsIdRowMap();
 		ArrayList<String> reactionDataKeggIds = new ArrayList<String>(LocalConfig.getInstance().getReactionDataKeggIdMap().keySet());

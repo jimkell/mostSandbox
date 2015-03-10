@@ -1220,6 +1220,16 @@ public class LocalConfig {
 		this.periplasmName = periplasmName;
 	}
 	
+	private String keggReactionIdColumnName;
+	
+	public String getKeggReactionIdColumnName() {
+		return keggReactionIdColumnName;
+	}
+
+	public void setKeggReactionIdColumnName(String keggReactionIdColumnName) {
+		this.keggReactionIdColumnName = keggReactionIdColumnName;
+	}
+
 	private ArrayList<Double> fluxes = new ArrayList<Double>();
 	
 	public ArrayList<Double> getFluxes() {
