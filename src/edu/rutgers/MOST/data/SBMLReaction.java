@@ -27,6 +27,7 @@ public class SBMLReaction implements ModelReaction {
 	private String subsystem;
 	private String proteinClass;
 	private String ecNumber;
+	private String keggReactionId;
 	private ArrayList<String> metaValues;
 	
 	public int getId() {
@@ -179,6 +180,14 @@ public class SBMLReaction implements ModelReaction {
 
 	public void setEcNumber(String ecNumber) {
 		this.ecNumber = ecNumber;
+	}
+
+	public String getKeggReactionId() {
+		return keggReactionId;
+	}
+
+	public void setKeggReactionId(String keggReactionId) {
+		this.keggReactionId = keggReactionId;
 	}
 
 	public ArrayList<String> getMetaValues() {

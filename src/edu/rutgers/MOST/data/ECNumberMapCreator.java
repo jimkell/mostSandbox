@@ -71,31 +71,31 @@ public class ECNumberMapCreator {
 		LocalConfig.getInstance().setMaxUpperBound(maxUpperBound);
 		LocalConfig.getInstance().setSecondaryMaxFlux(secondaryMaxFlux);
 		//System.out.println("ec " + ecNumberReactionMap);
-		ArrayList<String> keys = new ArrayList<String>(ecNumberReactionMap.keySet());
-		Collections.sort(keys);
+//		ArrayList<String> keys = new ArrayList<String>(ecNumberReactionMap.keySet());
+//		Collections.sort(keys);
 		//System.out.println("keys " + keys);
-		for (int j = 0; j < keys.size(); j++) {
-			ArrayList<String> sideReactants = new ArrayList<String>();
-			ArrayList<String> sideProducts = new ArrayList<String>();
-			if (LocalConfig.getInstance().getEnzymeDataMap().get(keys.get(j)) != null) {
-				if (LocalConfig.getInstance().getEnzymeDataMap().get(keys.get(j)).getCatalyticActivity() == null) {
-					//System.out.println(keys.get(j) + " " + LocalConfig.getInstance().getEnzymeDataMap().get(keys.get(j)).getDescription());
-				} else {
-					//System.out.println(keys.get(j) + " " + LocalConfig.getInstance().getEnzymeDataMap().get(keys.get(j)).getCatalyticActivity());
-					String[] halfReactions = LocalConfig.getInstance().getEnzymeDataMap().get(keys.get(j)).getCatalyticActivity().split(" = ");
-					for (int k = 0; k < LocalConfig.getInstance().getSideSpeciesList().size(); k++) {
-						if (halfReactions.length > 0 && halfReactions[0].contains(LocalConfig.getInstance().getSideSpeciesList().get(k))) {
-							sideReactants.add(LocalConfig.getInstance().getSideSpeciesList().get(k));
-						}
-						if (halfReactions.length > 1 && halfReactions[1].contains(LocalConfig.getInstance().getSideSpeciesList().get(k))) {
-							sideProducts.add(LocalConfig.getInstance().getSideSpeciesList().get(k));
-						}
-					}
-				}
-			}
+//		for (int j = 0; j < keys.size(); j++) {
+//			ArrayList<String> sideReactants = new ArrayList<String>();
+//			ArrayList<String> sideProducts = new ArrayList<String>();
+//			if (LocalConfig.getInstance().getEnzymeDataMap().get(keys.get(j)) != null) {
+//				if (LocalConfig.getInstance().getEnzymeDataMap().get(keys.get(j)).getCatalyticActivity() == null) {
+//					//System.out.println(keys.get(j) + " " + LocalConfig.getInstance().getEnzymeDataMap().get(keys.get(j)).getDescription());
+//				} else {
+//					//System.out.println(keys.get(j) + " " + LocalConfig.getInstance().getEnzymeDataMap().get(keys.get(j)).getCatalyticActivity());
+//					String[] halfReactions = LocalConfig.getInstance().getEnzymeDataMap().get(keys.get(j)).getCatalyticActivity().split(" = ");
+//					for (int k = 0; k < LocalConfig.getInstance().getSideSpeciesList().size(); k++) {
+//						if (halfReactions.length > 0 && halfReactions[0].contains(LocalConfig.getInstance().getSideSpeciesList().get(k))) {
+//							sideReactants.add(LocalConfig.getInstance().getSideSpeciesList().get(k));
+//						}
+//						if (halfReactions.length > 1 && halfReactions[1].contains(LocalConfig.getInstance().getSideSpeciesList().get(k))) {
+//							sideProducts.add(LocalConfig.getInstance().getSideSpeciesList().get(k));
+//						}
+//					}
+//				}
+//			}
 //			System.out.println("sr " + sideReactants);
 //			System.out.println("sp " + sideProducts);
-		}
+//		}
 	}
 	
 }

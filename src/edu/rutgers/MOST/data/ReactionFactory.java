@@ -65,6 +65,7 @@ public class ReactionFactory {
 		Map<Object, Object> reactionsIdPositionMap = new HashMap<Object, Object>();
 		int count = 0;
 		int ecColumn = getECColumnColumnIndex();
+		int keggColumn = getKeggIdColumnIndex();
 
 		if("SBML".equals(sourceType)){
 			// returns a list of SBMLReactions
@@ -94,6 +95,9 @@ public class ReactionFactory {
 					reaction.setSubsystem((String) GraphicalInterface.reactionsTable.getModel().getValueAt(i, GraphicalInterfaceConstants.SUBSYSTEM_COLUMN));
 					reaction.setProteinClass((String) GraphicalInterface.reactionsTable.getModel().getValueAt(i, GraphicalInterfaceConstants.PROTEIN_CLASS_COLUMN));
 					reaction.setEcNumber((String) GraphicalInterface.reactionsTable.getModel().getValueAt(i, ecColumn));
+					if (keggColumn > -1) {
+						reaction.setKeggReactionId((String) GraphicalInterface.reactionsTable.getModel().getValueAt(i, keggColumn));
+					}
 					reactions.add(reaction);
 					reactionsIdPositionMap.put(reaction.getId(), count);
 					count += 1;

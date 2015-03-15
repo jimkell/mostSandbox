@@ -1260,6 +1260,15 @@ public class LocalConfig {
 		this.secondaryMaxFlux = secondaryMaxFlux;
 	}
 	
-	
+	private Map<String, ArrayList<SBMLReaction>> keggIdReactionMap;
+
+	public Map<String, ArrayList<SBMLReaction>> getKeggIdReactionMap() {
+		return keggIdReactionMap;
+	}
+
+	public void setKeggIdReactionMap(
+			Map<String, ArrayList<SBMLReaction>> keggIdReactionMap) {
+		this.keggIdReactionMap = keggIdReactionMap;
+	}
 
 }

@@ -286,7 +286,7 @@ public class SBMLModelReader {
 					if (chebiId.endsWith("\"")) {
 						chebiId = chebiId.replace("\"", "");
 					}
-					System.out.println(chebiId);
+					//System.out.println(chebiId);
 				} 
 			}
 			metabKeggIds.add(keggId);
@@ -785,6 +785,7 @@ public class SBMLModelReader {
 					//if (j == 0) {
 						reactionsMetaColumnNames.add(GraphicalInterfaceConstants.REACTION_KEGG_ID_COLUMN_NAME);
 						reacTableModel.addColumn(GraphicalInterfaceConstants.REACTION_KEGG_ID_COLUMN_NAME);
+						LocalConfig.getInstance().setKeggReactionIdColumnName(GraphicalInterfaceConstants.REACTION_KEGG_ID_COLUMN_NAME);
 					} 
 					//System.out.println(j);
 					keggId = reactions.get(j).getAnnotationString().substring(reactions.get(j).getAnnotationString().indexOf("kegg.reaction") + 14, reactions.get(j).getAnnotationString().indexOf("kegg.reaction") + 20);

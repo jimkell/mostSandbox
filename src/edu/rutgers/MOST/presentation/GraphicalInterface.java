@@ -34,6 +34,8 @@ import edu.rutgers.MOST.data.ConfigProperties;
 import edu.rutgers.MOST.data.ECNumberMapCreator;
 import edu.rutgers.MOST.data.GDBBModel;
 import edu.rutgers.MOST.data.JSBMLWriter;
+import edu.rutgers.MOST.data.KEGGIdReactionMapCreator;
+import edu.rutgers.MOST.data.MetabolicPathway;
 import edu.rutgers.MOST.data.MetaboliteFactory;
 import edu.rutgers.MOST.data.MetaboliteSupplementaryMaterialReader;
 import edu.rutgers.MOST.data.MetaboliteUndoItem;
@@ -1438,6 +1440,10 @@ public class GraphicalInterface extends JFrame {
 		LocalConfig.getInstance().setMetaboliteIdKeggIdMap(metaboliteIdKeggIdMap);
 		Map<String, ArrayList<SBMLMetabolite>> keggIdMetaboliteMap = new HashMap<String, ArrayList<SBMLMetabolite>>();
 		LocalConfig.getInstance().setKeggIdMetaboliteMap(keggIdMetaboliteMap);
+		Map<String, String> metaboliteNameAbbrMap = new HashMap<String, String>();
+		LocalConfig.getInstance().setMetaboliteNameAbbrMap(metaboliteNameAbbrMap);
+		Map<String, MetabolicPathway> metabolicPathways = new HashMap<String, MetabolicPathway>();
+		LocalConfig.getInstance().setMetabolicPathways(metabolicPathways);
 		
 		LocalConfig.getInstance().setKeggReactionIdColumnName("");
 		
@@ -2229,6 +2235,9 @@ public class GraphicalInterface extends JFrame {
 
 		visualizeMenu.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
+				LocalConfig.getInstance().getMetabolicPathways().clear();
+				LocalConfig.getInstance().getMetaboliteNameAbbrMap().clear();
+				LocalConfig.getInstance().getMetaboliteIdKeggIdMap().clear();
 				String missingItem = "";
 				String missingData = "";
 				boolean showMissingItemMessage = true;
@@ -2289,26 +2298,26 @@ public class GraphicalInterface extends JFrame {
 				modelKeggEquationMapCreator.createKeggEquationMap();
 				
 				// comment this out and uncomment out below after removing ec number requirement
-				if (LocalConfig.getInstance().getEcNumberReactionMap().size() == 0 &&
-						f.getKeggIdColumnIndex() == -1) {
-					missingItem = "EC Numbers or KEGG IDs";
-					missingData = "reactions or metabolites in model to items";
-				} else if (LocalConfig.getInstance().getEcNumberReactionMap().size() == 0) {
-					missingItem = "EC Numbers";
-					missingData = "reactions in model to items";
-				} else if (f.getKeggIdColumnIndex() == -1) {
-					missingItem = "KEGG IDs";
-					missingData = "metabolites in model to items";
-				} else {
-					showMissingItemMessage = false;
-				} 
-				
-//				if (f.getKeggIdColumnIndex() == -1) {
+//				if (LocalConfig.getInstance().getEcNumberReactionMap().size() == 0 &&
+//						f.getKeggIdColumnIndex() == -1) {
+//					missingItem = "EC Numbers or KEGG IDs";
+//					missingData = "reactions or metabolites in model to items";
+//				} else if (LocalConfig.getInstance().getEcNumberReactionMap().size() == 0) {
+//					missingItem = "EC Numbers";
+//					missingData = "reactions in model to items";
+//				} else if (f.getKeggIdColumnIndex() == -1) {
 //					missingItem = "KEGG IDs";
 //					missingData = "metabolites in model to items";
 //				} else {
 //					showMissingItemMessage = false;
 //				} 
+				
+				if (f.getKeggIdColumnIndex() == -1) {
+					missingItem = "KEGG IDs";
+					missingData = "metabolites in model to items";
+				} else {
+					showMissingItemMessage = false;
+				} 
 				
 				if (showMissingItemMessage) {
 					Object[] options = {"Yes",
@@ -12667,6 +12676,8 @@ public class GraphicalInterface extends JFrame {
 				System.out.println("not plotted " + LocalConfig.getInstance().getUnplottedReactionIds());
 				assignKeggReactionIdsFromECNumbers();
 			}
+			KEGGIdReactionMapCreator keggIdReactionMapCreator = new KEGGIdReactionMapCreator();
+			keggIdReactionMapCreator.createKEGGIdReactionMap();
 		}
 	}
 	
@@ -12703,6 +12714,7 @@ public class GraphicalInterface extends JFrame {
 		addReactionsColumn(GraphicalInterfaceConstants.REACTION_KEGG_ID_COLUMN_NAME);
 		LocalConfig.getInstance().setKeggReactionIdColumnName(GraphicalInterfaceConstants.REACTION_KEGG_ID_COLUMN_NAME);
 		ReactionFactory rf = new ReactionFactory("SBML");
+		int keggIdColumn = rf.getKeggIdColumnIndex();
 		createReactionsIdRowMap();
 		ArrayList<String> reactionDataKeggIds = new ArrayList<String>(LocalConfig.getInstance().getReactionDataKeggIdMap().keySet());
 		for (int i = 0; i < LocalConfig.getInstance().getUnplottedReactionIds().size(); i++) {
@@ -12716,14 +12728,14 @@ public class GraphicalInterface extends JFrame {
 					// from model with reactant and product lists in file
 					if (keggReactionIdFound(fileData.getKeggReactantIds(), fileData.getKeggProductIds(), 
 							modelData.getKeggReactantIds(), modelData.getKeggProductIds(), "forward")) {
-						updateReactionsCellById(fileData.getKeggReactionId(), Integer.valueOf(modelData.getReactionId()), rf.getKeggIdColumnIndex());
+						updateReactionsCellById(fileData.getKeggReactionId(), Integer.valueOf(modelData.getReactionId()), keggIdColumn);
 						if (LocalConfig.getInstance().getUnplottedReactionIds().contains(Integer.parseInt(modelData.getReactionId()))) {
 							LocalConfig.getInstance().getUnplottedReactionIds().remove(LocalConfig.getInstance().getUnplottedReactionIds().indexOf(Integer.parseInt(modelData.getReactionId())));
 						}
 					} else {
 						if (keggReactionIdFound(fileData.getKeggReactantIds(), fileData.getKeggProductIds(), 
 								modelData.getKeggProductIds(), modelData.getKeggReactantIds(), "reverse")) {
-							updateReactionsCellById(fileData.getKeggReactionId(), Integer.valueOf(modelData.getReactionId()), rf.getKeggIdColumnIndex());
+							updateReactionsCellById(fileData.getKeggReactionId(), Integer.valueOf(modelData.getReactionId()), keggIdColumn);
 							if (LocalConfig.getInstance().getUnplottedReactionIds().contains(Integer.parseInt(modelData.getReactionId()))) {
 								LocalConfig.getInstance().getUnplottedReactionIds().remove(LocalConfig.getInstance().getUnplottedReactionIds().indexOf(Integer.parseInt(modelData.getReactionId())));
 							}
@@ -12777,6 +12789,7 @@ public class GraphicalInterface extends JFrame {
 		// reactions.csv is 26 and most are < 4
 		ArrayList<String> ecNumbersFromModel = new ArrayList<String>(LocalConfig.getInstance().getEcNumberReactionMap().keySet());
 		ReactionFactory rf = new ReactionFactory("SBML");
+		int keggIdColumn = rf.getKeggIdColumnIndex();
 		//System.out.println("ec from model " + ecNumbersFromModel.size());
 		// ec numbers found in model
 		for (int r = 0; r < ecNumbersFromModel.size(); r++) {
@@ -12799,11 +12812,11 @@ public class GraphicalInterface extends JFrame {
 								PathwayReactionData fileData = LocalConfig.getInstance().getReactionDataKeggIdMap().get(keggReactionIds.get(j));
 								if (keggReactionIdFound(fileData.getKeggReactantIds(), fileData.getKeggProductIds(), 
 										modelData.getKeggReactantIds(), modelData.getKeggProductIds(), "forward")) {
-									updateReactionsCellById(fileData.getKeggReactionId(), ecSBMLReactions.get(s).getId(), rf.getKeggIdColumnIndex());
+									updateReactionsCellById(fileData.getKeggReactionId(), ecSBMLReactions.get(s).getId(), keggIdColumn);
 								} else {
 									if (keggReactionIdFound(fileData.getKeggReactantIds(), fileData.getKeggProductIds(), 
 											modelData.getKeggProductIds(), modelData.getKeggReactantIds(), "reverse")) {
-										updateReactionsCellById(fileData.getKeggReactionId(), ecSBMLReactions.get(s).getId(), rf.getKeggIdColumnIndex());
+										updateReactionsCellById(fileData.getKeggReactionId(), ecSBMLReactions.get(s).getId(), keggIdColumn);
 									}
 								}
 							} else {
@@ -12829,13 +12842,13 @@ public class GraphicalInterface extends JFrame {
 									modelData.getKeggReactantIds(), modelData.getKeggProductIds(), "forward")) {
 //								System.out.println(ecNumbersFromModel.get(r));
 //								System.out.println("id " + fileData.getKeggReactionId());
-								updateReactionsCellById(fileData.getKeggReactionId(), ecSBMLReactions.get(s).getId(), rf.getKeggIdColumnIndex());
+								updateReactionsCellById(fileData.getKeggReactionId(), ecSBMLReactions.get(s).getId(), keggIdColumn);
 							} else {
 								if (keggReactionIdFound(fileData.getKeggReactantIds(), fileData.getKeggProductIds(), 
 										modelData.getKeggProductIds(), modelData.getKeggReactantIds(), "reverse")) {
 //									System.out.println(ecNumbersFromModel.get(r));
 //									System.out.println("id " + fileData.getKeggReactionId());
-									updateReactionsCellById(fileData.getKeggReactionId(), ecSBMLReactions.get(s).getId(), rf.getKeggIdColumnIndex());
+									updateReactionsCellById(fileData.getKeggReactionId(), ecSBMLReactions.get(s).getId(), keggIdColumn);
 								}
 							}
 						}

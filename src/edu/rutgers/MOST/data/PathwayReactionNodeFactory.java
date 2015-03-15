@@ -15,7 +15,7 @@ public class PathwayReactionNodeFactory {
 	 * @param compartment
 	 * @return
 	 */
-	public PathwayReactionNode createPathwayReactionNode(ArrayList<String> ec, String compartment) {
+	public PathwayReactionNode createPathwayReactionNode(ArrayList<String> ec, ArrayList<String> keggReactionIds, String compartment) {
 		PathwayReactionNode pn = new PathwayReactionNode();
 		ArrayList<String> sideReactants = new ArrayList<String>();
 		ArrayList<String> sideProducts = new ArrayList<String>();
@@ -26,36 +26,7 @@ public class PathwayReactionNodeFactory {
 			if (LocalConfig.getInstance().getEcNumberReactionMap().containsKey(ec.get(m))) {
 				// attributes from SBML Reaction
 				ArrayList<SBMLReaction> reac = LocalConfig.getInstance().getEcNumberReactionMap().get(ec.get(m));
-				for (int r = 0; r < reac.size(); r++) {
-					// if compartment not defined, just draw everything for now
-					if (compartment != null && compartment.length() > 0) {
-						SBMLReactionEquation equn = (SBMLReactionEquation) LocalConfig.getInstance().getReactionEquationMap().get(reac.get(r).getId());
-						if (equn.getCompartmentList().size() == 1 && equn.getCompartmentList().contains(compartment)) {
-							reactions.add(reac.get(r));
-						} else {
-							// if compartment is cytosol draw periplasm nodes if exist, then draw extra organism if exists
-							if (compartment.equals(LocalConfig.getInstance().getCytosolName())) {
-								if (LocalConfig.getInstance().getPeriplasmName() != null && 
-										LocalConfig.getInstance().getPeriplasmName().length() > 0 &&
-										equn.getCompartmentList().contains(LocalConfig.getInstance().getPeriplasmName())) {
-									reactions.add(reac.get(r));
-								}
-								if (LocalConfig.getInstance().getExtraOrganismName() != null && 
-										LocalConfig.getInstance().getExtraOrganismName().length() > 0 &&
-										equn.getCompartmentList().contains(LocalConfig.getInstance().getExtraOrganismName())) {
-									reactions.add(reac.get(r));
-//									System.out.println(reac.get(r).getReactionEqunAbbr());
-//									System.out.println(reac.get(r).getEcNumber());
-								}
-							}
-							// uncomment to show that reactions are eliminated if not correct compartment
-//							System.out.println("n c " + equn.getCompartmentList());
-//							System.out.println(ec);
-						}
-					} else {
-						reactions.add(reac.get(r));
-					}
-				}
+				addReactions(reactions, reac, compartment);
 				// attributes from Enzyme.dat
 				if (LocalConfig.getInstance().getEnzymeDataMap().containsKey(ec.get(m))) {
 					if (LocalConfig.getInstance().getEnzymeDataMap().get(ec.get(m)).getCatalyticActivity() == null) {
@@ -81,13 +52,69 @@ public class PathwayReactionNodeFactory {
 						
 			}
 		}
+		for (int n = 0; n < keggReactionIds.size(); n++) {
+			if (LocalConfig.getInstance().getKeggIdReactionMap().containsKey(keggReactionIds.get(n))) {
+				ArrayList<SBMLReaction> reac = LocalConfig.getInstance().getKeggIdReactionMap().get(keggReactionIds.get(n));
+				addReactions(reactions, reac, compartment);
+			}
+		}
 		//pn.setPathwayId(pathway.getId());
 		pn.setSideReactants(sideReactants);
 		pn.setSideProducts(sideProducts);
 		pn.setEnzymeDataEquations(enzymeDataEquations);
 		pn.setReactions(reactions);
+		//System.out.println(reactions);
 		
 		return pn;
+	}
+	
+	public void addReactions(ArrayList<SBMLReaction> reactions, ArrayList<SBMLReaction> reac, String compartment) {
+		for (int r = 0; r < reac.size(); r++) {
+			// if compartment not defined, just draw everything for now
+			if (compartment != null && compartment.length() > 0) {
+				SBMLReactionEquation equn = (SBMLReactionEquation) LocalConfig.getInstance().getReactionEquationMap().get(reac.get(r).getId());
+				if (equn.getCompartmentList().size() == 1 && equn.getCompartmentList().contains(compartment)) {
+					addReactionIfNotPresent(reactions, reac.get(r));
+				} else {
+					// if compartment is cytosol draw periplasm nodes if exist, then draw extra organism if exists
+					if (compartment.equals(LocalConfig.getInstance().getCytosolName())) {
+						if (LocalConfig.getInstance().getPeriplasmName() != null && 
+								LocalConfig.getInstance().getPeriplasmName().length() > 0 &&
+								equn.getCompartmentList().contains(LocalConfig.getInstance().getPeriplasmName())) {
+							addReactionIfNotPresent(reactions, reac.get(r));
+						}
+						if (LocalConfig.getInstance().getExtraOrganismName() != null && 
+								LocalConfig.getInstance().getExtraOrganismName().length() > 0 &&
+								equn.getCompartmentList().contains(LocalConfig.getInstance().getExtraOrganismName())) {
+							addReactionIfNotPresent(reactions, reac.get(r));
+//							System.out.println(reac.get(r).getReactionEqunAbbr());
+//							System.out.println(reac.get(r).getEcNumber());
+						}
+					}
+					// uncomment to show that reactions are eliminated if not correct compartment
+//					System.out.println("n c " + equn.getCompartmentList());
+//					System.out.println(ec);
+				}
+			} else {
+				addReactionIfNotPresent(reactions, reac.get(r));
+			}
+		}
+	}
+	
+	/**
+	 * Contains not working for adding SBMLReactions to list
+	 * @param reac
+	 * @param r
+	 */
+	public void addReactionIfNotPresent(ArrayList<SBMLReaction> reactions, SBMLReaction r) {
+		int id = r.getId();
+		ArrayList<Integer> idList = new ArrayList<Integer>();
+		for (int i = 0; i < reactions.size(); i++) {
+			idList.add(reactions.get(i).getId());
+		}
+		if (!idList.contains(id)) {
+			reactions.add(r);
+		}
 	}
 	
 	/**

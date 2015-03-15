@@ -215,9 +215,15 @@ public class PathwayFilesReader {
 						String abbr = pm.getAbbreviation();
 						if (LocalConfig.getInstance().getKeggIdMetaboliteMap().containsKey(pm.getKeggId())) {
 							String metabAbbr = LocalConfig.getInstance().getKeggIdMetaboliteMap().get(pm.getKeggId()).get(0).getMetaboliteAbbreviation();
-							abbr = metabAbbr.substring(2, metabAbbr.length() - 2);
+							// check if metabolite ends with "_x"
+							String ch = metabAbbr.substring(metabAbbr.length() - 2, metabAbbr.length() - 1);
+							//System.out.println("ch " + ch);
+							if (ch.equals("_")) {
+								abbr = metabAbbr.substring(2, metabAbbr.length() - 2);
+							} else {
+								abbr = metabAbbr.substring(2);
+							}
 							name += " " + metabAbbr;
-							//System.out.println(abbr);
 						}
 						if (metaboliteNameAbbrMap.containsKey(name)) {
 							name = name + duplicateSuffix(name, metaboliteNameAbbrMap);
@@ -591,6 +597,14 @@ public class PathwayFilesReader {
 							if (s == PathwaysCSVFileConstants.PATHWAY_CONNECTIONS_POSITIONING_COLUMN) {
 								pc.setPositioning(dataArray[s]);
 								
+							}
+							if (s == PathwaysCSVFileConstants.PATHWAY_CONNECTIONS_KEGG_IDS_COLUMN) {
+								String[] keggIds = dataArray[s].split("\\|");
+								ArrayList<String> kegg = new ArrayList<String>();
+								for (int i = 0; i < keggIds.length; i++) {
+									kegg.add(keggIds[i]);
+								}
+								pc.setKeggReactionIds(kegg);
 							}
 						}
 						pc.writeReactionEquation();
