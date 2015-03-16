@@ -291,10 +291,10 @@ public class PathwaysFrame extends JApplet {
 			}
 			
 			for (int k = 0; k < pathway.getReactionsData().size(); k++) {
-				//System.out.println(pathway.getReactionsData().get(Integer.toString(k)).getEcNumbers());
 				// only draw cytosol for now
 				PathwayReactionNode pn = prnf.createPathwayReactionNode(pathway.getReactionsData().get(Integer.toString(k)).getEcNumbers(),
-						pathway.getReactionsData().get(Integer.toString(k)).getKeggReactionIds(), LocalConfig.getInstance().getCytosolName());
+						pathway.getReactionsData().get(Integer.toString(k)).getKeggReactionIds(), pathway.getReactionsData().get(Integer.toString(k)).getKeggReactantIds(),
+						pathway.getReactionsData().get(Integer.toString(k)).getKeggProductIds(), LocalConfig.getInstance().getCytosolName());
 				String displayName = prnf.createDisplayName(pathway.getReactionsData().get(Integer.toString(k)).getDisplayName(),
 						pathway.getReactionsData().get(Integer.toString(k)).getName(),
 						pn.getReactions());
@@ -398,7 +398,10 @@ public class PathwaysFrame extends JApplet {
 		for (int i = 0; i < LocalConfig.getInstance().getConnectionslist().size(); i++) {
 			// only draw cytosol for now
 			PathwayReactionNode pn = prnf.createPathwayReactionNode(LocalConfig.getInstance().getConnectionslist().get(i).getEcNumbers(),
-					LocalConfig.getInstance().getConnectionslist().get(i).getKeggReactionIds(), LocalConfig.getInstance().getCytosolName());
+					LocalConfig.getInstance().getConnectionslist().get(i).getKeggReactionIds(), 
+					LocalConfig.getInstance().getConnectionslist().get(i).getKeggReactantIds(),
+					LocalConfig.getInstance().getConnectionslist().get(i).getKeggProductIds(),
+					LocalConfig.getInstance().getCytosolName());
 			PathwayConnectionNode pcn = prnf.createPathwayConnectionNode(pn);
 			pcn.setEquation(LocalConfig.getInstance().getConnectionslist().get(i).getEquation());
 			pcn.setName(LocalConfig.getInstance().getConnectionslist().get(i).getEquation());

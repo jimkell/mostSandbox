@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import edu.rutgers.MOST.config.LocalConfig;
+import edu.rutgers.MOST.presentation.GraphicalInterface;
 
 public class PathwayReactionNodeFactory {
 
@@ -15,7 +16,8 @@ public class PathwayReactionNodeFactory {
 	 * @param compartment
 	 * @return
 	 */
-	public PathwayReactionNode createPathwayReactionNode(ArrayList<String> ec, ArrayList<String> keggReactionIds, String compartment) {
+	public PathwayReactionNode createPathwayReactionNode(ArrayList<String> ec, ArrayList<String> keggReactionIds, 
+			ArrayList<String> keggReactantIds, ArrayList<String> keggProductIds, String compartment) {
 		PathwayReactionNode pn = new PathwayReactionNode();
 		ArrayList<String> sideReactants = new ArrayList<String>();
 		ArrayList<String> sideProducts = new ArrayList<String>();
@@ -26,7 +28,7 @@ public class PathwayReactionNodeFactory {
 			if (LocalConfig.getInstance().getEcNumberReactionMap().containsKey(ec.get(m))) {
 				// attributes from SBML Reaction
 				ArrayList<SBMLReaction> reac = LocalConfig.getInstance().getEcNumberReactionMap().get(ec.get(m));
-				addReactions(reactions, reac, compartment);
+				addReactions(reactions, reac, compartment, keggReactantIds, keggProductIds);
 				// attributes from Enzyme.dat
 				if (LocalConfig.getInstance().getEnzymeDataMap().containsKey(ec.get(m))) {
 					if (LocalConfig.getInstance().getEnzymeDataMap().get(ec.get(m)).getCatalyticActivity() == null) {
@@ -55,7 +57,7 @@ public class PathwayReactionNodeFactory {
 		for (int n = 0; n < keggReactionIds.size(); n++) {
 			if (LocalConfig.getInstance().getKeggIdReactionMap().containsKey(keggReactionIds.get(n))) {
 				ArrayList<SBMLReaction> reac = LocalConfig.getInstance().getKeggIdReactionMap().get(keggReactionIds.get(n));
-				addReactions(reactions, reac, compartment);
+				addReactions(reactions, reac, compartment, keggReactantIds, keggProductIds);
 			}
 		}
 		//pn.setPathwayId(pathway.getId());
@@ -68,25 +70,26 @@ public class PathwayReactionNodeFactory {
 		return pn;
 	}
 	
-	public void addReactions(ArrayList<SBMLReaction> reactions, ArrayList<SBMLReaction> reac, String compartment) {
+	public void addReactions(ArrayList<SBMLReaction> reactions, ArrayList<SBMLReaction> reac, String compartment, 
+			ArrayList<String> keggReactantIds, ArrayList<String> keggProductIds) {
 		for (int r = 0; r < reac.size(); r++) {
 			// if compartment not defined, just draw everything for now
 			if (compartment != null && compartment.length() > 0) {
 				SBMLReactionEquation equn = (SBMLReactionEquation) LocalConfig.getInstance().getReactionEquationMap().get(reac.get(r).getId());
 				if (equn.getCompartmentList().size() == 1 && equn.getCompartmentList().contains(compartment)) {
-					addReactionIfNotPresent(reactions, reac.get(r));
+					addReactionIfNotPresent(reactions, reac.get(r), keggReactantIds, keggProductIds);
 				} else {
 					// if compartment is cytosol draw periplasm nodes if exist, then draw extra organism if exists
 					if (compartment.equals(LocalConfig.getInstance().getCytosolName())) {
 						if (LocalConfig.getInstance().getPeriplasmName() != null && 
 								LocalConfig.getInstance().getPeriplasmName().length() > 0 &&
 								equn.getCompartmentList().contains(LocalConfig.getInstance().getPeriplasmName())) {
-							addReactionIfNotPresent(reactions, reac.get(r));
+							addReactionIfNotPresent(reactions, reac.get(r), keggReactantIds, keggProductIds);
 						}
 						if (LocalConfig.getInstance().getExtraOrganismName() != null && 
 								LocalConfig.getInstance().getExtraOrganismName().length() > 0 &&
 								equn.getCompartmentList().contains(LocalConfig.getInstance().getExtraOrganismName())) {
-							addReactionIfNotPresent(reactions, reac.get(r));
+							addReactionIfNotPresent(reactions, reac.get(r), keggReactantIds, keggProductIds);
 //							System.out.println(reac.get(r).getReactionEqunAbbr());
 //							System.out.println(reac.get(r).getEcNumber());
 						}
@@ -96,7 +99,7 @@ public class PathwayReactionNodeFactory {
 //					System.out.println(ec);
 				}
 			} else {
-				addReactionIfNotPresent(reactions, reac.get(r));
+				addReactionIfNotPresent(reactions, reac.get(r), keggReactantIds, keggProductIds);
 			}
 		}
 	}
@@ -106,15 +109,63 @@ public class PathwayReactionNodeFactory {
 	 * @param reac
 	 * @param r
 	 */
-	public void addReactionIfNotPresent(ArrayList<SBMLReaction> reactions, SBMLReaction r) {
+	public void addReactionIfNotPresent(ArrayList<SBMLReaction> reactions, SBMLReaction r,
+			ArrayList<String> keggReactantIds, ArrayList<String> keggProductIds) {
 		int id = r.getId();
 		ArrayList<Integer> idList = new ArrayList<Integer>();
 		for (int i = 0; i < reactions.size(); i++) {
 			idList.add(reactions.get(i).getId());
 		}
 		if (!idList.contains(id)) {
-			reactions.add(r);
+			if (correctMainSpecies(r, keggReactantIds, keggProductIds)) {
+				reactions.add(r);
+			}
 		}
+	}
+	
+	/**
+	 * Return true if all KEGG Ids of metabolite nodes in a reaction are present, else false
+	 * @param r
+	 * @param keggReactantIds
+	 * @param keggProductIds
+	 * @return
+	 */
+	public boolean correctMainSpecies(SBMLReaction r, ArrayList<String> keggReactantIds, ArrayList<String> keggProductIds) {
+		boolean match = false;
+		PathwayReactionData modelData = LocalConfig.getInstance().getModelKeggEquationMap().get(Integer.toString(r.getId()));
+//		System.out.println(modelData);
+		System.out.println("m " + modelData.getKeggReactantIds());
+		System.out.println("m " + modelData.getKeggProductIds());
+		System.out.println("d " + keggReactantIds);
+		System.out.println("d " + keggProductIds);
+		if (speciesMatch(keggReactantIds, modelData.getKeggReactantIds()) && 
+				speciesMatch(keggProductIds, modelData.getKeggProductIds())) {
+			match = true;
+		} else if (speciesMatch(keggReactantIds, modelData.getKeggProductIds()) && 
+				speciesMatch(keggProductIds, modelData.getKeggReactantIds())) {
+			match = true;
+		}
+		
+//		return match;
+		return match;
+		
+	}
+	
+	/**
+	 * Checks if all KEGG Ids from data are present in KEGG Id list from model.
+	 * @param dataIds
+	 * @param modelIds
+	 * @return
+	 */
+	public boolean speciesMatch(ArrayList<String> dataIds, ArrayList<String> modelIds) {
+		boolean speciesMatch = true;
+		for (int i = 0; i < dataIds.size(); i++) {
+			if (!modelIds.contains(dataIds.get(i))) {
+				speciesMatch = false;
+				break;
+			}
+		}
+		return speciesMatch;
 	}
 	
 	/**
