@@ -21,10 +21,10 @@ public class PathwaysFrameConstants {
 	public static final int BOTTOM_SPACE = 300;
 	public static final int START_Y = 3000;
    	
-	public static final int HORIZONTAL_INCREMENT = 350;
-	public static final int VERTICAL_INCREMENT = 175;
 //	public static final int HORIZONTAL_INCREMENT = 350;
-//	public static final int VERTICAL_INCREMENT = 225;
+//	public static final int VERTICAL_INCREMENT = 175;
+	public static final int HORIZONTAL_INCREMENT = 400;
+	public static final int VERTICAL_INCREMENT = 160;
 	public static final int PATHWAY_NAME_NODE_WIDTH = 120;
 	public static final int PATHWAY_NAME_NODE_HEIGHT = 50;
 	public static final int SIDE_NODE_WIDTH = 90;
@@ -60,12 +60,12 @@ public class PathwaysFrameConstants {
 	public static final int SIDE_NODE_YPOS = 23;
 	
 	public static final double DEFAULT_EDGE_WIDTH = 0.0; 
-//	public static final int ARROW_LENGTH = 30;
-//	public static final int ARROW_WIDTH = 25;
-//	public static final int ARROW_NOTCH = 12;
-	public static final int ARROW_LENGTH = 40;
-	public static final int ARROW_WIDTH = 40;
-	public static final int ARROW_NOTCH = 15;
+	public static final int ARROW_LENGTH = 30;
+	public static final int ARROW_WIDTH = 25;
+	public static final int ARROW_NOTCH = 12;
+//	public static final int ARROW_LENGTH = 40;
+//	public static final int ARROW_WIDTH = 40;
+//	public static final int ARROW_NOTCH = 15;
 	public static final double INFINITE_FLUX_RATIO = 0.95;
 	public static final double INFINITE_FLUX_WIDTH = 16.0;
 	public static final double SECONDARY_MAX_FLUX_WIDTH = 8.0;
