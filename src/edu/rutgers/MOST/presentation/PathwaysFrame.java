@@ -241,6 +241,10 @@ public class PathwaysFrame extends JApplet {
 			for (int j = 0; j < pathway.getMetabolitesData().size(); j++) {
 				String metabName = pathway.getMetabolitesData().get(Integer.toString(j)).getName();
 				//if (pathway.getComponent() == PathwaysFrameConstants.PHOSPHORYLATION_COMPONENT ||
+				String keggId = pathway.getMetabolitesData().get(Integer.toString(j)).getKeggId();
+				if (!LocalConfig.getInstance().getKeggIdMetaboliteMap().containsKey(keggId)) {
+					//System.out.println(keggId + " not found");
+				}
 				if (LocalConfig.getInstance().getSideSpeciesList().contains(pathway.getMetabolitesData().get(Integer.toString(j)).getKeggId())) {
 				//if (LocalConfig.getInstance().getSideSpeciesList().contains(pathway.getMetabolitesData().get(Integer.toString(j)).getAbbreviation())) {
 					noBorderList.add(pathway.getMetabolitesData().get(Integer.toString(j)).getName());
@@ -270,7 +274,7 @@ public class PathwaysFrame extends JApplet {
 				pathway.getMetabolitesNodes().put(pn.getDataId(), pn);
 				metabPosMap.put(metabName, new String[] {Double.toString(x), Double.toString(y)});
 				// create transport metabolite if kegg id in transport metabolite file
-				String keggId = pathway.getMetabolitesData().get(Integer.toString(j)).getKeggId();
+				//String keggId = pathway.getMetabolitesData().get(Integer.toString(j)).getKeggId();
 				if (pathway.getTransportMetabolitesData().containsKey(keggId)) {
 					ExternalMetaboliteData emd = pathway.getTransportMetabolitesData().get(keggId);
 					ExternalMetaboliteNode emn = new ExternalMetaboliteNode();
