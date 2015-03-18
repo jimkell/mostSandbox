@@ -24,6 +24,7 @@ import java.util.HashMap;
 import java.util.List;                                                                                               
 import java.util.Map;                                                                                                
                                                                                                                      
+
 import javax.swing.Icon;
 import javax.swing.ImageIcon;                                                                                        
 import javax.swing.JApplet;                                                                                          
@@ -52,6 +53,7 @@ import edu.rutgers.MOST.data.PathwayMetaboliteNode;
 import edu.rutgers.MOST.data.PathwayReactionNode;
 import edu.rutgers.MOST.data.PathwayReactionNodeFactory;
 import edu.rutgers.MOST.data.SBMLReaction;
+import edu.rutgers.MOST.data.TransportReactionConstants;
 import edu.rutgers.MOST.data.TransportReactionNode;
 import edu.uci.ics.jung.algorithms.layout.Layout;                                                                    
 import edu.uci.ics.jung.algorithms.layout.StaticLayout;                                                              
@@ -214,6 +216,9 @@ public class PathwaysFrame extends JApplet {
 	    	startX += PathwaysFrameConstants.PERIPLASM_WIDTH;
 	    	startY += PathwaysFrameConstants.PERIPLASM_HEIGHT;
 	    }
+	    
+	    double sideSpeciesExchangeStartX = 0;
+	    double sideSpeciesExchangeEndX = 0;
 		
 		ArrayList<String> foundList = new ArrayList<String>();
 		ArrayList<PathwayMetaboliteNode> externalMetaboliteNodeList = new ArrayList<PathwayMetaboliteNode>();
@@ -268,6 +273,13 @@ public class PathwaysFrame extends JApplet {
 				}
 				if (y > maxY) {
 					maxY = y;
+				}
+				// set start and end positions for side species transport reactions
+				if (keggId.equals(PathwaysFrameConstants.SIDE_SPECIES_EXCHANGE_START_POSITION_REACTION)) {
+					sideSpeciesExchangeStartX = x;
+				}
+				if (keggId.equals(PathwaysFrameConstants.SIDE_SPECIES_EXCHANGE_END_POSITION_REACTION)) {
+					sideSpeciesExchangeEndX = x;
 				}
 				pn.setAbbreviation(pathway.getMetabolitesData().get(Integer.toString(j)).getAbbreviation());
 				pn.setName(pathway.getMetabolitesData().get(Integer.toString(j)).getName());
@@ -519,8 +531,6 @@ public class PathwaysFrame extends JApplet {
 		metabPosMap.put("1", new String[] {borderLeftX, borderTopY}); 
 		metabPosMap.put("2", new String[] {borderRightX, borderTopY}); 
 		metabPosMap.put("3", new String[] {borderRightX, borderBottomY});
-//		metabPosMap.put("2", new String[] {borderRightX, borderTopY}); 
-//		metabPosMap.put("3", new String[] {borderRightX, borderBottomY});
 		metabPosMap.put("4", new String[] {borderLeftX, borderBottomY});                                                         
 
 		reactionMap.put("1", new String[] {"1", "2", "false"});
@@ -563,6 +573,83 @@ public class PathwaysFrame extends JApplet {
 			
 			for (int b = 5; b < 9; b++) {
 				borderList.add(Integer.toString(b));
+			}
+		}
+		
+		System.out.println(LocalConfig.getInstance().getSideSpeciesTransportReactionNodeMap());
+		ArrayList<String> sideSpeciesTransportMetabs = new ArrayList<String>(LocalConfig.getInstance().getSideSpeciesTransportMetaboliteKeggIdMap().keySet());
+		Collections.sort(sideSpeciesTransportMetabs);
+		for (int s = 0; s < sideSpeciesTransportMetabs.size(); s++) {
+			String keggId = LocalConfig.getInstance().getSideSpeciesTransportMetaboliteKeggIdMap().get(sideSpeciesTransportMetabs.get(s));
+			ArrayList<TransportReactionNode> trnList = LocalConfig.getInstance().getSideSpeciesTransportReactionNodeMap().get(keggId);
+			// eventually fad, gdp and gtp will be in pathways, remove for now
+			// also remove atp. even though kegg id in transport_metabolites.csv, it still
+			// gets plotted in recon model
+			String parentNode = "";
+			if (keggId.equals("C00035") || keggId.equals("C00044") || keggId.equals("C00016") || keggId.equals("C00002")) {
+				
+			} else {
+				double nodeY = Double.parseDouble(borderBottomY) - PathwaysFrameConstants.TRANSPORT_HEIGHT_INCREMENT;
+				ArrayList<String> compartmentList = LocalConfig.getInstance().getKeggIdCompartmentMap().get(keggId);
+				if (LocalConfig.getInstance().getCytosolName() != null && LocalConfig.getInstance().getCytosolName().length() > 0 &&
+						compartmentList.contains(LocalConfig.getInstance().getCytosolName())) {
+					//System.out.println(sideSpeciesTransportMetabs.get(s) + "_c");
+					String metabName = sideSpeciesTransportMetabs.get(s) + "_c";
+					metabolites.add(metabName);
+					PathwayMetaboliteNode pn = new PathwayMetaboliteNode();
+					pn.setxPosition(sideSpeciesExchangeStartX);
+					pn.setyPosition(nodeY);
+					pn.setAbbreviation(metabName);
+					pn.setName(metabName);
+					LocalConfig.getInstance().getMetaboliteNameAbbrMap().put(metabName, metabName);
+					metabPosMap.put(metabName, new String[] {Double.toString(pn.getxPosition()), Double.toString(pn.getyPosition())});
+					noBorderList.add(metabName);
+					parentNode = metabName;
+					nodeY += 2*PathwaysFrameConstants.TRANSPORT_HEIGHT_INCREMENT;
+				}
+				if (LocalConfig.getInstance().getPeriplasmName() != null && LocalConfig.getInstance().getPeriplasmName().length() > 0 &&
+						compartmentList.contains(LocalConfig.getInstance().getPeriplasmName())) {
+					//System.out.println(sideSpeciesTransportMetabs.get(s) + "_p");
+					String metabName = sideSpeciesTransportMetabs.get(s) + "_p";
+					metabolites.add(metabName);
+					PathwayMetaboliteNode pn = new PathwayMetaboliteNode();
+					pn.setxPosition(sideSpeciesExchangeStartX);
+					pn.setyPosition(nodeY);
+					pn.setAbbreviation(metabName);
+					pn.setName(metabName);
+					LocalConfig.getInstance().getMetaboliteNameAbbrMap().put(metabName, metabName);
+					metabPosMap.put(metabName, new String[] {Double.toString(pn.getxPosition()), Double.toString(pn.getyPosition())});
+					noBorderList.add(metabName);
+					parentNode = metabName;
+					for (int t = 0; t < trnList.size(); t++) {
+						if (trnList.get(t).getTransportType().equals(TransportReactionConstants.CYTOSOL_PERIPLASM_TRANSPORT)) {
+							trnList.get(t).setxPosition(sideSpeciesExchangeStartX);
+							trnList.get(t).setyPosition(nodeY - PathwaysFrameConstants.TRANSPORT_HEIGHT_INCREMENT);
+						}
+					}
+					nodeY += PathwaysFrameConstants.PERIPLASM_HEIGHT;
+				}
+				if (LocalConfig.getInstance().getExtraOrganismName() != null && LocalConfig.getInstance().getExtraOrganismName().length() > 0 &&
+						compartmentList.contains(LocalConfig.getInstance().getExtraOrganismName())) {
+					//System.out.println(sideSpeciesTransportMetabs.get(s) + "_e");
+					String metabName = sideSpeciesTransportMetabs.get(s) + "_e";
+					metabolites.add(metabName);
+					PathwayMetaboliteNode pn = new PathwayMetaboliteNode();
+					pn.setxPosition(sideSpeciesExchangeStartX);
+					pn.setyPosition(nodeY);
+					pn.setAbbreviation(metabName);
+					pn.setName(metabName);
+					LocalConfig.getInstance().getMetaboliteNameAbbrMap().put(metabName, metabName);
+					metabPosMap.put(metabName, new String[] {Double.toString(pn.getxPosition()), Double.toString(pn.getyPosition())});
+					noBorderList.add(metabName);
+					for (int t = 0; t < trnList.size(); t++) {
+						if (trnList.get(t).getTransportType().equals(TransportReactionConstants.CYTOSOL_EXTRAORGANISM_TRANSPORT)) {
+							trnList.get(t).setxPosition(sideSpeciesExchangeStartX);
+							trnList.get(t).setyPosition(nodeY - PathwaysFrameConstants.TRANSPORT_HEIGHT_INCREMENT);
+						}
+					}
+				}
+				sideSpeciesExchangeStartX += PathwaysFrameConstants.REACTION_NODE_WIDTH + 10;
 			}
 		}
 		
@@ -634,6 +721,7 @@ public class PathwaysFrame extends JApplet {
    	   			}
    			}
    		}
+   		System.out.println(fluxMap);
    		
    		for (int t = 0; t < transportMetaboliteNodeList.size(); t++) {
    			//System.out.println("transport " + transportMetaboliteNodeList.get(t).getKeggId());
@@ -688,7 +776,6 @@ public class PathwaysFrame extends JApplet {
    		
    		reactionList = new ArrayList<String>(reactionMap.keySet()); 
    		Collections.sort(reactionList);
-   		//System.out.println(reactionList);
                                                                                                                      
         // create graph     
         graph = new SparseMultigraph<String, Number>();  

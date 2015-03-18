@@ -7,7 +7,7 @@ public class TransportReactionNode {
 	// key, used for tooltip in graph
 	private String reactionName;
 	// used for node text
-	private String modelReactionName;
+	private String reactionAbbr;
 	private String dataId;
 	private String equation;
 	private String modelEquation;
@@ -25,11 +25,11 @@ public class TransportReactionNode {
 	public void setReactionName(String reactionName) {
 		this.reactionName = reactionName;
 	}
-	public String getModelReactionName() {
-		return modelReactionName;
+	public String getReactionAbbr() {
+		return reactionAbbr;
 	}
-	public void setModelReactionName(String modelReactionName) {
-		this.modelReactionName = modelReactionName;
+	public void setReactionAbbr(String reactionAbbr) {
+		this.reactionAbbr = reactionAbbr;
 	}
 	public String getDataId() {
 		return dataId;
@@ -95,8 +95,8 @@ public class TransportReactionNode {
 	
 	@Override
 	public String toString() {
-		return "Pathway Reaction Node [reactionName=" + reactionName
-		+ ", modelReactionName=" + modelReactionName		
+		return "Transport Reaction Node [reactionName=" + reactionName
+		+ ", reactionAbbr=" + reactionAbbr		
 		+ ", dataId=" + dataId
 		+ ", equation=" + equation
 		+ ", modelEquation=" + modelEquation

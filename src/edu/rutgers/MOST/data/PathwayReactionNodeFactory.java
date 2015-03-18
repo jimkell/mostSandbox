@@ -106,7 +106,7 @@ public class PathwayReactionNodeFactory {
 					//} 
 				}
 			}
-			System.out.println("found rxn " + reactions);
+			//System.out.println("found rxn " + reactions);
 		}
 		//pn.setPathwayId(pathway.getId());
 		pn.setSideReactants(sideReactants);

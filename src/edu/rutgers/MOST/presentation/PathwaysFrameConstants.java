@@ -97,4 +97,9 @@ public class PathwaysFrameConstants {
 	public static final int PHOSPHORYLATION_Y_OFFSET = VERTICAL_INCREMENT;
 	public static final int RIGHT_BORDER_INCREMENT = 0;
 	
+	// there is an area between f6p and pep in glycolysis where there are no transport reactions.
+	// this is a good place to put transport reactions of side species
+	public static final String SIDE_SPECIES_EXCHANGE_START_POSITION_REACTION = "C00085";
+	public static final String SIDE_SPECIES_EXCHANGE_END_POSITION_REACTION = "C00022";
+	
 }

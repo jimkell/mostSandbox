@@ -17,6 +17,7 @@ import edu.rutgers.MOST.data.PathwayMetaboliteData;
 import edu.rutgers.MOST.data.PathwayReactionData;
 import edu.rutgers.MOST.data.SBMLMetabolite;
 import edu.rutgers.MOST.data.SBMLReaction;
+import edu.rutgers.MOST.data.TransportReactionNode;
 
 public class LocalConfig {	
 
@@ -1270,5 +1271,28 @@ public class LocalConfig {
 			Map<String, ArrayList<SBMLReaction>> keggIdReactionMap) {
 		this.keggIdReactionMap = keggIdReactionMap;
 	}
+	
+	private Map<String, String> sideSpeciesTransportMetaboliteKeggIdMap;
+
+	public Map<String, String> getSideSpeciesTransportMetaboliteKeggIdMap() {
+		return sideSpeciesTransportMetaboliteKeggIdMap;
+	}
+
+	public void setSideSpeciesTransportMetaboliteKeggIdMap(
+			Map<String, String> sideSpeciesTransportMetaboliteKeggIdMap) {
+		this.sideSpeciesTransportMetaboliteKeggIdMap = sideSpeciesTransportMetaboliteKeggIdMap;
+	}
+	
+	private Map<String, ArrayList<TransportReactionNode>> sideSpeciesTransportReactionNodeMap;
+
+	public Map<String, ArrayList<TransportReactionNode>> getSideSpeciesTransportReactionNodeMap() {
+		return sideSpeciesTransportReactionNodeMap;
+	}
+
+	public void setSideSpeciesTransportReactionNodeMap(
+			Map<String, ArrayList<TransportReactionNode>> sideSpeciesTransportReactionNodeMap) {
+		this.sideSpeciesTransportReactionNodeMap = sideSpeciesTransportReactionNodeMap;
+	}
+
 
 }

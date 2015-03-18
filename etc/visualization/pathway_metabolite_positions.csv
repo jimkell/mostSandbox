@@ -56,6 +56,7 @@ Pathway ID,Metabolite ID,Metabolite Level,Metabolite Level Position,Metabolite N
 1,8,2.6,-4.5,Fumarate|fumarate,FUM,C00122,
 1,9,1.7,-3.5,(S)-Malate|(S)-malate,MAL,C00149,
 1,11,3,2,Glyoxylate,Glyoxylate,C00048,
+1,12,0.4,-0.8,Formate,Form,C00058,
 24,0,1,0,L-Glutamine,Gln,C00064,
 24,1,0,2,L-Glutamate,Glu,C00025,
 24,2,0,0,2-Oxoglutaramate,2-Oxoglutaramate,C00940,
