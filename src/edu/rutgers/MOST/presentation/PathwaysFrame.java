@@ -625,6 +625,11 @@ public class PathwaysFrame extends JApplet {
 						if (trnList.get(t).getTransportType().equals(TransportReactionConstants.CYTOSOL_PERIPLASM_TRANSPORT)) {
 							trnList.get(t).setxPosition(sideSpeciesExchangeStartX);
 							trnList.get(t).setyPosition(nodeY - PathwaysFrameConstants.TRANSPORT_HEIGHT_INCREMENT);
+							//System.out.println("pn " + parentNode);
+							System.out.println("cp abbr " + trnList.get(t).getReactionAbbr());
+							reactions.add(trnList.get(t).getReactionAbbr());
+							metabPosMap.put(trnList.get(t).getReactionAbbr(), new String[] {Double.toString(trnList.get(t).getxPosition()), Double.toString(trnList.get(t).getyPosition())});  
+							foundList.add(trnList.get(t).getReactionAbbr());
 						}
 					}
 					nodeY += PathwaysFrameConstants.PERIPLASM_HEIGHT;
@@ -646,6 +651,11 @@ public class PathwaysFrame extends JApplet {
 						if (trnList.get(t).getTransportType().equals(TransportReactionConstants.CYTOSOL_EXTRAORGANISM_TRANSPORT)) {
 							trnList.get(t).setxPosition(sideSpeciesExchangeStartX);
 							trnList.get(t).setyPosition(nodeY - PathwaysFrameConstants.TRANSPORT_HEIGHT_INCREMENT);
+							//System.out.println("pn " + parentNode);
+							System.out.println("ce abbr " + trnList.get(t).getReactionAbbr());
+							reactions.add(trnList.get(t).getReactionAbbr());
+							metabPosMap.put(trnList.get(t).getReactionAbbr(), new String[] {Double.toString(trnList.get(t).getxPosition()), Double.toString(trnList.get(t).getyPosition())});  
+							foundList.add(trnList.get(t).getReactionAbbr());
 						}
 					}
 				}
@@ -721,7 +731,6 @@ public class PathwaysFrame extends JApplet {
    	   			}
    			}
    		}
-   		System.out.println(fluxMap);
    		
    		for (int t = 0; t < transportMetaboliteNodeList.size(); t++) {
    			//System.out.println("transport " + transportMetaboliteNodeList.get(t).getKeggId());
