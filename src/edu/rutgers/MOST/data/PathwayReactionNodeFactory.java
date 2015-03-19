@@ -31,7 +31,11 @@ public class PathwayReactionNodeFactory {
 			if (LocalConfig.getInstance().getEcNumberReactionMap().containsKey(ec.get(m))) {
 				// attributes from SBML Reaction
 				ArrayList<SBMLReaction> reac = LocalConfig.getInstance().getEcNumberReactionMap().get(ec.get(m));
-				addReactions(reactions, reac, compartment, keggReactantIds, keggProductIds);
+				if (ec.size() == 1) {
+					reactions.add(reac.get(0));
+				} else {
+					addReactions(reactions, reac, compartment, keggReactantIds, keggProductIds);
+				}
 				// attributes from Enzyme.dat
 				if (LocalConfig.getInstance().getEnzymeDataMap().containsKey(ec.get(m))) {
 					if (LocalConfig.getInstance().getEnzymeDataMap().get(ec.get(m)).getCatalyticActivity() == null) {

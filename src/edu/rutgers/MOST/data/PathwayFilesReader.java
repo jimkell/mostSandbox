@@ -806,6 +806,7 @@ public class PathwayFilesReader {
 		File pathways = new File(PathwaysCSVFileConstants.PATHWAYS_FILE_NAME);
 		File pathwayGraph = new File(PathwaysCSVFileConstants.PATHWAY_GRAPH_FILE_NAME);
 		File metabolites = new File(PathwaysCSVFileConstants.METABOLITES_FILE_NAME);
+		File additionalMetabolites = new File(PathwaysCSVFileConstants.ADDITIONAL_METABOLITES_FILE_NAME);
 		File metabolitePositions = new File(PathwaysCSVFileConstants.METABOLITE_POSITIONS_FILE_NAME);
 		File reactions = new File(PathwaysCSVFileConstants.REACTIONS_FILE_NAME);
 		File reactionPositions = new File(PathwaysCSVFileConstants.REACTION_POSITIONS_FILE_NAME);
@@ -818,6 +819,7 @@ public class PathwayFilesReader {
 		reader.readPathwaysFile(pathways);
 		reader.readPathwayGraphFile(pathwayGraph);
 		reader.readMetabolitesFile(metabolites);
+		reader.readMetabolitesFile(additionalMetabolites);
 		reader.readMetabolitePositionsFile(metabolitePositions);
 		reader.readReactionsFile(reactions);
 		reader.readReactionPositionsFile(reactionPositions);
