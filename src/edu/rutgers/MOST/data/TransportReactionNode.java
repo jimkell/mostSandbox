@@ -105,7 +105,8 @@ public class TransportReactionNode {
 		+ ", pathwayProducts=" + pathwayProducts
 		+ ", reversible=" + reversible
 		+ ", xPosition=" + xPosition
-		+ ", yPosition=" + yPosition + "]";
+		+ ", yPosition=" + yPosition
+		+ ", transportType=" + transportType + "]";
 	}
 
 }

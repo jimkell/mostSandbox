@@ -82,4 +82,4 @@ Pathway ID,Metabolite ID,Metabolite Level,Metabolite Level Position,Metabolite N
 17,17,3,4,H c 1.6.5.3,H c,C00080,
 17,18,5.5,3.25,"O2 1.9.3.-,1.10.3.-",O2,C00007,
 17,19,0,4.5,Diphosphate 3.6.1.1,PPi,C00013,
-17,20,1,4.5,Triphosphate 2.7.4.1,PPPi,C00536,
+17,20,1,4.5,Triphosphate 2.7.4.1,PPPi,C00536,C03279

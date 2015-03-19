@@ -579,6 +579,7 @@ public class PathwaysFrame extends JApplet {
 		System.out.println(LocalConfig.getInstance().getSideSpeciesTransportReactionNodeMap());
 		ArrayList<String> sideSpeciesTransportMetabs = new ArrayList<String>(LocalConfig.getInstance().getSideSpeciesTransportMetaboliteKeggIdMap().keySet());
 		Collections.sort(sideSpeciesTransportMetabs);
+		
 		for (int s = 0; s < sideSpeciesTransportMetabs.size(); s++) {
 			String keggId = LocalConfig.getInstance().getSideSpeciesTransportMetaboliteKeggIdMap().get(sideSpeciesTransportMetabs.get(s));
 			ArrayList<TransportReactionNode> trnList = LocalConfig.getInstance().getSideSpeciesTransportReactionNodeMap().get(keggId);
@@ -593,7 +594,6 @@ public class PathwaysFrame extends JApplet {
 				ArrayList<String> compartmentList = LocalConfig.getInstance().getKeggIdCompartmentMap().get(keggId);
 				if (LocalConfig.getInstance().getCytosolName() != null && LocalConfig.getInstance().getCytosolName().length() > 0 &&
 						compartmentList.contains(LocalConfig.getInstance().getCytosolName())) {
-					//System.out.println(sideSpeciesTransportMetabs.get(s) + "_c");
 					String metabName = sideSpeciesTransportMetabs.get(s) + "_c";
 					metabolites.add(metabName);
 					PathwayMetaboliteNode pn = new PathwayMetaboliteNode();
@@ -609,7 +609,6 @@ public class PathwaysFrame extends JApplet {
 				}
 				if (LocalConfig.getInstance().getPeriplasmName() != null && LocalConfig.getInstance().getPeriplasmName().length() > 0 &&
 						compartmentList.contains(LocalConfig.getInstance().getPeriplasmName())) {
-					//System.out.println(sideSpeciesTransportMetabs.get(s) + "_p");
 					String metabName = sideSpeciesTransportMetabs.get(s) + "_p";
 					metabolites.add(metabName);
 					PathwayMetaboliteNode pn = new PathwayMetaboliteNode();
@@ -626,39 +625,59 @@ public class PathwaysFrame extends JApplet {
 							trnList.get(t).setxPosition(sideSpeciesExchangeStartX);
 							trnList.get(t).setyPosition(nodeY - PathwaysFrameConstants.TRANSPORT_HEIGHT_INCREMENT);
 							//System.out.println("pn " + parentNode);
-							System.out.println("cp abbr " + trnList.get(t).getReactionAbbr());
 							reactions.add(trnList.get(t).getReactionAbbr());
 							metabPosMap.put(trnList.get(t).getReactionAbbr(), new String[] {Double.toString(trnList.get(t).getxPosition()), Double.toString(trnList.get(t).getyPosition())});  
 							foundList.add(trnList.get(t).getReactionAbbr());
 						}
 					}
 					nodeY += PathwaysFrameConstants.PERIPLASM_HEIGHT;
-				}
-				if (LocalConfig.getInstance().getExtraOrganismName() != null && LocalConfig.getInstance().getExtraOrganismName().length() > 0 &&
+					if (LocalConfig.getInstance().getExtraOrganismName() != null && LocalConfig.getInstance().getExtraOrganismName().length() > 0 &&
+							compartmentList.contains(LocalConfig.getInstance().getExtraOrganismName())) {
+						metabName = sideSpeciesTransportMetabs.get(s) + "_e";
+						metabolites.add(metabName);
+						PathwayMetaboliteNode pn1 = new PathwayMetaboliteNode();
+						pn1.setxPosition(sideSpeciesExchangeStartX);
+						pn1.setyPosition(nodeY);
+						pn1.setAbbreviation(metabName);
+						pn1.setName(metabName);
+						LocalConfig.getInstance().getMetaboliteNameAbbrMap().put(metabName, metabName);
+						metabPosMap.put(metabName, new String[] {Double.toString(pn1.getxPosition()), Double.toString(pn1.getyPosition())});
+						noBorderList.add(metabName);
+						for (int t = 0; t < trnList.size(); t++) {
+							if (trnList.get(t).getTransportType().equals(TransportReactionConstants.PERIPLASM_EXTRAORGANISM_TRANSPORT)) {
+								trnList.get(t).setxPosition(sideSpeciesExchangeStartX);
+								trnList.get(t).setyPosition(nodeY - PathwaysFrameConstants.TRANSPORT_HEIGHT_INCREMENT);
+								//System.out.println("pn " + parentNode);
+								reactions.add(trnList.get(t).getReactionAbbr());
+								metabPosMap.put(trnList.get(t).getReactionAbbr(), new String[] {Double.toString(trnList.get(t).getxPosition()), Double.toString(trnList.get(t).getyPosition())});  
+								foundList.add(trnList.get(t).getReactionAbbr());
+							}
+						}
+					}
+				} else if (LocalConfig.getInstance().getExtraOrganismName() != null && LocalConfig.getInstance().getExtraOrganismName().length() > 0 &&
 						compartmentList.contains(LocalConfig.getInstance().getExtraOrganismName())) {
-					//System.out.println(sideSpeciesTransportMetabs.get(s) + "_e");
 					String metabName = sideSpeciesTransportMetabs.get(s) + "_e";
 					metabolites.add(metabName);
-					PathwayMetaboliteNode pn = new PathwayMetaboliteNode();
-					pn.setxPosition(sideSpeciesExchangeStartX);
-					pn.setyPosition(nodeY);
-					pn.setAbbreviation(metabName);
-					pn.setName(metabName);
+					PathwayMetaboliteNode pn1 = new PathwayMetaboliteNode();
+					pn1.setxPosition(sideSpeciesExchangeStartX);
+					pn1.setyPosition(nodeY);
+					pn1.setAbbreviation(metabName);
+					pn1.setName(metabName);
 					LocalConfig.getInstance().getMetaboliteNameAbbrMap().put(metabName, metabName);
-					metabPosMap.put(metabName, new String[] {Double.toString(pn.getxPosition()), Double.toString(pn.getyPosition())});
+					metabPosMap.put(metabName, new String[] {Double.toString(pn1.getxPosition()), Double.toString(pn1.getyPosition())});
 					noBorderList.add(metabName);
 					for (int t = 0; t < trnList.size(); t++) {
 						if (trnList.get(t).getTransportType().equals(TransportReactionConstants.CYTOSOL_EXTRAORGANISM_TRANSPORT)) {
 							trnList.get(t).setxPosition(sideSpeciesExchangeStartX);
 							trnList.get(t).setyPosition(nodeY - PathwaysFrameConstants.TRANSPORT_HEIGHT_INCREMENT);
 							//System.out.println("pn " + parentNode);
-							System.out.println("ce abbr " + trnList.get(t).getReactionAbbr());
 							reactions.add(trnList.get(t).getReactionAbbr());
 							metabPosMap.put(trnList.get(t).getReactionAbbr(), new String[] {Double.toString(trnList.get(t).getxPosition()), Double.toString(trnList.get(t).getyPosition())});  
 							foundList.add(trnList.get(t).getReactionAbbr());
 						}
 					}
 				}
+				
 				sideSpeciesExchangeStartX += PathwaysFrameConstants.REACTION_NODE_WIDTH + 10;
 			}
 		}

@@ -12634,7 +12634,7 @@ public class GraphicalInterface extends JFrame {
 			System.out.println("ce " + cytosolExtraOrganismIds);
 			for (int k = 0; k < cytosolExtraOrganismIds.size(); k++) {
 				if (transportReactionAbbreviation(cytosolExtraOrganismIds.get(k), idReactionMap, TransportReactionConstants.CYTOSOL_EXTRAORGANISM_TRANSPORT) != null) {
-					//System.out.println(transportReactionAbbreviation(cytosolExtraOrganismIds.get(k), idReactionMap));
+					//System.out.println(transportReactionAbbreviation(cytosolExtraOrganismIds.get(k), idReactionMap, TransportReactionConstants.CYTOSOL_EXTRAORGANISM_TRANSPORT));
 				} else {
 					//System.out.println("no kegg id " + idReactionMap.get(cytosolExtraOrganismIds.get(k)).getReactionEqunAbbr());
 				}
@@ -12650,7 +12650,7 @@ public class GraphicalInterface extends JFrame {
 			System.out.println("cp " + cytosolPeriplasmIds);
 			for (int m = 0; m < cytosolPeriplasmIds.size(); m++) {
 				if (transportReactionAbbreviation(cytosolPeriplasmIds.get(m), idReactionMap, TransportReactionConstants.CYTOSOL_PERIPLASM_TRANSPORT) != null) {
-					//System.out.println(transportReactionAbbreviation(cytosolPeriplasmIds.get(m), idReactionMap));
+					//System.out.println(transportReactionAbbreviation(cytosolPeriplasmIds.get(m), idReactionMap, TransportReactionConstants.CYTOSOL_PERIPLASM_TRANSPORT));
 				} else {
 					//System.out.println("no kegg id " + idReactionMap.get(cytosolPeriplasmIds.get(m)).getReactionEqunAbbr());
 				}
@@ -12666,7 +12666,7 @@ public class GraphicalInterface extends JFrame {
 			System.out.println("pe " + periplasmExtraOrganismIds);
 			for (int n = 0; n < periplasmExtraOrganismIds.size(); n++) {
 				if (transportReactionAbbreviation(periplasmExtraOrganismIds.get(n), idReactionMap, TransportReactionConstants.PERIPLASM_EXTRAORGANISM_TRANSPORT) != null) {
-					//System.out.println(transportReactionAbbreviation(periplasmExtraOrganismIds.get(n), idReactionMap));
+					//System.out.println(transportReactionAbbreviation(periplasmExtraOrganismIds.get(n), idReactionMap, TransportReactionConstants.PERIPLASM_EXTRAORGANISM_TRANSPORT));
 				} else {
 					//System.out.println("no kegg id " + idReactionMap.get(periplasmExtraOrganismIds.get(n)).getReactionEqunAbbr());
 				}
@@ -12718,7 +12718,7 @@ public class GraphicalInterface extends JFrame {
 						} else {
 							metabAbbr = metabAbbr.substring(2);
 						}
-						System.out.println(metabAbbr);
+						//System.out.println(metabAbbr);
 						LocalConfig.getInstance().getSideSpeciesTransportMetaboliteKeggIdMap().put(metabAbbr, LocalConfig.getInstance().getKeggIdMetaboliteMap().get(keggReactantIds.get(0)).get(0).getKeggId());
 						TransportReactionNode trn = new TransportReactionNode();
 						trn.setReactionAbbr(idReactionMap.get(id).getReactionAbbreviation());
