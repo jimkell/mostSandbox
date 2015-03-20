@@ -833,7 +833,7 @@ public class LocalConfig {
 	
 	// Visualizations
 	
-	// may need to make maps with other keys such as Reaction Name
+	// data from enzyme.dat file
 	private ArrayList<EnzymeData> enzymeDataList;
 
 	public ArrayList<EnzymeData> getEnzymeDataList() {
@@ -854,143 +854,7 @@ public class LocalConfig {
 		this.enzymeDataMap = enzymeDataMap;
 	}
 
-	private Map<String, MetabolicPathway> metabolicPathways;
-
-	public Map<String, MetabolicPathway> getMetabolicPathways() {
-		return metabolicPathways;
-	}
-
-	public void setMetabolicPathways(Map<String, MetabolicPathway> metabolicPathways) {
-		this.metabolicPathways = metabolicPathways;
-	}
-
-	private ArrayList<String> drawOrder;
-
-	public ArrayList<String> getDrawOrder() {
-		return drawOrder;
-	}
-
-	public void setDrawOrder(ArrayList<String> drawOrder) {
-		this.drawOrder = drawOrder;
-	}
-	
-	private ArrayList<String> sideSpeciesList;
-
-	public ArrayList<String> getSideSpeciesList() {
-		return sideSpeciesList;
-	}
-
-	public void setSideSpeciesList(ArrayList<String> sideSpeciesList) {
-		this.sideSpeciesList = sideSpeciesList;
-	}
-
-	private Map<String, String> metaboliteNameAbbrMap;
-
-	public Map<String, String> getMetaboliteNameAbbrMap() {
-		return metaboliteNameAbbrMap;
-	}
-
-	public void setMetaboliteNameAbbrMap(Map<String, String> metaboliteNameAbbrMap) {
-		this.metaboliteNameAbbrMap = metaboliteNameAbbrMap;
-	}
-	
-	private Map<String, ArrayList<SBMLReaction>> ecNumberReactionMap;
-
-	public Map<String, ArrayList<SBMLReaction>> getEcNumberReactionMap() {
-		return ecNumberReactionMap;
-	}
-
-	public void setEcNumberReactionMap(
-			Map<String, ArrayList<SBMLReaction>> ecNumberReactionMap) {
-		this.ecNumberReactionMap = ecNumberReactionMap;
-	}
-
-	// list from beginning of sbml file
-	private ArrayList<String> listOfCompartments;
-
-	public ArrayList<String> getListOfCompartments() {
-		return listOfCompartments;
-	}
-
-	public void setListOfCompartments(ArrayList<String> listOfCompartments) {
-		this.listOfCompartments = listOfCompartments;
-	}
-	
-	private ArrayList<String> listOfCompartmentNames;
-
-	public ArrayList<String> getListOfCompartmentNames() {
-		return listOfCompartmentNames;
-	}
-
-	public void setListOfCompartmentNames(ArrayList<String> listOfCompartmentNames) {
-		this.listOfCompartmentNames = listOfCompartmentNames;
-	}
-
-	// list from metabolites table
-	private ArrayList<String> compartmentsList;
-
-	public ArrayList<String> getCompartmentsList() {
-		return compartmentsList;
-	}
-
-	public void setCompartmentsList(ArrayList<String> compartmentsList) {
-		this.compartmentsList = compartmentsList;
-	}
-	
-	private ArrayList<Integer> biCompartmentReactionIds;
-
-	public ArrayList<Integer> getBiCompartmentReactionIds() {
-		return biCompartmentReactionIds;
-	}
-
-	public void setBiCompartmentReactionIds(
-			ArrayList<Integer> biCompartmentReactionIds) {
-		this.biCompartmentReactionIds = biCompartmentReactionIds;
-	}
-	
-	private Map<String, ArrayList<String>> keggIdCompartmentMap;
-
-	public Map<String, ArrayList<String>> getKeggIdCompartmentMap() {
-		return keggIdCompartmentMap;
-	}
-
-	public void setKeggIdCompartmentMap(
-			Map<String, ArrayList<String>> keggIdCompartmentMap) {
-		this.keggIdCompartmentMap = keggIdCompartmentMap;
-	}
-	
-	private Map<String, String> metaboliteIdKeggIdMap;
-
-	public Map<String, String> getMetaboliteIdKeggIdMap() {
-		return metaboliteIdKeggIdMap;
-	}
-
-	public void setMetaboliteIdKeggIdMap(Map<String, String> metaboliteIdKeggIdMap) {
-		this.metaboliteIdKeggIdMap = metaboliteIdKeggIdMap;
-	}
-	
-	private Map<String, ArrayList<SBMLMetabolite>> keggIdMetaboliteMap;
-
-	public Map<String, ArrayList<SBMLMetabolite>> getKeggIdMetaboliteMap() {
-		return keggIdMetaboliteMap;
-	}
-
-	public void setKeggIdMetaboliteMap(
-			Map<String, ArrayList<SBMLMetabolite>> keggIdMetaboliteMap) {
-		this.keggIdMetaboliteMap = keggIdMetaboliteMap;
-	}
-
-	private Map<String, PathwayReactionData> modelKeggEquationMap;
-
-	public Map<String, PathwayReactionData> getModelKeggEquationMap() {
-		return modelKeggEquationMap;
-	}
-
-	public void setModelKeggEquationMap(
-			Map<String, PathwayReactionData> modelKeggEquationMap) {
-		this.modelKeggEquationMap = modelKeggEquationMap;
-	}
-
+	// data from etc/visualizations files
 	private Map<String, ArrayList<PathwayConnectionData>> connectionPositionMap;
 
 	public Map<String, ArrayList<PathwayConnectionData>> getConnectionPositionMap() {
@@ -1023,15 +887,35 @@ public class LocalConfig {
 		this.connectionsNodelist = connectionsNodelist;
 	}
 	
-	private Map<String, String> metaboliteAbbrKeggIdMap;
+	private ArrayList<String> drawOrder;
 
-	public Map<String, String> getMetaboliteAbbrKeggIdMap() {
-		return metaboliteAbbrKeggIdMap;
+	public ArrayList<String> getDrawOrder() {
+		return drawOrder;
 	}
 
-	public void setMetaboliteAbbrKeggIdMap(
-			Map<String, String> metaboliteAbbrKeggIdMap) {
-		this.metaboliteAbbrKeggIdMap = metaboliteAbbrKeggIdMap;
+	public void setDrawOrder(ArrayList<String> drawOrder) {
+		this.drawOrder = drawOrder;
+	}
+	
+	private Map<String, ArrayList<String>> ecNumberKeggReactionIdMap;
+
+	public Map<String, ArrayList<String>> getEcNumberKeggReactionIdMap() {
+		return ecNumberKeggReactionIdMap;
+	}
+
+	public void setEcNumberKeggReactionIdMap(
+			Map<String, ArrayList<String>> ecNumberKeggReactionIdMap) {
+		this.ecNumberKeggReactionIdMap = ecNumberKeggReactionIdMap;
+	}
+	
+	private Map<String, MetabolicPathway> metabolicPathways;
+
+	public Map<String, MetabolicPathway> getMetabolicPathways() {
+		return metabolicPathways;
+	}
+
+	public void setMetabolicPathways(Map<String, MetabolicPathway> metabolicPathways) {
+		this.metabolicPathways = metabolicPathways;
 	}
 	
 	private Map<String, PathwayMetaboliteData> metaboliteDataKeggIdMap;
@@ -1045,6 +929,16 @@ public class LocalConfig {
 		this.metaboliteDataKeggIdMap = metaboliteDataKeggIdMap;
 	}
 	
+	private Map<String, String> metaboliteNameAbbrMap;
+
+	public Map<String, String> getMetaboliteNameAbbrMap() {
+		return metaboliteNameAbbrMap;
+	}
+
+	public void setMetaboliteNameAbbrMap(Map<String, String> metaboliteNameAbbrMap) {
+		this.metaboliteNameAbbrMap = metaboliteNameAbbrMap;
+	}
+	
 	private Map<String, PathwayReactionData> reactionDataKeggIdMap;
 
 	public Map<String, PathwayReactionData> getReactionDataKeggIdMap() {
@@ -1056,38 +950,126 @@ public class LocalConfig {
 		this.reactionDataKeggIdMap = reactionDataKeggIdMap;
 	}
 	
-	private Map<String, ArrayList<String>> ecNumberKeggReactionIdMap;
+	private ArrayList<String> sideSpeciesList;
 
-	public Map<String, ArrayList<String>> getEcNumberKeggReactionIdMap() {
-		return ecNumberKeggReactionIdMap;
+	public ArrayList<String> getSideSpeciesList() {
+		return sideSpeciesList;
 	}
 
-	public void setEcNumberKeggReactionIdMap(
-			Map<String, ArrayList<String>> ecNumberKeggReactionIdMap) {
-		this.ecNumberKeggReactionIdMap = ecNumberKeggReactionIdMap;
+	public void setSideSpeciesList(ArrayList<String> sideSpeciesList) {
+		this.sideSpeciesList = sideSpeciesList;
 	}
 
-	private Map<String, String> reactionAbbrECNumberMap;
+	// sbml file read - list from beginning of sbml file
+	private ArrayList<String> listOfCompartments;
 
-	public Map<String, String> getReactionAbbrECNumberMap() {
-		return reactionAbbrECNumberMap;
+	public ArrayList<String> getListOfCompartments() {
+		return listOfCompartments;
 	}
 
-	public void setReactionAbbrECNumberMap(
-			Map<String, String> reactionAbbrECNumberMap) {
-		this.reactionAbbrECNumberMap = reactionAbbrECNumberMap;
+	public void setListOfCompartments(ArrayList<String> listOfCompartments) {
+		this.listOfCompartments = listOfCompartments;
 	}
 	
-	private ArrayList<String> transportMetaboliteIds;
+	private ArrayList<String> listOfCompartmentNames;
+
+	public ArrayList<String> getListOfCompartmentNames() {
+		return listOfCompartmentNames;
+	}
+
+	public void setListOfCompartmentNames(ArrayList<String> listOfCompartmentNames) {
+		this.listOfCompartmentNames = listOfCompartmentNames;
+	}
+
+	// list from metabolites table
+	private ArrayList<String> compartmentsList;
+
+	public ArrayList<String> getCompartmentsList() {
+		return compartmentsList;
+	}
+
+	public void setCompartmentsList(ArrayList<String> compartmentsList) {
+		this.compartmentsList = compartmentsList;
+	}
 	
-	public ArrayList<String> getTransportMetaboliteIds() {
-		return transportMetaboliteIds;
+//	private ArrayList<Integer> biCompartmentReactionIds;
+//
+//	public ArrayList<Integer> getBiCompartmentReactionIds() {
+//		return biCompartmentReactionIds;
+//	}
+//
+//	public void setBiCompartmentReactionIds(
+//			ArrayList<Integer> biCompartmentReactionIds) {
+//		this.biCompartmentReactionIds = biCompartmentReactionIds;
+//	}
+	
+	
+	// created each time visualize run from model
+	private Map<String, ArrayList<String>> keggIdCompartmentMap;
+
+	public Map<String, ArrayList<String>> getKeggIdCompartmentMap() {
+		return keggIdCompartmentMap;
 	}
 
-	public void setTransportMetaboliteIds(ArrayList<String> transportMetaboliteIds) {
-		this.transportMetaboliteIds = transportMetaboliteIds;
+	public void setKeggIdCompartmentMap(
+			Map<String, ArrayList<String>> keggIdCompartmentMap) {
+		this.keggIdCompartmentMap = keggIdCompartmentMap;
+	}
+	
+	private Map<String, ArrayList<SBMLMetabolite>> keggIdMetaboliteMap;
+
+	public Map<String, ArrayList<SBMLMetabolite>> getKeggIdMetaboliteMap() {
+		return keggIdMetaboliteMap;
 	}
 
+	public void setKeggIdMetaboliteMap(
+			Map<String, ArrayList<SBMLMetabolite>> keggIdMetaboliteMap) {
+		this.keggIdMetaboliteMap = keggIdMetaboliteMap;
+	}
+	
+	private Map<String, String> metaboliteIdKeggIdMap;
+
+	public Map<String, String> getMetaboliteIdKeggIdMap() {
+		return metaboliteIdKeggIdMap;
+	}
+
+	public void setMetaboliteIdKeggIdMap(Map<String, String> metaboliteIdKeggIdMap) {
+		this.metaboliteIdKeggIdMap = metaboliteIdKeggIdMap;
+	}
+	
+	private Map<String, ArrayList<SBMLReaction>> ecNumberReactionMap;
+
+	public Map<String, ArrayList<SBMLReaction>> getEcNumberReactionMap() {
+		return ecNumberReactionMap;
+	}
+
+	public void setEcNumberReactionMap(
+			Map<String, ArrayList<SBMLReaction>> ecNumberReactionMap) {
+		this.ecNumberReactionMap = ecNumberReactionMap;
+	}
+	
+	private Map<String, ArrayList<SBMLReaction>> keggIdReactionMap;
+
+	public Map<String, ArrayList<SBMLReaction>> getKeggIdReactionMap() {
+		return keggIdReactionMap;
+	}
+
+	public void setKeggIdReactionMap(
+			Map<String, ArrayList<SBMLReaction>> keggIdReactionMap) {
+		this.keggIdReactionMap = keggIdReactionMap;
+	}
+	
+	private Map<String, PathwayReactionData> modelKeggEquationMap;
+
+	public Map<String, PathwayReactionData> getModelKeggEquationMap() {
+		return modelKeggEquationMap;
+	}
+
+	public void setModelKeggEquationMap(
+			Map<String, PathwayReactionData> modelKeggEquationMap) {
+		this.modelKeggEquationMap = modelKeggEquationMap;
+	}
+	
 	private ArrayList<Integer> unplottedReactionIds;
 
 	public ArrayList<Integer> getUnplottedReactionIds() {
@@ -1098,6 +1080,7 @@ public class LocalConfig {
 		this.unplottedReactionIds = unplottedReactionIds;
 	}
 	
+	// categorization
 	private ArrayList<Integer> cytosolExtraOrganismIds;
 
 	public ArrayList<Integer> getCytosolExtraOrganismIds() {
@@ -1128,6 +1111,64 @@ public class LocalConfig {
 	public void setPeriplasmExtraOrganismIds(
 			ArrayList<Integer> periplasmExtraOrganismIds) {
 		this.periplasmExtraOrganismIds = periplasmExtraOrganismIds;
+	}
+
+	
+	// used to add kegg ids to metabolites table from supplementary data
+	private Map<String, String> metaboliteAbbrKeggIdMap;
+
+	public Map<String, String> getMetaboliteAbbrKeggIdMap() {
+		return metaboliteAbbrKeggIdMap;
+	}
+
+	public void setMetaboliteAbbrKeggIdMap(
+			Map<String, String> metaboliteAbbrKeggIdMap) {
+		this.metaboliteAbbrKeggIdMap = metaboliteAbbrKeggIdMap;
+	}
+	
+	// used to add ec numbers from supplementary data 
+	private Map<String, String> reactionAbbrECNumberMap;
+
+	public Map<String, String> getReactionAbbrECNumberMap() {
+		return reactionAbbrECNumberMap;
+	}
+
+	public void setReactionAbbrECNumberMap(
+			Map<String, String> reactionAbbrECNumberMap) {
+		this.reactionAbbrECNumberMap = reactionAbbrECNumberMap;
+	}
+	
+	// transport reactions
+	private Map<String, String> sideSpeciesTransportMetaboliteKeggIdMap;
+
+	public Map<String, String> getSideSpeciesTransportMetaboliteKeggIdMap() {
+		return sideSpeciesTransportMetaboliteKeggIdMap;
+	}
+
+	public void setSideSpeciesTransportMetaboliteKeggIdMap(
+			Map<String, String> sideSpeciesTransportMetaboliteKeggIdMap) {
+		this.sideSpeciesTransportMetaboliteKeggIdMap = sideSpeciesTransportMetaboliteKeggIdMap;
+	}
+	
+	private Map<String, ArrayList<TransportReactionNode>> sideSpeciesTransportReactionNodeMap;
+
+	public Map<String, ArrayList<TransportReactionNode>> getSideSpeciesTransportReactionNodeMap() {
+		return sideSpeciesTransportReactionNodeMap;
+	}
+
+	public void setSideSpeciesTransportReactionNodeMap(
+			Map<String, ArrayList<TransportReactionNode>> sideSpeciesTransportReactionNodeMap) {
+		this.sideSpeciesTransportReactionNodeMap = sideSpeciesTransportReactionNodeMap;
+	}
+	
+	private ArrayList<String> transportMetaboliteIds;
+	
+	public ArrayList<String> getTransportMetaboliteIds() {
+		return transportMetaboliteIds;
+	}
+
+	public void setTransportMetaboliteIds(ArrayList<String> transportMetaboliteIds) {
+		this.transportMetaboliteIds = transportMetaboliteIds;
 	}
 
 	// Visualization options
@@ -1261,38 +1302,7 @@ public class LocalConfig {
 		this.secondaryMaxFlux = secondaryMaxFlux;
 	}
 	
-	private Map<String, ArrayList<SBMLReaction>> keggIdReactionMap;
-
-	public Map<String, ArrayList<SBMLReaction>> getKeggIdReactionMap() {
-		return keggIdReactionMap;
-	}
-
-	public void setKeggIdReactionMap(
-			Map<String, ArrayList<SBMLReaction>> keggIdReactionMap) {
-		this.keggIdReactionMap = keggIdReactionMap;
-	}
 	
-	private Map<String, String> sideSpeciesTransportMetaboliteKeggIdMap;
-
-	public Map<String, String> getSideSpeciesTransportMetaboliteKeggIdMap() {
-		return sideSpeciesTransportMetaboliteKeggIdMap;
-	}
-
-	public void setSideSpeciesTransportMetaboliteKeggIdMap(
-			Map<String, String> sideSpeciesTransportMetaboliteKeggIdMap) {
-		this.sideSpeciesTransportMetaboliteKeggIdMap = sideSpeciesTransportMetaboliteKeggIdMap;
-	}
-	
-	private Map<String, ArrayList<TransportReactionNode>> sideSpeciesTransportReactionNodeMap;
-
-	public Map<String, ArrayList<TransportReactionNode>> getSideSpeciesTransportReactionNodeMap() {
-		return sideSpeciesTransportReactionNodeMap;
-	}
-
-	public void setSideSpeciesTransportReactionNodeMap(
-			Map<String, ArrayList<TransportReactionNode>> sideSpeciesTransportReactionNodeMap) {
-		this.sideSpeciesTransportReactionNodeMap = sideSpeciesTransportReactionNodeMap;
-	}
 
 
 }

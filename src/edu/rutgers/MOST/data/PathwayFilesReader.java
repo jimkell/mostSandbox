@@ -338,7 +338,7 @@ public class PathwayFilesReader {
 				LocalConfig.getInstance().setReactionDataKeggIdMap(reactionDataKeggIdMap);
 				//System.out.println(reactionDataKeggIdMap);
 				LocalConfig.getInstance().setEcNumberKeggReactionIdMap(ecNumberKeggReactionIdMap);
-				//System.out.println("ec num kegg rxn " + ecNumberKeggReactionIdMap);
+				System.out.println("ec num kegg rxn " + ecNumberKeggReactionIdMap);
 			} catch (IOException e) {
 				JOptionPane.showMessageDialog(null,                
 						"File Not Found Error.",                
@@ -800,31 +800,58 @@ public class PathwayFilesReader {
 		}	
 	}
 	
-	public void readFiles() {
+	/**
+	 * Files where data is read once and the data structure is not modified in any way.
+	 * Most of these are large files and it is beneficial to read only once.
+	 */
+	public void readOnceFiles() {
 		EnzymeDataReader r = new EnzymeDataReader();
 		r.readFile();
-		File pathways = new File(PathwaysCSVFileConstants.PATHWAYS_FILE_NAME);
-		File pathwayGraph = new File(PathwaysCSVFileConstants.PATHWAY_GRAPH_FILE_NAME);
+//		File pathways = new File(PathwaysCSVFileConstants.PATHWAYS_FILE_NAME);
+//		File pathwayGraph = new File(PathwaysCSVFileConstants.PATHWAY_GRAPH_FILE_NAME);
 		File metabolites = new File(PathwaysCSVFileConstants.METABOLITES_FILE_NAME);
 		File additionalMetabolites = new File(PathwaysCSVFileConstants.ADDITIONAL_METABOLITES_FILE_NAME);
-		File metabolitePositions = new File(PathwaysCSVFileConstants.METABOLITE_POSITIONS_FILE_NAME);
 		File reactions = new File(PathwaysCSVFileConstants.REACTIONS_FILE_NAME);
-		File reactionPositions = new File(PathwaysCSVFileConstants.REACTION_POSITIONS_FILE_NAME);
 		File drawOrder = new File(PathwaysCSVFileConstants.PATHWAY_DRAW_ORDER_FILE_NAME);
 		File sideSpecies = new File(PathwaysCSVFileConstants.PATHWAY_SIDE_SPECIES_FILE_NAME);
+		PathwayFilesReader reader = new PathwayFilesReader();
+//		reader.readPathwaysFile(pathways);
+//		reader.readPathwayGraphFile(pathwayGraph);
+		reader.readMetabolitesFile(metabolites);
+		reader.readMetabolitesFile(additionalMetabolites);
+		reader.readReactionsFile(reactions);
+		reader.readDrawOrderFile(drawOrder);
+		reader.readSideSpeciesFile(sideSpecies);
+	}
+	
+	/**
+	 * Files where data is read but resultant data structure may be modified
+	 */
+	public void readFiles() {
+//		EnzymeDataReader r = new EnzymeDataReader();
+//		r.readFile();
+		File pathways = new File(PathwaysCSVFileConstants.PATHWAYS_FILE_NAME);
+		File pathwayGraph = new File(PathwaysCSVFileConstants.PATHWAY_GRAPH_FILE_NAME);
+//		File metabolites = new File(PathwaysCSVFileConstants.METABOLITES_FILE_NAME);
+//		File additionalMetabolites = new File(PathwaysCSVFileConstants.ADDITIONAL_METABOLITES_FILE_NAME);
+		File metabolitePositions = new File(PathwaysCSVFileConstants.METABOLITE_POSITIONS_FILE_NAME);
+//		File reactions = new File(PathwaysCSVFileConstants.REACTIONS_FILE_NAME);
+		File reactionPositions = new File(PathwaysCSVFileConstants.REACTION_POSITIONS_FILE_NAME);
+//		File drawOrder = new File(PathwaysCSVFileConstants.PATHWAY_DRAW_ORDER_FILE_NAME);
+//		File sideSpecies = new File(PathwaysCSVFileConstants.PATHWAY_SIDE_SPECIES_FILE_NAME);
 		File pathwayConnections = new File(PathwaysCSVFileConstants.PATHWAY_CONNECTIONS_FILE_NAME);
 		File externalMetabolites = new File(PathwaysCSVFileConstants.EXTERNAL_METABOLITES_FILE_NAME);
 		File transportMetabolites = new File(PathwaysCSVFileConstants.TRANSPORT_METABOLITES_FILE_NAME);
 		PathwayFilesReader reader = new PathwayFilesReader();
 		reader.readPathwaysFile(pathways);
 		reader.readPathwayGraphFile(pathwayGraph);
-		reader.readMetabolitesFile(metabolites);
-		reader.readMetabolitesFile(additionalMetabolites);
+//		reader.readMetabolitesFile(metabolites);
+//		reader.readMetabolitesFile(additionalMetabolites);
 		reader.readMetabolitePositionsFile(metabolitePositions);
-		reader.readReactionsFile(reactions);
+//		reader.readReactionsFile(reactions);
 		reader.readReactionPositionsFile(reactionPositions);
-		reader.readDrawOrderFile(drawOrder);
-		reader.readSideSpeciesFile(sideSpecies);
+//		reader.readDrawOrderFile(drawOrder);
+//		reader.readSideSpeciesFile(sideSpecies);
 		reader.readPathwayConnectionsFile(pathwayConnections);
 		reader.readExternalMetabolitesFile(externalMetabolites);
 		reader.readTransportMetabolitesFile(transportMetabolites);
@@ -851,6 +878,7 @@ public class PathwayFilesReader {
 	public static void main( String args[] )
 	{
 		PathwayFilesReader reader = new PathwayFilesReader();
+		reader.readOnceFiles();
 		reader.readFiles();
 	}
 

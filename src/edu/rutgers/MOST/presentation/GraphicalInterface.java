@@ -306,6 +306,9 @@ public class GraphicalInterface extends JFrame {
 	
 	public boolean fluxesSet;
 	public static boolean analysisRunning;
+	
+	// visualization
+	public boolean pathwayFilesRead;
 
 	/*****************************************************************************/
 	// end boolean values
@@ -1428,34 +1431,49 @@ public class GraphicalInterface extends JFrame {
 		LocalConfig.getInstance().setAddedMetabolites(addedMetabolites);
 		
 		// visualizations 
+		// pathway files read
+		Map<String, MetabolicPathway> metabolicPathways = new HashMap<String, MetabolicPathway>();
+		LocalConfig.getInstance().setMetabolicPathways(metabolicPathways);
+		Map<String, String> metaboliteNameAbbrMap = new HashMap<String, String>();
+		LocalConfig.getInstance().setMetaboliteNameAbbrMap(metaboliteNameAbbrMap);
+		
+		// sbml read
 		ArrayList<String> listOfCompartmentNames = new ArrayList<String>();
 		LocalConfig.getInstance().setListOfCompartmentNames(listOfCompartmentNames);
 		ArrayList<String> listOfCompartments = new ArrayList<String>();
 		LocalConfig.getInstance().setListOfCompartments(listOfCompartments);
+		
+		Map<String, ArrayList<String>> keggIdCompartmentMap = new HashMap<String, ArrayList<String>>();
+		LocalConfig.getInstance().setKeggIdCompartmentMap(keggIdCompartmentMap);
+		Map<String, ArrayList<SBMLMetabolite>> keggIdMetaboliteMap = new HashMap<String, ArrayList<SBMLMetabolite>>();
+		LocalConfig.getInstance().setKeggIdMetaboliteMap(keggIdMetaboliteMap);
+		Map<String, String> metaboliteIdKeggIdMap = new HashMap<String, String>();
+		LocalConfig.getInstance().setMetaboliteIdKeggIdMap(metaboliteIdKeggIdMap);
+		
+		Map<String, ArrayList<SBMLReaction>> ecNumberReactionMap = new HashMap<String, ArrayList<SBMLReaction>>();
+		LocalConfig.getInstance().setEcNumberReactionMap(ecNumberReactionMap);
+		
+		// categorize reactions
 		ArrayList<Integer> cytosolExtraOrganismIds = new ArrayList<Integer>();
 		LocalConfig.getInstance().setCytosolExtraOrganismIds(cytosolExtraOrganismIds);
 		ArrayList<Integer> cytosolPeriplasmIds = new ArrayList<Integer>();
 		LocalConfig.getInstance().setCytosolPeriplasmIds(cytosolPeriplasmIds);
 		ArrayList<Integer> periplasmExtraOrganismIds = new ArrayList<Integer>();
 		LocalConfig.getInstance().setPeriplasmExtraOrganismIds(periplasmExtraOrganismIds);
-		Map<String, ArrayList<SBMLReaction>> ecNumberReactionMap = new HashMap<String, ArrayList<SBMLReaction>>();
-		LocalConfig.getInstance().setEcNumberReactionMap(ecNumberReactionMap);
-		Map<String, ArrayList<String>> keggIdCompartmentMap = new HashMap<String, ArrayList<String>>();
-		LocalConfig.getInstance().setKeggIdCompartmentMap(keggIdCompartmentMap);
-		Map<String, String> metaboliteIdKeggIdMap = new HashMap<String, String>();
-		LocalConfig.getInstance().setMetaboliteIdKeggIdMap(metaboliteIdKeggIdMap);
-		Map<String, ArrayList<SBMLMetabolite>> keggIdMetaboliteMap = new HashMap<String, ArrayList<SBMLMetabolite>>();
-		LocalConfig.getInstance().setKeggIdMetaboliteMap(keggIdMetaboliteMap);
-		Map<String, String> metaboliteNameAbbrMap = new HashMap<String, String>();
-		LocalConfig.getInstance().setMetaboliteNameAbbrMap(metaboliteNameAbbrMap);
-		Map<String, MetabolicPathway> metabolicPathways = new HashMap<String, MetabolicPathway>();
-		LocalConfig.getInstance().setMetabolicPathways(metabolicPathways);
+		
+		
+		
+		
+		
+		
 		Map<String, String> sideSpeciesTransportMetaboliteKeggIdMap = new HashMap<String, String>();
 		LocalConfig.getInstance().setSideSpeciesTransportMetaboliteKeggIdMap(sideSpeciesTransportMetaboliteKeggIdMap);
 		Map<String, ArrayList<TransportReactionNode>> sideSpeciesTransportReactionNodeMap = new HashMap<String, ArrayList<TransportReactionNode>>();
 		LocalConfig.getInstance().setSideSpeciesTransportReactionNodeMap(sideSpeciesTransportReactionNodeMap);
 		
 		LocalConfig.getInstance().setKeggReactionIdColumnName("");
+		
+		pathwayFilesRead = false;
 		
 		DynamicTreePanel.getTreePanel().deleteItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent a) {
@@ -2245,9 +2263,10 @@ public class GraphicalInterface extends JFrame {
 
 		visualizeMenu.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
-				LocalConfig.getInstance().getMetabolicPathways().clear();
+				LocalConfig.getInstance().getKeggIdCompartmentMap().clear();
 				LocalConfig.getInstance().getMetaboliteNameAbbrMap().clear();
 				LocalConfig.getInstance().getMetaboliteIdKeggIdMap().clear();
+				LocalConfig.getInstance().getKeggIdMetaboliteMap().clear();
 				String missingItem = "";
 				String missingData = "";
 				boolean showMissingItemMessage = true;
@@ -2289,7 +2308,14 @@ public class GraphicalInterface extends JFrame {
 					//System.out.println(LocalConfig.getInstance().getMetaboliteIdKeggIdMap());
 					System.out.println(LocalConfig.getInstance().getKeggIdMetaboliteMap());
 				}
+				
 				PathwayFilesReader reader = new PathwayFilesReader();
+				// only read visualization csv files where data structure is not modified
+				// the first time visualize menu selected 
+				if (!pathwayFilesRead) {
+					reader.readOnceFiles();
+					pathwayFilesRead = true;
+				}
 				reader.readFiles();
 				
 				ArrayList<Object> unplottedReactions = new ArrayList<Object>(LocalConfig.getInstance().getReactionEquationMap().keySet());
@@ -2306,21 +2332,6 @@ public class GraphicalInterface extends JFrame {
 				
 				ModelKeggEquationMapCreator modelKeggEquationMapCreator = new ModelKeggEquationMapCreator();
 				modelKeggEquationMapCreator.createKeggEquationMap();
-				
-				// comment this out and uncomment out below after removing ec number requirement
-//				if (LocalConfig.getInstance().getEcNumberReactionMap().size() == 0 &&
-//						f.getKeggIdColumnIndex() == -1) {
-//					missingItem = "EC Numbers or KEGG IDs";
-//					missingData = "reactions or metabolites in model to items";
-//				} else if (LocalConfig.getInstance().getEcNumberReactionMap().size() == 0) {
-//					missingItem = "EC Numbers";
-//					missingData = "reactions in model to items";
-//				} else if (f.getKeggIdColumnIndex() == -1) {
-//					missingItem = "KEGG IDs";
-//					missingData = "metabolites in model to items";
-//				} else {
-//					showMissingItemMessage = false;
-//				} 
 				
 				if (f.getKeggIdColumnIndex() == -1) {
 					missingItem = "KEGG IDs";
@@ -12557,9 +12568,7 @@ public class GraphicalInterface extends JFrame {
 		for (int i = 0; i < reactions.size(); i++) {
 			idReactionMap.put(reactions.get(i).getId(), reactions.get(i));
 		}
-		// get reactions with no ec number
 		removeExternalReactions();
-		//System.out.println("no ext " + LocalConfig.getInstance().getUnplottedReactionIds());
 		// unnecessary to categorize reactions if compartment names not defined
 		if (LocalConfig.getInstance().getCytosolName() != null &&
 				LocalConfig.getInstance().getCytosolName().length() > 0 &&
@@ -12696,17 +12705,16 @@ public class GraphicalInterface extends JFrame {
 		if (LocalConfig.getInstance().getModelKeggEquationMap().containsKey(Integer.toString(id))) {
 			ArrayList<String> keggReactantIds = LocalConfig.getInstance().getModelKeggEquationMap().get(Integer.toString(id)).getKeggReactantIds();
 			ArrayList<String> keggProductIds = LocalConfig.getInstance().getModelKeggEquationMap().get(Integer.toString(id)).getKeggProductIds();
-//			System.out.println(keggReactantIds);
-//			System.out.println(keggProductIds);
 			if (keggReactantIds.contains("C00080") && keggProductIds.contains("C00080")) {
 				if (keggReactantIds.size() > 1 && keggProductIds.size() > 1) {
 					keggReactantIds.remove(keggReactantIds.indexOf("C00080"));
 					keggProductIds.remove(keggProductIds.indexOf("C00080"));
 				} 
 			}
-//			System.out.println(keggReactantIds);
-//			System.out.println(keggProductIds);
+			// note: there are a few transport reactions with Na (C01330) where Na and
+			// a second species are transported from c to p
 			if (keggReactantIds.equals(keggProductIds)) {
+				//System.out.println(keggReactantIds);
 				if (LocalConfig.getInstance().getSideSpeciesList().contains(keggReactantIds.get(0))) {
 					if (!LocalConfig.getInstance().getTransportMetaboliteIds().contains(keggReactantIds.get(0))) {
 						String metabAbbr = LocalConfig.getInstance().getKeggIdMetaboliteMap().get(keggReactantIds.get(0)).get(0).getMetaboliteAbbreviation();
