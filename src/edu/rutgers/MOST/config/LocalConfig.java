@@ -1301,8 +1301,5 @@ public class LocalConfig {
 	public void setSecondaryMaxFlux(double secondaryMaxFlux) {
 		this.secondaryMaxFlux = secondaryMaxFlux;
 	}
-	
-	
-
 
 }

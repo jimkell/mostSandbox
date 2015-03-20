@@ -93,7 +93,8 @@ public class PathwaysFrameConstants {
 	public static final int MAIN_COMPONENT = 0;
 	public static final int PHOSPHORYLATION_COMPONENT = 1;
 	
-	public static final int PHOSPHORYLATION_X_OFFSET = 3*HORIZONTAL_INCREMENT;
+	//public static final int PHOSPHORYLATION_X_OFFSET = 3*HORIZONTAL_INCREMENT;
+	public static final int PHOSPHORYLATION_X_OFFSET = 1400;
 	public static final int PHOSPHORYLATION_Y_OFFSET = VERTICAL_INCREMENT;
 	public static final int RIGHT_BORDER_INCREMENT = 0;
 	
