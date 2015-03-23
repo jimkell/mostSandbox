@@ -99,9 +99,10 @@ public class PathwaysFrameConstants {
 	public static final int RIGHT_BORDER_INCREMENT = 0;
 	
 	// there is an area between f6p and pep in glycolysis where there are no transport reactions.
-	// this is a good place to put transport reactions of side species
-	public static final String SIDE_SPECIES_EXCHANGE_START_POSITION_REACTION = "C00085";
-	public static final String SIDE_SPECIES_EXCHANGE_END_POSITION_REACTION = "C00022";
+	// this is a good place to put transport reactions of side species, cis-acon starts second area
+	public static final String SIDE_SPECIES_EXCHANGE_START_POSITION_METABOLITE = "C00085";
+	public static final String SIDE_SPECIES_EXCHANGE_END_POSITION_METABOLITE = "C00074";
+	public static final String SIDE_SPECIES_EXCHANGE_SECOND_START_POSITION_METABOLITE = "C00417";
 	
 	public static final String PERIPLASM_SUFFIX = "_p";
 	public static final String EXTRAORGANISM_SUFFIX = "_e";
