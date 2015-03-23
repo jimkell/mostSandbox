@@ -103,4 +103,8 @@ public class PathwaysFrameConstants {
 	public static final String SIDE_SPECIES_EXCHANGE_START_POSITION_REACTION = "C00085";
 	public static final String SIDE_SPECIES_EXCHANGE_END_POSITION_REACTION = "C00022";
 	
+	public static final String PERIPLASM_SUFFIX = "_p";
+	public static final String EXTRAORGANISM_SUFFIX = "_e";
+	
+	
 }
