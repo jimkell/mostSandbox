@@ -524,36 +524,36 @@ public class PathwaysFrame extends JApplet {
 		
 		LocalConfig.getInstance().setConnectionsNodelist(connectionsNodelist);
 		
-//		for (int c = 0; c < connectionsNodelist.size(); c++) {
-//			String reversible = prnf.reversibleString(connectionsNodelist.get(c).getReversible());
-//			String displayName = prnf.createDisplayName(connectionsNodelist.get(c).getDisplayName(),
-//					connectionsNodelist.get(c).getName(),
-//					connectionsNodelist.get(c).getReactions());
-//			// update temporary lists to keep track of what ec numbers have been found
-//			for (int z = 0; z < connectionsNodelist.get(c).getReactions().size(); z++) {
-//				java.util.List<String> ecNumbers = Arrays.asList(connectionsNodelist.get(c).getReactions().get(z).getEcNumber().split("\\s"));
-//				for (int y = 0; y < ecNumbers.size(); y++) {
-//					if (!foundEcNumbers.contains(ecNumbers.get(y))) {
-//						foundEcNumbers.add(ecNumbers.get(y));
-//					}
-//					if (notFoundEcNumbers.contains(ecNumbers.get(y))) {
-//						notFoundEcNumbers.remove(ecNumbers.get(y));
-//					}
-//				}
-//				// set last one for now
-//				connectionsNodelist.get(c).setFluxValue(connectionsNodelist.get(c).getReactions().get(z).getFluxValue());
-//			}
-//			boolean drawReaction = true;
-//			if (connectionsNodelist.get(c).getReactions().size() > 0) {
-//				foundReactionsList.add(displayName);
-//			} else {
-//				if (!LocalConfig.getInstance().isGraphMissingReactionsSelected()) {
-//					drawReaction = false;
-//				}
-//			}
-//			if (drawReaction) {
-//				reactions.add(displayName);
-//				metabPosMap.put(displayName, new String[] {Double.toString(connectionsNodelist.get(c).getxPosition()), Double.toString(connectionsNodelist.get(c).getyPosition())});  
+		for (int c = 0; c < connectionsNodelist.size(); c++) {
+			String reversible = prnf.reversibleString(connectionsNodelist.get(c).getReversible());
+			String displayName = prnf.createDisplayName(connectionsNodelist.get(c).getDisplayName(),
+					connectionsNodelist.get(c).getName(),
+					connectionsNodelist.get(c).getReactions());
+			// update temporary lists to keep track of what ec numbers have been found
+			for (int z = 0; z < connectionsNodelist.get(c).getReactions().size(); z++) {
+				java.util.List<String> ecNumbers = Arrays.asList(connectionsNodelist.get(c).getReactions().get(z).getEcNumber().split("\\s"));
+				for (int y = 0; y < ecNumbers.size(); y++) {
+					if (!foundEcNumbers.contains(ecNumbers.get(y))) {
+						foundEcNumbers.add(ecNumbers.get(y));
+					}
+					if (notFoundEcNumbers.contains(ecNumbers.get(y))) {
+						notFoundEcNumbers.remove(ecNumbers.get(y));
+					}
+				}
+				// set last one for now
+				connectionsNodelist.get(c).setFluxValue(connectionsNodelist.get(c).getReactions().get(z).getFluxValue());
+			}
+			boolean drawReaction = true;
+			if (connectionsNodelist.get(c).getReactions().size() > 0) {
+				foundReactionsList.add(displayName);
+			} else {
+				if (!LocalConfig.getInstance().isGraphMissingReactionsSelected()) {
+					drawReaction = false;
+				}
+			}
+			if (drawReaction) {
+				reactions.add(displayName);
+				metabPosMap.put(displayName, new String[] {Double.toString(connectionsNodelist.get(c).getxPosition()), Double.toString(connectionsNodelist.get(c).getyPosition())});  
 //				for (int d = 0; d < connectionsNodelist.get(c).getMainPathwayReactants().size(); d++) {
 //					String reac = connectionsNodelist.get(c).getMainPathwayReactants().get(d).getName();
 //					reactionMap.put(displayName + "reactant " + Integer.toString(d), new String[] {displayName, reac, reversible});
@@ -564,8 +564,8 @@ public class PathwaysFrame extends JApplet {
 //					reactionMap.put(displayName + "product " + Integer.toString(e), new String[] {displayName, prod, "true"});
 //					fluxMap.put(displayName + "product " + Integer.toString(e), edgeThickness(connectionsNodelist.get(c).getFluxValue()));
 //				}
-//			}
-//		}
+			}
+		}
 		
 		if (LocalConfig.getInstance().getPeriplasmName() != null && LocalConfig.getInstance().getPeriplasmName().length() > 0) {
 	    	maxX += PathwaysFrameConstants.PERIPLASM_WIDTH;
@@ -672,7 +672,7 @@ public class PathwaysFrame extends JApplet {
 					metabPosMap.put(metabName, new String[] {Double.toString(pn.getxPosition()), Double.toString(pn.getyPosition())});
 					noBorderList.add(metabName);
 					foundMetabolitesList.add(metabName);
-					parentNode = metabName;
+					//parentNode = metabName;
 					for (int t = 0; t < trnList.size(); t++) {
 						if (trnList.get(t).getTransportType().equals(TransportReactionConstants.CYTOSOL_PERIPLASM_TRANSPORT)) {
 							trnList.get(t).setxPosition(sideSpeciesExchangeStartX);
@@ -681,8 +681,19 @@ public class PathwaysFrame extends JApplet {
 							reactions.add(trnList.get(t).getReactionAbbr());
 							metabPosMap.put(trnList.get(t).getReactionAbbr(), new String[] {Double.toString(trnList.get(t).getxPosition()), Double.toString(trnList.get(t).getyPosition())});  
 							foundReactionsList.add(trnList.get(t).getReactionAbbr());
+							reactionMap.put(trnList.get(t).getReactionAbbr() + " reactant " + 1, 
+		   							new String[] {trnList.get(t).getReactionAbbr(), parentNode, 
+		   							trnList.get(t).getReversible()});
+		   					fluxMap.put(trnList.get(t).getReactionAbbr() + " reactant " + 1, 
+		   							edgeThickness(trnList.get(t).getFluxValue()));
+							reactionMap.put(trnList.get(t).getReactionAbbr() + " product " + 1, 
+		   							new String[] {trnList.get(t).getReactionAbbr(), metabName, 
+		   							"true"});
+		   					fluxMap.put(trnList.get(t).getReactionAbbr() + " product " + 1, 
+		   							edgeThickness(trnList.get(t).getFluxValue()));
 						}
 					}
+					parentNode = metabName;
 					nodeY += PathwaysFrameConstants.PERIPLASM_HEIGHT;
 					if (LocalConfig.getInstance().getExtraOrganismName() != null && LocalConfig.getInstance().getExtraOrganismName().length() > 0 &&
 							compartmentList.contains(LocalConfig.getInstance().getExtraOrganismName())) {
@@ -705,6 +716,16 @@ public class PathwaysFrame extends JApplet {
 								reactions.add(trnList.get(t).getReactionAbbr());
 								metabPosMap.put(trnList.get(t).getReactionAbbr(), new String[] {Double.toString(trnList.get(t).getxPosition()), Double.toString(trnList.get(t).getyPosition())});  
 								foundReactionsList.add(trnList.get(t).getReactionAbbr());
+								reactionMap.put(trnList.get(t).getReactionAbbr() + " reactant " + 2, 
+			   							new String[] {trnList.get(t).getReactionAbbr(), parentNode, 
+			   							trnList.get(t).getReversible()});
+			   					fluxMap.put(trnList.get(t).getReactionAbbr() + " reactant " + 2, 
+			   							edgeThickness(trnList.get(t).getFluxValue()));
+								reactionMap.put(trnList.get(t).getReactionAbbr() + " product " + 2, 
+			   							new String[] {trnList.get(t).getReactionAbbr(), metabName, 
+			   							"true"});
+			   					fluxMap.put(trnList.get(t).getReactionAbbr() + " product " + 2, 
+			   							edgeThickness(trnList.get(t).getFluxValue()));
 							}
 						}
 					}
@@ -729,6 +750,16 @@ public class PathwaysFrame extends JApplet {
 							reactions.add(trnList.get(t).getReactionAbbr());
 							metabPosMap.put(trnList.get(t).getReactionAbbr(), new String[] {Double.toString(trnList.get(t).getxPosition()), Double.toString(trnList.get(t).getyPosition())});  
 							foundReactionsList.add(trnList.get(t).getReactionAbbr());
+							reactionMap.put(trnList.get(t).getReactionAbbr() + " reactant " + -1, 
+		   							new String[] {trnList.get(t).getReactionAbbr(), parentNode, 
+		   							trnList.get(t).getReversible()});
+		   					fluxMap.put(trnList.get(t).getReactionAbbr() + " reactant " + -1, 
+		   							edgeThickness(trnList.get(t).getFluxValue()));
+							reactionMap.put(trnList.get(t).getReactionAbbr() + " product " + -1, 
+		   							new String[] {trnList.get(t).getReactionAbbr(), metabName, 
+		   							"true"});
+		   					fluxMap.put(trnList.get(t).getReactionAbbr() + " product " + -1, 
+		   							edgeThickness(trnList.get(t).getFluxValue()));
 						}
 					}
 				}
