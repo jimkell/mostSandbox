@@ -12705,10 +12705,12 @@ public class GraphicalInterface extends JFrame {
 		if (LocalConfig.getInstance().getModelKeggEquationMap().containsKey(Integer.toString(id))) {
 			ArrayList<String> keggReactantIds = LocalConfig.getInstance().getModelKeggEquationMap().get(Integer.toString(id)).getKeggReactantIds();
 			ArrayList<String> keggProductIds = LocalConfig.getInstance().getModelKeggEquationMap().get(Integer.toString(id)).getKeggProductIds();
+			String sideSpecies = "";
 			if (keggReactantIds.contains("C00080") && keggProductIds.contains("C00080")) {
 				if (keggReactantIds.size() > 1 && keggProductIds.size() > 1) {
 					keggReactantIds.remove(keggReactantIds.indexOf("C00080"));
 					keggProductIds.remove(keggProductIds.indexOf("C00080"));
+					sideSpecies = "C00080";
 				} 
 			}
 			// note: there are a few transport reactions with Na (C01330) where Na and
@@ -12727,13 +12729,59 @@ public class GraphicalInterface extends JFrame {
 							metabAbbr = metabAbbr.substring(2);
 						}
 						//System.out.println(metabAbbr);
+						String cytosolName = "";
+						String periplasmName = "";
+						String extraOrganismName = "";
+						if (keggReactantIds.size() == 1) {
+							SBMLReactionEquation equn = (SBMLReactionEquation) LocalConfig.getInstance().getReactionEquationMap().get(id);
+							String reactantComp = "";
+							String productComp = "";
+							for (int r = 0; r < equn.getReactants().size(); r++) {
+								if (LocalConfig.getInstance().getMetaboliteIdKeggIdMap().containsKey(Integer.toString(equn.getReactants().get(r).getMetaboliteId()))) {
+									String keggId = LocalConfig.getInstance().getMetaboliteIdKeggIdMap().get(Integer.toString(equn.getReactants().get(r).getMetaboliteId()));
+									if (keggId.equals("C00080")) {
+										
+									} else {
+										reactantComp = equn.getReactants().get(r).getCompartment();
+										if (reactantComp.equals(LocalConfig.getInstance().getCytosolName())) {
+											cytosolName = equn.getReactants().get(r).getMetaboliteAbbreviation();
+										} else if (reactantComp.equals(LocalConfig.getInstance().getPeriplasmName())) {
+											periplasmName = equn.getReactants().get(r).getMetaboliteAbbreviation();
+										} else if (reactantComp.equals(LocalConfig.getInstance().getExtraOrganismName())) {
+											extraOrganismName = equn.getReactants().get(r).getMetaboliteAbbreviation();
+										}
+									}
+								}
+							}
+							for (int p = 0; p < equn.getProducts().size(); p++) {
+								if (LocalConfig.getInstance().getMetaboliteIdKeggIdMap().containsKey(Integer.toString(equn.getProducts().get(p).getMetaboliteId()))) {
+									String keggId = LocalConfig.getInstance().getMetaboliteIdKeggIdMap().get(Integer.toString(equn.getProducts().get(p).getMetaboliteId()));
+									if (keggId.equals("C00080")) {
+										
+									} else {
+										productComp = equn.getProducts().get(p).getCompartment();
+										if (productComp.equals(LocalConfig.getInstance().getCytosolName())) {
+											cytosolName = equn.getProducts().get(p).getMetaboliteAbbreviation();
+										} else if (productComp.equals(LocalConfig.getInstance().getPeriplasmName())) {
+											periplasmName = equn.getProducts().get(p).getMetaboliteAbbreviation();
+										} else if (productComp.equals(LocalConfig.getInstance().getExtraOrganismName())) {
+											extraOrganismName = equn.getProducts().get(p).getMetaboliteAbbreviation();
+										}
+									}
+								}
+							}
+						}
 						LocalConfig.getInstance().getSideSpeciesTransportMetaboliteKeggIdMap().put(metabAbbr, LocalConfig.getInstance().getKeggIdMetaboliteMap().get(keggReactantIds.get(0)).get(0).getKeggId());
 						TransportReactionNode trn = new TransportReactionNode();
 						trn.setReactionAbbr(idReactionMap.get(id).getReactionAbbreviation());
 						trn.setReactionName(idReactionMap.get(id).getReactionName());
 						trn.setFluxValue(idReactionMap.get(id).getFluxValue());
+						trn.setCytosolName(cytosolName);
+						trn.setPeriplasmName(periplasmName);
+						trn.setExtraOrganismName(extraOrganismName);
 						trn.setReversible(idReactionMap.get(id).getReversible());
 						trn.setTransportType(transportType);
+						trn.setSideSpecies(sideSpecies);
 						if (LocalConfig.getInstance().getSideSpeciesTransportReactionNodeMap().containsKey(keggReactantIds.get(0))) {
 							ArrayList<TransportReactionNode> trnList = LocalConfig.getInstance().getSideSpeciesTransportReactionNodeMap().get(keggReactantIds.get(0));
 							trnList.add(trn);

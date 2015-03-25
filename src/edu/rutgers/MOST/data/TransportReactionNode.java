@@ -12,12 +12,21 @@ public class TransportReactionNode {
 	private String equation;
 	private String modelEquation;
 	private double fluxValue;
+	private String metaboliteName;
+	private String cytosolName;
+	private String periplasmName;
+	private String extraOrganismName;
 	private ArrayList<PathwayMetaboliteNode> pathwayReactants;
 	private ArrayList<PathwayMetaboliteNode> pathwayProducts;
 	private String reversible;
 	private double xPosition;
 	private double yPosition;
 	private String transportType;
+	// direction = 1 if same direction as TransportReactionConstants, -1 if opposite
+	private String direction;
+	private String sideSpecies;
+	// Transport reactions can have species switch sides such as a_c + b_p <=> a_p + b_c
+	private String sideDirection;
 	
 	public String getReactionName() {
 		return reactionName;
@@ -54,6 +63,30 @@ public class TransportReactionNode {
 	}
 	public void setFluxValue(double fluxValue) {
 		this.fluxValue = fluxValue;
+	}
+	public String getMetaboliteName() {
+		return metaboliteName;
+	}
+	public void setMetaboliteName(String metaboliteName) {
+		this.metaboliteName = metaboliteName;
+	}
+	public String getCytosolName() {
+		return cytosolName;
+	}
+	public void setCytosolName(String cytosolName) {
+		this.cytosolName = cytosolName;
+	}
+	public String getPeriplasmName() {
+		return periplasmName;
+	}
+	public void setPeriplasmName(String periplasmName) {
+		this.periplasmName = periplasmName;
+	}
+	public String getExtraOrganismName() {
+		return extraOrganismName;
+	}
+	public void setExtraOrganismName(String extraOrganismName) {
+		this.extraOrganismName = extraOrganismName;
 	}
 	public ArrayList<PathwayMetaboliteNode> getPathwayReactants() {
 		return pathwayReactants;
@@ -93,6 +126,24 @@ public class TransportReactionNode {
 		this.transportType = transportType;
 	}
 	
+	public String getDirection() {
+		return direction;
+	}
+	public void setDirection(String direction) {
+		this.direction = direction;
+	}
+	public String getSideSpecies() {
+		return sideSpecies;
+	}
+	public void setSideSpecies(String sideSpecies) {
+		this.sideSpecies = sideSpecies;
+	}
+	public String getSideDirection() {
+		return sideDirection;
+	}
+	public void setSideDirection(String sideDirection) {
+		this.sideDirection = sideDirection;
+	}
 	@Override
 	public String toString() {
 		return "Transport Reaction Node [reactionName=" + reactionName
@@ -101,12 +152,19 @@ public class TransportReactionNode {
 		+ ", equation=" + equation
 		+ ", modelEquation=" + modelEquation
 		+ ", fluxValue=" + fluxValue
+		+ ", metaboliteName=" + metaboliteName
+		+ ", cytosolName=" + cytosolName
+		+ ", periplasmName=" + periplasmName
+		+ ", extraOrganismName=" + extraOrganismName
 		+ ", pathwayReactants=" + pathwayReactants
 		+ ", pathwayProducts=" + pathwayProducts
 		+ ", reversible=" + reversible
 		+ ", xPosition=" + xPosition
 		+ ", yPosition=" + yPosition
-		+ ", transportType=" + transportType + "]";
+		+ ", transportType=" + transportType
+		+ ", direction=" + direction
+		+ ", sideSpecies=" + sideSpecies
+		+ ", sideDirection=" + sideDirection + "]";
 	}
 
 }

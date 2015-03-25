@@ -24,6 +24,8 @@ import java.util.HashMap;
 import java.util.List;                                                                                               
 import java.util.Map;                                                                                                
                                                                                                                      
+import java.util.Vector;
+
 import javax.swing.Icon;
 import javax.swing.ImageIcon;                                                                                        
 import javax.swing.JApplet;                                                                                          
@@ -51,6 +53,7 @@ import edu.rutgers.MOST.data.PathwayMetaboliteData;
 import edu.rutgers.MOST.data.PathwayMetaboliteNode;
 import edu.rutgers.MOST.data.PathwayReactionNode;
 import edu.rutgers.MOST.data.PathwayReactionNodeFactory;
+import edu.rutgers.MOST.data.ReactionFactory;
 import edu.rutgers.MOST.data.SBMLReaction;
 import edu.rutgers.MOST.data.TransportReactionConstants;
 import edu.rutgers.MOST.data.TransportReactionNode;
@@ -203,6 +206,13 @@ public class PathwaysFrame extends JApplet {
     	// end create menu bar
     	/**************************************************************************/
     	
+    	ReactionFactory f = new ReactionFactory("SBML");
+    	Vector<SBMLReaction> allReactions = f.getAllReactions();
+    	Map<Integer, SBMLReaction> idReactionMap = new HashMap<Integer, SBMLReaction>();
+		for (int i = 0; i < allReactions.size(); i++) {
+			idReactionMap.put(allReactions.get(i).getId(), allReactions.get(i));
+		}
+    	
 		// temporary lists to keep track of what ec numbers have been found
 		ArrayList<String> foundEcNumbers = new ArrayList<String>();
 	    ArrayList<String> notFoundEcNumbers = new ArrayList<String>(LocalConfig.getInstance().getEcNumberReactionMap().keySet());
@@ -342,7 +352,7 @@ public class PathwaysFrame extends JApplet {
 						pathway.getReactionsData().get(Integer.toString(k)).getKeggProductIds(), LocalConfig.getInstance().getCytosolName());
 				String displayName = prnf.createDisplayName(pathway.getReactionsData().get(Integer.toString(k)).getDisplayName(),
 						pathway.getReactionsData().get(Integer.toString(k)).getName(),
-						pn.getReactions());
+						pn.getReactions(), idReactionMap);
 				// update temporary lists to keep track of what ec numbers have been found
 				for (int z = 0; z < pn.getReactions().size(); z++) {
 					java.util.List<String> ecNumbers = Arrays.asList(pn.getReactions().get(z).getEcNumber().split("\\s"));
@@ -423,16 +433,16 @@ public class PathwaysFrame extends JApplet {
 						emn.setReactionDisplayName(displayName);
 						externalMetaboliteNodeList.add(emn);
 					}
-//					for (int r = 0; r < pathway.getReactionsData().get(Integer.toString(k)).getReactantIds().size(); r++) {
-//						String reac = pathway.getMetabolitesData().get((pathway.getReactionsData().get(Integer.toString(k)).getReactantIds().get(r))).getName();
-//						reactionMap.put(displayName + "reactant " + Integer.toString(r), new String[] {displayName, reac, reversible});
-//						fluxMap.put(displayName + "reactant " + Integer.toString(r), edgeThickness(pn.getFluxValue()));
-//					}
-//					for (int p = 0; p < pathway.getReactionsData().get(Integer.toString(k)).getProductIds().size(); p++) {
-//						String prod = pathway.getMetabolitesData().get((pathway.getReactionsData().get(Integer.toString(k)).getProductIds().get(p))).getName();
-//						reactionMap.put(displayName + "product " + Integer.toString(p), new String[] {displayName, prod, "true"});
-//						fluxMap.put(displayName + "product " + Integer.toString(p), edgeThickness(pn.getFluxValue()));
-//					}
+					for (int r = 0; r < pathway.getReactionsData().get(Integer.toString(k)).getReactantIds().size(); r++) {
+						String reac = pathway.getMetabolitesData().get((pathway.getReactionsData().get(Integer.toString(k)).getReactantIds().get(r))).getName();
+						reactionMap.put(displayName + "reactant " + Integer.toString(r), new String[] {displayName, reac, reversible});
+						fluxMap.put(displayName + "reactant " + Integer.toString(r), edgeThickness(pn.getFluxValue()));
+					}
+					for (int p = 0; p < pathway.getReactionsData().get(Integer.toString(k)).getProductIds().size(); p++) {
+						String prod = pathway.getMetabolitesData().get((pathway.getReactionsData().get(Integer.toString(k)).getProductIds().get(p))).getName();
+						reactionMap.put(displayName + "product " + Integer.toString(p), new String[] {displayName, prod, "true"});
+						fluxMap.put(displayName + "product " + Integer.toString(p), edgeThickness(pn.getFluxValue()));
+					}
 				}
 			}
 			
@@ -469,7 +479,7 @@ public class PathwaysFrame extends JApplet {
 			pcn.setName(LocalConfig.getInstance().getConnectionslist().get(i).getEquation());
 			String displayName = prnf.createDisplayName(LocalConfig.getInstance().getConnectionslist().get(i).getDisplayName(),
 					LocalConfig.getInstance().getConnectionslist().get(i).getName(),
-					pcn.getReactions());
+					pcn.getReactions(), idReactionMap);
 			pcn.setDisplayName(displayName);
 			ArrayList<PathwayMetaboliteNode> mainPathwayReactants = new ArrayList<PathwayMetaboliteNode>();
 			ArrayList<PathwayMetaboliteNode> mainPathwayProducts = new ArrayList<PathwayMetaboliteNode>();
@@ -528,7 +538,7 @@ public class PathwaysFrame extends JApplet {
 			String reversible = prnf.reversibleString(connectionsNodelist.get(c).getReversible());
 			String displayName = prnf.createDisplayName(connectionsNodelist.get(c).getDisplayName(),
 					connectionsNodelist.get(c).getName(),
-					connectionsNodelist.get(c).getReactions());
+					connectionsNodelist.get(c).getReactions(), idReactionMap);
 			// update temporary lists to keep track of what ec numbers have been found
 			for (int z = 0; z < connectionsNodelist.get(c).getReactions().size(); z++) {
 				java.util.List<String> ecNumbers = Arrays.asList(connectionsNodelist.get(c).getReactions().get(z).getEcNumber().split("\\s"));
@@ -554,16 +564,16 @@ public class PathwaysFrame extends JApplet {
 			if (drawReaction) {
 				reactions.add(displayName);
 				metabPosMap.put(displayName, new String[] {Double.toString(connectionsNodelist.get(c).getxPosition()), Double.toString(connectionsNodelist.get(c).getyPosition())});  
-//				for (int d = 0; d < connectionsNodelist.get(c).getMainPathwayReactants().size(); d++) {
-//					String reac = connectionsNodelist.get(c).getMainPathwayReactants().get(d).getName();
-//					reactionMap.put(displayName + "reactant " + Integer.toString(d), new String[] {displayName, reac, reversible});
-//					fluxMap.put(displayName + "reactant " + Integer.toString(d), edgeThickness(connectionsNodelist.get(c).getFluxValue()));
-//				}
-//				for (int e = 0; e < connectionsNodelist.get(c).getMainPathwayProducts().size(); e++) {
-//					String prod = connectionsNodelist.get(c).getMainPathwayProducts().get(e).getName();
-//					reactionMap.put(displayName + "product " + Integer.toString(e), new String[] {displayName, prod, "true"});
-//					fluxMap.put(displayName + "product " + Integer.toString(e), edgeThickness(connectionsNodelist.get(c).getFluxValue()));
-//				}
+				for (int d = 0; d < connectionsNodelist.get(c).getMainPathwayReactants().size(); d++) {
+					String reac = connectionsNodelist.get(c).getMainPathwayReactants().get(d).getName();
+					reactionMap.put(displayName + "reactant " + Integer.toString(d), new String[] {displayName, reac, reversible});
+					fluxMap.put(displayName + "reactant " + Integer.toString(d), edgeThickness(connectionsNodelist.get(c).getFluxValue()));
+				}
+				for (int e = 0; e < connectionsNodelist.get(c).getMainPathwayProducts().size(); e++) {
+					String prod = connectionsNodelist.get(c).getMainPathwayProducts().get(e).getName();
+					reactionMap.put(displayName + "product " + Integer.toString(e), new String[] {displayName, prod, "true"});
+					fluxMap.put(displayName + "product " + Integer.toString(e), edgeThickness(connectionsNodelist.get(c).getFluxValue()));
+				}
 			}
 		}
 		
@@ -633,6 +643,10 @@ public class PathwaysFrame extends JApplet {
 		boolean startSecondInterval = false;
 		for (int s = 0; s < sideSpeciesTransportMetabs.size(); s++) {
 			String keggId = LocalConfig.getInstance().getSideSpeciesTransportMetaboliteKeggIdMap().get(sideSpeciesTransportMetabs.get(s));
+			String keggName = "";
+			if (LocalConfig.getInstance().getMetaboliteDataKeggIdMap().containsKey(keggId)) {
+				keggName = LocalConfig.getInstance().getMetaboliteDataKeggIdMap().get(keggId).getNames().get(0);
+			}
 			ArrayList<TransportReactionNode> trnList = LocalConfig.getInstance().getSideSpeciesTransportReactionNodeMap().get(keggId);
 			// eventually fad, gdp and gtp will be in pathways, remove for now
 			// also remove atp. even though kegg id in transport_metabolites.csv, it still
@@ -645,14 +659,23 @@ public class PathwaysFrame extends JApplet {
 				ArrayList<String> compartmentList = LocalConfig.getInstance().getKeggIdCompartmentMap().get(keggId);
 				if (LocalConfig.getInstance().getCytosolName() != null && LocalConfig.getInstance().getCytosolName().length() > 0 &&
 						compartmentList.contains(LocalConfig.getInstance().getCytosolName())) {
-					String metabName = sideSpeciesTransportMetabs.get(s) + "_c";
+					String metabAbbr = sideSpeciesTransportMetabs.get(s) + "_c";
+					for (int t = 0; t < trnList.size(); t++) {
+						if (trnList.get(t).getCytosolName() != null && trnList.get(t).getCytosolName().length() > 0) {
+							metabAbbr = trnList.get(t).getCytosolName().substring(2);
+						}
+					}
+					String metabName = metabAbbr;
+					if (keggName.length() > 0) {
+						metabName = keggName + " " + metabAbbr;
+					}
 					metabolites.add(metabName);
 					PathwayMetaboliteNode pn = new PathwayMetaboliteNode();
 					pn.setxPosition(sideSpeciesExchangeStartX);
 					pn.setyPosition(nodeY);
-					pn.setAbbreviation(metabName);
+					pn.setAbbreviation(metabAbbr);
 					pn.setName(metabName);
-					LocalConfig.getInstance().getMetaboliteNameAbbrMap().put(metabName, metabName);
+					LocalConfig.getInstance().getMetaboliteNameAbbrMap().put(metabName, metabAbbr);
 					metabPosMap.put(metabName, new String[] {Double.toString(pn.getxPosition()), Double.toString(pn.getyPosition())});
 					noBorderList.add(metabName);
 					foundMetabolitesList.add(metabName);
@@ -661,14 +684,23 @@ public class PathwaysFrame extends JApplet {
 				}
 				if (LocalConfig.getInstance().getPeriplasmName() != null && LocalConfig.getInstance().getPeriplasmName().length() > 0 &&
 						compartmentList.contains(LocalConfig.getInstance().getPeriplasmName())) {
-					String metabName = sideSpeciesTransportMetabs.get(s) + "_p";
+					String metabAbbr = sideSpeciesTransportMetabs.get(s) + "_p";
+					for (int t = 0; t < trnList.size(); t++) {
+						if (trnList.get(t).getPeriplasmName() != null && trnList.get(t).getPeriplasmName().length() > 0) {
+							metabAbbr = trnList.get(t).getPeriplasmName().substring(2);
+						}
+					}
+					String metabName = metabAbbr;
+					if (keggName.length() > 0) {
+						metabName = keggName + " " + metabAbbr;
+					}
 					metabolites.add(metabName);
 					PathwayMetaboliteNode pn = new PathwayMetaboliteNode();
 					pn.setxPosition(sideSpeciesExchangeStartX);
 					pn.setyPosition(nodeY);
-					pn.setAbbreviation(metabName);
+					pn.setAbbreviation(metabAbbr);
 					pn.setName(metabName);
-					LocalConfig.getInstance().getMetaboliteNameAbbrMap().put(metabName, metabName);
+					LocalConfig.getInstance().getMetaboliteNameAbbrMap().put(metabName, metabAbbr);
 					metabPosMap.put(metabName, new String[] {Double.toString(pn.getxPosition()), Double.toString(pn.getyPosition())});
 					noBorderList.add(metabName);
 					foundMetabolitesList.add(metabName);
@@ -697,14 +729,23 @@ public class PathwaysFrame extends JApplet {
 					nodeY += PathwaysFrameConstants.PERIPLASM_HEIGHT;
 					if (LocalConfig.getInstance().getExtraOrganismName() != null && LocalConfig.getInstance().getExtraOrganismName().length() > 0 &&
 							compartmentList.contains(LocalConfig.getInstance().getExtraOrganismName())) {
-						metabName = sideSpeciesTransportMetabs.get(s) + "_e";
+						metabAbbr = sideSpeciesTransportMetabs.get(s) + "_e";
+						for (int t = 0; t < trnList.size(); t++) {
+							if (trnList.get(t).getExtraOrganismName() != null && trnList.get(t).getExtraOrganismName().length() > 0) {
+								metabAbbr = trnList.get(t).getExtraOrganismName().substring(2);
+							}
+						}
+						metabName = metabAbbr;
+						if (keggName.length() > 0) {
+							metabName = keggName + " " + metabAbbr;
+						}
 						metabolites.add(metabName);
 						PathwayMetaboliteNode pn1 = new PathwayMetaboliteNode();
 						pn1.setxPosition(sideSpeciesExchangeStartX);
 						pn1.setyPosition(nodeY);
-						pn1.setAbbreviation(metabName);
+						pn1.setAbbreviation(metabAbbr);
 						pn1.setName(metabName);
-						LocalConfig.getInstance().getMetaboliteNameAbbrMap().put(metabName, metabName);
+						LocalConfig.getInstance().getMetaboliteNameAbbrMap().put(metabName, metabAbbr);
 						metabPosMap.put(metabName, new String[] {Double.toString(pn1.getxPosition()), Double.toString(pn1.getyPosition())});
 						noBorderList.add(metabName);
 						foundMetabolitesList.add(metabName);
@@ -731,14 +772,23 @@ public class PathwaysFrame extends JApplet {
 					}
 				} else if (LocalConfig.getInstance().getExtraOrganismName() != null && LocalConfig.getInstance().getExtraOrganismName().length() > 0 &&
 						compartmentList.contains(LocalConfig.getInstance().getExtraOrganismName())) {
-					String metabName = sideSpeciesTransportMetabs.get(s) + "_e";
+					String metabAbbr = sideSpeciesTransportMetabs.get(s) + "_e";
+					for (int t = 0; t < trnList.size(); t++) {
+						if (trnList.get(t).getExtraOrganismName() != null && trnList.get(t).getExtraOrganismName().length() > 0) {
+							metabAbbr = trnList.get(t).getExtraOrganismName().substring(2);
+						}
+					}
+					String metabName = metabAbbr;
+					if (keggName.length() > 0) {
+						metabName = keggName + " " + metabAbbr;
+					}
 					metabolites.add(metabName);
 					PathwayMetaboliteNode pn1 = new PathwayMetaboliteNode();
 					pn1.setxPosition(sideSpeciesExchangeStartX);
 					pn1.setyPosition(nodeY);
-					pn1.setAbbreviation(metabName);
+					pn1.setAbbreviation(metabAbbr);
 					pn1.setName(metabName);
-					LocalConfig.getInstance().getMetaboliteNameAbbrMap().put(metabName, metabName);
+					LocalConfig.getInstance().getMetaboliteNameAbbrMap().put(metabName, metabAbbr);
 					metabPosMap.put(metabName, new String[] {Double.toString(pn1.getxPosition()), Double.toString(pn1.getyPosition())});
 					noBorderList.add(metabName);
 					foundMetabolitesList.add(metabName);

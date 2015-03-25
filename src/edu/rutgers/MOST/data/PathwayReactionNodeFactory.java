@@ -57,8 +57,7 @@ public class PathwayReactionNodeFactory {
 							}
 						}
 					}
-				}
-						
+				}		
 			}
 		}
 		for (int n = 0; n < keggReactionIds.size(); n++) {
@@ -244,10 +243,11 @@ public class PathwayReactionNodeFactory {
 	 * @param reactions
 	 * @return
 	 */
-	public String createDisplayName(String displayName, String name, ArrayList<SBMLReaction> reactions) {
+	public String createDisplayName(String displayName, String name, ArrayList<SBMLReaction> reactions, Map<Integer, SBMLReaction> idReactionMap) {
 		ArrayList<String> reactionAbbrevations = new ArrayList<String>();
 		ArrayList<String> reactionNames = new ArrayList<String>();
 		ArrayList<String> ecNumbers = new ArrayList<String>();
+		ArrayList<String> keggReactionIds = new ArrayList<String>();
 		ArrayList<String> equations = new ArrayList<String>();
 		ArrayList<String> subsystems = new ArrayList<String>();
 		ArrayList<Double> fluxes = new ArrayList<Double>();
@@ -261,6 +261,14 @@ public class PathwayReactionNodeFactory {
 				}
 				if (!ecNumbers.contains(reactions.get(i).getEcNumber())) {
 					ecNumbers.add(reactions.get(i).getEcNumber());
+				}
+				// since ec number reaction map made before kegg reaction ids assigned, these are
+				// null in ec list and need to be obtained from map made more recently
+				String keggReactionId = idReactionMap.get(reactions.get(i).getId()).getKeggReactionId();
+				if (keggReactionId != null && keggReactionId.length() > 0) {
+					if (!keggReactionIds.contains(keggReactionId)) {
+						keggReactionIds.add(keggReactionId);
+					}
 				}
 				if (!equations.contains(reactions.get(i).getReactionEqunAbbr())) {
 					equations.add(reactions.get(i).getReactionEqunAbbr());
@@ -277,6 +285,7 @@ public class PathwayReactionNodeFactory {
 					+ displayReactionName(reactionNames)
 					+ displayReactionAbbreviation(reactionAbbrevations)
 					+ displayECNumber(ecNumbers)
+					+ displayKeggReactionId(keggReactionIds)
 					+ "<p> Equation: " + name
 					+ displaySubsystem(subsystems)
 					+ displayModelEquation(equations)
@@ -306,6 +315,10 @@ public class PathwayReactionNodeFactory {
 	
 	public String displayECNumber(ArrayList<String> ecnumbers) {
 		return maybeMakeList(ecnumbers, "EC Number");
+	}
+	
+	public String displayKeggReactionId(ArrayList<String> keggReactionIds) {
+		return maybeMakeList(keggReactionIds, "KEGG Reaction Id");
 	}
 	
 	public String displaySubsystem(ArrayList<String> subsystems) {

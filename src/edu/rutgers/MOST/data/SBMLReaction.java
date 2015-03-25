@@ -251,6 +251,7 @@ public class SBMLReaction implements ModelReaction {
 		return "SBMLReaction [id=" + id
 		        + ", fluxValue=" + fluxValue
 		        + ", reactionName=" + reactionName
+		        + ", keggReactionId=" + keggReactionId
 		        + ", reactionEqunAbbr=" + reactionEqunAbbr + "]";
 //				+ ", biologicalObjective=" + biologicalObjective
 //				+ ", upperBound=" + upperBound
