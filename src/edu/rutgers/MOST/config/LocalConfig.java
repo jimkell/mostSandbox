@@ -855,6 +855,19 @@ public class LocalConfig {
 	}
 
 	// data from etc/visualizations files
+	// some metabolites have kegg ids that are not in the kegg metabolites.csv file.
+	// additional ids stored here.
+	private Map<String, ArrayList<String>> additionalMetabolitesMap;
+
+	public Map<String, ArrayList<String>> getAdditionalMetabolitesMap() {
+		return additionalMetabolitesMap;
+	}
+
+	public void setAdditionalMetabolitesMap(
+			Map<String, ArrayList<String>> additionalMetabolitesMap) {
+		this.additionalMetabolitesMap = additionalMetabolitesMap;
+	}
+
 	private Map<String, ArrayList<PathwayConnectionData>> connectionPositionMap;
 
 	public Map<String, ArrayList<PathwayConnectionData>> getConnectionPositionMap() {

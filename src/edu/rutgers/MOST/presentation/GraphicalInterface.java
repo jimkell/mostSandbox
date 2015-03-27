@@ -12641,7 +12641,7 @@ public class GraphicalInterface extends JFrame {
 									if ((equn.getCompartmentReactantsList().size() == 2 && prd != null && prd.getKeggReactantIds().size() == 2 && prd.getKeggReactantIds().contains("C00080")) 
 											&& (equn.getCompartmentProductsList().size() == 2 && prd != null && prd.getKeggProductIds().size() ==2 && prd.getKeggProductIds().contains("C00080"))) {
 										cytosolPeriplasmIds2.add(id);
-										System.out.println("id " + id + "\t" + equn.equationAbbreviations + "\t" + "Cytosol Periplasm2");
+										//System.out.println("id " + id + "\t" + equn.equationAbbreviations + "\t" + "Cytosol Periplasm2");
 									}
 								} else {
 									cytosolPeriplasmIds.add(id);
@@ -12660,7 +12660,7 @@ public class GraphicalInterface extends JFrame {
 									if ((equn.getCompartmentReactantsList().size() == 2 && prd != null && prd.getKeggReactantIds().size() == 2 && prd.getKeggReactantIds().contains("C00080")) 
 											&& (equn.getCompartmentProductsList().size() == 2 && prd != null && prd.getKeggProductIds().size() ==2 && prd.getKeggProductIds().contains("C00080"))) {
 										periplasmExtraOrganismIds2.add(id);
-										System.out.println("id " + id + "\t" + equn.equationAbbreviations + "\t" + "Extraorganism Periplasm2");
+										//System.out.println("id " + id + "\t" + equn.equationAbbreviations + "\t" + "Extraorganism Periplasm2");
 									}
 								} else {
 									periplasmExtraOrganismIds.add(id);
@@ -12681,7 +12681,7 @@ public class GraphicalInterface extends JFrame {
 								if ((equn.getCompartmentReactantsList().size() == 2 && prd != null && prd.getKeggReactantIds().size() == 2 && prd.getKeggReactantIds().contains("C00080")) 
 										&& (equn.getCompartmentProductsList().size() == 2 && prd != null && prd.getKeggProductIds().size() ==2 && prd.getKeggProductIds().contains("C00080"))) {
 									cytosolExtraOrganismIds2.add(id);
-									System.out.println("id " + id + "\t" + equn.equationAbbreviations + "\t" + "Cytosol Extraorganism2");
+									//System.out.println("id " + id + "\t" + equn.equationAbbreviations + "\t" + "Cytosol Extraorganism2");
 								}
 							} else {
 								cytosolExtraOrganismIds.add(id);

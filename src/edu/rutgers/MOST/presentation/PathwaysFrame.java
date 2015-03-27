@@ -349,7 +349,7 @@ public class PathwaysFrame extends JApplet {
 				// only draw cytosol for now
 				PathwayReactionNode pn = prnf.createPathwayReactionNode(pathway.getReactionsData().get(Integer.toString(k)).getEcNumbers(),
 						pathway.getReactionsData().get(Integer.toString(k)).getKeggReactionIds(), pathway.getReactionsData().get(Integer.toString(k)).getKeggReactantIds(),
-						pathway.getReactionsData().get(Integer.toString(k)).getKeggProductIds(), LocalConfig.getInstance().getCytosolName());
+						pathway.getReactionsData().get(Integer.toString(k)).getKeggProductIds(), LocalConfig.getInstance().getCytosolName(), pathway.getComponent());
 				String displayName = prnf.createDisplayName(pathway.getReactionsData().get(Integer.toString(k)).getDisplayName(),
 						pathway.getReactionsData().get(Integer.toString(k)).getName(),
 						pn.getReactions(), idReactionMap);
@@ -473,7 +473,7 @@ public class PathwaysFrame extends JApplet {
 					LocalConfig.getInstance().getConnectionslist().get(i).getKeggReactionIds(), 
 					LocalConfig.getInstance().getConnectionslist().get(i).getKeggReactantIds(),
 					LocalConfig.getInstance().getConnectionslist().get(i).getKeggProductIds(),
-					LocalConfig.getInstance().getCytosolName());
+					LocalConfig.getInstance().getCytosolName(), 0);
 			PathwayConnectionNode pcn = prnf.createPathwayConnectionNode(pn);
 			pcn.setEquation(LocalConfig.getInstance().getConnectionslist().get(i).getEquation());
 			pcn.setName(LocalConfig.getInstance().getConnectionslist().get(i).getEquation());
@@ -1258,7 +1258,7 @@ public class PathwaysFrame extends JApplet {
     	/**                                                                                                          
     	 * transform airport code to latlon string                                                                   
     	 */                                                                                                          
-		public String[] transform(String m) {                                                                     
+		public String[] transform(String m) { 
 			return map.get(m);                                                                                    
 		}                                                                                                            
     }                                                                                                                
@@ -1276,9 +1276,15 @@ public class PathwaysFrame extends JApplet {
     	public Point2D transform(String[] coord) { 
     		double xPos = 0;
 			double yPos = 0;                                                                                     
-			                                                                                    
-			String x = coord[0];                                                                     
-			String y = coord[1];  
+			   
+			String x = "0.0";
+			String y = "0.0"; 
+			if (coord != null) {
+				x = coord[0]; 
+				y = coord[1];  
+			}
+			//String x = coord[0];                                                                     
+			//String y = coord[1];  
 			
 			xPos = Double.parseDouble(x);
 			yPos = Double.parseDouble(y);

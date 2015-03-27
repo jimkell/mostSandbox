@@ -1,3 +1,4 @@
-KEGG ID,Names,Occurence
-C03279,Triphosphate|Triphosphoric acid|Tripolyphosphate|Inorganic triphosphate,0
-C00629,2-Keto-D-gluconic acid|2-Dehydro-D-gluconate|2-Dehydro-D-gluconic acid|alpha-D-arabino-2-Hexulosonic acid,0
+KEGG ID,Additional KEGG IDs,Name
+C00536,C03279,Triphosphate
+C06473,C00629,2-Dehydro-D-gluconate
+C00661,C00118,Glyceraldehyde-3P

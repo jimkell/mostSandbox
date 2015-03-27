@@ -36,7 +36,7 @@ public class PathwaysCSVFileConstants {
 	
 	public static final String[] ADDITIONAL_METABOLITES_COLUMN_NAMES = 
 		{
-		"KEGG ID", "Names", "Occurence"
+		"KEGG ID", "Additional KEGG IDs", "Name"
 		};
 	
 	public static final String[] METABOLITE_POSITIONS_COLUMN_NAMES = 
@@ -112,8 +112,8 @@ public class PathwaysCSVFileConstants {
 	public static final int METABOLITES_OCCURENCE_COLUMN = metabolitesList.indexOf("Occurence");
 	
 	public static final int ADDITIONAL_METABOLITES_KEGG_ID_COLUMN = additionalMetabolitesList.indexOf("KEGG ID");
-	public static final int ADDITIONAL_METABOLITES_NAMES_COLUMN = additionalMetabolitesList.indexOf("Names");
-	public static final int ADDITIONAL_METABOLITES_OCCURENCE_COLUMN = additionalMetabolitesList.indexOf("Occurence");
+	public static final int ADDITIONAL_METABOLITES_ALTERNATE_KEGG_IDS_COLUMN = additionalMetabolitesList.indexOf("Additional KEGG IDs");
+	public static final int ADDITIONAL_METABOLITES_NAME_COLUMN = additionalMetabolitesList.indexOf("Name");
 	
 	public static final int METABOLITE_POSITIONS_ID_COLUMN = metabolitePositionsList.indexOf("Pathway ID");
 	public static final int METABOLITE_POSITIONS_METABOLITE_ID_COLUMN = metabolitePositionsList.indexOf("Metabolite ID");

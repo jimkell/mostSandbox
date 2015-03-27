@@ -19,6 +19,7 @@ public class PathwayFilesReader {
 	Map<String, MetabolicPathway> metabolicPathways = new HashMap<String, MetabolicPathway>();
 	Map<String, PathwayMetaboliteData> metaboliteDataKeggIdMap = new HashMap<String, PathwayMetaboliteData>();
 	Map<String, String> metaboliteNameAbbrMap = new HashMap<String, String>();
+	Map<String, ArrayList<String>> additionalMetabolitesMap = new HashMap<String, ArrayList<String>>();
 	Map<String, PathwayReactionData> reactionDataKeggIdMap = new HashMap<String, PathwayReactionData>();
 	Map<String, ArrayList<String>> ecNumberKeggReactionIdMap = new HashMap<String, ArrayList<String>>();
 	
@@ -155,6 +156,59 @@ public class PathwayFilesReader {
 				reader.close();
 				LocalConfig.getInstance().setMetaboliteDataKeggIdMap(metaboliteDataKeggIdMap);
 //				System.out.println(metaboliteDataKeggIdMap);
+			} catch (IOException e) {
+				JOptionPane.showMessageDialog(null,                
+						"File Not Found Error.",                
+						"Error",                                
+						JOptionPane.ERROR_MESSAGE);
+				//e.printStackTrace();
+			}
+		} catch (FileNotFoundException e) {
+			JOptionPane.showMessageDialog(null,                
+					"File Not Found Error.",                
+					"Error",                                
+					JOptionPane.ERROR_MESSAGE);
+			//e.printStackTrace();
+		}	
+	}
+	
+	public void readAdditionalMetabolitesFile(File additionalMetabolites) {
+		CSVReader reader;
+		
+		int count = 0;
+		
+		try {
+			reader = new CSVReader(new FileReader(additionalMetabolites), ',');
+			String [] dataArray;
+			try {
+				while ((dataArray = reader.readNext()) != null) {
+					if (count > 0) {
+						for (int s = 0; s < dataArray.length; s++) {
+							String keggId = dataArray[PathwaysCSVFileConstants.ADDITIONAL_METABOLITES_KEGG_ID_COLUMN];
+							if (s == PathwaysCSVFileConstants.ADDITIONAL_METABOLITES_ALTERNATE_KEGG_IDS_COLUMN) {
+								// need to escape pipe: http://stackoverflow.com/questions/21524642/splitting-string-with-pipe-character
+								String[] ids = dataArray[s].split("\\|");
+								ArrayList<String> idsList = new ArrayList<String>();
+								for (int i = 0; i < ids.length; i++) {
+									idsList.add(ids[i]);
+									PathwayMetaboliteData pm = new PathwayMetaboliteData();
+									pm.setKeggId(idsList.get(i));
+									pm.setNames(LocalConfig.getInstance().getMetaboliteDataKeggIdMap().get(keggId).getNames());
+									pm.setOccurence(0);
+									//System.out.println("pm " + pm);
+									LocalConfig.getInstance().getMetaboliteDataKeggIdMap().put(idsList.get(i), pm);
+								}
+								additionalMetabolitesMap.put(keggId, idsList);
+								//System.out.println("k " + keggId);
+								//System.out.println("list " + idsList);
+							}
+						}
+					}
+					count += 1;
+				}
+				reader.close();
+				System.out.println("a " + additionalMetabolitesMap);
+				LocalConfig.getInstance().setAdditionalMetabolitesMap(additionalMetabolitesMap);
 			} catch (IOException e) {
 				JOptionPane.showMessageDialog(null,                
 						"File Not Found Error.",                
@@ -818,7 +872,7 @@ public class PathwayFilesReader {
 //		reader.readPathwaysFile(pathways);
 //		reader.readPathwayGraphFile(pathwayGraph);
 		reader.readMetabolitesFile(metabolites);
-		reader.readMetabolitesFile(additionalMetabolites);
+		reader.readAdditionalMetabolitesFile(additionalMetabolites);
 		reader.readReactionsFile(reactions);
 		reader.readDrawOrderFile(drawOrder);
 		reader.readSideSpeciesFile(sideSpecies);

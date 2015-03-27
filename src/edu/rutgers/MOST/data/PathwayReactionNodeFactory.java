@@ -8,6 +8,7 @@ import java.util.Vector;
 
 import edu.rutgers.MOST.config.LocalConfig;
 import edu.rutgers.MOST.presentation.GraphicalInterface;
+import edu.rutgers.MOST.presentation.PathwaysFrameConstants;
 
 public class PathwayReactionNodeFactory {
 
@@ -20,7 +21,7 @@ public class PathwayReactionNodeFactory {
 	 * @return
 	 */
 	public PathwayReactionNode createPathwayReactionNode(ArrayList<String> ec, ArrayList<String> keggReactionIds, 
-			ArrayList<String> keggReactantIds, ArrayList<String> keggProductIds, String compartment) {
+			ArrayList<String> keggReactantIds, ArrayList<String> keggProductIds, String compartment, int component) {
 		PathwayReactionNode pn = new PathwayReactionNode();
 		ArrayList<String> sideReactants = new ArrayList<String>();
 		ArrayList<String> sideProducts = new ArrayList<String>();
@@ -31,11 +32,11 @@ public class PathwayReactionNodeFactory {
 			if (LocalConfig.getInstance().getEcNumberReactionMap().containsKey(ec.get(m))) {
 				// attributes from SBML Reaction
 				ArrayList<SBMLReaction> reac = LocalConfig.getInstance().getEcNumberReactionMap().get(ec.get(m));
-//				if (ec.size() == 1) {
-//					reactions.add(reac.get(0));
-//				} else {
+				if (component == PathwaysFrameConstants.PHOSPHORYLATION_COMPONENT) {
+					reactions.add(reac.get(0));
+				} else {
 					addReactions(reactions, reac, compartment, keggReactantIds, keggProductIds);
-//				}
+				}
 				// attributes from Enzyme.dat
 				if (LocalConfig.getInstance().getEnzymeDataMap().containsKey(ec.get(m))) {
 					if (LocalConfig.getInstance().getEnzymeDataMap().get(ec.get(m)).getCatalyticActivity() == null) {
@@ -63,7 +64,12 @@ public class PathwayReactionNodeFactory {
 		for (int n = 0; n < keggReactionIds.size(); n++) {
 			if (LocalConfig.getInstance().getKeggIdReactionMap().containsKey(keggReactionIds.get(n))) {
 				ArrayList<SBMLReaction> reac = LocalConfig.getInstance().getKeggIdReactionMap().get(keggReactionIds.get(n));
-				addReactions(reactions, reac, compartment, keggReactantIds, keggProductIds);
+				if (keggReactionIds.size() == 1 && component == PathwaysFrameConstants.PHOSPHORYLATION_COMPONENT) {
+					reactions.add(reac.get(0));
+				} else {
+					addReactions(reactions, reac, compartment, keggReactantIds, keggProductIds);
+				}
+				//addReactions(reactions, reac, compartment, keggReactantIds, keggProductIds);
 			}
 		}
 		// if reaction does not have an ec number or kegg reaction id, have to check all unplotted
