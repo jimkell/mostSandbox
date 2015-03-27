@@ -2324,7 +2324,6 @@ public class GraphicalInterface extends JFrame {
 					unplottedReactionIds.add((int) unplottedReactions.get(i));
 				}
 				LocalConfig.getInstance().setUnplottedReactionIds(unplottedReactionIds);
-				//System.out.println(unplottedReactionIds);
 				
 				// should only run this if ec number column exists
 				ECNumberMapCreator ecMapCreator = new ECNumberMapCreator();
@@ -2332,6 +2331,7 @@ public class GraphicalInterface extends JFrame {
 				
 				ModelKeggEquationMapCreator modelKeggEquationMapCreator = new ModelKeggEquationMapCreator();
 				modelKeggEquationMapCreator.createKeggEquationMap();
+				//System.out.println("un " + unplottedReactionIds);
 				
 				if (f.getKeggIdColumnIndex() == -1) {
 					missingItem = "KEGG IDs";
@@ -12625,6 +12625,8 @@ public class GraphicalInterface extends JFrame {
 				int id = LocalConfig.getInstance().getUnplottedReactionIds().get(j);
 				SBMLReactionEquation equn = (SBMLReactionEquation) LocalConfig.getInstance().getReactionEquationMap().get(id);
 				//System.out.println("eq " + equn);
+				PathwayReactionData prd = LocalConfig.getInstance().getModelKeggEquationMap().get(Integer.toString(id));
+				//System.out.println(prd);
 				if (equn.getCompartmentList().size() == 2) { 
 					// get periplasm to cytosol and periplasm to extra organism exchange and transport reactions
 					if (LocalConfig.getInstance().getPeriplasmName() != null &&
@@ -12634,9 +12636,13 @@ public class GraphicalInterface extends JFrame {
 							//System.out.println("ex " + equn.getCompartmentList() + "id " + id);
 							if (LocalConfig.getInstance().getUnplottedReactionIds().contains(id)) {
 //								LocalConfig.getInstance().getUnplottedReactionIds().remove(LocalConfig.getInstance().getUnplottedReactionIds().indexOf(id));
-								if (equn.getCompartmentReactantsList().size() == 2 || equn.getCompartmentProductsList().size() == 2) {
-									cytosolPeriplasmIds2.add(id);
-									//System.out.println("id " + id + "\t" + equn.equationAbbreviations + "\t" + "Cytosol Periplasm2");
+								if ((equn.getCompartmentReactantsList().size() == 2 || equn.getCompartmentProductsList().size() == 2)) {
+								    // remove reactions of type X_c + H_p = X_p + H_c
+									if ((equn.getCompartmentReactantsList().size() == 2 && prd != null && prd.getKeggReactantIds().size() == 2 && prd.getKeggReactantIds().contains("C00080")) 
+											&& (equn.getCompartmentProductsList().size() == 2 && prd != null && prd.getKeggProductIds().size() ==2 && prd.getKeggProductIds().contains("C00080"))) {
+										cytosolPeriplasmIds2.add(id);
+										System.out.println("id " + id + "\t" + equn.equationAbbreviations + "\t" + "Cytosol Periplasm2");
+									}
 								} else {
 									cytosolPeriplasmIds.add(id);
 									//System.out.println("id " + id + "\t" + equn.equationAbbreviations + "\t" + "Cytosol Periplasm");
@@ -12647,10 +12653,15 @@ public class GraphicalInterface extends JFrame {
 								&& equn.getCompartmentList().contains(LocalConfig.getInstance().getPeriplasmName())) {
 							//System.out.println("ex " + equn.getCompartmentList() + "id " + id);
 							if (LocalConfig.getInstance().getUnplottedReactionIds().contains(id)) {
-//								LocalConfig.getInstance().getUnplottedReactionIds().remove(LocalConfig.getInstance().getUnplottedReactionIds().indexOf(id));
-								if (equn.getCompartmentReactantsList().size() == 2 || equn.getCompartmentProductsList().size() == 2) {
-									periplasmExtraOrganismIds2.add(id);
-									//System.out.println("id " + id + "\t" + equn.equationAbbreviations + "\t" + "Extraorganism Periplasm2");
+								//LocalConfig.getInstance().getUnplottedReactionIds().remove(LocalConfig.getInstance().getUnplottedReactionIds().indexOf(id));
+								// remove reactions of type X_p + H_e = X_e + H_p
+								if ((equn.getCompartmentReactantsList().size() == 2 || equn.getCompartmentProductsList().size() == 2)) {
+									// remove reactions of type X_c + H_p = X_p + H_c
+									if ((equn.getCompartmentReactantsList().size() == 2 && prd != null && prd.getKeggReactantIds().size() == 2 && prd.getKeggReactantIds().contains("C00080")) 
+											&& (equn.getCompartmentProductsList().size() == 2 && prd != null && prd.getKeggProductIds().size() ==2 && prd.getKeggProductIds().contains("C00080"))) {
+										periplasmExtraOrganismIds2.add(id);
+										System.out.println("id " + id + "\t" + equn.equationAbbreviations + "\t" + "Extraorganism Periplasm2");
+									}
 								} else {
 									periplasmExtraOrganismIds.add(id);
 									//System.out.println("id " + id + "\t" + equn.equationAbbreviations + "\t" + "Extraorganism Periplasm");
@@ -12664,9 +12675,14 @@ public class GraphicalInterface extends JFrame {
 						//System.out.println("ex " + equn.getCompartmentList() + "id " + id);
 						if (LocalConfig.getInstance().getUnplottedReactionIds().contains(id)) {
 //							LocalConfig.getInstance().getUnplottedReactionIds().remove(LocalConfig.getInstance().getUnplottedReactionIds().indexOf(id));
-							if (equn.getCompartmentReactantsList().size() == 2 || equn.getCompartmentProductsList().size() == 2) {
-								cytosolExtraOrganismIds2.add(id);
-								//System.out.println("id " + id + "\t" + equn.equationAbbreviations + "\t" + "Cytosol Extraorganism2");
+							// remove reactions of type X_c + H_e = X_e + H_c	
+							if ((equn.getCompartmentReactantsList().size() == 2 || equn.getCompartmentProductsList().size() == 2)) {
+								// remove reactions of type X_c + H_p = X_p + H_c
+								if ((equn.getCompartmentReactantsList().size() == 2 && prd != null && prd.getKeggReactantIds().size() == 2 && prd.getKeggReactantIds().contains("C00080")) 
+										&& (equn.getCompartmentProductsList().size() == 2 && prd != null && prd.getKeggProductIds().size() ==2 && prd.getKeggProductIds().contains("C00080"))) {
+									cytosolExtraOrganismIds2.add(id);
+									System.out.println("id " + id + "\t" + equn.equationAbbreviations + "\t" + "Cytosol Extraorganism2");
+								}
 							} else {
 								cytosolExtraOrganismIds.add(id);
 								//System.out.println("id " + id + "\t" + equn.equationAbbreviations + "\t" + "Cytosol Extraorganism");

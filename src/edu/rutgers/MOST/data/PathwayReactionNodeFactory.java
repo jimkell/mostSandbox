@@ -333,7 +333,7 @@ public class PathwayReactionNodeFactory {
 	 * @return
 	 */
 	public String maybeMakeList(ArrayList<String> items, String heading) {
-		String item = "";
+		String item = "<p>" + heading + ": ";
 		if (items.size() > 0) {
 			item = "<p>" + heading + ": " + items.get(0);
 		}

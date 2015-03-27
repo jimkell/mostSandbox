@@ -16,6 +16,7 @@ public class ModelKeggEquationMapCreator {
 			ArrayList<String> keggProductIds = new ArrayList<String>();
 			PathwayReactionData prd = new PathwayReactionData();
 			int reactionId = ((SBMLReactionEquation) LocalConfig.getInstance().getReactionEquationMap().get(j)).getReactants().get(0).getReactionId();
+			//System.out.println(reactionId);
 			prd.setReactionId(Integer.toString(reactionId));
 			for (int r = 0; r < ((SBMLReactionEquation) LocalConfig.getInstance().getReactionEquationMap().get(j)).getReactants().size(); r++) {
 				//reactionId = ((SBMLReactionEquation) LocalConfig.getInstance().getReactionEquationMap().get(j)).getReactants().get(r).getReactionId();
