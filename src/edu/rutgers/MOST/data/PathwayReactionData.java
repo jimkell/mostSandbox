@@ -188,21 +188,25 @@ public class PathwayReactionData {
 		StringBuffer rxnBfr = new StringBuffer();
 		
 		for (int r = 0; r < reactantIds.size(); r++) {
-			String name = LocalConfig.getInstance().getMetabolicPathways().get(this.pathwayId).getMetabolitesData().get(reactantIds.get(r)).getNames().get(0);
-			if (r == 0) {
-				reacBfr.append(name);							
-			} else {
-				reacBfr.append(" + " + name);			
-			}			
+			if (LocalConfig.getInstance().getMetabolicPathways().get(this.pathwayId).getMetabolitesData().containsKey(reactantIds.get(r))) {
+				String name = LocalConfig.getInstance().getMetabolicPathways().get(this.pathwayId).getMetabolitesData().get(reactantIds.get(r)).getNames().get(0);
+				if (r == 0) {
+					reacBfr.append(name);							
+				} else {
+					reacBfr.append(" + " + name);			
+				}	
+			}		
 		}
 		
 		for (int r = 0; r < productIds.size(); r++) {
-			String name = LocalConfig.getInstance().getMetabolicPathways().get(this.pathwayId).getMetabolitesData().get(productIds.get(r)).getNames().get(0);
-			if (r == 0) {
-				prodBfr.append(name);							
-			} else {
-				prodBfr.append(" + " + name);			
-			}			
+			if (LocalConfig.getInstance().getMetabolicPathways().get(this.pathwayId).getMetabolitesData().containsKey(productIds.get(r))) {
+				String name = LocalConfig.getInstance().getMetabolicPathways().get(this.pathwayId).getMetabolitesData().get(productIds.get(r)).getNames().get(0);
+				if (r == 0) {
+					prodBfr.append(name);							
+				} else {
+					prodBfr.append(" + " + name);			
+				}	
+			}	
 		}
 
 		if (reversible.equals("0")) {

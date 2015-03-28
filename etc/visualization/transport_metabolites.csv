@@ -13,12 +13,15 @@ Pathway ID,Metabolite ID,Metabolite Name,Metabolite Abbreviation,Position,Offset
 1,3,Fumarate,FUM,t,0,-1,C00122
 1,4,Citrate,CIT,b,0,-1,C00158
 1,5,Formate,Form,t,0,-1,C00058
-2,0,D-Gluconate,Gluconate,l,-3,-1,C00257
+2,0,D-Gluconate,Gluconate,t,-0.5,-1,C00257
 2,1,D-Ribose-5P,R5P,t,0,-1,C00117
 2,2,D-Ribose,Ribose,t,0,-1,C00121
 2,3,D-Glyceraldehyde,Glyceraldehyde,t,0,-1,C00577
 2,4,Glycerate,Glycerate,t,0,-1,C00258
 2,5,2-Dehydro-3-deoxy-D-gluconate,2H3OGlu,t,2,-1,C00204
+2,6,L-Xylulose,Xylu-L,t,0,-1,C00312
+2,7,L-Lyxose,Lyx-L,t,0,-1,C01508
+2,8,D-Xylose,Xyl-D,t,0.5,-1,C00181
 17,0,Orthophosphate,Pi,t,0,-1,C00009
 17,1,AMP,AMP,t,-2,-1,C00020
 17,2,ATP,ATP,t,-1,-1,C00002

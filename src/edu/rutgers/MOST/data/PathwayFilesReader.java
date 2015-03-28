@@ -437,7 +437,9 @@ public class PathwayFilesReader {
 								ArrayList<String> reactantIds = new ArrayList<String>();
 								for (int i = 0; i < reac.length; i++) {
 									reactantIds.add(reac[i]);
-									keggReactantIds.add(metabolitesData.get(reac[i]).getKeggId());
+									if (metabolitesData.containsKey(reac[i])) {
+										keggReactantIds.add(metabolitesData.get(reac[i]).getKeggId());
+									}
 								}
 								pr.setReactantIds(reactantIds);
 								//System.out.println(keggReactantIds);
@@ -447,7 +449,9 @@ public class PathwayFilesReader {
 								ArrayList<String> productIds = new ArrayList<String>();
 								for (int i = 0; i < prod.length; i++) {
 									productIds.add(prod[i]);
-									keggProductIds.add(metabolitesData.get(prod[i]).getKeggId());
+									if (metabolitesData.containsKey(prod[i])) {
+										keggProductIds.add(metabolitesData.get(prod[i]).getKeggId());
+									}
 								}
 								pr.setProductIds(productIds);
 								//System.out.println(keggProductIds);

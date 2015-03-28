@@ -434,14 +434,18 @@ public class PathwaysFrame extends JApplet {
 						externalMetaboliteNodeList.add(emn);
 					}
 					for (int r = 0; r < pathway.getReactionsData().get(Integer.toString(k)).getReactantIds().size(); r++) {
-						String reac = pathway.getMetabolitesData().get((pathway.getReactionsData().get(Integer.toString(k)).getReactantIds().get(r))).getName();
-						reactionMap.put(displayName + "reactant " + Integer.toString(r), new String[] {displayName, reac, reversible});
-						fluxMap.put(displayName + "reactant " + Integer.toString(r), edgeThickness(pn.getFluxValue()));
+						if (pathway.getMetabolitesData().containsKey((pathway.getReactionsData().get(Integer.toString(k)).getReactantIds().get(r)))) {
+							String reac = pathway.getMetabolitesData().get((pathway.getReactionsData().get(Integer.toString(k)).getReactantIds().get(r))).getName();
+							reactionMap.put(displayName + "reactant " + Integer.toString(r), new String[] {displayName, reac, reversible});
+							fluxMap.put(displayName + "reactant " + Integer.toString(r), edgeThickness(pn.getFluxValue()));
+						}
 					}
 					for (int p = 0; p < pathway.getReactionsData().get(Integer.toString(k)).getProductIds().size(); p++) {
-						String prod = pathway.getMetabolitesData().get((pathway.getReactionsData().get(Integer.toString(k)).getProductIds().get(p))).getName();
-						reactionMap.put(displayName + "product " + Integer.toString(p), new String[] {displayName, prod, "true"});
-						fluxMap.put(displayName + "product " + Integer.toString(p), edgeThickness(pn.getFluxValue()));
+						if (pathway.getMetabolitesData().containsKey((pathway.getReactionsData().get(Integer.toString(k)).getProductIds().get(p)))) {
+							String prod = pathway.getMetabolitesData().get((pathway.getReactionsData().get(Integer.toString(k)).getProductIds().get(p))).getName();
+							reactionMap.put(displayName + "product " + Integer.toString(p), new String[] {displayName, prod, "true"});
+							fluxMap.put(displayName + "product " + Integer.toString(p), edgeThickness(pn.getFluxValue()));
+						}
 					}
 				}
 			}
