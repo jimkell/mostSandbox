@@ -969,6 +969,26 @@ public class PathwaysFrame extends JApplet {
 							reactions.add(trnList.get(u).getReactionAbbr());
 							metabPosMap.put(trnList.get(u).getReactionAbbr(), new String[] {Double.toString(trnList.get(u).getxPosition()), Double.toString(trnList.get(u).getyPosition())});  
 							foundReactionsList.add(trnList.get(u).getReactionAbbr());
+							String reactantName = trnList.get(u).getCytosolName();
+							String productName = transportMetaboliteNodeList.get(t).getName() + PathwaysFrameConstants.PERIPLASM_SUFFIX;
+   							if (trnList.get(u).getDirection().equals("-1")) {
+								reactantName = transportMetaboliteNodeList.get(t).getName() + PathwaysFrameConstants.PERIPLASM_SUFFIX;
+								productName = trnList.get(u).getCytosolName();
+							} 
+							//System.out.println("pn " + parentNode);
+							reactions.add(trnList.get(u).getReactionAbbr());
+							metabPosMap.put(trnList.get(u).getReactionAbbr(), new String[] {Double.toString(trnList.get(u).getxPosition()), Double.toString(trnList.get(u).getyPosition())});  
+							foundReactionsList.add(trnList.get(u).getReactionAbbr());
+							reactionMap.put(trnList.get(u).getReactionAbbr() + " reactant " + 1, 
+		   							new String[] {trnList.get(u).getReactionAbbr(), reactantName, 
+		   							trnList.get(u).getReversible()});
+		   					fluxMap.put(trnList.get(u).getReactionAbbr() + " reactant " + 1, 
+		   							edgeThickness(trnList.get(u).getFluxValue()));
+							reactionMap.put(trnList.get(u).getReactionAbbr() + " product " + 1, 
+		   							new String[] {trnList.get(u).getReactionAbbr(), productName, 
+		   							"true"});
+		   					fluxMap.put(trnList.get(u).getReactionAbbr() + " product " + 1, 
+		   							edgeThickness(trnList.get(u).getFluxValue()));
 						}
 					}
    				}
@@ -1000,6 +1020,26 @@ public class PathwaysFrame extends JApplet {
    	   	   						reactions.add(trnList.get(u).getReactionAbbr());
    	   	   						metabPosMap.put(trnList.get(u).getReactionAbbr(), new String[] {Double.toString(trnList.get(u).getxPosition()), Double.toString(trnList.get(u).getyPosition())});  
    	   	   						foundReactionsList.add(trnList.get(u).getReactionAbbr());
+   	   	   				String reactantName = transportMetaboliteNodeList.get(t).getName() + PathwaysFrameConstants.PERIPLASM_SUFFIX;
+						String productName = transportMetaboliteNodeList.get(t).getName() + PathwaysFrameConstants.EXTRAORGANISM_SUFFIX;
+							if (trnList.get(u).getDirection().equals("-1")) {
+							reactantName = transportMetaboliteNodeList.get(t).getName() + PathwaysFrameConstants.EXTRAORGANISM_SUFFIX;
+							productName = transportMetaboliteNodeList.get(t).getName() + PathwaysFrameConstants.PERIPLASM_SUFFIX;
+						} 
+						//System.out.println("pn " + parentNode);
+						reactions.add(trnList.get(u).getReactionAbbr());
+						metabPosMap.put(trnList.get(u).getReactionAbbr(), new String[] {Double.toString(trnList.get(u).getxPosition()), Double.toString(trnList.get(u).getyPosition())});  
+						foundReactionsList.add(trnList.get(u).getReactionAbbr());
+						reactionMap.put(trnList.get(u).getReactionAbbr() + " reactant " + 1, 
+	   							new String[] {trnList.get(u).getReactionAbbr(), reactantName, 
+	   							trnList.get(u).getReversible()});
+	   					fluxMap.put(trnList.get(u).getReactionAbbr() + " reactant " + 1, 
+	   							edgeThickness(trnList.get(u).getFluxValue()));
+						reactionMap.put(trnList.get(u).getReactionAbbr() + " product " + 1, 
+	   							new String[] {trnList.get(u).getReactionAbbr(), productName, 
+	   							"true"});
+	   					fluxMap.put(trnList.get(u).getReactionAbbr() + " product " + 1, 
+	   							edgeThickness(trnList.get(u).getFluxValue()));
    	   	   					}
    	   	   				}
    	   	   			}
