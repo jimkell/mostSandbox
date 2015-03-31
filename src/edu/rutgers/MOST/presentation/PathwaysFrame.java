@@ -341,6 +341,20 @@ public class PathwaysFrame extends JApplet {
 						//emn.setReactionDisplayName(displayName);
 						//System.out.println(emn);
 						transportMetaboliteNodeList.add(emn);
+						TransportReactionNode trn = new TransportReactionNode();
+						trn.setCytosolName(metabName);
+						if (LocalConfig.getInstance().getKeggIdTransportReactionsMap().containsKey(keggId)) {
+							ArrayList<TransportReactionNode> trnList = LocalConfig.getInstance().getKeggIdTransportReactionsMap().get(keggId);
+							for (int t = 0; t < trnList.size(); t++) {
+								if (trnList.get(t).getTransportType().equals(TransportReactionConstants.CYTOSOL_EXTRAORGANISM_TRANSPORT) ||
+										trnList.get(t).getTransportType().equals(TransportReactionConstants.CYTOSOL_PERIPLASM_TRANSPORT)) {
+									trnList.get(t).setCytosolName(metabName);
+								}
+								System.out.println("key " + trnList.get(t));	
+							}
+						} else {
+							System.out.println(keggId + " not present");
+						}
 					}
 				}
 			}

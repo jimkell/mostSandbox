@@ -1040,6 +1040,17 @@ public class LocalConfig {
 		this.keggIdMetaboliteMap = keggIdMetaboliteMap;
 	}
 	
+	Map<String, ArrayList<TransportReactionNode>> keggIdTransportReactionsMap;
+
+	public Map<String, ArrayList<TransportReactionNode>> getKeggIdTransportReactionsMap() {
+		return keggIdTransportReactionsMap;
+	}
+
+	public void setKeggIdTransportReactionsMap(
+			Map<String, ArrayList<TransportReactionNode>> keggIdTransportReactionsMap) {
+		this.keggIdTransportReactionsMap = keggIdTransportReactionsMap;
+	}
+
 	private Map<String, String> metaboliteIdKeggIdMap;
 
 	public Map<String, String> getMetaboliteIdKeggIdMap() {
