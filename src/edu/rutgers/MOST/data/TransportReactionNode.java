@@ -19,6 +19,8 @@ public class TransportReactionNode {
 	private ArrayList<PathwayMetaboliteNode> pathwayReactants;
 	private ArrayList<PathwayMetaboliteNode> pathwayProducts;
 	private String reversible;
+	// t, b, l, r
+	private String position;
 	private double xPosition;
 	private double yPosition;
 	private String transportType;
@@ -106,6 +108,12 @@ public class TransportReactionNode {
 	}
 	public void setReversible(String reversible) {
 		this.reversible = reversible;
+	}
+	public String getPosition() {
+		return position;
+	}
+	public void setPosition(String position) {
+		this.position = position;
 	}
 	public double getxPosition() {
 		return xPosition;

@@ -1,7 +1,7 @@
 Pathway ID,Metabolite ID,Reaction ID,Metabolite Name,Metabolite Abbreviation,Position,Offset,Direction,KEGG Metabolite ID,EC Number,KEGG Reaction ID
-0,0,35,D-Glucose,Glc,l,-1.5,-1,C00031,2.7.1.69|2.7.3.9,R03076
-0,1,25,D-Fructose,Fru,l,-1.5,-1,C00095,2.7.1.69|2.7.3.9,R03076
-0,2,24,D-Glucose,Glc,l,-1.5,-1,C00031,2.7.1.69|2.7.3.9,R03076
+0,0,24,D-Glucose,Glc,l,0,-1,C00031,2.7.1.69|2.7.3.9,R03076
+0,1,25,D-Fructose,Fru,l,0,-1,C00095,2.7.1.69|2.7.3.9,R03076
+0,2,35,D-Glucose,Glc,l,0,-1,C00031,2.7.1.69|2.7.3.9,R03076
 0,3,42,Arbutin-6P,Arbt6P,l,0,-1,C06186,2.7.1.69,R03076
 0,4,43,Salicin-6P,Sal6P,l,0,-1,C06187,2.7.1.69,R03076
 17,0,2,H  3.6.3.14,H,t,0,-1,C00080,3.6.3.6|3.6.3.10|3.6.3.14,R00086
