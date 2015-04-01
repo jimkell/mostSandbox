@@ -5,7 +5,7 @@ Pathway ID,Metabolite ID,Metabolite Name,Metabolite Abbreviation,Position,Offset
 0,3,Pyruvate,PYR,b,-2,-1,C00022
 0,4,L-Lactate,L-Lac,b,-0.5,-1,C00186
 0,5,D-Lactate,D-Lac,b,1,-1,C00256
-0,6,a-D-Glucose-1P,a-G1P,b,0,-1,C00103
+0,6,a-D-Glucose-1P,a-G1P,l,0,-1,C00103
 0,7,B-D-Fructose-6P,F6P,b,-1.5,-1,C00085
 1,0,Succinate,SUC,r,0,-1,C00042
 1,1,(S)-Malate,MAL,t,0,-1,C00149

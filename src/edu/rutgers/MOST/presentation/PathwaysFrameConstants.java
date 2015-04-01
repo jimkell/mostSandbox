@@ -107,5 +107,8 @@ public class PathwaysFrameConstants {
 	public static final String PERIPLASM_SUFFIX = "_p";
 	public static final String EXTRAORGANISM_SUFFIX = "_e";
 	
+	// prevents nodes with calculated positions from touching
+	public static final double NODE_SPACING_CORRECTION = 1.1;
+	
 	
 }

@@ -12641,6 +12641,11 @@ public class GraphicalInterface extends JFrame {
 										cytosolPeriplasmIds2.add(id);
 										//System.out.println("id " + id + "\t" + equn.equationAbbreviations + "\t" + "Cytosol Periplasm2");
 									}
+									if ((equn.getCompartmentReactantsList().size() == 2 && prd != null && prd.getKeggReactantIds().size() == 2 && prd.getKeggReactantIds().contains("C00009")) 
+											&& (equn.getCompartmentProductsList().size() == 2 && prd != null && prd.getKeggProductIds().size() ==2 && prd.getKeggProductIds().contains("C00009"))) {
+										cytosolPeriplasmIds2.add(id);
+										//System.out.println("id " + id + "\t" + equn.equationAbbreviations + "\t" + "Cytosol Periplasm2");
+									}
 								} else {
 									cytosolPeriplasmIds.add(id);
 									//System.out.println("id " + id + "\t" + equn.equationAbbreviations + "\t" + "Cytosol Periplasm");
@@ -12657,6 +12662,11 @@ public class GraphicalInterface extends JFrame {
 									// remove reactions of type X_c + H_p = X_p + H_c
 									if ((equn.getCompartmentReactantsList().size() == 2 && prd != null && prd.getKeggReactantIds().size() == 2 && prd.getKeggReactantIds().contains("C00080")) 
 											&& (equn.getCompartmentProductsList().size() == 2 && prd != null && prd.getKeggProductIds().size() ==2 && prd.getKeggProductIds().contains("C00080"))) {
+										periplasmExtraOrganismIds2.add(id);
+										//System.out.println("id " + id + "\t" + equn.equationAbbreviations + "\t" + "Extraorganism Periplasm2");
+									}
+									if ((equn.getCompartmentReactantsList().size() == 2 && prd != null && prd.getKeggReactantIds().size() == 2 && prd.getKeggReactantIds().contains("C00009")) 
+											&& (equn.getCompartmentProductsList().size() == 2 && prd != null && prd.getKeggProductIds().size() ==2 && prd.getKeggProductIds().contains("C00009"))) {
 										periplasmExtraOrganismIds2.add(id);
 										//System.out.println("id " + id + "\t" + equn.equationAbbreviations + "\t" + "Extraorganism Periplasm2");
 									}
@@ -12681,6 +12691,11 @@ public class GraphicalInterface extends JFrame {
 									cytosolExtraOrganismIds2.add(id);
 									//System.out.println("id " + id + "\t" + equn.equationAbbreviations + "\t" + "Cytosol Extraorganism2");
 								}
+								if ((equn.getCompartmentReactantsList().size() == 2 && prd != null && prd.getKeggReactantIds().size() == 2 && prd.getKeggReactantIds().contains("C00009")) 
+										&& (equn.getCompartmentProductsList().size() == 2 && prd != null && prd.getKeggProductIds().size() ==2 && prd.getKeggProductIds().contains("C00009"))) {
+									cytosolExtraOrganismIds2.add(id);
+									//System.out.println("id " + id + "\t" + equn.equationAbbreviations + "\t" + "Cytosol Extraorganism2");
+								}
 							} else {
 								cytosolExtraOrganismIds.add(id);
 								//System.out.println("id " + id + "\t" + equn.equationAbbreviations + "\t" + "Cytosol Extraorganism");
@@ -12696,48 +12711,42 @@ public class GraphicalInterface extends JFrame {
 			// where added to this list (above), it skips some ids. commented out
 			System.out.println("ce " + cytosolExtraOrganismIds);
 			for (int k = 0; k < cytosolExtraOrganismIds.size(); k++) {
-				if (transportReactionAbbreviation(cytosolExtraOrganismIds.get(k), idReactionMap, TransportReactionConstants.CYTOSOL_EXTRAORGANISM_TRANSPORT) != null) {
-					//System.out.println(transportReactionAbbreviation(cytosolExtraOrganismIds.get(k), idReactionMap, TransportReactionConstants.CYTOSOL_EXTRAORGANISM_TRANSPORT));
-				} else {
-					//System.out.println("no kegg id " + idReactionMap.get(cytosolExtraOrganismIds.get(k)).getReactionEqunAbbr());
-				}
+				createTransportCollections(cytosolExtraOrganismIds.get(k), idReactionMap, TransportReactionConstants.CYTOSOL_EXTRAORGANISM_TRANSPORT);
 				if (LocalConfig.getInstance().getUnplottedReactionIds().contains(cytosolExtraOrganismIds.get(k))) {
 					LocalConfig.getInstance().getUnplottedReactionIds().remove(LocalConfig.getInstance().getUnplottedReactionIds().indexOf(cytosolExtraOrganismIds.get(k)));
 				}
 			}
+			System.out.println("ce2 " + cytosolExtraOrganismIds2);
 			for (int k = 0; k < cytosolExtraOrganismIds2.size(); k++) {
+				createTransportCollections(cytosolExtraOrganismIds2.get(k), idReactionMap, TransportReactionConstants.CYTOSOL_EXTRAORGANISM_TRANSPORT);
 				if (LocalConfig.getInstance().getUnplottedReactionIds().contains(cytosolExtraOrganismIds2.get(k))) {
 					LocalConfig.getInstance().getUnplottedReactionIds().remove(LocalConfig.getInstance().getUnplottedReactionIds().indexOf(cytosolExtraOrganismIds2.get(k)));
 				}
 			}
 			System.out.println("cp " + cytosolPeriplasmIds);
 			for (int m = 0; m < cytosolPeriplasmIds.size(); m++) {
-				if (transportReactionAbbreviation(cytosolPeriplasmIds.get(m), idReactionMap, TransportReactionConstants.CYTOSOL_PERIPLASM_TRANSPORT) != null) {
-					//System.out.println(transportReactionAbbreviation(cytosolPeriplasmIds.get(m), idReactionMap, TransportReactionConstants.CYTOSOL_PERIPLASM_TRANSPORT));
-				} else {
-					//System.out.println("no kegg id " + idReactionMap.get(cytosolPeriplasmIds.get(m)).getReactionEqunAbbr());
-				}
+				createTransportCollections(cytosolPeriplasmIds.get(m), idReactionMap, TransportReactionConstants.CYTOSOL_PERIPLASM_TRANSPORT);
 				if (LocalConfig.getInstance().getUnplottedReactionIds().contains(cytosolPeriplasmIds.get(m))) {
 					LocalConfig.getInstance().getUnplottedReactionIds().remove(LocalConfig.getInstance().getUnplottedReactionIds().indexOf(cytosolPeriplasmIds.get(m)));
 				}
 			}
+			System.out.println("cp2 " + cytosolPeriplasmIds2);
 			for (int m = 0; m < cytosolPeriplasmIds2.size(); m++) {
+				createTransportCollections(cytosolPeriplasmIds2.get(m), idReactionMap, TransportReactionConstants.CYTOSOL_PERIPLASM_TRANSPORT);
 				if (LocalConfig.getInstance().getUnplottedReactionIds().contains(cytosolPeriplasmIds2.get(m))) {
 					LocalConfig.getInstance().getUnplottedReactionIds().remove(LocalConfig.getInstance().getUnplottedReactionIds().indexOf(cytosolPeriplasmIds2.get(m)));
 				}
 			}
 			System.out.println("pe " + periplasmExtraOrganismIds);
 			for (int n = 0; n < periplasmExtraOrganismIds.size(); n++) {
-				if (transportReactionAbbreviation(periplasmExtraOrganismIds.get(n), idReactionMap, TransportReactionConstants.PERIPLASM_EXTRAORGANISM_TRANSPORT) != null) {
-					//System.out.println(transportReactionAbbreviation(periplasmExtraOrganismIds.get(n), idReactionMap, TransportReactionConstants.PERIPLASM_EXTRAORGANISM_TRANSPORT));
-				} else {
-					//System.out.println("no kegg id " + idReactionMap.get(periplasmExtraOrganismIds.get(n)).getReactionEqunAbbr());
-				}
+				createTransportCollections(periplasmExtraOrganismIds.get(n), idReactionMap, TransportReactionConstants.PERIPLASM_EXTRAORGANISM_TRANSPORT);
 				if (LocalConfig.getInstance().getUnplottedReactionIds().contains(periplasmExtraOrganismIds.get(n))) {
 					LocalConfig.getInstance().getUnplottedReactionIds().remove(LocalConfig.getInstance().getUnplottedReactionIds().indexOf(periplasmExtraOrganismIds.get(n)));
 				}
 			}
+			System.out.println("pe2 " + periplasmExtraOrganismIds2);
 			for (int n = 0; n < periplasmExtraOrganismIds2.size(); n++) {
+				createTransportCollections(periplasmExtraOrganismIds2.get(n), idReactionMap, TransportReactionConstants.PERIPLASM_EXTRAORGANISM_TRANSPORT);
 				if (LocalConfig.getInstance().getUnplottedReactionIds().contains(periplasmExtraOrganismIds2.get(n))) {
 					LocalConfig.getInstance().getUnplottedReactionIds().remove(LocalConfig.getInstance().getUnplottedReactionIds().indexOf(periplasmExtraOrganismIds2.get(n)));
 				}
@@ -12754,7 +12763,7 @@ public class GraphicalInterface extends JFrame {
 		}
 	}
 	
-	public String transportReactionAbbreviation(int id, Map<Integer, SBMLReaction> idReactionMap, String transportType) {
+	public void createTransportCollections(int id, Map<Integer, SBMLReaction> idReactionMap, String transportType) {
 		//System.out.println(idReactionMap.get(id).getReactionAbbreviation());
 		if (LocalConfig.getInstance().getModelKeggEquationMap().containsKey(Integer.toString(id))) {
 			ArrayList<String> keggReactantIds = LocalConfig.getInstance().getModelKeggEquationMap().get(Integer.toString(id)).getKeggReactantIds();
@@ -12765,6 +12774,13 @@ public class GraphicalInterface extends JFrame {
 					keggReactantIds.remove(keggReactantIds.indexOf("C00080"));
 					keggProductIds.remove(keggProductIds.indexOf("C00080"));
 					sideSpecies = "C00080";
+				} 
+			}
+			if (keggReactantIds.contains("C00009") && keggProductIds.contains("C00009")) {
+				if (keggReactantIds.size() > 1 && keggProductIds.size() > 1) {
+					keggReactantIds.remove(keggReactantIds.indexOf("C00009"));
+					keggProductIds.remove(keggProductIds.indexOf("C00009"));
+					sideSpecies = "C00009";
 				} 
 			}
 			// note: there are a few transport reactions with Na (C01330) where Na and
@@ -12808,10 +12824,8 @@ public class GraphicalInterface extends JFrame {
 						}
 					}
 				}
-				return idReactionMap.get(id).getReactionAbbreviation();
 			}
 		}
-		return null;
 	}
 	
 	public TransportReactionNode createTransportReactionNode(ArrayList<String> keggReactantIds, String metabAbbr, 
@@ -12828,6 +12842,8 @@ public class GraphicalInterface extends JFrame {
 				if (LocalConfig.getInstance().getMetaboliteIdKeggIdMap().containsKey(Integer.toString(equn.getReactants().get(r).getMetaboliteId()))) {
 					String keggId = LocalConfig.getInstance().getMetaboliteIdKeggIdMap().get(Integer.toString(equn.getReactants().get(r).getMetaboliteId()));
 					if (keggId.equals("C00080")) {
+						
+					} else if (keggId.equals("C00009")) {
 						
 					} else {
 						reactantComp = equn.getReactants().get(r).getCompartment();
@@ -12847,6 +12863,8 @@ public class GraphicalInterface extends JFrame {
 				if (LocalConfig.getInstance().getMetaboliteIdKeggIdMap().containsKey(Integer.toString(equn.getProducts().get(p).getMetaboliteId()))) {
 					String keggId = LocalConfig.getInstance().getMetaboliteIdKeggIdMap().get(Integer.toString(equn.getProducts().get(p).getMetaboliteId()));
 					if (keggId.equals("C00080")) {
+						
+					} else if (keggId.equals("C00009")) {
 						
 					} else {
 						productComp = equn.getProducts().get(p).getCompartment();

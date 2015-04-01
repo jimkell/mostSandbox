@@ -937,6 +937,9 @@ public class PathwaysFrame extends JApplet {
    		}
    		
    		for (int t = 0; t < transportMetaboliteNodeList.size(); t++) {
+   			int ceCount = 0;
+   			int cpCount = 0;
+   			int peCount = 0;
    			//System.out.println("transport " + transportMetaboliteNodeList.get(t).getKeggId());
    			if (LocalConfig.getInstance().getKeggIdCompartmentMap().containsKey(transportMetaboliteNodeList.get(t).getKeggId())) {
    				//System.out.println("transport " + LocalConfig.getInstance().getKeggIdCompartmentMap().get(transportMetaboliteNodeList.get(t).getKeggId()));
@@ -962,10 +965,12 @@ public class PathwaysFrame extends JApplet {
    					ArrayList<TransportReactionNode> trnList = LocalConfig.getInstance().getKeggIdTransportReactionsMap().get(transportMetaboliteNodeList.get(t).getKeggId());
 					for (int u = 0; u < trnList.size(); u++) {
 						if (trnList.get(u).getTransportType().equals(TransportReactionConstants.CYTOSOL_PERIPLASM_TRANSPORT)) {
-							//System.out.println(trnList.get(u).getReactionAbbr());
+							cpCount += 1;
+	   	   					System.out.println("cp " + cpCount);
+							System.out.println("cp " + trnList.get(u).getReactionAbbr());
 							updateTransportReactionNodePosition(trnList.get(u), 
 									borderTopY, borderBottomY, borderLeftX, borderRightX, 0, 0,
-									transportMetaboliteNodeList.get(t).getxPosition(), transportMetaboliteNodeList.get(t).getyPosition());
+									transportMetaboliteNodeList.get(t).getxPosition(), transportMetaboliteNodeList.get(t).getyPosition(), cpCount);
 							reactions.add(trnList.get(u).getReactionAbbr());
 							metabPosMap.put(trnList.get(u).getReactionAbbr(), new String[] {Double.toString(trnList.get(u).getxPosition()), Double.toString(trnList.get(u).getyPosition())});  
 							foundReactionsList.add(trnList.get(u).getReactionAbbr());
@@ -976,9 +981,6 @@ public class PathwaysFrame extends JApplet {
 								productName = trnList.get(u).getCytosolName();
 							} 
 							//System.out.println("pn " + parentNode);
-							reactions.add(trnList.get(u).getReactionAbbr());
-							metabPosMap.put(trnList.get(u).getReactionAbbr(), new String[] {Double.toString(trnList.get(u).getxPosition()), Double.toString(trnList.get(u).getyPosition())});  
-							foundReactionsList.add(trnList.get(u).getReactionAbbr());
 							reactionMap.put(trnList.get(u).getReactionAbbr() + " reactant " + 1, 
 		   							new String[] {trnList.get(u).getReactionAbbr(), reactantName, 
 		   							trnList.get(u).getReversible()});
@@ -1012,34 +1014,33 @@ public class PathwaysFrame extends JApplet {
    	   	   				ArrayList<TransportReactionNode> trnList = LocalConfig.getInstance().getKeggIdTransportReactionsMap().get(transportMetaboliteNodeList.get(t).getKeggId());
    	   	   				for (int u = 0; u < trnList.size(); u++) {
    	   	   					if (trnList.get(u).getTransportType().equals(TransportReactionConstants.PERIPLASM_EXTRAORGANISM_TRANSPORT)) {
-   	   	   						//System.out.println(trnList.get(u).getReactionAbbr());
+   	   	   						peCount += 1;
+   	   	   						System.out.println("pe " + peCount);
+   	   	   						System.out.println("pe " + trnList.get(u).getReactionAbbr());
    	   	   						updateTransportReactionNodePosition(trnList.get(u), 
    	   	   								borderTopY, borderBottomY, borderLeftX, borderRightX, 
    	   	   								2*PathwaysFrameConstants.TRANSPORT_HEIGHT_INCREMENT, 2*PathwaysFrameConstants.TRANSPORT_WIDTH_INCREMENT,
-   	   	   								transportMetaboliteNodeList.get(t).getxPosition(), transportMetaboliteNodeList.get(t).getyPosition());
+   	   	   								transportMetaboliteNodeList.get(t).getxPosition(), transportMetaboliteNodeList.get(t).getyPosition(), peCount);
    	   	   						reactions.add(trnList.get(u).getReactionAbbr());
    	   	   						metabPosMap.put(trnList.get(u).getReactionAbbr(), new String[] {Double.toString(trnList.get(u).getxPosition()), Double.toString(trnList.get(u).getyPosition())});  
    	   	   						foundReactionsList.add(trnList.get(u).getReactionAbbr());
-   	   	   				String reactantName = transportMetaboliteNodeList.get(t).getName() + PathwaysFrameConstants.PERIPLASM_SUFFIX;
-						String productName = transportMetaboliteNodeList.get(t).getName() + PathwaysFrameConstants.EXTRAORGANISM_SUFFIX;
-							if (trnList.get(u).getDirection().equals("-1")) {
-							reactantName = transportMetaboliteNodeList.get(t).getName() + PathwaysFrameConstants.EXTRAORGANISM_SUFFIX;
-							productName = transportMetaboliteNodeList.get(t).getName() + PathwaysFrameConstants.PERIPLASM_SUFFIX;
-						} 
-						//System.out.println("pn " + parentNode);
-						reactions.add(trnList.get(u).getReactionAbbr());
-						metabPosMap.put(trnList.get(u).getReactionAbbr(), new String[] {Double.toString(trnList.get(u).getxPosition()), Double.toString(trnList.get(u).getyPosition())});  
-						foundReactionsList.add(trnList.get(u).getReactionAbbr());
-						reactionMap.put(trnList.get(u).getReactionAbbr() + " reactant " + 1, 
-	   							new String[] {trnList.get(u).getReactionAbbr(), reactantName, 
-	   							trnList.get(u).getReversible()});
-	   					fluxMap.put(trnList.get(u).getReactionAbbr() + " reactant " + 1, 
-	   							edgeThickness(trnList.get(u).getFluxValue()));
-						reactionMap.put(trnList.get(u).getReactionAbbr() + " product " + 1, 
-	   							new String[] {trnList.get(u).getReactionAbbr(), productName, 
-	   							"true"});
-	   					fluxMap.put(trnList.get(u).getReactionAbbr() + " product " + 1, 
-	   							edgeThickness(trnList.get(u).getFluxValue()));
+   	   	   						String reactantName = transportMetaboliteNodeList.get(t).getName() + PathwaysFrameConstants.PERIPLASM_SUFFIX;
+   	   	   						String productName = transportMetaboliteNodeList.get(t).getName() + PathwaysFrameConstants.EXTRAORGANISM_SUFFIX;
+   	   	   						if (trnList.get(u).getDirection().equals("-1")) {
+   	   	   							reactantName = transportMetaboliteNodeList.get(t).getName() + PathwaysFrameConstants.EXTRAORGANISM_SUFFIX;
+   	   	   							productName = transportMetaboliteNodeList.get(t).getName() + PathwaysFrameConstants.PERIPLASM_SUFFIX;
+   	   	   						} 
+   	   	   						//System.out.println("pn " + parentNode);
+   	   	   						reactionMap.put(trnList.get(u).getReactionAbbr() + " reactant " + 1, 
+   	   	   								new String[] {trnList.get(u).getReactionAbbr(), reactantName, 
+   	   	   							trnList.get(u).getReversible()});
+   	   	   						fluxMap.put(trnList.get(u).getReactionAbbr() + " reactant " + 1, 
+   	   	   								edgeThickness(trnList.get(u).getFluxValue()));
+   	   	   						reactionMap.put(trnList.get(u).getReactionAbbr() + " product " + 1, 
+   	   	   								new String[] {trnList.get(u).getReactionAbbr(), productName, 
+   	   	   						"true"});
+   	   	   						fluxMap.put(trnList.get(u).getReactionAbbr() + " product " + 1, 
+   	   	   								edgeThickness(trnList.get(u).getFluxValue()));
    	   	   					}
    	   	   				}
    	   	   			}
@@ -1057,12 +1058,15 @@ public class PathwaysFrame extends JApplet {
    				}
    				if (LocalConfig.getInstance().getKeggIdTransportReactionsMap().containsKey(transportMetaboliteNodeList.get(t).getKeggId())) {
    					ArrayList<TransportReactionNode> trnList = LocalConfig.getInstance().getKeggIdTransportReactionsMap().get(transportMetaboliteNodeList.get(t).getKeggId());
+   					//System.out.println("trn " + trnList);
    					for (int u = 0; u < trnList.size(); u++) {
    						if (trnList.get(u).getTransportType().equals(TransportReactionConstants.CYTOSOL_EXTRAORGANISM_TRANSPORT)) {
-   							//System.out.println(trnList.get(u).getReactionAbbr());
+   							ceCount += 1;
+   							System.out.println("ce " + ceCount);
+   							System.out.println("ce " + trnList.get(u).getReactionAbbr());
    							updateTransportReactionNodePosition(trnList.get(u), 
    									borderTopY, borderBottomY, borderLeftX, borderRightX, 0, 0,
-   									transportMetaboliteNodeList.get(t).getxPosition(), transportMetaboliteNodeList.get(t).getyPosition());
+   									transportMetaboliteNodeList.get(t).getxPosition(), transportMetaboliteNodeList.get(t).getyPosition(), ceCount);
    							reactions.add(trnList.get(u).getReactionAbbr());
    							metabPosMap.put(trnList.get(u).getReactionAbbr(), new String[] {Double.toString(trnList.get(u).getxPosition()), Double.toString(trnList.get(u).getyPosition())});  
    							foundReactionsList.add(trnList.get(u).getReactionAbbr());
@@ -1073,9 +1077,6 @@ public class PathwaysFrame extends JApplet {
 								productName = trnList.get(u).getCytosolName();
 							} 
 							//System.out.println("pn " + parentNode);
-							reactions.add(trnList.get(u).getReactionAbbr());
-							metabPosMap.put(trnList.get(u).getReactionAbbr(), new String[] {Double.toString(trnList.get(u).getxPosition()), Double.toString(trnList.get(u).getyPosition())});  
-							foundReactionsList.add(trnList.get(u).getReactionAbbr());
 							reactionMap.put(trnList.get(u).getReactionAbbr() + " reactant " + 1, 
 		   							new String[] {trnList.get(u).getReactionAbbr(), reactantName, 
 		   							trnList.get(u).getReversible()});
@@ -1620,19 +1621,28 @@ public class PathwaysFrame extends JApplet {
     
     public void updateTransportReactionNodePosition(TransportReactionNode transportReactionNode, 
     		String borderTopY, String borderBottomY, String borderLeftX, String borderRightX, int h, int w,
-    		double x, double y) {
+    		double x, double y, int reactionCount) {
+    	//reactionCount -= 1;
+    	int offset = 0;
+    	if (reactionCount % 2 == 0) {
+    		offset = -(reactionCount/2);
+    	} else {
+    		offset = reactionCount/2;
+    	}
+    	//System.out.println("off " + offset);
+    	double off = offset*PathwaysFrameConstants.NODE_SPACING_CORRECTION;
     	if (transportReactionNode.getPosition().equals("t")) {
-    		transportReactionNode.setxPosition(x);
+    		transportReactionNode.setxPosition(x + off*PathwaysFrameConstants.REACTION_NODE_WIDTH);
     		transportReactionNode.setyPosition(Double.parseDouble(borderTopY) - h);
     	} else if (transportReactionNode.getPosition().equals("b")) {
-    		transportReactionNode.setxPosition(x);
+    		transportReactionNode.setxPosition(x + off*PathwaysFrameConstants.REACTION_NODE_WIDTH);
     		transportReactionNode.setyPosition(Double.parseDouble(borderBottomY) + h);
     	} else if (transportReactionNode.getPosition().equals("l")) {
     		transportReactionNode.setxPosition(Double.parseDouble(borderLeftX) - w);
-    		transportReactionNode.setyPosition(y);
+    		transportReactionNode.setyPosition(y + off*PathwaysFrameConstants.REACTION_NODE_HEIGHT);
     	} else if (transportReactionNode.getPosition().equals("r")) {
     		transportReactionNode.setxPosition(Double.parseDouble(borderRightX) + w);
-    		transportReactionNode.setyPosition(y);
+    		transportReactionNode.setyPosition(y + off*PathwaysFrameConstants.REACTION_NODE_HEIGHT);
     	}
     }
     
