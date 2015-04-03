@@ -117,6 +117,7 @@ public class PathwaysFrame extends JApplet {
    	ArrayList<String> metabolites = new ArrayList<String>();
    	ArrayList<String> reactions = new ArrayList<String>();
    	Map<String, Double> fluxMap = new HashMap<String, Double>(); 
+   	ArrayList<String> koReactions = new ArrayList<String>();
    	
    	private double layoutScale;
    	private double viewScale;
@@ -128,14 +129,14 @@ public class PathwaysFrame extends JApplet {
    
    	private final JCheckBoxMenuItem transformItem = new JCheckBoxMenuItem("Transform");
    	
-   	private NodeEditorDialog nodeEditor;
-   	
-   	public NodeEditorDialog getNodeEditor() {
-		return nodeEditor;
+   	private NodeInformationDialog nodeInformationDialog;
+
+	public NodeInformationDialog getNodeInformationDialog() {
+		return nodeInformationDialog;
 	}
 
-	public void setNodeEditor(NodeEditorDialog nodeEditor) {
-		this.nodeEditor = nodeEditor;
+	public void setNodeInformationDialog(NodeInformationDialog nodeInformationDialog) {
+		this.nodeInformationDialog = nodeInformationDialog;
 	}
 
 	protected EdgeWeightStrokeFunction<Number> ewcs;
@@ -383,6 +384,9 @@ public class PathwaysFrame extends JApplet {
 					}
 					// set last one for now
 					pn.setFluxValue(pn.getReactions().get(z).getFluxValue());
+					if (pn.getReactions().get(z).getKnockout().equals(GraphicalInterfaceConstants.BOOLEAN_VALUES[1])) {
+						koReactions.add(displayName);
+					}
 				}
 				boolean drawReaction = true;
 				if (pn.getReactions().size() > 0) {
@@ -572,6 +576,9 @@ public class PathwaysFrame extends JApplet {
 				}
 				// set last one for now
 				connectionsNodelist.get(c).setFluxValue(connectionsNodelist.get(c).getReactions().get(z).getFluxValue());
+				if (connectionsNodelist.get(c).getReactions().get(z).getKnockout().equals(GraphicalInterfaceConstants.BOOLEAN_VALUES[1])) {
+					koReactions.add(displayName);
+				}
 			}
 			boolean drawReaction = true;
 			if (connectionsNodelist.get(c).getReactions().size() > 0) {
@@ -738,6 +745,9 @@ public class PathwaysFrame extends JApplet {
 							reactions.add(trnList.get(t).getReactionAbbr());
 							metabPosMap.put(trnList.get(t).getReactionAbbr(), new String[] {Double.toString(trnList.get(t).getxPosition()), Double.toString(trnList.get(t).getyPosition())});  
 							foundReactionsList.add(trnList.get(t).getReactionAbbr());
+							if (trnList.get(t).getKnockout().equals(GraphicalInterfaceConstants.BOOLEAN_VALUES[1])) {
+								koReactions.add(trnList.get(t).getReactionAbbr());
+							}
 							reactionMap.put(trnList.get(t).getReactionAbbr() + " reactant " + 1, 
 		   							new String[] {trnList.get(t).getReactionAbbr(), reactantName, 
 		   							trnList.get(t).getReversible()});
@@ -788,6 +798,9 @@ public class PathwaysFrame extends JApplet {
 								reactions.add(trnList.get(t).getReactionAbbr());
 								metabPosMap.put(trnList.get(t).getReactionAbbr(), new String[] {Double.toString(trnList.get(t).getxPosition()), Double.toString(trnList.get(t).getyPosition())});  
 								foundReactionsList.add(trnList.get(t).getReactionAbbr());
+								if (trnList.get(t).getKnockout().equals(GraphicalInterfaceConstants.BOOLEAN_VALUES[1])) {
+									koReactions.add(trnList.get(t).getReactionAbbr());
+								}
 								reactionMap.put(trnList.get(t).getReactionAbbr() + " reactant " + 2, 
 			   							new String[] {trnList.get(t).getReactionAbbr(), reactantName, 
 			   							trnList.get(t).getReversible()});
@@ -837,6 +850,9 @@ public class PathwaysFrame extends JApplet {
 							reactions.add(trnList.get(t).getReactionAbbr());
 							metabPosMap.put(trnList.get(t).getReactionAbbr(), new String[] {Double.toString(trnList.get(t).getxPosition()), Double.toString(trnList.get(t).getyPosition())});  
 							foundReactionsList.add(trnList.get(t).getReactionAbbr());
+							if (trnList.get(t).getKnockout().equals(GraphicalInterfaceConstants.BOOLEAN_VALUES[1])) {
+								koReactions.add(trnList.get(t).getReactionAbbr());
+							}
 							reactionMap.put(trnList.get(t).getReactionAbbr() + " reactant " + -1, 
 		   							new String[] {trnList.get(t).getReactionAbbr(), reactantName, 
 		   							trnList.get(t).getReversible()});
@@ -975,6 +991,9 @@ public class PathwaysFrame extends JApplet {
 							reactions.add(trnList.get(u).getReactionAbbr());
 							metabPosMap.put(trnList.get(u).getReactionAbbr(), new String[] {Double.toString(trnList.get(u).getxPosition()), Double.toString(trnList.get(u).getyPosition())});  
 							foundReactionsList.add(trnList.get(u).getReactionAbbr());
+							if (trnList.get(u).getKnockout().equals(GraphicalInterfaceConstants.BOOLEAN_VALUES[1])) {
+								koReactions.add(trnList.get(u).getReactionAbbr());
+							}
 							String reactantName = trnList.get(u).getCytosolName();
 							String productName = transportMetaboliteNodeList.get(t).getName() + PathwaysFrameConstants.PERIPLASM_SUFFIX;
    							if (trnList.get(u).getDirection().equals("-1")) {
@@ -1025,6 +1044,9 @@ public class PathwaysFrame extends JApplet {
    	   	   						reactions.add(trnList.get(u).getReactionAbbr());
    	   	   						metabPosMap.put(trnList.get(u).getReactionAbbr(), new String[] {Double.toString(trnList.get(u).getxPosition()), Double.toString(trnList.get(u).getyPosition())});  
    	   	   						foundReactionsList.add(trnList.get(u).getReactionAbbr());
+   	   	   						if (trnList.get(u).getKnockout().equals(GraphicalInterfaceConstants.BOOLEAN_VALUES[1])) {
+   	   	   							koReactions.add(trnList.get(u).getReactionAbbr());
+   	   	   						}
    	   	   						String reactantName = transportMetaboliteNodeList.get(t).getName() + PathwaysFrameConstants.PERIPLASM_SUFFIX;
    	   	   						String productName = transportMetaboliteNodeList.get(t).getName() + PathwaysFrameConstants.EXTRAORGANISM_SUFFIX;
    	   	   						if (trnList.get(u).getDirection().equals("-1")) {
@@ -1073,6 +1095,9 @@ public class PathwaysFrame extends JApplet {
    	   	   							reactions.add(trnList.get(u).getReactionAbbr());
    	   	   							metabPosMap.put(trnList.get(u).getReactionAbbr(), new String[] {Double.toString(trnList.get(u).getxPosition()), Double.toString(trnList.get(u).getyPosition())});  
    	   	   							foundReactionsList.add(trnList.get(u).getReactionAbbr());
+   	   	   							if (trnList.get(u).getKnockout().equals(GraphicalInterfaceConstants.BOOLEAN_VALUES[1])) {
+   	   	   								koReactions.add(trnList.get(u).getReactionAbbr());
+   	   	   							}
    	   	   							String reactantName = trnList.get(u).getCytosolName();
    	   								String productName = transportMetaboliteNodeList.get(t).getName() + PathwaysFrameConstants.EXTRAORGANISM_SUFFIX;
    	   	   							if (trnList.get(u).getDirection().equals("-1")) {
@@ -1139,17 +1164,17 @@ public class PathwaysFrame extends JApplet {
 					final VisualizationViewer<String,String> vv =(VisualizationViewer<String,String>)me.getSource();
 			        //final Point2D p = me.getPoint();
 			        JPopupMenu popup = new JPopupMenu();
-			        JMenuItem editNodeMenu = new JMenuItem("Edit");
-			        editNodeMenu.addActionListener(new ActionListener() {
+			        JMenuItem nodeInformationMenu = new JMenuItem("View Node Information");
+			        nodeInformationMenu.addActionListener(new ActionListener() {
 						public void actionPerformed(ActionEvent ae) {
-							createNodeEditorDialog(arg0);
+							createNodeInformationDialog(arg0);
 						}
 					});
-			        popup.add(editNodeMenu);
+			        popup.add(nodeInformationMenu);
 			        popup.show(vv, me.getX(), me.getY());
                 }
 				if (me.getButton() == MouseEvent.BUTTON1 && me.getClickCount() == 2) {
-					createNodeEditorDialog(arg0);
+					createNodeInformationDialog(arg0);
                 }
                 me.consume();
 			}
@@ -1198,18 +1223,18 @@ public class PathwaysFrame extends JApplet {
         		graphics.setColor(Color.black);
         	} else if (metabolites.contains(name)) {
         		if (!noBorderList.contains(name)) {
-        			graphics.setColor(Color.lightGray);
+        			graphics.setColor(PathwaysFrameConstants.METABOLITE_NODE_DETAULT_COLOR);
         			if (!foundMetabolitesList.contains(name) && LocalConfig.getInstance().isHighlightMissingMetabolitesSelected()) {
-            			graphics.setColor(Color.orange);
+            			graphics.setColor(PathwaysFrameConstants.METABOLITE_NOT_FOUND_COLOR);
             		}
         		} else {
         			graphics.setColor(Color.white);
         		}
         	} else if (reactions.contains(name)) {
         		graphics.setColor(Color.white);
-        		if (!foundReactionsList.contains(name) && LocalConfig.getInstance().isHighlightMissingReactionsSelected()) {
-        			graphics.setColor(Color.yellow);
-        		}
+//        		if (!foundReactionsList.contains(name) && LocalConfig.getInstance().isHighlightMissingReactionsSelected()) {
+//        			graphics.setColor(Color.yellow);
+//        		}
         	}
         	graphics.fillRect(0, 0, width, height);
         	graphics.setColor(Color.BLACK);
@@ -1222,15 +1247,21 @@ public class PathwaysFrame extends JApplet {
         				alignCenterString(graphics, abbr, width, PathwaysFrameConstants.METABOLITE_NODE_XPOS, PathwaysFrameConstants.METABOLITE_NODE_YPOS, PathwaysFrameConstants.METABOLITE_NODE_FONT_SIZE);
         			} else {
         				if (!foundMetabolitesList.contains(name) && LocalConfig.getInstance().isHighlightMissingMetabolitesSelected()) {
-                			graphics.setColor(Color.orange);
+                			graphics.setColor(PathwaysFrameConstants.METABOLITE_NOT_FOUND_COLOR);
                 		}
         				alignCenterString(graphics, abbr, width, PathwaysFrameConstants.SIDE_NODE_XPOS, PathwaysFrameConstants.SIDE_NODE_YPOS, PathwaysFrameConstants.SIDE_NODE_FONT_SIZE);
         			}
         		} else if (reactions.contains(name)) {
+        			if (!foundReactionsList.contains(name) && LocalConfig.getInstance().isHighlightMissingReactionsSelected()) {
+            			graphics.setColor(PathwaysFrameConstants.REACTION_NOT_FOUND_FONT_COLOR);
+            		} else if (koReactions.contains(name)) {
+            			graphics.setColor(PathwaysFrameConstants.REACTION_KO_FONT_COLOR);
+            		}
         			alignCenterString(graphics, name, width, PathwaysFrameConstants.REACTION_NODE_XPOS, PathwaysFrameConstants.REACTION_NODE_YPOS, PathwaysFrameConstants.REACTION_NODE_FONT_SIZE);
         		}
         	}
-        	if (metabolites.contains(name) || reactions.contains(name)) {
+        	if (metabolites.contains(name)) {
+        	//if (metabolites.contains(name) || reactions.contains(name)) {
         		if (!noBorderList.contains(name)) {
         			drawBorder(graphics, width, height, 4);
         		}
@@ -1488,17 +1519,6 @@ public class PathwaysFrame extends JApplet {
                 	} else {
                 		strokeWidth = (int) value;
                 	}
-//                	if (value < 1.0) {
-//                		strokeWidth = 1;
-//                	} else if (value < 10) {
-//                		strokeWidth = 2;
-//                	} else if (value < 100) {
-//                		strokeWidth = 3;
-//                	} else if (value < 1000) {
-//                		strokeWidth = 4;
-//                	} else if (value < 10000) {
-//                		strokeWidth = 5;
-//                	}
                 	return new BasicStroke(strokeWidth);
                 } else {
                 	return RenderContext.DOTTED;
@@ -1545,23 +1565,21 @@ public class PathwaysFrame extends JApplet {
 
     }
     
-    public void createNodeEditorDialog(Object arg0) {
+    public void createNodeInformationDialog(Object arg0) {
     	final ArrayList<Image> icons = new ArrayList<Image>(); 
 		icons.add(new ImageIcon("images/most16.jpg").getImage()); 
 		icons.add(new ImageIcon("images/most32.jpg").getImage());
 
-		if (getNodeEditor() != null) {
-			getNodeEditor().dispose();
+		if (getNodeInformationDialog() != null) {
+			getNodeInformationDialog().dispose();
 		}
-		NodeEditorDialog frame = new NodeEditorDialog();
-		setNodeEditor(frame);
+		NodeInformationDialog frame = new NodeInformationDialog(arg0.toString());
+		setNodeInformationDialog(frame);
 
 		frame.setIconImages(icons);
-		frame.setSize(350, 170);
-		//frame.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		frame.pack();
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
-		frame.textField.setText(arg0.toString());
     }
     
     public double edgeThickness(double fluxValue) {

@@ -2326,7 +2326,6 @@ public class GraphicalInterface extends JFrame {
 				// should only run this if ec number column exists
 				ECNumberMapCreator ecMapCreator = new ECNumberMapCreator();
 				ecMapCreator.createEcNumberReactionMap();
-				
 				ModelKeggEquationMapCreator modelKeggEquationMapCreator = new ModelKeggEquationMapCreator();
 				modelKeggEquationMapCreator.createKeggEquationMap();
 				//System.out.println("un " + unplottedReactionIds);
@@ -7304,7 +7303,7 @@ public class GraphicalInterface extends JFrame {
 		JPopupMenu reactionsHeaderContextMenu = new JPopupMenu();
 
 		JMenuItem deleteColumnMenu = new JMenuItem("Delete Column");
-		if (columnIndex > GraphicalInterfaceConstants.REACTIONS_COLUMN_NAMES.length - 1) {
+		if (columnIndex > GraphicalInterfaceConstants.REACTIONS_COLUMN_NAMES.length - 1 && isRoot) {
 			deleteColumnMenu.setEnabled(true);
 		} else {
 			deleteColumnMenu.setEnabled(false);
@@ -7374,7 +7373,7 @@ public class GraphicalInterface extends JFrame {
 
 		JMenuItem deleteColumnMenu = new JMenuItem("Delete Column");
 		//core columns cannot be deleted - abbreviation and boundary
-		if (columnIndex > GraphicalInterfaceConstants.METABOLITES_COLUMN_NAMES.length - 1) {
+		if (columnIndex > GraphicalInterfaceConstants.METABOLITES_COLUMN_NAMES.length - 1 && isRoot) {
 			deleteColumnMenu.setEnabled(true);
 		} else {
 			deleteColumnMenu.setEnabled(false);
@@ -12753,11 +12752,22 @@ public class GraphicalInterface extends JFrame {
 			}
 			Collections.sort(LocalConfig.getInstance().getUnplottedReactionIds());
 			System.out.println("not plotted " + LocalConfig.getInstance().getUnplottedReactionIds());
-			if (LocalConfig.getInstance().getKeggReactionIdColumnName().equals("")) {
+			System.out.println(LocalConfig.getInstance().getReactionsMetaColumnNames());
+			try {
+				reactionsTable.getModel().getValueAt(0, rf.getKeggIdColumnIndex());
+			} catch (Exception e) {
 				assignKeggReactionIds();
+				System.out.println("rf " + rf.getKeggIdColumnIndex());
 				System.out.println("not plotted " + LocalConfig.getInstance().getUnplottedReactionIds());
 				assignKeggReactionIdsFromECNumbers();
 			}
+//			if (rf.getKeggIdColumnIndex() == -1) {
+//				
+//			//if (LocalConfig.getInstance().getKeggReactionIdColumnName().equals("")) {
+//				assignKeggReactionIds();
+//				System.out.println("not plotted " + LocalConfig.getInstance().getUnplottedReactionIds());
+//				assignKeggReactionIdsFromECNumbers();
+//			}
 			KEGGIdReactionMapCreator keggIdReactionMapCreator = new KEGGIdReactionMapCreator();
 			keggIdReactionMapCreator.createKEGGIdReactionMap();
 		}
@@ -12890,6 +12900,8 @@ public class GraphicalInterface extends JFrame {
 		trn.setReactionAbbr(idReactionMap.get(id).getReactionAbbreviation());
 		trn.setReactionName(idReactionMap.get(id).getReactionName());
 		trn.setFluxValue(idReactionMap.get(id).getFluxValue());
+		trn.setKnockout(idReactionMap.get(id).getKnockout());
+		trn.setSyntheticObjective(idReactionMap.get(id).getSyntheticObjective());
 		trn.setModelEquation(idReactionMap.get(id).getReactionEqunAbbr());
 		trn.setCytosolName(cytosolName);
 		trn.setPeriplasmName(periplasmName);
@@ -12929,9 +12941,12 @@ public class GraphicalInterface extends JFrame {
 	public void assignKeggReactionIds() {
 		setCurrentReactionsRow(reactionsTable.getSelectedRow());
 		setCurrentReactionsColumn(reactionsTable.getSelectedColumn());
-		addReactionsColumn(GraphicalInterfaceConstants.REACTION_KEGG_ID_COLUMN_NAME);
-		LocalConfig.getInstance().setKeggReactionIdColumnName(GraphicalInterfaceConstants.REACTION_KEGG_ID_COLUMN_NAME);
 		ReactionFactory rf = new ReactionFactory("SBML");
+		if (rf.getKeggIdColumnIndex() == -1) {
+			addReactionsColumn(GraphicalInterfaceConstants.REACTION_KEGG_ID_COLUMN_NAME);
+		}
+		LocalConfig.getInstance().setKeggReactionIdColumnName(GraphicalInterfaceConstants.REACTION_KEGG_ID_COLUMN_NAME);
+		//ReactionFactory rf = new ReactionFactory("SBML");
 		int keggIdColumn = rf.getKeggIdColumnIndex();
 		createReactionsIdRowMap();
 		ArrayList<String> reactionDataKeggIds = new ArrayList<String>(LocalConfig.getInstance().getReactionDataKeggIdMap().keySet());
@@ -13006,8 +13021,14 @@ public class GraphicalInterface extends JFrame {
 		// the maximum number of kegg reaction ids that map to one EC Number from the  
 		// reactions.csv is 26 and most are < 4
 		ArrayList<String> ecNumbersFromModel = new ArrayList<String>(LocalConfig.getInstance().getEcNumberReactionMap().keySet());
-		ReactionFactory rf = new ReactionFactory("SBML");
-		int keggIdColumn = rf.getKeggIdColumnIndex();
+		int keggIdColumn = -1;
+		for (int i = 0; i < LocalConfig.getInstance().getReactionsMetaColumnNames().size(); i++) {
+			if (LocalConfig.getInstance().getReactionsMetaColumnNames().get(i).contains(GraphicalInterfaceConstants.KEGG_ID_REACTIONS_COLUMN_NAMES[0])) {
+				keggIdColumn = GraphicalInterfaceConstants.REACTIONS_COLUMN_NAMES.length + i;
+			} else if (LocalConfig.getInstance().getReactionsMetaColumnNames().get(i).contains(GraphicalInterfaceConstants.KEGG_ID_REACTIONS_COLUMN_NAMES[1])) {
+				keggIdColumn = GraphicalInterfaceConstants.REACTIONS_COLUMN_NAMES.length + i;
+			}
+		}
 		//System.out.println("ec from model " + ecNumbersFromModel.size());
 		// ec numbers found in model
 		for (int r = 0; r < ecNumbersFromModel.size(); r++) {
@@ -13015,12 +13036,12 @@ public class GraphicalInterface extends JFrame {
 			ArrayList<SBMLReaction> ecSBMLReactions = LocalConfig.getInstance().getEcNumberReactionMap().get(ecNumbersFromModel.get(r));
 			//System.out.println("reactions from ec number " + ecSBMLReactions.size());
 			for (int s = 0; s < ecSBMLReactions.size(); s++) {
-//				System.out.println("reac id " + ecSBMLReactions.get(s).getId());
+				//					System.out.println("reac id " + ecSBMLReactions.get(s).getId());
 				if (LocalConfig.getInstance().getModelKeggEquationMap().containsKey(Integer.toString(ecSBMLReactions.get(s).getId()))) {
 					// data from model
 					PathwayReactionData modelData = LocalConfig.getInstance().getModelKeggEquationMap().get(Integer.toString(ecSBMLReactions.get(s).getId()));
-//					System.out.println(prd.getKeggReactantIds());
-//					System.out.println(prd.getKeggProductIds());
+					//						System.out.println(prd.getKeggReactantIds());
+					//						System.out.println(prd.getKeggProductIds());
 					if (LocalConfig.getInstance().getEcNumberKeggReactionIdMap().containsKey(ecNumbersFromModel.get(r))) {
 						ArrayList<String> keggReactionIds = LocalConfig.getInstance().getEcNumberKeggReactionIdMap().get(ecNumbersFromModel.get(r));
 						//System.out.println("ec num kegg id from file " + keggReactionIds.size());
@@ -13030,11 +13051,24 @@ public class GraphicalInterface extends JFrame {
 								PathwayReactionData fileData = LocalConfig.getInstance().getReactionDataKeggIdMap().get(keggReactionIds.get(j));
 								if (keggReactionIdFound(fileData.getKeggReactantIds(), fileData.getKeggProductIds(), 
 										modelData.getKeggReactantIds(), modelData.getKeggProductIds(), "forward")) {
-									updateReactionsCellById(fileData.getKeggReactionId(), ecSBMLReactions.get(s).getId(), keggIdColumn);
+									try {
+										updateReactionsCellById(fileData.getKeggReactionId(), ecSBMLReactions.get(s).getId(), keggIdColumn);
+									} catch (Exception e) {
+										keggIdColumn -= 1;
+										try {
+											updateReactionsCellById(fileData.getKeggReactionId(), ecSBMLReactions.get(s).getId(), keggIdColumn);
+										} catch (Exception e2) {
+											
+										}
+									}
 								} else {
 									if (keggReactionIdFound(fileData.getKeggReactantIds(), fileData.getKeggProductIds(), 
 											modelData.getKeggProductIds(), modelData.getKeggReactantIds(), "reverse")) {
-										updateReactionsCellById(fileData.getKeggReactionId(), ecSBMLReactions.get(s).getId(), keggIdColumn);
+										try {
+											updateReactionsCellById(fileData.getKeggReactionId(), ecSBMLReactions.get(s).getId(), keggIdColumn);
+										} catch (Exception e) {
+											
+										}
 									}
 								}
 							} else {
@@ -13046,26 +13080,26 @@ public class GraphicalInterface extends JFrame {
 						// ec number not present in file
 						// consider same as not having ec number?
 						// need to search entire file here
-//						System.out.println("reac id " + ecSBMLReactions.get(s).getId());
-//						System.out.println(modelData.getKeggReactantIds());
-//						System.out.println(modelData.getKeggProductIds());
-//						System.out.println(ecNumbersFromModel.get(r) + " not found in file");
+						//							System.out.println("reac id " + ecSBMLReactions.get(s).getId());
+						//							System.out.println(modelData.getKeggReactantIds());
+						//							System.out.println(modelData.getKeggProductIds());
+						//							System.out.println(ecNumbersFromModel.get(r) + " not found in file");
 						ArrayList<String> reactionDataKeggIds = new ArrayList<String>(LocalConfig.getInstance().getReactionDataKeggIdMap().keySet());
 						for (int d = 0; d < reactionDataKeggIds.size(); d++) {
 							PathwayReactionData fileData = LocalConfig.getInstance().getReactionDataKeggIdMap().get(reactionDataKeggIds.get(d));
-//							System.out.println(fileData.getKeggReactionId());
-//							System.out.println(fileData.getKeggReactantIds());
-//							System.out.println(fileData.getKeggProductIds());
+							//								System.out.println(fileData.getKeggReactionId());
+							//								System.out.println(fileData.getKeggReactantIds());
+							//								System.out.println(fileData.getKeggProductIds());
 							if (keggReactionIdFound(fileData.getKeggReactantIds(), fileData.getKeggProductIds(), 
 									modelData.getKeggReactantIds(), modelData.getKeggProductIds(), "forward")) {
-//								System.out.println(ecNumbersFromModel.get(r));
-//								System.out.println("id " + fileData.getKeggReactionId());
+								//									System.out.println(ecNumbersFromModel.get(r));
+								//									System.out.println("id " + fileData.getKeggReactionId());
 								updateReactionsCellById(fileData.getKeggReactionId(), ecSBMLReactions.get(s).getId(), keggIdColumn);
 							} else {
 								if (keggReactionIdFound(fileData.getKeggReactantIds(), fileData.getKeggProductIds(), 
 										modelData.getKeggProductIds(), modelData.getKeggReactantIds(), "reverse")) {
-//									System.out.println(ecNumbersFromModel.get(r));
-//									System.out.println("id " + fileData.getKeggReactionId());
+									//										System.out.println(ecNumbersFromModel.get(r));
+									//										System.out.println("id " + fileData.getKeggReactionId());
 									updateReactionsCellById(fileData.getKeggReactionId(), ecSBMLReactions.get(s).getId(), keggIdColumn);
 								}
 							}
@@ -13086,28 +13120,33 @@ public class GraphicalInterface extends JFrame {
         frame.setIconImages(icons);
         frame.setTitle(gi.getTitle());
         JTabbedPane visualizationTabbedPane = new JTabbedPane(3); 
-//        frame.add(visualizationTabbedPane);
-//        Container content = frame.getContentPane(); 
         final PathwaysFrame pf1 = new PathwaysFrame();
-//        content.add(pf);
-        final PathwaysFrame pf2 = new PathwaysFrame();
+        //final PathwaysFrame pf2 = new PathwaysFrame();
         visualizationTabbedPane.addTab("Metabolic Pathways", pf1);
         visualizationTabbedPane.setMnemonicAt(0, KeyEvent.VK_M);
-        visualizationTabbedPane.addTab("Cellular and Molecular Processes", pf2);
-        visualizationTabbedPane.setMnemonicAt(1, KeyEvent.VK_P);
+//        visualizationTabbedPane.addTab("Cellular and Molecular Processes", pf2);
+//        visualizationTabbedPane.setMnemonicAt(1, KeyEvent.VK_P);
+//        visualizationTabbedPane.addChangeListener(new ChangeListener() {
+//			public void stateChanged(ChangeEvent e) {
+//				if (pf1.getNodeInformationDialog() != null) {
+//					pf1.getNodeInformationDialog().dispose();
+//				}
+//				if (pf2.getNodeInformationDialog() != null) {
+//					pf2.getNodeInformationDialog().dispose();
+//				}
+//			}
+//		});
         frame.add(visualizationTabbedPane);
-        //content.add(new PathwaysFrame());
         frame.setSize(1300, 700);
-        //frame.pack(); 
         frame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         frame.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent evt) {
-				if (pf1.getNodeEditor() != null) {
-					pf1.getNodeEditor().dispose();
+				if (pf1.getNodeInformationDialog() != null) {
+					pf1.getNodeInformationDialog().dispose();
 				}
-				if (pf2.getNodeEditor() != null) {
-					pf2.getNodeEditor().dispose();
-				}
+//				if (pf2.getNodeInformationDialog() != null) {
+//					pf2.getNodeInformationDialog().dispose();
+//				}
 				frame.setVisible(false);
 				enableVisualizationItems(true);
 			}

@@ -96,7 +96,11 @@ public class ReactionFactory {
 					reaction.setProteinClass((String) GraphicalInterface.reactionsTable.getModel().getValueAt(i, GraphicalInterfaceConstants.PROTEIN_CLASS_COLUMN));
 					reaction.setEcNumber((String) GraphicalInterface.reactionsTable.getModel().getValueAt(i, ecColumn));
 					if (keggColumn > -1) {
-						reaction.setKeggReactionId((String) GraphicalInterface.reactionsTable.getModel().getValueAt(i, keggColumn));
+						try {
+							reaction.setKeggReactionId((String) GraphicalInterface.reactionsTable.getModel().getValueAt(i, keggColumn));
+						} catch (Exception e) {
+							
+						}
 					}
 					reactions.add(reaction);
 					reactionsIdPositionMap.put(reaction.getId(), count);

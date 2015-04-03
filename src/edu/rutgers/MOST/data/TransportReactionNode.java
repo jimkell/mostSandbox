@@ -11,7 +11,9 @@ public class TransportReactionNode {
 	private String dataId;
 	private String equation;
 	private String modelEquation;
+	private String knockout;
 	private double fluxValue;
+	private double syntheticObjective;
 	private String metaboliteName;
 	private String cytosolName;
 	private String periplasmName;
@@ -60,11 +62,23 @@ public class TransportReactionNode {
 	public void setModelEquation(String modelEquation) {
 		this.modelEquation = modelEquation;
 	}
+	public String getKnockout() {
+		return knockout;
+	}
+	public void setKnockout(String knockout) {
+		this.knockout = knockout;
+	}
 	public double getFluxValue() {
 		return fluxValue;
 	}
 	public void setFluxValue(double fluxValue) {
 		this.fluxValue = fluxValue;
+	}
+	public double getSyntheticObjective() {
+		return syntheticObjective;
+	}
+	public void setSyntheticObjective(double syntheticObjective) {
+		this.syntheticObjective = syntheticObjective;
 	}
 	public String getMetaboliteName() {
 		return metaboliteName;

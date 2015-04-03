@@ -1,7 +1,11 @@
 package edu.rutgers.MOST.presentation;
 
+import java.awt.Color;
+
 public class PathwaysFrameConstants {
 
+	public static final String NODE_INFORMATION_TITLE = "Node Information";
+	
 	public static final float SCALING_FACTOR = (float) 1.2;
 	public static final int GRAPH_WIDTH = 10000;
 	public static final int GRAPH_HEIGHT = 8000;
@@ -110,5 +114,11 @@ public class PathwaysFrameConstants {
 	// prevents nodes with calculated positions from touching
 	public static final double NODE_SPACING_CORRECTION = 1.1;
 	
+	public static final Color METABOLITE_NODE_DETAULT_COLOR = Color.white;
+	public static final Color METABOLITE_NOT_FOUND_COLOR = Color.yellow;
+	public static final Color REACTION_NODE_DETAULT_COLOR = Color.white;
+	public static final Color REACTION_NODE_DETAULT_FONT_COLOR = Color.white;
+	public static final Color REACTION_NOT_FOUND_FONT_COLOR = Color.orange;
+	public static final Color REACTION_KO_FONT_COLOR = Color.red;
 	
 }

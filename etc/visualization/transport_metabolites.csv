@@ -22,6 +22,5 @@ Pathway ID,Metabolite ID,Metabolite Name,Metabolite Abbreviation,Position,Offset
 2,6,L-Xylulose,Xylu-L,t,0,-1,C00312
 2,7,L-Lyxose,Lyx-L,t,0,-1,C01508
 2,8,D-Xylose,Xyl-D,t,0.5,-1,C00181
-17,0,Orthophosphate,Pi,t,0,-1,C00009
 24,0,L-Glutamine,Gln,b,0,-1,C00064
 24,1,L-Glutamate,Glu,b,0,-1,C00025
