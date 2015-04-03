@@ -13085,17 +13085,28 @@ public class GraphicalInterface extends JFrame {
         setVisualizationsPane(frame);
         frame.setIconImages(icons);
         frame.setTitle(gi.getTitle());
-        Container content = frame.getContentPane(); 
-        final PathwaysFrame pf = new PathwaysFrame();
-        content.add(pf);
+        JTabbedPane visualizationTabbedPane = new JTabbedPane(3); 
+//        frame.add(visualizationTabbedPane);
+//        Container content = frame.getContentPane(); 
+        final PathwaysFrame pf1 = new PathwaysFrame();
+//        content.add(pf);
+        final PathwaysFrame pf2 = new PathwaysFrame();
+        visualizationTabbedPane.addTab("Metabolic Pathways", pf1);
+        visualizationTabbedPane.setMnemonicAt(0, KeyEvent.VK_M);
+        visualizationTabbedPane.addTab("Cellular and Molecular Processes", pf2);
+        visualizationTabbedPane.setMnemonicAt(1, KeyEvent.VK_P);
+        frame.add(visualizationTabbedPane);
         //content.add(new PathwaysFrame());
         frame.setSize(1300, 700);
         //frame.pack(); 
         frame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         frame.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent evt) {
-				if (pf.getNodeEditor() != null) {
-					pf.getNodeEditor().dispose();
+				if (pf1.getNodeEditor() != null) {
+					pf1.getNodeEditor().dispose();
+				}
+				if (pf2.getNodeEditor() != null) {
+					pf2.getNodeEditor().dispose();
 				}
 				frame.setVisible(false);
 				enableVisualizationItems(true);
