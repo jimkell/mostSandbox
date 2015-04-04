@@ -32,7 +32,7 @@ public class PathwayReactionNodeFactory {
 			if (LocalConfig.getInstance().getEcNumberReactionMap().containsKey(ec.get(m))) {
 				// attributes from SBML Reaction
 				ArrayList<SBMLReaction> reac = LocalConfig.getInstance().getEcNumberReactionMap().get(ec.get(m));
-				if (component == PathwaysFrameConstants.PHOSPHORYLATION_COMPONENT) {
+				if (component == PathwaysFrameConstants.PROCESSES_COMPONENT) {
 					reactions.add(reac.get(0));
 				} else {
 					addReactions(reactions, reac, compartment, keggReactantIds, keggProductIds);
@@ -64,7 +64,7 @@ public class PathwayReactionNodeFactory {
 		for (int n = 0; n < keggReactionIds.size(); n++) {
 			if (LocalConfig.getInstance().getKeggIdReactionMap().containsKey(keggReactionIds.get(n))) {
 				ArrayList<SBMLReaction> reac = LocalConfig.getInstance().getKeggIdReactionMap().get(keggReactionIds.get(n));
-				if (keggReactionIds.size() == 1 && component == PathwaysFrameConstants.PHOSPHORYLATION_COMPONENT) {
+				if (keggReactionIds.size() == 1 && component == PathwaysFrameConstants.PROCESSES_COMPONENT) {
 					reactions.add(reac.get(0));
 				} else {
 					addReactions(reactions, reac, compartment, keggReactantIds, keggProductIds);

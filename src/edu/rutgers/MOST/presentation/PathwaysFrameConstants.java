@@ -94,8 +94,8 @@ public class PathwaysFrameConstants {
 //	public static final double MINIMUM_FLUX_RATIO = 0.025;
 //	public static final double MINIMUM_FLUX_WIDTH = 2.0;
 	
-	public static final int MAIN_COMPONENT = 0;
-	public static final int PHOSPHORYLATION_COMPONENT = 1;
+	public static final int PATHWAYS_COMPONENT = 0;
+	public static final int PROCESSES_COMPONENT = 1;
 	
 	//public static final int PHOSPHORYLATION_X_OFFSET = 3*HORIZONTAL_INCREMENT;
 	public static final int PHOSPHORYLATION_X_OFFSET = 1400;
@@ -120,5 +120,13 @@ public class PathwaysFrameConstants {
 	public static final Color REACTION_NODE_DETAULT_FONT_COLOR = Color.white;
 	public static final Color REACTION_NOT_FOUND_FONT_COLOR = Color.orange;
 	public static final Color REACTION_KO_FONT_COLOR = Color.red;
+	
+	public static final double BLACK_COLOR_VALUE = 0.0;
+	public static final double GRAY_COLOR_VALUE = 1.0;
+	public static final double RED_COLOR_VALUE = 2.0;
+	public static final double GREEN_COLOR_VALUE = 3.0;
+	public static final double BLUE_COLOR_VALUE = 4.0;
+	
+	public static final double DEFAULT_COLOR_VALUE = BLACK_COLOR_VALUE;
 	
 }

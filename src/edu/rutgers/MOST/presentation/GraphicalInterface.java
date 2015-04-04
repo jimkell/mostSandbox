@@ -12752,12 +12752,10 @@ public class GraphicalInterface extends JFrame {
 			}
 			Collections.sort(LocalConfig.getInstance().getUnplottedReactionIds());
 			System.out.println("not plotted " + LocalConfig.getInstance().getUnplottedReactionIds());
-			System.out.println(LocalConfig.getInstance().getReactionsMetaColumnNames());
 			try {
 				reactionsTable.getModel().getValueAt(0, rf.getKeggIdColumnIndex());
 			} catch (Exception e) {
 				assignKeggReactionIds();
-				System.out.println("rf " + rf.getKeggIdColumnIndex());
 				System.out.println("not plotted " + LocalConfig.getInstance().getUnplottedReactionIds());
 				assignKeggReactionIdsFromECNumbers();
 			}
@@ -13120,22 +13118,22 @@ public class GraphicalInterface extends JFrame {
         frame.setIconImages(icons);
         frame.setTitle(gi.getTitle());
         JTabbedPane visualizationTabbedPane = new JTabbedPane(3); 
-        final PathwaysFrame pf1 = new PathwaysFrame();
-        //final PathwaysFrame pf2 = new PathwaysFrame();
+        final PathwaysFrame pf1 = new PathwaysFrame(PathwaysFrameConstants.PATHWAYS_COMPONENT);
+        final PathwaysFrame pf2 = new PathwaysFrame(PathwaysFrameConstants.PROCESSES_COMPONENT);
         visualizationTabbedPane.addTab("Metabolic Pathways", pf1);
         visualizationTabbedPane.setMnemonicAt(0, KeyEvent.VK_M);
-//        visualizationTabbedPane.addTab("Cellular and Molecular Processes", pf2);
-//        visualizationTabbedPane.setMnemonicAt(1, KeyEvent.VK_P);
-//        visualizationTabbedPane.addChangeListener(new ChangeListener() {
-//			public void stateChanged(ChangeEvent e) {
-//				if (pf1.getNodeInformationDialog() != null) {
-//					pf1.getNodeInformationDialog().dispose();
-//				}
-//				if (pf2.getNodeInformationDialog() != null) {
-//					pf2.getNodeInformationDialog().dispose();
-//				}
-//			}
-//		});
+        visualizationTabbedPane.addTab("Cellular and Molecular Processes", pf2);
+        visualizationTabbedPane.setMnemonicAt(1, KeyEvent.VK_P);
+        visualizationTabbedPane.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent e) {
+				if (pf1.getNodeInformationDialog() != null) {
+					pf1.getNodeInformationDialog().dispose();
+				}
+				if (pf2.getNodeInformationDialog() != null) {
+					pf2.getNodeInformationDialog().dispose();
+				}
+			}
+		});
         frame.add(visualizationTabbedPane);
         frame.setSize(1300, 700);
         frame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
@@ -13144,9 +13142,9 @@ public class GraphicalInterface extends JFrame {
 				if (pf1.getNodeInformationDialog() != null) {
 					pf1.getNodeInformationDialog().dispose();
 				}
-//				if (pf2.getNodeInformationDialog() != null) {
-//					pf2.getNodeInformationDialog().dispose();
-//				}
+				if (pf2.getNodeInformationDialog() != null) {
+					pf2.getNodeInformationDialog().dispose();
+				}
 				frame.setVisible(false);
 				enableVisualizationItems(true);
 			}
