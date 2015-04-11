@@ -5,19 +5,26 @@ import java.util.Arrays;
 public class PathwaysCSVFileConstants {
 
 	public static final String PATHWAYS_FILE_NAME = "etc/visualization/pathways.csv";
-	public static final String PATHWAY_GRAPH_FILE_NAME = "etc/visualization/pathway_graphing_data.csv";
+	//public static final String PATHWAY_GRAPH_FILE_NAME = "etc/visualization/pathway_graphing_data.csv";
+	public static final String PATHWAY_GRAPH_FILE_NAME = "etc/visualization/pathway_graphing_data1.csv";
 	public static final String METABOLITES_FILE_NAME = "etc/visualization/metabolites.csv";
 	// since there are only a few metabolites that have KEGG ids that are not in the metabolites.csv file generated
 	// from the KEGG Crawler, just add them manually and append to map
 	public static final String ADDITIONAL_METABOLITES_FILE_NAME = "etc/visualization/additional_metabolites.csv";
-	public static final String METABOLITE_POSITIONS_FILE_NAME = "etc/visualization/pathway_metabolite_positions.csv";
+	//public static final String METABOLITE_POSITIONS_FILE_NAME = "etc/visualization/pathway_metabolite_positions.csv";
+	public static final String METABOLITE_POSITIONS_FILE_NAME = "etc/visualization/pathway_metabolite_positions1.csv";
 	public static final String REACTIONS_FILE_NAME = "etc/visualization/reactions.csv";
-	public static final String REACTION_POSITIONS_FILE_NAME = "etc/visualization/pathways_reaction_positions.csv";
-	public static final String PATHWAY_DRAW_ORDER_FILE_NAME = "etc/visualization/pathway_draw_order.csv";
-	public static final String PATHWAY_CONNECTIONS_FILE_NAME = "etc/visualization/pathway_connections.csv";
+	//public static final String REACTION_POSITIONS_FILE_NAME = "etc/visualization/pathways_reaction_positions.csv";
+	public static final String REACTION_POSITIONS_FILE_NAME = "etc/visualization/pathways_reaction_positions1.csv";
+	//public static final String PATHWAY_DRAW_ORDER_FILE_NAME = "etc/visualization/pathway_draw_order.csv";
+	public static final String PATHWAY_DRAW_ORDER_FILE_NAME = "etc/visualization/pathway_draw_order1.csv";
+	//public static final String PATHWAY_CONNECTIONS_FILE_NAME = "etc/visualization/pathway_connections.csv";
+	public static final String PATHWAY_CONNECTIONS_FILE_NAME = "etc/visualization/pathway_connections1.csv";
 	public static final String PATHWAY_SIDE_SPECIES_FILE_NAME = "etc/visualization/pathway_side_species.csv";
-	public static final String EXTERNAL_METABOLITES_FILE_NAME = "etc/visualization/external_metabolites.csv";
-	public static final String TRANSPORT_METABOLITES_FILE_NAME = "etc/visualization/transport_metabolites.csv";
+	//public static final String EXTERNAL_METABOLITES_FILE_NAME = "etc/visualization/external_metabolites.csv";
+	public static final String EXTERNAL_METABOLITES_FILE_NAME = "etc/visualization/external_metabolites1.csv";
+	//public static final String TRANSPORT_METABOLITES_FILE_NAME = "etc/visualization/transport_metabolites.csv";
+	public static final String TRANSPORT_METABOLITES_FILE_NAME = "etc/visualization/transport_metabolites1.csv";
 	
 	public static final String[] PATHWAYS_COLUMN_NAMES = 
 		{

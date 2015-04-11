@@ -7,8 +7,8 @@ public class PathwaysFrameConstants {
 	public static final String NODE_INFORMATION_TITLE = "Node Information";
 	
 	public static final float SCALING_FACTOR = (float) 1.2;
-	public static final int GRAPH_WIDTH = 10000;
-	public static final int GRAPH_HEIGHT = 8000;
+	public static final int GRAPH_WIDTH = 24000;
+	public static final int GRAPH_HEIGHT = 18000;
 	public static final int BORDER_WIDTH = 100;
 	public static final int BORDER_HEIGHT = 100;
 	public static final int PERIPLASM_WIDTH = 400;
@@ -23,12 +23,13 @@ public class PathwaysFrameConstants {
 	
 	public static final int TOP_SPACE = 300;
 	public static final int BOTTOM_SPACE = 300;
-	public static final int START_Y = 3000;
+	public static final int START_Y = 5000;
    	
 //	public static final int HORIZONTAL_INCREMENT = 350;
 //	public static final int VERTICAL_INCREMENT = 175;
 	public static final int HORIZONTAL_INCREMENT = 400;
-	public static final int VERTICAL_INCREMENT = 160;
+//	public static final int VERTICAL_INCREMENT = 160;
+	public static final int VERTICAL_INCREMENT = 360;
 	public static final int PATHWAY_NAME_NODE_WIDTH = 120;
 	public static final int PATHWAY_NAME_NODE_HEIGHT = 50;
 	public static final int SIDE_NODE_WIDTH = 90;
