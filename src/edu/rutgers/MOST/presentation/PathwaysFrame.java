@@ -1282,6 +1282,7 @@ public class PathwaysFrame extends JApplet {
         				alignCenterString(graphics, abbr, width, PathwaysFrameConstants.SIDE_NODE_XPOS, PathwaysFrameConstants.SIDE_NODE_YPOS, PathwaysFrameConstants.SIDE_NODE_FONT_SIZE);
         			}
         		} else if (reactions.contains(name)) {
+        			graphics.setColor(PathwaysFrameConstants.REACTION_NODE_DETAULT_FONT_COLOR);
         			if (!foundReactionsList.contains(name) && LocalConfig.getInstance().isHighlightMissingReactionsSelected()) {
             			graphics.setColor(PathwaysFrameConstants.REACTION_NOT_FOUND_FONT_COLOR);
             		} else if (koReactions.contains(name)) {

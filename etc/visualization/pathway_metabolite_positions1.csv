@@ -90,8 +90,8 @@ Pathway ID,Metabolite ID,Metabolite Level,Metabolite Level Position,Metabolite N
 0,88,8,-3.4,D-Ribose,RIB_D,C00121,2,1
 0,89,8,-2,D-Ribose-5P,R5P,C00117,2,1
 0,90,8,-1,D-Erythrose-4P,E4P,C00279,2,1
-0,91,8.2,0,"B-D-Fructose-1,6P2",FDP,C00354,0,1
-0,92,8.2,1,D-Fructose-1P,F1P,C01094,0,0
+0,91,8.2,0,"B-D-Fructose-1,6P2",FDP,C00354,0|4,1
+0,92,8.2,1,D-Fructose-1P,F1P,C01094,4,0
 0,93,8.5,-8,L-Ribulose,RIBL_L,C00508,3,0
 0,94,8.5,-0.8,D Sedoheptulose-7P,S7P,C00281,2,1
 0,95,8.8,-10,B-D-Ribosylamine-5P,PRAM,C03090,20,0
@@ -122,8 +122,8 @@ Pathway ID,Metabolite ID,Metabolite Level,Metabolite Level Position,Metabolite N
 0,120,12.9,-2.2,Glycolate,GLYCLT,C00160,,1
 0,121,13,0,Phosphoenolpyruvate,PEP,C00074,0,1
 0,122,14,0,Pyruvate,PYR,C00022,0,1
-0,123,14.2,1.8,L-Lactate,LAC_L,C00186,,0
-0,124,14.7,1.8,D-Lactate,LAC_D,C00256,,1
+0,123,14.2,1.8,L-Lactate,LAC_L,C00186,0|90,0
+0,124,14.7,1.8,D-Lactate,LAC_D,C00256,90,1
 0,125,15,0,2-(a-Lactoyl)ThPP,2-(a-Lactoyl)ThPP,-1,,0
 0,126,15.5,1.8,Acetaldehyde,ACALD,C00084,0,1
 0,127,15.5,2.5,Ethanol,ETOH,C00469,0,0
