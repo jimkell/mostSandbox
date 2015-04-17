@@ -463,7 +463,7 @@ public class PathwaysFrame extends JApplet {
 								String reac = pathway.getMetabolitesData().get((pathway.getReactionsData().get(Integer.toString(k)).getReactantIds().get(r))).getName();
 								reactionMap.put(displayName + "reactant " + Integer.toString(r), new String[] {displayName, reac, reversible});
 								fluxMap.put(displayName + "reactant " + Integer.toString(r), edgeThickness(pn.getFluxValue()));
-								if (pn.getFluxValue() == 0) {
+								if (pn.getFluxValue() == 0 && !koReactions.contains(displayName)) {
 									edgeColor = PathwaysFrameConstants.GRAY_COLOR_VALUE;
 								}
 								colorMap.put(displayName + "reactant " + Integer.toString(r), edgeColor);
@@ -474,7 +474,7 @@ public class PathwaysFrame extends JApplet {
 								String prod = pathway.getMetabolitesData().get((pathway.getReactionsData().get(Integer.toString(k)).getProductIds().get(p))).getName();
 								reactionMap.put(displayName + "product " + Integer.toString(p), new String[] {displayName, prod, "true"});
 								fluxMap.put(displayName + "product " + Integer.toString(p), edgeThickness(pn.getFluxValue()));
-								if (pn.getFluxValue() == 0) {
+								if (pn.getFluxValue() == 0 && !koReactions.contains(displayName)) {
 									edgeColor = PathwaysFrameConstants.GRAY_COLOR_VALUE;
 								}
 								colorMap.put(displayName + "product " + Integer.toString(p), edgeColor);
@@ -615,7 +615,7 @@ public class PathwaysFrame extends JApplet {
 						String reac = connectionsNodelist.get(c).getMainPathwayReactants().get(d).getName();
 						reactionMap.put(displayName + "reactant " + Integer.toString(d), new String[] {displayName, reac, reversible});
 						fluxMap.put(displayName + "reactant " + Integer.toString(d), edgeThickness(connectionsNodelist.get(c).getFluxValue()));
-						if (connectionsNodelist.get(c).getFluxValue() == 0) {
+						if (connectionsNodelist.get(c).getFluxValue() == 0 && !koReactions.contains(displayName)) {
 							edgeColor = PathwaysFrameConstants.GRAY_COLOR_VALUE;
 						}
 						colorMap.put(displayName + "reactant " + Integer.toString(d), edgeColor);
@@ -624,7 +624,7 @@ public class PathwaysFrame extends JApplet {
 						String prod = connectionsNodelist.get(c).getMainPathwayProducts().get(e).getName();
 						reactionMap.put(displayName + "product " + Integer.toString(e), new String[] {displayName, prod, "true"});
 						fluxMap.put(displayName + "product " + Integer.toString(e), edgeThickness(connectionsNodelist.get(c).getFluxValue()));
-						if (connectionsNodelist.get(c).getFluxValue() == 0) {
+						if (connectionsNodelist.get(c).getFluxValue() == 0 && !koReactions.contains(displayName)) {
 							edgeColor = PathwaysFrameConstants.GRAY_COLOR_VALUE;
 						}
 						colorMap.put(displayName + "product " + Integer.toString(e), edgeColor);

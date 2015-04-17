@@ -130,7 +130,7 @@ Pathway ID,Metabolite ID,Metabolite Level,Metabolite Level Position,Metabolite N
 0,128,16,0,2-(a-Hydroxyethyl)ThPP,2-(a-Hydroxyethyl)ThPP,C05125,,0
 0,129,16.5,1.8,Acetate,AC,C00033,0,1
 0,130,17,0,6-S-Acetyldihydrolipoate,6-S-Acetyldihydrolipoate,-2,,0
-0,131,17.5,1.8,Acetyl Adenylate,Acetyl Adenylate,C05993,,0
+0,131,17.5,1.8,Acetyl Adenylate,Acetyl Adenylate,C05993,90,0
 0,132,17.9,-0.4,Formate,Form,C00058,,1
 0,133,18,0,Acetyl-CoA,ACCOA,C00024,1,1
 0,134,18.4,1.8,O-Acetylcarnitine,O-Acetylcarnitine,C02571,,1
