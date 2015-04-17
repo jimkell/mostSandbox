@@ -38,9 +38,11 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;                                                                                           
                                                                                                                      
 import javax.swing.JPopupMenu;
+
 import org.apache.commons.collections15.Transformer;                                                                 
 import org.apache.commons.collections15.functors.ChainedTransformer;                                                 
                                                                                                                      
+
 import edu.rutgers.MOST.config.LocalConfig;
 import edu.rutgers.MOST.data.ExternalMetaboliteData;
 import edu.rutgers.MOST.data.ExternalMetaboliteNode;
@@ -74,6 +76,7 @@ import edu.uci.ics.jung.visualization.decorators.EdgeShape;
 import edu.uci.ics.jung.visualization.decorators.EllipseVertexShapeTransformer;
 import edu.uci.ics.jung.visualization.decorators.ToStringLabeller;                                                   
 import edu.uci.ics.jung.visualization.decorators.VertexIconShapeTransformer;
+import edu.uci.ics.jung.visualization.transform.MutableTransformer;
 import edu.uci.ics.jung.visualization.util.ArrowFactory;
                                                                                                                      
                                                                                                                      
@@ -1182,6 +1185,10 @@ public class PathwaysFrame extends JApplet {
         vv =  new VisualizationViewer<String,Number>(layout,                                                         
         		new Dimension(1000,600));   
         
+        final ScalingControl scaler = new CrossoverScalingControl();
+        
+        scaler.scale(vv, PathwaysFrameConstants.START_SCALING_FACTOR, vv.getCenter());
+        
         vv.setBackground(Color.white);
         
         // based on code from http://stackoverflow.com/questions/21657249/mouse-events-on-vertex-of-jung-graph
@@ -1373,12 +1380,12 @@ public class PathwaysFrame extends JApplet {
         vv.getRenderContext().setEdgeShapeTransformer(new EdgeShape.Line<String,Number>());
         
         final GraphZoomScrollPane panel = new GraphZoomScrollPane(vv);                                               
-        add(panel);                                                                                                  
+        add(panel);
         final AbstractModalGraphMouse graphMouse = new DefaultModalGraphMouse(); 
 		graphMouse.setMode(ModalGraphMouse.Mode.TRANSFORMING);
         vv.setGraphMouse(graphMouse); 
                                                                                                                 
-        final ScalingControl scaler = new CrossoverScalingControl();                                                 
+        //final ScalingControl scaler = new CrossoverScalingControl();                                                 
            
         // not sure what this does
         //vv.scaleToLayout(scaler);                                                                                                                                                                                              
@@ -1420,7 +1427,8 @@ public class PathwaysFrame extends JApplet {
         controls.add(plus);                                                                                          
         controls.add(minus);                                                                                         
         controls.add(reset);                                                                                         
-        add(controls, BorderLayout.SOUTH);                                                                           
+        add(controls, BorderLayout.SOUTH);  
+       
     }                                                                                                                
                                                                                                                      
     /**                                                                                                              
