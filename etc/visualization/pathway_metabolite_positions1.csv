@@ -52,7 +52,7 @@ Pathway ID,Metabolite ID,Metabolite Level,Metabolite Level Position,Metabolite N
 0,50,5.8,-4.4,Pyruvate,PYR,C00022,2,1
 0,51,6,-10,L-Dehydroascorbate,L-Dehydroascorbate,C05422,,1
 0,52,6,-9,"2,3-Dioxo-L-Gulonate","2,3-Dioxo-L-Gulonate",-4,,0
-0,53,6,-7.2,Pentosans,Pentosans,C06016,,0
+0,53,5.8,-7.2,Pentosans,Pentosans,C06016,,0
 0,54,6,-3.4,2-Dehydro-3-deoxy-D-gluconate-6P,2DDG6P,C04442,2,0
 0,55,6,-2,D-Gluconate-6P,6PGC,C00345,2,0
 0,56,6,-1,"D-Glucono-1,5-lactone-6P",6PGL,C01236,2,0
@@ -64,9 +64,9 @@ Pathway ID,Metabolite ID,Metabolite Level,Metabolite Level Position,Metabolite N
 0,62,6.4,-9,L-Lyxonate,L-Lyxonate,C05412,,0
 0,63,6.6,-10.2,L-Threonate,L-Threonate,C01620,6,0
 0,64,6.6,-9.8,Oxalate,Oxalate,C00209,,1
-0,65,6.6,-8,L-Arabinitol,L-Arabinitol,C00532,3,0
-0,66,6.6,-6.4,Xylitol,Xylitol,C00379,3,0
-0,67,6.6,-5.4,D-Xylulose,XYLU-D,C00310,3,0
+0,65,6.8,-8,L-Arabinitol,L-Arabinitol,C00532,3,0
+0,66,6.8,-6.4,Xylitol,Xylitol,C00379,3,0
+0,67,6.8,-5.4,D-Xylulose,XYLU-D,C00310,3,0
 0,68,6.6,-4.4,D-Ribitol,Ribitol,C00474,3,0
 0,69,6.6,-3.4,D-Ribulose,Ribl-D,C00309,3,0
 0,70,6.6,1,a-D-Mannose-6P,MAN6P,C00275,4,0
@@ -92,7 +92,7 @@ Pathway ID,Metabolite ID,Metabolite Level,Metabolite Level Position,Metabolite N
 0,90,8,-1,D-Erythrose-4P,E4P,C00279,2,1
 0,91,8.2,0,"B-D-Fructose-1,6P2",FDP,C00354,0|4,1
 0,92,8.2,1,D-Fructose-1P,F1P,C01094,4,0
-0,93,8.5,-8,L-Ribulose,RIBL_L,C00508,3,0
+0,93,8.5,-6.4,L-Ribulose,RIBL_L,C00508,3,0
 0,94,8.5,-0.8,D Sedoheptulose-7P,S7P,C00281,2,1
 0,95,8.8,-10,B-D-Ribosylamine-5P,PRAM,C03090,20,0
 0,96,8.8,-9,5-Phospho-alpha-D-ribose 1-diphosphate,PRPP,C00119,2|20|23,1
