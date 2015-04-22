@@ -27,7 +27,7 @@ Pathway ID,Metabolite ID,Metabolite Level,Metabolite Level Position,Metabolite N
 0,25,3.2,-0.4,UDP-D-Glucose,UDPG,C00029,6|61,1
 0,26,3.2,0.4,ADP-D-Glucose,ADPGLC,C00498,61,1
 0,27,3.6,-2,dTDP-D-Galactose,dTDP-D-Galactose,C02097,,0
-0,28,3.6,-1,GDP-D-Glucose,GDP-D-Glucose,C00394,,0
+0,28,3.6,-1,GDP-D-Glucose,GDP-D-Glucose,C00394,67,0
 0,29,3.8,-7,Pectin,Pectin,C00714,,0
 0,30,4.3,-10,2-Dehydro-L-Gulonolactone,2-Dehydro-L-Gulunolactone,-5,,0
 0,31,4.4,-9,3-Dehydro-L-Gulonate,3DHGULN,C00618,6,0
@@ -58,15 +58,15 @@ Pathway ID,Metabolite ID,Metabolite Level,Metabolite Level Position,Metabolite N
 0,56,6,-1,"D-Glucono-1,5-lactone-6P",6PGL,C01236,2,0
 0,57,6,0,D-Glucose-6P,G6P,C00092,0,1
 0,58,6,2,D-Glucose,GLC_D,C00031, ,1
-0,59,6.1,-8,L-Arabinose,ARAB_L,C00259,3,0
-0,60,6.1,-6.4,D-Xylose,XYL-D,C00181,3,0
+0,59,6.2,-8,L-Arabinose,ARAB_L,C00259,3,0
+0,60,6.2,-6.4,D-Xylose,XYL-D,C00181,3,0
 0,61,6.2,-4.4,Glyceraldehyde-3P,G3P,C00661,0,1
 0,62,6.4,-9,L-Lyxonate,L-Lyxonate,C05412,,0
 0,63,6.6,-10.2,L-Threonate,L-Threonate,C01620,6,0
 0,64,6.6,-9.8,Oxalate,Oxalate,C00209,,1
-0,65,6.8,-8,L-Arabinitol,L-Arabinitol,C00532,3,0
-0,66,6.8,-6.4,Xylitol,Xylitol,C00379,3,0
-0,67,6.8,-5.4,D-Xylulose,XYLU-D,C00310,3,0
+0,65,7,-8,L-Arabinitol,L-Arabinitol,C00532,3,0
+0,66,7,-6.4,Xylitol,Xylitol,C00379,3,0
+0,67,7,-5.4,D-Xylulose,XYLU-D,C00310,3,0
 0,68,6.6,-4.4,D-Ribitol,Ribitol,C00474,3,0
 0,69,6.6,-3.4,D-Ribulose,Ribl-D,C00309,3,0
 0,70,6.6,1,a-D-Mannose-6P,MAN6P,C00275,4,0
@@ -83,16 +83,16 @@ Pathway ID,Metabolite ID,Metabolite Level,Metabolite Level Position,Metabolite N
 0,81,7.5,-4.4,Acetyl-CoA,ACCOA,C00024,0,1
 0,82,7.6,-10.2,3-Dehydrothreonate,3-Dehydrothreonate,C03064,6,0
 0,83,7.6,-9,L-Erythroascorbate,L-Erythroascorbate,-3,,0
-0,84,7.6,-8,L-Xylulose,XYLU_L,C00312,3,0
-0,85,7.6,-6.4,D-Xylulose-5P,XU5P_D,C00231,3,0
-0,86,7.6,-5.4,L-Ribulose-5P,RU5P_L,C01101,2,0
+0,84,7.8,-8,L-Xylulose,XYLU_L,C00312,3,0
+0,85,7.8,-6.4,D-Xylulose-5P,XU5P_D,C00231,3,0
+0,86,7.8,-5.4,L-Ribulose-5P,RU5P_L,C01101,2,0
 0,87,7.6,-1.2,D-Xylulose-5P,XU5P_D,C00231,2,1
 0,88,8,-3.4,D-Ribose,RIB_D,C00121,2,1
 0,89,8,-2,D-Ribose-5P,R5P,C00117,2,1
 0,90,8,-1,D-Erythrose-4P,E4P,C00279,2,1
 0,91,8.2,0,"B-D-Fructose-1,6P2",FDP,C00354,0|4,1
 0,92,8.2,1,D-Fructose-1P,F1P,C01094,4,0
-0,93,8.5,-6.4,L-Ribulose,RIBL_L,C00508,3,0
+0,93,8.6,-6.4,L-Ribulose,RIBL_L,C00508,3,0
 0,94,8.5,-0.8,D Sedoheptulose-7P,S7P,C00281,2,1
 0,95,8.8,-10,B-D-Ribosylamine-5P,PRAM,C03090,20,0
 0,96,8.8,-9,5-Phospho-alpha-D-ribose 1-diphosphate,PRPP,C00119,2|20|23,1

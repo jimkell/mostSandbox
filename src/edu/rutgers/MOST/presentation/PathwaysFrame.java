@@ -1587,8 +1587,8 @@ public class PathwaysFrame extends JApplet {
     public class DirectionalEdgeArrowTransformer<V,E> implements Transformer<Context<Graph<V,E>,E>,Shape> {
         //protected Shape undirected_arrow;
 //        protected Shape directed_arrow;	
-    	float width = PathwaysFrameConstants.ARROW_LENGTH;
-    	float length = PathwaysFrameConstants.ARROW_WIDTH;
+    	float length = PathwaysFrameConstants.ARROW_LENGTH;
+    	float width = PathwaysFrameConstants.ARROW_WIDTH;
     	float notch_depth = PathwaysFrameConstants.ARROW_NOTCH;
     	protected Shape directed_arrow = ArrowFactory.getNotchedArrow(width, length, notch_depth);
         
