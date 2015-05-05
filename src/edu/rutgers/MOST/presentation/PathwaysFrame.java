@@ -57,7 +57,7 @@ import edu.rutgers.MOST.data.TransportReactionConstants;
 import edu.rutgers.MOST.data.TransportReactionNode;
 import edu.uci.ics.jung.algorithms.layout.Layout;                                                                    
 import edu.uci.ics.jung.algorithms.layout.StaticLayout;                                                              
-import edu.uci.ics.jung.graph.Graph;                                                                                 
+import edu.uci.ics.jung.graph.Graph;  
 import edu.uci.ics.jung.graph.SparseMultigraph;
 import edu.uci.ics.jung.graph.util.Context;
 import edu.uci.ics.jung.graph.util.EdgeType;                                                                         
@@ -1168,8 +1168,8 @@ public class PathwaysFrame extends JApplet {
    		reactionList = new ArrayList<String>(reactionMap.keySet()); 
    		Collections.sort(reactionList);
                                                                                                                      
-        // create graph     
-        graph = new SparseMultigraph<String, Number>();  
+        // create graph
+        graph = new SparseMultigraph<String, Number>();
         createVertices();                                                                                            
         createEdges();                                                                                               
                                                                                                                                                                                                                                                                                                                       
