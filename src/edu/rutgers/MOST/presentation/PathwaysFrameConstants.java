@@ -24,7 +24,7 @@ public class PathwaysFrameConstants {
 	
 	public static final int TOP_SPACE = 300;
 	public static final int BOTTOM_SPACE = 300;
-	public static final int START_Y = 5000;
+	public static final int START_Y = 5600;
    	
 //	public static final int HORIZONTAL_INCREMENT = 350;
 //	public static final int VERTICAL_INCREMENT = 175;
