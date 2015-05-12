@@ -1366,15 +1366,12 @@ public class PathwaysFrame extends JApplet {
         vv.getRenderContext().setArrowDrawPaintTransformer(colorTransformer);
         
         // add listeners for ToolTips  
-        // may need to use abbreviations for labels
-        // then tooltip could be full name and meta info if available
-        vv.setVertexToolTipTransformer(new ToStringLabeller());   
-        // labels should be either full names or abbreviations
-        // tooltips - full names, EC#s, maybe even equation if 
-        // zoom is sufficient?
+        vv.setVertexToolTipTransformer(new ToStringLabeller()); 
+        // no tooltips on edges for now
         vv.setEdgeToolTipTransformer(new Transformer<Number,String>() {                                              
-        	public String transform(Number edge) {                                                                   
-        		return "E"+graph.getEndpoints(edge).toString();                                                      
+        	public String transform(Number edge) {
+        		return "";
+        		//return "E"+graph.getEndpoints(edge).toString();                                                      
         	}});                                                                                                     
                    
         vv.getRenderContext().setEdgeShapeTransformer(new EdgeShape.Line<String,Number>());
