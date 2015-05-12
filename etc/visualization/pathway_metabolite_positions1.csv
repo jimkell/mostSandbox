@@ -235,7 +235,7 @@ Pathway ID,Metabolite ID,Metabolite Level,Metabolite Level Position,Metabolite N
 0,233,21.2,-5.4,Acetyl-CoA,ACCOA,C00024,43,1,,,
 0,234,21.4,-6.4,Pyruvate,PYR,C00022,43,1,,,
 0,235,21.5,-5.6,Succinyl-CoA,SUCCOA,C00091,43,1,,,
-0,236,18.6,-8.1,L-Tyrosine,TYR_L,C00082,48|142,0,,,
+0,236,18.6,-8.1,L-Tyrosine,TYR_L,C00082,39|48|142,0,,,
 0,237,18.6,-7.4,L-Phenylalanine,PHE_L,C00079,41|142,0,,,
 0,238,20,-8.1,L-Tyrosyl-tRNA,TRNATYR,C02839,142,1,,,
 0,239,20,-7.4,L-Phenylalanyl-tRNA,PHETRNA,C03511,142,1,,,
