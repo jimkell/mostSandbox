@@ -92,7 +92,8 @@ public class PathwaysFrame extends JApplet {
     /**                                                                                                              
      * the graph                                                                                                     
      */                                                                                                              
-    Graph<String, Number> graph;                                                                                     
+    Graph<String, Number> graph; 
+    public JButton redrawButton = new JButton("Redraw");
                                                                                                                      
     /**                                                                                                              
      * the visual component and renderer for the graph                                                               
@@ -102,11 +103,11 @@ public class PathwaysFrame extends JApplet {
     public final JMenuItem visualizationOptionsItem = new JMenuItem(VisualizationOptionsConstants.VISUALIZATION_OPTIONS_MENU_ITEM_NAME);
                                                                                                                      
 	Map<String, String[]> metabPosMap = new HashMap<String, String[]>();                                                       
-   	List<String> metaboliteList; 
+	ArrayList<String> metaboliteList = new ArrayList<String>(); 
    	
    	// key = name of rxn, value = reactant, product, reversible
    	Map<String, String[]> reactionMap = new HashMap<String, String[]>(); 
-   	List<String> reactionList;
+   	ArrayList<String> reactionList = new ArrayList<String>();
    	
    	// lists used to distinguish node types
    	ArrayList<String> borderList = new ArrayList<String>();
@@ -117,6 +118,9 @@ public class PathwaysFrame extends JApplet {
    	Map<String, Double> fluxMap = new HashMap<String, Double>(); 
    	Map<String, Double> colorMap = new HashMap<String, Double>();
    	ArrayList<String> koReactions = new ArrayList<String>();
+   	ArrayList<String> foundMetabolitesList = new ArrayList<String>();
+   	ArrayList<String> foundReactionsList = new ArrayList<String>();
+   	Map<String, Icon> iconMap = new HashMap<String, Icon>(); 
    	
    	private double layoutScale;
    	private double viewScale;
@@ -206,7 +210,203 @@ public class PathwaysFrame extends JApplet {
     	/**************************************************************************/
     	// end create menu bar
     	/**************************************************************************/
+               
+    	processData(component);
     	
+    	// create graph
+        graph = new SparseMultigraph<String, Number>();
+        createVertices();
+        createEdges(); 
+                                                                                                                                                                                                                                                                                                                      
+        Dimension layoutSize = new Dimension(PathwaysFrameConstants.GRAPH_WIDTH, PathwaysFrameConstants.GRAPH_HEIGHT);                                                             
+                                                                                                                     
+        Layout<String,Number> layout = new StaticLayout<String,Number>(graph,                                        
+        		new ChainedTransformer(new Transformer[]{                                                            
+        				new MetabTransformer(metabPosMap),                                                                    
+        				new PixelTransformer(new Dimension(PathwaysFrameConstants.GRAPH_WIDTH, PathwaysFrameConstants.GRAPH_HEIGHT))                                         
+        		}));                                                                                                 
+        	                                                                                                         
+        layout.setSize(layoutSize);                                                                                  
+        vv =  new VisualizationViewer<String,Number>(layout,                                                         
+        		new Dimension(1000,600));   
+        
+        final ScalingControl scaler = new CrossoverScalingControl();
+        
+        scaler.scale(vv, PathwaysFrameConstants.START_SCALING_FACTOR, vv.getCenter());
+        
+        vv.setBackground(Color.white);
+        
+        // based on code from http://stackoverflow.com/questions/21657249/mouse-events-on-vertex-of-jung-graph
+        vv.addGraphMouseListener(new GraphMouseListener() {
+
+			@Override
+			public void graphClicked(final Object arg0, MouseEvent me) {
+				// TODO Auto-generated method stub
+				if (me.getButton() == MouseEvent.BUTTON3) {
+					final VisualizationViewer<String,String> vv =(VisualizationViewer<String,String>)me.getSource();
+			        //final Point2D p = me.getPoint();
+			        JPopupMenu popup = new JPopupMenu();
+			        JMenuItem nodeInformationMenu = new JMenuItem("View Node Information");
+			        nodeInformationMenu.addActionListener(new ActionListener() {
+						public void actionPerformed(ActionEvent ae) {
+							createNodeInformationDialog(arg0);
+						}
+					});
+			        popup.add(nodeInformationMenu);
+			        popup.show(vv, me.getX(), me.getY());
+                }
+				if (me.getButton() == MouseEvent.BUTTON1 && me.getClickCount() == 2) {
+					createNodeInformationDialog(arg0);
+                }
+                me.consume();
+			}
+
+			@Override
+			public void graphPressed(Object arg0, MouseEvent me) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void graphReleased(Object arg0, MouseEvent me) {
+				// TODO Auto-generated method stub
+				
+			}
+            
+        });
+           
+        //System.out.println("fl " + foundReactionsList);            
+        
+        final VertexIconShapeTransformer<String> vertexImageShapeFunction =                                                                           
+                new VertexIconShapeTransformer<String>(new EllipseVertexShapeTransformer<String>());                                                      
+                                                                                                                                                          
+        final DefaultVertexIconTransformer<String> vertexIconFunction =                                                                               
+            	new DefaultVertexIconTransformer<String>(); 
+        
+        createIconMap();
+        vertexImageShapeFunction.setIconMap(iconMap);                                                                                                 
+        vertexIconFunction.setIconMap(iconMap);                                                                                                       
+                                                                                                                                                      
+        vv.getRenderContext().setVertexShapeTransformer(vertexImageShapeFunction);                                                                    
+        vv.getRenderContext().setVertexIconTransformer(vertexIconFunction); 
+        
+        // this class will provide both label drawing and vertex shapes
+        //VertexLabelAsShapeRenderer<String,Number> vlasr = new VertexLabelAsShapeRenderer<String,Number>(vv.getRenderContext());
+
+        vv.addPreRenderPaintable(new VisualizationViewer.Paintable(){                                            
+        	public void paint(Graphics g) {                                                                      
+        		Graphics2D g2d = (Graphics2D)g;                                                                  
+        		AffineTransform oldXform = g2d.getTransform();                                                   
+        		AffineTransform lat =                                                                            
+        				vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.LAYOUT).getTransform();
+        		AffineTransform vat =                                                                            
+        				vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.VIEW).getTransform();  
+        		AffineTransform at = new AffineTransform();                                                      
+        		at.concatenate(g2d.getTransform());                                                              
+        		at.concatenate(vat);                                                                             
+        		at.concatenate(lat);                                                                             
+        		g2d.setTransform(at);                                                                            
+        		//                    g.drawImage(icon.getImage(), 0, 0,                                                               
+        		//                    		icon.getIconWidth(),icon.getIconHeight(),vv);                                            
+        		g2d.setTransform(oldXform);                                                                      
+        	}                                                                                                    
+        	public boolean useTransform() { return false; }                                                      
+        });  
+        
+        ewcs = new EdgeWeightStrokeFunction<Number>(edge_weight);
+        //arrowTransformer = new DirectionalEdgeArrowTransformer(PathwaysFrameConstants.ARROW_LENGTH, PathwaysFrameConstants.ARROW_WIDTH, PathwaysFrameConstants.ARROW_NOTCH); 
+        arrowTransformer = new DirectionalEdgeArrowTransformer();
+        
+        // don't think this is necessary
+        //vv.getRenderContext().setVertexLabelRenderer(new DefaultVertexLabelRenderer(Color.gray));
+        
+        // all edges same color
+        //vv.getRenderContext().setEdgeDrawPaintTransformer(new ConstantTransformer(Color.black));
+        // vary colors
+        vv.getRenderContext().setEdgeDrawPaintTransformer(colorTransformer);
+        
+        // all edges same thickness
+        //vv.getRenderContext().setEdgeStrokeTransformer(new ConstantTransformer(new BasicStroke(2.5f)));
+        // vary edge thicknesses
+        vv.getRenderContext().setEdgeStrokeTransformer(ewcs);
+        
+        // all arrows same
+        vv.getRenderContext().setEdgeArrowTransformer(arrowTransformer);
+        vv.getRenderContext().setArrowFillPaintTransformer(colorTransformer);
+        vv.getRenderContext().setArrowDrawPaintTransformer(colorTransformer);
+        
+        // add listeners for ToolTips  
+        vv.setVertexToolTipTransformer(new ToStringLabeller()); 
+        // no tooltips on edges for now
+        vv.setEdgeToolTipTransformer(new Transformer<Number,String>() {                                              
+        	public String transform(Number edge) {
+        		return "";
+        		//return "E"+graph.getEndpoints(edge).toString();                                                      
+        	}});                                                                                                     
+                   
+        vv.getRenderContext().setEdgeShapeTransformer(new EdgeShape.Line<String,Number>());
+        
+        final GraphZoomScrollPane panel = new GraphZoomScrollPane(vv);                                               
+        add(panel);
+        final AbstractModalGraphMouse graphMouse = new DefaultModalGraphMouse(); 
+		graphMouse.setMode(ModalGraphMouse.Mode.TRANSFORMING);
+        vv.setGraphMouse(graphMouse); 
+                                                                                                                
+        //final ScalingControl scaler = new CrossoverScalingControl();                                                 
+           
+        // not sure what this does
+        //vv.scaleToLayout(scaler);                                                                                                                                                                                              
+                                                                                                                     
+        JButton plus = new JButton("+");                                                                             
+        plus.addActionListener(new ActionListener() {                                                                
+            public void actionPerformed(ActionEvent e) {                                                             
+                scaler.scale(vv, PathwaysFrameConstants.SCALING_FACTOR, vv.getCenter()); 
+//                System.out.println("layout scale " + vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.LAYOUT).getScale());
+//				System.out.println("view scale " + vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.VIEW).getScale());
+                layoutScale = vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.LAYOUT).getScale();
+				viewScale = vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.VIEW).getScale();
+            }                                                                                                        
+        });                                                                                                          
+        JButton minus = new JButton("-");                                                                            
+        minus.addActionListener(new ActionListener() {                                                               
+            public void actionPerformed(ActionEvent e) {                                                             
+                scaler.scale(vv, 1/PathwaysFrameConstants.SCALING_FACTOR, vv.getCenter());
+//                System.out.println("layout scale " + vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.LAYOUT).getScale());
+//				System.out.println("view scale " + vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.VIEW).getScale());
+                layoutScale = vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.LAYOUT).getScale();
+				viewScale = vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.VIEW).getScale();
+            }                                                                                                        
+        });                                                                                                          
+                                                                                                                     
+//        JButton reset = new JButton("Reset");                                                                        
+//        reset.addActionListener(new ActionListener() {                                                               
+//                                                                                                                     
+//			public void actionPerformed(ActionEvent e) {                                                             
+//				vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.LAYOUT).setToIdentity();       
+//				vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.VIEW).setToIdentity();  
+//				System.out.println("layout scale " + vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.LAYOUT).getScale());
+//				System.out.println("view scale " + vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.VIEW).getScale());
+//				layoutScale = vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.LAYOUT).getScale();
+//				viewScale = vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.VIEW).getScale();
+//			}}); 
+        
+        //JButton redraw = new JButton("Redraw");                                                                        
+//        redrawButton.addActionListener(new ActionListener() {                                                               
+//
+//        	public void actionPerformed(ActionEvent e) {                                                             
+//
+//        	}});
+
+        JPanel controls = new JPanel();                                                                              
+        controls.add(plus);                                                                                          
+        controls.add(minus); 
+        controls.add(redrawButton);
+        //controls.add(reset);                                                                                         
+        add(controls, BorderLayout.SOUTH);  
+       
+    }   
+    
+    public void processData(int component) {
     	ReactionFactory f = new ReactionFactory("SBML");
     	Vector<SBMLReaction> allReactions = f.getAllReactions();
     	Map<Integer, SBMLReaction> idReactionMap = new HashMap<Integer, SBMLReaction>();
@@ -231,8 +431,8 @@ public class PathwaysFrame extends JApplet {
 	    double sideSpeciesExchangeEndX = 0;
 	    double sideSpeciesSecondExchangeStartX = 0;
 		
-	    ArrayList<String> foundMetabolitesList = new ArrayList<String>();
-	    ArrayList<String> foundReactionsList = new ArrayList<String>();
+	    //ArrayList<String> foundMetabolitesList = new ArrayList<String>();
+	    //ArrayList<String> foundReactionsList = new ArrayList<String>();
 		ArrayList<PathwayMetaboliteNode> externalMetaboliteNodeList = new ArrayList<PathwayMetaboliteNode>();
 		ArrayList<PathwayMetaboliteNode> transportMetaboliteNodeList = new ArrayList<PathwayMetaboliteNode>();
 	
@@ -1167,71 +1367,75 @@ public class PathwaysFrame extends JApplet {
    		
    		reactionList = new ArrayList<String>(reactionMap.keySet()); 
    		Collections.sort(reactionList);
+    }
+    
+    public void createGraph() {
+    	
+    }
                                                                                                                      
-        // create graph
-        graph = new SparseMultigraph<String, Number>();
-        createVertices();                                                                                            
-        createEdges();                                                                                               
-                                                                                                                                                                                                                                                                                                                      
-        Dimension layoutSize = new Dimension(PathwaysFrameConstants.GRAPH_WIDTH, PathwaysFrameConstants.GRAPH_HEIGHT);                                                             
+    /**                                                                                                              
+     * create some vertices                                                                                          
+     * @param count how many to create                                                                               
+     * @return the Vertices in an array                                                                              
+     */                                                                                                              
+    public void createVertices() {                                                                                  
+        for (String met : metabPosMap.keySet()) {
+            graph.addVertex(met); 
+        } 
+    } 
+    
+    public void removeVertices() {                                                                                  
+        for (String met : metabPosMap.keySet()) {
+            graph.removeVertex(met); 
+        } 
+    } 
                                                                                                                      
-        Layout<String,Number> layout = new StaticLayout<String,Number>(graph,                                        
-        		new ChainedTransformer(new Transformer[]{                                                            
-        				new MetabTransformer(metabPosMap),                                                                    
-        				new PixelTransformer(new Dimension(PathwaysFrameConstants.GRAPH_WIDTH, PathwaysFrameConstants.GRAPH_HEIGHT))                                         
-        		}));                                                                                                 
-        	                                                                                                         
-        layout.setSize(layoutSize);                                                                                  
-        vv =  new VisualizationViewer<String,Number>(layout,                                                         
-        		new Dimension(1000,600));   
-        
-        final ScalingControl scaler = new CrossoverScalingControl();
-        
-        scaler.scale(vv, PathwaysFrameConstants.START_SCALING_FACTOR, vv.getCenter());
-        
-        vv.setBackground(Color.white);
-        
-        // based on code from http://stackoverflow.com/questions/21657249/mouse-events-on-vertex-of-jung-graph
-        vv.addGraphMouseListener(new GraphMouseListener() {
-
-			@Override
-			public void graphClicked(final Object arg0, MouseEvent me) {
-				// TODO Auto-generated method stub
-				if (me.getButton() == MouseEvent.BUTTON3) {
-					final VisualizationViewer<String,String> vv =(VisualizationViewer<String,String>)me.getSource();
-			        //final Point2D p = me.getPoint();
-			        JPopupMenu popup = new JPopupMenu();
-			        JMenuItem nodeInformationMenu = new JMenuItem("View Node Information");
-			        nodeInformationMenu.addActionListener(new ActionListener() {
-						public void actionPerformed(ActionEvent ae) {
-							createNodeInformationDialog(arg0);
-						}
-					});
-			        popup.add(nodeInformationMenu);
-			        popup.show(vv, me.getX(), me.getY());
-                }
-				if (me.getButton() == MouseEvent.BUTTON1 && me.getClickCount() == 2) {
-					createNodeInformationDialog(arg0);
-                }
-                me.consume();
-			}
-
-			@Override
-			public void graphPressed(Object arg0, MouseEvent me) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void graphReleased(Object arg0, MouseEvent me) {
-				// TODO Auto-generated method stub
-				
-			}
-            
-        });
-           
-        //System.out.println("fl " + foundReactionsList);
-        Map<String, Icon> iconMap = new HashMap<String, Icon>();                                                                                        
+    /**                                                                                                              
+     * create edges for this demo graph                                                                              
+     * @param v an array of Vertices to connect                                                                      
+     */                                                                                                              
+    public void createEdges() { 
+    	System.out.println("fm " + fluxMap);
+    	for(int i=0; i<reactionList.size(); i++) {
+    		String[] info = reactionMap.get(reactionList.get(i));
+    		String rev = info[2];
+    		if (rev.equals("true")) {
+    			graph.addEdge(new Double(i), info[0], info[1], EdgeType.DIRECTED); 
+    		} else if (rev.equals("false")) {
+    			graph.addEdge(new Double(i), info[0], info[1], EdgeType.UNDIRECTED); 
+    		}
+    		//String rxnName = "";
+    		if (fluxMap.containsKey(reactionList.get(i))) {
+    			double fluxValue = fluxMap.get(reactionList.get(i));
+        		edge_weight.put(new Double(i), fluxValue);
+    		} else {
+    			edge_weight.put(new Double(i), PathwaysFrameConstants.DEFAULT_EDGE_WIDTH);
+    		}
+    		if (colorMap.containsKey(reactionList.get(i))) {
+    			double color = colorMap.get(reactionList.get(i));
+    			edge_color.put(new Double(i), color);
+    		} else {
+    			edge_color.put(new Double(i), PathwaysFrameConstants.DEFAULT_COLOR_VALUE);
+    		}
+    	} 
+    } 
+    
+    public void removeEdges() {
+    	for(int i=0; i<reactionList.size(); i++) {
+    		graph.removeEdge(new Double(i)); 
+    		fluxMap.clear();
+    		edge_weight.clear();
+    		edge_color.clear();
+    	}
+    }
+    
+    /**
+     * Creates image icons to be used as nodes
+     * @return
+     */
+    public void createIconMap() {
+    	//Map<String, Icon> iconMap = new HashMap<String, Icon>();   
+    	iconMap.clear();
         for(int i = 0; i < metaboliteList.size(); i++) {                                                                                                        
         	String name = metaboliteList.get(i);
         	String abbr = LocalConfig.getInstance().getMetaboliteNameAbbrMap().get(name);
@@ -1306,163 +1510,8 @@ public class PathwaysFrame extends JApplet {
         	}
         	Icon icon = new ImageIcon(bufferedImage);
         	iconMap.put(name, icon);                                                                                                                                         
-        }             
-        
-        final VertexIconShapeTransformer<String> vertexImageShapeFunction =                                                                           
-                new VertexIconShapeTransformer<String>(new EllipseVertexShapeTransformer<String>());                                                      
-                                                                                                                                                          
-        final DefaultVertexIconTransformer<String> vertexIconFunction =                                                                               
-            	new DefaultVertexIconTransformer<String>(); 
-        
-        vertexImageShapeFunction.setIconMap(iconMap);                                                                                                 
-        vertexIconFunction.setIconMap(iconMap);                                                                                                       
-                                                                                                                                                      
-        vv.getRenderContext().setVertexShapeTransformer(vertexImageShapeFunction);                                                                    
-        vv.getRenderContext().setVertexIconTransformer(vertexIconFunction); 
-        
-        // this class will provide both label drawing and vertex shapes
-        //VertexLabelAsShapeRenderer<String,Number> vlasr = new VertexLabelAsShapeRenderer<String,Number>(vv.getRenderContext());
-
-        vv.addPreRenderPaintable(new VisualizationViewer.Paintable(){                                            
-        	public void paint(Graphics g) {                                                                      
-        		Graphics2D g2d = (Graphics2D)g;                                                                  
-        		AffineTransform oldXform = g2d.getTransform();                                                   
-        		AffineTransform lat =                                                                            
-        				vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.LAYOUT).getTransform();
-        		AffineTransform vat =                                                                            
-        				vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.VIEW).getTransform();  
-        		AffineTransform at = new AffineTransform();                                                      
-        		at.concatenate(g2d.getTransform());                                                              
-        		at.concatenate(vat);                                                                             
-        		at.concatenate(lat);                                                                             
-        		g2d.setTransform(at);                                                                            
-        		//                    g.drawImage(icon.getImage(), 0, 0,                                                               
-        		//                    		icon.getIconWidth(),icon.getIconHeight(),vv);                                            
-        		g2d.setTransform(oldXform);                                                                      
-        	}                                                                                                    
-        	public boolean useTransform() { return false; }                                                      
-        });  
-        
-        ewcs = new EdgeWeightStrokeFunction<Number>(edge_weight);
-        //arrowTransformer = new DirectionalEdgeArrowTransformer(PathwaysFrameConstants.ARROW_LENGTH, PathwaysFrameConstants.ARROW_WIDTH, PathwaysFrameConstants.ARROW_NOTCH); 
-        arrowTransformer = new DirectionalEdgeArrowTransformer();
-        
-        // don't think this is necessary
-        //vv.getRenderContext().setVertexLabelRenderer(new DefaultVertexLabelRenderer(Color.gray));
-        
-        // all edges same color
-        //vv.getRenderContext().setEdgeDrawPaintTransformer(new ConstantTransformer(Color.black));
-        // vary colors
-        vv.getRenderContext().setEdgeDrawPaintTransformer(colorTransformer);
-        
-        // all edges same thickness
-        //vv.getRenderContext().setEdgeStrokeTransformer(new ConstantTransformer(new BasicStroke(2.5f)));
-        // vary edge thicknesses
-        vv.getRenderContext().setEdgeStrokeTransformer(ewcs);
-        
-        // all arrows same
-        vv.getRenderContext().setEdgeArrowTransformer(arrowTransformer);
-        vv.getRenderContext().setArrowFillPaintTransformer(colorTransformer);
-        vv.getRenderContext().setArrowDrawPaintTransformer(colorTransformer);
-        
-        // add listeners for ToolTips  
-        vv.setVertexToolTipTransformer(new ToStringLabeller()); 
-        // no tooltips on edges for now
-        vv.setEdgeToolTipTransformer(new Transformer<Number,String>() {                                              
-        	public String transform(Number edge) {
-        		return "";
-        		//return "E"+graph.getEndpoints(edge).toString();                                                      
-        	}});                                                                                                     
-                   
-        vv.getRenderContext().setEdgeShapeTransformer(new EdgeShape.Line<String,Number>());
-        
-        final GraphZoomScrollPane panel = new GraphZoomScrollPane(vv);                                               
-        add(panel);
-        final AbstractModalGraphMouse graphMouse = new DefaultModalGraphMouse(); 
-		graphMouse.setMode(ModalGraphMouse.Mode.TRANSFORMING);
-        vv.setGraphMouse(graphMouse); 
-                                                                                                                
-        //final ScalingControl scaler = new CrossoverScalingControl();                                                 
-           
-        // not sure what this does
-        //vv.scaleToLayout(scaler);                                                                                                                                                                                              
-                                                                                                                     
-        JButton plus = new JButton("+");                                                                             
-        plus.addActionListener(new ActionListener() {                                                                
-            public void actionPerformed(ActionEvent e) {                                                             
-                scaler.scale(vv, PathwaysFrameConstants.SCALING_FACTOR, vv.getCenter()); 
-//                System.out.println("layout scale " + vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.LAYOUT).getScale());
-//				System.out.println("view scale " + vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.VIEW).getScale());
-                layoutScale = vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.LAYOUT).getScale();
-				viewScale = vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.VIEW).getScale();
-            }                                                                                                        
-        });                                                                                                          
-        JButton minus = new JButton("-");                                                                            
-        minus.addActionListener(new ActionListener() {                                                               
-            public void actionPerformed(ActionEvent e) {                                                             
-                scaler.scale(vv, 1/PathwaysFrameConstants.SCALING_FACTOR, vv.getCenter());
-//                System.out.println("layout scale " + vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.LAYOUT).getScale());
-//				System.out.println("view scale " + vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.VIEW).getScale());
-                layoutScale = vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.LAYOUT).getScale();
-				viewScale = vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.VIEW).getScale();
-            }                                                                                                        
-        });                                                                                                          
-                                                                                                                     
-        JButton reset = new JButton("Reset");                                                                        
-        reset.addActionListener(new ActionListener() {                                                               
-                                                                                                                     
-			public void actionPerformed(ActionEvent e) {                                                             
-				vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.LAYOUT).setToIdentity();       
-				vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.VIEW).setToIdentity();  
-//				System.out.println("layout scale " + vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.LAYOUT).getScale());
-//				System.out.println("view scale " + vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.VIEW).getScale());
-				layoutScale = vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.LAYOUT).getScale();
-				viewScale = vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.VIEW).getScale();
-			}});                                                                                                     
-                                                                                                                     
-        JPanel controls = new JPanel();                                                                              
-        controls.add(plus);                                                                                          
-        controls.add(minus);                                                                                         
-        controls.add(reset);                                                                                         
-        add(controls, BorderLayout.SOUTH);  
-       
-    }                                                                                                                
-                                                                                                                     
-    /**                                                                                                              
-     * create some vertices                                                                                          
-     * @param count how many to create                                                                               
-     * @return the Vertices in an array                                                                              
-     */                                                                                                              
-    private void createVertices() {                                                                                  
-        for (String met : metabPosMap.keySet()) {
-            graph.addVertex(met); 
         } 
-    }                                                                                                                
-                                                                                                                     
-    /**                                                                                                              
-     * create edges for this demo graph                                                                              
-     * @param v an array of Vertices to connect                                                                      
-     */                                                                                                              
-    void createEdges() { 
-    	for(int i=0; i<reactionList.size(); i++) {
-    		String[] info = reactionMap.get(reactionList.get(i));
-    		String rev = info[2];
-    		if (rev.equals("true")) {
-    			graph.addEdge(new Double(i), info[0], info[1], EdgeType.DIRECTED); 
-    		} else if (rev.equals("false")) {
-    			graph.addEdge(new Double(i), info[0], info[1], EdgeType.UNDIRECTED); 
-    		}
-    		//String rxnName = "";
-    		double fluxValue = fluxMap.get(reactionList.get(i));
-    		edge_weight.put(new Double(i), fluxValue);
-    		if (colorMap.containsKey(reactionList.get(i))) {
-    			double color = colorMap.get(reactionList.get(i));
-    			edge_color.put(new Double(i), color);
-    		} else {
-    			edge_color.put(new Double(i), PathwaysFrameConstants.DEFAULT_COLOR_VALUE);
-    		}
-    	} 
-    }                                                                                                                                                                                                                                                                                                                                             
+    }
                                                                                                                      
     static class MetabTransformer implements Transformer<String,String[]> {                                           
                                                                                                                      

@@ -2260,117 +2260,8 @@ public class GraphicalInterface extends JFrame {
 
 		visualizeMenu.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
-				LocalConfig.getInstance().getKeggIdCompartmentMap().clear();
-				LocalConfig.getInstance().getMetaboliteNameAbbrMap().clear();
-				LocalConfig.getInstance().getMetaboliteIdKeggIdMap().clear();
-				LocalConfig.getInstance().getKeggIdMetaboliteMap().clear();
-				LocalConfig.getInstance().getKeggIdTransportReactionsMap().clear();
-				String missingItem = "";
-				String missingData = "";
-				boolean showMissingItemMessage = true;
-				MetaboliteFactory f = new MetaboliteFactory("SBML");
-				if (f.getKeggIdColumnIndex() > -1) {
-					Vector<SBMLMetabolite> metabolites = f.getAllMetabolites();
-					for (int i = 0; i < metabolites.size(); i++) {
-						if (metabolites.get(i).getMetaboliteAbbreviation() != null &&
-								metabolites.get(i).getMetaboliteAbbreviation().length() > 0 &&
-								!metabolites.get(i).getMetaboliteAbbreviation().endsWith("_b") &&
-								metabolites.get(i).getKeggId() != null &&
-								metabolites.get(i).getKeggId().length() > 0) {
-							String metabId = Integer.toString(metabolites.get(i).getId());
-							String keggId = metabolites.get(i).getKeggId();
-							if (keggId != null && keggId.length() > 0) {
-								LocalConfig.getInstance().getMetaboliteIdKeggIdMap().put(metabId, keggId);
-								if (LocalConfig.getInstance().getKeggIdMetaboliteMap().containsKey(keggId)) {
-									ArrayList<SBMLMetabolite> metabolitesList = LocalConfig.getInstance().getKeggIdMetaboliteMap().get(keggId);
-									metabolitesList.add(metabolites.get(i));
-									LocalConfig.getInstance().getKeggIdMetaboliteMap().put(keggId, metabolitesList);
-								} else {
-									ArrayList<SBMLMetabolite> metabolitesList = new ArrayList<SBMLMetabolite>();
-									metabolitesList.add(metabolites.get(i));
-									LocalConfig.getInstance().getKeggIdMetaboliteMap().put(keggId, metabolitesList);
-								}
-							}
-							if (!LocalConfig.getInstance().getKeggIdCompartmentMap().containsKey(keggId)) {
-								ArrayList<String> compList = new ArrayList<String>();
-								compList.add(metabolites.get(i).getCompartment());
-								LocalConfig.getInstance().getKeggIdCompartmentMap().put(keggId, compList);
-							} else {
-								ArrayList<String> compList = LocalConfig.getInstance().getKeggIdCompartmentMap().get(keggId);
-								compList.add(metabolites.get(i).getCompartment());
-								LocalConfig.getInstance().getKeggIdCompartmentMap().put(keggId, compList);
-							}
-						}
-					}
-					//System.out.println(LocalConfig.getInstance().getKeggIdCompartmentMap());
-					//System.out.println(LocalConfig.getInstance().getMetaboliteIdKeggIdMap());
-					System.out.println(LocalConfig.getInstance().getKeggIdMetaboliteMap());
-				}
-				
-				PathwayFilesReader reader = new PathwayFilesReader();
-				// only read visualization csv files where data structure is not modified
-				// the first time visualize menu selected 
-				if (!pathwayFilesRead) {
-					reader.readOnceFiles();
-					pathwayFilesRead = true;
-				}
-				reader.readFiles();
-				
-				ArrayList<Object> unplottedReactions = new ArrayList<Object>(LocalConfig.getInstance().getReactionEquationMap().keySet());
-				ArrayList<Integer> unplottedReactionIds = new ArrayList<Integer>();
-				for (int i = 0; i < unplottedReactions.size(); i++) {
-					unplottedReactionIds.add((int) unplottedReactions.get(i));
-				}
-				LocalConfig.getInstance().setUnplottedReactionIds(unplottedReactionIds);
-				
-				// should only run this if ec number column exists
-				ECNumberMapCreator ecMapCreator = new ECNumberMapCreator();
-				ecMapCreator.createEcNumberReactionMap();
-				ModelKeggEquationMapCreator modelKeggEquationMapCreator = new ModelKeggEquationMapCreator();
-				modelKeggEquationMapCreator.createKeggEquationMap();
-				//System.out.println("un " + unplottedReactionIds);
-				
-				if (f.getKeggIdColumnIndex() == -1) {
-					missingItem = "KEGG IDs";
-					missingData = "metabolites in model to items";
-				} else {
-					showMissingItemMessage = false;
-				} 
-				
-				if (showMissingItemMessage) {
-					Object[] options = {"Yes",
-					"No"};
-					int choice = JOptionPane.showOptionDialog(null, 
-							"<html>Since there are no " + missingItem + " in the loaded model, <p>"
-									+ "MOST is unable to link " + missingData + " <p>"
-									+ "in the Visualizations database. Continue anyway?", 
-									"No EC Numbers in Model", 
-									JOptionPane.YES_NO_OPTION, 
-									JOptionPane.QUESTION_MESSAGE, 
-									null, options, options[0]);
-					//options[0] sets "Yes" as default button
-
-					// interpret the user's choice	  
-					if (choice == JOptionPane.YES_OPTION)
-					{
-						if (LocalConfig.getInstance().getListOfCompartments().size() > 0) {
-							createCompartmentNameDialog();
-						} else {
-							createVisualizationsPane();
-						}
-					}
-					//No option actually corresponds to "Yes to All" button
-					if (choice == JOptionPane.NO_OPTION)
-					{
-						// option in future to graph unconstrained
-					}
-				} else {
-					if (LocalConfig.getInstance().getListOfCompartments().size() > 0) {
-						createCompartmentNameDialog();
-					} else {
-						createVisualizationsPane();
-					}
-				}
+				processVisualizationsData();
+				visualizeModel();
 			}
 		});
         
@@ -6104,28 +5995,6 @@ public class GraphicalInterface extends JFrame {
 		gdbbSelected = false;
 		gdbbRunning = false;
 		gdbbProcessed = false;
-	}
-	
-	/**
-	 * Sets Visualization Options defaults on startup of Graphical Interface
-	 */
-	public void setVisualizationOptionsDefaults() {
-		// may eventually get this from a config file
-		LocalConfig.getInstance().setGraphMissingReactionsSelected(VisualizationOptionsConstants.GRAPH_MISSING_REACTIONS_DEFAULT);
-		if (VisualizationOptionsConstants.GRAPH_MISSING_REACTIONS_DEFAULT) {
-			LocalConfig.getInstance().setHighlightMissingReactionsSelected(VisualizationOptionsConstants.HIGHLIGHT_MISSING_REACTIONS_DEFAULT);
-			LocalConfig.getInstance().setGapFillingSelected(VisualizationOptionsConstants.USE_GAP_FILLING_DEFAULT);
-		} else {
-			LocalConfig.getInstance().setHighlightMissingReactionsSelected(VisualizationOptionsConstants.HIGHLIGHT_MISSING_REACTIONS_GRAYED_DEFAULT);
-			LocalConfig.getInstance().setGapFillingSelected(VisualizationOptionsConstants.USE_GAP_FILLING_GRAYED_DEFAULT);
-		}
-		LocalConfig.getInstance().setGraphMissingMetabolitesSelected(VisualizationOptionsConstants.GRAPH_MISSING_REACTIONS_DEFAULT);
-		if (VisualizationOptionsConstants.GRAPH_MISSING_METABOLITES_DEFAULT) {
-			LocalConfig.getInstance().setHighlightMissingMetabolitesSelected(VisualizationOptionsConstants.HIGHLIGHT_MISSING_METABOLITES_DEFAULT);
-		} else {
-			LocalConfig.getInstance().setHighlightMissingMetabolitesSelected(VisualizationOptionsConstants.HIGHLIGHT_MISSING_METABOLITES_GRAYED_DEFAULT);
-		}
-		LocalConfig.getInstance().setScaleEdgeThicknessSelected(VisualizationOptionsConstants.SCALE_EDGE_THICKNESS_DEFAULT);
 	}
 
 	public void clearConfigLists() {	
@@ -13111,19 +12980,183 @@ public class GraphicalInterface extends JFrame {
 		}
 	}
 	
+	/**
+	 * Sets Visualization Options defaults on startup of Graphical Interface
+	 */
+	public void setVisualizationOptionsDefaults() {
+		// may eventually get this from a config file
+		LocalConfig.getInstance().setGraphMissingReactionsSelected(VisualizationOptionsConstants.GRAPH_MISSING_REACTIONS_DEFAULT);
+		if (VisualizationOptionsConstants.GRAPH_MISSING_REACTIONS_DEFAULT) {
+			LocalConfig.getInstance().setHighlightMissingReactionsSelected(VisualizationOptionsConstants.HIGHLIGHT_MISSING_REACTIONS_DEFAULT);
+			LocalConfig.getInstance().setGapFillingSelected(VisualizationOptionsConstants.USE_GAP_FILLING_DEFAULT);
+		} else {
+			LocalConfig.getInstance().setHighlightMissingReactionsSelected(VisualizationOptionsConstants.HIGHLIGHT_MISSING_REACTIONS_GRAYED_DEFAULT);
+			LocalConfig.getInstance().setGapFillingSelected(VisualizationOptionsConstants.USE_GAP_FILLING_GRAYED_DEFAULT);
+		}
+		LocalConfig.getInstance().setGraphMissingMetabolitesSelected(VisualizationOptionsConstants.GRAPH_MISSING_REACTIONS_DEFAULT);
+		if (VisualizationOptionsConstants.GRAPH_MISSING_METABOLITES_DEFAULT) {
+			LocalConfig.getInstance().setHighlightMissingMetabolitesSelected(VisualizationOptionsConstants.HIGHLIGHT_MISSING_METABOLITES_DEFAULT);
+		} else {
+			LocalConfig.getInstance().setHighlightMissingMetabolitesSelected(VisualizationOptionsConstants.HIGHLIGHT_MISSING_METABOLITES_GRAYED_DEFAULT);
+		}
+		LocalConfig.getInstance().setScaleEdgeThicknessSelected(VisualizationOptionsConstants.SCALE_EDGE_THICKNESS_DEFAULT);
+	}
+	
+	public void clearVisualizationCollections() {
+		LocalConfig.getInstance().getKeggIdCompartmentMap().clear();
+		LocalConfig.getInstance().getMetaboliteNameAbbrMap().clear();
+		LocalConfig.getInstance().getMetaboliteIdKeggIdMap().clear();
+		LocalConfig.getInstance().getKeggIdMetaboliteMap().clear();
+		LocalConfig.getInstance().getKeggIdTransportReactionsMap().clear();
+	}
+	
+	public void processVisualizationsData() {
+		clearVisualizationCollections();
+		MetaboliteFactory f = new MetaboliteFactory("SBML");
+		if (f.getKeggIdColumnIndex() > -1) {
+			Vector<SBMLMetabolite> metabolites = f.getAllMetabolites();
+			for (int i = 0; i < metabolites.size(); i++) {
+				if (metabolites.get(i).getMetaboliteAbbreviation() != null &&
+						metabolites.get(i).getMetaboliteAbbreviation().length() > 0 &&
+						!metabolites.get(i).getMetaboliteAbbreviation().endsWith("_b") &&
+						metabolites.get(i).getKeggId() != null &&
+						metabolites.get(i).getKeggId().length() > 0) {
+					String metabId = Integer.toString(metabolites.get(i).getId());
+					String keggId = metabolites.get(i).getKeggId();
+					if (keggId != null && keggId.length() > 0) {
+						LocalConfig.getInstance().getMetaboliteIdKeggIdMap().put(metabId, keggId);
+						if (LocalConfig.getInstance().getKeggIdMetaboliteMap().containsKey(keggId)) {
+							ArrayList<SBMLMetabolite> metabolitesList = LocalConfig.getInstance().getKeggIdMetaboliteMap().get(keggId);
+							metabolitesList.add(metabolites.get(i));
+							LocalConfig.getInstance().getKeggIdMetaboliteMap().put(keggId, metabolitesList);
+						} else {
+							ArrayList<SBMLMetabolite> metabolitesList = new ArrayList<SBMLMetabolite>();
+							metabolitesList.add(metabolites.get(i));
+							LocalConfig.getInstance().getKeggIdMetaboliteMap().put(keggId, metabolitesList);
+						}
+					}
+					if (!LocalConfig.getInstance().getKeggIdCompartmentMap().containsKey(keggId)) {
+						ArrayList<String> compList = new ArrayList<String>();
+						compList.add(metabolites.get(i).getCompartment());
+						LocalConfig.getInstance().getKeggIdCompartmentMap().put(keggId, compList);
+					} else {
+						ArrayList<String> compList = LocalConfig.getInstance().getKeggIdCompartmentMap().get(keggId);
+						compList.add(metabolites.get(i).getCompartment());
+						LocalConfig.getInstance().getKeggIdCompartmentMap().put(keggId, compList);
+					}
+				}
+			}
+			//System.out.println(LocalConfig.getInstance().getKeggIdCompartmentMap());
+			//System.out.println(LocalConfig.getInstance().getMetaboliteIdKeggIdMap());
+			System.out.println(LocalConfig.getInstance().getKeggIdMetaboliteMap());
+		}
+		
+		PathwayFilesReader reader = new PathwayFilesReader();
+		// only read visualization csv files where data structure is not modified
+		// the first time visualize menu selected 
+		if (!pathwayFilesRead) {
+			reader.readOnceFiles();
+			pathwayFilesRead = true;
+		}
+		reader.readFiles();
+		
+		ArrayList<Object> unplottedReactions = new ArrayList<Object>(LocalConfig.getInstance().getReactionEquationMap().keySet());
+		ArrayList<Integer> unplottedReactionIds = new ArrayList<Integer>();
+		for (int i = 0; i < unplottedReactions.size(); i++) {
+			unplottedReactionIds.add((int) unplottedReactions.get(i));
+		}
+		LocalConfig.getInstance().setUnplottedReactionIds(unplottedReactionIds);
+		
+		// should only run this if ec number column exists
+		ECNumberMapCreator ecMapCreator = new ECNumberMapCreator();
+		ecMapCreator.createEcNumberReactionMap();
+		ModelKeggEquationMapCreator modelKeggEquationMapCreator = new ModelKeggEquationMapCreator();
+		modelKeggEquationMapCreator.createKeggEquationMap();
+		//System.out.println("un " + unplottedReactionIds);
+	}
+	
+	public void visualizeModel() {
+		MetaboliteFactory f = new MetaboliteFactory("SBML");
+		String missingItem = "";
+		String missingData = "";
+		boolean showMissingItemMessage = true;
+		if (f.getKeggIdColumnIndex() == -1) {
+			missingItem = "KEGG IDs";
+			missingData = "metabolites in model to items";
+		} else {
+			showMissingItemMessage = false;
+		} 
+		
+		if (showMissingItemMessage) {
+			Object[] options = {"Yes",
+			"No"};
+			int choice = JOptionPane.showOptionDialog(null, 
+					"<html>Since there are no " + missingItem + " in the loaded model, <p>"
+							+ "MOST is unable to link " + missingData + " <p>"
+							+ "in the Visualizations database. Continue anyway?", 
+							"No EC Numbers in Model", 
+							JOptionPane.YES_NO_OPTION, 
+							JOptionPane.QUESTION_MESSAGE, 
+							null, options, options[0]);
+			//options[0] sets "Yes" as default button
+
+			// interpret the user's choice	  
+			if (choice == JOptionPane.YES_OPTION)
+			{
+				if (LocalConfig.getInstance().getListOfCompartments().size() > 0) {
+					createCompartmentNameDialog();
+				} else {
+					createVisualizationsPane();
+				}
+			}
+			//No option actually corresponds to "Yes to All" button
+			if (choice == JOptionPane.NO_OPTION)
+			{
+				// option in future to graph unconstrained
+			}
+		} else {
+			if (LocalConfig.getInstance().getListOfCompartments().size() > 0) {
+				createCompartmentNameDialog();
+			} else {
+				createVisualizationsPane();
+			}
+		}
+	}
+	
 	public void createVisualizationsPane() {
 		// create a frome to hold the graph                                                                          
         final JFrame frame = new JFrame(); 
         setVisualizationsPane(frame);
         frame.setIconImages(icons);
         frame.setTitle(gi.getTitle());
-        JTabbedPane visualizationTabbedPane = new JTabbedPane(3); 
+        final JTabbedPane visualizationTabbedPane = new JTabbedPane(3); 
         final PathwaysFrame pf1 = new PathwaysFrame(PathwaysFrameConstants.PATHWAYS_COMPONENT);
         final PathwaysFrame pf2 = new PathwaysFrame(PathwaysFrameConstants.PROCESSES_COMPONENT);
         visualizationTabbedPane.addTab("Metabolic Pathways", pf1);
         visualizationTabbedPane.setMnemonicAt(0, KeyEvent.VK_M);
         visualizationTabbedPane.addTab("Cellular and Molecular Processes", pf2);
         visualizationTabbedPane.setMnemonicAt(1, KeyEvent.VK_P);
+        pf1.redrawButton.addActionListener(new ActionListener() {                                                               
+        	public void actionPerformed(ActionEvent e) { 
+        		pf1.removeVertices();
+        		pf1.removeEdges();
+        		processVisualizationsData();
+        		pf1.processData(PathwaysFrameConstants.PATHWAYS_COMPONENT);
+//        		pf2.processData(PathwaysFrameConstants.PROCESSES_COMPONENT);
+//        		pf1.removeVertices();
+//        		pf1.removeEdges();
+        		pf1.createIconMap();
+        		pf1.createVertices();
+        		pf1.createEdges();
+        		frame.setTitle(gi.getTitle());
+        		// refersh display by switching tabs
+        		visualizationTabbedPane.setSelectedIndex(1);
+        		visualizationTabbedPane.setSelectedIndex(0);
+        	}});
+        pf2.redrawButton.addActionListener(new ActionListener() {                                                               
+        	public void actionPerformed(ActionEvent e) {                                                             
+        		
+        	}});
         visualizationTabbedPane.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e) {
 				if (pf1.getNodeInformationDialog() != null) {
