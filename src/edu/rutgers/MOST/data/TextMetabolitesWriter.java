@@ -8,11 +8,9 @@ import edu.rutgers.MOST.presentation.GraphicalInterface;
 import edu.rutgers.MOST.presentation.GraphicalInterfaceConstants;
 import au.com.bytecode.opencsv.CSVWriter;
 
-// TODO: account for hidden columns
 public class TextMetabolitesWriter {
 
 	public void write(String file) {
-		//String extension = ".csv";
 		CSVWriter writer;
 		try {
 			writer = new CSVWriter(new FileWriter(file), ',');

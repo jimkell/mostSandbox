@@ -1395,7 +1395,6 @@ public class PathwaysFrame extends JApplet {
      * @param v an array of Vertices to connect                                                                      
      */                                                                                                              
     public void createEdges() { 
-    	System.out.println("fm " + fluxMap);
     	for(int i=0; i<reactionList.size(); i++) {
     		String[] info = reactionMap.get(reactionList.get(i));
     		String rev = info[2];
