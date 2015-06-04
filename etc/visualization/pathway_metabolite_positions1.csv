@@ -556,7 +556,7 @@ Pathway ID,Metabolite ID,Metabolite Level,Metabolite Level Position,Metabolite N
 0,554,2.9,13.6,2-Dehydropantoate,2DHP,C00966,113,0,,,,
 0,555,2.9,14.4,(R)-Pantoate,PANT_R,C00522,113,1,,,,
 0,556,3.3,9.6,2-Oxoisocaproate,4MOP,C00233,,0,,,,
-0,557,3.5,11.2,2-Oxo-3-methylvalerate,2-Oxo-3-methylvalerate,C03465,,0,,,,
+0,557,3.5,11.2,2-Oxo-3-methylvalerate,3MOP,C00671,,0,,,,
 0,558,3.6,12.6,2-Oxoisovalerate,3MOB,C00141,,0,,,,
 0,559,3.7,14.1,B-Alanine,ALA_B,C00099,,1,,,,
 0,560,4.5,13,L-Valine,VAL_L,C00183,,1,,,,
