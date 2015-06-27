@@ -1054,3 +1054,6 @@ Pathway ID,Metabolite ID,Metabolite Level,Metabolite Level Position,Metabolite N
 0,,42,11.2,2-Methoxyestrone 3-sulfate,2-Methoxyestrone 3-sulfate,C08358,16,0,,f,,,,,,,,,,,,,,,,,
 0,,42,12,Androsterone glucuronide,Androsterone glucuronide,C11135,16,0,,f,,,,,,,,,,,,,,,,,
 0,,42,12.8,Etiocholan-3alpha-ol-17-one 3-glucuronide,Etiocholan-3alpha-ol-17-one 3-glucuronide,C11136,16,0,,f,,,,,,,,,,,,,,,,,
+0,,22.1,12.5,"5beta-Pregnane-3,20-dione","5beta-Pregnane-3,20-dione",C05479,16,0,,f,,,,,,,,,,,,,,,,,
+0,,20.7,12.5,3alpha-Hydroxy-5beta-pregnan-20-one,3alpha-Hydroxy-5beta-pregnan-20-one,C05480,16,0,,f,,,,,,,,,,,,,,,,,
+0,,19.4,12.5,Pregnanediol,Pregnanediol,C05484,16,0,,f,,,,,,,,,,,,,,,,,
