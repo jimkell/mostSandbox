@@ -941,3 +941,4 @@ Pathway ID,Metabolite ID,Metabolite Level,Metabolite Level Position,Metabolite N
 0,939,22.1,12.5,"5beta-Pregnane-3,20-dione","5beta-Pregnane-3,20-dione",C05479,16,0,,,,
 0,940,20.7,12.5,3alpha-Hydroxy-5beta-pregnan-20-one,3alpha-Hydroxy-5beta-pregnan-20-one,C05480,16,0,,,,
 0,941,19.4,12.5,Pregnanediol,Pregnanediol,C05484,16,0,,,,
+0,942,38.5,12.8,16-Glucuronide-estriol,16-Glucuronide-estriol,C05504,16,1,,,,
