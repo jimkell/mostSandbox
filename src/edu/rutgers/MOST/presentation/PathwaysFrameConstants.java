@@ -119,12 +119,27 @@ public class PathwaysFrameConstants {
 	// prevents nodes with calculated positions from touching
 	public static final double NODE_SPACING_CORRECTION = 1.1;
 	
-	public static final Color METABOLITE_NODE_DETAULT_COLOR = Color.white;
-	public static final Color METABOLITE_NOT_FOUND_COLOR = Color.yellow;
-	public static final Color REACTION_NODE_DETAULT_COLOR = Color.white;
+	public static final Color NODE_BACKGROUND_DETAULT_COLOR = Color.white;
+//	public static final Color METABOLITE_NODE_DETAULT_COLOR = Color.white;
+//	public static final Color REACTION_NODE_DETAULT_COLOR = Color.white;
 	public static final Color REACTION_NODE_DETAULT_FONT_COLOR = Color.blue;
-	public static final Color REACTION_NOT_FOUND_FONT_COLOR = Color.orange;
+	
 	public static final Color REACTION_KO_FONT_COLOR = Color.red;
+	
+	// not found colors from http://www.rapidtables.com/web/color/RGB_Color.htm
+	// light blue
+	public static final Color REACTION_NOT_FOUND_FONT_COLOR = new Color(204,229,255);
+	// one step darker 
+	//public static final Color REACTION_NOT_FOUND_FONT_COLOR = new Color(153,204,255);
+	// light gray
+	public static final Color METABOLITE_NOT_FOUND_COLOR = new Color(224,224,224);
+	// one step darker 
+	//public static final Color METABOLITE_NOT_FOUND_COLOR = new Color(192,192,192);
+
+	// formerly used yellow and orange, but this is confusing since some metabolites
+	// have no borders using the Roche map convention
+	//public static final Color METABOLITE_NOT_FOUND_COLOR = Color.yellow;
+	//public static final Color REACTION_NOT_FOUND_FONT_COLOR = Color.orange;
 	
 	public static final double BLACK_COLOR_VALUE = 0.0;
 	public static final double GRAY_COLOR_VALUE = 1.0;

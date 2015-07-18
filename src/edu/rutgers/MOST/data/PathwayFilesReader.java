@@ -263,6 +263,9 @@ public class PathwayFilesReader {
 							if (s == PathwaysCSVFileConstants.METABOLITE_POSITIONS_KEGG_ID_COLUMN) {
 								pm.setKeggId(dataArray[s]);
 							}
+							if (s == PathwaysCSVFileConstants.METABOLITE_POSITIONS_BORDER_COLUMN) {
+								pm.setBorder(dataArray[s]);
+							}
 						}
 						metabolicPathways.get(id).getMetabolitesData().put(pm.getId(), pm);
 						String name = pm.getNames().get(0);

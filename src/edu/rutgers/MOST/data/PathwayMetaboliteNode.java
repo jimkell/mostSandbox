@@ -14,6 +14,7 @@ public class PathwayMetaboliteNode {
 	private String keggId;
 	private double xPosition;
 	private double yPosition;
+	private String border;
 	
 	public String getCompartment() {
 		return compartment;
@@ -77,6 +78,14 @@ public class PathwayMetaboliteNode {
 
 	public void setyPosition(double yPosition) {
 		this.yPosition = yPosition;
+	}
+
+	public String getBorder() {
+		return border;
+	}
+
+	public void setBorder(String border) {
+		this.border = border;
 	}
 
 	@Override

@@ -12,6 +12,7 @@ public class PathwayMetaboliteData {
 	private String abbreviation;
 	private double level;
 	private double levelPosition;
+	private String border;
 	
 	public String getId() {
 		return id;
@@ -75,6 +76,14 @@ public class PathwayMetaboliteData {
 
 	public void setLevelPosition(double levelPosition) {
 		this.levelPosition = levelPosition;
+	}
+
+	public String getBorder() {
+		return border;
+	}
+
+	public void setBorder(String border) {
+		this.border = border;
 	}
 
 	@Override

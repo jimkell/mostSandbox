@@ -49,7 +49,7 @@ public class PathwaysCSVFileConstants {
 	public static final String[] METABOLITE_POSITIONS_COLUMN_NAMES = 
 		{
 		"Pathway ID", "Metabolite ID", "Metabolite Level", "Metabolite Level Position", 
-		"Metabolite Names", "Metabolite Abbreviation", "KEGG ID"
+		"Metabolite Names", "Metabolite Abbreviation", "KEGG ID", "Border"
 		};
 	
 	public static final String[] REACTIONS_COLUMN_NAMES = 
@@ -132,6 +132,7 @@ public class PathwaysCSVFileConstants {
 	// abbreviation still used if metabolite not found in model
 	public static final int METABOLITE_POSITIONS_ABBR_COLUMN = metabolitePositionsList.indexOf("Metabolite Abbreviation");
 	public static final int METABOLITE_POSITIONS_KEGG_ID_COLUMN = metabolitePositionsList.indexOf("KEGG ID");
+	public static final int METABOLITE_POSITIONS_BORDER_COLUMN = metabolitePositionsList.indexOf("Border");
 	
 	public static final int REACTIONS_KEGG_ID_COLUMN = reactionsColumnsList.indexOf("Reaction KEGG ID");
 	public static final int REACTIONS_KEGG_REACTANTS_COLUMN = reactionsColumnsList.indexOf("Reactants");
