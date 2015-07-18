@@ -226,21 +226,6 @@ public class PathwayReactionNodeFactory {
 		return speciesMatch;
 	}
 	
-	/**
-	 * PathwayConnectionNode created from PathwayReactionNode
-	 * @param pn
-	 * @return
-	 */
-	public PathwayConnectionNode createPathwayConnectionNode(PathwayReactionNode pn) {
-		PathwayConnectionNode pcn = new PathwayConnectionNode();
-		pcn.setSideReactants(pn.getSideReactants());
-		pcn.setSideProducts(pn.getSideProducts());
-		pcn.setEnzymeDataEquations(pn.getEnzymeDataEquations());
-		pcn.setReactions(pn.getReactions());
-		
-		return pcn;
-	}
-	
 	/** 
 	 * Display name for tooltip created from input names if length of list of SBMLReactions = 0.
 	 * Else display name created from SBMLReaction attributes.  

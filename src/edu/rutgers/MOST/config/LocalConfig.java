@@ -11,9 +11,8 @@ import javax.swing.table.DefaultTableModel;
 import edu.rutgers.MOST.data.EnzymeData;
 import edu.rutgers.MOST.data.MetabolicPathway;
 import edu.rutgers.MOST.data.ModelReactionEquation;
-import edu.rutgers.MOST.data.PathwayConnectionData;
-import edu.rutgers.MOST.data.PathwayConnectionNode;
 import edu.rutgers.MOST.data.PathwayMetaboliteData;
+import edu.rutgers.MOST.data.PathwayNameData;
 import edu.rutgers.MOST.data.PathwayReactionData;
 import edu.rutgers.MOST.data.SBMLMetabolite;
 import edu.rutgers.MOST.data.SBMLReaction;
@@ -868,38 +867,6 @@ public class LocalConfig {
 		this.additionalMetabolitesMap = additionalMetabolitesMap;
 	}
 
-	private Map<String, ArrayList<PathwayConnectionData>> connectionPositionMap;
-
-	public Map<String, ArrayList<PathwayConnectionData>> getConnectionPositionMap() {
-		return connectionPositionMap;
-	}
-
-	public void setConnectionPositionMap(
-			Map<String, ArrayList<PathwayConnectionData>> connectionPositionMap) {
-		this.connectionPositionMap = connectionPositionMap;
-	}
-
-	private ArrayList<PathwayConnectionData> connectionslist;
-
-	public ArrayList<PathwayConnectionData> getConnectionslist() {
-		return connectionslist;
-	}
-
-	public void setConnectionslist(ArrayList<PathwayConnectionData> connectionslist) {
-		this.connectionslist = connectionslist;
-	}
-	
-	private ArrayList<PathwayConnectionNode> connectionsNodelist;
-
-	public ArrayList<PathwayConnectionNode> getConnectionsNodelist() {
-		return connectionsNodelist;
-	}
-
-	public void setConnectionsNodelist(
-			ArrayList<PathwayConnectionNode> connectionsNodelist) {
-		this.connectionsNodelist = connectionsNodelist;
-	}
-	
 	private ArrayList<String> drawOrder;
 
 	public ArrayList<String> getDrawOrder() {
@@ -931,6 +898,16 @@ public class LocalConfig {
 		this.metabolicPathways = metabolicPathways;
 	}
 	
+	private Map<String, PathwayNameData> pathwayNameMap;
+	
+	public Map<String, PathwayNameData> getPathwayNameMap() {
+		return pathwayNameMap;
+	}
+
+	public void setPathwayNameMap(Map<String, PathwayNameData> pathwayNameMap) {
+		this.pathwayNameMap = pathwayNameMap;
+	}
+
 	private Map<String, PathwayMetaboliteData> metaboliteDataKeggIdMap;
 
 	public Map<String, PathwayMetaboliteData> getMetaboliteDataKeggIdMap() {

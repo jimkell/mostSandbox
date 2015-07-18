@@ -22,7 +22,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;                                                                                            
-import java.util.List;                                                                                               
 import java.util.Map;                                                                                                
                                                                                                                      
 import java.util.Vector;
@@ -47,7 +46,6 @@ import edu.rutgers.MOST.config.LocalConfig;
 import edu.rutgers.MOST.data.ExternalMetaboliteData;
 import edu.rutgers.MOST.data.ExternalMetaboliteNode;
 import edu.rutgers.MOST.data.MetabolicPathway;
-import edu.rutgers.MOST.data.PathwayConnectionNode;
 import edu.rutgers.MOST.data.PathwayMetaboliteNode;
 import edu.rutgers.MOST.data.PathwayReactionNode;
 import edu.rutgers.MOST.data.PathwayReactionNodeFactory;
@@ -76,7 +74,6 @@ import edu.uci.ics.jung.visualization.decorators.EdgeShape;
 import edu.uci.ics.jung.visualization.decorators.EllipseVertexShapeTransformer;
 import edu.uci.ics.jung.visualization.decorators.ToStringLabeller;                                                   
 import edu.uci.ics.jung.visualization.decorators.VertexIconShapeTransformer;
-import edu.uci.ics.jung.visualization.transform.MutableTransformer;
 import edu.uci.ics.jung.visualization.util.ArrowFactory;
                                                                                                                      
                                                                                                                      
@@ -683,154 +680,10 @@ public class PathwaysFrame extends JApplet {
 					}
 				}
 			}
-			
-			// update start position map if necessary
-			if (LocalConfig.getInstance().getConnectionPositionMap().get(pathway.getId()) != null) {
-				if (component == PathwaysFrameConstants.PATHWAYS_COMPONENT) {
-					if (LocalConfig.getInstance().getConnectionPositionMap().get(pathway.getId()).get(0).getReactantPathwaysIds().get(0).get(0).equals(pathway.getId())) {
-						for (int p = 0; p < LocalConfig.getInstance().getConnectionPositionMap().get(pathway.getId()).size(); p++) {
-							ArrayList<Double> xyList = new ArrayList<Double>();
-							double newStartX = pathway.getMetabolitesNodes().get(LocalConfig.getInstance().getConnectionPositionMap().get(pathway.getId()).get(p).getReactantPathwaysIds().get(0).get(1)).getxPosition();;
-							double newStartY = pathway.getMetabolitesNodes().get(LocalConfig.getInstance().getConnectionPositionMap().get(pathway.getId()).get(p).getReactantPathwaysIds().get(0).get(1)).getyPosition();
-							if (LocalConfig.getInstance().getConnectionPositionMap().get(pathway.getId()).get(p).getDirection().equals("vertical")) {
-								newStartY += LocalConfig.getInstance().getConnectionPositionMap().get(pathway.getId()).get(p).getLength() * PathwaysFrameConstants.VERTICAL_INCREMENT;	
-							} else if (LocalConfig.getInstance().getConnectionPositionMap().get(pathway.getId()).get(p).getDirection().equals("horizontal")) {
-								newStartX += LocalConfig.getInstance().getConnectionPositionMap().get(pathway.getId()).get(p).getLength() * PathwaysFrameConstants.HORIZONTAL_INCREMENT;
-							}
-							xyList.add(newStartX);
-							xyList.add(newStartY);
-							startPosMap.put(LocalConfig.getInstance().getConnectionPositionMap().get(pathway.getId()).get(p).getProductPathwaysIds().get(0).get(0), xyList);
-						}
-					}
-				}
-			}
 		}
 		
-		// connections only occur in main component
-		if (component == PathwaysFrameConstants.PATHWAYS_COMPONENT) {
-			ArrayList<PathwayConnectionNode> connectionsNodelist = new ArrayList<PathwayConnectionNode>();
-			for (int i = 0; i < LocalConfig.getInstance().getConnectionslist().size(); i++) {
-				// only draw cytosol for now
-				PathwayReactionNode pn = prnf.createPathwayReactionNode(LocalConfig.getInstance().getConnectionslist().get(i).getEcNumbers(),
-						LocalConfig.getInstance().getConnectionslist().get(i).getKeggReactionIds(), 
-						LocalConfig.getInstance().getConnectionslist().get(i).getKeggReactantIds(),
-						LocalConfig.getInstance().getConnectionslist().get(i).getKeggProductIds(),
-						LocalConfig.getInstance().getCytosolName(), 0);
-				PathwayConnectionNode pcn = prnf.createPathwayConnectionNode(pn);
-				pcn.setEquation(LocalConfig.getInstance().getConnectionslist().get(i).getEquation());
-				pcn.setName(LocalConfig.getInstance().getConnectionslist().get(i).getEquation());
-				String displayName = prnf.createDisplayName(LocalConfig.getInstance().getConnectionslist().get(i).getDisplayName(),
-						LocalConfig.getInstance().getConnectionslist().get(i).getName(),
-						pcn.getReactions(), idReactionMap);
-				pcn.setDisplayName(displayName);
-				ArrayList<PathwayMetaboliteNode> mainPathwayReactants = new ArrayList<PathwayMetaboliteNode>();
-				ArrayList<PathwayMetaboliteNode> mainPathwayProducts = new ArrayList<PathwayMetaboliteNode>();
-				pcn.setMainPathwayReactants(mainPathwayReactants);
-				pcn.setMainPathwayProducts(mainPathwayProducts);
-				pcn.setReactionName(LocalConfig.getInstance().getConnectionslist().get(i).getName());
-				double avgReacX = 0;
-				double avgReacY = 0;
-				double avgProdX = 0;
-				double avgProdY = 0;
-				for (int j = 0; j < LocalConfig.getInstance().getConnectionslist().get(i).getReactantPathwaysIds().size(); j++) {
-					PathwayMetaboliteNode reacNode = LocalConfig.getInstance().getMetabolicPathways().get(LocalConfig.getInstance().getConnectionslist().get(i).getReactantPathwaysIds().get(j).get(0)).getMetabolitesNodes().get(LocalConfig.getInstance().getConnectionslist().get(i).getReactantPathwaysIds().get(j).get(1));				
-					pcn.getMainPathwayReactants().add(reacNode);
-					if (reacNode != null) {
-						avgReacX += reacNode.getxPosition();
-						avgReacY += reacNode.getyPosition();
-					}
-				}
-				avgReacX = avgReacX/LocalConfig.getInstance().getConnectionslist().get(i).getReactantPathwaysIds().size();
-				avgReacY = avgReacY/LocalConfig.getInstance().getConnectionslist().get(i).getReactantPathwaysIds().size();
-				for (int k = 0; k < LocalConfig.getInstance().getConnectionslist().get(i).getProductPathwaysIds().size(); k++) {
-					PathwayMetaboliteNode prodNode = LocalConfig.getInstance().getMetabolicPathways().get(LocalConfig.getInstance().getConnectionslist().get(i).getProductPathwaysIds().get(k).get(0)).getMetabolitesNodes().get(LocalConfig.getInstance().getConnectionslist().get(i).getProductPathwaysIds().get(k).get(1));
-					pcn.getMainPathwayProducts().add(prodNode);
-					if (prodNode != null) {
-						avgProdX += prodNode.getxPosition();
-						avgProdY += prodNode.getyPosition();
-					}
-				}
-				avgProdX = avgProdX/LocalConfig.getInstance().getConnectionslist().get(i).getProductPathwaysIds().size();
-				avgProdY = avgProdY/LocalConfig.getInstance().getConnectionslist().get(i).getProductPathwaysIds().size();
-				
-				reactions.add(pcn.getReactionName());
-				double avgX = (avgReacX + avgProdX)/2;
-				double avgY = (avgReacY + avgProdY)/2;
-				// length field set to > 1 or < -1 for second reaction if two reactions connect 
-				// connection nodes, negative and positive values allow control of relative 
-				// position to first connecting reaction
-				if (Math.abs(LocalConfig.getInstance().getConnectionslist().get(i).getLength()) > 1 &&
-						LocalConfig.getInstance().getConnectionslist().get(i).getPositioning().equals("0")) {
-					if (LocalConfig.getInstance().getConnectionslist().get(i).getLength() > 0) {
-						avgX += PathwaysFrameConstants.REACTION_NODE_WIDTH/2;
-					} else {
-						avgX -= PathwaysFrameConstants.REACTION_NODE_WIDTH/2;
-					}
-					avgY += LocalConfig.getInstance().getConnectionslist().get(i).getLength()*PathwaysFrameConstants.REACTION_NODE_HEIGHT/2;
-				}
-				pcn.setxPosition(avgX);
-				pcn.setyPosition(avgY);
-				pcn.setReversible(LocalConfig.getInstance().getConnectionslist().get(i).getReversible());
-				connectionsNodelist.add(pcn);
-			}
-			
-			LocalConfig.getInstance().setConnectionsNodelist(connectionsNodelist);
-			
-			for (int c = 0; c < connectionsNodelist.size(); c++) {
-				String reversible = prnf.reversibleString(connectionsNodelist.get(c).getReversible());
-				String displayName = prnf.createDisplayName(connectionsNodelist.get(c).getDisplayName(),
-						connectionsNodelist.get(c).getName(),
-						connectionsNodelist.get(c).getReactions(), idReactionMap);
-				double edgeColor = PathwaysFrameConstants.BLACK_COLOR_VALUE;
-				// update temporary lists to keep track of what ec numbers have been found
-				for (int z = 0; z < connectionsNodelist.get(c).getReactions().size(); z++) {
-					java.util.List<String> ecNumbers = Arrays.asList(connectionsNodelist.get(c).getReactions().get(z).getEcNumber().split("\\s"));
-					for (int y = 0; y < ecNumbers.size(); y++) {
-						if (!foundEcNumbers.contains(ecNumbers.get(y))) {
-							foundEcNumbers.add(ecNumbers.get(y));
-						}
-						if (notFoundEcNumbers.contains(ecNumbers.get(y))) {
-							notFoundEcNumbers.remove(ecNumbers.get(y));
-						}
-					}
-					// set last one for now
-					connectionsNodelist.get(c).setFluxValue(connectionsNodelist.get(c).getReactions().get(z).getFluxValue());
-					if (connectionsNodelist.get(c).getReactions().get(z).getKnockout().equals(GraphicalInterfaceConstants.BOOLEAN_VALUES[1])) {
-						koReactions.add(displayName);
-						edgeColor = PathwaysFrameConstants.RED_COLOR_VALUE;
-					}
-				}
-				boolean drawReaction = true;
-				if (connectionsNodelist.get(c).getReactions().size() > 0) {
-					foundReactionsList.add(displayName);
-				} else {
-					if (!LocalConfig.getInstance().isGraphMissingReactionsSelected()) {
-						drawReaction = false;
-					}
-				}
-				if (drawReaction) {
-					reactions.add(displayName);
-					metabPosMap.put(displayName, new String[] {Double.toString(connectionsNodelist.get(c).getxPosition()), Double.toString(connectionsNodelist.get(c).getyPosition())});  
-					for (int d = 0; d < connectionsNodelist.get(c).getMainPathwayReactants().size(); d++) {
-						String reac = connectionsNodelist.get(c).getMainPathwayReactants().get(d).getName();
-						reactionMap.put(displayName + "reactant " + Integer.toString(d), new String[] {displayName, reac, reversible});
-						fluxMap.put(displayName + "reactant " + Integer.toString(d), edgeThickness(connectionsNodelist.get(c).getFluxValue()));
-						if (connectionsNodelist.get(c).getFluxValue() == 0 && !koReactions.contains(displayName)) {
-							edgeColor = PathwaysFrameConstants.GRAY_COLOR_VALUE;
-						}
-						colorMap.put(displayName + "reactant " + Integer.toString(d), edgeColor);
-					}
-					for (int e = 0; e < connectionsNodelist.get(c).getMainPathwayProducts().size(); e++) {
-						String prod = connectionsNodelist.get(c).getMainPathwayProducts().get(e).getName();
-						reactionMap.put(displayName + "product " + Integer.toString(e), new String[] {displayName, prod, "true"});
-						fluxMap.put(displayName + "product " + Integer.toString(e), edgeThickness(connectionsNodelist.get(c).getFluxValue()));
-						if (connectionsNodelist.get(c).getFluxValue() == 0 && !koReactions.contains(displayName)) {
-							edgeColor = PathwaysFrameConstants.GRAY_COLOR_VALUE;
-						}
-						colorMap.put(displayName + "product " + Integer.toString(e), edgeColor);
-					}
-				}
-			}
+		for(int p = 0; p < LocalConfig.getInstance().getPathwayNameMap().size(); p++) {
+			System.out.println(LocalConfig.getInstance().getPathwayNameMap().get(Integer.toString(p)));
 		}
 		
 		if (LocalConfig.getInstance().getPeriplasmName() != null && LocalConfig.getInstance().getPeriplasmName().length() > 0) {

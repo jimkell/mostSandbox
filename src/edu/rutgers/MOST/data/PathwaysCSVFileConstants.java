@@ -5,6 +5,7 @@ import java.util.Arrays;
 public class PathwaysCSVFileConstants {
 
 	public static final String PATHWAYS_FILE_NAME = "etc/visualization/pathways.csv";
+	public static final String PATHWAY_NAMES_FILE_NAME = "etc/visualization/pathway_names.csv";
 	//public static final String PATHWAY_GRAPH_FILE_NAME = "etc/visualization/pathway_graphing_data.csv";
 	public static final String PATHWAY_GRAPH_FILE_NAME = "etc/visualization/pathway_graphing_data1.csv";
 	public static final String METABOLITES_FILE_NAME = "etc/visualization/metabolites.csv";
@@ -18,8 +19,6 @@ public class PathwaysCSVFileConstants {
 	public static final String REACTION_POSITIONS_FILE_NAME = "etc/visualization/pathways_reaction_positions1.csv";
 	//public static final String PATHWAY_DRAW_ORDER_FILE_NAME = "etc/visualization/pathway_draw_order.csv";
 	public static final String PATHWAY_DRAW_ORDER_FILE_NAME = "etc/visualization/pathway_draw_order1.csv";
-	//public static final String PATHWAY_CONNECTIONS_FILE_NAME = "etc/visualization/pathway_connections.csv";
-	public static final String PATHWAY_CONNECTIONS_FILE_NAME = "etc/visualization/pathway_connections1.csv";
 	public static final String PATHWAY_SIDE_SPECIES_FILE_NAME = "etc/visualization/pathway_side_species.csv";
 	//public static final String EXTERNAL_METABOLITES_FILE_NAME = "etc/visualization/external_metabolites.csv";
 	public static final String EXTERNAL_METABOLITES_FILE_NAME = "etc/visualization/external_metabolites1.csv";
@@ -29,6 +28,11 @@ public class PathwaysCSVFileConstants {
 	public static final String[] PATHWAYS_COLUMN_NAMES = 
 		{
 		"Pathway ID", "Pathway Name", "KEGG ID"
+		};
+	
+	public static final String[] PATHWAY_NAMES_COLUMN_NAMES = 
+		{
+		"Pathway ID", "Pathway KEGG Ids", "Pathway Level", "Pathway Level Position", "Pathway Name"
 		};
 	
 	public static final String[] PATHWAY_GRAPH_COLUMN_NAMES = 
@@ -68,11 +72,6 @@ public class PathwaysCSVFileConstants {
 		"Pathway ID"
 		};
 	
-	public static final String[] PATHWAY_CONNECTIONS_COLUMN_NAMES = 
-		{
-		"Reactants", "Products", "Reversible", "EC # List", "Length", "Positioning", "Direction", "KEGG IDs"
-		};
-	
 	public static final String[] PATHWAY_SIDE_SPECIES_COLUMN_NAMES = 
 		{
 		"Species Name"
@@ -91,6 +90,7 @@ public class PathwaysCSVFileConstants {
 		};
 	
 	private static java.util.List<String> pathwayColumnsList = Arrays.asList(PATHWAYS_COLUMN_NAMES);
+	private static java.util.List<String> pathwayNamesColumnsList = Arrays.asList(PATHWAY_NAMES_COLUMN_NAMES);
 	private static java.util.List<String> pathwayGraphColumnsList = Arrays.asList(PATHWAY_GRAPH_COLUMN_NAMES);
 	private static java.util.List<String> metabolitesList = Arrays.asList(METABOLITES_COLUMN_NAMES);
 	private static java.util.List<String> additionalMetabolitesList = Arrays.asList(ADDITIONAL_METABOLITES_COLUMN_NAMES);
@@ -98,7 +98,6 @@ public class PathwaysCSVFileConstants {
 	private static java.util.List<String> reactionsColumnsList = Arrays.asList(REACTIONS_COLUMN_NAMES);
 	private static java.util.List<String> reactionPositionsColumnsList = Arrays.asList(REACTION_POSITIONS_COLUMN_NAMES);
 	private static java.util.List<String> pathwayDrawOrderColumnsList = Arrays.asList(PATHWAY_DRAW_ORDER_COLUMN_NAMES);
-	private static java.util.List<String> pathwayConnectionsColumnsList = Arrays.asList(PATHWAY_CONNECTIONS_COLUMN_NAMES);
 	private static java.util.List<String> pathwaySideSpeciesColumnsList = Arrays.asList(PATHWAY_SIDE_SPECIES_COLUMN_NAMES);
 	private static java.util.List<String> externalMetabolitesColumnsList = Arrays.asList(EXTERNAL_METABOLITES_COLUMN_NAMES);
 	private static java.util.List<String> transportMetabolitesColumnsList = Arrays.asList(TRANSPORT_METABOLITES_COLUMN_NAMES);
@@ -106,6 +105,12 @@ public class PathwaysCSVFileConstants {
 	public static final int PATHWAYS_ID_COLUMN = pathwayColumnsList.indexOf("Pathway ID");
 	public static final int PATHWAYS_NAME_COLUMN = pathwayColumnsList.indexOf("Pathway Name");
 	public static final int PATHWAYS_KEGG_ID_COLUMN = pathwayColumnsList.indexOf("KEGG ID");
+	
+	public static final int PATHWAY_NAMES_ID_COLUMN = pathwayNamesColumnsList.indexOf("Pathway ID");
+	public static final int PATHWAY_NAMES_KEGG_IDS_COLUMN = pathwayNamesColumnsList.indexOf("Pathway KEGG Ids");
+	public static final int PATHWAY_NAMES_LEVEL_COLUMN = pathwayNamesColumnsList.indexOf("Pathway Level");
+	public static final int PATHWAY_NAMES_LEVEL_POSITION_COLUMN = pathwayNamesColumnsList.indexOf("Pathway Level Position");
+	public static final int PATHWAY_NAMES_NAME_COLUMN = pathwayNamesColumnsList.indexOf("Pathway Name");
 	
 	public static final int PATHWAY_GRAPH_ID_COLUMN = pathwayGraphColumnsList.indexOf("Pathway ID");
 	// pathway name column is redundant and not used except for making it
@@ -153,16 +158,7 @@ public class PathwaysCSVFileConstants {
 	public static final int REACTIONS_POSITION_KEGG_IDS_COLUMN = reactionPositionsColumnsList.indexOf("KEGG IDs");
 	
 	public static final int PATHWAY_DRAW_ORDER_PATHWAY_ID_COLUMN = pathwayDrawOrderColumnsList.indexOf("Pathway ID");
-	
-	public static final int PATHWAY_CONNECTIONS_REACTANTS_COLUMN = pathwayConnectionsColumnsList.indexOf("Reactants");
-	public static final int PATHWAY_CONNECTIONS_PRODUCTS_COLUMN = pathwayConnectionsColumnsList.indexOf("Products");
-	public static final int PATHWAY_CONNECTIONS_REVERSIBLE_COLUMN = pathwayConnectionsColumnsList.indexOf("Reversible");
-	public static final int PATHWAY_CONNECTIONS_EC_NUM_LIST_COLUMN = pathwayConnectionsColumnsList.indexOf("EC # List");
-	public static final int PATHWAY_CONNECTIONS_LENGTH_COLUMN = pathwayConnectionsColumnsList.indexOf("Length");
-	public static final int PATHWAY_CONNECTIONS_POSITIONING_COLUMN = pathwayConnectionsColumnsList.indexOf("Positioning");
-	public static final int PATHWAY_CONNECTIONS_DIRECTION_COLUMN = pathwayConnectionsColumnsList.indexOf("Direction");
-	public static final int PATHWAY_CONNECTIONS_KEGG_IDS_COLUMN = pathwayConnectionsColumnsList.indexOf("KEGG IDs");
-	
+
 	public static final int PATHWAY_SIDE_SPECIES_NAME_COLUMN = pathwaySideSpeciesColumnsList.indexOf("Species Name");
 	
 	public static final int EXTERNAL_METABOLITE_PATHWAY_ID_COLUMN = externalMetabolitesColumnsList.indexOf("Pathway ID");
