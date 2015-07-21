@@ -86,12 +86,6 @@ public class PathwayFilesReader {
 						if (metabolicPathways.containsKey(dataArray[PathwaysCSVFileConstants.PATHWAY_GRAPH_ID_COLUMN])) {
 							MetabolicPathway pathway = metabolicPathways.get(dataArray[PathwaysCSVFileConstants.PATHWAY_GRAPH_ID_COLUMN]);
 							for (int s = 0; s < dataArray.length; s++) {
-//								if (s == PathwaysCSVFileConstants.PATHWAY_GRAPH_NAME_COLUMN) {
-//									pathway.setName(dataArray[s]);
-//								}
-								if (s == PathwaysCSVFileConstants.PATHWAY_GRAPH_DIRECTION_COLUMN) {
-									pathway.setDirection(dataArray[s]);
-								}
 								if (s == PathwaysCSVFileConstants.PATHWAY_GRAPH_COMPONENT_COLUMN) {
 									pathway.setComponent(Integer.parseInt(dataArray[s]));
 								}

@@ -37,7 +37,7 @@ public class PathwaysCSVFileConstants {
 	
 	public static final String[] PATHWAY_GRAPH_COLUMN_NAMES = 
 		{
-		"Pathway ID", "Pathway Name", "Direction", "Component"
+		"Pathway ID", "Pathway Name", "Component"
 		};
 	
 	public static final String[] METABOLITES_COLUMN_NAMES = 
@@ -116,7 +116,6 @@ public class PathwaysCSVFileConstants {
 	// pathway name column is redundant and not used except for making it
 	// easier to see which pathway is which. name data comes from pathways.csv file
 	public static final int PATHWAY_GRAPH_NAME_COLUMN = pathwayGraphColumnsList.indexOf("Pathway Name");
-	public static final int PATHWAY_GRAPH_DIRECTION_COLUMN = pathwayGraphColumnsList.indexOf("Direction");
 	public static final int PATHWAY_GRAPH_COMPONENT_COLUMN = pathwayGraphColumnsList.indexOf("Component");
 
 	public static final int METABOLITES_KEGG_ID_COLUMN = metabolitesList.indexOf("KEGG ID");

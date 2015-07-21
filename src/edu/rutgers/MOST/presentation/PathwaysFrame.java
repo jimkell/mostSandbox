@@ -42,11 +42,13 @@ import org.apache.commons.collections15.Transformer;
 import org.apache.commons.collections15.functors.ChainedTransformer;                                                 
                                                                                                                      
 
+
 import edu.rutgers.MOST.config.LocalConfig;
 import edu.rutgers.MOST.data.ExternalMetaboliteData;
 import edu.rutgers.MOST.data.ExternalMetaboliteNode;
 import edu.rutgers.MOST.data.MetabolicPathway;
 import edu.rutgers.MOST.data.PathwayMetaboliteNode;
+import edu.rutgers.MOST.data.PathwayNameNode;
 import edu.rutgers.MOST.data.PathwayReactionNode;
 import edu.rutgers.MOST.data.PathwayReactionNodeFactory;
 import edu.rutgers.MOST.data.ReactionFactory;
@@ -476,13 +478,8 @@ public class PathwaysFrame extends JApplet {
 						pn.setDataId(pathway.getMetabolitesData().get(Integer.toString(j)).getId());
 						double x = 0;
 						double y = 0;
-						if (pathway.getDirection().equals("horizontal")) {
-							x = startX + PathwaysFrameConstants.HORIZONTAL_INCREMENT*pathway.getMetabolitesData().get(Integer.toString(j)).getLevel();
-							y = startY + PathwaysFrameConstants.VERTICAL_INCREMENT*pathway.getMetabolitesData().get(Integer.toString(j)).getLevelPosition();
-						} else if (pathway.getDirection().equals("vertical")) {
-							x = startX + PathwaysFrameConstants.HORIZONTAL_INCREMENT*pathway.getMetabolitesData().get(Integer.toString(j)).getLevelPosition();
-							y = startY + PathwaysFrameConstants.VERTICAL_INCREMENT*pathway.getMetabolitesData().get(Integer.toString(j)).getLevel();
-						}
+						x = startX + PathwaysFrameConstants.HORIZONTAL_INCREMENT*pathway.getMetabolitesData().get(Integer.toString(j)).getLevel();
+						y = startY + PathwaysFrameConstants.VERTICAL_INCREMENT*pathway.getMetabolitesData().get(Integer.toString(j)).getLevelPosition();
 						pn.setxPosition(x);
 						pn.setyPosition(y);
 						if (x > maxX) {
@@ -602,13 +599,8 @@ public class PathwaysFrame extends JApplet {
 						reactions.add(displayName);
 						double x = 0;
 						double y = 0;
-						if (pathway.getDirection().equals("horizontal")) {
-							x = startX + PathwaysFrameConstants.HORIZONTAL_INCREMENT*pathway.getReactionsData().get(Integer.toString(k)).getLevel();
-							y = startY + PathwaysFrameConstants.VERTICAL_INCREMENT*pathway.getReactionsData().get(Integer.toString(k)).getLevelPosition();
-						} else if (pathway.getDirection().equals("vertical")) {
-							x = startX + PathwaysFrameConstants.HORIZONTAL_INCREMENT*pathway.getReactionsData().get(Integer.toString(k)).getLevelPosition();
-							y = startY + PathwaysFrameConstants.VERTICAL_INCREMENT*pathway.getReactionsData().get(Integer.toString(k)).getLevel();
-						}
+						x = startX + PathwaysFrameConstants.HORIZONTAL_INCREMENT*pathway.getReactionsData().get(Integer.toString(k)).getLevel();
+						y = startY + PathwaysFrameConstants.VERTICAL_INCREMENT*pathway.getReactionsData().get(Integer.toString(k)).getLevelPosition();
 						metabPosMap.put(displayName, new String[] {Double.toString(x), Double.toString(y)});  
 						pn.setDataId(pathway.getReactionsData().get(Integer.toString(k)).getReactionId());
 						pn.setxPosition(x);
@@ -684,6 +676,18 @@ public class PathwaysFrame extends JApplet {
 		
 		for(int p = 0; p < LocalConfig.getInstance().getPathwayNameMap().size(); p++) {
 			System.out.println(LocalConfig.getInstance().getPathwayNameMap().get(Integer.toString(p)));
+			String pathwayName = LocalConfig.getInstance().getPathwayNameMap().get(Integer.toString(p)).getName();
+			pathwayNames.add(pathwayName);
+			PathwayNameNode pnn = new PathwayNameNode();
+			double x = 0;
+			double y = 0;
+			pnn.setDataId(LocalConfig.getInstance().getPathwayNameMap().get(Integer.toString(p)).getId());
+			pnn.setName(pathwayName);
+			x = startX + PathwaysFrameConstants.HORIZONTAL_INCREMENT*LocalConfig.getInstance().getPathwayNameMap().get(Integer.toString(p)).getLevel();
+			y = startY + PathwaysFrameConstants.VERTICAL_INCREMENT*LocalConfig.getInstance().getPathwayNameMap().get(Integer.toString(p)).getLevelPosition();
+			pnn.setxPosition(x);
+			pnn.setyPosition(y);
+			metabPosMap.put(pathwayName, new String[] {Double.toString(x), Double.toString(y)});
 		}
 		
 		if (LocalConfig.getInstance().getPeriplasmName() != null && LocalConfig.getInstance().getPeriplasmName().length() > 0) {
@@ -1307,6 +1311,9 @@ public class PathwaysFrame extends JApplet {
         	} else if (reactions.contains(name)) {
         		width = PathwaysFrameConstants.REACTION_NODE_WIDTH;
         		height = PathwaysFrameConstants.REACTION_NODE_HEIGHT;
+        	} else if (pathwayNames.contains(name)) {
+        		width = PathwaysFrameConstants.PATHWAY_NAME_NODE_WIDTH;
+        		height = PathwaysFrameConstants.PATHWAY_NAME_NODE_HEIGHT; 
         	}
         	// based on http://stackoverflow.com/questions/2736320/write-text-onto-image-in-java
         	BufferedImage bufferedImage = new BufferedImage(width, height,
@@ -1319,14 +1326,17 @@ public class PathwaysFrame extends JApplet {
         	graphics.fillRect(0, 0, width, height);
         	graphics.setColor(Color.BLACK);
         	if (pathwayNames.contains(name)) {
-        		graphics.setFont(new Font("Arial", Font.BOLD, PathwaysFrameConstants.PATHWAY_NAME_NODE_FONT_SIZE));
-            	graphics.drawString(name, 5, 15);
+        		graphics.setColor(PathwaysFrameConstants.PATHWAY_NAME_COLOR);
+//        		graphics.setFont(new Font("Arial", Font.BOLD, PathwaysFrameConstants.PATHWAY_NAME_NODE_FONT_SIZE));
+//            	graphics.drawString(name, 5, 15);
+        		alignCenterString(graphics, name, width, PathwaysFrameConstants.PATHWAY_NAME_NODE_XPOS, PathwaysFrameConstants.PATHWAY_NAME_NODE_YPOS, PathwaysFrameConstants.PATHWAY_NAME_NODE_FONT_SIZE);
+            	drawBorder(graphics, width, height, 4);
         	} else {
         		if (metabolites.contains(name)) {
         			if (!foundMetabolitesList.contains(name) && LocalConfig.getInstance().isHighlightMissingMetabolitesSelected()) {
         				graphics.setColor(PathwaysFrameConstants.METABOLITE_NOT_FOUND_COLOR);
         			}
-        			alignCenterString(graphics, abbr, width, PathwaysFrameConstants.SIDE_NODE_XPOS, PathwaysFrameConstants.SIDE_NODE_YPOS, PathwaysFrameConstants.SIDE_NODE_FONT_SIZE);
+        			alignCenterString(graphics, abbr, width, PathwaysFrameConstants.METABOLITE_NODE_XPOS, PathwaysFrameConstants.METABOLITE_NODE_YPOS, PathwaysFrameConstants.METABOLITE_NODE_FONT_SIZE);
         		} else if (reactions.contains(name)) {
         			graphics.setColor(PathwaysFrameConstants.REACTION_NODE_DETAULT_FONT_COLOR);
         			if (!foundReactionsList.contains(name) && LocalConfig.getInstance().isHighlightMissingReactionsSelected()) {
@@ -1402,6 +1412,10 @@ public class PathwaysFrame extends JApplet {
         	}
     		if (s.length() > PathwaysFrameConstants.REACTION_NODE_MAX_CHARS) {
         		s = s.substring(0, PathwaysFrameConstants.REACTION_NODE_MAX_CHARS - PathwaysFrameConstants.REACTION_NODE_ELLIPSIS_CORRECTION) + "...";
+        	}
+    	} else if (pathwayNames.contains(s)) {
+    		if (s.length() > PathwaysFrameConstants.PATHWAY_NAME_NODE_MAX_CHARS) {
+        		s = s.substring(0, PathwaysFrameConstants.PATHWAY_NAME_NODE_MAX_CHARS - PathwaysFrameConstants.PATHWAY_NAME_NODE_ELLIPSIS_CORRECTION) + "...";
         	}
     	} else {
     		if (s.length() > PathwaysFrameConstants.METABOLITE_NODE_MAX_CHARS) {

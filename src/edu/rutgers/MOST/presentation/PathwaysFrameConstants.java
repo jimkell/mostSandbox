@@ -31,8 +31,8 @@ public class PathwaysFrameConstants {
 	public static final int HORIZONTAL_INCREMENT = 400; 
 //	public static final int VERTICAL_INCREMENT = 160;
 	public static final int VERTICAL_INCREMENT = 380; // was 360, change made TCA cycle more circular
-	public static final int PATHWAY_NAME_NODE_WIDTH = 120;
-	public static final int PATHWAY_NAME_NODE_HEIGHT = 50;
+	public static final int PATHWAY_NAME_NODE_WIDTH = 200;
+	public static final int PATHWAY_NAME_NODE_HEIGHT = 36;
 	public static final int SIDE_NODE_WIDTH = 90;
 	public static final int SIDE_NODE_HEIGHT = 28;
 	public static final int METABOLITE_NODE_WIDTH = 100;
@@ -44,7 +44,7 @@ public class PathwaysFrameConstants {
 	public static final int REACTION_NODE_WIDTH = 120;
 //	public static final int REACTION_NODE_HEIGHT = 25;
 	public static final int REACTION_NODE_HEIGHT = 36;
-	public static final int PATHWAY_NAME_NODE_FONT_SIZE = 40;
+	public static final int PATHWAY_NAME_NODE_FONT_SIZE = 36;
 //	public static final int METABOLITE_NODE_FONT_SIZE = 16;
 //	public static final int REACTION_NODE_FONT_SIZE = 16;
 //	public static final int METABOLITE_NODE_FONT_SIZE = 32;
@@ -54,11 +54,14 @@ public class PathwaysFrameConstants {
 	public static final int SIDE_NODE_FONT_SIZE = 28;
 	public static final int METABOLITE_NODE_MAX_CHARS = 5;
 	public static final int REACTION_NODE_MAX_CHARS = 7;
+	public static final int PATHWAY_NAME_NODE_MAX_CHARS = 10;
+	
 	public static final int METABOLITE_NODE_ELLIPSIS_CORRECTION = 2;
 	public static final int REACTION_NODE_ELLIPSIS_CORRECTION = 2;
+	public static final int PATHWAY_NAME_NODE_ELLIPSIS_CORRECTION = 1;
 	// positions to start text in node
 	public static final int PATHWAY_NAME_NODE_XPOS = 0;
-	public static final int PATHWAY_NAME_NODE_YPOS = 18;
+	public static final int PATHWAY_NAME_NODE_YPOS = 28;
 	public static final int METABOLITE_NODE_XPOS = 0;
 //	public static final int METABOLITE_NODE_YPOS = 18;
 	public static final int METABOLITE_NODE_YPOS = 28;
@@ -118,6 +121,8 @@ public class PathwaysFrameConstants {
 	
 	// prevents nodes with calculated positions from touching
 	public static final double NODE_SPACING_CORRECTION = 1.1;
+	
+	public static final Color PATHWAY_NAME_COLOR = Color.orange;
 	
 	public static final Color NODE_BACKGROUND_DETAULT_COLOR = Color.white;
 //	public static final Color METABOLITE_NODE_DETAULT_COLOR = Color.white;

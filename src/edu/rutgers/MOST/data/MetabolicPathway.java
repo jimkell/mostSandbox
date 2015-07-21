@@ -19,7 +19,6 @@ public class MetabolicPathway {
 	private ArrayList<PathwayEdge> edges;
 	private ArrayList<ArrayList<String>> ecNumbers = new ArrayList<ArrayList<String>>();
 	// horizontal or vertical
-	private String direction;
 	private int component;
 	
 	public String getId() {
@@ -106,12 +105,6 @@ public class MetabolicPathway {
 	public void setEdges(ArrayList<PathwayEdge> edges) {
 		this.edges = edges;
 	}
-	public String getDirection() {
-		return direction;
-	}
-	public void setDirection(String direction) {
-		this.direction = direction;
-	}
 	
 	public int getComponent() {
 		return component;
@@ -134,7 +127,6 @@ public class MetabolicPathway {
 		+ ", transportMetabolitesNodes=" + transportMetabolitesNodes
 		+ ", edges=" + edges
 		+ ", ecNumbers=" + ecNumbers
-		+ ", direction=" + direction
 		+ ", component=" + component + "]\n";
 	}
 
