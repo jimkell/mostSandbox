@@ -1,3 +1,23 @@
 Pathway ID,Pathway KEGG Ids,Pathway Level,Pathway Level Position,Pathway Name
 0,79,0.7,-8.3,Inositol metabolism
 1,-1,3.7,-6.3,Nucleotide sugars
+2,20,10.5,-9.7,Purine biosynthesis
+3,38,10.5,-9.3,Histidine metabolism
+4,20,30.7,-11.4,Purines
+5,116,38.3,-12.3,Pterine biosynthesis
+6,48,12.2,-7.9,Aromatic amino acids
+7,32,32.2,-7.3,Lysine metabolism
+8,34,38.4,-7.4,beta-Lactam antibiotics
+9,103,41,-7.9,Butanol/butyrate fermentation
+10,3,6.7,-7.2,Pentose interconversions
+11,61,0.2,-1.4,Polysaccarides
+12,2,5.5,-2.8,Entner-Douderoff pathway
+13,-1,10.7,-1.1,Methane oxidation
+14,2,7.4,-0.6,Pentose cycle
+15,-1,12.4,-4.3,Amino sugars
+16,27,21.3,-3,Aspartate group of amino acids
+17,130,31,-4,Sulfur metabolism
+18,-1,17.1,-2.4,Anaplerotic reactions
+19,98,20,-0.3,Glyoxylate cycle
+20,119,28.35,-0.9,Porphyrins
+21,119,40.6,-0.6,Bile pigments
