@@ -17,7 +17,36 @@ Pathway ID,Pathway KEGG Ids,Pathway Level,Pathway Level Position,Pathway Name
 15,-1,12.4,-4.3,Amino sugars
 16,27,21.3,-3,Aspartate group of amino acids
 17,130,31,-4,Sulfur metabolism
-18,-1,17.1,-2.4,Anaplerotic reactions
+18,-1,17.1,-2.2,Anaplerotic reactions
 19,98,20,-0.3,Glyoxylate cycle
 20,119,28.35,-0.9,Porphyrins
 21,119,40.6,-0.6,Bile pigments
+22,0,10.5,0.4, -> Glycolysis
+23,0,10.5,0.5, <- Gluconeogenesis
+24,1,20.5,2.5,Citrate Cycle
+25,7,13.7,3.3,Fatty acid synthesis
+26,-1,25.2,1.4,Glutamate decarboxylation pathway
+27,98|104,27.3,2.3,Mesaconate pathway
+28,-1,10.6,4.9,Lipid metabolism
+29,105,0.9,5.6,One carbon pool
+30,23,41,6.6,Pyrimidines
+31,-1,27,6.9,Glutamate group of amino acids
+32,23,27.3,8.4,Pyrimidine biosynthesis
+33,20,21.7,8.8,Urea cycle
+34,-1,17.2,7.2,Ketone bodies
+35,8|9,14.1,8.6,Fatty acid oxidation
+36,126,13.8,9.25,Carotenoids
+37,-1,9,6.5,Phosphatides
+38,106,0.4,7.9,Methanogenesis
+39,-1,1.5,9.3,Branched chain amino acids
+40,16,18.1,10.4,Phytosterols
+41,16,17.1,12.1,Mycosterols
+42,16,24.8,9.4,Mineralocorticoids
+43,16,26,9.8,Gestagen
+44,16,24.8,12.1,Corticoids and Gestagens
+45,16|12,24.8,12.8,Zoosterols
+46,16,30.5,9.4,Glucocorticoids
+47,16,35.5,12.55,Estrogens
+48,16,33.8,12.55,Androgens
+49,13,41.8,14.8,Bile acids
+50,-1,12.5,14.6,Isoprenoids
