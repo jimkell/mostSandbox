@@ -990,3 +990,5 @@ Pathway ID,Metabolite ID,Metabolite Level,Metabolite Level Position,Metabolite N
 0,988,10,-2.1,Methanol,MEOH,C00132,0,m,106,,,
 0,989,11,-2.1,Methane,CH4,C01438,1,sm,106,,,
 0,990,11,-1.5,Carbon dioxide,CO2,C00011,0,sm,,,,
+0,991,5.3,-9.7,Oxid Glutathione,GTHOX,C00127,1,s,,,,
+0,992,5.7,-9.7,Glutathione,GTHRD,C00051,1,s,,,,
