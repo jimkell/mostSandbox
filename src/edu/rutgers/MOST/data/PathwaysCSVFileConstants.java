@@ -53,7 +53,7 @@ public class PathwaysCSVFileConstants {
 	public static final String[] METABOLITE_POSITIONS_COLUMN_NAMES = 
 		{
 		"Pathway ID", "Metabolite ID", "Metabolite Level", "Metabolite Level Position", 
-		"Metabolite Names", "Metabolite Abbreviation", "KEGG ID", "Border"
+		"Metabolite Names", "Metabolite Abbreviation", "KEGG ID", "Border", "Type"
 		};
 	
 	public static final String[] REACTIONS_COLUMN_NAMES = 
@@ -137,6 +137,7 @@ public class PathwaysCSVFileConstants {
 	public static final int METABOLITE_POSITIONS_ABBR_COLUMN = metabolitePositionsList.indexOf("Metabolite Abbreviation");
 	public static final int METABOLITE_POSITIONS_KEGG_ID_COLUMN = metabolitePositionsList.indexOf("KEGG ID");
 	public static final int METABOLITE_POSITIONS_BORDER_COLUMN = metabolitePositionsList.indexOf("Border");
+	public static final int METABOLITE_POSITIONS_TYPE_COLUMN = metabolitePositionsList.indexOf("Type");
 	
 	public static final int REACTIONS_KEGG_ID_COLUMN = reactionsColumnsList.indexOf("Reaction KEGG ID");
 	public static final int REACTIONS_KEGG_REACTANTS_COLUMN = reactionsColumnsList.indexOf("Reactants");
@@ -183,5 +184,9 @@ public class PathwaysCSVFileConstants {
 	// -1 if reactant, 1 if product
 	public static final int TRANSPORT_METABOLITE_DIRECTION_COLUMN = transportMetabolitesColumnsList.indexOf("Direction");
 	public static final int TRANSPORT_KEGG_METABOLITE_ID_COLUMN = transportMetabolitesColumnsList.indexOf("KEGG Metabolite ID");
+	
+	public static final String MAIN_METABOLITE_TYPE = "m";
+	public static final String SMALL_MAIN_METABOLITE_TYPE = "sm";
+	public static final String SIDE_METABOLITE_TYPE = "s";
 
 }

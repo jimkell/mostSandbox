@@ -15,6 +15,7 @@ public class PathwayMetaboliteNode {
 	private double xPosition;
 	private double yPosition;
 	private String border;
+	private String type;
 	
 	public String getCompartment() {
 		return compartment;
@@ -88,6 +89,14 @@ public class PathwayMetaboliteNode {
 		this.border = border;
 	}
 
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
 	@Override
 	public String toString() {
 		return "PathwayMetabolite Node [compartment=" + compartment
@@ -96,6 +105,8 @@ public class PathwayMetaboliteNode {
 		+ ", reactionName=" + reactionName
 		+ ", dataId=" + dataId
 		+ ", xPosition=" + xPosition
-		+ ", yPosition=" + yPosition + "]";
+		+ ", yPosition=" + yPosition	
+		+ ", border=" + border
+		+ ", type=" + type + "]";
 	}
 }

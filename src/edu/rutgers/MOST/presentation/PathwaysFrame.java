@@ -43,6 +43,7 @@ import org.apache.commons.collections15.functors.ChainedTransformer;
                                                                                                                      
 
 
+
 import edu.rutgers.MOST.config.LocalConfig;
 import edu.rutgers.MOST.data.ExternalMetaboliteData;
 import edu.rutgers.MOST.data.ExternalMetaboliteNode;
@@ -51,6 +52,7 @@ import edu.rutgers.MOST.data.PathwayMetaboliteNode;
 import edu.rutgers.MOST.data.PathwayNameNode;
 import edu.rutgers.MOST.data.PathwayReactionNode;
 import edu.rutgers.MOST.data.PathwayReactionNodeFactory;
+import edu.rutgers.MOST.data.PathwaysCSVFileConstants;
 import edu.rutgers.MOST.data.ReactionFactory;
 import edu.rutgers.MOST.data.SBMLReaction;
 import edu.rutgers.MOST.data.TransportReactionConstants;
@@ -113,6 +115,7 @@ public class PathwaysFrame extends JApplet {
    	ArrayList<String> noBorderList = new ArrayList<String>();   // metabolite node border
    	ArrayList<String> pathwayNames = new ArrayList<String>();
    	ArrayList<String> metabolites = new ArrayList<String>();
+   	ArrayList<String> smallMainMetabolites = new ArrayList<String>();
    	ArrayList<String> reactions = new ArrayList<String>();
    	Map<String, Double> fluxMap = new HashMap<String, Double>(); 
    	Map<String, Double> colorMap = new HashMap<String, Double>();
@@ -457,6 +460,7 @@ public class PathwaysFrame extends JApplet {
 			for (int j = 0; j < pathway.getMetabolitesData().size(); j++) {
 				if (pathway.getComponent() == component) {
 					String metabName = pathway.getMetabolitesData().get(Integer.toString(j)).getName();
+					String type = pathway.getMetabolitesData().get(Integer.toString(j)).getType();
 					//if (pathway.getComponent() == PathwaysFrameConstants.PROCESSES_COMPONENT ||
 					String keggId = pathway.getMetabolitesData().get(Integer.toString(j)).getKeggId();
 					boolean drawMetabolite = true;
@@ -473,7 +477,11 @@ public class PathwaysFrame extends JApplet {
 						if (pathway.getMetabolitesData().get(Integer.toString(j)).getBorder().equals("0")) {
 							noBorderList.add(pathway.getMetabolitesData().get(Integer.toString(j)).getName());
 						}
-						metabolites.add(metabName);
+						if (type.equals(PathwaysCSVFileConstants.MAIN_METABOLITE_TYPE)) {
+							metabolites.add(metabName);
+						} else if (type.equals(PathwaysCSVFileConstants.SMALL_MAIN_METABOLITE_TYPE)) {
+							smallMainMetabolites.add(metabName);
+						}
 						PathwayMetaboliteNode pn = new PathwayMetaboliteNode();
 						pn.setDataId(pathway.getMetabolitesData().get(Integer.toString(j)).getId());
 						double x = 0;
@@ -482,6 +490,7 @@ public class PathwaysFrame extends JApplet {
 						y = startY + PathwaysFrameConstants.VERTICAL_INCREMENT*pathway.getMetabolitesData().get(Integer.toString(j)).getLevelPosition();
 						pn.setxPosition(x);
 						pn.setyPosition(y);
+						pn.setType(type);
 						if (x > maxX) {
 							maxX = x;
 						}
@@ -675,7 +684,6 @@ public class PathwaysFrame extends JApplet {
 		}
 		
 		for(int p = 0; p < LocalConfig.getInstance().getPathwayNameMap().size(); p++) {
-			System.out.println(LocalConfig.getInstance().getPathwayNameMap().get(Integer.toString(p)));
 			String pathwayName = LocalConfig.getInstance().getPathwayNameMap().get(Integer.toString(p)).getName();
 			pathwayNames.add(pathwayName);
 			PathwayNameNode pnn = new PathwayNameNode();
@@ -1308,6 +1316,9 @@ public class PathwaysFrame extends JApplet {
         			width = PathwaysFrameConstants.SIDE_NODE_WIDTH;
                 	height = PathwaysFrameConstants.SIDE_NODE_HEIGHT;
         		}
+        	} else if (smallMainMetabolites.contains(name)) {	
+        		width = PathwaysFrameConstants.SMALL_MAIN_METABOLITE_NODE_WIDTH;
+            	height = PathwaysFrameConstants.SMALL_MAIN_METABOLITE_NODE_HEIGHT;
         	} else if (reactions.contains(name)) {
         		width = PathwaysFrameConstants.REACTION_NODE_WIDTH;
         		height = PathwaysFrameConstants.REACTION_NODE_HEIGHT;
@@ -1337,6 +1348,11 @@ public class PathwaysFrame extends JApplet {
         				graphics.setColor(PathwaysFrameConstants.METABOLITE_NOT_FOUND_COLOR);
         			}
         			alignCenterString(graphics, abbr, width, PathwaysFrameConstants.METABOLITE_NODE_XPOS, PathwaysFrameConstants.METABOLITE_NODE_YPOS, PathwaysFrameConstants.METABOLITE_NODE_FONT_SIZE);
+        		} else if (smallMainMetabolites.contains(name)) {
+        			if (!foundMetabolitesList.contains(name) && LocalConfig.getInstance().isHighlightMissingMetabolitesSelected()) {
+        				graphics.setColor(PathwaysFrameConstants.METABOLITE_NOT_FOUND_COLOR);
+        			}
+        			alignCenterString(graphics, abbr, width, PathwaysFrameConstants.SMALL_MAIN_METABOLITE_NODE_XPOS, PathwaysFrameConstants.SMALL_MAIN_METABOLITE_NODE_YPOS, PathwaysFrameConstants.METABOLITE_NODE_FONT_SIZE);
         		} else if (reactions.contains(name)) {
         			graphics.setColor(PathwaysFrameConstants.REACTION_NODE_DETAULT_FONT_COLOR);
         			if (!foundReactionsList.contains(name) && LocalConfig.getInstance().isHighlightMissingReactionsSelected()) {
@@ -1347,7 +1363,7 @@ public class PathwaysFrame extends JApplet {
         			alignCenterString(graphics, name, width, PathwaysFrameConstants.REACTION_NODE_XPOS, PathwaysFrameConstants.REACTION_NODE_YPOS, PathwaysFrameConstants.REACTION_NODE_FONT_SIZE);
         		}
         	}
-        	if (metabolites.contains(name)) {
+        	if (metabolites.contains(name) || smallMainMetabolites.contains(name)) {
         		if (!noBorderList.contains(name)) {
         			drawBorder(graphics, width, height, 4);
         		}
@@ -1416,6 +1432,10 @@ public class PathwaysFrame extends JApplet {
     	} else if (pathwayNames.contains(s)) {
     		if (s.length() > PathwaysFrameConstants.PATHWAY_NAME_NODE_MAX_CHARS) {
         		s = s.substring(0, PathwaysFrameConstants.PATHWAY_NAME_NODE_MAX_CHARS - PathwaysFrameConstants.PATHWAY_NAME_NODE_ELLIPSIS_CORRECTION) + "...";
+        	}	
+    	} else if (smallMainMetabolites.contains(s)) {
+    		if (s.length() > PathwaysFrameConstants.SMALL_MAIN_METABOLITE_NODE_MAX_CHARS) {
+        		s = s.substring(0, PathwaysFrameConstants.SMALL_MAIN_METABOLITE_NODE_MAX_CHARS - PathwaysFrameConstants.SMALL_MAIN_METABOLITE_NODE_ELLIPSIS_CORRECTION) + "...";
         	}
     	} else {
     		if (s.length() > PathwaysFrameConstants.METABOLITE_NODE_MAX_CHARS) {

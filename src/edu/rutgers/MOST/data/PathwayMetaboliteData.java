@@ -13,6 +13,7 @@ public class PathwayMetaboliteData {
 	private double level;
 	private double levelPosition;
 	private String border;
+	private String type;
 	
 	public String getId() {
 		return id;
@@ -86,6 +87,14 @@ public class PathwayMetaboliteData {
 		this.border = border;
 	}
 
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
 	@Override
 	public String toString() {
 		return "PathwayMetabolite Data [id=" + id
@@ -94,7 +103,9 @@ public class PathwayMetaboliteData {
 		+ ", names=" + names
 		+ ", abbreviation=" + abbreviation
 		+ ", level=" + level
-		+ ", levelPosition=" + levelPosition + "]";
+		+ ", levelPosition=" + levelPosition
+		+ ", border=" + border
+		+ ", type=" + type + "]";
 	}
 	
 }
