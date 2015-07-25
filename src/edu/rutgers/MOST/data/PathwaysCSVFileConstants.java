@@ -188,5 +188,10 @@ public class PathwaysCSVFileConstants {
 	public static final String MAIN_METABOLITE_TYPE = "m";
 	public static final String SMALL_MAIN_METABOLITE_TYPE = "sm";
 	public static final String SIDE_METABOLITE_TYPE = "s";
+	// Designates a main metabolite that occurs in more than one location, where if reaction
+	// in which metabolite participates is not present, metabolite will not be drawn. Prevents
+	// "orphan" metabolites. Example: pyruvate occurs in many reactions that are not found
+	// in iAF1260 model.
+	public static final String OPTIONAL_METABOLITE_TYPE = "o";
 
 }
