@@ -269,7 +269,7 @@ Pathway ID,Metabolite ID,Metabolite Level,Metabolite Level Position,Metabolite N
 0,,13.7,-5.5,Pyruvate,PYR,C00022,1,,s,f,,,,,,,,,,,,,,,,,
 0,,13.8,-7.5,5-O-(1-carboxyvinyl)-3-phosphoshikimate,3psme,C01269,0,,,f,,,,,,,,,,,,,,,,,
 0,,14,-6.4,Polyprenyl-PP,Polyprenyl-PP,C04093,1,,s,f,,,,,,,,,,,,,,,,,
-0,,14.1,-8.1,4-Aminobenzoate,4ABZ,C00568,1,,s,f,,,,,,,,,,,,,,,,,
+0,,14.1,-8.1,4-Aminobenzoate,4ABZ,C00568,1,,,f,,,,,,,,,,,,,,,,,
 0,,14.1,-5.9,2-Oxoglutarate,AKG,C00026,1,,s,f,,,,,,,,,,,,,,,,,
 0,,14.4,-6.6,4-Hydroxybenzoate,4HBZ,C00156,0,,,f,,,,,,,,,,,,,,,,,
 0,,14.4,-5.7,Isochorismate,ICHOR,C00885,0,,,f,,,,,,,,,,,,,,,,,
