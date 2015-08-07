@@ -436,8 +436,6 @@ Pathway ID,Metabolite ID,Metabolite Level,Metabolite Level Position,Metabolite N
 0,,32,-2.4,Pyruvate,PYR,C00022,1,,s,f,,,,,,,,,,,,,,,,,
 0,,32.8,-2.4,Oxaloacteate,OAA,C00036,1,,s,f,,,,,,,,,,,,,,,,,
 0,,33.5,-3.6,Propionyladenylate,Propionyladenylate,C05983,0,100,,f,,,,,,,,,,,,,,,,,
-0,,33.7,-3.25,Succinyl-CoA,SUCCOA,C00091,1,,s,f,,,,,,,,,,,,,,,,,
-0,,33.7,-3.05,Succinate,SUC,C00042,1,,s,f,,,,,,,,,,,,,,,,,
 0,,33.5,-2.7,Propionyl-CoA,PPCOA,C00100,1,100,,f,,,,,,,,,,,,,,,,,
 0,,34.6,-3.6,Propionate,PPA,C00163,0,100,,f,,,,,,,,,,,,,,,,,
 0,,34.6,-2.7,Acryloyl-CoA,Acryloyl-CoA,C00894,0,100,,f,,,,,,,,,,,,,,,,,
