@@ -117,6 +117,7 @@ public class PathwaysFrame extends JApplet {
    	ArrayList<String> metabolites = new ArrayList<String>();
    	ArrayList<String> smallMainMetabolites = new ArrayList<String>();
    	ArrayList<String> sideMetabolites = new ArrayList<String>();
+   	ArrayList<String> cofactors = new ArrayList<String>();
    	ArrayList<String> reactions = new ArrayList<String>();
    	Map<String, Double> fluxMap = new HashMap<String, Double>(); 
    	Map<String, Double> colorMap = new HashMap<String, Double>();
@@ -485,6 +486,9 @@ public class PathwaysFrame extends JApplet {
 							smallMainMetabolites.add(metabName);
 						} else if (type.equals(PathwaysCSVFileConstants.SIDE_METABOLITE_TYPE)) {
 							sideMetabolites.add(metabName);
+							if (PathwaysFrameConstants.cofactorList.contains(keggId)) {
+								cofactors.add(metabName);
+							}
 						}
 						PathwayMetaboliteNode pn = new PathwayMetaboliteNode();
 						pn.setDataId(pathway.getMetabolitesData().get(Integer.toString(j)).getId());
@@ -1269,6 +1273,12 @@ public class PathwaysFrame extends JApplet {
         		} else if (sideMetabolites.contains(name)) {
         			if (!foundMetabolitesList.contains(name) && LocalConfig.getInstance().isHighlightMissingMetabolitesSelected()) {
         				graphics.setColor(PathwaysFrameConstants.METABOLITE_NOT_FOUND_COLOR);
+        			}
+        			if (cofactors.contains(name)) {
+        				graphics.setColor(PathwaysFrameConstants.COFACTOR_COLOR);
+        				if (!foundMetabolitesList.contains(name) && LocalConfig.getInstance().isHighlightMissingMetabolitesSelected()) {
+            				graphics.setColor(PathwaysFrameConstants.COFACTOR_NOT_FOUND_COLOR);
+            			}
         			}
         			alignCenterString(graphics, abbr, width, PathwaysFrameConstants.SIDE_METABOLITE_NODE_XPOS, PathwaysFrameConstants.SIDE_METABOLITE_NODE_YPOS, PathwaysFrameConstants.SIDE_METABOLITE_NODE_FONT_SIZE);
         		} else if (reactions.contains(name)) {

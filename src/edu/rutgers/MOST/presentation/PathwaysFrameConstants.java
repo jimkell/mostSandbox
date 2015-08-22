@@ -1,6 +1,7 @@
 package edu.rutgers.MOST.presentation;
 
 import java.awt.Color;
+import java.util.Arrays;
 
 public class PathwaysFrameConstants {
 
@@ -134,7 +135,7 @@ public class PathwaysFrameConstants {
 	
 	// not found colors from http://www.rapidtables.com/web/color/RGB_Color.htm
 	// light blue
-	public static final Color REACTION_NOT_FOUND_FONT_COLOR = new Color(204,229,255);
+	public static final Color REACTION_NOT_FOUND_FONT_COLOR = new Color(224,224,255);
 	// one step darker 
 	//public static final Color REACTION_NOT_FOUND_FONT_COLOR = new Color(153,204,255);
 	// light gray
@@ -142,6 +143,9 @@ public class PathwaysFrameConstants {
 	// one step darker 
 	//public static final Color METABOLITE_NOT_FOUND_COLOR = new Color(192,192,192);
 
+	public static final Color COFACTOR_COLOR = Color.red;
+	public static final Color COFACTOR_NOT_FOUND_COLOR = new Color(255,224,224);
+	
 	// formerly used yellow and orange, but this is confusing since some metabolites
 	// have no borders using the Roche map convention
 	//public static final Color METABOLITE_NOT_FOUND_COLOR = Color.yellow;
@@ -154,5 +158,16 @@ public class PathwaysFrameConstants {
 	public static final double BLUE_COLOR_VALUE = 4.0;
 	
 	public static final double DEFAULT_COLOR_VALUE = BLACK_COLOR_VALUE;
+	
+	public static final String[] COFACTOR_KEGG_IDS = 
+		{ 
+		"C00002", "C00003", "C00004", "C00005", "C00006", "C00008", "C00010", "C00015", 
+		"C00020", "C00035", "C00006", "C00002", "C00035", "C00044", "C00055", "C00063",
+		"C00075", "C00101", "C00105", "C00112", "C00131", "C00144", "C00206", "C00234",
+		"C00239", "C00268", "C00272",
+		"C00360","C00361", "C00362", "C00363", "C00364", "C00365", "C00664"
+		};
+
+	public static java.util.List<String> cofactorList = Arrays.asList(COFACTOR_KEGG_IDS);
 	
 }
