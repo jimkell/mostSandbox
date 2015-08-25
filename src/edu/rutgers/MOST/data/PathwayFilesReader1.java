@@ -14,7 +14,7 @@ import edu.rutgers.MOST.config.LocalConfig;
 import edu.rutgers.MOST.presentation.GraphicalInterfaceConstants;
 import au.com.bytecode.opencsv.CSVReader;
 
-public class PathwayFilesReader {
+public class PathwayFilesReader1 {
 	
 	Map<String, MetabolicPathway> metabolicPathways = new HashMap<String, MetabolicPathway>();
 	Map<String, PathwayNameData> pathwayNameMap = new HashMap<String, PathwayNameData>();
@@ -23,8 +23,10 @@ public class PathwayFilesReader {
 	Map<String, ArrayList<String>> additionalMetabolitesMap = new HashMap<String, ArrayList<String>>();
 	Map<String, PathwayReactionData> reactionDataKeggIdMap = new HashMap<String, PathwayReactionData>();
 	Map<String, ArrayList<String>> ecNumberKeggReactionIdMap = new HashMap<String, ArrayList<String>>();
+	static ArrayList<PathwayReactionData> reactionsList = new ArrayList<PathwayReactionData>();
+	static ArrayList<PathwayReactionData> reactionsPositionsList = new ArrayList<PathwayReactionData>();
 	
-	public PathwayFilesReader() {
+	public PathwayFilesReader1() {
 		
 	}
 	
@@ -319,6 +321,7 @@ public class PathwayFilesReader {
 						metabolicPathways.get(id).getMetabolitesData().put(pm.getId(), pm);
 						String name = pm.getNames().get(0);
 						String abbr = pm.getAbbreviation();
+						/*
 						if (LocalConfig.getInstance().getKeggIdMetaboliteMap().containsKey(pm.getKeggId())) {
 							String metabAbbr = LocalConfig.getInstance().getKeggIdMetaboliteMap().get(pm.getKeggId()).get(0).getMetaboliteAbbreviation();
 							// check if metabolite ends with "_x"
@@ -331,6 +334,7 @@ public class PathwayFilesReader {
 							}
 							name += " " + metabAbbr;
 						}
+						*/
 						if (metaboliteNameAbbrMap.containsKey(name)) {
 							name = name + duplicateSuffix(name, metaboliteNameAbbrMap);
 						}
@@ -438,6 +442,7 @@ public class PathwayFilesReader {
 						}
 						//System.out.println("pfr " + pr);
 						reactionDataKeggIdMap.put(pr.getKeggReactionId(), pr);
+						reactionsList.add(pr);
 					}
 					count += 1;
 				}
@@ -542,11 +547,13 @@ public class PathwayFilesReader {
 						pr.setKeggReactantIds(keggReactantIds);
 						pr.setKeggProductIds(keggProductIds);
 						metabolicPathways.get(id).getReactionsData().put(pr.getReactionId(), pr);
+						reactionsPositionsList.add(pr);
 						//System.out.println(pr.getKeggReactionIds());
 					}
 					count += 1;
 				}
 				reader.close();
+				System.out.println(reactionsPositionsList);
 			} catch (IOException e) {
 				JOptionPane.showMessageDialog(null,                
 						"File Not Found Error.",                
@@ -803,13 +810,11 @@ public class PathwayFilesReader {
 		File metabolites = new File(PathwaysCSVFileConstants.METABOLITES_FILE_NAME);
 		File additionalMetabolites = new File(PathwaysCSVFileConstants.ADDITIONAL_METABOLITES_FILE_NAME);
 		File reactions = new File(PathwaysCSVFileConstants.REACTIONS_FILE_NAME);
-		File drawOrder = new File(PathwaysCSVFileConstants.PATHWAY_DRAW_ORDER_FILE_NAME);
-		File sideSpecies = new File(PathwaysCSVFileConstants.PATHWAY_SIDE_SPECIES_FILE_NAME);
-		PathwayFilesReader reader = new PathwayFilesReader();
+		File sideSpecies = new File("etc/visualization/pathway_side_species1.csv");
+		PathwayFilesReader1 reader = new PathwayFilesReader1();
 		reader.readMetabolitesFile(metabolites);
 		reader.readAdditionalMetabolitesFile(additionalMetabolites);
 		reader.readReactionsFile(reactions);
-		reader.readDrawOrderFile(drawOrder);
 		reader.readSideSpeciesFile(sideSpecies);
 	}
 	
@@ -823,10 +828,10 @@ public class PathwayFilesReader {
 		File pathwayNames = new File(PathwaysCSVFileConstants.PATHWAY_NAMES_FILE_NAME);
 		File pathwayGraph = new File(PathwaysCSVFileConstants.PATHWAY_GRAPH_FILE_NAME);
 		File metabolitePositions = new File(PathwaysCSVFileConstants.METABOLITE_POSITIONS_FILE_NAME);
-		File reactionPositions = new File(PathwaysCSVFileConstants.REACTION_POSITIONS_FILE_NAME);
+		File reactionPositions = new File("etc/visualization/pathways_reaction_positions_old.csv");
 		File externalMetabolites = new File(PathwaysCSVFileConstants.EXTERNAL_METABOLITES_FILE_NAME);
 		File transportMetabolites = new File(PathwaysCSVFileConstants.TRANSPORT_METABOLITES_FILE_NAME);
-		PathwayFilesReader reader = new PathwayFilesReader();
+		PathwayFilesReader1 reader = new PathwayFilesReader1();
 		reader.readPathwaysFile(pathways);
 		reader.readPathwayNamesFile(pathwayNames);
 		reader.readPathwayGraphFile(pathwayGraph);
@@ -856,9 +861,58 @@ public class PathwayFilesReader {
 	
 	public static void main( String args[] )
 	{
-		PathwayFilesReader reader = new PathwayFilesReader();
+		PathwayFilesReader1 reader = new PathwayFilesReader1();
 		reader.readOnceFiles();
 		reader.readFiles();
+		for (int j = 0; j < reactionsPositionsList.size(); j++) {
+			String keggReactantId = "";
+			String keggProductId = "";
+			for (int i = 0; i < reactionsList.size(); i++) {
+				boolean reactantMatch = false;
+				boolean productMatch = false;
+				String direction = "";
+				for (int s = 0; s < reactionsPositionsList.get(j).getKeggReactantIds().size(); s++) {
+					keggReactantId = reactionsPositionsList.get(j).getKeggReactantIds().get(s);
+					for (int r = 0; r < reactionsList.get(i).getKeggReactantIds().size(); r++) {
+						if (reactionsList.get(i).getKeggReactantIds().get(r).equals(keggReactantId)) {
+							reactantMatch = true;
+							direction = "forward";
+							break;
+						}
+					}
+					for (int r = 0; r < reactionsList.get(i).getKeggProductIds().size(); r++) {
+						if (reactionsList.get(i).getKeggProductIds().get(r).equals(keggReactantId)) {
+							reactantMatch = true;
+							direction = "reverse";
+							break;
+						}
+					}
+					
+				}
+				for (int s = 0; s < reactionsPositionsList.get(j).getKeggProductIds().size(); s++) {
+					keggProductId = reactionsPositionsList.get(j).getKeggProductIds().get(s);
+					for (int r = 0; r < reactionsList.get(i).getKeggReactantIds().size(); r++) {
+						if (reactionsList.get(i).getKeggReactantIds().get(r).equals(keggProductId)) {
+							productMatch = true;
+							direction = "reverse";
+							break;
+						}
+					}
+					for (int r = 0; r < reactionsList.get(i).getKeggProductIds().size(); r++) {
+						if (reactionsList.get(i).getKeggProductIds().get(r).equals(keggProductId)) {
+							productMatch = true;
+							direction = "forward";
+							break;
+						}
+					}
+				}
+				if (reactantMatch && productMatch) {
+					System.out.println(direction + " " + reactionsPositionsList.get(j).getReactionId() +
+							" " + keggReactantId + " = " + keggProductId + 
+							" " + reactionsList.get(i).getKeggReactantIds() + " " + reactionsList.get(i).getKeggProductIds());
+				}
+			}
+		}
 	}
-
 }
+

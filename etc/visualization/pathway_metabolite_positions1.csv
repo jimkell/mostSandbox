@@ -1057,7 +1057,7 @@ Pathway ID,Metabolite ID,Metabolite Level,Metabolite Level Position,Metabolite N
 0,1055,25.35,-7.05,Water,H2O,C00001,0,s,,,,
 0,1056,24.9,-7.5,Ammonia,NH3,C00014,0,s,,,,
 0,1057,9.1,-10.3,Glycine,GLY,C00037,1,s,,,,
-0,1058,10.3,-10.3,10-Formyl-THF,10FTHF,C00234,1,m,,,,
+0,1058,10.3,-10.3,10-Formyl-THF,10FTHF,C00234,1,s,,,,
 0,1059,10.7,-10.3,THF,THF,C00101,1,s,,,,
 0,1060,11.8,-10.3,L-Glutamine,GLN_L,C00064,1,s,,,,
 0,1061,12.2,-10.3,L-Glutamate,GLU_L,C00025,1,s,,,,
