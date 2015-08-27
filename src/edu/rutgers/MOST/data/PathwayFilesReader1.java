@@ -553,7 +553,7 @@ public class PathwayFilesReader1 {
 					count += 1;
 				}
 				reader.close();
-				System.out.println(reactionsPositionsList);
+				//System.out.println(reactionsPositionsList);
 			} catch (IOException e) {
 				JOptionPane.showMessageDialog(null,                
 						"File Not Found Error.",                
@@ -864,6 +864,7 @@ public class PathwayFilesReader1 {
 		PathwayFilesReader1 reader = new PathwayFilesReader1();
 		reader.readOnceFiles();
 		reader.readFiles();
+		//System.out.println(LocalConfig.getInstance().getMetaboliteDataKeggIdMap().get("C00001"));
 		for (int j = 0; j < reactionsPositionsList.size(); j++) {
 			String keggReactantId = "";
 			String keggProductId = "";
@@ -887,7 +888,6 @@ public class PathwayFilesReader1 {
 							break;
 						}
 					}
-					
 				}
 				for (int s = 0; s < reactionsPositionsList.get(j).getKeggProductIds().size(); s++) {
 					keggProductId = reactionsPositionsList.get(j).getKeggProductIds().get(s);
@@ -907,9 +907,27 @@ public class PathwayFilesReader1 {
 					}
 				}
 				if (reactantMatch && productMatch) {
+					ArrayList<ArrayList<String>> reactantNames = new ArrayList<ArrayList<String>>();
+					ArrayList<ArrayList<String>> productNames = new ArrayList<ArrayList<String>>();
+					for (int y = 0; y < reactionsList.get(i).getKeggReactantIds().size(); y++) {
+						//System.out.println(reactionsList.get(i).getKeggReactantIds().get(y));
+						if (LocalConfig.getInstance().getMetaboliteDataKeggIdMap().containsKey(reactionsList.get(i).getKeggReactantIds().get(y))) {
+							reactantNames.add(LocalConfig.getInstance().getMetaboliteDataKeggIdMap().get(reactionsList.get(i).getKeggReactantIds().get(y)).getNames());
+						} else {
+							reactantNames.add(null);
+						}
+					}
+					for (int z = 0; z < reactionsList.get(i).getKeggProductIds().size(); z++) {
+						if (LocalConfig.getInstance().getMetaboliteDataKeggIdMap().containsKey(reactionsList.get(i).getKeggProductIds().get(z))) {
+							productNames.add(LocalConfig.getInstance().getMetaboliteDataKeggIdMap().get(reactionsList.get(i).getKeggProductIds().get(z)).getNames());
+						} else {
+							productNames.add(null);
+						}
+					}
 					System.out.println(direction + " " + reactionsPositionsList.get(j).getReactionId() +
 							" " + keggReactantId + " = " + keggProductId + 
-							" " + reactionsList.get(i).getKeggReactantIds() + " " + reactionsList.get(i).getKeggProductIds());
+							" " + reactionsList.get(i).getKeggReactantIds() + " " + reactantNames
+							+ " " + reactionsList.get(i).getKeggProductIds() + " " + productNames);
 				}
 			}
 		}
