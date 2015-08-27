@@ -25,6 +25,7 @@ public class PathwayFilesReader1 {
 	Map<String, ArrayList<String>> ecNumberKeggReactionIdMap = new HashMap<String, ArrayList<String>>();
 	static ArrayList<PathwayReactionData> reactionsList = new ArrayList<PathwayReactionData>();
 	static ArrayList<PathwayReactionData> reactionsPositionsList = new ArrayList<PathwayReactionData>();
+	static Map<String, String> metaboliteKeggIdAbbrMap = new HashMap<String, String>();
 	
 	public PathwayFilesReader1() {
 		
@@ -319,6 +320,7 @@ public class PathwayFilesReader1 {
 							}
 						}
 						metabolicPathways.get(id).getMetabolitesData().put(pm.getId(), pm);
+						metaboliteKeggIdAbbrMap.put(pm.getKeggId(), pm.getAbbreviation());
 						String name = pm.getNames().get(0);
 						String abbr = pm.getAbbreviation();
 						/*
@@ -864,7 +866,6 @@ public class PathwayFilesReader1 {
 		PathwayFilesReader1 reader = new PathwayFilesReader1();
 		reader.readOnceFiles();
 		reader.readFiles();
-		//System.out.println(LocalConfig.getInstance().getMetaboliteDataKeggIdMap().get("C00001"));
 		for (int j = 0; j < reactionsPositionsList.size(); j++) {
 			String keggReactantId = "";
 			String keggProductId = "";
@@ -909,8 +910,14 @@ public class PathwayFilesReader1 {
 				if (reactantMatch && productMatch) {
 					ArrayList<ArrayList<String>> reactantNames = new ArrayList<ArrayList<String>>();
 					ArrayList<ArrayList<String>> productNames = new ArrayList<ArrayList<String>>();
+					ArrayList<String> reactantAbbr = new ArrayList<String>();
+					ArrayList<String> productAbbr = new ArrayList<String>();
 					for (int y = 0; y < reactionsList.get(i).getKeggReactantIds().size(); y++) {
-						//System.out.println(reactionsList.get(i).getKeggReactantIds().get(y));
+						if (metaboliteKeggIdAbbrMap.containsKey(reactionsList.get(i).getKeggReactantIds().get(y))) {
+							reactantAbbr.add(metaboliteKeggIdAbbrMap.get(reactionsList.get(i).getKeggReactantIds().get(y)));
+						} else {
+							reactantAbbr.add(null);
+						}
 						if (LocalConfig.getInstance().getMetaboliteDataKeggIdMap().containsKey(reactionsList.get(i).getKeggReactantIds().get(y))) {
 							reactantNames.add(LocalConfig.getInstance().getMetaboliteDataKeggIdMap().get(reactionsList.get(i).getKeggReactantIds().get(y)).getNames());
 						} else {
@@ -918,6 +925,11 @@ public class PathwayFilesReader1 {
 						}
 					}
 					for (int z = 0; z < reactionsList.get(i).getKeggProductIds().size(); z++) {
+						if (metaboliteKeggIdAbbrMap.containsKey(reactionsList.get(i).getKeggProductIds().get(z))) {
+							productAbbr.add(metaboliteKeggIdAbbrMap.get(reactionsList.get(i).getKeggProductIds().get(z)));
+						} else {
+							productAbbr.add(null);
+						}
 						if (LocalConfig.getInstance().getMetaboliteDataKeggIdMap().containsKey(reactionsList.get(i).getKeggProductIds().get(z))) {
 							productNames.add(LocalConfig.getInstance().getMetaboliteDataKeggIdMap().get(reactionsList.get(i).getKeggProductIds().get(z)).getNames());
 						} else {
@@ -926,8 +938,8 @@ public class PathwayFilesReader1 {
 					}
 					System.out.println(direction + " " + reactionsPositionsList.get(j).getReactionId() +
 							" " + keggReactantId + " = " + keggProductId + 
-							" " + reactionsList.get(i).getKeggReactantIds() + " " + reactantNames
-							+ " " + reactionsList.get(i).getKeggProductIds() + " " + productNames);
+							" " + reactionsList.get(i).getKeggReactantIds() + " " + reactantAbbr + " " + reactantNames
+							+ " " + reactionsList.get(i).getKeggProductIds() + " " + productAbbr + " " + productNames);
 				}
 			}
 		}
