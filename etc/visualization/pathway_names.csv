@@ -21,8 +21,8 @@ Pathway ID,Pathway KEGG Ids,Pathway Level,Pathway Level Position,Pathway Name
 19,98,20,-0.3,Glyoxylate cycle
 20,119,28.35,-0.9,Porphyrins
 21,119,40.6,-0.6,Bile pigments
-22,0,10.5,0.4, -> Glycolysis
-23,0,10.5,0.5, <- Gluconeogenesis
+22,0,10.5,0.5, -> Glycolysis
+23,0,10.5,0.6, <- Gluconeogenesis
 24,1,20.5,2.5,Citrate Cycle
 25,7,13.7,3.3,Fatty acid synthesis
 26,-1,25.2,1.4,Glutamate decarboxylation pathway

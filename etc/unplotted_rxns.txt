@@ -1,0 +1,68 @@
+forward 5 KEGG Rxn Id R00767 [2.7.1.11] [76] [91] C00085 = C00354
+[C00063, C00085] [CTP, F6P] [Cytidine 5'-triphosphate, D-Fructose-6P] level [7.0] level pos [0.0] 
+[C00112, C00354] [CDP, FDP] [Cytidine 5'-diphosphate, B-D-Fructose-1,6P2] level [8.2] level pos [0.0] 
+
+forward 5 KEGG Rxn Id R00769 [2.7.1.11] [76] [91] C00085 = C00354
+[C00075, C00085] [UTP, F6P] [Uridine 5'-triphosphate, D-Fructose-6P] level [7.0] level pos [0.0] 
+[C00015, C00354] [UDP, FDP] [Uridine 5'-diphosphate, B-D-Fructose-1,6P2] level [8.2] level pos [0.0] 
+
+forward 5 KEGG Rxn Id R05805 [2.7.1.146] [76] [91] C00085 = C00354
+[C00008, C00085] [ADP, F6P] [Adenosine 5'-diphosphate, D-Fructose-6P] level [7.0] level pos [0.0] 
+[C00020, C00354] [AMP, FDP] [Adenosine 5'-phosphate, B-D-Fructose-1,6P2] level [8.2] level pos [0.0] 
+
+can't match this reaction for some reason
+forward 8 KEGG Rxn Id R01326 [2.7.1.1, 2.7.1.7] [71] [70] C00159 = C00275
+[C00002, C00159] [ATP, MAN] [Adenosine 5'-triphosphate, D-Mannose] level [6.6] level pos [2.0] 
+[C00008, C00275] [ADP, MAN6P] [Adenosine 5'-diphosphate, a-D-Mannose-6P] level [6.6] level pos [1.0] 
+
+forward 8 KEGG Rxn Id R01330 [2.7.1.1] [71] [70] C00159 = C00275
+[C00131, C00159] [DATP, MAN] [2'-Deoxyadenosine 5'-triphosphate;, D-Mannose] level [6.6] level pos [2.0] 
+[C00206, C00275] [DADP, MAN6P] [2'-Deoxyadenosine 5'-diphosphate, a-D-Mannose-6P] level [6.6] level pos [1.0] 
+
+forward 21 KEGG Rxn Id R01517 [2.7.2.10] [108] [105] C00197 = C00236
+[C00044, C00197] [GTP, 3PG] [Guanosine 5'-triphosphate, D-Glycerate-3P] level [11.0] level pos [0.0] 
+[C00035, C00236] [GDP, 13DPG] [Guanosine 5'-diphosphate, Glycerate-1,3P2] level [10.0] level pos [0.0] 
+
+reverse 21 KEGG Rxn Id R01660 [2.7.1.106] [108] [105] C00197 = C00236
+[C00236, C00103] [13DPG, G1P] [Glycerate-1,3P2, a-D-Glucose-1P] level [11.0] level pos [0.0] 
+[C00197, C01231] [3PG, aG16P] [D-Glycerate-3P, a-D-Glucose-1,6P2] level [10.0] level pos [0.0] 
+
+empty nodes for species other than AMP, ATP for following two reactions
+
+reverse 24 KEGG Rxn Id R00199 [2.7.9.2] [121] [122] C00074 = C00022
+[C00002, C00022, C00001] [ATP, PYR, H2O] [Adenosine 5'-triphosphate, Pyruvate, Water] level [13.0] level pos [0.0] 
+[C00020, C00074, C00009] [AMP, PEP, PI] [Adenosine 5'-phosphate, Phosphoenolpyruvate, Phosphate] level [14.0] level pos [0.0] 
+
+reverse 24 KEGG Rxn Id R00206 [2.7.9.1] [121] [122] C00074 = C00022
+[C00002, C00022, C00009] [ATP, PYR, PI] [Adenosine 5'-triphosphate, Pyruvate, Phosphate] level [13.0] level pos [0.0] 
+[C00020, C00074, C00013] [AMP, PEP, PPI] [Adenosine 5'-phosphate, Phosphoenolpyruvate, Diphosphate] level [14.0] level pos [0.0] 
+
+___________________________________________
+
+forward 24 KEGG Rxn Id R00208 [3.1.3.60] [121] [122] C00074 = C00022
+[C00074, C00001] [PEP, H2O] [Phosphoenolpyruvate, Water] level [13.0] level pos [0.0] 
+[C00022, C00009] [PYR, PI] [Pyruvate, Phosphate] level [14.0] level pos [0.0] 
+
+reverse 24 KEGG Rxn Id R00430 [2.7.1.40] [121] [122] C00074 = C00022
+[C00044, C00022] [GTP, PYR] [Guanosine 5'-triphosphate, Pyruvate] level [13.0] level pos [0.0] 
+[C00035, C00074] [GDP, PEP] [Guanosine 5'-diphosphate, Phosphoenolpyruvate] level [14.0] level pos [0.0] 
+
+reverse 24 KEGG Rxn Id R00572 [2.7.1.40] [121] [122] C00074 = C00022
+[C00063, C00022] [CTP, PYR] [Cytidine 5'-triphosphate, Pyruvate] level [13.0] level pos [0.0] 
+[C00112, C00074] [CDP, PEP] [Cytidine 5'-diphosphate, Phosphoenolpyruvate] level [14.0] level pos [0.0] 
+
+reverse 24 KEGG Rxn Id R00659 [2.7.1.40] [121] [122] C00074 = C00022
+[C00075, C00022] [UTP, PYR] [Uridine 5'-triphosphate, Pyruvate] level [13.0] level pos [0.0] 
+[C00015, C00074] [UDP, PEP] [Uridine 5'-diphosphate, Phosphoenolpyruvate] level [14.0] level pos [0.0] 
+
+forward 24 KEGG Rxn Id R01012 [2.7.1.121] [121] [122] C00074 = C00022
+[C00074, C00184] [PEP, null] [Phosphoenolpyruvate, null] level [13.0] level pos [0.0] 
+[C00022, C00111] [PYR, DHAP] [Pyruvate, Glycerone-P] level [14.0] level pos [0.0] 
+
+reverse 24 KEGG Rxn Id R01138 [2.7.1.40] [121] [122] C00074 = C00022
+[C00131, C00022] [DATP, PYR] [2'-Deoxyadenosine 5'-triphosphate;, Pyruvate] level [13.0] level pos [0.0] 
+[C00206, C00074] [DADP, PEP] [2'-Deoxyadenosine 5'-diphosphate, Phosphoenolpyruvate] level [14.0] level pos [0.0] 
+
+reverse 24 KEGG Rxn Id R01858 [2.7.1.40] [121] [122] C00074 = C00022
+[C00286, C00022] [DGTP, PYR] [2'-Deoxyguanosine 5'-triphosphate, Pyruvate] level [13.0] level pos [0.0] 
+[C00361, C00074] [DGDP, PEP] [2'-Deoxyguanosine 5'-diphosphate, Phosphoenolpyruvate] level [14.0] level pos [0.0] 
