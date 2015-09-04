@@ -1136,9 +1136,9 @@ public class PathwaysFrame extends JApplet {
 		}
 		
 		Collections.sort(foundEcNumbers);
-		System.out.println("found " + foundEcNumbers);
+		//System.out.println("found " + foundEcNumbers);
 		Collections.sort(notFoundEcNumbers);
-		System.out.println("not found " + notFoundEcNumbers);
+		//System.out.println("not found " + notFoundEcNumbers);
                                                                                                                      
    		metaboliteList = new ArrayList<String>(metabPosMap.keySet()); 
    		Collections.sort(metaboliteList);

@@ -971,6 +971,8 @@ public class PathwayFilesReader1 {
 						}
 						if (metaboliteKeggIdNameMap.containsKey(reactionsList.get(i).getKeggReactantIds().get(y))) {
 							reactantName.add(metaboliteKeggIdNameMap.get(reactionsList.get(i).getKeggReactantIds().get(y)));
+						} else if (LocalConfig.getInstance().getMetaboliteDataKeggIdMap().containsKey(reactionsList.get(i).getKeggReactantIds().get(y))) {			
+							reactantName.add(LocalConfig.getInstance().getMetaboliteDataKeggIdMap().get(reactionsList.get(i).getKeggReactantIds().get(y)).getNames().get(0));
 						} else {
 							reactantName.add(null);
 						}
@@ -983,6 +985,8 @@ public class PathwayFilesReader1 {
 						}
 						if (metaboliteKeggIdNameMap.containsKey(reactionsList.get(i).getKeggProductIds().get(z))) {
 							productName.add(metaboliteKeggIdNameMap.get(reactionsList.get(i).getKeggProductIds().get(z)));
+						} else if (LocalConfig.getInstance().getMetaboliteDataKeggIdMap().containsKey(reactionsList.get(i).getKeggProductIds().get(z))) {			
+							productName.add(LocalConfig.getInstance().getMetaboliteDataKeggIdMap().get(reactionsList.get(i).getKeggProductIds().get(z)).getNames().get(0));
 						} else {
 							productName.add(null);
 						}

@@ -12577,42 +12577,42 @@ public class GraphicalInterface extends JFrame {
 			LocalConfig.getInstance().setCytosolExtraOrganismIds(cytosolExtraOrganismIds);
 			// for some unknown reason, if it is attempted to remove these ids in if statements
 			// where added to this list (above), it skips some ids. commented out
-			System.out.println("ce " + cytosolExtraOrganismIds);
+			//System.out.println("ce " + cytosolExtraOrganismIds);
 			for (int k = 0; k < cytosolExtraOrganismIds.size(); k++) {
 				createTransportCollections(cytosolExtraOrganismIds.get(k), idReactionMap, TransportReactionConstants.CYTOSOL_EXTRAORGANISM_TRANSPORT);
 				if (LocalConfig.getInstance().getUnplottedReactionIds().contains(cytosolExtraOrganismIds.get(k))) {
 					LocalConfig.getInstance().getUnplottedReactionIds().remove(LocalConfig.getInstance().getUnplottedReactionIds().indexOf(cytosolExtraOrganismIds.get(k)));
 				}
 			}
-			System.out.println("ce2 " + cytosolExtraOrganismIds2);
+			//System.out.println("ce2 " + cytosolExtraOrganismIds2);
 			for (int k = 0; k < cytosolExtraOrganismIds2.size(); k++) {
 				createTransportCollections(cytosolExtraOrganismIds2.get(k), idReactionMap, TransportReactionConstants.CYTOSOL_EXTRAORGANISM_TRANSPORT);
 				if (LocalConfig.getInstance().getUnplottedReactionIds().contains(cytosolExtraOrganismIds2.get(k))) {
 					LocalConfig.getInstance().getUnplottedReactionIds().remove(LocalConfig.getInstance().getUnplottedReactionIds().indexOf(cytosolExtraOrganismIds2.get(k)));
 				}
 			}
-			System.out.println("cp " + cytosolPeriplasmIds);
+			//System.out.println("cp " + cytosolPeriplasmIds);
 			for (int m = 0; m < cytosolPeriplasmIds.size(); m++) {
 				createTransportCollections(cytosolPeriplasmIds.get(m), idReactionMap, TransportReactionConstants.CYTOSOL_PERIPLASM_TRANSPORT);
 				if (LocalConfig.getInstance().getUnplottedReactionIds().contains(cytosolPeriplasmIds.get(m))) {
 					LocalConfig.getInstance().getUnplottedReactionIds().remove(LocalConfig.getInstance().getUnplottedReactionIds().indexOf(cytosolPeriplasmIds.get(m)));
 				}
 			}
-			System.out.println("cp2 " + cytosolPeriplasmIds2);
+			//System.out.println("cp2 " + cytosolPeriplasmIds2);
 			for (int m = 0; m < cytosolPeriplasmIds2.size(); m++) {
 				createTransportCollections(cytosolPeriplasmIds2.get(m), idReactionMap, TransportReactionConstants.CYTOSOL_PERIPLASM_TRANSPORT);
 				if (LocalConfig.getInstance().getUnplottedReactionIds().contains(cytosolPeriplasmIds2.get(m))) {
 					LocalConfig.getInstance().getUnplottedReactionIds().remove(LocalConfig.getInstance().getUnplottedReactionIds().indexOf(cytosolPeriplasmIds2.get(m)));
 				}
 			}
-			System.out.println("pe " + periplasmExtraOrganismIds);
+			//System.out.println("pe " + periplasmExtraOrganismIds);
 			for (int n = 0; n < periplasmExtraOrganismIds.size(); n++) {
 				createTransportCollections(periplasmExtraOrganismIds.get(n), idReactionMap, TransportReactionConstants.PERIPLASM_EXTRAORGANISM_TRANSPORT);
 				if (LocalConfig.getInstance().getUnplottedReactionIds().contains(periplasmExtraOrganismIds.get(n))) {
 					LocalConfig.getInstance().getUnplottedReactionIds().remove(LocalConfig.getInstance().getUnplottedReactionIds().indexOf(periplasmExtraOrganismIds.get(n)));
 				}
 			}
-			System.out.println("pe2 " + periplasmExtraOrganismIds2);
+			//System.out.println("pe2 " + periplasmExtraOrganismIds2);
 			for (int n = 0; n < periplasmExtraOrganismIds2.size(); n++) {
 				createTransportCollections(periplasmExtraOrganismIds2.get(n), idReactionMap, TransportReactionConstants.PERIPLASM_EXTRAORGANISM_TRANSPORT);
 				if (LocalConfig.getInstance().getUnplottedReactionIds().contains(periplasmExtraOrganismIds2.get(n))) {
@@ -12620,12 +12620,12 @@ public class GraphicalInterface extends JFrame {
 				}
 			}
 			Collections.sort(LocalConfig.getInstance().getUnplottedReactionIds());
-			System.out.println("not plotted " + LocalConfig.getInstance().getUnplottedReactionIds());
+			//System.out.println("not plotted " + LocalConfig.getInstance().getUnplottedReactionIds());
 			try {
 				reactionsTable.getModel().getValueAt(0, rf.getKeggIdColumnIndex());
 			} catch (Exception e) {
 				assignKeggReactionIds();
-				System.out.println("not plotted " + LocalConfig.getInstance().getUnplottedReactionIds());
+				//System.out.println("not plotted " + LocalConfig.getInstance().getUnplottedReactionIds());
 				assignKeggReactionIdsFromECNumbers();
 			}
 //			if (rf.getKeggIdColumnIndex() == -1) {
@@ -13048,7 +13048,7 @@ public class GraphicalInterface extends JFrame {
 			}
 			//System.out.println(LocalConfig.getInstance().getKeggIdCompartmentMap());
 			//System.out.println(LocalConfig.getInstance().getMetaboliteIdKeggIdMap());
-			System.out.println(LocalConfig.getInstance().getKeggIdMetaboliteMap());
+			//System.out.println(LocalConfig.getInstance().getKeggIdMetaboliteMap());
 		}
 		
 		PathwayFilesReader reader = new PathwayFilesReader();
