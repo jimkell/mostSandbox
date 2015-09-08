@@ -135,3 +135,14 @@ reverse 24 KEGG Rxn Id R01858 [2.7.1.40] [121] [122] C00074 = C00022
 reverse 24 KEGG Rxn Id R02320 [2.7.1.40] [121] [122] C00074 = C00022
 [C00201, C00022] [null, PYR] [Nucleoside triphosphate, Pyruvate] level [13.0] level pos [0.0] 
 [C00454, C00074] [null, PEP] [NDP, Phosphoenolpyruvate] level [14.0] level pos [0.0] 
+
+reverse 37 KEGG Rxn Id R09550 [1.1.98.2] [56] [57] C01236 = C00092
+[C00092, C00876] [G6P, Coenzyme F420] [D-Glucose-6P, Coenzyme F420] level [6.0] level pos [-1.0] 
+[C01236, C01080] [6PGL, Reduced coenzyme F420] [D-Glucono-1,5-lactone-6P, Reduced coenzyme F420] level [6.0] level pos [0.0] 
+
+reaction not found on KEGG website or in Roche map
+reverse 47 KEGG Rxn Id R00850 [2.7.1.142] [103] [99] C00116 = C00093
+[C00093, C00031] [GLYC3P, DGlc] [sn-Glycerol-3P, D-Glucose] level [9.8] level pos [2.4] 
+[C00116, C00092] [GLYC, G6P] [Glycerol, D-Glucose-6P] level [9.0] level pos [2.4]
+
+53, 54 consolidated
