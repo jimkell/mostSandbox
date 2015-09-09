@@ -1,4 +1,4 @@
-Pathway ID,Metabolite ID,Metabolite Level,Metabolite Level Position,Metabolite Names,Metabolite Abbreviation,KEGG ID,Border,Type,Pathway KEGG ID,,Alternate KEGG Ids,
+Pathway ID,Metabolite ID,Metabolite Level,Metabolite Level Position,Metabolite Names,Metabolite Abbreviation,KEGG ID,Border,Type,Pathway KEGG ID,Notes,Alternate KEGG Ids,
 0,0,0.1,-10,5-Dehydro-4-Deoxyglutarate,5DH4DGLC,C00679,0,m,6,,,
 0,1,0.1,-9,D-Glucarate,GLCR,C00818,0,m,6,,,
 0,2,0,-8,1D-myo-Inositol-1P,MI1P_D,C01177,1,m,79,,,

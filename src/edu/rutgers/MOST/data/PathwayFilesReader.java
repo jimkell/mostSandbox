@@ -245,8 +245,8 @@ public class PathwayFilesReader {
 									LocalConfig.getInstance().getMetaboliteDataKeggIdMap().put(idsList.get(i), pm);
 								}
 								additionalMetabolitesMap.put(keggId, idsList);
-								//System.out.println("k " + keggId);
-								//System.out.println("list " + idsList);
+								System.out.println("addl k " + keggId);
+								System.out.println("addl list " + idsList);
 							}
 						}
 					}
@@ -255,6 +255,50 @@ public class PathwayFilesReader {
 				reader.close();
 				//System.out.println("a " + additionalMetabolitesMap);
 				LocalConfig.getInstance().setAdditionalMetabolitesMap(additionalMetabolitesMap);
+			} catch (IOException e) {
+				JOptionPane.showMessageDialog(null,                
+						"File Not Found Error.",                
+						"Error",                                
+						JOptionPane.ERROR_MESSAGE);
+				//e.printStackTrace();
+			}
+		} catch (FileNotFoundException e) {
+			JOptionPane.showMessageDialog(null,                
+					"File Not Found Error.",                
+					"Error",                                
+					JOptionPane.ERROR_MESSAGE);
+			//e.printStackTrace();
+		}	
+	}
+	
+	public void readMetaboliteSubstitutionsFile(File metaboliteSubstitutions) {
+		CSVReader reader;
+		
+		int count = 0;
+		
+		try {
+			reader = new CSVReader(new FileReader(metaboliteSubstitutions), ',');
+			String [] dataArray;
+			try {
+				while ((dataArray = reader.readNext()) != null) {
+					if (count > 0) {
+						for (int s = 0; s < dataArray.length; s++) {
+							String keggId = dataArray[PathwaysCSVFileConstants.METABOLITE_SUBSTITUTIONS_KEGG_ID_COLUMN];
+							if (s == PathwaysCSVFileConstants.METABOLITE_SUBSTITUTIONS_ALTERNATE_KEGG_IDS_COLUMN) {
+								// need to escape pipe: http://stackoverflow.com/questions/21524642/splitting-string-with-pipe-character
+								String[] ids = dataArray[s].split("\\|");
+								ArrayList<String> idsList = new ArrayList<String>();
+								for (int i = 0; i < ids.length; i++) {
+									idsList.add(ids[i]);
+								}
+								System.out.println("sub kegg id " + keggId);
+								System.out.println("sub list " + idsList);
+							}
+						}
+					}
+					count += 1;
+				}
+				reader.close();
 			} catch (IOException e) {
 				JOptionPane.showMessageDialog(null,                
 						"File Not Found Error.",                
@@ -802,12 +846,14 @@ public class PathwayFilesReader {
 		r.readFile();
 		File metabolites = new File(PathwaysCSVFileConstants.METABOLITES_FILE_NAME);
 		File additionalMetabolites = new File(PathwaysCSVFileConstants.ADDITIONAL_METABOLITES_FILE_NAME);
+		File metaboliteSubstitutions = new File(PathwaysCSVFileConstants.METABOLITE_SUBSTITUTIONS_FILE_NAME);
 		File reactions = new File(PathwaysCSVFileConstants.REACTIONS_FILE_NAME);
 		File drawOrder = new File(PathwaysCSVFileConstants.PATHWAY_DRAW_ORDER_FILE_NAME);
 		File sideSpecies = new File(PathwaysCSVFileConstants.PATHWAY_SIDE_SPECIES_FILE_NAME);
 		PathwayFilesReader reader = new PathwayFilesReader();
 		reader.readMetabolitesFile(metabolites);
 		reader.readAdditionalMetabolitesFile(additionalMetabolites);
+		reader.readMetaboliteSubstitutionsFile(metaboliteSubstitutions);
 		reader.readReactionsFile(reactions);
 		reader.readDrawOrderFile(drawOrder);
 		reader.readSideSpeciesFile(sideSpecies);

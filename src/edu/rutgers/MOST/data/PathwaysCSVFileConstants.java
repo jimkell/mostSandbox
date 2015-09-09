@@ -6,24 +6,22 @@ public class PathwaysCSVFileConstants {
 
 	public static final String PATHWAYS_FILE_NAME = "etc/visualization/pathways.csv";
 	public static final String PATHWAY_NAMES_FILE_NAME = "etc/visualization/pathway_names.csv";
-	//public static final String PATHWAY_GRAPH_FILE_NAME = "etc/visualization/pathway_graphing_data.csv";
 	public static final String PATHWAY_GRAPH_FILE_NAME = "etc/visualization/pathway_graphing_data1.csv";
 	public static final String METABOLITES_FILE_NAME = "etc/visualization/metabolites.csv";
-	// since there are only a few metabolites that have KEGG ids that are not in the metabolites.csv file generated
-	// from the KEGG Crawler, just add them manually and append to map
+	// additional metabolites handle situations where either a metabolite has more than one KEGG Id in
+	// metabolites.csv, or a model has a different KEGG Id for a compound than KEGG does
 	public static final String ADDITIONAL_METABOLITES_FILE_NAME = "etc/visualization/additional_metabolites.csv";
-	//public static final String METABOLITE_POSITIONS_FILE_NAME = "etc/visualization/pathway_metabolite_positions.csv";
 	public static final String METABOLITE_POSITIONS_FILE_NAME = "etc/visualization/pathway_metabolite_positions1.csv";
 	public static final String REACTIONS_FILE_NAME = "etc/visualization/reactions.csv";
-	//public static final String REACTION_POSITIONS_FILE_NAME = "etc/visualization/pathways_reaction_positions.csv";
 	public static final String REACTION_POSITIONS_FILE_NAME = "etc/visualization/pathways_reaction_positions1.csv";
-	//public static final String PATHWAY_DRAW_ORDER_FILE_NAME = "etc/visualization/pathway_draw_order.csv";
 	public static final String PATHWAY_DRAW_ORDER_FILE_NAME = "etc/visualization/pathway_draw_order1.csv";
 	public static final String PATHWAY_SIDE_SPECIES_FILE_NAME = "etc/visualization/pathway_side_species.csv";
-	//public static final String EXTERNAL_METABOLITES_FILE_NAME = "etc/visualization/external_metabolites.csv";
 	public static final String EXTERNAL_METABOLITES_FILE_NAME = "etc/visualization/external_metabolites1.csv";
-	//public static final String TRANSPORT_METABOLITES_FILE_NAME = "etc/visualization/transport_metabolites.csv";
 	public static final String TRANSPORT_METABOLITES_FILE_NAME = "etc/visualization/transport_metabolites1.csv";
+	// metabolite substitutions handle situations such where multiple compounds can be mapped to the same node 
+	// such as wher NAD or NADP, ATP or GTP can be in the same reaction, or classes of compounds such as
+	// fatty acids, of where models do not distinguish between alpha-Glucose, beta-Glucose and D-Glucose
+	public static final String METABOLITE_SUBSTITUTIONS_FILE_NAME = "etc/visualization/metabolite_substitutions.csv";
 	
 	public static final String[] PATHWAYS_COLUMN_NAMES = 
 		{
@@ -46,6 +44,11 @@ public class PathwaysCSVFileConstants {
 		};
 	
 	public static final String[] ADDITIONAL_METABOLITES_COLUMN_NAMES = 
+		{
+		"KEGG ID", "Additional KEGG IDs", "Name"
+		};
+	
+	public static final String[] METABOLITE_SUBSTITUTIONS_COLUMN_NAMES = 
 		{
 		"KEGG ID", "Additional KEGG IDs", "Name"
 		};
@@ -101,6 +104,7 @@ public class PathwaysCSVFileConstants {
 	private static java.util.List<String> pathwaySideSpeciesColumnsList = Arrays.asList(PATHWAY_SIDE_SPECIES_COLUMN_NAMES);
 	private static java.util.List<String> externalMetabolitesColumnsList = Arrays.asList(EXTERNAL_METABOLITES_COLUMN_NAMES);
 	private static java.util.List<String> transportMetabolitesColumnsList = Arrays.asList(TRANSPORT_METABOLITES_COLUMN_NAMES);
+	private static java.util.List<String> metaboliteSubstitutionsColumnsList = Arrays.asList(METABOLITE_SUBSTITUTIONS_COLUMN_NAMES);
 
 	public static final int PATHWAYS_ID_COLUMN = pathwayColumnsList.indexOf("Pathway ID");
 	public static final int PATHWAYS_NAME_COLUMN = pathwayColumnsList.indexOf("Pathway Name");
@@ -125,6 +129,10 @@ public class PathwaysCSVFileConstants {
 	public static final int ADDITIONAL_METABOLITES_KEGG_ID_COLUMN = additionalMetabolitesList.indexOf("KEGG ID");
 	public static final int ADDITIONAL_METABOLITES_ALTERNATE_KEGG_IDS_COLUMN = additionalMetabolitesList.indexOf("Additional KEGG IDs");
 	public static final int ADDITIONAL_METABOLITES_NAME_COLUMN = additionalMetabolitesList.indexOf("Name");
+	
+	public static final int METABOLITE_SUBSTITUTIONS_KEGG_ID_COLUMN = metaboliteSubstitutionsColumnsList.indexOf("KEGG ID");
+	public static final int METABOLITE_SUBSTITUTIONS_ALTERNATE_KEGG_IDS_COLUMN = metaboliteSubstitutionsColumnsList.indexOf("Additional KEGG IDs");
+	public static final int METABOLITE_SUBSTITUTIONS_NAME_COLUMN = metaboliteSubstitutionsColumnsList.indexOf("Name");
 	
 	public static final int METABOLITE_POSITIONS_ID_COLUMN = metabolitePositionsList.indexOf("Pathway ID");
 	public static final int METABOLITE_POSITIONS_METABOLITE_ID_COLUMN = metabolitePositionsList.indexOf("Metabolite ID");
