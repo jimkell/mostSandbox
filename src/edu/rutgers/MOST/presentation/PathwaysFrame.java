@@ -466,15 +466,25 @@ public class PathwaysFrame extends JApplet {
 					String type = pathway.getMetabolitesData().get(Integer.toString(j)).getType();
 					//if (pathway.getComponent() == PathwaysFrameConstants.PROCESSES_COMPONENT ||
 					String keggId = pathway.getMetabolitesData().get(Integer.toString(j)).getKeggId();
+					ArrayList<String> metabolteSubstitutions = pathway.getMetabolitesData().get(Integer.toString(j)).getMetaboliteSubstitutions();
 					boolean drawMetabolite = true;
-					if (!LocalConfig.getInstance().getKeggIdMetaboliteMap().containsKey(keggId)) {
+					if (LocalConfig.getInstance().getKeggIdMetaboliteMap().containsKey(keggId) || 
+							metabolteSubstitutions.size() > 0) {
+						foundMetabolitesList.add(metabName);
+					} else {
 						if (!LocalConfig.getInstance().isGraphMissingMetabolitesSelected()) {
 							drawMetabolite = false;
 						}
 						//System.out.println(keggId + " not found");
-					} else {
-						foundMetabolitesList.add(metabName);
 					}
+//					if (!LocalConfig.getInstance().getKeggIdMetaboliteMap().containsKey(keggId)) {
+//						if (!LocalConfig.getInstance().isGraphMissingMetabolitesSelected()) {
+//							drawMetabolite = false;
+//						}
+//						//System.out.println(keggId + " not found");
+//					} else {
+//						foundMetabolitesList.add(metabName);
+//					}
 					if (drawMetabolite) {
 						//if (LocalConfig.getInstance().getSideSpeciesList().contains(pathway.getMetabolitesData().get(Integer.toString(j)).getKeggId()) ||
 						if (pathway.getMetabolitesData().get(Integer.toString(j)).getBorder().equals("0")) {

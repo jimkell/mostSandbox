@@ -370,12 +370,12 @@ public class PathwayFilesReader {
 								pm.setMetaboliteSubstitutions(LocalConfig.getInstance().getMetaboliteSubstitutionsMap().get(pm.getKeggId()));
 							}
 						}
-						if (pm.getAdditionalMetabolites().size() > 0) {
-							System.out.println(pm);
-						}
-						if (pm.getMetaboliteSubstitutions().size() > 0) {
-							System.out.println(pm);
-						}
+//						if (pm.getAdditionalMetabolites().size() > 0) {
+//							System.out.println(pm);
+//						}
+//						if (pm.getMetaboliteSubstitutions().size() > 0) {
+//							System.out.println(pm);
+//						}
 						metabolicPathways.get(id).getMetabolitesData().put(pm.getId(), pm);
 						String name = pm.getNames().get(0);
 						String abbr = pm.getAbbreviation();
