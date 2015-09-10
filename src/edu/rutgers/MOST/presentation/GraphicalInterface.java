@@ -13012,7 +13012,17 @@ public class GraphicalInterface extends JFrame {
 	
 	public void processVisualizationsData() {
 		clearVisualizationCollections();
+		PathwayFilesReader reader = new PathwayFilesReader();
+		// only read visualization csv files where data structure is not modified
+		// the first time visualize menu selected 
+		if (!pathwayFilesRead) {
+			reader.readOnceFiles();
+			pathwayFilesRead = true;
+		}
+		//reader.readFiles();
 		MetaboliteFactory f = new MetaboliteFactory("SBML");
+		ArrayList<String> additionalMetaboliteKeys = new ArrayList<String>(LocalConfig.getInstance().getAdditionalMetabolitesMap().keySet());
+		ArrayList<String> metaboliteSubstitutionKeys = new ArrayList<String>(LocalConfig.getInstance().getMetaboliteSubstitutionsMap().keySet());
 		if (f.getKeggIdColumnIndex() > -1) {
 			Vector<SBMLMetabolite> metabolites = f.getAllMetabolites();
 			for (int i = 0; i < metabolites.size(); i++) {
@@ -13024,6 +13034,12 @@ public class GraphicalInterface extends JFrame {
 					String metabId = Integer.toString(metabolites.get(i).getId());
 					String keggId = metabolites.get(i).getKeggId();
 					if (keggId != null && keggId.length() > 0) {
+						// replace key from model with key from KEGG database
+						for (int j = 0; j < additionalMetaboliteKeys.size(); j++) {
+							if (LocalConfig.getInstance().getAdditionalMetabolitesMap().get(additionalMetaboliteKeys.get(j)).contains(keggId)) {
+								keggId = additionalMetaboliteKeys.get(j);
+							}
+						}
 						LocalConfig.getInstance().getMetaboliteIdKeggIdMap().put(metabId, keggId);
 						if (LocalConfig.getInstance().getKeggIdMetaboliteMap().containsKey(keggId)) {
 							ArrayList<SBMLMetabolite> metabolitesList = LocalConfig.getInstance().getKeggIdMetaboliteMap().get(keggId);
@@ -13051,13 +13067,13 @@ public class GraphicalInterface extends JFrame {
 			//System.out.println(LocalConfig.getInstance().getKeggIdMetaboliteMap());
 		}
 		
-		PathwayFilesReader reader = new PathwayFilesReader();
-		// only read visualization csv files where data structure is not modified
-		// the first time visualize menu selected 
-		if (!pathwayFilesRead) {
-			reader.readOnceFiles();
-			pathwayFilesRead = true;
-		}
+//		PathwayFilesReader reader = new PathwayFilesReader();
+//		// only read visualization csv files where data structure is not modified
+//		// the first time visualize menu selected 
+//		if (!pathwayFilesRead) {
+//			reader.readOnceFiles();
+//			pathwayFilesRead = true;
+//		}
 		reader.readFiles();
 		
 		ArrayList<Object> unplottedReactions = new ArrayList<Object>(LocalConfig.getInstance().getReactionEquationMap().keySet());
