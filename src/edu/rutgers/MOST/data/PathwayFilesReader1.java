@@ -264,7 +264,7 @@ public class PathwayFilesReader1 {
 				}
 				reader.close();
 				//System.out.println("a " + additionalMetabolitesMap);
-				LocalConfig.getInstance().setAdditionalMetabolitesMap(additionalMetabolitesMap);
+				//LocalConfig.getInstance().setAdditionalMetabolitesMap(additionalMetabolitesMap);
 			} catch (IOException e) {
 				JOptionPane.showMessageDialog(null,                
 						"File Not Found Error.",                

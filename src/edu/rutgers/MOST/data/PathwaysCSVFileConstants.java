@@ -8,8 +8,7 @@ public class PathwaysCSVFileConstants {
 	public static final String PATHWAY_NAMES_FILE_NAME = "etc/visualization/pathway_names.csv";
 	public static final String PATHWAY_GRAPH_FILE_NAME = "etc/visualization/pathway_graphing_data1.csv";
 	public static final String METABOLITES_FILE_NAME = "etc/visualization/metabolites.csv";
-	// additional metabolites handle situations where either a metabolite has more than one KEGG Id in
-	// metabolites.csv, or a model has a different KEGG Id for a compound than KEGG does
+	// additional metabolites handle situations where a model has a different KEGG Id for a compound than KEGG does
 	public static final String ADDITIONAL_METABOLITES_FILE_NAME = "etc/visualization/additional_metabolites.csv";
 	public static final String METABOLITE_POSITIONS_FILE_NAME = "etc/visualization/pathway_metabolite_positions1.csv";
 	public static final String REACTIONS_FILE_NAME = "etc/visualization/reactions.csv";

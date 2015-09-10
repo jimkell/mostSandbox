@@ -21,6 +21,7 @@ public class PathwayFilesReader {
 	Map<String, PathwayMetaboliteData> metaboliteDataKeggIdMap = new HashMap<String, PathwayMetaboliteData>();
 	Map<String, String> metaboliteNameAbbrMap = new HashMap<String, String>();
 	Map<String, ArrayList<String>> additionalMetabolitesMap = new HashMap<String, ArrayList<String>>();
+	Map<String, ArrayList<String>> metaboliteSubstitutionsMap = new HashMap<String, ArrayList<String>>();
 	Map<String, PathwayReactionData> reactionDataKeggIdMap = new HashMap<String, PathwayReactionData>();
 	Map<String, ArrayList<String>> ecNumberKeggReactionIdMap = new HashMap<String, ArrayList<String>>();
 	
@@ -237,16 +238,16 @@ public class PathwayFilesReader {
 								ArrayList<String> idsList = new ArrayList<String>();
 								for (int i = 0; i < ids.length; i++) {
 									idsList.add(ids[i]);
-									PathwayMetaboliteData pm = new PathwayMetaboliteData();
-									pm.setKeggId(idsList.get(i));
-									pm.setNames(LocalConfig.getInstance().getMetaboliteDataKeggIdMap().get(keggId).getNames());
-									pm.setOccurence(0);
-									//System.out.println("pm " + pm);
-									LocalConfig.getInstance().getMetaboliteDataKeggIdMap().put(idsList.get(i), pm);
+//									PathwayMetaboliteData pm = new PathwayMetaboliteData();
+//									pm.setKeggId(idsList.get(i));
+//									pm.setNames(LocalConfig.getInstance().getMetaboliteDataKeggIdMap().get(keggId).getNames());
+//									pm.setOccurence(0);
+//									//System.out.println("pm " + pm);
+//									LocalConfig.getInstance().getMetaboliteDataKeggIdMap().put(idsList.get(i), pm);
 								}
 								additionalMetabolitesMap.put(keggId, idsList);
-								System.out.println("addl k " + keggId);
-								System.out.println("addl list " + idsList);
+//								System.out.println("addl k " + keggId);
+//								System.out.println("addl list " + idsList);
 							}
 						}
 					}
@@ -291,14 +292,16 @@ public class PathwayFilesReader {
 								for (int i = 0; i < ids.length; i++) {
 									idsList.add(ids[i]);
 								}
-								System.out.println("sub kegg id " + keggId);
-								System.out.println("sub list " + idsList);
+								metaboliteSubstitutionsMap.put(keggId, idsList);
+//								System.out.println("sub kegg id " + keggId);
+//								System.out.println("sub list " + idsList);
 							}
 						}
 					}
 					count += 1;
 				}
 				reader.close();
+				LocalConfig.getInstance().setMetaboliteSubstitutionsMap(metaboliteSubstitutionsMap);
 			} catch (IOException e) {
 				JOptionPane.showMessageDialog(null,                
 						"File Not Found Error.",                
@@ -327,6 +330,7 @@ public class PathwayFilesReader {
 				while ((dataArray = reader.readNext()) != null) {
 					if (count > 0) {
 						PathwayMetaboliteData pm = new PathwayMetaboliteData();
+						
 						String id = dataArray[PathwaysCSVFileConstants.METABOLITE_POSITIONS_ID_COLUMN];
 						for (int s = 0; s < dataArray.length; s++) {
 							if (s == PathwaysCSVFileConstants.METABOLITE_POSITIONS_METABOLITE_ID_COLUMN) {
@@ -359,6 +363,18 @@ public class PathwayFilesReader {
 							if (s == PathwaysCSVFileConstants.METABOLITE_POSITIONS_TYPE_COLUMN) {
 								pm.setType(dataArray[s]);
 							}
+							if (LocalConfig.getInstance().getAdditionalMetabolitesMap().containsKey(pm.getKeggId())) {
+								pm.setAdditionalMetabolites(LocalConfig.getInstance().getAdditionalMetabolitesMap().get(pm.getKeggId()));
+							}
+							if (LocalConfig.getInstance().getMetaboliteSubstitutionsMap().containsKey(pm.getKeggId())) {
+								pm.setMetaboliteSubstitutions(LocalConfig.getInstance().getMetaboliteSubstitutionsMap().get(pm.getKeggId()));
+							}
+						}
+						if (pm.getAdditionalMetabolites().size() > 0) {
+							System.out.println(pm);
+						}
+						if (pm.getMetaboliteSubstitutions().size() > 0) {
+							System.out.println(pm);
 						}
 						metabolicPathways.get(id).getMetabolitesData().put(pm.getId(), pm);
 						String name = pm.getNames().get(0);
