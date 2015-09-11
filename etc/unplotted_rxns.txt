@@ -146,3 +146,8 @@ reverse 47 KEGG Rxn Id R00850 [2.7.1.142] [103] [99] C00116 = C00093
 [C00116, C00092] [GLYC, G6P] [Glycerol, D-Glucose-6P] level [9.0] level pos [2.4]
 
 53, 54 consolidated
+
+not on KEGG site
+reverse 84 KEGG Rxn Id R07290 [2.8.3.16] [144] [149] C00313 = C00209
+[C00798, C00209] [Formyl-CoA, OXA] [Formyl-CoA, Oxalate] level [20.5] level pos [0.3] 
+[C00058, C00313] [Form, Oxalyl-CoA] [Formate, Oxalyl-CoA] level [21.2] level pos [0.3] 
