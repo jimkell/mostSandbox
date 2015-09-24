@@ -210,9 +210,9 @@ public class PathwayReactionData {
 		}
 
 		if (reversible.equals("0")) {
-			rxnBfr.append(reacBfr).append(" " + GraphicalInterfaceConstants.NOT_REVERSIBLE_ARROWS[2]).append(prodBfr);
+			rxnBfr.append(reacBfr).append(" " + GraphicalInterfaceConstants.HTML_NOT_REVERSIBLE_ARROW).append(prodBfr);
 		} else if (reversible.equals("1")) {
-			rxnBfr.append(reacBfr).append(" " + GraphicalInterfaceConstants.REVERSIBLE_ARROWS[1]).append(prodBfr);
+			rxnBfr.append(reacBfr).append(" " + GraphicalInterfaceConstants.HTML_REVERSIBLE_ARROW).append(prodBfr);
 		}
 			
 		this.equation = rxnBfr.toString();

@@ -262,7 +262,8 @@ public class PathwayReactionNodeFactory {
 					}
 				}
 				if (!equations.contains(reactions.get(i).getReactionEqunAbbr())) {
-					equations.add(reactions.get(i).getReactionEqunAbbr());
+					String htmlEquation = reactions.get(i).getReactionEqunAbbr().replace("<", "&lt;");
+					equations.add(htmlEquation);
 				}
 				if (!subsystems.contains(reactions.get(i).getSubsystem())) {
 					subsystems.add(reactions.get(i).getSubsystem());

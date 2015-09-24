@@ -12,10 +12,9 @@ public class PathwayReactionNode {
 	private String reactionName;
 	// used for node text
 	private String modelReactionName;
-//	private ArrayList<String> modelReactionNames;
 	private String dataId;
 	private String equation;
-	private String modelEquation;
+//	private String modelEquation;
 	private ArrayList<SBMLReaction> reactions;
 //	private ArrayList<String> modelEquations;
 //	private ArrayList<Double> fluxes;
@@ -99,13 +98,13 @@ public class PathwayReactionNode {
 		this.equation = equation;
 	}
 
-	public String getModelEquation() {
-		return modelEquation;
-	}
-
-	public void setModelEquation(String modelEquation) {
-		this.modelEquation = modelEquation;
-	}
+//	public String getModelEquation() {
+//		return modelEquation;
+//	}
+//
+//	public void setModelEquation(String modelEquation) {
+//		this.modelEquation = modelEquation;
+//	}
 
 //	public ArrayList<String> getModelEquations() {
 //		return modelEquations;
@@ -286,7 +285,7 @@ public class PathwayReactionNode {
 		+ ", modelReactionName=" + modelReactionName
 		+ ", dataId=" + dataId
 		+ ", equation=" + equation
-		+ ", modelEquation=" + modelEquation
+		//+ ", modelEquation=" + modelEquation
 		//+ ", modelEquations=" + modelEquations
 		//+ ", fluxes=" + fluxes
 		+ ", enzymeDataEquations=" + enzymeDataEquations
