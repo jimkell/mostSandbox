@@ -1093,6 +1093,16 @@ public class LocalConfig {
 	}
 	
 	// categorization
+	private ArrayList<Integer> cytosolIds;
+	
+	public ArrayList<Integer> getCytosolIds() {
+		return cytosolIds;
+	}
+
+	public void setCytosolIds(ArrayList<Integer> cytosolIds) {
+		this.cytosolIds = cytosolIds;
+	}
+
 	private ArrayList<Integer> cytosolExtraOrganismIds;
 
 	public ArrayList<Integer> getCytosolExtraOrganismIds() {

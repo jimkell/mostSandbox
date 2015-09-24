@@ -1457,6 +1457,8 @@ public class GraphicalInterface extends JFrame {
 		LocalConfig.getInstance().setEcNumberReactionMap(ecNumberReactionMap);
 		
 		// categorize reactions
+		ArrayList<Integer> cytosolIds = new ArrayList<Integer>();
+		LocalConfig.getInstance().setCytosolIds(cytosolIds);
 		ArrayList<Integer> cytosolExtraOrganismIds = new ArrayList<Integer>();
 		LocalConfig.getInstance().setCytosolExtraOrganismIds(cytosolExtraOrganismIds);
 		ArrayList<Integer> cytosolPeriplasmIds = new ArrayList<Integer>();

@@ -154,6 +154,12 @@ public class VisualizationReactionCategorizer {
 						}
 					} 
 				} else {
+					if (equn.getCompartmentList().size() == 1) {
+						if (equn.getCompartmentList().contains(LocalConfig.getInstance().getCytosolName())) {
+							LocalConfig.getInstance().getCytosolIds().add(id);
+						}
+					}
+					//System.out.println(LocalConfig.getInstance().getCytosolIds());
 					//System.out.println("comp list != 2 " + equn.getCompartmentList() + "id " + id);
 				}
 			}

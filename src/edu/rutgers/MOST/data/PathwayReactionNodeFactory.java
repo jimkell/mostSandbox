@@ -138,20 +138,20 @@ public class PathwayReactionNodeFactory {
 					addReactionIfNotPresent(reactions, reac.get(r), keggReactantIds, keggProductIds);
 				} else {
 					// if compartment is cytosol draw periplasm nodes if exist, then draw extra organism if exists
-					if (compartment.equals(LocalConfig.getInstance().getCytosolName())) {
-						if (LocalConfig.getInstance().getPeriplasmName() != null && 
-								LocalConfig.getInstance().getPeriplasmName().length() > 0 &&
-								equn.getCompartmentList().contains(LocalConfig.getInstance().getPeriplasmName())) {
-							addReactionIfNotPresent(reactions, reac.get(r), keggReactantIds, keggProductIds);
-						}
-						if (LocalConfig.getInstance().getExtraOrganismName() != null && 
-								LocalConfig.getInstance().getExtraOrganismName().length() > 0 &&
-								equn.getCompartmentList().contains(LocalConfig.getInstance().getExtraOrganismName())) {
-							addReactionIfNotPresent(reactions, reac.get(r), keggReactantIds, keggProductIds);
-//							System.out.println(reac.get(r).getReactionEqunAbbr());
-//							System.out.println(reac.get(r).getEcNumber());
-						}
-					}
+//					if (compartment.equals(LocalConfig.getInstance().getCytosolName())) {
+//						if (LocalConfig.getInstance().getPeriplasmName() != null && 
+//								LocalConfig.getInstance().getPeriplasmName().length() > 0 &&
+//								equn.getCompartmentList().contains(LocalConfig.getInstance().getPeriplasmName())) {
+//							addReactionIfNotPresent(reactions, reac.get(r), keggReactantIds, keggProductIds);
+//						}
+//						if (LocalConfig.getInstance().getExtraOrganismName() != null && 
+//								LocalConfig.getInstance().getExtraOrganismName().length() > 0 &&
+//								equn.getCompartmentList().contains(LocalConfig.getInstance().getExtraOrganismName())) {
+//							addReactionIfNotPresent(reactions, reac.get(r), keggReactantIds, keggProductIds);
+////							System.out.println(reac.get(r).getReactionEqunAbbr());
+////							System.out.println(reac.get(r).getEcNumber());
+//						}
+//					}
 					// uncomment to show that reactions are eliminated if not correct compartment
 //					System.out.println("n c " + equn.getCompartmentList());
 //					System.out.println(ec);
