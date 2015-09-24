@@ -62,7 +62,8 @@ public class PathwayReactionNodeFactory {
 			}
 		}
 		for (int n = 0; n < keggReactionIds.size(); n++) {
-			if (LocalConfig.getInstance().getKeggIdReactionMap().containsKey(keggReactionIds.get(n))) {
+			if (LocalConfig.getInstance().getKeggIdReactionMap() != null && 
+					LocalConfig.getInstance().getKeggIdReactionMap().containsKey(keggReactionIds.get(n))) {
 				ArrayList<SBMLReaction> reac = LocalConfig.getInstance().getKeggIdReactionMap().get(keggReactionIds.get(n));
 				if (keggReactionIds.size() == 1 && component == PathwaysFrameConstants.PROCESSES_COMPONENT) {
 					reactions.add(reac.get(0));

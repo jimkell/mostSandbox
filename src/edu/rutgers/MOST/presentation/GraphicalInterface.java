@@ -2264,7 +2264,7 @@ public class GraphicalInterface extends JFrame {
 		visualizeMenu.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
 				processVisualizationsData();
-				visualizeModel();
+				visualizeMenuProcesses();
 			}
 		});
         
@@ -12413,14 +12413,12 @@ public class GraphicalInterface extends JFrame {
 	
 	ActionListener compartmentNameAbbrOKActionListener = new ActionListener() {
 		public void actionPerformed(ActionEvent ae) {
-			VisualizationReactionCategorizer categorizer = new VisualizationReactionCategorizer();
 			LocalConfig.getInstance().setCytosolName(compNameFromCombo(getCompNameDialog().cbCytosolName));
 			LocalConfig.getInstance().setExtraOrganismName(compNameFromCombo(getCompNameDialog().cbExtraOrganismName));
 			LocalConfig.getInstance().setPeriplasmName(compNameFromCombo(getCompNameDialog().cbPeriplasmName));
 			getCompNameDialog().setVisible(false);
 			getCompNameDialog().dispose();
-			categorizer.categorizeReactions();
-			createVisualizationsPane();
+			visualizeModel();
 		}
 	};
 	
@@ -12622,12 +12620,9 @@ public class GraphicalInterface extends JFrame {
 		
 		reader.readFiles();
 		
-		ArrayList<Object> unplottedReactions = new ArrayList<Object>(LocalConfig.getInstance().getReactionEquationMap().keySet());
-		ArrayList<Integer> unplottedReactionIds = new ArrayList<Integer>();
-		for (int i = 0; i < unplottedReactions.size(); i++) {
-			unplottedReactionIds.add((int) unplottedReactions.get(i));
-		}
-		LocalConfig.getInstance().setUnplottedReactionIds(unplottedReactionIds);
+		// create list of ids from model to keep track of which reactions are unplotted
+		VisualizationReactionCategorizer categorizer = new VisualizationReactionCategorizer();
+		categorizer.createUnplottedReactionsList();
 		
 		// should only run this if ec number column exists
 		ECNumberMapCreator ecMapCreator = new ECNumberMapCreator();
@@ -12635,10 +12630,9 @@ public class GraphicalInterface extends JFrame {
 		// key = reaction id, value = PathwayReactionData (lists of KEGG ids of reactants and products)
 		ModelKeggEquationMapCreator modelKeggEquationMapCreator = new ModelKeggEquationMapCreator();
 		modelKeggEquationMapCreator.createKeggEquationMap();
-		//System.out.println("un " + unplottedReactionIds);
 	}
 	
-	public void visualizeModel() {
+	public void visualizeMenuProcesses() {
 		MetaboliteFactory f = new MetaboliteFactory("SBML");
 		String missingItem = "";
 		String missingData = "";
@@ -12669,7 +12663,7 @@ public class GraphicalInterface extends JFrame {
 				if (LocalConfig.getInstance().getListOfCompartments().size() > 0) {
 					createCompartmentNameDialog();
 				} else {
-					createVisualizationsPane();
+					visualizeModel();
 				}
 			}
 			//No option actually corresponds to "Yes to All" button
@@ -12681,9 +12675,20 @@ public class GraphicalInterface extends JFrame {
 			if (LocalConfig.getInstance().getListOfCompartments().size() > 0) {
 				createCompartmentNameDialog();
 			} else {
-				createVisualizationsPane();
+				visualizeModel();
 			}
 		}
+	}
+	
+	public void categorizeReactions() {
+		VisualizationReactionCategorizer categorizer = new VisualizationReactionCategorizer();
+		categorizer.categorizeReactions();
+	}
+	
+	public void visualizeModel() {
+		VisualizationReactionCategorizer categorizer = new VisualizationReactionCategorizer();
+		categorizer.categorizeReactions();
+		createVisualizationsPane();
 	}
 	
 	public void createVisualizationsPane() {
