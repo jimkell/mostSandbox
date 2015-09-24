@@ -860,6 +860,8 @@ public class PathwayFilesReader {
 	public void readOnceFiles() {
 		EnzymeDataReader r = new EnzymeDataReader();
 		r.readFile();
+		File pathwayNames = new File(PathwaysCSVFileConstants.PATHWAY_NAMES_FILE_NAME);
+		File pathwayGraph = new File(PathwaysCSVFileConstants.PATHWAY_GRAPH_FILE_NAME);
 		File metabolites = new File(PathwaysCSVFileConstants.METABOLITES_FILE_NAME);
 		File additionalMetabolites = new File(PathwaysCSVFileConstants.ADDITIONAL_METABOLITES_FILE_NAME);
 		File metaboliteSubstitutions = new File(PathwaysCSVFileConstants.METABOLITE_SUBSTITUTIONS_FILE_NAME);
@@ -867,6 +869,8 @@ public class PathwayFilesReader {
 		File drawOrder = new File(PathwaysCSVFileConstants.PATHWAY_DRAW_ORDER_FILE_NAME);
 		File sideSpecies = new File(PathwaysCSVFileConstants.PATHWAY_SIDE_SPECIES_FILE_NAME);
 		PathwayFilesReader reader = new PathwayFilesReader();
+		reader.readPathwayNamesFile(pathwayNames);
+		reader.readPathwayGraphFile(pathwayGraph);
 		reader.readMetabolitesFile(metabolites);
 		reader.readAdditionalMetabolitesFile(additionalMetabolites);
 		reader.readMetaboliteSubstitutionsFile(metaboliteSubstitutions);
@@ -879,19 +883,13 @@ public class PathwayFilesReader {
 	 * Files where data is read but resultant data structure may be modified
 	 */
 	public void readFiles() {
-//		EnzymeDataReader r = new EnzymeDataReader();
-//		r.readFile();
 		File pathways = new File(PathwaysCSVFileConstants.PATHWAYS_FILE_NAME);
-		File pathwayNames = new File(PathwaysCSVFileConstants.PATHWAY_NAMES_FILE_NAME);
-		File pathwayGraph = new File(PathwaysCSVFileConstants.PATHWAY_GRAPH_FILE_NAME);
 		File metabolitePositions = new File(PathwaysCSVFileConstants.METABOLITE_POSITIONS_FILE_NAME);
 		File reactionPositions = new File(PathwaysCSVFileConstants.REACTION_POSITIONS_FILE_NAME);
 		File externalMetabolites = new File(PathwaysCSVFileConstants.EXTERNAL_METABOLITES_FILE_NAME);
 		File transportMetabolites = new File(PathwaysCSVFileConstants.TRANSPORT_METABOLITES_FILE_NAME);
 		PathwayFilesReader reader = new PathwayFilesReader();
 		reader.readPathwaysFile(pathways);
-		reader.readPathwayNamesFile(pathwayNames);
-		reader.readPathwayGraphFile(pathwayGraph);
 		reader.readMetabolitePositionsFile(metabolitePositions);
 		reader.readReactionPositionsFile(reactionPositions);
 		reader.readExternalMetabolitesFile(externalMetabolites);
