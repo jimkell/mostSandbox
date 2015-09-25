@@ -354,6 +354,16 @@ public class GraphicalInterface extends JFrame {
 		GraphicalInterface.addReactionRowsDialog = addReactionRowsDialog;
 	}
 	
+	private static CompartmentsTable compartmentsTable;
+
+	public static CompartmentsTable getCompartmentsTable() {
+		return compartmentsTable;
+	}
+
+	public static void setCompartmentsTable(CompartmentsTable compartmentsTable) {
+		GraphicalInterface.compartmentsTable = compartmentsTable;
+	}
+
 	private static CompartmentNameDialog compNameDialog;
 
 	public static CompartmentNameDialog getCompNameDialog() {
@@ -392,16 +402,6 @@ public class GraphicalInterface extends JFrame {
 
 	public static FindReplaceDialog getFindReplaceDialog() {
 		return findReplaceDialog;
-	}
-	
-	private JFrame visualizationsPane;
-	
-	public JFrame getVisualizationsPane() {
-		return visualizationsPane;
-	}
-
-	public void setVisualizationsPane(JFrame visualizationsPane) {
-		this.visualizationsPane = visualizationsPane;
 	}
 
 	private static GDBBDialog gdbbDialog;
@@ -565,6 +565,16 @@ public class GraphicalInterface extends JFrame {
 
 	public void setUrlString(String urlString) {
 		this.urlString = urlString;
+	}
+	
+	private JFrame visualizationsPane;
+	
+	public JFrame getVisualizationsPane() {
+		return visualizationsPane;
+	}
+
+	public void setVisualizationsPane(JFrame visualizationsPane) {
+		this.visualizationsPane = visualizationsPane;
 	}
 
 	/*****************************************************************************/
@@ -1233,6 +1243,28 @@ public class GraphicalInterface extends JFrame {
 		setAboutDialog(aboutDialog);
 		getAboutDialog().licenseButton.addActionListener(new OpenUrlAction());
 		
+		ArrayList<SBMLCompartment> listOfCompartments = new ArrayList<SBMLCompartment>();
+		LocalConfig.getInstance().setListOfCompartments(listOfCompartments);
+		
+		CompartmentsTable compTable = new CompartmentsTable();
+		compTable.setIconImages(icons);
+		compTable.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+		compTable.setAlwaysOnTop(true);				
+		compTable.setLocationRelativeTo(null);
+		compTable.setVisible(false);
+		setCompartmentsTable(compTable);
+		CompartmentsTable.okButton.addActionListener(compartmentsTableOKButtonActionListener);
+		CompartmentsTable.cancelButton.addActionListener(compartmentsTableCancelButtonActionListener);
+		compTable.addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent evt) {
+				loadExistingItem.setEnabled(true);
+				getCompartmentsTable().setVisible(false);
+				getCompartmentsTable().dispose();
+				enableLoadItems();
+				disableMenuItemsForFVA(false);
+			}
+		});	
+		
 		File f = new File(ModelCollectionConstants.MODEL_COLLECTION_FILE_NAME);
 		ModelCollectionTable mcTable = new ModelCollectionTable(f);
 		mcTable.setIconImages(icons);
@@ -1443,9 +1475,6 @@ public class GraphicalInterface extends JFrame {
 		LocalConfig.getInstance().setMetaboliteNameAbbrMap(metaboliteNameAbbrMap);
 		
 		// sbml read
-		ArrayList<SBMLCompartment> listOfCompartments = new ArrayList<SBMLCompartment>();
-		LocalConfig.getInstance().setListOfCompartments(listOfCompartments);
-		
 		Map<String, ArrayList<String>> keggIdCompartmentMap = new HashMap<String, ArrayList<String>>();
 		LocalConfig.getInstance().setKeggIdCompartmentMap(keggIdCompartmentMap);
 		Map<String, ArrayList<SBMLMetabolite>> keggIdMetaboliteMap = new HashMap<String, ArrayList<SBMLMetabolite>>();
@@ -2275,7 +2304,8 @@ public class GraphicalInterface extends JFrame {
 
 		visualizeCompartmentMenu.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
-				
+				getCompartmentsTable().loadTable();
+				getCompartmentsTable().setVisible(true);
 			}
 		});
         
@@ -11848,6 +11878,7 @@ public class GraphicalInterface extends JFrame {
 	public void enableVisualizationItems(boolean state) {
 		arrangeCompMenu.setEnabled(state);
 		visualizeMenu.setEnabled(state);
+		visualizeCompartmentMenu.setEnabled(state);
 	}
 	
 	/**
@@ -12440,6 +12471,19 @@ public class GraphicalInterface extends JFrame {
 		}
 		return suffix;
 	}
+	
+	ActionListener compartmentsTableOKButtonActionListener = new ActionListener() {
+		public void actionPerformed(ActionEvent ae) {						
+			System.out.println(LocalConfig.getInstance().getSelectedCompartmentName());
+		}
+	};
+	
+	ActionListener compartmentsTableCancelButtonActionListener = new ActionListener() {
+		public void actionPerformed(ActionEvent ae) {						
+			enableLoadItems();
+			disableMenuItemsForFVA(false);
+		}
+	};
 	
 	public void assignKeggReactionIds() {
 		VisualizationKeggReactionProcessor processor = new VisualizationKeggReactionProcessor();

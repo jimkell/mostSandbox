@@ -81,7 +81,7 @@ public class SBMLModelReader {
 			} 
 			listOfCompartments.add(comp);
 		}
-		System.out.println(listOfCompartments);
+		//System.out.println(listOfCompartments);
 		LocalConfig.getInstance().setListOfCompartments(listOfCompartments);
 		
 		ArrayList<String> compartmentsList = new ArrayList<String>();

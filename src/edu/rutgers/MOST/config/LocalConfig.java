@@ -1281,6 +1281,16 @@ public class LocalConfig {
 		this.periplasmName = periplasmName;
 	}
 	
+	private String selectedCompartmentName;
+	
+	public String getSelectedCompartmentName() {
+		return selectedCompartmentName;
+	}
+
+	public void setSelectedCompartmentName(String selectedCompartmentName) {
+		this.selectedCompartmentName = selectedCompartmentName;
+	}
+
 	private String keggReactionIdColumnName;
 	
 	public String getKeggReactionIdColumnName() {
