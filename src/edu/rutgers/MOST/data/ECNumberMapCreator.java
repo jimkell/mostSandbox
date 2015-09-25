@@ -25,7 +25,8 @@ public class ECNumberMapCreator {
 	public void createEcNumberReactionMap() {
 		Map<String, ArrayList<SBMLReaction>> ecNumberReactionMap = new HashMap<String, ArrayList<SBMLReaction>>();
 		ReactionFactory rf = new ReactionFactory("SBML");
-		Vector<SBMLReaction> rxns = rf.getAllReactions();
+		Vector<SBMLReaction> rxns = rf.getReactionsByCompartment(LocalConfig.getInstance().getCytosolName());
+		//Vector<SBMLReaction> rxns = rf.getAllReactions();
 		VisualizationFluxesProcessor processor = new VisualizationFluxesProcessor();
 		maxUpperBound = 0;
 		for (int r = 0; r < rxns.size(); r++) {

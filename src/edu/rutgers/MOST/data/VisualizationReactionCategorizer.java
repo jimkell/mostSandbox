@@ -10,6 +10,7 @@ import edu.rutgers.MOST.config.LocalConfig;
 
 public class VisualizationReactionCategorizer {
 
+	TransportCollectionsCreator transportCollectionsCreator = new TransportCollectionsCreator();
 	public void removeExternalReactions() {
 		ArrayList<Integer> externalReactionIds = new ArrayList<Integer>();
 		MetaboliteFactory f = new MetaboliteFactory("SBML");
@@ -49,8 +50,7 @@ public class VisualizationReactionCategorizer {
 		//System.out.println("not plotted no ext " + LocalConfig.getInstance().getUnplottedReactionIds());
 	}
 	
-	public void categorizeReactions() {
-		TransportCollectionsCreator transportCollectionsCreator = new TransportCollectionsCreator();
+	public void categorizeTransportReactions() {
 		ReactionFactory rf = new ReactionFactory("SBML");
 		Vector<SBMLReaction> reactions = rf.getAllReactions();
 		Map<Integer, SBMLReaction> idReactionMap = new HashMap<Integer, SBMLReaction>();
@@ -154,66 +154,33 @@ public class VisualizationReactionCategorizer {
 						}
 					} 
 				} else {
-					if (equn.getCompartmentList().size() == 1) {
-						if (equn.getCompartmentList().contains(LocalConfig.getInstance().getCytosolName())) {
-							LocalConfig.getInstance().getCytosolIds().add(id);
-						}
-					}
+//					if (equn.getCompartmentList().size() == 1) {
+//						if (equn.getCompartmentList().contains(LocalConfig.getInstance().getCytosolName())) {
+//							LocalConfig.getInstance().getCytosolIds().add(id);
+//						}
+//					}
 					//System.out.println(LocalConfig.getInstance().getCytosolIds());
 					//System.out.println("comp list != 2 " + equn.getCompartmentList() + "id " + id);
 				}
 			}
 			LocalConfig.getInstance().setCytosolExtraOrganismIds(cytosolExtraOrganismIds);
+			LocalConfig.getInstance().setCytosolPeriplasmIds(cytosolPeriplasmIds);
+			LocalConfig.getInstance().setPeriplasmExtraOrganismIds(periplasmExtraOrganismIds);
 			// for some unknown reason, if it is attempted to remove these ids in if statements
 			// where added to this list (above), it skips some ids. commented out
 			//System.out.println("ce " + cytosolExtraOrganismIds);
-			for (int k = 0; k < cytosolExtraOrganismIds.size(); k++) {
-				transportCollectionsCreator.createTransportCollections(cytosolExtraOrganismIds.get(k), 
-						idReactionMap, TransportReactionConstants.CYTOSOL_EXTRAORGANISM_TRANSPORT);
-				if (LocalConfig.getInstance().getUnplottedReactionIds().contains(cytosolExtraOrganismIds.get(k))) {
-					LocalConfig.getInstance().getUnplottedReactionIds().remove(LocalConfig.getInstance().getUnplottedReactionIds().indexOf(cytosolExtraOrganismIds.get(k)));
-				}
-			}
-			//System.out.println("ce2 " + cytosolExtraOrganismIds2);
-			for (int k = 0; k < cytosolExtraOrganismIds2.size(); k++) {
-				transportCollectionsCreator.createTransportCollections(cytosolExtraOrganismIds2.get(k), 
-						idReactionMap, TransportReactionConstants.CYTOSOL_EXTRAORGANISM_TRANSPORT);
-				if (LocalConfig.getInstance().getUnplottedReactionIds().contains(cytosolExtraOrganismIds2.get(k))) {
-					LocalConfig.getInstance().getUnplottedReactionIds().remove(LocalConfig.getInstance().getUnplottedReactionIds().indexOf(cytosolExtraOrganismIds2.get(k)));
-				}
-			}
-			//System.out.println("cp " + cytosolPeriplasmIds);
-			for (int m = 0; m < cytosolPeriplasmIds.size(); m++) {
-				transportCollectionsCreator.createTransportCollections(cytosolPeriplasmIds.get(m), 
-						idReactionMap, TransportReactionConstants.CYTOSOL_PERIPLASM_TRANSPORT);
-				if (LocalConfig.getInstance().getUnplottedReactionIds().contains(cytosolPeriplasmIds.get(m))) {
-					LocalConfig.getInstance().getUnplottedReactionIds().remove(LocalConfig.getInstance().getUnplottedReactionIds().indexOf(cytosolPeriplasmIds.get(m)));
-				}
-			}
-			//System.out.println("cp2 " + cytosolPeriplasmIds2);
-			for (int m = 0; m < cytosolPeriplasmIds2.size(); m++) {
-				transportCollectionsCreator.createTransportCollections(cytosolPeriplasmIds2.get(m), 
-						idReactionMap, TransportReactionConstants.CYTOSOL_PERIPLASM_TRANSPORT);
-				if (LocalConfig.getInstance().getUnplottedReactionIds().contains(cytosolPeriplasmIds2.get(m))) {
-					LocalConfig.getInstance().getUnplottedReactionIds().remove(LocalConfig.getInstance().getUnplottedReactionIds().indexOf(cytosolPeriplasmIds2.get(m)));
-				}
-			}
-			//System.out.println("pe " + periplasmExtraOrganismIds);
-			for (int n = 0; n < periplasmExtraOrganismIds.size(); n++) {
-				transportCollectionsCreator.createTransportCollections(periplasmExtraOrganismIds.get(n), 
-						idReactionMap, TransportReactionConstants.PERIPLASM_EXTRAORGANISM_TRANSPORT);
-				if (LocalConfig.getInstance().getUnplottedReactionIds().contains(periplasmExtraOrganismIds.get(n))) {
-					LocalConfig.getInstance().getUnplottedReactionIds().remove(LocalConfig.getInstance().getUnplottedReactionIds().indexOf(periplasmExtraOrganismIds.get(n)));
-				}
-			}
-			//System.out.println("pe2 " + periplasmExtraOrganismIds2);
-			for (int n = 0; n < periplasmExtraOrganismIds2.size(); n++) {
-				transportCollectionsCreator.createTransportCollections(periplasmExtraOrganismIds2.get(n), 
-						idReactionMap, TransportReactionConstants.PERIPLASM_EXTRAORGANISM_TRANSPORT);
-				if (LocalConfig.getInstance().getUnplottedReactionIds().contains(periplasmExtraOrganismIds2.get(n))) {
-					LocalConfig.getInstance().getUnplottedReactionIds().remove(LocalConfig.getInstance().getUnplottedReactionIds().indexOf(periplasmExtraOrganismIds2.get(n)));
-				}
-			}
+			createTransportCollectionFromList(cytosolExtraOrganismIds, idReactionMap);
+			createTransportCollectionFromList(cytosolExtraOrganismIds2, idReactionMap);
+			createTransportCollectionFromList(cytosolPeriplasmIds, idReactionMap);
+			createTransportCollectionFromList(cytosolPeriplasmIds2, idReactionMap);
+			createTransportCollectionFromList(periplasmExtraOrganismIds, idReactionMap);
+			createTransportCollectionFromList(periplasmExtraOrganismIds2, idReactionMap);
+//			System.out.println("ce " + cytosolExtraOrganismIds);			
+//			System.out.println("ce2 " + cytosolExtraOrganismIds2);
+//			System.out.println("cp " + cytosolPeriplasmIds);
+//			System.out.println("cp2 " + cytosolPeriplasmIds2);
+//			System.out.println("pe " + periplasmExtraOrganismIds);
+//			System.out.println("pe2 " + periplasmExtraOrganismIds2);
 			Collections.sort(LocalConfig.getInstance().getUnplottedReactionIds());
 			//System.out.println("not plotted " + LocalConfig.getInstance().getUnplottedReactionIds());
 			try {
@@ -242,5 +209,15 @@ public class VisualizationReactionCategorizer {
 			unplottedReactionIds.add((int) unplottedReactions.get(i));
 		}
 		LocalConfig.getInstance().setUnplottedReactionIds(unplottedReactionIds);
+	}
+	
+	public void createTransportCollectionFromList(ArrayList<Integer> idsList, Map<Integer, SBMLReaction> idReactionMap) {
+		for (int n = 0; n < idsList.size(); n++) {
+			transportCollectionsCreator.createTransportCollections(idsList.get(n), 
+					idReactionMap, TransportReactionConstants.PERIPLASM_EXTRAORGANISM_TRANSPORT);
+			if (LocalConfig.getInstance().getUnplottedReactionIds().contains(idsList.get(n))) {
+				LocalConfig.getInstance().getUnplottedReactionIds().remove(LocalConfig.getInstance().getUnplottedReactionIds().indexOf(idsList.get(n)));
+			}
+		}
 	}
 }

@@ -434,6 +434,20 @@ public class ReactionFactory {
 
 		return index;
 	}
+	
+	public Vector<SBMLReaction> getReactionsByCompartment(String comp) {
+		Vector<SBMLReaction> reactions = getAllReactions();
+		Vector<SBMLReaction> reactionsByCompartment = new Vector<SBMLReaction>();
+		for (int i = 0; i < reactions.size(); i++) {
+			SBMLReactionEquation equn = (SBMLReactionEquation) LocalConfig.getInstance().getReactionEquationMap().get(reactions.get(i).getId());
+			if (equn.getCompartmentList().size() == 1 && equn.getCompartmentList().contains(comp)) {
+				System.out.println(equn.getCompartmentList());
+				reactionsByCompartment.add(reactions.get(i));
+			}
+		}
+		System.out.println(reactionsByCompartment);
+		return reactionsByCompartment;
+	}
 
 	private void processStackTrace( Exception e ) {
 		//e.printStackTrace();

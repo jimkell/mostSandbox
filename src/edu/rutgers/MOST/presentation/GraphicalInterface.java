@@ -12679,12 +12679,12 @@ public class GraphicalInterface extends JFrame {
 		VisualizationReactionCategorizer categorizer = new VisualizationReactionCategorizer();
 		categorizer.createUnplottedReactionsList();
 		
-		// should only run this if ec number column exists
-		ECNumberMapCreator ecMapCreator = new ECNumberMapCreator();
-		ecMapCreator.createEcNumberReactionMap();
-		// key = reaction id, value = PathwayReactionData (lists of KEGG ids of reactants and products)
-		ModelKeggEquationMapCreator modelKeggEquationMapCreator = new ModelKeggEquationMapCreator();
-		modelKeggEquationMapCreator.createKeggEquationMap();
+//		// should only run this if ec number column exists
+//		ECNumberMapCreator ecMapCreator = new ECNumberMapCreator();
+//		ecMapCreator.createEcNumberReactionMap();
+//		// key = reaction id, value = PathwayReactionData (lists of KEGG ids of reactants and products)
+//		ModelKeggEquationMapCreator modelKeggEquationMapCreator = new ModelKeggEquationMapCreator();
+//		modelKeggEquationMapCreator.createKeggEquationMap();
 	}
 	
 	public void visualizeMenuProcesses() {
@@ -12735,14 +12735,19 @@ public class GraphicalInterface extends JFrame {
 		}
 	}
 	
-	public void categorizeReactions() {
+	public void categorizeTransportReactions() {
 		VisualizationReactionCategorizer categorizer = new VisualizationReactionCategorizer();
-		categorizer.categorizeReactions();
+		categorizer.categorizeTransportReactions();
 	}
 	
 	public void visualizeModel() {
-		VisualizationReactionCategorizer categorizer = new VisualizationReactionCategorizer();
-		categorizer.categorizeReactions();
+		// should only run this if ec number column exists
+		ECNumberMapCreator ecMapCreator = new ECNumberMapCreator();
+		ecMapCreator.createEcNumberReactionMap();
+		// key = reaction id, value = PathwayReactionData (lists of KEGG ids of reactants and products)
+		ModelKeggEquationMapCreator modelKeggEquationMapCreator = new ModelKeggEquationMapCreator();
+		modelKeggEquationMapCreator.createKeggEquationMap();
+		categorizeTransportReactions();
 		createVisualizationsPane();
 	}
 	
