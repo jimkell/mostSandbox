@@ -700,7 +700,8 @@ public class GraphicalInterface extends JFrame {
 	public final JMenuItem loadMetabSuppDataItem = new JMenuItem("Load Metabolites Supplementary Data");
 	public final JMenuItem loadReacSuppDataItem = new JMenuItem("Load Reactions Supplementary Data");
 	public final JMenuItem arrangeCompMenu = new JMenuItem("Arrange Compartments");
-	public final JMenuItem visualizeMenu = new JMenuItem("Visualize");
+	public final JMenuItem visualizeMenu = new JMenuItem("Visualize Cytosol");
+	public final JMenuItem visualizeCompartmentMenu = new JMenuItem("Visualize Compartment");
 	public final JMenuItem setUpSolver = new JMenuItem("Select Solvers");
 	public final JMenuItem gurobiParametersItem = new JMenuItem(GurobiParameters.GUROBI_PARAMETERS_MENU_ITEM);
 	public final JMenuItem glpkParametersItem = new JMenuItem( GLPKParameters.GLPK_PARAMETERS_MENU_ITEM );
@@ -2266,6 +2267,15 @@ public class GraphicalInterface extends JFrame {
 			public void actionPerformed(ActionEvent ae) {
 				processVisualizationsData();
 				visualizeMenuProcesses();
+			}
+		});
+		
+		visualizationMenu.add(visualizeCompartmentMenu);
+		visualizeCompartmentMenu.setMnemonic(KeyEvent.VK_C);
+
+		visualizeCompartmentMenu.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ae) {
+				
 			}
 		});
         

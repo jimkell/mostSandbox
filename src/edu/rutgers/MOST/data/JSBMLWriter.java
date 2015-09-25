@@ -3,6 +3,7 @@ package edu.rutgers.MOST.data;
 
 import java.io.File;
 import java.util.ArrayList;
+
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
@@ -351,6 +352,7 @@ public class JSBMLWriter implements TreeModelListener{
 			this.parseAllMetabolites();
 		}
 		
+		@SuppressWarnings("deprecation")
 		public void parseAllMetabolites() {
 			MetaboliteFactory mFactory = new MetaboliteFactory(sourceType);
 			// TODO: change to size of collection
