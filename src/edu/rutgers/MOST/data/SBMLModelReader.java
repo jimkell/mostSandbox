@@ -65,19 +65,24 @@ public class SBMLModelReader {
 		
 		LocalConfig.getInstance().getMetaboliteUsedMap().clear();
 		
-		ArrayList<String> listOfCompartments = new ArrayList<String>();
+		ArrayList<SBMLCompartment> listOfCompartments = new ArrayList<SBMLCompartment>();
 		for (int c = 0; c < doc.getModel().getListOfCompartments().size(); c++) {
-			listOfCompartments.add(doc.getModel().getCompartment(c).getId().toString());
+			SBMLCompartment comp = new SBMLCompartment();
+			comp.setId(doc.getModel().getCompartment(c).getId().toString());
+			if (doc.getModel().getCompartment(c).getName() != null &&
+					doc.getModel().getCompartment(c).getName().toString().length() > 0) {
+				comp.setName(doc.getModel().getCompartment(c).getName().toString());
+			} else {
+				comp.setName(doc.getModel().getCompartment(c).getId().toString());
+			}
+			if (doc.getModel().getCompartment(c).getOutside() != null &&
+					doc.getModel().getCompartment(c).getOutside().toString().length() > 0) {
+				comp.setOutside(doc.getModel().getCompartment(c).getOutside().toString());
+			} 
+			listOfCompartments.add(comp);
 		}
-		//System.out.println(listOfCompartments);
+		System.out.println(listOfCompartments);
 		LocalConfig.getInstance().setListOfCompartments(listOfCompartments);
-		
-		ArrayList<String> listOfCompartmentNames = new ArrayList<String>();
-		for (int c = 0; c < doc.getModel().getListOfCompartments().size(); c++) {
-			listOfCompartmentNames.add(doc.getModel().getCompartment(c).toString());
-		}
-		//System.out.println(listOfCompartmentNames);
-		LocalConfig.getInstance().setListOfCompartmentNames(listOfCompartmentNames);
 		
 		ArrayList<String> compartmentsList = new ArrayList<String>();
 		ArrayList<String> metabKeggIds = new ArrayList<String>();

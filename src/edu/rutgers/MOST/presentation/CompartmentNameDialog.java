@@ -231,9 +231,9 @@ public class CompartmentNameDialog extends JDialog {
     		cbExtraOrganismName.removeAllItems();
     		//add all column names to from file comboboxes
     		for (int c = 0; c < LocalConfig.getInstance().getListOfCompartments().size(); c++) { 
-    			cbCytosolName.addItem(LocalConfig.getInstance().getListOfCompartments().get(c));
-    			cbPeriplasmName.addItem(LocalConfig.getInstance().getListOfCompartments().get(c));
-    			cbExtraOrganismName.addItem(LocalConfig.getInstance().getListOfCompartments().get(c));
+    			cbCytosolName.addItem(LocalConfig.getInstance().getListOfCompartments().get(c).getId());
+    			cbPeriplasmName.addItem(LocalConfig.getInstance().getListOfCompartments().get(c).getId());
+    			cbExtraOrganismName.addItem(LocalConfig.getInstance().getListOfCompartments().get(c).getId());
     		}
     		cbCytosolName.setSelectedIndex(-1);
     		cbPeriplasmName.setSelectedIndex(-1);

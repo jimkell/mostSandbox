@@ -12,10 +12,10 @@
       </unitDefinition>
     </listOfUnitDefinitions>
     <listOfCompartments>
-      <compartment id="Cytosol"/>
+      <compartment id="Cytosol" outside="Extraorganism"/>
       <compartment id="Extraorganism"/>
-      <compartment id="Apicoplast"/>
-      <compartment id="Mitochondria"/>
+	  <compartment id="Mitochondria" outside="Cytosol"/>
+	  <compartment id="Apicoplast" outside="Cytosol"/>
     </listOfCompartments>
     <listOfSpecies>
       <species id="M_10fthf_c" name="10_Formyltetrahydrofolate_C20H21N7O7" boundaryCondition="false" compartment="Cytosol">

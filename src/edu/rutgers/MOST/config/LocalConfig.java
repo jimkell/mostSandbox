@@ -14,6 +14,7 @@ import edu.rutgers.MOST.data.ModelReactionEquation;
 import edu.rutgers.MOST.data.PathwayMetaboliteData;
 import edu.rutgers.MOST.data.PathwayNameData;
 import edu.rutgers.MOST.data.PathwayReactionData;
+import edu.rutgers.MOST.data.SBMLCompartment;
 import edu.rutgers.MOST.data.SBMLMetabolite;
 import edu.rutgers.MOST.data.SBMLReaction;
 import edu.rutgers.MOST.data.TransportReactionNode;
@@ -962,24 +963,20 @@ public class LocalConfig {
 	}
 
 	// sbml file read - list from beginning of sbml file
-	private ArrayList<String> listOfCompartments;
-
-	public ArrayList<String> getListOfCompartments() {
+	private ArrayList<SBMLCompartment> listOfCompartments;
+	
+	public ArrayList<SBMLCompartment> getListOfCompartments() {
 		return listOfCompartments;
 	}
 
-	public void setListOfCompartments(ArrayList<String> listOfCompartments) {
+	public void setListOfCompartments(ArrayList<SBMLCompartment> listOfCompartments) {
 		this.listOfCompartments = listOfCompartments;
 	}
 	
-	private ArrayList<String> listOfCompartmentNames;
+	private ArrayList<String> listOfCompartmentIds;
 
-	public ArrayList<String> getListOfCompartmentNames() {
-		return listOfCompartmentNames;
-	}
-
-	public void setListOfCompartmentNames(ArrayList<String> listOfCompartmentNames) {
-		this.listOfCompartmentNames = listOfCompartmentNames;
+	public ArrayList<String> getListOfCompartmentIds() {
+		return listOfCompartmentIds;
 	}
 
 	// list from metabolites table

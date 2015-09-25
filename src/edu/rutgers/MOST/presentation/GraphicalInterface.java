@@ -54,6 +54,7 @@ import edu.rutgers.MOST.data.ReactionEquationUpdater;
 import edu.rutgers.MOST.data.ReactionFactory;
 import edu.rutgers.MOST.data.ReactionSupplementaryMaterialReader;
 import edu.rutgers.MOST.data.ReactionUndoItem;
+import edu.rutgers.MOST.data.SBMLCompartment;
 import edu.rutgers.MOST.data.SBMLMetabolite;
 import edu.rutgers.MOST.data.SBMLModelReader;
 import edu.rutgers.MOST.data.SBMLProduct;
@@ -1441,9 +1442,7 @@ public class GraphicalInterface extends JFrame {
 		LocalConfig.getInstance().setMetaboliteNameAbbrMap(metaboliteNameAbbrMap);
 		
 		// sbml read
-		ArrayList<String> listOfCompartmentNames = new ArrayList<String>();
-		LocalConfig.getInstance().setListOfCompartmentNames(listOfCompartmentNames);
-		ArrayList<String> listOfCompartments = new ArrayList<String>();
+		ArrayList<SBMLCompartment> listOfCompartments = new ArrayList<SBMLCompartment>();
 		LocalConfig.getInstance().setListOfCompartments(listOfCompartments);
 		
 		Map<String, ArrayList<String>> keggIdCompartmentMap = new HashMap<String, ArrayList<String>>();

@@ -12,16 +12,16 @@
       </unitDefinition>
     </listOfUnitDefinitions>
     <listOfCompartments>
-      <compartment id="c"/>
-      <compartment id="h"/>
-      <compartment id="m"/>
-      <compartment id="x"/>
-      <compartment id="f"/>
-      <compartment id="e"/>
-      <compartment id="n"/>
-      <compartment id="g"/>
-      <compartment id="s"/>
-      <compartment id="u"/>
+      <compartment id="c" name="Cytosol"/>
+      <compartment id="e" name="Extra-organism"/>
+      <compartment id="f" name="Flagellum"/>
+      <compartment id="g" name="Golgi Apparatus"/>
+      <compartment id="h" name="Chloroplast"/>
+      <compartment id="m" name="Mitochondria"/>
+      <compartment id="n" name="Nucleus"/>
+      <compartment id="s" name="Eyespot"/>
+      <compartment id="u" name="Thylakoid Lumen"/>
+      <compartment id="x" name="Glyoxysome"/>
     </listOfCompartments>
     <listOfSpecies>
       <species id="M_10fthf_c" name="10-Formyltetrahydrofolate" boundaryCondition="false" compartment="c">

@@ -12,14 +12,14 @@
       </unitDefinition>
     </listOfUnitDefinitions>
     <listOfCompartments>
-      <compartment id="Cytosol"/>
-      <compartment id="Mitochondria"/>
-      <compartment id="Endoplasmic_Reticulum"/>
-      <compartment id="Glycosome"/>
       <compartment id="Extracellular_space"/>
-      <compartment id="Nucleus"/>
-      <compartment id="Flagellum"/>
-      <compartment id="Acidocalcisome"/>
+	  <compartment id="Flagellum" outside="Extracellular_space"/>
+	  <compartment id="Cytosol" outside="Extracellular_space"/>
+	  <compartment id="Endoplasmic_Reticulum" outside="Extracellular_space"/>
+	  <compartment id="Mitochondria" outside="Extracellular_space"/>
+	  <compartment id="Nucleus" outside="Extracellular_space"/>
+	  <compartment id="Glycosome" outside="Extracellular_space"/>
+	  <compartment id="Acidocalcisome" outside="Extracellular_space"/>
     </listOfCompartments>
     <listOfSpecies>
       <species id="M_10fthf_c" name="M_10_Formyltetrahydrofolate_C20H21N7O7" boundaryCondition="false" compartment="Cytosol">

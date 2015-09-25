@@ -12,8 +12,8 @@
       </unitDefinition>
     </listOfUnitDefinitions>
     <listOfCompartments>
-      <compartment id="C_c"/>
-      <compartment id="C_e"/>
+      <compartment id="C_c" name="Cytoplasm"/>
+      <compartment id="C_e" name="Extracellular"/>
     </listOfCompartments>
     <listOfSpecies>
       <species id="M_10fthf_c" name="10fthf[c]" boundaryCondition="false" compartment="C_c">

@@ -12,8 +12,8 @@
       </unitDefinition>
     </listOfUnitDefinitions>
     <listOfCompartments>
-      <compartment id="C_c"/>
-      <compartment id="C_e"/>
+      <compartment id="C_e" name="Extraorganism"/>
+	  <compartment id="C_c" name="Cytosol"/>
     </listOfCompartments>
     <listOfSpecies>
       <species id="M_13dpg_c" name="3-Phospho-D-glyceroyl-phosphate" boundaryCondition="false" compartment="C_c">

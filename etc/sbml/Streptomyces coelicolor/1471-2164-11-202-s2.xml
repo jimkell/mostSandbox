@@ -12,8 +12,8 @@
       </unitDefinition>
     </listOfUnitDefinitions>
     <listOfCompartments>
-      <compartment id="Cytosol"/>
-      <compartment id="Extra_organism"/>
+      <compartment id="Extra_organism" metaid="metaid_3"/>
+	  <compartment id="Cytosol" metaid="metaid_4" outside="Extra_organism"/>
       <compartment/>
     </listOfCompartments>
     <listOfSpecies>

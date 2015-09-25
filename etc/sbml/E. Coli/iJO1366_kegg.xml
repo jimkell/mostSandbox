@@ -12,9 +12,9 @@
       </unitDefinition>
     </listOfUnitDefinitions>
     <listOfCompartments>
-      <compartment id="c"/>
-      <compartment id="e"/>
-      <compartment id="p"/>
+      <compartment id="c" name="Cytoplasm"/>
+      <compartment id="e" name="Extracellular"/>
+      <compartment id="p" name="Periplasm"/>
     </listOfCompartments>
     <listOfSpecies>
       <species id="M_10fthf_c" name="10-Formyltetrahydrofolate" boundaryCondition="false" compartment="c">

@@ -12,8 +12,8 @@
       </unitDefinition>
     </listOfUnitDefinitions>
     <listOfCompartments>
-      <compartment id="Cytosol"/>
       <compartment id="Extra_organism"/>
+	  <compartment id="Cytosol" outside="Extra_organism"/>
     </listOfCompartments>
     <listOfSpecies>
       <species id="M_10fthf_c" name="M_10_Formyltetrahydrofolate_C20H21N7O7" boundaryCondition="false" compartment="Cytosol">

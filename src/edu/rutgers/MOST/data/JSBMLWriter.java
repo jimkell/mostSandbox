@@ -364,6 +364,24 @@ public class JSBMLWriter implements TreeModelListener{
 			int metabRow = 0;
 			int blankMetabAbbrCount = 1;
 			compartments = new HashMap< String, Compartment >();
+			for (int c = 0; c < LocalConfig.getInstance().getListOfCompartments().size(); c++) {
+				String compId = LocalConfig.getInstance().getListOfCompartments().get(c).getId().toString();
+				String compName = compId;
+				if (LocalConfig.getInstance().getListOfCompartments().get(c).getName() != null &&
+						LocalConfig.getInstance().getListOfCompartments().get(c).getName().toString().length() > 0) {
+					compName = LocalConfig.getInstance().getListOfCompartments().get(c).getName().toString();
+				}  
+				if (!compartments.containsKey(compId)) {
+					Compartment temp = model.createCompartment(compId);
+					temp.setName(compName);
+					if (LocalConfig.getInstance().getListOfCompartments().get(c).getOutside() != null &&
+							LocalConfig.getInstance().getListOfCompartments().get(c).getOutside().toString().length() > 0) {
+						temp.setOutside(LocalConfig.getInstance().getListOfCompartments().get(c).getOutside().toString());
+					}
+					compartments.put(compId,temp);
+				}
+			}
+			
 			for (int i=0; i < length; i++) {
 				SBMLMetabolite curMeta = (SBMLMetabolite) mFactory.getMetaboliteByRow(i);
 				//SBMLMetabolite curMeta = (SBMLMetabolite) mFactory.getMetaboliteById(i);
@@ -380,8 +398,10 @@ public class JSBMLWriter implements TreeModelListener{
 					curMeta.setMetaboliteAbbreviation(abbr);
 					String comp = validator.replaceInvalidSBMLCharacters(curMeta.getCompartment());
 					String compTrim = comp.trim();
+					// leave this here for csv models where there is no list of compartments
 					if (!compartments.containsKey(compTrim)) {
 						Compartment temp = model.createCompartment(compTrim);
+						temp.setName(compTrim);
 						compartments.put(compTrim,temp);
 					}
 
