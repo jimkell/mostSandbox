@@ -31,49 +31,51 @@ public class TransportCollectionsCreator {
 			// a second species are transported from c to p
 			if (keggReactantIds.equals(keggProductIds)) {
 				createTransportReactionNodes(id, idReactionMap, transportType, 
-						keggReactantIds, keggProductIds, sideSpecies);
+						keggReactantIds, sideSpecies);
 			}
 		}
 	}
 	
 	public void createTransportReactionNodes(int id, Map<Integer, SBMLReaction> idReactionMap, String transportType, 
-			ArrayList<String> keggReactantIds, ArrayList<String> keggProductIds, String sideSpecies) {
+			ArrayList<String> keggReactantIds, String sideSpecies) {
 		TransportReactionNodeCreator creator = new TransportReactionNodeCreator();
-		String metabAbbr = createMetaboliteAbbreviation(LocalConfig.getInstance().getKeggIdMetaboliteMap().get(keggReactantIds.get(0)).get(0).getMetaboliteAbbreviation());
-		//System.out.println(metabAbbr);
-		//System.out.println(keggReactantIds);
-		if (LocalConfig.getInstance().getSideSpeciesList().contains(keggReactantIds.get(0))) {
-			if (!LocalConfig.getInstance().getTransportMetaboliteIds().contains(keggReactantIds.get(0))) {
-				LocalConfig.getInstance().getSideSpeciesTransportMetaboliteKeggIdMap().put(metabAbbr, LocalConfig.getInstance().getKeggIdMetaboliteMap().get(keggReactantIds.get(0)).get(0).getKeggId());
+		if (keggReactantIds.size() > 0) {
+			String metabAbbr = createMetaboliteAbbreviation(LocalConfig.getInstance().getKeggIdMetaboliteMap().get(keggReactantIds.get(0)).get(0).getMetaboliteAbbreviation());
+			//System.out.println(metabAbbr);
+			//System.out.println(keggReactantIds);
+			if (LocalConfig.getInstance().getSideSpeciesList().contains(keggReactantIds.get(0))) {
+				if (!LocalConfig.getInstance().getTransportMetaboliteIds().contains(keggReactantIds.get(0))) {
+					LocalConfig.getInstance().getSideSpeciesTransportMetaboliteKeggIdMap().put(metabAbbr, LocalConfig.getInstance().getKeggIdMetaboliteMap().get(keggReactantIds.get(0)).get(0).getKeggId());
+					if (keggReactantIds.size() == 1) {
+						TransportReactionNode trn = creator.createTransportReactionNode(keggReactantIds, metabAbbr, 
+								id, idReactionMap, sideSpecies, transportType);
+						if (LocalConfig.getInstance().getSideSpeciesTransportReactionNodeMap().containsKey(keggReactantIds.get(0))) {
+							ArrayList<TransportReactionNode> trnList = LocalConfig.getInstance().getSideSpeciesTransportReactionNodeMap().get(keggReactantIds.get(0));
+							trnList.add(trn);
+							LocalConfig.getInstance().getSideSpeciesTransportReactionNodeMap().put(keggReactantIds.get(0), trnList);
+						} else {
+							ArrayList<TransportReactionNode> trnList = new ArrayList<TransportReactionNode>();
+							trnList.add(trn);
+							LocalConfig.getInstance().getSideSpeciesTransportReactionNodeMap().put(keggReactantIds.get(0), trnList);
+						}
+						//System.out.println(idReactionMap.get(id).getReactionAbbreviation());
+					}
+				}
+			} else if (LocalConfig.getInstance().getTransportMetaboliteIds().contains(keggReactantIds.get(0))) {
 				if (keggReactantIds.size() == 1) {
 					TransportReactionNode trn = creator.createTransportReactionNode(keggReactantIds, metabAbbr, 
 							id, idReactionMap, sideSpecies, transportType);
-					if (LocalConfig.getInstance().getSideSpeciesTransportReactionNodeMap().containsKey(keggReactantIds.get(0))) {
-						ArrayList<TransportReactionNode> trnList = LocalConfig.getInstance().getSideSpeciesTransportReactionNodeMap().get(keggReactantIds.get(0));
+//					System.out.println("abbr " + idReactionMap.get(id).getReactionAbbreviation());
+//					System.out.println(trn);
+					if (LocalConfig.getInstance().getKeggIdTransportReactionsMap().containsKey(keggReactantIds.get(0))) {
+						ArrayList<TransportReactionNode> trnList = LocalConfig.getInstance().getKeggIdTransportReactionsMap().get(keggReactantIds.get(0));
 						trnList.add(trn);
-						LocalConfig.getInstance().getSideSpeciesTransportReactionNodeMap().put(keggReactantIds.get(0), trnList);
+						LocalConfig.getInstance().getKeggIdTransportReactionsMap().put(keggReactantIds.get(0), trnList);
 					} else {
 						ArrayList<TransportReactionNode> trnList = new ArrayList<TransportReactionNode>();
 						trnList.add(trn);
-						LocalConfig.getInstance().getSideSpeciesTransportReactionNodeMap().put(keggReactantIds.get(0), trnList);
+						LocalConfig.getInstance().getKeggIdTransportReactionsMap().put(keggReactantIds.get(0), trnList);
 					}
-					//System.out.println(idReactionMap.get(id).getReactionAbbreviation());
-				}
-			}
-		} else if (LocalConfig.getInstance().getTransportMetaboliteIds().contains(keggReactantIds.get(0))) {
-			if (keggReactantIds.size() == 1) {
-				TransportReactionNode trn = creator.createTransportReactionNode(keggReactantIds, metabAbbr, 
-						id, idReactionMap, sideSpecies, transportType);
-//				System.out.println("abbr " + idReactionMap.get(id).getReactionAbbreviation());
-//				System.out.println(trn);
-				if (LocalConfig.getInstance().getKeggIdTransportReactionsMap().containsKey(keggReactantIds.get(0))) {
-					ArrayList<TransportReactionNode> trnList = LocalConfig.getInstance().getKeggIdTransportReactionsMap().get(keggReactantIds.get(0));
-					trnList.add(trn);
-					LocalConfig.getInstance().getKeggIdTransportReactionsMap().put(keggReactantIds.get(0), trnList);
-				} else {
-					ArrayList<TransportReactionNode> trnList = new ArrayList<TransportReactionNode>();
-					trnList.add(trn);
-					LocalConfig.getInstance().getKeggIdTransportReactionsMap().put(keggReactantIds.get(0), trnList);
 				}
 			}
 		}

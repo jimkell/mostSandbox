@@ -12529,105 +12529,6 @@ public class GraphicalInterface extends JFrame {
 		}
 	}
 	
-	public void assignKeggReactionIdsFromECNumbers() {
-		// this method would appear to be O(n^3), but the two inner loops are very small, 
-		// the number of reactions that map to the same ec number in the file is small ~<= 2 and
-		// the maximum number of kegg reaction ids that map to one EC Number from the  
-		// reactions.csv is 26 and most are < 4
-		VisualizationKeggReactionProcessor processor = new VisualizationKeggReactionProcessor();
-		ArrayList<String> ecNumbersFromModel = new ArrayList<String>(LocalConfig.getInstance().getEcNumberReactionMap().keySet());
-		int keggIdColumn = -1;
-		for (int i = 0; i < LocalConfig.getInstance().getReactionsMetaColumnNames().size(); i++) {
-			if (LocalConfig.getInstance().getReactionsMetaColumnNames().get(i).contains(GraphicalInterfaceConstants.KEGG_ID_REACTIONS_COLUMN_NAMES[0])) {
-				keggIdColumn = GraphicalInterfaceConstants.REACTIONS_COLUMN_NAMES.length + i;
-			} else if (LocalConfig.getInstance().getReactionsMetaColumnNames().get(i).contains(GraphicalInterfaceConstants.KEGG_ID_REACTIONS_COLUMN_NAMES[1])) {
-				keggIdColumn = GraphicalInterfaceConstants.REACTIONS_COLUMN_NAMES.length + i;
-			}
-		}
-		//System.out.println("ec from model " + ecNumbersFromModel.size());
-		// ec numbers found in model
-		for (int r = 0; r < ecNumbersFromModel.size(); r++) {
-			//System.out.println(ecNumbersFromModel.get(r));
-			ArrayList<SBMLReaction> ecSBMLReactions = LocalConfig.getInstance().getEcNumberReactionMap().get(ecNumbersFromModel.get(r));
-			//System.out.println("reactions from ec number " + ecSBMLReactions.size());
-			for (int s = 0; s < ecSBMLReactions.size(); s++) {
-				//					System.out.println("reac id " + ecSBMLReactions.get(s).getId());
-				if (LocalConfig.getInstance().getModelKeggEquationMap().containsKey(Integer.toString(ecSBMLReactions.get(s).getId()))) {
-					// data from model
-					PathwayReactionData modelData = LocalConfig.getInstance().getModelKeggEquationMap().get(Integer.toString(ecSBMLReactions.get(s).getId()));
-					//						System.out.println(prd.getKeggReactantIds());
-					//						System.out.println(prd.getKeggProductIds());
-					if (LocalConfig.getInstance().getEcNumberKeggReactionIdMap().containsKey(ecNumbersFromModel.get(r))) {
-						ArrayList<String> keggReactionIds = LocalConfig.getInstance().getEcNumberKeggReactionIdMap().get(ecNumbersFromModel.get(r));
-						//System.out.println("ec num kegg id from file " + keggReactionIds.size());
-						for (int j = 0; j < keggReactionIds.size(); j++) {
-							if (LocalConfig.getInstance().getReactionDataKeggIdMap().containsKey(keggReactionIds.get(j))) {
-								// data from reactions.csv file
-								PathwayReactionData fileData = LocalConfig.getInstance().getReactionDataKeggIdMap().get(keggReactionIds.get(j));
-								if (processor.keggReactionIdFound(fileData.getKeggReactantIds(), fileData.getKeggProductIds(), 
-										modelData.getKeggReactantIds(), modelData.getKeggProductIds(), "forward")) {
-									try {
-										updateReactionsCellById(fileData.getKeggReactionId(), ecSBMLReactions.get(s).getId(), keggIdColumn);
-									} catch (Exception e) {
-										keggIdColumn -= 1;
-										try {
-											updateReactionsCellById(fileData.getKeggReactionId(), ecSBMLReactions.get(s).getId(), keggIdColumn);
-										} catch (Exception e2) {
-											
-										}
-									}
-								} else {
-									if (processor.keggReactionIdFound(fileData.getKeggReactantIds(), fileData.getKeggProductIds(), 
-											modelData.getKeggProductIds(), modelData.getKeggReactantIds(), "reverse")) {
-										try {
-											updateReactionsCellById(fileData.getKeggReactionId(), ecSBMLReactions.get(s).getId(), keggIdColumn);
-										} catch (Exception e) {
-											
-										}
-									}
-								}
-							} else {
-								// is this possible?
-								System.out.println(keggReactionIds.get(j) + "not found in file");
-							}
-						}
-					} else {
-						// ec number not present in file
-						// consider same as not having ec number?
-						// need to search entire file here
-						//							System.out.println("reac id " + ecSBMLReactions.get(s).getId());
-						//							System.out.println(modelData.getKeggReactantIds());
-						//							System.out.println(modelData.getKeggProductIds());
-						//							System.out.println(ecNumbersFromModel.get(r) + " not found in file");
-						ArrayList<String> reactionDataKeggIds = new ArrayList<String>(LocalConfig.getInstance().getReactionDataKeggIdMap().keySet());
-						for (int d = 0; d < reactionDataKeggIds.size(); d++) {
-							PathwayReactionData fileData = LocalConfig.getInstance().getReactionDataKeggIdMap().get(reactionDataKeggIds.get(d));
-							//								System.out.println(fileData.getKeggReactionId());
-							//								System.out.println(fileData.getKeggReactantIds());
-							//								System.out.println(fileData.getKeggProductIds());
-							if (processor.keggReactionIdFound(fileData.getKeggReactantIds(), fileData.getKeggProductIds(), 
-									modelData.getKeggReactantIds(), modelData.getKeggProductIds(), "forward")) {
-								//									System.out.println(ecNumbersFromModel.get(r));
-								//									System.out.println("id " + fileData.getKeggReactionId());
-								updateReactionsCellById(fileData.getKeggReactionId(), ecSBMLReactions.get(s).getId(), keggIdColumn);
-							} else {
-								if (processor.keggReactionIdFound(fileData.getKeggReactantIds(), fileData.getKeggProductIds(), 
-										modelData.getKeggProductIds(), modelData.getKeggReactantIds(), "reverse")) {
-									//										System.out.println(ecNumbersFromModel.get(r));
-									//										System.out.println("id " + fileData.getKeggReactionId());
-									updateReactionsCellById(fileData.getKeggReactionId(), ecSBMLReactions.get(s).getId(), keggIdColumn);
-								}
-							}
-						}
-					}
-				} else {
-					// this happens for reactions containing metabolites that have no kegg ids
-					//System.out.println("not found in model equns");
-				}
-			}
-		}
-	}
-	
 	/**
 	 * Sets Visualization Options defaults on startup of Graphical Interface
 	 */
@@ -12741,12 +12642,20 @@ public class GraphicalInterface extends JFrame {
 	}
 	
 	public void visualizeModel() {
+		ReactionFactory rf = new ReactionFactory("SBML");
+		Vector<SBMLReaction> rxns = null;
+		if (LocalConfig.getInstance().getCytosolName() != null && LocalConfig.getInstance().getCytosolName().length() > 0) {
+			rxns = rf.getAllReactions();
+		} else {
+			rxns = rf.getReactionsByCompartment(LocalConfig.getInstance().getCytosolName());
+		}
 		// should only run this if ec number column exists
 		ECNumberMapCreator ecMapCreator = new ECNumberMapCreator();
-		ecMapCreator.createEcNumberReactionMap();
+		ecMapCreator.createEcNumberReactionMap(rxns);
 		// key = reaction id, value = PathwayReactionData (lists of KEGG ids of reactants and products)
 		ModelKeggEquationMapCreator modelKeggEquationMapCreator = new ModelKeggEquationMapCreator();
 		modelKeggEquationMapCreator.createKeggEquationMap();
+		assignKeggReactionIds();
 		categorizeTransportReactions();
 		createVisualizationsPane();
 	}

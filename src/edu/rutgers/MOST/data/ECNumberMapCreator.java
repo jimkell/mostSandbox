@@ -20,12 +20,15 @@ public class ECNumberMapCreator {
 	/**
 	 * EC Number map created to be used for getting information from loaded
 	 * model by EC Number. To avoid going through reactions twice, max upper bound
-	 * found here, flux data processed further by VisualizationFluxesProcessor
+	 * found here, flux data processed further by VisualizationFluxesProcessor.
+	 * If reaction is identified by EC Number, the only reason it should be rejected is
+	 * if main species in reaction are different from main species in visualization diagram.
+	 * This often occurs with sugars for example.
 	 */
-	public void createEcNumberReactionMap() {
+	public void createEcNumberReactionMap(Vector<SBMLReaction> rxns) {
 		Map<String, ArrayList<SBMLReaction>> ecNumberReactionMap = new HashMap<String, ArrayList<SBMLReaction>>();
-		ReactionFactory rf = new ReactionFactory("SBML");
-		Vector<SBMLReaction> rxns = rf.getReactionsByCompartment(LocalConfig.getInstance().getCytosolName());
+		//ReactionFactory rf = new ReactionFactory("SBML");
+		//Vector<SBMLReaction> rxns = rf.getReactionsByCompartment(LocalConfig.getInstance().getCytosolName());
 		//Vector<SBMLReaction> rxns = rf.getAllReactions();
 		VisualizationFluxesProcessor processor = new VisualizationFluxesProcessor();
 		maxUpperBound = 0;

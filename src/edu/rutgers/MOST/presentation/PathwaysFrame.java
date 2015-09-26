@@ -41,14 +41,13 @@ import javax.swing.JPopupMenu;
 import org.apache.commons.collections15.Transformer;                                                                 
 import org.apache.commons.collections15.functors.ChainedTransformer;                                                 
                                                                                                                      
-
-
-
 import edu.rutgers.MOST.config.LocalConfig;
 import edu.rutgers.MOST.data.ExternalMetaboliteData;
 import edu.rutgers.MOST.data.ExternalMetaboliteNode;
+import edu.rutgers.MOST.data.ExternalMetaboliteNodeFactory;
 import edu.rutgers.MOST.data.MetabolicPathway;
 import edu.rutgers.MOST.data.PathwayMetaboliteNode;
+import edu.rutgers.MOST.data.PathwayMetaboliteNodeFactory;
 import edu.rutgers.MOST.data.PathwayNameNode;
 import edu.rutgers.MOST.data.PathwayReactionNode;
 import edu.rutgers.MOST.data.PathwayReactionNodeFactory;
@@ -214,8 +213,28 @@ public class PathwaysFrame extends JApplet {
     	/**************************************************************************/
     	// end create menu bar
     	/**************************************************************************/
-               
+         
     	processData(component);
+//    	metabPosMap = LocalConfig.getInstance().getMetabPosMap();
+//    	metaboliteList = LocalConfig.getInstance().getPathwaysFrameMetaboliteList();
+//    	reactionMap = LocalConfig.getInstance().getPathwaysFrameReactionMap();
+//    	reactionList = LocalConfig.getInstance().getPathwaysFrameReactionList();
+//    	borderList = LocalConfig.getInstance().getBorderList();
+//    	noBorderList = LocalConfig.getInstance().getNoBorderList(); 
+//    	pathwayNames = LocalConfig.getInstance().getPathwayNames();
+//    	metabolites = LocalConfig.getInstance().getPathwaysFrameMetabolites();
+//    	smallMainMetabolites = LocalConfig.getInstance().getSmallMainMetabolites(); 
+//    	sideMetabolites = LocalConfig.getInstance().getSideMetabolites(); 
+//    	cofactors = LocalConfig.getInstance().getCofactors(); 
+//    	reactions = LocalConfig.getInstance().getPathwaysFrameReactions(); 
+//    	fluxMap = LocalConfig.getInstance().getPathwaysFrameFluxMap(); 
+//    	colorMap = LocalConfig.getInstance().getPathwaysFrameColorMap();
+//    	koReactions = LocalConfig.getInstance().getPathwaysFrameKoReactions();
+//    	foundMetabolitesList = LocalConfig.getInstance().getPathwaysFrameFoundMetabolitesList();
+//    	foundReactionsList = LocalConfig.getInstance().getPathwaysFrameFoundReactionsList();
+//    	startPosMap = LocalConfig.getInstance().getPathwaysFrameStartPosMap();
+//    	externalMetaboliteNodeList = LocalConfig.getInstance().getExternalMetaboliteNodeList();
+//    	transportMetaboliteNodeList = LocalConfig.getInstance().getTransportMetaboliteNodeList();
     	
     	// create graph
         graph = new SparseMultigraph<String, Number>();
@@ -500,60 +519,41 @@ public class PathwaysFrame extends JApplet {
 								cofactors.add(metabName);
 							}
 						}
-						PathwayMetaboliteNode pn = new PathwayMetaboliteNode();
-						pn.setDataId(pathway.getMetabolitesData().get(Integer.toString(j)).getId());
+						//PathwayMetaboliteNode pn = new PathwayMetaboliteNode();
+						//pn.setDataId(pathway.getMetabolitesData().get(Integer.toString(j)).getId());
 						double x = 0;
 						double y = 0;
 						x = startX + PathwaysFrameConstants.HORIZONTAL_INCREMENT*pathway.getMetabolitesData().get(Integer.toString(j)).getLevel();
 						y = startY + PathwaysFrameConstants.VERTICAL_INCREMENT*pathway.getMetabolitesData().get(Integer.toString(j)).getLevelPosition();
-						pn.setxPosition(x);
-						pn.setyPosition(y);
-						pn.setType(type);
+//						pn.setxPosition(x);
+//						pn.setyPosition(y);
+//						pn.setType(type);
 						if (x > maxX) {
 							maxX = x;
 						}
 						if (y > maxY) {
 							maxY = y;
 						}
-						pn.setAbbreviation(pathway.getMetabolitesData().get(Integer.toString(j)).getAbbreviation());
-						pn.setName(pathway.getMetabolitesData().get(Integer.toString(j)).getName());
+						PathwayMetaboliteNodeFactory pmnf = new PathwayMetaboliteNodeFactory();
+						PathwayMetaboliteNode pn = pmnf.createPathwayMetaboliteNode(pathway.getMetabolitesData().get(Integer.toString(j)).getId(), 
+								x, y, type, pathway.getMetabolitesData().get(Integer.toString(j)).getAbbreviation(), 
+								pathway.getMetabolitesData().get(Integer.toString(j)).getName());		
+//						pn.setDataId(pathway.getMetabolitesData().get(Integer.toString(j)).getId());
+//						pn.setxPosition(x);
+//						pn.setyPosition(y);
+//						pn.setType(type);
+//						pn.setAbbreviation(pathway.getMetabolitesData().get(Integer.toString(j)).getAbbreviation());
+//						pn.setName(pathway.getMetabolitesData().get(Integer.toString(j)).getName());
 						pathway.getMetabolitesNodes().put(pn.getDataId(), pn);
 						metabPosMap.put(metabName, new String[] {Double.toString(x), Double.toString(y)});
 						// create transport metabolite if kegg id in transport metabolite file
 						//String keggId = pathway.getMetabolitesData().get(Integer.toString(j)).getKeggId();
 						if (pathway.getTransportMetabolitesData().containsKey(keggId)) {
 							ExternalMetaboliteData emd = pathway.getTransportMetabolitesData().get(keggId);
-							ExternalMetaboliteNode emn = new ExternalMetaboliteNode();
-							emn.setxPosition(pn.getxPosition());
-							emn.setyPosition(pn.getyPosition());
-							emn.setKeggId(keggId);
-							//emn.setFluxValue(pn.getFluxValue());
-							String abbr = emd.getAbbreviation();
-							String name = emd.getName();
-							if (LocalConfig.getInstance().getKeggIdMetaboliteMap().containsKey(keggId)) {
-								String metabAbbr = LocalConfig.getInstance().getKeggIdMetaboliteMap().get(keggId).get(0).getMetaboliteAbbreviation();
-								// check if metabolite ends with "_x"
-								String ch = metabAbbr.substring(metabAbbr.length() - 2, metabAbbr.length() - 1);
-								if (ch.equals("_")) {
-									abbr = metabAbbr.substring(2, metabAbbr.length() - 2);
-								} else {
-									abbr = metabAbbr.substring(2);
-								}
-								name += " " + abbr;
-							}
-							if (LocalConfig.getInstance().getMetaboliteNameAbbrMap().containsKey(name)) {
-								name = name + duplicateSuffix(name, LocalConfig.getInstance().getMetaboliteNameAbbrMap());
-							}
-							LocalConfig.getInstance().getMetaboliteNameAbbrMap().put(name, abbr);
-							emn.setAbbreviation(abbr);
-							emn.setName(name);
-							emn.setKeggId(emd.getKeggMetaboliteId());
-							emn.setPosition(emd.getPosition());
-							emn.setOffset(emd.getOffset());
-							emn.setDirection(emd.getDirection());
-							//emn.setReversible(reversible);
-							//emn.setReactionDisplayName(displayName);
-							//System.out.println(emn);
+							ExternalMetaboliteNodeFactory emnf = new ExternalMetaboliteNodeFactory();
+							ExternalMetaboliteNode emn = emnf.createExternalMetaboliteNode(pn.getxPosition(), pn.getyPosition(), emd.getKeggMetaboliteId(), 
+									emd.getAbbreviation(), emd.getName(), emd.getPosition(), 
+									emd.getOffset(), emd.getDirection());
 							transportMetaboliteNodeList.add(emn);
 							TransportReactionNode trn = new TransportReactionNode();
 							trn.setCytosolName(metabName);
@@ -717,52 +717,10 @@ public class PathwaysFrame extends JApplet {
 		String borderBottomY = Double.toString(maxY + PathwaysFrameConstants.BOTTOM_SPACE + PathwaysFrameConstants.METABOLITE_NODE_HEIGHT);
 		
 		// draw cell border
-		metabPosMap.put("1", new String[] {borderLeftX, borderTopY}); 
-		metabPosMap.put("2", new String[] {borderRightX, borderTopY}); 
-		metabPosMap.put("3", new String[] {borderRightX, borderBottomY});
-		metabPosMap.put("4", new String[] {borderLeftX, borderBottomY});                                                         
-
-		reactionMap.put("1", new String[] {"1", "2", "false"});
-		reactionMap.put("2", new String[] {"2", "3", "false"});
-		reactionMap.put("3", new String[] {"3", "4", "false"});
-		reactionMap.put("4", new String[] {"4", "1", "false"});
-
-		fluxMap.put("1", PathwaysFrameConstants.BORDER_THICKNESS);
-		fluxMap.put("2", PathwaysFrameConstants.BORDER_THICKNESS);
-		fluxMap.put("3", PathwaysFrameConstants.BORDER_THICKNESS);
-		fluxMap.put("4", PathwaysFrameConstants.BORDER_THICKNESS);
-
-		for (int b = 1; b < 5; b++) {
-			borderList.add(Integer.toString(b));
-		}
+		drawBorder(borderLeftX, borderRightX, borderTopY, borderBottomY);
 		
 		if (LocalConfig.getInstance().getPeriplasmName() != null && LocalConfig.getInstance().getPeriplasmName().length() > 0) {
-			borderLeftX = Integer.toString(PathwaysFrameConstants.BORDER_WIDTH + PathwaysFrameConstants.PERIPLASM_WIDTH);
-			borderRightX = Double.toString(maxX + PathwaysFrameConstants.RIGHT_BORDER_INCREMENT + PathwaysFrameConstants.METABOLITE_NODE_WIDTH - PathwaysFrameConstants.PERIPLASM_WIDTH);
-			borderTopY = Integer.toString(PathwaysFrameConstants.BORDER_HEIGHT + PathwaysFrameConstants.PERIPLASM_HEIGHT);
-			borderBottomY = Double.toString(maxY + PathwaysFrameConstants.BOTTOM_SPACE + PathwaysFrameConstants.METABOLITE_NODE_HEIGHT - PathwaysFrameConstants.PERIPLASM_HEIGHT);
-			//String borderLeftX = Integer.toString(PathwaysFrameConstants.BORDER_WIDTH + PathwaysFrameConstants.PERIPLASM_WIDTH);
-		   	//String borderRightX = Integer.toString(PathwaysFrameConstants.GRAPH_WIDTH - (PathwaysFrameConstants.BORDER_WIDTH + PathwaysFrameConstants.PERIPLASM_WIDTH));
-		   	//String borderTopY = Integer.toString(PathwaysFrameConstants.BORDER_HEIGHT + PathwaysFrameConstants.PERIPLASM_HEIGHT);
-		   	//String borderBottomY = Integer.toString(PathwaysFrameConstants.GRAPH_HEIGHT - (PathwaysFrameConstants.BORDER_HEIGHT + PathwaysFrameConstants.PERIPLASM_HEIGHT));
-		   	metabPosMap.put("5", new String[] {borderLeftX, borderTopY});                                                        
-			metabPosMap.put("6", new String[] {borderRightX, borderTopY}); 
-			metabPosMap.put("7", new String[] {borderRightX, borderBottomY});
-			metabPosMap.put("8", new String[] {borderLeftX, borderBottomY});                                                         
-			
-			reactionMap.put("5", new String[] {"5", "6", "false"});
-			reactionMap.put("6", new String[] {"6", "7", "false"});
-			reactionMap.put("7", new String[] {"7", "8", "false"});
-			reactionMap.put("8", new String[] {"8", "5", "false"});
-			
-			fluxMap.put("5", PathwaysFrameConstants.BORDER_THICKNESS);
-			fluxMap.put("6", PathwaysFrameConstants.BORDER_THICKNESS);
-			fluxMap.put("7", PathwaysFrameConstants.BORDER_THICKNESS);
-			fluxMap.put("8", PathwaysFrameConstants.BORDER_THICKNESS);
-			
-			for (int b = 5; b < 9; b++) {
-				borderList.add(Integer.toString(b));
-			}
+			drawSecondBorder(maxX, maxY);
 		}
 		
 		// transport and exchange reactions in pathways component
@@ -1156,6 +1114,54 @@ public class PathwaysFrame extends JApplet {
    		
    		reactionList = new ArrayList<String>(reactionMap.keySet()); 
    		Collections.sort(reactionList);
+    }
+    
+    public void drawBorder(String borderLeftX, String borderRightX, 
+    		String borderTopY, String borderBottomY) {
+		// draw cell border
+		metabPosMap.put("1", new String[] {borderLeftX, borderTopY}); 
+		metabPosMap.put("2", new String[] {borderRightX, borderTopY}); 
+		metabPosMap.put("3", new String[] {borderRightX, borderBottomY});
+		metabPosMap.put("4", new String[] {borderLeftX, borderBottomY});                                                         
+
+		reactionMap.put("1", new String[] {"1", "2", "false"});
+		reactionMap.put("2", new String[] {"2", "3", "false"});
+		reactionMap.put("3", new String[] {"3", "4", "false"});
+		reactionMap.put("4", new String[] {"4", "1", "false"});
+
+		fluxMap.put("1", PathwaysFrameConstants.BORDER_THICKNESS);
+		fluxMap.put("2", PathwaysFrameConstants.BORDER_THICKNESS);
+		fluxMap.put("3", PathwaysFrameConstants.BORDER_THICKNESS);
+		fluxMap.put("4", PathwaysFrameConstants.BORDER_THICKNESS);
+
+		for (int b = 1; b < 5; b++) {
+			borderList.add(Integer.toString(b));
+		}
+    }
+    
+    public void drawSecondBorder(double maxX, double maxY) {
+    	String borderLeftX = Integer.toString(PathwaysFrameConstants.BORDER_WIDTH + PathwaysFrameConstants.PERIPLASM_WIDTH);
+    	String borderRightX = Double.toString(maxX + PathwaysFrameConstants.RIGHT_BORDER_INCREMENT + PathwaysFrameConstants.METABOLITE_NODE_WIDTH - PathwaysFrameConstants.PERIPLASM_WIDTH);
+    	String borderTopY = Integer.toString(PathwaysFrameConstants.BORDER_HEIGHT + PathwaysFrameConstants.PERIPLASM_HEIGHT);
+    	String borderBottomY = Double.toString(maxY + PathwaysFrameConstants.BOTTOM_SPACE + PathwaysFrameConstants.METABOLITE_NODE_HEIGHT - PathwaysFrameConstants.PERIPLASM_HEIGHT);
+	   	metabPosMap.put("5", new String[] {borderLeftX, borderTopY});                                                        
+		metabPosMap.put("6", new String[] {borderRightX, borderTopY}); 
+		metabPosMap.put("7", new String[] {borderRightX, borderBottomY});
+		metabPosMap.put("8", new String[] {borderLeftX, borderBottomY});                                                         
+		
+		reactionMap.put("5", new String[] {"5", "6", "false"});
+		reactionMap.put("6", new String[] {"6", "7", "false"});
+		reactionMap.put("7", new String[] {"7", "8", "false"});
+		reactionMap.put("8", new String[] {"8", "5", "false"});
+		
+		fluxMap.put("5", PathwaysFrameConstants.BORDER_THICKNESS);
+		fluxMap.put("6", PathwaysFrameConstants.BORDER_THICKNESS);
+		fluxMap.put("7", PathwaysFrameConstants.BORDER_THICKNESS);
+		fluxMap.put("8", PathwaysFrameConstants.BORDER_THICKNESS);
+		
+		for (int b = 5; b < 9; b++) {
+			borderList.add(Integer.toString(b));
+		}
     }
     
     public void createGraph() {
