@@ -21,7 +21,8 @@ public class PathwayReactionNodeFactory {
 	 * @return
 	 */
 	public PathwayReactionNode createPathwayReactionNode(ArrayList<String> ec, ArrayList<String> keggReactionIds, 
-			ArrayList<String> keggReactantIds, ArrayList<String> keggProductIds, String compartment, int component) {
+			ArrayList<String> keggReactantIds, ArrayList<String> keggProductIds, String compartment, int component, 
+			Vector<SBMLReaction> allReactions) {
 		PathwayReactionNode pn = new PathwayReactionNode();
 		ArrayList<String> sideReactants = new ArrayList<String>();
 		ArrayList<String> sideProducts = new ArrayList<String>();
@@ -76,46 +77,46 @@ public class PathwayReactionNodeFactory {
 		// if reaction does not have an ec number or kegg reaction id, have to check all unplotted
 		// reactions for a match
 		if (reactions.size() == 0) {
-			ReactionFactory f = new ReactionFactory("SBML");
-			Vector<SBMLReaction> allReactions = f.getAllReactions();
+//			ReactionFactory f = new ReactionFactory("SBML");
+//			Vector<SBMLReaction> allReactions = f.getAllReactions();
 			Map<String, SBMLReaction> reactionMap = new HashMap<String, SBMLReaction>();
 			for (int j = 0; j < allReactions.size(); j++) {
 				reactionMap.put(Integer.toString(allReactions.get(j).getId()), allReactions.get(j));
 			}
-			for (int i = 0; i < LocalConfig.getInstance().getUnplottedReactionIds().size(); i++) {
-				if (LocalConfig.getInstance().getModelKeggEquationMap().containsKey(Integer.toString(LocalConfig.getInstance().getUnplottedReactionIds().get(i)))) {
-					PathwayReactionData modelData = LocalConfig.getInstance().getModelKeggEquationMap().get(Integer.toString(LocalConfig.getInstance().getUnplottedReactionIds().get(i)));
-					//System.out.println("data " + modelData);
-					boolean matchFound = false;
-					if (speciesMatch(keggReactantIds, modelData.getKeggReactantIds()) && 
-							speciesMatch(keggProductIds, modelData.getKeggProductIds())) {
-						matchFound = true;
-					} else if (speciesMatch(keggProductIds, modelData.getKeggReactantIds()) && 
-							speciesMatch(keggReactantIds, modelData.getKeggProductIds())) {
-						matchFound = true;
-					}
-					if (matchFound) {
-						int id = reactionMap.get(Integer.toString(LocalConfig.getInstance().getUnplottedReactionIds().get(i))).getId();
-						ArrayList<Integer> idList = new ArrayList<Integer>();
-						for (int r = 0; r < reactions.size(); r++) {
-							idList.add(reactions.get(r).getId());
-						}
-						if (!idList.contains(id)) {
-							reactions.add(reactionMap.get(Integer.toString(LocalConfig.getInstance().getUnplottedReactionIds().get(i))));
-						}
-					}
-					
-					//if (correctMainSpecies(reactionMap.get(Integer.toString(LocalConfig.getInstance().getUnplottedReactionIds().get(i))), 
-							//modelData.getKeggReactantIds(), modelData.getKeggProductIds())) {
-						// since ec map and kegg reaction id map have values that are lists,
-						// must add SBML Reaction to list to use addReactions method
-//						ArrayList<SBMLReaction> list = new ArrayList<SBMLReaction>();
-//						list.add(reactionMap.get(Integer.toString(LocalConfig.getInstance().getUnplottedReactionIds().get(i))));
-//						addReactions(reactions, list, compartment, 
-//								modelData.getKeggReactantIds(), modelData.getKeggProductIds());
-					//} 
-				}
-			}
+//			for (int i = 0; i < LocalConfig.getInstance().getUnplottedReactionIds().size(); i++) {
+//				if (LocalConfig.getInstance().getModelKeggEquationMap().containsKey(Integer.toString(LocalConfig.getInstance().getUnplottedReactionIds().get(i)))) {
+//					PathwayReactionData modelData = LocalConfig.getInstance().getModelKeggEquationMap().get(Integer.toString(LocalConfig.getInstance().getUnplottedReactionIds().get(i)));
+//					//System.out.println("data " + modelData);
+//					boolean matchFound = false;
+//					if (speciesMatch(keggReactantIds, modelData.getKeggReactantIds()) && 
+//							speciesMatch(keggProductIds, modelData.getKeggProductIds())) {
+//						matchFound = true;
+//					} else if (speciesMatch(keggProductIds, modelData.getKeggReactantIds()) && 
+//							speciesMatch(keggReactantIds, modelData.getKeggProductIds())) {
+//						matchFound = true;
+//					}
+////					if (matchFound) {
+////						int id = reactionMap.get(Integer.toString(LocalConfig.getInstance().getUnplottedReactionIds().get(i))).getId();
+////						ArrayList<Integer> idList = new ArrayList<Integer>();
+////						for (int r = 0; r < reactions.size(); r++) {
+////							idList.add(reactions.get(r).getId());
+////						}
+////						if (!idList.contains(id)) {
+////							reactions.add(reactionMap.get(Integer.toString(LocalConfig.getInstance().getUnplottedReactionIds().get(i))));
+////						}
+////					}
+//					
+//					//if (correctMainSpecies(reactionMap.get(Integer.toString(LocalConfig.getInstance().getUnplottedReactionIds().get(i))), 
+//							//modelData.getKeggReactantIds(), modelData.getKeggProductIds())) {
+//						// since ec map and kegg reaction id map have values that are lists,
+//						// must add SBML Reaction to list to use addReactions method
+////						ArrayList<SBMLReaction> list = new ArrayList<SBMLReaction>();
+////						list.add(reactionMap.get(Integer.toString(LocalConfig.getInstance().getUnplottedReactionIds().get(i))));
+////						addReactions(reactions, list, compartment, 
+////								modelData.getKeggReactantIds(), modelData.getKeggProductIds());
+//					//} 
+//				}
+//			}
 			//System.out.println("found rxn " + reactions);
 		}
 		//pn.setPathwayId(pathway.getId());
@@ -256,12 +257,12 @@ public class PathwayReactionNodeFactory {
 				}
 				// since ec number reaction map made before kegg reaction ids assigned, these are
 				// null in ec list and need to be obtained from map made more recently
-				String keggReactionId = idReactionMap.get(reactions.get(i).getId()).getKeggReactionId();
-				if (keggReactionId != null && keggReactionId.length() > 0) {
-					if (!keggReactionIds.contains(keggReactionId)) {
-						keggReactionIds.add(keggReactionId);
-					}
-				}
+//				String keggReactionId = idReactionMap.get(reactions.get(i).getId()).getKeggReactionId();
+//				if (keggReactionId != null && keggReactionId.length() > 0) {
+//					if (!keggReactionIds.contains(keggReactionId)) {
+//						keggReactionIds.add(keggReactionId);
+//					}
+//				}
 				if (!equations.contains(reactions.get(i).getReactionEqunAbbr())) {
 					String htmlEquation = reactions.get(i).getReactionEqunAbbr().replace("<", "&lt;");
 					equations.add(htmlEquation);

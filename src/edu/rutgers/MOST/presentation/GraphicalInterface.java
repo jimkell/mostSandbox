@@ -12645,9 +12645,9 @@ public class GraphicalInterface extends JFrame {
 		ReactionFactory rf = new ReactionFactory("SBML");
 		Vector<SBMLReaction> rxns = null;
 		if (LocalConfig.getInstance().getCytosolName() != null && LocalConfig.getInstance().getCytosolName().length() > 0) {
-			rxns = rf.getAllReactions();
-		} else {
 			rxns = rf.getReactionsByCompartment(LocalConfig.getInstance().getCytosolName());
+		} else {
+			rxns = rf.getAllReactions();
 		}
 		// should only run this if ec number column exists
 		ECNumberMapCreator ecMapCreator = new ECNumberMapCreator();

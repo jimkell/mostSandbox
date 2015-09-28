@@ -441,11 +441,11 @@ public class ReactionFactory {
 		for (int i = 0; i < reactions.size(); i++) {
 			SBMLReactionEquation equn = (SBMLReactionEquation) LocalConfig.getInstance().getReactionEquationMap().get(reactions.get(i).getId());
 			if (equn.getCompartmentList().size() == 1 && equn.getCompartmentList().contains(comp)) {
-				System.out.println(equn.getCompartmentList());
+				//System.out.println(equn.getCompartmentList());
 				reactionsByCompartment.add(reactions.get(i));
 			}
 		}
-		System.out.println(reactionsByCompartment);
+		//System.out.println(reactionsByCompartment);
 		return reactionsByCompartment;
 	}
 
