@@ -18,6 +18,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import edu.rutgers.MOST.config.LocalConfig;
+import edu.rutgers.MOST.data.SBMLCompartment;
 
 public class CompartmentNameDialog extends JDialog {
 
@@ -229,16 +230,35 @@ public class CompartmentNameDialog extends JDialog {
     		cbCytosolName.removeAllItems();
     		cbPeriplasmName.removeAllItems();
     		cbExtraOrganismName.removeAllItems();
-    		//add all column names to from file comboboxes
+    		//populate combo boxes
     		for (int c = 0; c < LocalConfig.getInstance().getListOfCompartments().size(); c++) { 
-    			cbCytosolName.addItem(LocalConfig.getInstance().getListOfCompartments().get(c).getId());
-    			cbPeriplasmName.addItem(LocalConfig.getInstance().getListOfCompartments().get(c).getId());
-    			cbExtraOrganismName.addItem(LocalConfig.getInstance().getListOfCompartments().get(c).getId());
+    			cbCytosolName.addItem(LocalConfig.getInstance().getListOfCompartments().get(c).getName());
+    			cbPeriplasmName.addItem(LocalConfig.getInstance().getListOfCompartments().get(c).getName());
+    			cbExtraOrganismName.addItem(LocalConfig.getInstance().getListOfCompartments().get(c).getName());
     		}
     		cbCytosolName.setSelectedIndex(-1);
     		cbPeriplasmName.setSelectedIndex(-1);
     		cbExtraOrganismName.setSelectedIndex(-1);
+    		for (int c = 0; c < LocalConfig.getInstance().getListOfCompartments().size(); c++) {
+    			//filters to match compartment names from list of compartments		
+    			if((LocalConfig.getInstance().getListOfCompartments().get(c).getName().toLowerCase()).contains(CompartmentsTableConstants.CYTOSOL_FILTER[0])) {
+    				cbCytosolName.setSelectedIndex(c);
+    			} else if((LocalConfig.getInstance().getListOfCompartments().get(c).getName().toLowerCase()).contains(CompartmentsTableConstants.PERIPLASM_FILTER[0])) {
+    				cbPeriplasmName.setSelectedIndex(c);
+    			} else if((LocalConfig.getInstance().getListOfCompartments().get(c).getName().toLowerCase()).contains(CompartmentsTableConstants.EXTRA_ORGANISM_FILTER[0])) {
+    				cbExtraOrganismName.setSelectedIndex(c);
+    			}  
+    		}
     	}
+    }
+    
+    public void setSelectedItemByFilter(JComboBox<String> cb, ArrayList<SBMLCompartment> compList, 
+    		String[] filter, int index) {
+    	if (compList.get(index).getName().contains(filter[0])) {
+			cb.setSelectedIndex(index);
+		} else {
+			cb.setSelectedIndex(-1);
+		}
     }
 	
 	public static void main(String[] args) throws Exception {

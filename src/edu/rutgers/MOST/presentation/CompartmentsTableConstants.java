@@ -25,4 +25,17 @@ public class CompartmentsTableConstants {
 	public static final int WIDTH = 450;
 	public static final int HEIGHT = 300;
 	
+	// Compartments Name Dialog
+	public static final String[] CYTOSOL_FILTER =
+		{"cyt"
+		}; 
+
+	public static final String[] PERIPLASM_FILTER =
+		{"peri"
+		};
+
+	public static final String[] EXTRA_ORGANISM_FILTER =
+		{"extra"
+		};
+	
 }

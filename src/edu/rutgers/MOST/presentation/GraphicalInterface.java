@@ -12467,11 +12467,15 @@ public class GraphicalInterface extends JFrame {
 	};
 	
 	public String compNameFromCombo(JComboBox<String> combo) {
-		String suffix = "";
+		String abbr = "";
 		if (combo.getSelectedIndex() > -1) {
-			suffix = (String) combo.getSelectedItem();
+			for (int i = 0; i < LocalConfig.getInstance().getListOfCompartments().size(); i++) {
+				if (LocalConfig.getInstance().getListOfCompartments().get(i).getName().equals((String) combo.getSelectedItem())) {
+					abbr = LocalConfig.getInstance().getListOfCompartments().get(i).getId();
+				}
+			}
 		}
-		return suffix;
+		return abbr;
 	}
 	
 	ActionListener compartmentsTableOKButtonActionListener = new ActionListener() {
