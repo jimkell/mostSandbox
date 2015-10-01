@@ -423,6 +423,9 @@ public class PathwaysFrame extends JApplet {
 		} else {
 			rxns = f.getAllReactions();
 		}
+		for (int i = 0; i < rxns.size(); i++) {
+			idReactionMap.put(rxns.get(i).getId(), rxns.get(i));
+		}
 		// temporary lists to keep track of what ec numbers have been found
 		ArrayList<String> foundEcNumbers = new ArrayList<String>();
 	    ArrayList<String> notFoundEcNumbers = new ArrayList<String>(LocalConfig.getInstance().getEcNumberReactionMap().keySet());
@@ -501,7 +504,9 @@ public class PathwaysFrame extends JApplet {
 						PathwayMetaboliteNodeFactory pmnf = new PathwayMetaboliteNodeFactory();
 						PathwayMetaboliteNode pn = pmnf.createPathwayMetaboliteNode(pathway.getMetabolitesData().get(Integer.toString(j)).getId(), 
 								x, y, type, pathway.getMetabolitesData().get(Integer.toString(j)).getAbbreviation(), 
-								pathway.getMetabolitesData().get(Integer.toString(j)).getName());		
+								pathway.getMetabolitesData().get(Integer.toString(j)).getName(), keggId);
+						String displayName = pmnf.createDisplayName(metabName, pn.getAbbreviation(), pn.getName(), keggId);
+						System.out.println(displayName);
 						pathway.getMetabolitesNodes().put(pn.getDataId(), pn);
 						metabPosMap.put(metabName, new String[] {Double.toString(x), Double.toString(y)});
 						// create transport metabolite if kegg id in transport metabolite file

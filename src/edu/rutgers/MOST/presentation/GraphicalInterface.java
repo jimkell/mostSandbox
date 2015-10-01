@@ -679,6 +679,8 @@ public class GraphicalInterface extends JFrame {
 	public final JMenuItem loadSBMLItem = new JMenuItem("Load SBML");
 	public final JMenuItem loadCSVItem = new JMenuItem("Load CSV");
 	public final JMenuItem loadExistingItem = new JMenuItem(GraphicalInterfaceConstants.LOAD_FROM_MODEL_COLLECTION_TABLE_TITLE);
+	public final JMenuItem loadMetabSuppDataItem = new JMenuItem("Load Metabolites Supplementary Data");
+	public final JMenuItem loadReacSuppDataItem = new JMenuItem("Load Reactions Supplementary Data");
 	public final JMenuItem saveItem = new JMenuItem("Save");
 	public final JMenuItem saveSBMLItem = new JMenuItem("Save As SBML");
 	public final JMenuItem saveCSVItem = new JMenuItem("Save As CSV");
@@ -707,11 +709,9 @@ public class GraphicalInterface extends JFrame {
 	public final JMenuItem editorMenu = new JMenuItem("Launch Reaction Editor");
 	public final JMenuItem unsortReacMenuItem = new JMenuItem("Unsort Reactions Table");
 	public final JMenuItem unsortMetabMenuItem = new JMenuItem("Unsort Metabolites Table");
-	public final JMenuItem loadMetabSuppDataItem = new JMenuItem("Load Metabolites Supplementary Data");
-	public final JMenuItem loadReacSuppDataItem = new JMenuItem("Load Reactions Supplementary Data");
-	public final JMenuItem arrangeCompMenu = new JMenuItem("Arrange Compartments");
-	public final JMenuItem visualizeMenu = new JMenuItem("Visualize Cytosol");
-	public final JMenuItem visualizeCompartmentMenu = new JMenuItem("Visualize Compartment");
+	//public final JMenuItem arrangeCompMenu = new JMenuItem("Arrange Compartments");
+	public final JMenuItem visualizeMenu = new JMenuItem("Visualize Prokaryotic Cell");
+	public final JMenuItem visualizeCompartmentMenu = new JMenuItem("Visualize Single Compartment");
 	public final JMenuItem setUpSolver = new JMenuItem("Select Solvers");
 	public final JMenuItem gurobiParametersItem = new JMenuItem(GurobiParameters.GUROBI_PARAMETERS_MENU_ITEM);
 	public final JMenuItem glpkParametersItem = new JMenuItem( GLPKParameters.GLPK_PARAMETERS_MENU_ITEM );
@@ -1669,6 +1669,108 @@ public class GraphicalInterface extends JFrame {
 		loadExistingItem.addActionListener(new LoadExistingItemAction());
 
 		fileMenu.addSeparator();
+		
+		fileMenu.add(loadMetabSuppDataItem);
+        loadMetabSuppDataItem.setMnemonic(KeyEvent.VK_M);
+        
+        loadMetabSuppDataItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ae) {
+				JTextArea output = null;
+				JFileChooser fileChooser = new JFileChooser();
+				fileChooser.setDialogTitle("Load CSV File"); 
+				fileChooser.setFileFilter(new CSVFileFilter());
+				fileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);			
+
+				String lastSuppData_path = curSettings.get("LastSuppData");
+				Utilities u = new Utilities();
+				// if path is null or does not exist, default used, else last path used
+				fileChooser.setCurrentDirectory(new File(u.lastPath(lastSuppData_path, fileChooser)));					
+ 
+				//... Open a file dialog.
+				int retval = fileChooser.showOpenDialog(output);
+				if (retval == JFileChooser.APPROVE_OPTION) {
+					//... The user selected a file, get it, use it.
+					File file = fileChooser.getSelectedFile();
+					String rawPathName = file.getAbsolutePath();
+					curSettings.add("LastSuppData", rawPathName);
+
+					String rawFilename = file.getName();				
+					if (!rawFilename.endsWith(".csv")) {
+						JOptionPane.showMessageDialog(null,                
+								"Not a Valid CSV File.",                
+								"Invalid CSV File",                                
+								JOptionPane.ERROR_MESSAGE);
+					} else {
+						tabbedPane.setSelectedIndex(1);
+						MetaboliteSupplementaryMaterialReader reader = 
+								new MetaboliteSupplementaryMaterialReader();
+						ArrayList<String> columnNames = reader.columnNamesFromFile(file, 0);
+						MetabolitesSupplementalDataDialog frame = new MetabolitesSupplementalDataDialog(columnNames);
+						setMetabolitesSupplementalDataDialog(frame);
+						getMetabolitesSupplementalDataDialog().okButton.addActionListener(okButtonMetabSuppDataActionListener);
+						getMetabolitesSupplementalDataDialog().setLoadedFile(file);
+						frame.setIconImages(icons);
+						frame.setSize(600, 400);
+						frame.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+						frame.setLocationRelativeTo(null);
+						frame.setModal(true);
+						frame.setVisible(true);
+					}
+				}
+			}
+		});
+        
+        fileMenu.add(loadReacSuppDataItem);
+        loadReacSuppDataItem.setMnemonic(KeyEvent.VK_R);
+        
+        loadReacSuppDataItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ae) {
+				JTextArea output = null;
+				JFileChooser fileChooser = new JFileChooser();
+				fileChooser.setDialogTitle("Load CSV File"); 
+				fileChooser.setFileFilter(new CSVFileFilter());
+				fileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);			
+
+				String lastSuppData_path = curSettings.get("LastSuppData");
+				Utilities u = new Utilities();
+				// if path is null or does not exist, default used, else last path used
+				fileChooser.setCurrentDirectory(new File(u.lastPath(lastSuppData_path, fileChooser)));					
+ 
+				//... Open a file dialog.
+				int retval = fileChooser.showOpenDialog(output);
+				if (retval == JFileChooser.APPROVE_OPTION) {
+					//... The user selected a file, get it, use it.
+					File file = fileChooser.getSelectedFile();
+					String rawPathName = file.getAbsolutePath();
+					curSettings.add("LastSuppData", rawPathName);
+
+					String rawFilename = file.getName();				
+					if (!rawFilename.endsWith(".csv")) {
+						JOptionPane.showMessageDialog(null,                
+								"Not a Valid CSV File.",                
+								"Invalid CSV File",                                
+								JOptionPane.ERROR_MESSAGE);
+					} else {
+						tabbedPane.setSelectedIndex(0);
+						ReactionSupplementaryMaterialReader reader = 
+								new ReactionSupplementaryMaterialReader();
+						ArrayList<String> columnNames = reader.columnNamesFromFile(file, 0);
+						ReactionsSupplementalDataDialog frame = new ReactionsSupplementalDataDialog(columnNames);
+						setReactionsSupplementalDataDialog(frame);
+						getReactionsSupplementalDataDialog().okButton.addActionListener(okButtonReacSuppDataActionListener);
+						getReactionsSupplementalDataDialog().setLoadedFile(file);
+						frame.setIconImages(icons);
+						frame.setSize(600, 400);
+						frame.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+						frame.setLocationRelativeTo(null);
+						frame.setModal(true);
+						frame.setVisible(true);
+					}
+				}
+			}
+		});
+		
+		fileMenu.addSeparator();
 
 		fileMenu.add(saveItem);
 		saveItem.setMnemonic(KeyEvent.VK_S);
@@ -2184,110 +2286,10 @@ public class GraphicalInterface extends JFrame {
         
         //Visualization menu
         JMenu visualizationMenu = new JMenu("Visualization");
-        visualizationMenu.setMnemonic(KeyEvent.VK_V);
+        visualizationMenu.setMnemonic(KeyEvent.VK_V);    
         
-        visualizationMenu.add(loadMetabSuppDataItem);
-        loadMetabSuppDataItem.setMnemonic(KeyEvent.VK_M);
-        
-        loadMetabSuppDataItem.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent ae) {
-				JTextArea output = null;
-				JFileChooser fileChooser = new JFileChooser();
-				fileChooser.setDialogTitle("Load CSV File"); 
-				fileChooser.setFileFilter(new CSVFileFilter());
-				fileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);			
-
-				String lastSuppData_path = curSettings.get("LastSuppData");
-				Utilities u = new Utilities();
-				// if path is null or does not exist, default used, else last path used
-				fileChooser.setCurrentDirectory(new File(u.lastPath(lastSuppData_path, fileChooser)));					
- 
-				//... Open a file dialog.
-				int retval = fileChooser.showOpenDialog(output);
-				if (retval == JFileChooser.APPROVE_OPTION) {
-					//... The user selected a file, get it, use it.
-					File file = fileChooser.getSelectedFile();
-					String rawPathName = file.getAbsolutePath();
-					curSettings.add("LastSuppData", rawPathName);
-
-					String rawFilename = file.getName();				
-					if (!rawFilename.endsWith(".csv")) {
-						JOptionPane.showMessageDialog(null,                
-								"Not a Valid CSV File.",                
-								"Invalid CSV File",                                
-								JOptionPane.ERROR_MESSAGE);
-					} else {
-						tabbedPane.setSelectedIndex(1);
-						MetaboliteSupplementaryMaterialReader reader = 
-								new MetaboliteSupplementaryMaterialReader();
-						ArrayList<String> columnNames = reader.columnNamesFromFile(file, 0);
-						MetabolitesSupplementalDataDialog frame = new MetabolitesSupplementalDataDialog(columnNames);
-						setMetabolitesSupplementalDataDialog(frame);
-						getMetabolitesSupplementalDataDialog().okButton.addActionListener(okButtonMetabSuppDataActionListener);
-						getMetabolitesSupplementalDataDialog().setLoadedFile(file);
-						frame.setIconImages(icons);
-						frame.setSize(600, 400);
-						frame.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-						frame.setLocationRelativeTo(null);
-						frame.setModal(true);
-						frame.setVisible(true);
-					}
-				}
-			}
-		});
-        
-        visualizationMenu.add(loadReacSuppDataItem);
-        loadReacSuppDataItem.setMnemonic(KeyEvent.VK_R);
-        
-        loadReacSuppDataItem.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent ae) {
-				JTextArea output = null;
-				JFileChooser fileChooser = new JFileChooser();
-				fileChooser.setDialogTitle("Load CSV File"); 
-				fileChooser.setFileFilter(new CSVFileFilter());
-				fileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);			
-
-				String lastSuppData_path = curSettings.get("LastSuppData");
-				Utilities u = new Utilities();
-				// if path is null or does not exist, default used, else last path used
-				fileChooser.setCurrentDirectory(new File(u.lastPath(lastSuppData_path, fileChooser)));					
- 
-				//... Open a file dialog.
-				int retval = fileChooser.showOpenDialog(output);
-				if (retval == JFileChooser.APPROVE_OPTION) {
-					//... The user selected a file, get it, use it.
-					File file = fileChooser.getSelectedFile();
-					String rawPathName = file.getAbsolutePath();
-					curSettings.add("LastSuppData", rawPathName);
-
-					String rawFilename = file.getName();				
-					if (!rawFilename.endsWith(".csv")) {
-						JOptionPane.showMessageDialog(null,                
-								"Not a Valid CSV File.",                
-								"Invalid CSV File",                                
-								JOptionPane.ERROR_MESSAGE);
-					} else {
-						tabbedPane.setSelectedIndex(0);
-						ReactionSupplementaryMaterialReader reader = 
-								new ReactionSupplementaryMaterialReader();
-						ArrayList<String> columnNames = reader.columnNamesFromFile(file, 0);
-						ReactionsSupplementalDataDialog frame = new ReactionsSupplementalDataDialog(columnNames);
-						setReactionsSupplementalDataDialog(frame);
-						getReactionsSupplementalDataDialog().okButton.addActionListener(okButtonReacSuppDataActionListener);
-						getReactionsSupplementalDataDialog().setLoadedFile(file);
-						frame.setIconImages(icons);
-						frame.setSize(600, 400);
-						frame.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-						frame.setLocationRelativeTo(null);
-						frame.setModal(true);
-						frame.setVisible(true);
-					}
-				}
-			}
-		});
-        
-        visualizationMenu.add(arrangeCompMenu);
-        arrangeCompMenu.setMnemonic(KeyEvent.VK_A);
+//        visualizationMenu.add(arrangeCompMenu);
+//        arrangeCompMenu.setMnemonic(KeyEvent.VK_A);
         
         visualizationMenu.add(visualizeMenu);
 		visualizeMenu.setMnemonic(KeyEvent.VK_V);
@@ -11876,7 +11878,7 @@ public class GraphicalInterface extends JFrame {
 	}
 	
 	public void enableVisualizationItems(boolean state) {
-		arrangeCompMenu.setEnabled(state);
+		//arrangeCompMenu.setEnabled(state);
 		visualizeMenu.setEnabled(state);
 		visualizeCompartmentMenu.setEnabled(state);
 	}
