@@ -12483,6 +12483,16 @@ public class GraphicalInterface extends JFrame {
 	ActionListener compartmentsTableOKButtonActionListener = new ActionListener() {
 		public void actionPerformed(ActionEvent ae) {						
 			System.out.println(LocalConfig.getInstance().getSelectedCompartmentName());
+			ReactionFactory rf = new ReactionFactory("SBML");
+			// uncomment to get periplasm reactions
+			if (LocalConfig.getInstance().getSelectedCompartmentName() != null && LocalConfig.getInstance().getSelectedCompartmentName().length() > 0) {
+				Vector<SBMLReaction> rxns = rf.getReactionsByCompartment(LocalConfig.getInstance().getSelectedCompartmentName());
+				for (int i = 0; i < rxns.size(); i++) {
+					System.out.println(rxns.get(i).getId());
+					System.out.println(rxns.get(i).getReactionEqunAbbr());
+					System.out.println(rxns.get(i).getReactionEqunNames());
+				}
+			} 
 		}
 	};
 	
