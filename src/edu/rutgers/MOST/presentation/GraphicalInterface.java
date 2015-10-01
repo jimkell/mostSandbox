@@ -1494,6 +1494,8 @@ public class GraphicalInterface extends JFrame {
 		LocalConfig.getInstance().setCytosolPeriplasmIds(cytosolPeriplasmIds);
 		ArrayList<Integer> periplasmExtraOrganismIds = new ArrayList<Integer>();
 		LocalConfig.getInstance().setPeriplasmExtraOrganismIds(periplasmExtraOrganismIds);
+		ArrayList<Integer> externalReactionIds = new ArrayList<Integer>();
+		LocalConfig.getInstance().setExternalReactionIds(externalReactionIds);
 		
 		Map<String, String> sideSpeciesTransportMetaboliteKeggIdMap = new HashMap<String, String>();
 		LocalConfig.getInstance().setSideSpeciesTransportMetaboliteKeggIdMap(sideSpeciesTransportMetaboliteKeggIdMap);
@@ -12655,6 +12657,15 @@ public class GraphicalInterface extends JFrame {
 		} else {
 			rxns = rf.getAllReactions();
 		}
+		// uncomment to get periplasm reactions
+//		if (LocalConfig.getInstance().getPeriplasmName() != null && LocalConfig.getInstance().getPeriplasmName().length() > 0) {
+//			Vector<SBMLReaction> pRxns = rf.getReactionsByCompartment(LocalConfig.getInstance().getPeriplasmName());
+//			for (int i = 0; i < pRxns.size(); i++) {
+//				System.out.println(pRxns.get(i).getId());
+//				System.out.println(pRxns.get(i).getReactionEqunAbbr());
+//				System.out.println(pRxns.get(i).getReactionEqunNames());
+//			}
+//		} 
 		// should only run this if ec number column exists
 		ECNumberMapCreator ecMapCreator = new ECNumberMapCreator();
 		ecMapCreator.createEcNumberReactionMap(rxns);
@@ -12663,6 +12674,16 @@ public class GraphicalInterface extends JFrame {
 		modelKeggEquationMapCreator.createKeggEquationMap();
 		assignKeggReactionIds();
 		categorizeTransportReactions();
+//		if (LocalConfig.getInstance().getExtraOrganismName() != null && LocalConfig.getInstance().getExtraOrganismName().length() > 0) {
+//			Vector<SBMLReaction> eRxns = rf.getReactionsByCompartment(LocalConfig.getInstance().getExtraOrganismName());
+//			for (int i = 0; i < eRxns.size(); i++) {
+//				if (!LocalConfig.getInstance().getExternalReactionIds().contains(eRxns.get(i).getId())) {
+//					System.out.println(eRxns.get(i).getId());
+//					System.out.println(eRxns.get(i).getReactionEqunAbbr());
+//					System.out.println(eRxns.get(i).getReactionEqunNames());
+//				}
+//			}
+//		} 
 		createVisualizationsPane();
 	}
 	

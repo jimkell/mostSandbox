@@ -48,7 +48,7 @@ public class PathwayMetaboliteNodeFactory {
 			try {
 				for (int i = 0; i < LocalConfig.getInstance().getAdditionalMetabolitesMap().get(keggId).size(); i++) {
 					keggId = LocalConfig.getInstance().getAdditionalMetabolitesMap().get(keggId).get(i);
-					System.out.println(LocalConfig.getInstance().getKeggIdMetaboliteMap().get(keggId));
+					//System.out.println(LocalConfig.getInstance().getKeggIdMetaboliteMap().get(keggId));
 					ArrayList<SBMLMetabolite> m = LocalConfig.getInstance().getKeggIdMetaboliteMap().get(keggId);
 					for (int k = 0; k < m.size(); k++) {
 						if (m.get(k).getCompartment().equals(LocalConfig.getInstance().getCytosolName())) {
@@ -68,7 +68,7 @@ public class PathwayMetaboliteNodeFactory {
 			try {
 				for (int j = 0; j < LocalConfig.getInstance().getMetaboliteSubstitutionsMap().get(keggId).size(); j++) {
 					keggId = LocalConfig.getInstance().getMetaboliteSubstitutionsMap().get(keggId).get(j);
-					System.out.println(LocalConfig.getInstance().getKeggIdMetaboliteMap().get(keggId));
+					//System.out.println(LocalConfig.getInstance().getKeggIdMetaboliteMap().get(keggId));
 					ArrayList<SBMLMetabolite> m = LocalConfig.getInstance().getKeggIdMetaboliteMap().get(keggId);
 					for (int k = 0; k < m.size(); k++) {
 						if (m.get(k).getCompartment().equals(LocalConfig.getInstance().getCytosolName())) {
@@ -100,7 +100,7 @@ public class PathwayMetaboliteNodeFactory {
 					+ displayMetaboliteName(metaboliteNames)
 					+ displayMetaboliteAbbreviation(metaboliteAbbrevations)
 					+ displayKeggId(keggMetaboliteIds);
-			System.out.println(displayName);
+			//System.out.println(displayName);
 //		}
 		return displayName;
 	}

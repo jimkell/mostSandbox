@@ -506,7 +506,7 @@ public class PathwaysFrame extends JApplet {
 								x, y, type, pathway.getMetabolitesData().get(Integer.toString(j)).getAbbreviation(), 
 								pathway.getMetabolitesData().get(Integer.toString(j)).getName(), keggId);
 						String displayName = pmnf.createDisplayName(metabName, pn.getAbbreviation(), pn.getName(), keggId);
-						System.out.println(displayName);
+						//System.out.println(displayName);
 						pathway.getMetabolitesNodes().put(pn.getDataId(), pn);
 						metabPosMap.put(metabName, new String[] {Double.toString(x), Double.toString(y)});
 						// create transport metabolite if kegg id in transport metabolite file

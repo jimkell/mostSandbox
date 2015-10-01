@@ -40,7 +40,8 @@ public class VisualizationReactionCategorizer {
 				}
 			}
 		}
-		//System.out.println("ext rxns " + externalReactionIds);
+		System.out.println("ext rxns " + externalReactionIds);
+		LocalConfig.getInstance().setExternalReactionIds(externalReactionIds);
 		for (int n = 0; n < externalReactionIds.size(); n++) {
 			if (LocalConfig.getInstance().getUnplottedReactionIds().contains(externalReactionIds.get(n))) {
 				LocalConfig.getInstance().getUnplottedReactionIds().remove(LocalConfig.getInstance().getUnplottedReactionIds().indexOf(externalReactionIds.get(n)));

@@ -1001,7 +1001,16 @@ public class LocalConfig {
 //		this.biCompartmentReactionIds = biCompartmentReactionIds;
 //	}
 	
+	private ArrayList<Integer> externalReactionIds;
 	
+	public ArrayList<Integer> getExternalReactionIds() {
+		return externalReactionIds;
+	}
+
+	public void setExternalReactionIds(ArrayList<Integer> externalReactionIds) {
+		this.externalReactionIds = externalReactionIds;
+	}
+
 	// created each time visualize run from model
 	private Map<String, ArrayList<String>> keggIdCompartmentMap;
 
