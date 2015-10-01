@@ -46,36 +46,6 @@ class CompartmentsTable
 	private	JPanel		bottomPanel;
 	public static JButton okButton = new JButton("  OK  ");
 	public static JButton cancelButton = new JButton("Cancel");
-	
-	private String fileName;
-
-	public String getFileName() {
-		return fileName;
-	}
-
-	public void setFileName(String fileName) {
-		this.fileName = fileName;
-	}
-
-	private String path;
-
-	public String getPath() {
-		return path;
-	}
-
-	public void setPath(String path) {
-		this.path = path;
-	}
-	
-	private String fileType;
-	
-	public String getFileType() {
-		return fileType;
-	}
-
-	public void setFileType(String fileType) {
-		this.fileType = fileType;
-	}
 
 	private Vector<String> columnNames;
 
@@ -154,24 +124,7 @@ class CompartmentsTable
 		table.getTableHeader().setReorderingAllowed(false); 
 		
 		createColumns();
-		
-		int r = table.getModel().getColumnCount();	
-		for (int i = 0; i < r; i++) {
-			//set background of id column to grey
-			ModelCollectionCellRenderer renderer = new ModelCollectionCellRenderer();
-			TableColumn column = table.getColumnModel().getColumn(i);  
-			column.setCellRenderer(renderer);
-            // Column widths can be changed here           
-            if (i == CompartmentsTableConstants.ABBREVIATION_COLUMN) {
-            	column.setPreferredWidth(CompartmentsTableConstants.ABBREVIATION_WIDTH);
-            }
-            if (i == CompartmentsTableConstants.NAME_COLUMN) {
-            	column.setPreferredWidth(CompartmentsTableConstants.NAME_WIDTH);
-            }
-            if (i == CompartmentsTableConstants.OUTSIDE_COLUMN) {
-            	column.setPreferredWidth(CompartmentsTableConstants.OUTSIDE_WIDTH);
-            }
-		}	
+		setUpTable();	
 		
 		ActionListener okButtonActionListener = new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
@@ -210,6 +163,7 @@ class CompartmentsTable
 	
 	public void loadTable() {
 		createColumns();
+		setUpTable();
 		DefaultTableModel model = (DefaultTableModel) table.getModel();
 		for (int k = 0; k < LocalConfig.getInstance().getListOfCompartments().size(); k++) {
 			Vector <String> row = new Vector<String>();
@@ -219,6 +173,26 @@ class CompartmentsTable
 			model.addRow(row);
 		}
 		table.setModel(model);
+	}
+	
+	public void setUpTable() {
+		int r = table.getModel().getColumnCount();	
+		for (int i = 0; i < r; i++) {
+			//set background of id column to grey
+			CompartmentsTableCellRenderer renderer = new CompartmentsTableCellRenderer();
+			TableColumn column = table.getColumnModel().getColumn(i);  
+			column.setCellRenderer(renderer);
+            // Column widths can be changed here           
+            if (i == CompartmentsTableConstants.ABBREVIATION_COLUMN) {
+            	column.setPreferredWidth(CompartmentsTableConstants.ABBREVIATION_WIDTH);
+            }
+            if (i == CompartmentsTableConstants.NAME_COLUMN) {
+            	column.setPreferredWidth(CompartmentsTableConstants.NAME_WIDTH);
+            }
+            if (i == CompartmentsTableConstants.OUTSIDE_COLUMN) {
+            	column.setPreferredWidth(CompartmentsTableConstants.OUTSIDE_WIDTH);
+            }
+		}	
 	}
 	
 	private class RowListener implements ListSelectionListener {
