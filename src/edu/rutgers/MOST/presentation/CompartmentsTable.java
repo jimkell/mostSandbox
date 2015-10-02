@@ -1,6 +1,7 @@
 package edu.rutgers.MOST.presentation;
 
 import java.awt.*;
+import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -21,6 +22,7 @@ import org.jdesktop.swingx.JXTable;
 
 import edu.rutgers.MOST.config.LocalConfig;
 import edu.rutgers.MOST.data.MetaboliteUndoItem;
+import edu.rutgers.MOST.data.SBMLCompartment;
 import edu.rutgers.MOST.data.UndoConstants;
 
 // loosely based on http://www.cs.cf.ac.uk/Dave/HCI/HCI_Handout_CALLER/node167.html
@@ -117,12 +119,15 @@ class CompartmentsTable
 				TableCellListener tcl = (TableCellListener)e.getSource();
 			
 				if (tcl.getOldValue() != tcl.getNewValue()) {
-					for (int i = 0; i < LocalConfig.getInstance().getListOfCompartments().size(); i++) {
-						if (LocalConfig.getInstance().getListOfCompartments().get(i).getId().equals(table.getModel().getValueAt(tcl.getRow(), CompartmentsTableConstants.ABBREVIATION_COLUMN))) {
-							LocalConfig.getInstance().getListOfCompartments().get(i).setName((String) table.getModel().getValueAt(tcl.getRow(), CompartmentsTableConstants.NAME_COLUMN));
-							LocalConfig.getInstance().getListOfCompartments().get(i).setOutside((String) table.getModel().getValueAt(tcl.getRow(), CompartmentsTableConstants.OUTSIDE_COLUMN));
-						}
-					}
+					updateTableByRow(tcl.getRow());
+//					for (int i = 0; i < LocalConfig.getInstance().getListOfCompartments().size(); i++) {
+//						if (LocalConfig.getInstance().getListOfCompartments().get(i).getId().equals(table.getModel().getValueAt(tcl.getRow(), CompartmentsTableConstants.ABBREVIATION_COLUMN))) {
+////							LocalConfig.getInstance().getListOfCompartments().get(i).setName((String) table.getModel().getValueAt(tcl.getRow(), CompartmentsTableConstants.NAME_COLUMN));
+////							LocalConfig.getInstance().getListOfCompartments().get(i).setOutside((String) table.getModel().getValueAt(tcl.getRow(), CompartmentsTableConstants.OUTSIDE_COLUMN));
+//							updateCompartment(LocalConfig.getInstance().getListOfCompartments().get(i), tcl.getRow());
+//							System.out.println(LocalConfig.getInstance().getListOfCompartments().get(i));
+//						}
+//					}
 				}			
 			}
 		};
@@ -140,9 +145,20 @@ class CompartmentsTable
 			}
 		};
 		
-		KeyStroke copyKey = KeyStroke.getKeyStroke(KeyEvent.VK_C,ActionEvent.CTRL_MASK,false);
+		ActionListener pasteActionListener = new ActionListener() {
+			public void actionPerformed(ActionEvent actionEvent) {
+				if (table.getSelectedRow() > -1 && table.getSelectedColumn() > -1 && 
+						table.getSelectedColumn() != CompartmentsTableConstants.ABBREVIATION_COLUMN) {
+					tablePaste();
+				}			
+			}
+		};
 		
-		table.registerKeyboardAction(copyActionListener, copyKey, JComponent.WHEN_FOCUSED); 
+		KeyStroke copyKey = KeyStroke.getKeyStroke(KeyEvent.VK_C,ActionEvent.CTRL_MASK,false);
+		KeyStroke pasteKey = KeyStroke.getKeyStroke(KeyEvent.VK_V,ActionEvent.CTRL_MASK,false);
+		
+		table.registerKeyboardAction(copyActionListener, copyKey, JComponent.WHEN_FOCUSED);
+		table.registerKeyboardAction(pasteActionListener, pasteKey, JComponent.WHEN_FOCUSED);
 
 		// Create a panel to hold all other components
 		topPanel = new JPanel();
@@ -300,8 +316,36 @@ class CompartmentsTable
 			}
 		});
 		contextMenu.add(copyMenu);
+		JMenuItem pasteMenu = new JMenuItem("Paste");
+		if (columnIndex == CompartmentsTableConstants.ABBREVIATION_COLUMN) {
+			pasteMenu.setEnabled(false);
+		}
+		pasteMenu.setAccelerator(KeyStroke.getKeyStroke(
+				KeyEvent.VK_V, ActionEvent.CTRL_MASK));
+		pasteMenu.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				tablePaste();
+			}
+		});
+		contextMenu.add(pasteMenu);
 
 		return contextMenu;
+	}
+	
+	public void updateTableByRow(int row) {
+		for (int i = 0; i < LocalConfig.getInstance().getListOfCompartments().size(); i++) {
+			if (LocalConfig.getInstance().getListOfCompartments().get(i).getId().equals(table.getModel().getValueAt(row, CompartmentsTableConstants.ABBREVIATION_COLUMN))) {
+//				LocalConfig.getInstance().getListOfCompartments().get(i).setName((String) table.getModel().getValueAt(tcl.getRow(), CompartmentsTableConstants.NAME_COLUMN));
+//				LocalConfig.getInstance().getListOfCompartments().get(i).setOutside((String) table.getModel().getValueAt(tcl.getRow(), CompartmentsTableConstants.OUTSIDE_COLUMN));
+				updateCompartment(LocalConfig.getInstance().getListOfCompartments().get(i), row);
+				System.out.println(LocalConfig.getInstance().getListOfCompartments().get(i));
+			}
+		}
+	}
+	
+	public void updateCompartment(SBMLCompartment comp, int row) {
+		comp.setName((String) table.getModel().getValueAt(row, CompartmentsTableConstants.NAME_COLUMN));
+		comp.setOutside((String) table.getModel().getValueAt(row, CompartmentsTableConstants.OUTSIDE_COLUMN));
 	}
 
 	public void tableCopy() {
@@ -340,7 +384,20 @@ class CompartmentsTable
 		Toolkit.getDefaultToolkit().getSystemClipboard().setContents(sel, sel);
 	}
 	
-	
+	public void tablePaste() {
+		String pasteString = ""; 
+		try { 
+			pasteString = (String)(Toolkit.getDefaultToolkit().getSystemClipboard().getContents(this).getTransferData(DataFlavor.stringFlavor));
+			if (table.getSelectedRow() > -1 && table.getSelectedColumn() > -1 &&
+					table.getSelectedColumn() != CompartmentsTableConstants.ABBREVIATION_COLUMN) {
+				table.setValueAt(pasteString, table.getSelectedRow(), table.getSelectedColumn());
+				updateTableByRow(table.getSelectedRow());
+			}
+		} catch (Exception e1) { 
+			JOptionPane.showMessageDialog(null, "Invalid Paste Type", "Invalid Paste Type", JOptionPane.ERROR_MESSAGE);
+			return; 
+		} 
+	}
 	
 	private String escape(Object cell) { 
 		return cell.toString().replace("\n", " ").replace("\t", " "); 

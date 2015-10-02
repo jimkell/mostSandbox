@@ -2310,6 +2310,9 @@ public class GraphicalInterface extends JFrame {
 			public void actionPerformed(ActionEvent ae) {
 				getCompartmentsTable().loadTable();
 				getCompartmentsTable().setVisible(true);
+				loadExistingItem.setEnabled(false);
+				disableLoadItems();
+				disableMenuItemsForFVA(true);
 			}
 		});
         
@@ -12455,6 +12458,9 @@ public class GraphicalInterface extends JFrame {
 		frame.setAlwaysOnTop(true);
 		frame.setVisible(true);
 		frame.okButton.addActionListener(compartmentNameAbbrOKActionListener);
+		frame.cancelButton.addActionListener(compartmentNameAbbrCancelActionListener);
+		disableLoadItems();
+		disableMenuItemsForFVA(true);
 	}
 	
 	ActionListener compartmentNameAbbrOKActionListener = new ActionListener() {
@@ -12468,6 +12474,14 @@ public class GraphicalInterface extends JFrame {
 		}
 	};
 	
+	ActionListener compartmentNameAbbrCancelActionListener = new ActionListener() {
+		public void actionPerformed(ActionEvent ae) {
+			getCompNameDialog().setVisible(false);
+			getCompNameDialog().dispose();
+			enableLoadItems();
+			disableMenuItemsForFVA(false);
+		}
+	};
 	public String compNameFromCombo(JComboBox<String> combo) {
 		String abbr = "";
 		if (combo.getSelectedIndex() > -1) {
@@ -12484,15 +12498,16 @@ public class GraphicalInterface extends JFrame {
 		public void actionPerformed(ActionEvent ae) {						
 			System.out.println(LocalConfig.getInstance().getSelectedCompartmentName());
 			ReactionFactory rf = new ReactionFactory("SBML");
-			// uncomment to get periplasm reactions
 			if (LocalConfig.getInstance().getSelectedCompartmentName() != null && LocalConfig.getInstance().getSelectedCompartmentName().length() > 0) {
 				Vector<SBMLReaction> rxns = rf.getReactionsByCompartment(LocalConfig.getInstance().getSelectedCompartmentName());
-				for (int i = 0; i < rxns.size(); i++) {
-					System.out.println(rxns.get(i).getId());
-					System.out.println(rxns.get(i).getReactionEqunAbbr());
-					System.out.println(rxns.get(i).getReactionEqunNames());
-				}
+//				for (int i = 0; i < rxns.size(); i++) {
+//					System.out.println(rxns.get(i).getId());
+//					System.out.println(rxns.get(i).getReactionEqunAbbr());
+//					System.out.println(rxns.get(i).getReactionEqunNames());
+//				}
 			} 
+			enableLoadItems();
+			disableMenuItemsForFVA(false);
 		}
 	};
 	
