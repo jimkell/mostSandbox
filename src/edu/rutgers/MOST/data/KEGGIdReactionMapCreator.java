@@ -32,12 +32,12 @@ public class KEGGIdReactionMapCreator {
 					rxnsList.add(reaction);
 					keggIdReactionMap.put(keggReactionId, rxnsList);
 				}
-				if (LocalConfig.getInstance().getUnplottedReactionIds().contains(id)) {
-					LocalConfig.getInstance().getUnplottedReactionIds().remove(LocalConfig.getInstance().getUnplottedReactionIds().indexOf(id));
-				}
+//				if (LocalConfig.getInstance().getUnplottedReactionIds().contains(id)) {
+//					LocalConfig.getInstance().getUnplottedReactionIds().remove(LocalConfig.getInstance().getUnplottedReactionIds().indexOf(id));
+//				}
 			}
 		}
-		Collections.sort(LocalConfig.getInstance().getUnplottedReactionIds());
+//		Collections.sort(LocalConfig.getInstance().getUnplottedReactionIds());
 		//System.out.println("not plotted " + LocalConfig.getInstance().getUnplottedReactionIds());
 		//System.out.println("kegg rxn id " + keggIdReactionMap);
 		LocalConfig.getInstance().setKeggIdReactionMap(keggIdReactionMap);

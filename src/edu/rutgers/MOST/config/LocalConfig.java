@@ -989,18 +989,7 @@ public class LocalConfig {
 	public void setCompartmentsList(ArrayList<String> compartmentsList) {
 		this.compartmentsList = compartmentsList;
 	}
-	
-//	private ArrayList<Integer> biCompartmentReactionIds;
-//
-//	public ArrayList<Integer> getBiCompartmentReactionIds() {
-//		return biCompartmentReactionIds;
-//	}
-//
-//	public void setBiCompartmentReactionIds(
-//			ArrayList<Integer> biCompartmentReactionIds) {
-//		this.biCompartmentReactionIds = biCompartmentReactionIds;
-//	}
-	
+
 	private ArrayList<Integer> externalReactionIds;
 	
 	public ArrayList<Integer> getExternalReactionIds() {
@@ -1088,15 +1077,15 @@ public class LocalConfig {
 		this.modelKeggEquationMap = modelKeggEquationMap;
 	}
 	
-	private ArrayList<Integer> unplottedReactionIds;
-
-	public ArrayList<Integer> getUnplottedReactionIds() {
-		return unplottedReactionIds;
-	}
-
-	public void setUnplottedReactionIds(ArrayList<Integer> unplottedReactionIds) {
-		this.unplottedReactionIds = unplottedReactionIds;
-	}
+//	private ArrayList<Integer> unplottedReactionIds;
+//
+//	public ArrayList<Integer> getUnplottedReactionIds() {
+//		return unplottedReactionIds;
+//	}
+//
+//	public void setUnplottedReactionIds(ArrayList<Integer> unplottedReactionIds) {
+//		this.unplottedReactionIds = unplottedReactionIds;
+//	}
 	
 	// categorization
 	private ArrayList<Integer> cytosolIds;
@@ -1109,38 +1098,37 @@ public class LocalConfig {
 		this.cytosolIds = cytosolIds;
 	}
 
-	private ArrayList<Integer> cytosolExtraOrganismIds;
-
-	public ArrayList<Integer> getCytosolExtraOrganismIds() {
-		return cytosolExtraOrganismIds;
-	}
-
-	public void setCytosolExtraOrganismIds(
-			ArrayList<Integer> cytosolExtraOrganismIds) {
-		this.cytosolExtraOrganismIds = cytosolExtraOrganismIds;
-	}
+//	private ArrayList<Integer> cytosolExtraOrganismIds;
+//
+//	public ArrayList<Integer> getCytosolExtraOrganismIds() {
+//		return cytosolExtraOrganismIds;
+//	}
+//
+//	public void setCytosolExtraOrganismIds(
+//			ArrayList<Integer> cytosolExtraOrganismIds) {
+//		this.cytosolExtraOrganismIds = cytosolExtraOrganismIds;
+//	}
 	
-	private ArrayList<Integer> cytosolPeriplasmIds;
-
-	public ArrayList<Integer> getCytosolPeriplasmIds() {
-		return cytosolPeriplasmIds;
-	}
-
-	public void setCytosolPeriplasmIds(ArrayList<Integer> cytosolPeriplasmIds) {
-		this.cytosolPeriplasmIds = cytosolPeriplasmIds;
-	}
-	
-	private ArrayList<Integer> periplasmExtraOrganismIds;
-
-	public ArrayList<Integer> getPeriplasmExtraOrganismIds() {
-		return periplasmExtraOrganismIds;
-	}
-
-	public void setPeriplasmExtraOrganismIds(
-			ArrayList<Integer> periplasmExtraOrganismIds) {
-		this.periplasmExtraOrganismIds = periplasmExtraOrganismIds;
-	}
-
+//	private ArrayList<Integer> cytosolPeriplasmIds;
+//
+//	public ArrayList<Integer> getCytosolPeriplasmIds() {
+//		return cytosolPeriplasmIds;
+//	}
+//
+//	public void setCytosolPeriplasmIds(ArrayList<Integer> cytosolPeriplasmIds) {
+//		this.cytosolPeriplasmIds = cytosolPeriplasmIds;
+//	}
+//	
+//	private ArrayList<Integer> periplasmExtraOrganismIds;
+//
+//	public ArrayList<Integer> getPeriplasmExtraOrganismIds() {
+//		return periplasmExtraOrganismIds;
+//	}
+//
+//	public void setPeriplasmExtraOrganismIds(
+//			ArrayList<Integer> periplasmExtraOrganismIds) {
+//		this.periplasmExtraOrganismIds = periplasmExtraOrganismIds;
+//	}
 	
 	// used to add kegg ids to metabolites table from supplementary data
 	private Map<String, String> metaboliteAbbrKeggIdMap;
@@ -1298,6 +1286,26 @@ public class LocalConfig {
 
 	public void setSelectedCompartmentName(String selectedCompartmentName) {
 		this.selectedCompartmentName = selectedCompartmentName;
+	}
+	
+	private String membraneName;
+
+	public String getMembraneName() {
+		return membraneName;
+	}
+
+	public void setMembraneName(String membraneName) {
+		this.membraneName = membraneName;
+	}
+	
+	private String outsideName;
+
+	public String getOutsideName() {
+		return outsideName;
+	}
+
+	public void setOutsideName(String outsideName) {
+		this.outsideName = outsideName;
 	}
 
 	private String keggReactionIdColumnName;

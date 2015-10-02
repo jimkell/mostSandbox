@@ -325,8 +325,6 @@ public class SBMLModelReader {
 		boolean containsMinFlux = false;
 		boolean containsMaxFlux = false;
 		
-		//ArrayList<Integer> biCompartmentReactionIds = new ArrayList<Integer>();
-		
 		// begin reactions read
 		DefaultTableModel reacTableModel = new DefaultTableModel();
 		for (int r = 0; r < GraphicalInterfaceConstants.REACTIONS_COLUMN_NAMES.length; r++) {
@@ -504,9 +502,6 @@ public class SBMLModelReader {
 				}
 				//System.out.println(product.toString());
 				equnProducts.add(product);
-//				if (compartmentList.size() > 1 && !biCompartmentReactionIds.contains(j)) {
-//					biCompartmentReactionIds.add(j);
-//				}
 			}
             equation.setReactants(equnReactants);
             equation.setProducts(equnProducts);
@@ -823,8 +818,6 @@ public class SBMLModelReader {
 		//System.out.println(LocalConfig.getInstance().getReactionEquationMap());
 		LocalConfig.getInstance().setReactionAbbreviationIdMap(reactionAbbreviationIdMap);
 		//System.out.println(reactionAbbreviationIdMap);
-		//LocalConfig.getInstance().setBiCompartmentReactionIds(biCompartmentReactionIds);
-		//System.out.println("bicompartment ids " + biCompartmentReactionIds);
 		LocalConfig.getInstance().setProgress(100);	
 		if (containsMinFlux && containsMaxFlux) {
 			LocalConfig.getInstance().getShowFVAColumnsList().add(LocalConfig.getInstance().getModelName());

@@ -39,27 +39,27 @@ public class PathwayReactionNodeFactory {
 					addReactions(reactions, reac, compartment, keggReactantIds, keggProductIds);
 				}
 				// attributes from Enzyme.dat
-				if (LocalConfig.getInstance().getEnzymeDataMap().containsKey(ec.get(m))) {
-					if (LocalConfig.getInstance().getEnzymeDataMap().get(ec.get(m)).getCatalyticActivity() == null) {
-						// description can have alternate numbers. need to get these
-						//System.out.println(keys.get(j) + " " + LocalConfig.getInstance().getEnzymeDataMap().get(keys.get(j)).getDescription());
-					} else {
-						enzymeDataEquations.add(LocalConfig.getInstance().getEnzymeDataMap().get(ec.get(m)).getCatalyticActivity());
-						String[] halfReactions = LocalConfig.getInstance().getEnzymeDataMap().get(ec.get(m)).getCatalyticActivity().split(" = ");
-						for (int n = 0; n < LocalConfig.getInstance().getSideSpeciesList().size(); n++) {
-							if (halfReactions[0].contains(LocalConfig.getInstance().getSideSpeciesList().get(n))) {
-								if (!sideReactants.contains(LocalConfig.getInstance().getSideSpeciesList().get(n))) {
-									sideReactants.add(LocalConfig.getInstance().getSideSpeciesList().get(n));
-								}
-							}
-							if (halfReactions.length > 1 && halfReactions[1].contains(LocalConfig.getInstance().getSideSpeciesList().get(n))) {
-								if (!sideProducts.contains(LocalConfig.getInstance().getSideSpeciesList().get(n))) {
-									sideProducts.add(LocalConfig.getInstance().getSideSpeciesList().get(n));
-								}
-							}
-						}
-					}
-				}		
+//				if (LocalConfig.getInstance().getEnzymeDataMap().containsKey(ec.get(m))) {
+//					if (LocalConfig.getInstance().getEnzymeDataMap().get(ec.get(m)).getCatalyticActivity() == null) {
+//						// description can have alternate numbers. need to get these
+//						//System.out.println(keys.get(j) + " " + LocalConfig.getInstance().getEnzymeDataMap().get(keys.get(j)).getDescription());
+//					} else {
+//						enzymeDataEquations.add(LocalConfig.getInstance().getEnzymeDataMap().get(ec.get(m)).getCatalyticActivity());
+//						String[] halfReactions = LocalConfig.getInstance().getEnzymeDataMap().get(ec.get(m)).getCatalyticActivity().split(" = ");
+//						for (int n = 0; n < LocalConfig.getInstance().getSideSpeciesList().size(); n++) {
+//							if (halfReactions[0].contains(LocalConfig.getInstance().getSideSpeciesList().get(n))) {
+//								if (!sideReactants.contains(LocalConfig.getInstance().getSideSpeciesList().get(n))) {
+//									sideReactants.add(LocalConfig.getInstance().getSideSpeciesList().get(n));
+//								}
+//							}
+//							if (halfReactions.length > 1 && halfReactions[1].contains(LocalConfig.getInstance().getSideSpeciesList().get(n))) {
+//								if (!sideProducts.contains(LocalConfig.getInstance().getSideSpeciesList().get(n))) {
+//									sideProducts.add(LocalConfig.getInstance().getSideSpeciesList().get(n));
+//								}
+//							}
+//						}
+//					}
+//				}		
 			}
 		}
 		for (int n = 0; n < keggReactionIds.size(); n++) {
