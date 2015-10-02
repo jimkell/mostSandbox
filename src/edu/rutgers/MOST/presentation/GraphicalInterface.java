@@ -1170,6 +1170,7 @@ public class GraphicalInterface extends JFrame {
 								loadOutputPane(u.createLogFileName(databaseName + ".log"));
 								isRoot = false;	
 								disableMenuItems();
+								tabbedPane.setSelectedIndex(0);
 								setTitle(GraphicalInterfaceConstants.TITLE + " - " + databaseName);
 								if (getPopout() != null) {
 									getPopout().load(u.createLogFileName(databaseName + ".log"), gi.getTitle());
@@ -1838,6 +1839,7 @@ public class GraphicalInterface extends JFrame {
 						disableMenuItems();
 						disableLoadItems();
 						disableMenuItemsForFVA(true);
+						tabbedPane.setSelectedIndex(0);
 						ArrayList< Double > soln = null;
 						try
 						{
@@ -11866,7 +11868,7 @@ public class GraphicalInterface extends JFrame {
 		loadMetabSuppDataItem.setEnabled(false);
 		loadReacSuppDataItem.setEnabled(false);
 		reactionsTableEditable = false;
-		tabbedPane.setSelectedIndex(0);
+		//tabbedPane.setSelectedIndex(0);
 		formulaBar.setEditable(false);
 		formulaBar.setBackground(Color.WHITE);
 		editorMenu.setEnabled(false);
@@ -12453,8 +12455,16 @@ public class GraphicalInterface extends JFrame {
 		frame.setIconImages(icons);
 		//frame.setSize(550, 270);
 		frame.pack();
-		frame.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		frame.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		frame.setLocationRelativeTo(null);
+		frame.addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent evt) {
+				getCompNameDialog().setVisible(false);
+				getCompNameDialog().dispose();
+				enableLoadItems();
+				disableMenuItemsForFVA(false);
+			}
+		});
 		frame.setAlwaysOnTop(true);
 		frame.setVisible(true);
 		frame.okButton.addActionListener(compartmentNameAbbrOKActionListener);
