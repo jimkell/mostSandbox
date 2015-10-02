@@ -13,10 +13,15 @@ import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableColumn;
+import javax.swing.text.JTextComponent;
 
 import org.jdesktop.swingx.JXTable;
+
 import edu.rutgers.MOST.config.LocalConfig;
+import edu.rutgers.MOST.data.MetaboliteUndoItem;
+import edu.rutgers.MOST.data.UndoConstants;
 
 // loosely based on http://www.cs.cf.ac.uk/Dave/HCI/HCI_Handout_CALLER/node167.html
 // based on http://www.coderanch.com/t/345311/GUI/java/Adding-rows-Jtable
@@ -36,10 +41,25 @@ class CompartmentsTable
 		 */
 		private static final long serialVersionUID = 1L;
 
-		public boolean isCellEditable(int row, int column){
-			return false;
-			
-		}	
+		public boolean isCellEditable(int row, int column){	    	   
+			if (column == CompartmentsTableConstants.ABBREVIATION_COLUMN) {
+				return false;
+			}
+			return true;  
+		}
+
+		public Component prepareEditor(
+				TableCellEditor editor, int row, int column)
+		{
+			Component c = super.prepareEditor(editor, row, column);
+
+			if (c instanceof JTextComponent)
+			{
+				((JTextField)c).selectAll();
+			}
+
+			return c;
+		}		
 	};
 	private	JPanel		bottomLeftPanel;
 	private	JPanel		bottomRightPanel;
@@ -71,7 +91,7 @@ class CompartmentsTable
 		okButton.setEnabled(false);
 		cancelButton.setMnemonic(KeyEvent.VK_C);
 		
-		//getRootPane().setDefaultButton(okButton);
+		getRootPane().setDefaultButton(okButton);
 		
 		table.setRowHeight(20);
 		table.setColumnSelectionAllowed(false);
@@ -84,6 +104,30 @@ class CompartmentsTable
 		// and should not take precedence over functionality. As a result of this,
 		// only 1 cell can be copied at a time
 		//table.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+		
+		Action compTableAction = new AbstractAction()
+		{
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
+			public void actionPerformed(ActionEvent e)
+			{   	  
+				TableCellListener tcl = (TableCellListener)e.getSource();
+			
+				if (tcl.getOldValue() != tcl.getNewValue()) {
+					for (int i = 0; i < LocalConfig.getInstance().getListOfCompartments().size(); i++) {
+						if (LocalConfig.getInstance().getListOfCompartments().get(i).getId().equals(table.getModel().getValueAt(tcl.getRow(), CompartmentsTableConstants.ABBREVIATION_COLUMN))) {
+							LocalConfig.getInstance().getListOfCompartments().get(i).setName((String) table.getModel().getValueAt(tcl.getRow(), CompartmentsTableConstants.NAME_COLUMN));
+							LocalConfig.getInstance().getListOfCompartments().get(i).setOutside((String) table.getModel().getValueAt(tcl.getRow(), CompartmentsTableConstants.OUTSIDE_COLUMN));
+						}
+					}
+				}			
+			}
+		};
+		
+		new TableCellListener(table, compTableAction);
 		
 		PopupListener popupListener = new PopupListener();
 		table.addMouseListener(popupListener);
