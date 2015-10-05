@@ -1077,15 +1077,15 @@ public class LocalConfig {
 		this.modelKeggEquationMap = modelKeggEquationMap;
 	}
 	
-//	private ArrayList<Integer> unplottedReactionIds;
-//
-//	public ArrayList<Integer> getUnplottedReactionIds() {
-//		return unplottedReactionIds;
-//	}
-//
-//	public void setUnplottedReactionIds(ArrayList<Integer> unplottedReactionIds) {
-//		this.unplottedReactionIds = unplottedReactionIds;
-//	}
+	private ArrayList<Integer> unplottedReactionIds;
+
+	public ArrayList<Integer> getUnplottedReactionIds() {
+		return unplottedReactionIds;
+	}
+
+	public void setUnplottedReactionIds(ArrayList<Integer> unplottedReactionIds) {
+		this.unplottedReactionIds = unplottedReactionIds;
+	}
 	
 	// categorization
 	private ArrayList<Integer> cytosolIds;

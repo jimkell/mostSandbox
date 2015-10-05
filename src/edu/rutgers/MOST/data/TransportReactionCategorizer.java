@@ -51,15 +51,15 @@ public class TransportReactionCategorizer {
 				}
 			}
 		}
-//		System.out.println("ext rxns " + externalReactionIds);
+		System.out.println("ext rxns " + externalReactionIds);
 		LocalConfig.getInstance().setExternalReactionIds(externalReactionIds);
-//		for (int n = 0; n < externalReactionIds.size(); n++) {
-//			if (LocalConfig.getInstance().getUnplottedReactionIds().contains(externalReactionIds.get(n))) {
-//				LocalConfig.getInstance().getUnplottedReactionIds().remove(LocalConfig.getInstance().getUnplottedReactionIds().indexOf(externalReactionIds.get(n)));
-//			}
-//		}
+		for (int n = 0; n < externalReactionIds.size(); n++) {
+			if (LocalConfig.getInstance().getUnplottedReactionIds().contains(externalReactionIds.get(n))) {
+				LocalConfig.getInstance().getUnplottedReactionIds().remove(LocalConfig.getInstance().getUnplottedReactionIds().indexOf(externalReactionIds.get(n)));
+			}
+		}
 //		Collections.sort(LocalConfig.getInstance().getUnplottedReactionIds());
-//		//System.out.println("not plotted no ext " + LocalConfig.getInstance().getUnplottedReactionIds());
+//		System.out.println("not plotted no ext " + LocalConfig.getInstance().getUnplottedReactionIds());
 	}
 	
 	public void categorizeTransportReactionsByCompartment() {
@@ -95,12 +95,23 @@ public class TransportReactionCategorizer {
 				LocalConfig.getInstance().getExtraOrganismName().length() > 0) {
 			cytosolExtraOrganismRxns = rf.getTransportReactionsByCompartments(LocalConfig.getInstance().getCytosolName(), 
 					LocalConfig.getInstance().getExtraOrganismName());
+//			System.out.println(LocalConfig.getInstance().getUnplottedReactionIds());
+//			System.out.println(cytosolExtraOrganismRxns);
+//			for (int i = 0; i < cytosolExtraOrganismRxns.size(); i++) {
+//				if (LocalConfig.getInstance().getUnplottedReactionIds().contains(cytosolExtraOrganismRxns.get(i).getId())) {
+//					LocalConfig.getInstance().getUnplottedReactionIds().remove(LocalConfig.getInstance().getUnplottedReactionIds().indexOf(cytosolExtraOrganismRxns.get(i).getId()));
+//				}
+//			}
+//			System.out.println(LocalConfig.getInstance().getUnplottedReactionIds());
+			removeTransportReactionsFromUnplottedList(cytosolExtraOrganismRxns);
 			if (LocalConfig.getInstance().getPeriplasmName() != null &&
 					LocalConfig.getInstance().getPeriplasmName().length() > 0) {
 				cytosolPeriplasmRxns = rf.getTransportReactionsByCompartments(LocalConfig.getInstance().getCytosolName(), 
 						LocalConfig.getInstance().getPeriplasmName());
+				removeTransportReactionsFromUnplottedList(cytosolPeriplasmRxns);
 				periplasmExtraOrganismRxns = rf.getTransportReactionsByCompartments(LocalConfig.getInstance().getPeriplasmName(), 
 						LocalConfig.getInstance().getExtraOrganismName());
+				removeTransportReactionsFromUnplottedList(periplasmExtraOrganismRxns);
 			}
 		}
 		
@@ -249,12 +260,23 @@ public class TransportReactionCategorizer {
 	}
 	
 	public void createUnplottedReactionsList() {
-//		ArrayList<Object> unplottedReactions = new ArrayList<Object>(LocalConfig.getInstance().getReactionEquationMap().keySet());
-//		ArrayList<Integer> unplottedReactionIds = new ArrayList<Integer>();
-//		for (int i = 0; i < unplottedReactions.size(); i++) {
-//			unplottedReactionIds.add((int) unplottedReactions.get(i));
-//		}
-//		LocalConfig.getInstance().setUnplottedReactionIds(unplottedReactionIds);
+		ArrayList<Object> unplottedReactions = new ArrayList<Object>(LocalConfig.getInstance().getReactionEquationMap().keySet());
+		ArrayList<Integer> unplottedReactionIds = new ArrayList<Integer>();
+		for (int i = 0; i < unplottedReactions.size(); i++) {
+			unplottedReactionIds.add((int) unplottedReactions.get(i));
+		}
+		LocalConfig.getInstance().setUnplottedReactionIds(unplottedReactionIds);
+	}
+	
+	public void removeTransportReactionsFromUnplottedList(Vector<SBMLReaction> rxns) {
+		System.out.println(LocalConfig.getInstance().getUnplottedReactionIds());
+		System.out.println(rxns);
+		for (int i = 0; i < rxns.size(); i++) {
+			if (LocalConfig.getInstance().getUnplottedReactionIds().contains(rxns.get(i).getId())) {
+				LocalConfig.getInstance().getUnplottedReactionIds().remove(LocalConfig.getInstance().getUnplottedReactionIds().indexOf(rxns.get(i).getId()));
+			}
+		}
+		System.out.println(LocalConfig.getInstance().getUnplottedReactionIds());
 	}
 	
 	public void createTransportCollectionFromList(ArrayList<Integer> idsList, Map<Integer, SBMLReaction> idReactionMap) {
