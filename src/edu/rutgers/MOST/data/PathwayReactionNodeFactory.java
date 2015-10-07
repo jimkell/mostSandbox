@@ -118,8 +118,8 @@ public class PathwayReactionNodeFactory {
 						// must add SBML Reaction to list to use addReactions method
 						ArrayList<SBMLReaction> list = new ArrayList<SBMLReaction>();
 						list.add(reactionMap.get(Integer.toString(LocalConfig.getInstance().getUnplottedReactionIds().get(i))));
-						addReactions(reactions, list, compartment, 
-								modelData.getKeggReactantIds(), modelData.getKeggProductIds());
+//						addReactions(reactions, list, compartment, 
+//								modelData.getKeggReactantIds(), modelData.getKeggProductIds());
 					} 
 				}
 			}
@@ -146,7 +146,7 @@ public class PathwayReactionNodeFactory {
 					if (equn.getCompartmentList().size() == 1 && equn.getCompartmentList().contains(compartment)) {
 						addReactionIfNotPresent(reactions, reac.get(r), keggReactantIds, keggProductIds);
 						if (LocalConfig.getInstance().getUnplottedReactionIds().contains(reac.get(r).getId())) {
-							System.out.println(reac.get(r).getId());
+							//System.out.println(reac.get(r).getId());
 							LocalConfig.getInstance().getUnplottedReactionIds().remove(LocalConfig.getInstance().getUnplottedReactionIds().indexOf(reac.get(r).getId()));
 						}
 					} else {

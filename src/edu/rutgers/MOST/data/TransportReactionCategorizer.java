@@ -16,6 +16,7 @@ public class TransportReactionCategorizer {
 	private Vector<SBMLReaction> compartmentOutsideRxns;
 	private Vector<SBMLReaction> compartmentMembraneRxns;
 	private Vector<SBMLReaction> membraneOutsideRxns;
+	private ArrayList<Integer> transportIds;
 	
 	TransportCollectionsCreator transportCollectionsCreator = new TransportCollectionsCreator();
 	public void removeExternalReactions() {
@@ -51,13 +52,21 @@ public class TransportReactionCategorizer {
 				}
 			}
 		}
-		System.out.println("ext rxns " + externalReactionIds);
+		//System.out.println("ext rxns " + externalReactionIds);
 		LocalConfig.getInstance().setExternalReactionIds(externalReactionIds);
-		for (int n = 0; n < externalReactionIds.size(); n++) {
-			if (LocalConfig.getInstance().getUnplottedReactionIds().contains(externalReactionIds.get(n))) {
-				LocalConfig.getInstance().getUnplottedReactionIds().remove(LocalConfig.getInstance().getUnplottedReactionIds().indexOf(externalReactionIds.get(n)));
+		// faster to make new list than remove from old list
+		ArrayList<Integer> unplottedIds = new ArrayList<Integer>();
+		for (int n = 0; n < LocalConfig.getInstance().getUnplottedReactionIds().size(); n++) {
+			if (!externalReactionIds.contains(LocalConfig.getInstance().getUnplottedReactionIds().get(n))) {
+				unplottedIds.add(LocalConfig.getInstance().getUnplottedReactionIds().get(n));
 			}
 		}
+		LocalConfig.getInstance().setUnplottedReactionIds(unplottedIds);
+//		for (int n = 0; n < externalReactionIds.size(); n++) {
+//			if (LocalConfig.getInstance().getUnplottedReactionIds().contains(externalReactionIds.get(n))) {
+//				LocalConfig.getInstance().getUnplottedReactionIds().remove(LocalConfig.getInstance().getUnplottedReactionIds().indexOf(externalReactionIds.get(n)));
+//			}
+//		}
 //		Collections.sort(LocalConfig.getInstance().getUnplottedReactionIds());
 //		System.out.println("not plotted no ext " + LocalConfig.getInstance().getUnplottedReactionIds());
 	}
@@ -269,14 +278,21 @@ public class TransportReactionCategorizer {
 	}
 	
 	public void removeTransportReactionsFromUnplottedList(Vector<SBMLReaction> rxns) {
-		System.out.println(LocalConfig.getInstance().getUnplottedReactionIds());
-		System.out.println(rxns);
+//		System.out.println(LocalConfig.getInstance().getUnplottedReactionIds());
+//		System.out.println(rxns);
+		ArrayList<Integer> rxnIds = new ArrayList<Integer>();
 		for (int i = 0; i < rxns.size(); i++) {
-			if (LocalConfig.getInstance().getUnplottedReactionIds().contains(rxns.get(i).getId())) {
-				LocalConfig.getInstance().getUnplottedReactionIds().remove(LocalConfig.getInstance().getUnplottedReactionIds().indexOf(rxns.get(i).getId()));
+			rxnIds.add(rxns.get(i).getId());
+		}
+		// faster to make new list than remove from old list
+		ArrayList<Integer> unplottedIds = new ArrayList<Integer>();
+		for (int n = 0; n < LocalConfig.getInstance().getUnplottedReactionIds().size(); n++) {
+			if (!rxnIds.contains(LocalConfig.getInstance().getUnplottedReactionIds().get(n))) {
+				unplottedIds.add(LocalConfig.getInstance().getUnplottedReactionIds().get(n));
 			}
 		}
-		System.out.println(LocalConfig.getInstance().getUnplottedReactionIds());
+		LocalConfig.getInstance().setUnplottedReactionIds(unplottedIds);
+		//System.out.println("no trans " + LocalConfig.getInstance().getUnplottedReactionIds());
 	}
 	
 	public void createTransportCollectionFromList(ArrayList<Integer> idsList, Map<Integer, SBMLReaction> idReactionMap) {

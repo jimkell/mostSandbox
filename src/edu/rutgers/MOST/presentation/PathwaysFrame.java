@@ -426,9 +426,9 @@ public class PathwaysFrame extends JApplet {
 		for (int i = 0; i < rxns.size(); i++) {
 			idReactionMap.put(rxns.get(i).getId(), rxns.get(i));
 		}
-		// temporary lists to keep track of what ec numbers have been found
-		ArrayList<String> foundEcNumbers = new ArrayList<String>();
-	    ArrayList<String> notFoundEcNumbers = new ArrayList<String>(LocalConfig.getInstance().getEcNumberReactionMap().keySet());
+//		// temporary lists to keep track of what ec numbers have been found
+//		ArrayList<String> foundEcNumbers = new ArrayList<String>();
+//	    ArrayList<String> notFoundEcNumbers = new ArrayList<String>(LocalConfig.getInstance().getEcNumberReactionMap().keySet());
 		 
 	    double startX = PathwaysFrameConstants.BORDER_WIDTH + PathwaysFrameConstants.HORIZONTAL_INCREMENT;
 		double startY = PathwaysFrameConstants.START_Y;
@@ -547,6 +547,7 @@ public class PathwaysFrame extends JApplet {
 					String displayName = prnf.createDisplayName(pathway.getReactionsData().get(Integer.toString(k)).getDisplayName(),
 							pathway.getReactionsData().get(Integer.toString(k)).getName(),
 							pn.getReactions(), idReactionMap);
+					
 					// update temporary lists to keep track of what ec numbers have been found
 					double edgeColor = PathwaysFrameConstants.BLACK_COLOR_VALUE;
 					for (int z = 0; z < pn.getReactions().size(); z++) {
@@ -554,12 +555,12 @@ public class PathwaysFrame extends JApplet {
 							java.util.List<String> ecNumbers = Arrays.asList(pn.getReactions().get(z).getEcNumber().split("\\s"));
 							for (int y = 0; y < ecNumbers.size(); y++) {
 								//System.out.println(ecNumbers.get(y));
-								if (!foundEcNumbers.contains(ecNumbers.get(y))) {
-									foundEcNumbers.add(ecNumbers.get(y));
-								}
-								if (notFoundEcNumbers.contains(ecNumbers.get(y))) {
-									notFoundEcNumbers.remove(ecNumbers.get(y));
-								}
+//								if (!foundEcNumbers.contains(ecNumbers.get(y))) {
+//									foundEcNumbers.add(ecNumbers.get(y));
+//								}
+//								if (notFoundEcNumbers.contains(ecNumbers.get(y))) {
+//									notFoundEcNumbers.remove(ecNumbers.get(y));
+//								}
 							}
 							// set last one for now
 							pn.setFluxValue(pn.getReactions().get(z).getFluxValue());
@@ -655,6 +656,7 @@ public class PathwaysFrame extends JApplet {
 				}
 			}
 		}
+		System.out.println("unplotted " + LocalConfig.getInstance().getUnplottedReactionIds());
 		
 		for(int p = 0; p < LocalConfig.getInstance().getPathwayNameMap().size(); p++) {
 			String pathwayName = LocalConfig.getInstance().getPathwayNameMap().get(Integer.toString(p)).getName();
@@ -1073,9 +1075,9 @@ public class PathwaysFrame extends JApplet {
 //			}
 //		}
 		
-		Collections.sort(foundEcNumbers);
+		//Collections.sort(foundEcNumbers);
 		//System.out.println("found " + foundEcNumbers);
-		Collections.sort(notFoundEcNumbers);
+		//Collections.sort(notFoundEcNumbers);
 		//System.out.println("not found " + notFoundEcNumbers);
                                                                                                                      
    		metaboliteList = new ArrayList<String>(metabPosMap.keySet()); 
