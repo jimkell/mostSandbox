@@ -52,7 +52,7 @@ public class TransportReactionCategorizer {
 				}
 			}
 		}
-		//System.out.println("ext rxns " + externalReactionIds);
+		System.out.println("ext rxns " + externalReactionIds);
 		LocalConfig.getInstance().setExternalReactionIds(externalReactionIds);
 		// faster to make new list than remove from old list
 		ArrayList<Integer> unplottedIds = new ArrayList<Integer>();
@@ -71,9 +71,32 @@ public class TransportReactionCategorizer {
 //		System.out.println("not plotted no ext " + LocalConfig.getInstance().getUnplottedReactionIds());
 	}
 	
+	public void removeBiomassReactions() {
+		ReactionFactory rf = new ReactionFactory("SBML");
+		Vector<SBMLReaction> reactions = rf.getAllReactions();
+		for (int i = 0; i < reactions.size(); i++) {
+			//			for (int j = 0; j < LocalConfig.getInstance().getUnplottedReactionIds().size(); j++) {
+			int id = reactions.get(i).getId();
+			//				int id = LocalConfig.getInstance().getUnplottedReactionIds().get(j);
+			SBMLReactionEquation equn = (SBMLReactionEquation) LocalConfig.getInstance().getReactionEquationMap().get(id);
+			//System.out.println("eq " + equn);
+			// get external reactions, not plotted
+			ArrayList<SBMLReactant> reactants = equn.getReactants();
+			ArrayList<SBMLProduct> products = equn.getProducts();
+			System.out.println(reactants.size());
+			System.out.println(products.size());
+			if (reactants.size() > 15 || products.size() > 15) {
+				if (LocalConfig.getInstance().getUnplottedReactionIds().contains(id)) {
+					LocalConfig.getInstance().getUnplottedReactionIds().remove(LocalConfig.getInstance().getUnplottedReactionIds().indexOf(id));
+				}
+			}
+		}
+	}
+	
 	public void categorizeTransportReactionsByCompartment() {
 		ReactionFactory rf = new ReactionFactory("SBML");
 		removeExternalReactions();
+		removeBiomassReactions();
 		if (LocalConfig.getInstance().getSelectedCompartmentName() != null &&
 				LocalConfig.getInstance().getSelectedCompartmentName().length() > 0 &&
 				LocalConfig.getInstance().getOutsideName() != null &&
@@ -98,6 +121,7 @@ public class TransportReactionCategorizer {
 //			idReactionMap.put(reactions.get(i).getId(), reactions.get(i));
 //		}
 		removeExternalReactions();
+		removeBiomassReactions();
 		if (LocalConfig.getInstance().getCytosolName() != null &&
 				LocalConfig.getInstance().getCytosolName().length() > 0 &&
 				LocalConfig.getInstance().getExtraOrganismName() != null &&
@@ -292,7 +316,7 @@ public class TransportReactionCategorizer {
 			}
 		}
 		LocalConfig.getInstance().setUnplottedReactionIds(unplottedIds);
-		//System.out.println("no trans " + LocalConfig.getInstance().getUnplottedReactionIds());
+		System.out.println("no trans " + LocalConfig.getInstance().getUnplottedReactionIds());
 	}
 	
 	public void createTransportCollectionFromList(ArrayList<Integer> idsList, Map<Integer, SBMLReaction> idReactionMap) {

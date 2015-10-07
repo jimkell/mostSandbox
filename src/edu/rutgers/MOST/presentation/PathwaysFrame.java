@@ -448,7 +448,8 @@ public class PathwaysFrame extends JApplet {
 	    //ArrayList<String> foundReactionsList = new ArrayList<String>();
 //		ArrayList<PathwayMetaboliteNode> externalMetaboliteNodeList = new ArrayList<PathwayMetaboliteNode>();
 		ArrayList<PathwayMetaboliteNode> transportMetaboliteNodeList = new ArrayList<PathwayMetaboliteNode>();
-	
+		ArrayList<Integer> plottedIds = new ArrayList<Integer>();
+		
 		PathwayReactionNodeFactory prnf = new PathwayReactionNodeFactory();
 		for (int i = 0; i < LocalConfig.getInstance().getDrawOrder().size(); i++) {
 			MetabolicPathway pathway = LocalConfig.getInstance().getMetabolicPathways().get(LocalConfig.getInstance().getDrawOrder().get(i));
@@ -573,6 +574,12 @@ public class PathwaysFrame extends JApplet {
 					boolean drawReaction = true;
 					if (pn.getReactions().size() > 0) {
 						foundReactionsList.add(displayName);
+						// for bookkeeping only
+						for (int z = 0; z < pn.getReactions().size(); z++) {
+							//if (!plottedIds.contains(pn.getReactions().get(z).getId())) {
+								plottedIds.add(pn.getReactions().get(z).getId());
+							//}
+						}
 					} else {
 						if (!LocalConfig.getInstance().isGraphMissingReactionsSelected()) {
 							drawReaction = false;
@@ -656,6 +663,8 @@ public class PathwaysFrame extends JApplet {
 				}
 			}
 		}
+		Collections.sort(plottedIds);
+		System.out.println("plotted " + plottedIds);
 		System.out.println("unplotted " + LocalConfig.getInstance().getUnplottedReactionIds());
 		
 		for(int p = 0; p < LocalConfig.getInstance().getPathwayNameMap().size(); p++) {
