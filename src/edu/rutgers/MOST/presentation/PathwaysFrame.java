@@ -577,7 +577,9 @@ public class PathwaysFrame extends JApplet {
 						// for bookkeeping only
 						for (int z = 0; z < pn.getReactions().size(); z++) {
 							//if (!plottedIds.contains(pn.getReactions().get(z).getId())) {
-								plottedIds.add(pn.getReactions().get(z).getId());
+								if (pn.getReactions().get(z) != null) {
+									plottedIds.add(pn.getReactions().get(z).getId());
+								}	
 							//}
 						}
 					} else {

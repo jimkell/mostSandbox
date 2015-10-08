@@ -52,7 +52,7 @@ public class TransportReactionCategorizer {
 				}
 			}
 		}
-		System.out.println("ext rxns " + externalReactionIds);
+		//System.out.println("ext rxns " + externalReactionIds);
 		LocalConfig.getInstance().setExternalReactionIds(externalReactionIds);
 		// faster to make new list than remove from old list
 		ArrayList<Integer> unplottedIds = new ArrayList<Integer>();
@@ -83,8 +83,8 @@ public class TransportReactionCategorizer {
 			// get external reactions, not plotted
 			ArrayList<SBMLReactant> reactants = equn.getReactants();
 			ArrayList<SBMLProduct> products = equn.getProducts();
-			System.out.println(reactants.size());
-			System.out.println(products.size());
+//			System.out.println(reactants.size());
+//			System.out.println(products.size());
 			if (reactants.size() > 15 || products.size() > 15) {
 				if (LocalConfig.getInstance().getUnplottedReactionIds().contains(id)) {
 					LocalConfig.getInstance().getUnplottedReactionIds().remove(LocalConfig.getInstance().getUnplottedReactionIds().indexOf(id));
@@ -115,11 +115,6 @@ public class TransportReactionCategorizer {
 	
 	public void categorizeTransportReactions() {
 		ReactionFactory rf = new ReactionFactory("SBML");
-//		Vector<SBMLReaction> reactions = rf.getAllReactions();
-//		Map<Integer, SBMLReaction> idReactionMap = new HashMap<Integer, SBMLReaction>();
-//		for (int i = 0; i < reactions.size(); i++) {
-//			idReactionMap.put(reactions.get(i).getId(), reactions.get(i));
-//		}
 		removeExternalReactions();
 		removeBiomassReactions();
 		if (LocalConfig.getInstance().getCytosolName() != null &&
@@ -128,14 +123,31 @@ public class TransportReactionCategorizer {
 				LocalConfig.getInstance().getExtraOrganismName().length() > 0) {
 			cytosolExtraOrganismRxns = rf.getTransportReactionsByCompartments(LocalConfig.getInstance().getCytosolName(), 
 					LocalConfig.getInstance().getExtraOrganismName());
-//			System.out.println(LocalConfig.getInstance().getUnplottedReactionIds());
-//			System.out.println(cytosolExtraOrganismRxns);
+			// classification of transport reactions
 //			for (int i = 0; i < cytosolExtraOrganismRxns.size(); i++) {
-//				if (LocalConfig.getInstance().getUnplottedReactionIds().contains(cytosolExtraOrganismRxns.get(i).getId())) {
-//					LocalConfig.getInstance().getUnplottedReactionIds().remove(LocalConfig.getInstance().getUnplottedReactionIds().indexOf(cytosolExtraOrganismRxns.get(i).getId()));
+//				int id = cytosolExtraOrganismRxns.get(i).getId();
+//				SBMLReactionEquation equn = (SBMLReactionEquation) LocalConfig.getInstance().getReactionEquationMap().get(id);
+//				ArrayList<SBMLReactant> reactants = equn.getReactants();
+//				ArrayList<SBMLProduct> products = equn.getProducts();
+//				if (reactants.size() == 1 && products.size() == 1) {
+//					//System.out.println(cytosolExtraOrganismRxns.get(i).getReactionEqunAbbr());
+//				} else {
+//					for (int r = 0; r < reactants.size(); r++) {
+//						for (int p = 0; p < products.size(); p++) {
+//							String keggReacId = LocalConfig.getInstance().getMetaboliteIdKeggIdMap().get(Integer.toString(reactants.get(r).getMetaboliteId()));
+//							String keggProdId = LocalConfig.getInstance().getMetaboliteIdKeggIdMap().get(Integer.toString(products.get(p).getMetaboliteId()));
+//							//System.out.println("id " + keggReacId);
+//							if (keggReacId != null && !keggReacId.equals("C00080")) {
+//								if (keggReacId.equals(keggProdId)) {
+//									System.out.println(cytosolExtraOrganismRxns.get(i).getReactionEqunAbbr());
+//								}
+//							} else {
+//								System.out.println(cytosolExtraOrganismRxns.get(i).getReactionEqunAbbr());
+//							}
+//						}
+//					}
 //				}
 //			}
-//			System.out.println(LocalConfig.getInstance().getUnplottedReactionIds());
 			removeTransportReactionsFromUnplottedList(cytosolExtraOrganismRxns);
 			if (LocalConfig.getInstance().getPeriplasmName() != null &&
 					LocalConfig.getInstance().getPeriplasmName().length() > 0) {
