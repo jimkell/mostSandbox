@@ -12775,7 +12775,7 @@ public class GraphicalInterface extends JFrame {
         		pf1.createVertices();
         		pf1.createEdges();
         		frame.setTitle(gi.getTitle());
-        		// refersh display by switching tabs
+        		// refresh display by switching tabs
         		visualizationTabbedPane.setSelectedIndex(1);
         		visualizationTabbedPane.setSelectedIndex(0);
         	}});
