@@ -314,12 +314,14 @@ public class PathwayReactionNodeFactory {
 					}
 					// since ec number reaction map made before kegg reaction ids assigned, these are
 					// null in ec list and need to be obtained from map made more recently
-//					String keggReactionId = idReactionMap.get(reactions.get(i).getId()).getKeggReactionId();
-//					if (keggReactionId != null && keggReactionId.length() > 0) {
-//						if (!keggReactionIds.contains(keggReactionId)) {
-//							keggReactionIds.add(keggReactionId);
-//						}
-//					}
+					if (reactions.get(i) != null && idReactionMap.containsKey(reactions.get(i).getId())) {
+						String keggReactionId = idReactionMap.get(reactions.get(i).getId()).getKeggReactionId();
+						if (keggReactionId != null && keggReactionId.length() > 0) {
+							if (!keggReactionIds.contains(keggReactionId)) {
+								keggReactionIds.add(keggReactionId);
+							}
+						}
+					}
 					if (!equations.contains(reactions.get(i).getReactionEqunAbbr())) {
 						String htmlEquation = reactions.get(i).getReactionEqunAbbr().replace("<", "&lt;");
 						equations.add(htmlEquation);
@@ -327,9 +329,9 @@ public class PathwayReactionNodeFactory {
 					if (!subsystems.contains(reactions.get(i).getSubsystem())) {
 						subsystems.add(reactions.get(i).getSubsystem());
 					}
-					if (!fluxes.contains(reactions.get(i).getFluxValue())) {
+//					if (!fluxes.contains(reactions.get(i).getFluxValue())) {
 						fluxes.add(reactions.get(i).getFluxValue());
-					}
+//					}
 					//System.out.println("flux " + reactions.get(i).getFluxValue() + " log " + Math.log10(Math.abs(reactions.get(i).getFluxValue())));
 				}
 			}
@@ -361,9 +363,9 @@ public class PathwayReactionNodeFactory {
 		return maybeMakeList(reactionAbbrevations, "Reaction Abbreviation");
 	}
 	
-	public String displayReactionName(ArrayList<String> reactionNames) {
-		return maybeMakeList(reactionNames, "Reaction Name");
-	}
+//	public String displayReactionName(ArrayList<String> reactionNames) {
+//		return maybeMakeList(reactionNames, "Reaction Name");
+//	}
 	
 	public String displayECNumber(ArrayList<String> ecnumbers) {
 		return maybeMakeList(ecnumbers, "EC Number");
@@ -395,6 +397,22 @@ public class PathwayReactionNodeFactory {
 		return item;
 	}
 	
+	public String displayReactionName(ArrayList<String> names) {
+		// since equations can be quite long and a list of reactions may not fit on screen,
+		// each reaction is put on a separate line
+		String reactionNameString = "";
+		if (names.size() > 0) {
+			reactionNameString = "<p>Reaction Name: " + names.get(0);
+		}
+		if (names.size() > 1) {
+			reactionNameString = "<p>Reaction Names: " + names.get(0);
+			for (int m = 1; m < names.size(); m++) {
+				reactionNameString += ", <p>" + names.get(m);
+			}
+		}
+		return reactionNameString;
+	}
+	
 	public String displayModelEquation(ArrayList<String> equations) {
 		// since equations can be quite long and a list of reactions may not fit on screen,
 		// each reaction is put on a separate line
@@ -403,7 +421,7 @@ public class PathwayReactionNodeFactory {
 			modelEquationString = "<p>Equation from Model: " + equations.get(0);
 		}
 		if (equations.size() > 1) {
-			modelEquationString = "<p>Equation(s) from Model: " + equations.get(0);
+			modelEquationString = "<p>Equations from Model: " + equations.get(0);
 			for (int m = 1; m < equations.size(); m++) {
 				modelEquationString += ", <p>" + equations.get(m);
 			}

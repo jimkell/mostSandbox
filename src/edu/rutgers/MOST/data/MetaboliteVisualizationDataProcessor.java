@@ -40,8 +40,8 @@ public class MetaboliteVisualizationDataProcessor {
 						}
 						for (int m = 0; m < metaboliteAlternativeKeys.size(); m++) {
 							if (LocalConfig.getInstance().getMetaboliteAlternativesMap().get(metaboliteAlternativeKeys.get(m)).contains(keggId)) {
-								System.out.println(keggId);
-								System.out.println(LocalConfig.getInstance().getMetaboliteAlternativesMap().get(metaboliteAlternativeKeys.get(m)));
+//								System.out.println(keggId);
+//								System.out.println(LocalConfig.getInstance().getMetaboliteAlternativesMap().get(metaboliteAlternativeKeys.get(m)));
 							}
 						}
 						// map used to match metabolite ids from model with KEGG ids

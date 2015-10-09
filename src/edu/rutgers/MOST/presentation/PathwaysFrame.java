@@ -477,8 +477,8 @@ public class PathwaysFrame extends JApplet {
 					String keggId = pathway.getMetabolitesData().get(Integer.toString(j)).getKeggId();
 					ArrayList<String> metabolteSubstitutions = pathway.getMetabolitesData().get(Integer.toString(j)).getMetaboliteSubstitutions();
 					boolean drawMetabolite = true;
-					if (LocalConfig.getInstance().getKeggIdMetaboliteMap().containsKey(keggId) || 
-							metabolteSubstitutions.size() > 0) {
+					if (LocalConfig.getInstance().getKeggIdMetaboliteMap().containsKey(keggId)) { 
+							//|| metabolteSubstitutions.size() > 0) {
 						foundMetabolitesList.add(metabName);
 					} else {
 						if (!LocalConfig.getInstance().isGraphMissingMetabolitesSelected()) {
