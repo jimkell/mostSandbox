@@ -879,6 +879,17 @@ public class LocalConfig {
 		this.metaboliteSubstitutionsMap = metaboliteSubstitutionsMap;
 	}
 	
+	private Map<String, ArrayList<String>> metaboliteSubstitutionsFoundMap;
+	
+	public Map<String, ArrayList<String>> getMetaboliteSubstitutionsFoundMap() {
+		return metaboliteSubstitutionsFoundMap;
+	}
+
+	public void setMetaboliteSubstitutionsFoundMap(
+			Map<String, ArrayList<String>> metaboliteSubstitutionsFoundMap) {
+		this.metaboliteSubstitutionsFoundMap = metaboliteSubstitutionsFoundMap;
+	}
+
 	private Map<String, ArrayList<String>> metaboliteAlternativesMap;
 
 	public Map<String, ArrayList<String>> getMetaboliteAlternativesMap() {

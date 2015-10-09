@@ -506,6 +506,10 @@ public class PathwaysFrame extends JApplet {
 						PathwayMetaboliteNode pn = pmnf.createPathwayMetaboliteNode(pathway.getMetabolitesData().get(Integer.toString(j)).getId(), 
 								x, y, type, pathway.getMetabolitesData().get(Integer.toString(j)).getAbbreviation(), 
 								pathway.getMetabolitesData().get(Integer.toString(j)).getName(), keggId);
+						if (LocalConfig.getInstance().getMetaboliteSubstitutionsFoundMap().containsKey(keggId)) {
+//							System.out.println(keggId);
+//							System.out.println(LocalConfig.getInstance().getMetaboliteSubstitutionsFoundMap().get(keggId));
+						}
 						String displayName = pmnf.createDisplayName(metabName, pn.getAbbreviation(), pn.getName(), keggId);
 						//System.out.println(displayName);
 						pathway.getMetabolitesNodes().put(pn.getDataId(), pn);

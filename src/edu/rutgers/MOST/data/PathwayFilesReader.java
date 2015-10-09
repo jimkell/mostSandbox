@@ -428,15 +428,24 @@ public class PathwayFilesReader {
 						String abbr = pm.getAbbreviation();
 						if (LocalConfig.getInstance().getKeggIdMetaboliteMap().containsKey(pm.getKeggId())) {
 							String metabAbbr = LocalConfig.getInstance().getKeggIdMetaboliteMap().get(pm.getKeggId()).get(0).getMetaboliteAbbreviation();
-							// check if metabolite ends with "_x"
-							String ch = metabAbbr.substring(metabAbbr.length() - 2, metabAbbr.length() - 1);
-							//System.out.println("ch " + ch);
-							if (ch.equals("_")) {
-								abbr = metabAbbr.substring(2, metabAbbr.length() - 2);
-							} else {
-								abbr = metabAbbr.substring(2);
-							}
+							abbr = maybeRemoveCompartmentPrefix(metabAbbr);
 							name += " " + metabAbbr;
+							// need to get abbr from KEGG id here
+							if (LocalConfig.getInstance().getMetaboliteSubstitutionsFoundMap().containsKey(pm.getKeggId())) {
+								//System.out.println(LocalConfig.getInstance().getMetaboliteSubstitutionsFoundMap().get((pm.getKeggId())));
+								ArrayList<String> keggIdList = LocalConfig.getInstance().getMetaboliteSubstitutionsFoundMap().get(pm.getKeggId());
+								for (int i = 0; i < keggIdList.size(); i++) {
+									if (LocalConfig.getInstance().getKeggIdMetaboliteMap().containsKey(keggIdList.get(i))) {
+										ArrayList<SBMLMetabolite> metabList = LocalConfig.getInstance().getKeggIdMetaboliteMap().get(keggIdList.get(i));
+										if (metabList.size() > 0) {
+											// compartment doesn't matter since prefix will be removed
+											String ab = metabList.get(0).getMetaboliteAbbreviation();
+											String a = maybeRemoveCompartmentPrefix(ab);
+											name += ", " + a;
+										}
+									}
+								}
+							}
 						}
 						if (metaboliteNameAbbrMap.containsKey(name)) {
 							name = name + duplicateSuffix(name, metaboliteNameAbbrMap);
@@ -464,6 +473,19 @@ public class PathwayFilesReader {
 					JOptionPane.ERROR_MESSAGE);
 			//e.printStackTrace();
 		}	
+	}
+	
+	public String maybeRemoveCompartmentPrefix(String metabAbbr) {
+		String abbr = "";
+		// check if metabolite ends with "_x"
+		String ch = metabAbbr.substring(metabAbbr.length() - 2, metabAbbr.length() - 1);
+		//System.out.println("ch " + ch);
+		if (ch.equals("_")) {
+			abbr = metabAbbr.substring(2, metabAbbr.length() - 2);
+		} else {
+			abbr = metabAbbr.substring(2);
+		}
+		return abbr;
 	}
 	
 	public void readReactionsFile(File reactions) {

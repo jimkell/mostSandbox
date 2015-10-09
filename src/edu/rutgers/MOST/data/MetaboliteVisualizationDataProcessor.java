@@ -1,6 +1,8 @@
 package edu.rutgers.MOST.data;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Vector;
 
 import edu.rutgers.MOST.config.LocalConfig;
@@ -13,6 +15,7 @@ public class MetaboliteVisualizationDataProcessor {
 		ArrayList<String> additionalMetaboliteKeys = new ArrayList<String>(LocalConfig.getInstance().getAdditionalMetabolitesMap().keySet());
 		ArrayList<String> metaboliteSubstitutionKeys = new ArrayList<String>(LocalConfig.getInstance().getMetaboliteSubstitutionsMap().keySet());
 		ArrayList<String> metaboliteAlternativeKeys = new ArrayList<String>(LocalConfig.getInstance().getMetaboliteAlternativesMap().keySet());
+		Map<String, ArrayList<String>> metaboliteSubstitutionsFoundMap = new HashMap<String, ArrayList<String>>();
 		if (f.getKeggIdColumnIndex() > -1) {
 			Vector<SBMLMetabolite> metabolites = f.getAllMetabolites();
 			for (int i = 0; i < metabolites.size(); i++) {
@@ -31,11 +34,26 @@ public class MetaboliteVisualizationDataProcessor {
 								keggId = additionalMetaboliteKeys.get(j);
 							}
 						}
+						String originalKeggId = keggId;
 						for (int k = 0; k < metaboliteSubstitutionKeys.size(); k++) {
 							if (LocalConfig.getInstance().getMetaboliteSubstitutionsMap().get(metaboliteSubstitutionKeys.get(k)).contains(keggId)) {
 //								System.out.println(keggId);
 //								System.out.println(LocalConfig.getInstance().getMetaboliteSubstitutionsMap().get(metaboliteSubstitutionKeys.get(k)));
 								keggId = metaboliteSubstitutionKeys.get(k);
+								if (metaboliteSubstitutionsFoundMap.containsKey(keggId)) {
+									ArrayList<String> m = metaboliteSubstitutionsFoundMap.get(keggId);
+									if (!m.contains(originalKeggId)) {
+										m.add(originalKeggId);
+										metaboliteSubstitutionsFoundMap.put(keggId, m);
+									}
+								} else {
+									ArrayList<String> m = new ArrayList<String>();
+									if (!m.contains(originalKeggId)) {
+										m.add(originalKeggId);
+										metaboliteSubstitutionsFoundMap.put(keggId, m);
+									}
+									metaboliteSubstitutionsFoundMap.put(keggId, m);
+								}
 							}
 						}
 						for (int m = 0; m < metaboliteAlternativeKeys.size(); m++) {
@@ -57,6 +75,17 @@ public class MetaboliteVisualizationDataProcessor {
 							metabolitesList.add(metabolites.get(i));
 							LocalConfig.getInstance().getKeggIdMetaboliteMap().put(keggId, metabolitesList);
 						}
+						if (LocalConfig.getInstance().getKeggIdMetaboliteMap().containsKey(originalKeggId)) {
+							ArrayList<SBMLMetabolite> metabolitesList = LocalConfig.getInstance().getKeggIdMetaboliteMap().get(originalKeggId);
+							metabolitesList.add(metabolites.get(i));
+							// key - kegg id value SBMLMetabolite list, used to get data from model when
+							// constructing nodes
+							LocalConfig.getInstance().getKeggIdMetaboliteMap().put(originalKeggId, metabolitesList);
+						} else {
+							ArrayList<SBMLMetabolite> metabolitesList = new ArrayList<SBMLMetabolite>();
+							metabolitesList.add(metabolites.get(i));
+							LocalConfig.getInstance().getKeggIdMetaboliteMap().put(originalKeggId, metabolitesList);
+						}
 					}
 					if (!LocalConfig.getInstance().getKeggIdCompartmentMap().containsKey(keggId)) {
 						ArrayList<String> compList = new ArrayList<String>();
@@ -74,6 +103,7 @@ public class MetaboliteVisualizationDataProcessor {
 			//System.out.println(LocalConfig.getInstance().getMetaboliteIdKeggIdMap());
 			//System.out.println(LocalConfig.getInstance().getKeggIdMetaboliteMap());
 		}
+		LocalConfig.getInstance().setMetaboliteSubstitutionsFoundMap(metaboliteSubstitutionsFoundMap);
 	}
 
 	private boolean metaboliteAbbreviationValid(SBMLMetabolite metabolite) {
