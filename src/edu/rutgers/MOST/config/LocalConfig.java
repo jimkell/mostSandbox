@@ -878,6 +878,17 @@ public class LocalConfig {
 			Map<String, ArrayList<String>> metaboliteSubstitutionsMap) {
 		this.metaboliteSubstitutionsMap = metaboliteSubstitutionsMap;
 	}
+	
+	private Map<String, ArrayList<String>> metaboliteAlternativesMap;
+
+	public Map<String, ArrayList<String>> getMetaboliteAlternativesMap() {
+		return metaboliteAlternativesMap;
+	}
+
+	public void setMetaboliteAlternativesMap(
+			Map<String, ArrayList<String>> metaboliteAlternativesMap) {
+		this.metaboliteAlternativesMap = metaboliteAlternativesMap;
+	}
 
 	private ArrayList<String> drawOrder;
 

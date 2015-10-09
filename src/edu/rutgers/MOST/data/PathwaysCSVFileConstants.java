@@ -18,9 +18,13 @@ public class PathwaysCSVFileConstants {
 	public static final String EXTERNAL_METABOLITES_FILE_NAME = "etc/visualization/external_metabolites1.csv";
 	public static final String TRANSPORT_METABOLITES_FILE_NAME = "etc/visualization/transport_metabolites1.csv";
 	// metabolite substitutions handle situations such where multiple compounds can be mapped to the same node 
-	// such as wher NAD or NADP, ATP or GTP can be in the same reaction, or classes of compounds such as
+	// such as where NAD or NADP, ATP or GTP can be in the same reaction, or classes of compounds such as
 	// fatty acids, of where models do not distinguish between alpha-Glucose, beta-Glucose and D-Glucose
 	public static final String METABOLITE_SUBSTITUTIONS_FILE_NAME = "etc/visualization/metabolite_substitutions.csv";
+	// metabolite alternatives are used for species such as ATP, NAD where other species such as GTP or NADP can
+	// occur in place of the former species, but otherwise the reaction is the same. this data is only used when
+	// the species is a "side" species so it is not interchangeable with the above data.
+	public static final String METABOLITE_ALTERNATIVES_FILE_NAME = "etc/visualization/metabolite_alternates.csv";
 	
 	public static final String[] PATHWAYS_COLUMN_NAMES = 
 		{
@@ -48,6 +52,11 @@ public class PathwaysCSVFileConstants {
 		};
 	
 	public static final String[] METABOLITE_SUBSTITUTIONS_COLUMN_NAMES = 
+		{
+		"KEGG ID", "Additional KEGG IDs", "Name"
+		};
+	
+	public static final String[] METABOLITE_ALTERNATIVES_COLUMN_NAMES = 
 		{
 		"KEGG ID", "Additional KEGG IDs", "Name"
 		};
@@ -104,6 +113,7 @@ public class PathwaysCSVFileConstants {
 	private static java.util.List<String> externalMetabolitesColumnsList = Arrays.asList(EXTERNAL_METABOLITES_COLUMN_NAMES);
 	private static java.util.List<String> transportMetabolitesColumnsList = Arrays.asList(TRANSPORT_METABOLITES_COLUMN_NAMES);
 	private static java.util.List<String> metaboliteSubstitutionsColumnsList = Arrays.asList(METABOLITE_SUBSTITUTIONS_COLUMN_NAMES);
+	private static java.util.List<String> metaboliteAlternativesColumnsList = Arrays.asList(METABOLITE_ALTERNATIVES_COLUMN_NAMES);
 
 	public static final int PATHWAYS_ID_COLUMN = pathwayColumnsList.indexOf("Pathway ID");
 	public static final int PATHWAYS_NAME_COLUMN = pathwayColumnsList.indexOf("Pathway Name");
@@ -132,6 +142,10 @@ public class PathwaysCSVFileConstants {
 	public static final int METABOLITE_SUBSTITUTIONS_KEGG_ID_COLUMN = metaboliteSubstitutionsColumnsList.indexOf("KEGG ID");
 	public static final int METABOLITE_SUBSTITUTIONS_ALTERNATE_KEGG_IDS_COLUMN = metaboliteSubstitutionsColumnsList.indexOf("Additional KEGG IDs");
 	public static final int METABOLITE_SUBSTITUTIONS_NAME_COLUMN = metaboliteSubstitutionsColumnsList.indexOf("Name");
+	
+	public static final int METABOLITE_ALTERNATIVES_KEGG_ID_COLUMN = metaboliteAlternativesColumnsList.indexOf("KEGG ID");
+	public static final int METABOLITE_ALTERNATIVES_ALTERNATE_KEGG_IDS_COLUMN = metaboliteAlternativesColumnsList.indexOf("Additional KEGG IDs");
+	public static final int METABOLITE_ALTERNATIVES_NAME_COLUMN = metaboliteAlternativesColumnsList.indexOf("Name");
 	
 	public static final int METABOLITE_POSITIONS_ID_COLUMN = metabolitePositionsList.indexOf("Pathway ID");
 	public static final int METABOLITE_POSITIONS_METABOLITE_ID_COLUMN = metabolitePositionsList.indexOf("Metabolite ID");

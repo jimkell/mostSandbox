@@ -22,6 +22,7 @@ public class PathwayFilesReader {
 	Map<String, String> metaboliteNameAbbrMap = new HashMap<String, String>();
 	Map<String, ArrayList<String>> additionalMetabolitesMap = new HashMap<String, ArrayList<String>>();
 	Map<String, ArrayList<String>> metaboliteSubstitutionsMap = new HashMap<String, ArrayList<String>>();
+	Map<String, ArrayList<String>> metaboliteAlternativesMap = new HashMap<String, ArrayList<String>>();
 	Map<String, PathwayReactionData> reactionDataKeggIdMap = new HashMap<String, PathwayReactionData>();
 	Map<String, ArrayList<String>> ecNumberKeggReactionIdMap = new HashMap<String, ArrayList<String>>();
 	
@@ -302,6 +303,52 @@ public class PathwayFilesReader {
 				}
 				reader.close();
 				LocalConfig.getInstance().setMetaboliteSubstitutionsMap(metaboliteSubstitutionsMap);
+			} catch (IOException e) {
+				JOptionPane.showMessageDialog(null,                
+						"File Not Found Error.",                
+						"Error",                                
+						JOptionPane.ERROR_MESSAGE);
+				//e.printStackTrace();
+			}
+		} catch (FileNotFoundException e) {
+			JOptionPane.showMessageDialog(null,                
+					"File Not Found Error.",                
+					"Error",                                
+					JOptionPane.ERROR_MESSAGE);
+			//e.printStackTrace();
+		}	
+	}
+	
+	public void readMetaboliteAlternativesFile(File metaboliteAlternatives) {
+		CSVReader reader;
+		
+		int count = 0;
+		
+		try {
+			reader = new CSVReader(new FileReader(metaboliteAlternatives), ',');
+			String [] dataArray;
+			try {
+				while ((dataArray = reader.readNext()) != null) {
+					if (count > 0) {
+						for (int s = 0; s < dataArray.length; s++) {
+							String keggId = dataArray[PathwaysCSVFileConstants.METABOLITE_ALTERNATIVES_KEGG_ID_COLUMN];
+							if (s == PathwaysCSVFileConstants.METABOLITE_ALTERNATIVES_ALTERNATE_KEGG_IDS_COLUMN) {
+								// need to escape pipe: http://stackoverflow.com/questions/21524642/splitting-string-with-pipe-character
+								String[] ids = dataArray[s].split("\\|");
+								ArrayList<String> idsList = new ArrayList<String>();
+								for (int i = 0; i < ids.length; i++) {
+									idsList.add(ids[i]);
+								}
+								metaboliteAlternativesMap.put(keggId, idsList);
+//								System.out.println("sub kegg id " + keggId);
+//								System.out.println("sub list " + idsList);
+							}
+						}
+					}
+					count += 1;
+				}
+				reader.close();
+				LocalConfig.getInstance().setMetaboliteAlternativesMap(metaboliteAlternativesMap);
 			} catch (IOException e) {
 				JOptionPane.showMessageDialog(null,                
 						"File Not Found Error.",                
@@ -865,6 +912,7 @@ public class PathwayFilesReader {
 		File metabolites = new File(PathwaysCSVFileConstants.METABOLITES_FILE_NAME);
 		File additionalMetabolites = new File(PathwaysCSVFileConstants.ADDITIONAL_METABOLITES_FILE_NAME);
 		File metaboliteSubstitutions = new File(PathwaysCSVFileConstants.METABOLITE_SUBSTITUTIONS_FILE_NAME);
+		File metaboliteAlternatives = new File(PathwaysCSVFileConstants.METABOLITE_ALTERNATIVES_FILE_NAME);
 		File reactions = new File(PathwaysCSVFileConstants.REACTIONS_FILE_NAME);
 		File drawOrder = new File(PathwaysCSVFileConstants.PATHWAY_DRAW_ORDER_FILE_NAME);
 		File sideSpecies = new File(PathwaysCSVFileConstants.PATHWAY_SIDE_SPECIES_FILE_NAME);
@@ -874,6 +922,7 @@ public class PathwayFilesReader {
 		reader.readMetabolitesFile(metabolites);
 		reader.readAdditionalMetabolitesFile(additionalMetabolites);
 		reader.readMetaboliteSubstitutionsFile(metaboliteSubstitutions);
+		reader.readMetaboliteAlternativesFile(metaboliteAlternatives);
 		reader.readReactionsFile(reactions);
 		reader.readDrawOrderFile(drawOrder);
 		reader.readSideSpeciesFile(sideSpecies);

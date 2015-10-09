@@ -12,6 +12,7 @@ public class MetaboliteVisualizationDataProcessor {
 		MetaboliteFactory f = new MetaboliteFactory("SBML");
 		ArrayList<String> additionalMetaboliteKeys = new ArrayList<String>(LocalConfig.getInstance().getAdditionalMetabolitesMap().keySet());
 		ArrayList<String> metaboliteSubstitutionKeys = new ArrayList<String>(LocalConfig.getInstance().getMetaboliteSubstitutionsMap().keySet());
+		ArrayList<String> metaboliteAlternativeKeys = new ArrayList<String>(LocalConfig.getInstance().getMetaboliteAlternativesMap().keySet());
 		if (f.getKeggIdColumnIndex() > -1) {
 			Vector<SBMLMetabolite> metabolites = f.getAllMetabolites();
 			for (int i = 0; i < metabolites.size(); i++) {
@@ -32,9 +33,15 @@ public class MetaboliteVisualizationDataProcessor {
 						}
 						for (int k = 0; k < metaboliteSubstitutionKeys.size(); k++) {
 							if (LocalConfig.getInstance().getMetaboliteSubstitutionsMap().get(metaboliteSubstitutionKeys.get(k)).contains(keggId)) {
-								System.out.println(keggId);
-								System.out.println(LocalConfig.getInstance().getMetaboliteSubstitutionsMap().get(metaboliteSubstitutionKeys.get(k)));
+//								System.out.println(keggId);
+//								System.out.println(LocalConfig.getInstance().getMetaboliteSubstitutionsMap().get(metaboliteSubstitutionKeys.get(k)));
 								keggId = metaboliteSubstitutionKeys.get(k);
+							}
+						}
+						for (int m = 0; m < metaboliteAlternativeKeys.size(); m++) {
+							if (LocalConfig.getInstance().getMetaboliteAlternativesMap().get(metaboliteAlternativeKeys.get(m)).contains(keggId)) {
+								System.out.println(keggId);
+								System.out.println(LocalConfig.getInstance().getMetaboliteAlternativesMap().get(metaboliteAlternativeKeys.get(m)));
 							}
 						}
 						// map used to match metabolite ids from model with KEGG ids
