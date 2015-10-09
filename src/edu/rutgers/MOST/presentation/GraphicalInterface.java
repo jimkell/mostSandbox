@@ -12805,6 +12805,8 @@ public class GraphicalInterface extends JFrame {
 					pf2.getNodeInformationDialog().dispose();
 				}
 				frame.setVisible(false);
+				enableLoadItems();
+				disableMenuItemsForFVA(false);
 				enableVisualizationItems(true);
 			}
 		});		
