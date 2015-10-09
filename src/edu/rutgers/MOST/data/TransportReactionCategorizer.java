@@ -158,6 +158,7 @@ public class TransportReactionCategorizer {
 						LocalConfig.getInstance().getExtraOrganismName());
 				removeTransportReactionsFromUnplottedList(periplasmExtraOrganismRxns);
 			}
+			LocalConfig.getInstance().setNoTransportReactionIds(LocalConfig.getInstance().getUnplottedReactionIds());
 		}
 		
 		// unnecessary to categorize reactions if compartment names not defined
@@ -328,7 +329,7 @@ public class TransportReactionCategorizer {
 			}
 		}
 		LocalConfig.getInstance().setUnplottedReactionIds(unplottedIds);
-		System.out.println("no trans " + LocalConfig.getInstance().getUnplottedReactionIds());
+		//System.out.println("no trans " + LocalConfig.getInstance().getUnplottedReactionIds());
 	}
 	
 	public void createTransportCollectionFromList(ArrayList<Integer> idsList, Map<Integer, SBMLReaction> idReactionMap) {

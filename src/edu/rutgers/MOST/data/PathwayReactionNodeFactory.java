@@ -22,7 +22,7 @@ public class PathwayReactionNodeFactory {
 	 */
 	public PathwayReactionNode createPathwayReactionNode(ArrayList<String> ec, ArrayList<String> keggReactionIds, 
 			ArrayList<String> keggReactantIds, ArrayList<String> keggProductIds, String compartment, int component, 
-			Vector<SBMLReaction> allReactions) {
+			Vector<SBMLReaction> allReactions, Map<Integer, SBMLReaction> idReactionMap) {
 		PathwayReactionNode pn = new PathwayReactionNode();
 		//ArrayList<String> sideReactants = new ArrayList<String>();
 		//ArrayList<String> sideProducts = new ArrayList<String>();
@@ -73,7 +73,21 @@ public class PathwayReactionNodeFactory {
 				}
 			}
 		}
-		//System.out.println(LocalConfig.getInstance().getUnplottedReactionIds());
+		//System.out.println("ni " + LocalConfig.getInstance().getNoIdentifierIds());
+		for (int i = 0; i < LocalConfig.getInstance().getNoIdentifierIds().size(); i++) {
+			SBMLReaction r = idReactionMap.get(LocalConfig.getInstance().getNoIdentifierIds().get(i));
+			ArrayList<SBMLReaction> reac = new ArrayList<SBMLReaction>();
+			reac.add(r);
+			//System.out.println(reac);
+			if (component == PathwaysFrameConstants.PROCESSES_COMPONENT) {
+				//reactions.add(reac.get(0));
+			} else {
+				addReactions(reactions, reac, compartment, keggReactantIds, keggProductIds);
+			}
+		}
+//		System.out.println("ids " + LocalConfig.getInstance().getIdentifierIds());
+//		System.out.println("no ids " + LocalConfig.getInstance().getNoIdentifierIds());
+		//System.out.println("un " + LocalConfig.getInstance().getUnplottedReactionIds());
 		// if reaction does not have an ec number or kegg reaction id, have to check all unplotted
 		// reactions for a match
 //		if (reactions.size() == 0) {
@@ -140,7 +154,7 @@ public class PathwayReactionNodeFactory {
 		for (int r = 0; r < reac.size(); r++) {
 			// if compartment not defined, just draw everything for now
 			if (compartment != null && compartment.length() > 0) {
-				//if (reac.get(r) != null) {
+				if (reac.get(r) != null) {
 					SBMLReactionEquation equn = (SBMLReactionEquation) LocalConfig.getInstance().getReactionEquationMap().get(reac.get(r).getId());
 					if (equn.getCompartmentList().size() == 1 && equn.getCompartmentList().contains(compartment)) {
 						addReactionIfNotPresent(reactions, reac.get(r), keggReactantIds, keggProductIds);
@@ -151,7 +165,7 @@ public class PathwayReactionNodeFactory {
 					} else {
 		
 					}
-				//}
+				}
 			} else {
 				//addReactionIfNotPresent(reactions, reac.get(r), keggReactantIds, keggProductIds);
 			}

@@ -544,7 +544,8 @@ public class PathwaysFrame extends JApplet {
 					// only draw cytosol for now
 					PathwayReactionNode pn = prnf.createPathwayReactionNode(pathway.getReactionsData().get(Integer.toString(k)).getEcNumbers(),
 							pathway.getReactionsData().get(Integer.toString(k)).getKeggReactionIds(), pathway.getReactionsData().get(Integer.toString(k)).getKeggReactantIds(),
-							pathway.getReactionsData().get(Integer.toString(k)).getKeggProductIds(), LocalConfig.getInstance().getCytosolName(), pathway.getComponent(), rxns);
+							pathway.getReactionsData().get(Integer.toString(k)).getKeggProductIds(), LocalConfig.getInstance().getCytosolName(), pathway.getComponent(), rxns, 
+							idReactionMap);
 					String displayName = prnf.createDisplayName(pathway.getReactionsData().get(Integer.toString(k)).getDisplayName(),
 							pathway.getReactionsData().get(Integer.toString(k)).getName(),
 							pn.getReactions(), idReactionMap);
@@ -665,8 +666,8 @@ public class PathwaysFrame extends JApplet {
 			}
 		}
 		Collections.sort(plottedIds);
-		System.out.println("plotted " + plottedIds);
-		System.out.println("unplotted " + LocalConfig.getInstance().getUnplottedReactionIds());
+//		System.out.println("pf plotted " + plottedIds);
+//		System.out.println("pf unplotted " + LocalConfig.getInstance().getUnplottedReactionIds());
 		
 		for(int p = 0; p < LocalConfig.getInstance().getPathwayNameMap().size(); p++) {
 			String pathwayName = LocalConfig.getInstance().getPathwayNameMap().get(Integer.toString(p)).getName();

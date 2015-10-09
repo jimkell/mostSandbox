@@ -1087,8 +1087,26 @@ public class LocalConfig {
 		this.unplottedReactionIds = unplottedReactionIds;
 	}
 	
-	// rxns with no EC number or KEGG reaction id
+	private ArrayList<Integer> noTransportReactionIds;
+	
+	public ArrayList<Integer> getNoTransportReactionIds() {
+		return noTransportReactionIds;
+	}
+
+	public void setNoTransportReactionIds(ArrayList<Integer> noTransportReactionIds) {
+		this.noTransportReactionIds = noTransportReactionIds;
+	}
+
+	// rxns with EC number or KEGG reaction id
 	private ArrayList<Integer> identifierIds;
+
+	public ArrayList<Integer> getNoIdentifierIds() {
+		return noIdentifierIds;
+	}
+
+	public void setNoIdentifierIds(ArrayList<Integer> noIdentifierIds) {
+		this.noIdentifierIds = noIdentifierIds;
+	}
 
 	public ArrayList<Integer> getIdentifierIds() {
 		return identifierIds;
@@ -1097,6 +1115,9 @@ public class LocalConfig {
 	public void setIdentifierIds(ArrayList<Integer> identifierIds) {
 		this.identifierIds = identifierIds;
 	}
+	
+	// rxns with no EC number or KEGG reaction id
+	private ArrayList<Integer> noIdentifierIds;
 
 	// categorization
 	private ArrayList<Integer> cytosolIds;

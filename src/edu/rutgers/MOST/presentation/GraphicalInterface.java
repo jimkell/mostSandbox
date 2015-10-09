@@ -1499,8 +1499,12 @@ public class GraphicalInterface extends JFrame {
 		LocalConfig.getInstance().setExternalReactionIds(externalReactionIds);
 		ArrayList<Integer> unplottedReactionIds = new ArrayList<Integer>();
 		LocalConfig.getInstance().setUnplottedReactionIds(unplottedReactionIds);
+		ArrayList<Integer> noTransportReactionIds = new ArrayList<Integer>();
+		LocalConfig.getInstance().setNoTransportReactionIds(noTransportReactionIds);
 		ArrayList<Integer> identifierIds = new ArrayList<Integer>();
 		LocalConfig.getInstance().setIdentifierIds(identifierIds);
+		ArrayList<Integer> noIdentifierIds = new ArrayList<Integer>();
+		LocalConfig.getInstance().setNoIdentifierIds(noIdentifierIds);
 		
 		Map<String, String> sideSpeciesTransportMetaboliteKeggIdMap = new HashMap<String, String>();
 		LocalConfig.getInstance().setSideSpeciesTransportMetaboliteKeggIdMap(sideSpeciesTransportMetaboliteKeggIdMap);
@@ -12722,7 +12726,16 @@ public class GraphicalInterface extends JFrame {
 		categorizeTransportReactions();
 		KEGGIdReactionMapCreator keggIdReactionMapCreator = new KEGGIdReactionMapCreator();
 		keggIdReactionMapCreator.createKEGGIdReactionMap(rxns);
-		System.out.println("ids " + LocalConfig.getInstance().getIdentifierIds());
+//		System.out.println("g ids " + LocalConfig.getInstance().getIdentifierIds());
+//		System.out.println("g nt " + LocalConfig.getInstance().getNoTransportReactionIds());
+		ArrayList<Integer> noIdentifierIds = new ArrayList<Integer>();
+		for (int i = 0; i < LocalConfig.getInstance().getNoTransportReactionIds().size(); i++) {
+			if (!LocalConfig.getInstance().getIdentifierIds().contains(LocalConfig.getInstance().getNoTransportReactionIds().get(i))) {
+				noIdentifierIds.add(LocalConfig.getInstance().getNoTransportReactionIds().get(i));
+			}
+		}
+		LocalConfig.getInstance().setNoIdentifierIds(noIdentifierIds);
+//		System.out.println("g no " + noIdentifierIds);
 //		if (LocalConfig.getInstance().getExtraOrganismName() != null && LocalConfig.getInstance().getExtraOrganismName().length() > 0) {
 //			Vector<SBMLReaction> eRxns = rf.getReactionsByCompartment(LocalConfig.getInstance().getExtraOrganismName());
 //			for (int i = 0; i < eRxns.size(); i++) {
