@@ -1499,6 +1499,8 @@ public class GraphicalInterface extends JFrame {
 		LocalConfig.getInstance().setExternalReactionIds(externalReactionIds);
 		ArrayList<Integer> unplottedReactionIds = new ArrayList<Integer>();
 		LocalConfig.getInstance().setUnplottedReactionIds(unplottedReactionIds);
+		ArrayList<Integer> identifierIds = new ArrayList<Integer>();
+		LocalConfig.getInstance().setIdentifierIds(identifierIds);
 		
 		Map<String, String> sideSpeciesTransportMetaboliteKeggIdMap = new HashMap<String, String>();
 		LocalConfig.getInstance().setSideSpeciesTransportMetaboliteKeggIdMap(sideSpeciesTransportMetaboliteKeggIdMap);
@@ -12719,7 +12721,8 @@ public class GraphicalInterface extends JFrame {
 		assignKeggReactionIds();
 		categorizeTransportReactions();
 		KEGGIdReactionMapCreator keggIdReactionMapCreator = new KEGGIdReactionMapCreator();
-		keggIdReactionMapCreator.createKEGGIdReactionMap();
+		keggIdReactionMapCreator.createKEGGIdReactionMap(rxns);
+		System.out.println("ids " + LocalConfig.getInstance().getIdentifierIds());
 //		if (LocalConfig.getInstance().getExtraOrganismName() != null && LocalConfig.getInstance().getExtraOrganismName().length() > 0) {
 //			Vector<SBMLReaction> eRxns = rf.getReactionsByCompartment(LocalConfig.getInstance().getExtraOrganismName());
 //			for (int i = 0; i < eRxns.size(); i++) {

@@ -50,7 +50,10 @@ public class ECNumberMapCreator {
 						ecNumberReactionMap.put(ecNumbers.get(i), rxnsList);
 					}
 				}
-			}
+				if (!LocalConfig.getInstance().getIdentifierIds().contains(reaction.getId())) {
+					LocalConfig.getInstance().getIdentifierIds().add(reaction.getId());
+				}
+			} 
 			fluxes.add(reaction.getFluxValue());
 			if (reaction.getUpperBound() > maxUpperBound) {
 				maxUpperBound = reaction.getUpperBound();

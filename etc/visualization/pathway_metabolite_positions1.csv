@@ -1469,3 +1469,7 @@ Pathway ID,Metabolite ID,Metabolite Level,Metabolite Level Position,Metabolite N
 0,1467,23.85,1.85,Ammonia,NH3,C00014,0,s,,,,
 0,1468,23.85,2.35,Water,H2O,C00001,0,s,,,,
 0,1469,16,-0.4,Coenzyme A,COA,C00010,0,s,,,,
+0,1470,16.2,0.2,Coenzyme A,COA,C00010,0,s,,,,
+0,1471,16.8,0.2,Carbon dioxide,CO2,C00011,0,s,,,,
+0,1472,16.2,0.6,Coenzyme A,COA,C00010,0,s,,,,
+0,1473,16.8,0.6,Carbon dioxide,CO2,C00011,0,s,,,,

@@ -1087,6 +1087,17 @@ public class LocalConfig {
 		this.unplottedReactionIds = unplottedReactionIds;
 	}
 	
+	// rxns with no EC number or KEGG reaction id
+	private ArrayList<Integer> identifierIds;
+
+	public ArrayList<Integer> getIdentifierIds() {
+		return identifierIds;
+	}
+
+	public void setIdentifierIds(ArrayList<Integer> identifierIds) {
+		this.identifierIds = identifierIds;
+	}
+
 	// categorization
 	private ArrayList<Integer> cytosolIds;
 	

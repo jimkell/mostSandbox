@@ -548,13 +548,12 @@ public class PathwaysFrame extends JApplet {
 					String displayName = prnf.createDisplayName(pathway.getReactionsData().get(Integer.toString(k)).getDisplayName(),
 							pathway.getReactionsData().get(Integer.toString(k)).getName(),
 							pn.getReactions(), idReactionMap);
-					
 					// update temporary lists to keep track of what ec numbers have been found
 					double edgeColor = PathwaysFrameConstants.BLACK_COLOR_VALUE;
 					for (int z = 0; z < pn.getReactions().size(); z++) {
 						if (pn.getReactions().get(z) != null) {
-							java.util.List<String> ecNumbers = Arrays.asList(pn.getReactions().get(z).getEcNumber().split("\\s"));
-							for (int y = 0; y < ecNumbers.size(); y++) {
+//							java.util.List<String> ecNumbers = Arrays.asList(pn.getReactions().get(z).getEcNumber().split("\\s"));
+//							for (int y = 0; y < ecNumbers.size(); y++) {
 								//System.out.println(ecNumbers.get(y));
 //								if (!foundEcNumbers.contains(ecNumbers.get(y))) {
 //									foundEcNumbers.add(ecNumbers.get(y));
@@ -562,7 +561,7 @@ public class PathwaysFrame extends JApplet {
 //								if (notFoundEcNumbers.contains(ecNumbers.get(y))) {
 //									notFoundEcNumbers.remove(ecNumbers.get(y));
 //								}
-							}
+//							}
 							// set last one for now
 							pn.setFluxValue(pn.getReactions().get(z).getFluxValue());
 							if (pn.getReactions().get(z).getKnockout().equals(GraphicalInterfaceConstants.BOOLEAN_VALUES[1])) {

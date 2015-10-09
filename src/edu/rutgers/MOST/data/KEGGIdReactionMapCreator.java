@@ -10,18 +10,14 @@ import edu.rutgers.MOST.config.LocalConfig;
 
 public class KEGGIdReactionMapCreator {
 	
-	/**
-	 * EC Number map created to be used for getting information from loaded
-	 * model by EC Number
-	 */
-	public void createKEGGIdReactionMap() {
+	public void createKEGGIdReactionMap(Vector<SBMLReaction> rxns) {
 		Map<String, ArrayList<SBMLReaction>> keggIdReactionMap = new HashMap<String, ArrayList<SBMLReaction>>();
-		ReactionFactory rf = new ReactionFactory("SBML");
-		Vector<SBMLReaction> rxns = rf.getAllReactions();
+		//ReactionFactory rf = new ReactionFactory("SBML");
+		//Vector<SBMLReaction> rxns = rf.getAllReactions();
 		for (int r = 0; r < rxns.size(); r++) {
 			SBMLReaction reaction = (SBMLReaction) rxns.get(r);
 			String keggReactionId = reaction.getKeggReactionId();
-			int id = reaction.getId();
+			//int id = reaction.getId();
 			if (keggReactionId != null && keggReactionId.length() > 0) {
 				if (keggIdReactionMap.containsKey(keggReactionId)) {
 					ArrayList<SBMLReaction> rxnsList = keggIdReactionMap.get(keggReactionId);
@@ -35,7 +31,10 @@ public class KEGGIdReactionMapCreator {
 //				if (LocalConfig.getInstance().getUnplottedReactionIds().contains(id)) {
 //					LocalConfig.getInstance().getUnplottedReactionIds().remove(LocalConfig.getInstance().getUnplottedReactionIds().indexOf(id));
 //				}
-			}
+				if (!LocalConfig.getInstance().getIdentifierIds().contains(reaction.getId())) {
+					LocalConfig.getInstance().getIdentifierIds().add(reaction.getId());
+				}
+			} 
 		}
 //		Collections.sort(LocalConfig.getInstance().getUnplottedReactionIds());
 		//System.out.println("not plotted " + LocalConfig.getInstance().getUnplottedReactionIds());
