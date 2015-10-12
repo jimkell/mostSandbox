@@ -468,7 +468,6 @@ public class PathwaysFrame extends JApplet {
 				}	
 				//System.out.println("start " + startX + " " + startY);
 			}
-
 			for (int j = 0; j < pathway.getMetabolitesData().size(); j++) {
 				if (pathway.getComponent() == component) {
 					String metabName = pathway.getMetabolitesData().get(Integer.toString(j)).getName();
@@ -477,9 +476,18 @@ public class PathwaysFrame extends JApplet {
 					String keggId = pathway.getMetabolitesData().get(Integer.toString(j)).getKeggId();
 					ArrayList<String> metabolteSubstitutions = pathway.getMetabolitesData().get(Integer.toString(j)).getMetaboliteSubstitutions();
 					boolean drawMetabolite = true;
-					if (LocalConfig.getInstance().getKeggIdMetaboliteMap().containsKey(keggId)) { 
-							//|| metabolteSubstitutions.size() > 0) {
-						foundMetabolitesList.add(metabName);
+					if (LocalConfig.getInstance().getKeggIdMetaboliteMap().containsKey(keggId)) {
+						for (int k = 0; k < LocalConfig.getInstance().getKeggIdMetaboliteMap().get(keggId).size(); k++) {
+							if (LocalConfig.getInstance().getKeggIdMetaboliteMap().get(keggId).get(k).getCompartment().
+									equals(LocalConfig.getInstance().getCytosolName())) {
+								foundMetabolitesList.add(metabName);
+							} else {
+								if (!LocalConfig.getInstance().isGraphMissingMetabolitesSelected()) {
+									drawMetabolite = false;
+								}
+							}
+						}
+//						foundMetabolitesList.add(metabName);
 					} else {
 						if (!LocalConfig.getInstance().isGraphMissingMetabolitesSelected()) {
 							drawMetabolite = false;
@@ -1324,10 +1332,7 @@ public class PathwaysFrame extends JApplet {
     	public MetabTransformer(Map<String,String[]> map) {                                                           
     		this.map = map;                                                                                          
     	}                                                                                                            
-                                                                                                                     
-    	/**                                                                                                          
-    	 * transform airport code to latlon string                                                                   
-    	 */                                                                                                          
+                                                                                                                                                                                                                             
 		public String[] transform(String m) { 
 			return map.get(m);                                                                                    
 		}                                                                                                            

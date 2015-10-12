@@ -1044,7 +1044,7 @@ public class LocalConfig {
 			Map<String, ArrayList<SBMLMetabolite>> keggIdMetaboliteMap) {
 		this.keggIdMetaboliteMap = keggIdMetaboliteMap;
 	}
-	
+
 	Map<String, ArrayList<TransportReactionNode>> keggIdTransportReactionsMap;
 
 	public Map<String, ArrayList<TransportReactionNode>> getKeggIdTransportReactionsMap() {

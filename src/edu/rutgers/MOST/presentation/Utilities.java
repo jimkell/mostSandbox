@@ -16,6 +16,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileSystemView;
 
+import edu.rutgers.MOST.data.SBMLConstants;
+
 /**
  * Class contains commonly used functions and eliminate redundancy of code.
  *
@@ -224,6 +226,56 @@ public class Utilities {
 				destination.close();
 			}
 		}
+	}
+	
+	
+	/*********************************************************************************/
+	// metabolite abbreviation processing methods
+	/*********************************************************************************/
+	
+	public String maybeRemovePrefixAndSuffix(String metabAbbr) {
+		String abbr = "";
+		abbr = maybeRemovePrefix(metabAbbr);
+		abbr = maybeRemoveCompartmentSuffix(abbr);
+		return abbr;
+	}
+	
+	public String maybeRemovePrefix(String metabAbbr) {
+		String abbr = metabAbbr;
+		if (hasMetabolitePrefix(metabAbbr)) {
+			abbr = metabAbbr.substring(2, metabAbbr.length());
+		}
+		return abbr;
+		
+	}
+	
+	public String maybeRemoveCompartmentSuffix(String metabAbbr) {
+		String abbr = metabAbbr;
+		// check if metabolite ends with "_x"
+		if (hasCompartmentSuffix(metabAbbr)) {
+			abbr = metabAbbr.substring(0, metabAbbr.length() - 2);
+		}
+		return abbr;
+	}
+	
+	public boolean hasMetabolitePrefix(String metabAbbr) {
+		for (int i = 0; i < SBMLConstants.METABOLITE_ABBREVIATION_PREFIXES.length; i++) {
+			if (metabAbbr.startsWith(SBMLConstants.METABOLITE_ABBREVIATION_PREFIXES[i])) {
+				return true;
+			}
+		}
+		
+		return false;
+		
+	}
+	
+	public boolean hasCompartmentSuffix(String metabAbbr) {
+		String ch = metabAbbr.substring(metabAbbr.length() - 2, metabAbbr.length() - 1);
+		if (ch.equals("_")) {
+			return true;
+		}
+		return false;
+		
 	}
 	
 }

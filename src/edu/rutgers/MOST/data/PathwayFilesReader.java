@@ -12,6 +12,7 @@ import javax.swing.JOptionPane;
 
 import edu.rutgers.MOST.config.LocalConfig;
 import edu.rutgers.MOST.presentation.GraphicalInterfaceConstants;
+import edu.rutgers.MOST.presentation.Utilities;
 import au.com.bytecode.opencsv.CSVReader;
 
 public class PathwayFilesReader {
@@ -25,6 +26,8 @@ public class PathwayFilesReader {
 	Map<String, ArrayList<String>> metaboliteAlternativesMap = new HashMap<String, ArrayList<String>>();
 	Map<String, PathwayReactionData> reactionDataKeggIdMap = new HashMap<String, PathwayReactionData>();
 	Map<String, ArrayList<String>> ecNumberKeggReactionIdMap = new HashMap<String, ArrayList<String>>();
+	
+	Utilities util = new Utilities();
 	
 	public PathwayFilesReader() {
 		
@@ -428,9 +431,9 @@ public class PathwayFilesReader {
 						String abbr = pm.getAbbreviation();
 						if (LocalConfig.getInstance().getKeggIdMetaboliteMap().containsKey(pm.getKeggId())) {
 							String metabAbbr = LocalConfig.getInstance().getKeggIdMetaboliteMap().get(pm.getKeggId()).get(0).getMetaboliteAbbreviation();
-							abbr = maybeRemoveCompartmentPrefix(metabAbbr);
-							name = metabAbbr;
-							//name += " " + metabAbbr;
+							//abbr = maybeRemoveCompartmentSuffix(metabAbbr);
+							abbr = util.maybeRemovePrefixAndSuffix(metabAbbr);
+							name += " " + metabAbbr;
 							if (LocalConfig.getInstance().getMetaboliteSubstitutionsFoundMap().containsKey(pm.getKeggId())) {
 								ArrayList<String> keggIdList = LocalConfig.getInstance().getMetaboliteSubstitutionsFoundMap().get(pm.getKeggId());
 								for (int i = 0; i < keggIdList.size(); i++) {
@@ -472,19 +475,6 @@ public class PathwayFilesReader {
 					JOptionPane.ERROR_MESSAGE);
 			//e.printStackTrace();
 		}	
-	}
-	
-	public String maybeRemoveCompartmentPrefix(String metabAbbr) {
-		String abbr = "";
-		// check if metabolite ends with "_x"
-		String ch = metabAbbr.substring(metabAbbr.length() - 2, metabAbbr.length() - 1);
-		//System.out.println("ch " + ch);
-		if (ch.equals("_")) {
-			abbr = metabAbbr.substring(2, metabAbbr.length() - 2);
-		} else {
-			abbr = metabAbbr.substring(2);
-		}
-		return abbr;
 	}
 	
 	public void readReactionsFile(File reactions) {

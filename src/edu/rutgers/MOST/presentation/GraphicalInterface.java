@@ -2310,8 +2310,9 @@ public class GraphicalInterface extends JFrame {
 
 		visualizeMenu.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
-				processVisualizationsData();
 				visualizeMenuProcesses();
+				processVisualizationsData();
+				//visualizeMenuProcesses();
 			}
 		});
 		
