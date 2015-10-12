@@ -420,16 +420,9 @@ public class PathwayFilesReader {
 								pm.setMetaboliteSubstitutions(LocalConfig.getInstance().getMetaboliteSubstitutionsMap().get(pm.getKeggId()));
 							}
 						}
-//						if (pm.getAdditionalMetabolites().size() > 0) {
-//							System.out.println(pm);
-//						}
-//						if (pm.getMetaboliteSubstitutions().size() > 0) {
-//							System.out.println(pm);
-//						}
 						metabolicPathways.get(id).getMetabolitesData().put(pm.getId(), pm);
 						String name = pm.getNames().get(0);
 						String abbr = pm.getAbbreviation();
-						//System.out.println("c " + LocalConfig.getInstance().getCytosolName());
 						if (LocalConfig.getInstance().getKeggIdMetaboliteMap().containsKey(pm.getKeggId())) {
 							String metabAbbr = pm.getNames().get(0);
 							ArrayList<String> abbrList = new ArrayList<String>();
@@ -450,39 +443,12 @@ public class PathwayFilesReader {
 							} else {
 								name = metabAbbr;
 							}
-							//String metabAbbr = LocalConfig.getInstance().getKeggIdMetaboliteMap().get(pm.getKeggId()).get(0).getMetaboliteAbbreviation();
-							//abbr = maybeRemoveCompartmentSuffix(metabAbbr);
 							abbr = util.maybeRemovePrefixAndSuffix(metabAbbr);
-							//name += " " + metabAbbr;
-//							if (LocalConfig.getInstance().getMetaboliteSubstitutionsFoundMap().containsKey(pm.getKeggId())) {
-//								ArrayList<String> keggIdList = LocalConfig.getInstance().getMetaboliteSubstitutionsFoundMap().get(pm.getKeggId());
-//								for (int i = 0; i < keggIdList.size(); i++) {
-//									if (LocalConfig.getInstance().getKeggIdMetaboliteMap().containsKey(keggIdList.get(i))) {
-//										ArrayList<SBMLMetabolite> metabList = LocalConfig.getInstance().getKeggIdMetaboliteMap().get(keggIdList.get(i));
-//										for (int m = 0; m < metabList.size(); m++) {
-//											if (metabList.get(m).getCompartment().equals(LocalConfig.getInstance().getCytosolName())) {
-//												String ab = metabList.get(m).getMetaboliteAbbreviation();
-//												//if (!ab.equals(metabAbbr)) {
-//													name += ", " + ab;
-//												//}
-//											}
-//										}
-////										if (metabList.size() > 0) {
-////											
-////											String ab = metabList.get(0).getMetaboliteAbbreviation();
-////											if (!ab.equals(metabAbbr)) {
-////												name += ", " + ab;
-////											}
-////										}
-//									}
-//								}
-//							}
 						}
 						if (metaboliteNameAbbrMap.containsKey(name)) {
 							name = name + duplicateSuffix(name, metaboliteNameAbbrMap);
 						}
 						pm.setName(name);
-						//metaboliteNameAbbrMap.put(name, pm.getAbbreviation());
 						metaboliteNameAbbrMap.put(name, abbr);
 					}
 					count += 1;
