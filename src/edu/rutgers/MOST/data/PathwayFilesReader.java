@@ -429,19 +429,18 @@ public class PathwayFilesReader {
 						if (LocalConfig.getInstance().getKeggIdMetaboliteMap().containsKey(pm.getKeggId())) {
 							String metabAbbr = LocalConfig.getInstance().getKeggIdMetaboliteMap().get(pm.getKeggId()).get(0).getMetaboliteAbbreviation();
 							abbr = maybeRemoveCompartmentPrefix(metabAbbr);
-							name += " " + metabAbbr;
-							// need to get abbr from KEGG id here
+							name = metabAbbr;
+							//name += " " + metabAbbr;
 							if (LocalConfig.getInstance().getMetaboliteSubstitutionsFoundMap().containsKey(pm.getKeggId())) {
-								//System.out.println(LocalConfig.getInstance().getMetaboliteSubstitutionsFoundMap().get((pm.getKeggId())));
 								ArrayList<String> keggIdList = LocalConfig.getInstance().getMetaboliteSubstitutionsFoundMap().get(pm.getKeggId());
 								for (int i = 0; i < keggIdList.size(); i++) {
 									if (LocalConfig.getInstance().getKeggIdMetaboliteMap().containsKey(keggIdList.get(i))) {
 										ArrayList<SBMLMetabolite> metabList = LocalConfig.getInstance().getKeggIdMetaboliteMap().get(keggIdList.get(i));
 										if (metabList.size() > 0) {
-											// compartment doesn't matter since prefix will be removed
 											String ab = metabList.get(0).getMetaboliteAbbreviation();
-											String a = maybeRemoveCompartmentPrefix(ab);
-											name += ", " + a;
+											if (!ab.equals(metabAbbr)) {
+												name += ", " + ab;
+											}
 										}
 									}
 								}
