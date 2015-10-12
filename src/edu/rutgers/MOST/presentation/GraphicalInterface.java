@@ -2311,7 +2311,7 @@ public class GraphicalInterface extends JFrame {
 		visualizeMenu.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
 				visualizeMenuProcesses();
-				processVisualizationsData();
+				//processVisualizationsData();
 				//visualizeMenuProcesses();
 			}
 		});
@@ -12491,6 +12491,7 @@ public class GraphicalInterface extends JFrame {
 			LocalConfig.getInstance().setPeriplasmName(compNameFromCombo(getCompNameDialog().cbPeriplasmName));
 			getCompNameDialog().setVisible(false);
 			getCompNameDialog().dispose();
+			processVisualizationsData();
 			visualizeModel();
 		}
 	};

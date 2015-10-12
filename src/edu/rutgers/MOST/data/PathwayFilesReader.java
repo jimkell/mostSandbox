@@ -429,25 +429,54 @@ public class PathwayFilesReader {
 						metabolicPathways.get(id).getMetabolitesData().put(pm.getId(), pm);
 						String name = pm.getNames().get(0);
 						String abbr = pm.getAbbreviation();
+						//System.out.println("c " + LocalConfig.getInstance().getCytosolName());
 						if (LocalConfig.getInstance().getKeggIdMetaboliteMap().containsKey(pm.getKeggId())) {
-							String metabAbbr = LocalConfig.getInstance().getKeggIdMetaboliteMap().get(pm.getKeggId()).get(0).getMetaboliteAbbreviation();
-							//abbr = maybeRemoveCompartmentSuffix(metabAbbr);
-							abbr = util.maybeRemovePrefixAndSuffix(metabAbbr);
-							name += " " + metabAbbr;
-							if (LocalConfig.getInstance().getMetaboliteSubstitutionsFoundMap().containsKey(pm.getKeggId())) {
-								ArrayList<String> keggIdList = LocalConfig.getInstance().getMetaboliteSubstitutionsFoundMap().get(pm.getKeggId());
-								for (int i = 0; i < keggIdList.size(); i++) {
-									if (LocalConfig.getInstance().getKeggIdMetaboliteMap().containsKey(keggIdList.get(i))) {
-										ArrayList<SBMLMetabolite> metabList = LocalConfig.getInstance().getKeggIdMetaboliteMap().get(keggIdList.get(i));
-										if (metabList.size() > 0) {
-											String ab = metabList.get(0).getMetaboliteAbbreviation();
-											if (!ab.equals(metabAbbr)) {
-												name += ", " + ab;
-											}
-										}
-									}
+							String metabAbbr = pm.getNames().get(0);
+							ArrayList<String> abbrList = new ArrayList<String>();
+							for (int j = 0; j < LocalConfig.getInstance().getKeggIdMetaboliteMap().get(pm.getKeggId()).size(); j++) {
+								if (LocalConfig.getInstance().getKeggIdMetaboliteMap().get(pm.getKeggId()).get(j).getCompartment().
+										equals(LocalConfig.getInstance().getCytosolName())) {
+									abbrList.add(LocalConfig.getInstance().getKeggIdMetaboliteMap().get(pm.getKeggId()).get(j).getMetaboliteAbbreviation());
 								}
 							}
+							if (abbrList.size() > 0) {
+								name = abbrList.get(0);
+								if (abbrList.size() > 1) {
+									for (int k = 1; k < abbrList.size(); k++) {
+										name += ", " + abbrList.get(k);
+									}
+								} 
+								metabAbbr = name;
+							} else {
+								name = metabAbbr;
+							}
+							//String metabAbbr = LocalConfig.getInstance().getKeggIdMetaboliteMap().get(pm.getKeggId()).get(0).getMetaboliteAbbreviation();
+							//abbr = maybeRemoveCompartmentSuffix(metabAbbr);
+							abbr = util.maybeRemovePrefixAndSuffix(metabAbbr);
+							//name += " " + metabAbbr;
+//							if (LocalConfig.getInstance().getMetaboliteSubstitutionsFoundMap().containsKey(pm.getKeggId())) {
+//								ArrayList<String> keggIdList = LocalConfig.getInstance().getMetaboliteSubstitutionsFoundMap().get(pm.getKeggId());
+//								for (int i = 0; i < keggIdList.size(); i++) {
+//									if (LocalConfig.getInstance().getKeggIdMetaboliteMap().containsKey(keggIdList.get(i))) {
+//										ArrayList<SBMLMetabolite> metabList = LocalConfig.getInstance().getKeggIdMetaboliteMap().get(keggIdList.get(i));
+//										for (int m = 0; m < metabList.size(); m++) {
+//											if (metabList.get(m).getCompartment().equals(LocalConfig.getInstance().getCytosolName())) {
+//												String ab = metabList.get(m).getMetaboliteAbbreviation();
+//												//if (!ab.equals(metabAbbr)) {
+//													name += ", " + ab;
+//												//}
+//											}
+//										}
+////										if (metabList.size() > 0) {
+////											
+////											String ab = metabList.get(0).getMetaboliteAbbreviation();
+////											if (!ab.equals(metabAbbr)) {
+////												name += ", " + ab;
+////											}
+////										}
+//									}
+//								}
+//							}
 						}
 						if (metaboliteNameAbbrMap.containsKey(name)) {
 							name = name + duplicateSuffix(name, metaboliteNameAbbrMap);
