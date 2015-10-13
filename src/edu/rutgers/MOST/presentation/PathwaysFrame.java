@@ -482,17 +482,17 @@ public class PathwaysFrame extends JApplet {
 									equals(LocalConfig.getInstance().getCytosolName())) {
 								foundMetabolitesList.add(metabName);
 							} else {
-								if (!LocalConfig.getInstance().isGraphMissingMetabolitesSelected()) {
-									drawMetabolite = false;
-								}
+//								if (!LocalConfig.getInstance().isGraphMissingMetabolitesSelected()) {
+//									drawMetabolite = false;
+//									System.out.println(metabName);
+//								}
 							}
 						}
-//						foundMetabolitesList.add(metabName);
 					} else {
 						if (!LocalConfig.getInstance().isGraphMissingMetabolitesSelected()) {
 							drawMetabolite = false;
+							//System.out.println(metabName);
 						}
-						//System.out.println(keggId + " not found");
 					}
 					if (drawMetabolite) {
 						//if (LocalConfig.getInstance().getSideSpeciesList().contains(pathway.getMetabolitesData().get(Integer.toString(j)).getKeggId()) ||

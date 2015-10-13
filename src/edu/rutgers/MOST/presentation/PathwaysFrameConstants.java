@@ -12,7 +12,7 @@ public class PathwaysFrameConstants {
 	public static final int GRAPH_WIDTH = 24000;
 	public static final int GRAPH_HEIGHT = 18000;
 	public static final int BORDER_WIDTH = 100;
-	public static final int BORDER_HEIGHT = 100;
+	public static final int BORDER_HEIGHT = -150;
 	public static final int PERIPLASM_WIDTH = 400;
 	public static final int PERIPLASM_HEIGHT = 200;
 	public static final int TRANSPORT_WIDTH_INCREMENT = 200;
