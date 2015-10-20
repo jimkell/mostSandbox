@@ -14,7 +14,7 @@ public class MetaboliteVisualizationDataProcessor {
 		ArrayList<String> additionalMetaboliteKeys = new ArrayList<String>(LocalConfig.getInstance().getAdditionalMetabolitesMap().keySet());
 		ArrayList<String> metaboliteSubstitutionKeys = new ArrayList<String>(LocalConfig.getInstance().getMetaboliteSubstitutionsMap().keySet());
 		ArrayList<String> metaboliteAlternativeKeys = new ArrayList<String>(LocalConfig.getInstance().getMetaboliteAlternativesMap().keySet());
-		Map<String, ArrayList<String>> metaboliteSubstitutionsFoundMap = new HashMap<String, ArrayList<String>>();
+		//Map<String, ArrayList<String>> metaboliteSubstitutionsFoundMap = new HashMap<String, ArrayList<String>>();
 		if (f.getKeggIdColumnIndex() > -1) {
 			Vector<SBMLMetabolite> metabolites = f.getAllMetabolites();
 			for (int i = 0; i < metabolites.size(); i++) {
@@ -39,20 +39,20 @@ public class MetaboliteVisualizationDataProcessor {
 //								System.out.println(keggId);
 //								System.out.println(LocalConfig.getInstance().getMetaboliteSubstitutionsMap().get(metaboliteSubstitutionKeys.get(k)));
 								keggId = metaboliteSubstitutionKeys.get(k);
-								if (metaboliteSubstitutionsFoundMap.containsKey(keggId)) {
-									ArrayList<String> m = metaboliteSubstitutionsFoundMap.get(keggId);
-									if (!m.contains(originalKeggId)) {
-										m.add(originalKeggId);
-										metaboliteSubstitutionsFoundMap.put(keggId, m);
-									}
-								} else {
-									ArrayList<String> m = new ArrayList<String>();
-									if (!m.contains(originalKeggId)) {
-										m.add(originalKeggId);
-										metaboliteSubstitutionsFoundMap.put(keggId, m);
-									}
-									metaboliteSubstitutionsFoundMap.put(keggId, m);
-								}
+//								if (metaboliteSubstitutionsFoundMap.containsKey(keggId)) {
+//									ArrayList<String> m = metaboliteSubstitutionsFoundMap.get(keggId);
+//									if (!m.contains(originalKeggId)) {
+//										m.add(originalKeggId);
+//										metaboliteSubstitutionsFoundMap.put(keggId, m);
+//									}
+//								} else {
+//									ArrayList<String> m = new ArrayList<String>();
+//									if (!m.contains(originalKeggId)) {
+//										m.add(originalKeggId);
+//										metaboliteSubstitutionsFoundMap.put(keggId, m);
+//									}
+//									metaboliteSubstitutionsFoundMap.put(keggId, m);
+//								}
 							}
 						}
 						for (int m = 0; m < metaboliteAlternativeKeys.size(); m++) {
@@ -104,7 +104,7 @@ public class MetaboliteVisualizationDataProcessor {
 			//System.out.println(LocalConfig.getInstance().getMetaboliteIdKeggIdMap());
 			//System.out.println(LocalConfig.getInstance().getKeggIdMetaboliteMap());
 		}
-		LocalConfig.getInstance().setMetaboliteSubstitutionsFoundMap(metaboliteSubstitutionsFoundMap);
+		//LocalConfig.getInstance().setMetaboliteSubstitutionsFoundMap(metaboliteSubstitutionsFoundMap);
 	}
 
 	private boolean metaboliteAbbreviationValid(SBMLMetabolite metabolite) {

@@ -1505,8 +1505,8 @@ public class GraphicalInterface extends JFrame {
 		LocalConfig.getInstance().setIdentifierIds(identifierIds);
 		ArrayList<Integer> noIdentifierIds = new ArrayList<Integer>();
 		LocalConfig.getInstance().setNoIdentifierIds(noIdentifierIds);
-		Map<String, ArrayList<String>> metaboliteSubstitutionsFoundMap = new HashMap<String, ArrayList<String>>();
-		LocalConfig.getInstance().setMetaboliteSubstitutionsFoundMap(metaboliteSubstitutionsFoundMap);
+//		Map<String, ArrayList<String>> metaboliteSubstitutionsFoundMap = new HashMap<String, ArrayList<String>>();
+//		LocalConfig.getInstance().setMetaboliteSubstitutionsFoundMap(metaboliteSubstitutionsFoundMap);
 		
 		Map<String, String> sideSpeciesTransportMetaboliteKeggIdMap = new HashMap<String, String>();
 		LocalConfig.getInstance().setSideSpeciesTransportMetaboliteKeggIdMap(sideSpeciesTransportMetaboliteKeggIdMap);

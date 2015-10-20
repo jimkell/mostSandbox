@@ -417,7 +417,7 @@ public class PathwayFilesReader {
 								pm.setAdditionalMetabolites(LocalConfig.getInstance().getAdditionalMetabolitesMap().get(pm.getKeggId()));
 							}
 							if (LocalConfig.getInstance().getMetaboliteSubstitutionsMap().containsKey(pm.getKeggId())) {
-								pm.setMetaboliteSubstitutions(LocalConfig.getInstance().getMetaboliteSubstitutionsMap().get(pm.getKeggId()));
+								//pm.setMetaboliteSubstitutions(LocalConfig.getInstance().getMetaboliteSubstitutionsMap().get(pm.getKeggId()));
 							}
 						}
 						metabolicPathways.get(id).getMetabolitesData().put(pm.getId(), pm);
@@ -426,12 +426,21 @@ public class PathwayFilesReader {
 						if (LocalConfig.getInstance().getKeggIdMetaboliteMap().containsKey(pm.getKeggId())) {
 							String metabAbbr = pm.getNames().get(0);
 							ArrayList<String> abbrList = new ArrayList<String>();
+							ArrayList<String> nameList = new ArrayList<String>();
+							//ArrayList<String> keggIdList = new ArrayList<String>();
+							ArrayList<String> chargeList = new ArrayList<String>();
 							for (int j = 0; j < LocalConfig.getInstance().getKeggIdMetaboliteMap().get(pm.getKeggId()).size(); j++) {
 								if (LocalConfig.getInstance().getKeggIdMetaboliteMap().get(pm.getKeggId()).get(j).getCompartment().
 										equals(LocalConfig.getInstance().getCytosolName())) {
 									abbrList.add(LocalConfig.getInstance().getKeggIdMetaboliteMap().get(pm.getKeggId()).get(j).getMetaboliteAbbreviation());
+									nameList.add(LocalConfig.getInstance().getKeggIdMetaboliteMap().get(pm.getKeggId()).get(j).getMetaboliteName());
+									//keggIdList.add(pm.getKeggId());
+									if (chargeList.contains(LocalConfig.getInstance().getKeggIdMetaboliteMap().get(pm.getKeggId()).get(j).getCharge())) {
+										chargeList.add(LocalConfig.getInstance().getKeggIdMetaboliteMap().get(pm.getKeggId()).get(j).getCharge());
+									}
 								}
 							}
+							//System.out.println(abbrList);
 							if (abbrList.size() > 0) {
 								name = abbrList.get(0);
 								if (abbrList.size() > 1) {
@@ -444,10 +453,16 @@ public class PathwayFilesReader {
 								name = metabAbbr;
 							}
 							abbr = util.maybeRemovePrefixAndSuffix(metabAbbr);
+							name = "<html>" + name + "<p> Metabolite Names: " + nameList.toString() +
+									"<p> Metabolite Abbreviations: " + abbrList.toString() +
+									//"<p>KEGG Ids: " + keggIdList.toString() +
+									"<p>Charge: " + chargeList.toString();
 						}
+//						name = "<html>" + name + "<p>" + pm.getNames().get(0);
 						if (metaboliteNameAbbrMap.containsKey(name)) {
 							name = name + duplicateSuffix(name, metaboliteNameAbbrMap);
 						}
+						//name += "<p>" + pm.getNames().get(0);
 						pm.setName(name);
 						metaboliteNameAbbrMap.put(name, abbr);
 					}
