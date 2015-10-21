@@ -431,7 +431,7 @@ public class PathwayFilesReader {
 							ArrayList<String> chargeList = new ArrayList<String>();
 							for (int j = 0; j < LocalConfig.getInstance().getKeggIdMetaboliteMap().get(pm.getKeggId()).size(); j++) {
 								if (LocalConfig.getInstance().getKeggIdMetaboliteMap().get(pm.getKeggId()).get(j).getCompartment().
-										equals(LocalConfig.getInstance().getCytosolName())) {
+										equals(LocalConfig.getInstance().getSelectedCompartmentName())) {
 									abbrList.add(LocalConfig.getInstance().getKeggIdMetaboliteMap().get(pm.getKeggId()).get(j).getMetaboliteAbbreviation());
 									nameList.add(LocalConfig.getInstance().getKeggIdMetaboliteMap().get(pm.getKeggId()).get(j).getMetaboliteName());
 									if (!keggIdList.contains(pm.getKeggId())) {
@@ -448,7 +448,7 @@ public class PathwayFilesReader {
 								if (LocalConfig.getInstance().getKeggIdMetaboliteMap().containsKey(pm.getMetaboliteSubstitutions().get(k))) {
 									ArrayList<SBMLMetabolite> subList = LocalConfig.getInstance().getKeggIdMetaboliteMap().get(pm.getMetaboliteSubstitutions().get(k));
 									for (int s = 0; s < subList.size(); s++) {
-										if (subList.get(s).getCompartment().equals(LocalConfig.getInstance().getCytosolName())) {
+										if (subList.get(s).getCompartment().equals(LocalConfig.getInstance().getSelectedCompartmentName())) {
 											keggIdList.add(pm.getMetaboliteSubstitutions().get(k));
 										}
 									}

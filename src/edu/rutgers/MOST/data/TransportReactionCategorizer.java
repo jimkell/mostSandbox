@@ -10,9 +10,6 @@ import edu.rutgers.MOST.config.LocalConfig;
 
 public class TransportReactionCategorizer {
 
-	private Vector<SBMLReaction> cytosolExtraOrganismRxns;
-	private Vector<SBMLReaction> cytosolPeriplasmRxns;
-	private Vector<SBMLReaction> periplasmExtraOrganismRxns;
 	private Vector<SBMLReaction> compartmentOutsideRxns;
 	private Vector<SBMLReaction> compartmentMembraneRxns;
 	private Vector<SBMLReaction> membraneOutsideRxns;
@@ -93,7 +90,7 @@ public class TransportReactionCategorizer {
 		}
 	}
 	
-	public void categorizeTransportReactionsByCompartment() {
+	public void categorizeTransportReactions() {
 		ReactionFactory rf = new ReactionFactory("SBML");
 		removeExternalReactions();
 		removeBiomassReactions();
@@ -103,60 +100,15 @@ public class TransportReactionCategorizer {
 				LocalConfig.getInstance().getOutsideName().length() > 0) {
 			compartmentOutsideRxns = rf.getTransportReactionsByCompartments(LocalConfig.getInstance().getSelectedCompartmentName(), 
 					LocalConfig.getInstance().getOutsideName());
+			removeTransportReactionsFromUnplottedList(compartmentOutsideRxns);
 			if (LocalConfig.getInstance().getMembraneName() != null &&
 					LocalConfig.getInstance().getMembraneName().length() > 0) {
 				compartmentMembraneRxns = rf.getTransportReactionsByCompartments(LocalConfig.getInstance().getSelectedCompartmentName(), 
-						LocalConfig.getInstance().getPeriplasmName());
-				membraneOutsideRxns = rf.getTransportReactionsByCompartments(LocalConfig.getInstance().getPeriplasmName(), 
+						LocalConfig.getInstance().getMembraneName());
+				removeTransportReactionsFromUnplottedList(compartmentMembraneRxns);
+				membraneOutsideRxns = rf.getTransportReactionsByCompartments(LocalConfig.getInstance().getMembraneName(), 
 						LocalConfig.getInstance().getOutsideName());
-			}
-		}
-	}
-	
-	public void categorizeTransportReactions() {
-		ReactionFactory rf = new ReactionFactory("SBML");
-		removeExternalReactions();
-		removeBiomassReactions();
-		if (LocalConfig.getInstance().getCytosolName() != null &&
-				LocalConfig.getInstance().getCytosolName().length() > 0 &&
-				LocalConfig.getInstance().getExtraOrganismName() != null &&
-				LocalConfig.getInstance().getExtraOrganismName().length() > 0) {
-			cytosolExtraOrganismRxns = rf.getTransportReactionsByCompartments(LocalConfig.getInstance().getCytosolName(), 
-					LocalConfig.getInstance().getExtraOrganismName());
-			// classification of transport reactions
-//			for (int i = 0; i < cytosolExtraOrganismRxns.size(); i++) {
-//				int id = cytosolExtraOrganismRxns.get(i).getId();
-//				SBMLReactionEquation equn = (SBMLReactionEquation) LocalConfig.getInstance().getReactionEquationMap().get(id);
-//				ArrayList<SBMLReactant> reactants = equn.getReactants();
-//				ArrayList<SBMLProduct> products = equn.getProducts();
-//				if (reactants.size() == 1 && products.size() == 1) {
-//					//System.out.println(cytosolExtraOrganismRxns.get(i).getReactionEqunAbbr());
-//				} else {
-//					for (int r = 0; r < reactants.size(); r++) {
-//						for (int p = 0; p < products.size(); p++) {
-//							String keggReacId = LocalConfig.getInstance().getMetaboliteIdKeggIdMap().get(Integer.toString(reactants.get(r).getMetaboliteId()));
-//							String keggProdId = LocalConfig.getInstance().getMetaboliteIdKeggIdMap().get(Integer.toString(products.get(p).getMetaboliteId()));
-//							//System.out.println("id " + keggReacId);
-//							if (keggReacId != null && !keggReacId.equals("C00080")) {
-//								if (keggReacId.equals(keggProdId)) {
-//									System.out.println(cytosolExtraOrganismRxns.get(i).getReactionEqunAbbr());
-//								}
-//							} else {
-//								System.out.println(cytosolExtraOrganismRxns.get(i).getReactionEqunAbbr());
-//							}
-//						}
-//					}
-//				}
-//			}
-			removeTransportReactionsFromUnplottedList(cytosolExtraOrganismRxns);
-			if (LocalConfig.getInstance().getPeriplasmName() != null &&
-					LocalConfig.getInstance().getPeriplasmName().length() > 0) {
-				cytosolPeriplasmRxns = rf.getTransportReactionsByCompartments(LocalConfig.getInstance().getCytosolName(), 
-						LocalConfig.getInstance().getPeriplasmName());
-				removeTransportReactionsFromUnplottedList(cytosolPeriplasmRxns);
-				periplasmExtraOrganismRxns = rf.getTransportReactionsByCompartments(LocalConfig.getInstance().getPeriplasmName(), 
-						LocalConfig.getInstance().getExtraOrganismName());
-				removeTransportReactionsFromUnplottedList(periplasmExtraOrganismRxns);
+				removeTransportReactionsFromUnplottedList(membraneOutsideRxns);
 			}
 			LocalConfig.getInstance().setNoTransportReactionIds(LocalConfig.getInstance().getUnplottedReactionIds());
 		}

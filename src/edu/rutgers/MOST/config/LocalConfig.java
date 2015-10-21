@@ -1302,36 +1302,6 @@ public class LocalConfig {
 	}
 	
 	// compartment names from model
-	private String cytosolName;
-
-	public String getCytosolName() {
-		return cytosolName;
-	}
-
-	public void setCytosolName(String cytosolName) {
-		this.cytosolName = cytosolName;
-	}
-	
-	private String extraOrganismName;
-
-	public String getExtraOrganismName() {
-		return extraOrganismName;
-	}
-
-	public void setExtraOrganismName(String extraOrganismName) {
-		this.extraOrganismName = extraOrganismName;
-	}
-	
-	private String periplasmName;
-
-	public String getPeriplasmName() {
-		return periplasmName;
-	}
-
-	public void setPeriplasmName(String periplasmName) {
-		this.periplasmName = periplasmName;
-	}
-	
 	private String selectedCompartmentName;
 	
 	public String getSelectedCompartmentName() {

@@ -26,9 +26,9 @@ public class CompartmentNameDialog extends JDialog {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	public JComboBox<String> cbCytosolName = new JComboBox<String>();
-	public JComboBox<String> cbPeriplasmName = new JComboBox<String>();
-	public JComboBox<String> cbExtraOrganismName = new JComboBox<String>();
+	public JComboBox<String> cbCompartmentName = new JComboBox<String>();
+	public JComboBox<String> cbMembraneName = new JComboBox<String>();
+	public JComboBox<String> cbOutsideName = new JComboBox<String>();
 	
 	public JButton okButton = new JButton("     OK     ");
 	public JButton cancelButton = new JButton("  Cancel  ");
@@ -41,21 +41,21 @@ public class CompartmentNameDialog extends JDialog {
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		//setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 
-		cbCytosolName.setEditable(false);	
-		cbPeriplasmName.setEditable(false);
-		cbExtraOrganismName.setEditable(false);	
+		cbCompartmentName.setEditable(false);	
+		cbMembraneName.setEditable(false);
+		cbOutsideName.setEditable(false);	
 
-		cbCytosolName.setPreferredSize(new Dimension(250, 25));
-		cbCytosolName.setMaximumSize(new Dimension(250, 25));
-		cbCytosolName.setMinimumSize(new Dimension(250, 25));
+		cbCompartmentName.setPreferredSize(new Dimension(250, 25));
+		cbCompartmentName.setMaximumSize(new Dimension(250, 25));
+		cbCompartmentName.setMinimumSize(new Dimension(250, 25));
 
-		cbPeriplasmName.setPreferredSize(new Dimension(250, 25));
-		cbPeriplasmName.setMaximumSize(new Dimension(250, 25));
-		cbPeriplasmName.setMinimumSize(new Dimension(250, 25));
+		cbMembraneName.setPreferredSize(new Dimension(250, 25));
+		cbMembraneName.setMaximumSize(new Dimension(250, 25));
+		cbMembraneName.setMinimumSize(new Dimension(250, 25));
 	
-		cbExtraOrganismName.setPreferredSize(new Dimension(250, 25));
-		cbExtraOrganismName.setMaximumSize(new Dimension(250, 25));
-		cbExtraOrganismName.setMinimumSize(new Dimension(250, 25));
+		cbOutsideName.setPreferredSize(new Dimension(250, 25));
+		cbOutsideName.setMaximumSize(new Dimension(250, 25));
+		cbOutsideName.setMinimumSize(new Dimension(250, 25));
 
 		populateComboBoxes();
 		
@@ -64,12 +64,12 @@ public class CompartmentNameDialog extends JDialog {
 
 		Box hbLabels = Box.createHorizontalBox();
 		Box hbTop = Box.createHorizontalBox();	    	    
-		Box hbCytosolLabel = Box.createHorizontalBox();	    
-		Box hbCytosol = Box.createHorizontalBox();
-		Box hbPeriplasmLabel = Box.createHorizontalBox();	    
-		Box hbMetabolite = Box.createHorizontalBox();
-		Box hbExtraOrganismLabel = Box.createHorizontalBox();	    
-		Box hbExtraOrganism = Box.createHorizontalBox();
+		Box hbCompartmentLabel = Box.createHorizontalBox();	    
+		Box hbCompartment = Box.createHorizontalBox();
+		Box hbMembraneLabel = Box.createHorizontalBox();	    
+		Box hbMembrane = Box.createHorizontalBox();
+		Box hbOutsideLabel = Box.createHorizontalBox();	    
+		Box hbOutside = Box.createHorizontalBox();
 		
 		Box vbLabels = Box.createVerticalBox();
 		Box vbCombos = Box.createVerticalBox();
@@ -89,99 +89,99 @@ public class CompartmentNameDialog extends JDialog {
 
 		hbLabels.add(hbTop);
 
-		//cytosol Label and combo
-		JLabel cytosolLabel = new JLabel();
-		cytosolLabel.setText("Cytosol");
-		cytosolLabel.setPreferredSize(new Dimension(150, 25));
-		cytosolLabel.setMaximumSize(new Dimension(150, 25));
-		cytosolLabel.setMinimumSize(new Dimension(150, 25));
-		cytosolLabel.setBorder(BorderFactory.createEmptyBorder(10,10,0,10));
-		cytosolLabel.setAlignmentX(LEFT_ALIGNMENT);
-		//cytosolLabel.setAlignmentY(TOP_ALIGNMENT);	    	    
+		//compartment Label and combo
+		JLabel compartmentLabel = new JLabel();
+		compartmentLabel.setText(CompartmentsConstants.COMPARTMENT_NAME_LABEL);
+		compartmentLabel.setPreferredSize(new Dimension(150, 25));
+		compartmentLabel.setMaximumSize(new Dimension(150, 25));
+		compartmentLabel.setMinimumSize(new Dimension(150, 25));
+		compartmentLabel.setBorder(BorderFactory.createEmptyBorder(10,10,0,10));
+		compartmentLabel.setAlignmentX(LEFT_ALIGNMENT);
+		//compartmentLabel.setAlignmentY(TOP_ALIGNMENT);	    	    
 
-		JPanel panelCytosolLabel = new JPanel();
-		panelCytosolLabel.setLayout(new BoxLayout(panelCytosolLabel, BoxLayout.X_AXIS));
-		panelCytosolLabel.add(cytosolLabel);
-		panelCytosolLabel.setBorder(BorderFactory.createEmptyBorder(0,0,10,0));
+		JPanel panelCompartmentLabel = new JPanel();
+		panelCompartmentLabel.setLayout(new BoxLayout(panelCompartmentLabel, BoxLayout.X_AXIS));
+		panelCompartmentLabel.add(compartmentLabel);
+		panelCompartmentLabel.setBorder(BorderFactory.createEmptyBorder(0,0,10,0));
 
-		hbCytosolLabel.add(panelCytosolLabel);
-		hbCytosolLabel.setAlignmentX(LEFT_ALIGNMENT);
+		hbCompartmentLabel.add(panelCompartmentLabel);
+		hbCompartmentLabel.setAlignmentX(LEFT_ALIGNMENT);
 
 		JPanel panelCytosol = new JPanel();
 		panelCytosol.setLayout(new BoxLayout(panelCytosol, BoxLayout.X_AXIS));
-		panelCytosol.add(cbCytosolName);
+		panelCytosol.add(cbCompartmentName);
 		panelCytosol.setBorder(BorderFactory.createEmptyBorder(0,0,10,10));
 		panelCytosol.setAlignmentX(RIGHT_ALIGNMENT);
 
-		hbCytosol.add(panelCytosol);
-		hbCytosol.setAlignmentX(RIGHT_ALIGNMENT);
+		hbCompartment.add(panelCytosol);
+		hbCompartment.setAlignmentX(RIGHT_ALIGNMENT);
 
-		vbLabels.add(hbCytosolLabel);
+		vbLabels.add(hbCompartmentLabel);
 		JLabel blankLabel1 = new JLabel("");
 		vbLabels.add(blankLabel1);
-		vbCombos.add(hbCytosol);
+		vbCombos.add(hbCompartment);
 
-		//metabolite Name Label and combo
-		JLabel periplasmLabel = new JLabel();
-		periplasmLabel.setText("Periplasm");
-		periplasmLabel.setPreferredSize(new Dimension(150, 25));
-		periplasmLabel.setMaximumSize(new Dimension(150, 25));
-		periplasmLabel.setMinimumSize(new Dimension(150, 25));
-		periplasmLabel.setBorder(BorderFactory.createEmptyBorder(10,10,0,10));
-		periplasmLabel.setAlignmentX(LEFT_ALIGNMENT);
+		//membrane Name Label and combo
+		JLabel membraneLabel = new JLabel();
+		membraneLabel.setText(CompartmentsConstants.MEMBRANE_NAME_LABEL);
+		membraneLabel.setPreferredSize(new Dimension(150, 25));
+		membraneLabel.setMaximumSize(new Dimension(150, 25));
+		membraneLabel.setMinimumSize(new Dimension(150, 25));
+		membraneLabel.setBorder(BorderFactory.createEmptyBorder(10,10,0,10));
+		membraneLabel.setAlignmentX(LEFT_ALIGNMENT);
 
-		JPanel panelPeriplasmLabel = new JPanel();
-		panelPeriplasmLabel.setLayout(new BoxLayout(panelPeriplasmLabel, BoxLayout.X_AXIS));
-		panelPeriplasmLabel.add(periplasmLabel);
-		panelPeriplasmLabel.setBorder(BorderFactory.createEmptyBorder(0,0,10,0));
+		JPanel panelMembraneLabel = new JPanel();
+		panelMembraneLabel.setLayout(new BoxLayout(panelMembraneLabel, BoxLayout.X_AXIS));
+		panelMembraneLabel.add(membraneLabel);
+		panelMembraneLabel.setBorder(BorderFactory.createEmptyBorder(0,0,10,0));
 
-		hbPeriplasmLabel.add(panelPeriplasmLabel);
-		hbPeriplasmLabel.setAlignmentX(LEFT_ALIGNMENT);
+		hbMembraneLabel.add(panelMembraneLabel);
+		hbMembraneLabel.setAlignmentX(LEFT_ALIGNMENT);
 
-		JPanel panelPeriplasm = new JPanel();
-		panelPeriplasm.setLayout(new BoxLayout(panelPeriplasm, BoxLayout.X_AXIS));
-		panelPeriplasm.add(cbPeriplasmName);
-		panelPeriplasm.setBorder(BorderFactory.createEmptyBorder(0,0,10,10));
-		panelPeriplasm.setAlignmentX(RIGHT_ALIGNMENT);
+		JPanel panelMembrane = new JPanel();
+		panelMembrane.setLayout(new BoxLayout(panelMembrane, BoxLayout.X_AXIS));
+		panelMembrane.add(cbMembraneName);
+		panelMembrane.setBorder(BorderFactory.createEmptyBorder(0,0,10,10));
+		panelMembrane.setAlignmentX(RIGHT_ALIGNMENT);
 
-		hbMetabolite.add(panelPeriplasm);
-		hbMetabolite.setAlignmentX(RIGHT_ALIGNMENT);
+		hbMembrane.add(panelMembrane);
+		hbMembrane.setAlignmentX(RIGHT_ALIGNMENT);
 
-		vbLabels.add(hbPeriplasmLabel);
+		vbLabels.add(hbMembraneLabel);
 		JLabel blankLabel2 = new JLabel("");
 		vbLabels.add(blankLabel2);
-		vbCombos.add(hbMetabolite);
+		vbCombos.add(hbMembrane);
 
-		//extraOrganism label and combo
-		JLabel extraOrganismLabel = new JLabel();
-		extraOrganismLabel.setText("Extra Organism");
-		extraOrganismLabel.setPreferredSize(new Dimension(150, 25));
-		extraOrganismLabel.setMaximumSize(new Dimension(150, 25));
-		extraOrganismLabel.setMinimumSize(new Dimension(150, 25));
-		extraOrganismLabel.setBorder(BorderFactory.createEmptyBorder(10,10,0,10));
-		extraOrganismLabel.setAlignmentX(LEFT_ALIGNMENT);
+		//outside label and combo
+		JLabel outsideLabel = new JLabel();
+		outsideLabel.setText(CompartmentsConstants.OUTSIDE_NAME_LABEL);
+		outsideLabel.setPreferredSize(new Dimension(150, 25));
+		outsideLabel.setMaximumSize(new Dimension(150, 25));
+		outsideLabel.setMinimumSize(new Dimension(150, 25));
+		outsideLabel.setBorder(BorderFactory.createEmptyBorder(10,10,0,10));
+		outsideLabel.setAlignmentX(LEFT_ALIGNMENT);
 
-		JPanel panelExtraOrganismLabel = new JPanel();
-		panelExtraOrganismLabel.setLayout(new BoxLayout(panelExtraOrganismLabel, BoxLayout.X_AXIS));
-		panelExtraOrganismLabel.add(extraOrganismLabel);
-		panelExtraOrganismLabel.setBorder(BorderFactory.createEmptyBorder(0,0,10,10));
+		JPanel panelOutsideLabel = new JPanel();
+		panelOutsideLabel.setLayout(new BoxLayout(panelOutsideLabel, BoxLayout.X_AXIS));
+		panelOutsideLabel.add(outsideLabel);
+		panelOutsideLabel.setBorder(BorderFactory.createEmptyBorder(0,0,10,10));
 
-		hbExtraOrganismLabel.add(panelExtraOrganismLabel);
-		hbExtraOrganismLabel.setAlignmentX(LEFT_ALIGNMENT);
+		hbOutsideLabel.add(panelOutsideLabel);
+		hbOutsideLabel.setAlignmentX(LEFT_ALIGNMENT);
 
 		JPanel panelExtraOrganism = new JPanel();
 		panelExtraOrganism.setLayout(new BoxLayout(panelExtraOrganism, BoxLayout.X_AXIS));
-		panelExtraOrganism.add(cbExtraOrganismName);
+		panelExtraOrganism.add(cbOutsideName);
 		panelExtraOrganism.setBorder(BorderFactory.createEmptyBorder(0,0,10,10));
 		panelExtraOrganism.setAlignmentX(RIGHT_ALIGNMENT);
 
-		hbExtraOrganism.add(panelExtraOrganism);
-		hbExtraOrganism.setAlignmentX(RIGHT_ALIGNMENT);
+		hbOutside.add(panelExtraOrganism);
+		hbOutside.setAlignmentX(RIGHT_ALIGNMENT);
 
-		vbLabels.add(hbExtraOrganismLabel);
+		vbLabels.add(hbOutsideLabel);
 		JLabel blankLabel3 = new JLabel("");
 		vbLabels.add(blankLabel3);
-		vbCombos.add(hbExtraOrganism);
+		vbCombos.add(hbOutside);
 		
 		okButton.setMnemonic(KeyEvent.VK_O);
 		JLabel blank = new JLabel("    "); 
@@ -227,26 +227,30 @@ public class CompartmentNameDialog extends JDialog {
     public void populateComboBoxes() {
     	if (LocalConfig.getInstance().getListOfCompartments() != null && 
     			LocalConfig.getInstance().getListOfCompartments().size() > 0) {
-    		cbCytosolName.removeAllItems();
-    		cbPeriplasmName.removeAllItems();
-    		cbExtraOrganismName.removeAllItems();
+    		cbCompartmentName.removeAllItems();
+    		cbMembraneName.removeAllItems();
+    		cbOutsideName.removeAllItems();
     		//populate combo boxes
     		for (int c = 0; c < LocalConfig.getInstance().getListOfCompartments().size(); c++) { 
-    			cbCytosolName.addItem(LocalConfig.getInstance().getListOfCompartments().get(c).getName());
-    			cbPeriplasmName.addItem(LocalConfig.getInstance().getListOfCompartments().get(c).getName());
-    			cbExtraOrganismName.addItem(LocalConfig.getInstance().getListOfCompartments().get(c).getName());
+    			cbCompartmentName.addItem(LocalConfig.getInstance().getListOfCompartments().get(c).getName());
+    			cbMembraneName.addItem(LocalConfig.getInstance().getListOfCompartments().get(c).getName());
+    			cbOutsideName.addItem(LocalConfig.getInstance().getListOfCompartments().get(c).getName());
     		}
-    		cbCytosolName.setSelectedIndex(-1);
-    		cbPeriplasmName.setSelectedIndex(-1);
-    		cbExtraOrganismName.setSelectedIndex(-1);
+    		// add empty item
+    		cbCompartmentName.addItem("");
+			cbMembraneName.addItem("");
+			cbOutsideName.addItem("");
+    		cbCompartmentName.setSelectedIndex(-1);
+    		cbMembraneName.setSelectedIndex(-1);
+    		cbOutsideName.setSelectedIndex(-1);
     		for (int c = 0; c < LocalConfig.getInstance().getListOfCompartments().size(); c++) {
     			//filters to match compartment names from list of compartments		
-    			if((LocalConfig.getInstance().getListOfCompartments().get(c).getName().toLowerCase()).contains(CompartmentsTableConstants.CYTOSOL_FILTER[0])) {
-    				cbCytosolName.setSelectedIndex(c);
-    			} else if((LocalConfig.getInstance().getListOfCompartments().get(c).getName().toLowerCase()).contains(CompartmentsTableConstants.PERIPLASM_FILTER[0])) {
-    				cbPeriplasmName.setSelectedIndex(c);
-    			} else if((LocalConfig.getInstance().getListOfCompartments().get(c).getName().toLowerCase()).contains(CompartmentsTableConstants.EXTRA_ORGANISM_FILTER[0])) {
-    				cbExtraOrganismName.setSelectedIndex(c);
+    			if((LocalConfig.getInstance().getListOfCompartments().get(c).getName().toLowerCase()).contains(CompartmentsConstants.CYTOSOL_FILTER[0])) {
+    				cbCompartmentName.setSelectedIndex(c);
+    			} else if((LocalConfig.getInstance().getListOfCompartments().get(c).getName().toLowerCase()).contains(CompartmentsConstants.PERIPLASM_FILTER[0])) {
+    				cbMembraneName.setSelectedIndex(c);
+    			} else if((LocalConfig.getInstance().getListOfCompartments().get(c).getName().toLowerCase()).contains(CompartmentsConstants.EXTRA_ORGANISM_FILTER[0])) {
+    				cbOutsideName.setSelectedIndex(c);
     			}  
     		}
     	}

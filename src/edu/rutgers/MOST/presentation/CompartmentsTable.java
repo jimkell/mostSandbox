@@ -44,7 +44,7 @@ class CompartmentsTable
 		private static final long serialVersionUID = 1L;
 
 		public boolean isCellEditable(int row, int column){	    	   
-			if (column == CompartmentsTableConstants.ABBREVIATION_COLUMN) {
+			if (column == CompartmentsConstants.ABBREVIATION_COLUMN) {
 				return false;
 			}
 			return true;  
@@ -83,9 +83,9 @@ class CompartmentsTable
 	public CompartmentsTable()
 	{
 		// Set the frame characteristics
-		setTitle(CompartmentsTableConstants.TITLE);
+		setTitle(CompartmentsConstants.TITLE);
 		//setSize( 700, 500 );
-		setSize(CompartmentsTableConstants.WIDTH, CompartmentsTableConstants.HEIGHT);
+		setSize(CompartmentsConstants.WIDTH, CompartmentsConstants.HEIGHT);
 		
 		setBackground( Color.gray );
 		
@@ -121,9 +121,9 @@ class CompartmentsTable
 				if (tcl.getOldValue() != tcl.getNewValue()) {
 					updateTableByRow(tcl.getRow());
 //					for (int i = 0; i < LocalConfig.getInstance().getListOfCompartments().size(); i++) {
-//						if (LocalConfig.getInstance().getListOfCompartments().get(i).getId().equals(table.getModel().getValueAt(tcl.getRow(), CompartmentsTableConstants.ABBREVIATION_COLUMN))) {
-////							LocalConfig.getInstance().getListOfCompartments().get(i).setName((String) table.getModel().getValueAt(tcl.getRow(), CompartmentsTableConstants.NAME_COLUMN));
-////							LocalConfig.getInstance().getListOfCompartments().get(i).setOutside((String) table.getModel().getValueAt(tcl.getRow(), CompartmentsTableConstants.OUTSIDE_COLUMN));
+//						if (LocalConfig.getInstance().getListOfCompartments().get(i).getId().equals(table.getModel().getValueAt(tcl.getRow(), CompartmentsConstants.ABBREVIATION_COLUMN))) {
+////							LocalConfig.getInstance().getListOfCompartments().get(i).setName((String) table.getModel().getValueAt(tcl.getRow(), CompartmentsConstants.NAME_COLUMN));
+////							LocalConfig.getInstance().getListOfCompartments().get(i).setOutside((String) table.getModel().getValueAt(tcl.getRow(), CompartmentsConstants.OUTSIDE_COLUMN));
 //							updateCompartment(LocalConfig.getInstance().getListOfCompartments().get(i), tcl.getRow());
 //							System.out.println(LocalConfig.getInstance().getListOfCompartments().get(i));
 //						}
@@ -148,7 +148,7 @@ class CompartmentsTable
 		ActionListener pasteActionListener = new ActionListener() {
 			public void actionPerformed(ActionEvent actionEvent) {
 				if (table.getSelectedRow() > -1 && table.getSelectedColumn() > -1 && 
-						table.getSelectedColumn() != CompartmentsTableConstants.ABBREVIATION_COLUMN) {
+						table.getSelectedColumn() != CompartmentsConstants.ABBREVIATION_COLUMN) {
 					tablePaste();
 				}			
 			}
@@ -210,8 +210,8 @@ class CompartmentsTable
 		DefaultTableModel model = new DefaultTableModel();
 		Vector<String> columnNames = new Vector<String>();
 		
-		for (int i = 0; i < CompartmentsTableConstants.visibleColumnsList.size(); i++) {						
-				columnNames.add(CompartmentsTableConstants.visibleColumnsList.get(i));
+		for (int i = 0; i < CompartmentsConstants.visibleColumnsList.size(); i++) {						
+				columnNames.add(CompartmentsConstants.visibleColumnsList.get(i));
 		}
 		for (int j = 0; j < columnNames.size(); j++) {
 			model.addColumn(columnNames.get(j));
@@ -243,14 +243,14 @@ class CompartmentsTable
 			TableColumn column = table.getColumnModel().getColumn(i);  
 			column.setCellRenderer(renderer);
             // Column widths can be changed here           
-            if (i == CompartmentsTableConstants.ABBREVIATION_COLUMN) {
-            	column.setPreferredWidth(CompartmentsTableConstants.ABBREVIATION_WIDTH);
+            if (i == CompartmentsConstants.ABBREVIATION_COLUMN) {
+            	column.setPreferredWidth(CompartmentsConstants.ABBREVIATION_WIDTH);
             }
-            if (i == CompartmentsTableConstants.NAME_COLUMN) {
-            	column.setPreferredWidth(CompartmentsTableConstants.NAME_WIDTH);
+            if (i == CompartmentsConstants.NAME_COLUMN) {
+            	column.setPreferredWidth(CompartmentsConstants.NAME_WIDTH);
             }
-            if (i == CompartmentsTableConstants.OUTSIDE_COLUMN) {
-            	column.setPreferredWidth(CompartmentsTableConstants.OUTSIDE_WIDTH);
+            if (i == CompartmentsConstants.OUTSIDE_COLUMN) {
+            	column.setPreferredWidth(CompartmentsConstants.OUTSIDE_WIDTH);
             }
 		}	
 	}
@@ -258,7 +258,7 @@ class CompartmentsTable
 	private class RowListener implements ListSelectionListener {
     	public void valueChanged(ListSelectionEvent event) {
     		if (table.getSelectedRow() > -1) {
-				String abbreviation = (table.getModel().getValueAt(table.getSelectedRow(), CompartmentsTableConstants.ABBREVIATION_COLUMN)).toString();
+				String abbreviation = (table.getModel().getValueAt(table.getSelectedRow(), CompartmentsConstants.ABBREVIATION_COLUMN)).toString();
     			LocalConfig.getInstance().setSelectedCompartmentName(abbreviation);
 				okButton.setEnabled(true);
 			}
@@ -317,7 +317,7 @@ class CompartmentsTable
 		});
 		contextMenu.add(copyMenu);
 		JMenuItem pasteMenu = new JMenuItem("Paste");
-		if (columnIndex == CompartmentsTableConstants.ABBREVIATION_COLUMN) {
+		if (columnIndex == CompartmentsConstants.ABBREVIATION_COLUMN) {
 			pasteMenu.setEnabled(false);
 		}
 		pasteMenu.setAccelerator(KeyStroke.getKeyStroke(
@@ -334,9 +334,9 @@ class CompartmentsTable
 	
 	public void updateTableByRow(int row) {
 		for (int i = 0; i < LocalConfig.getInstance().getListOfCompartments().size(); i++) {
-			if (LocalConfig.getInstance().getListOfCompartments().get(i).getId().equals(table.getModel().getValueAt(row, CompartmentsTableConstants.ABBREVIATION_COLUMN))) {
-//				LocalConfig.getInstance().getListOfCompartments().get(i).setName((String) table.getModel().getValueAt(tcl.getRow(), CompartmentsTableConstants.NAME_COLUMN));
-//				LocalConfig.getInstance().getListOfCompartments().get(i).setOutside((String) table.getModel().getValueAt(tcl.getRow(), CompartmentsTableConstants.OUTSIDE_COLUMN));
+			if (LocalConfig.getInstance().getListOfCompartments().get(i).getId().equals(table.getModel().getValueAt(row, CompartmentsConstants.ABBREVIATION_COLUMN))) {
+//				LocalConfig.getInstance().getListOfCompartments().get(i).setName((String) table.getModel().getValueAt(tcl.getRow(), CompartmentsConstants.NAME_COLUMN));
+//				LocalConfig.getInstance().getListOfCompartments().get(i).setOutside((String) table.getModel().getValueAt(tcl.getRow(), CompartmentsConstants.OUTSIDE_COLUMN));
 				updateCompartment(LocalConfig.getInstance().getListOfCompartments().get(i), row);
 				System.out.println(LocalConfig.getInstance().getListOfCompartments().get(i));
 			}
@@ -344,8 +344,8 @@ class CompartmentsTable
 	}
 	
 	public void updateCompartment(SBMLCompartment comp, int row) {
-		comp.setName((String) table.getModel().getValueAt(row, CompartmentsTableConstants.NAME_COLUMN));
-		comp.setOutside((String) table.getModel().getValueAt(row, CompartmentsTableConstants.OUTSIDE_COLUMN));
+		comp.setName((String) table.getModel().getValueAt(row, CompartmentsConstants.NAME_COLUMN));
+		comp.setOutside((String) table.getModel().getValueAt(row, CompartmentsConstants.OUTSIDE_COLUMN));
 	}
 
 	public void tableCopy() {
@@ -389,7 +389,7 @@ class CompartmentsTable
 		try { 
 			pasteString = (String)(Toolkit.getDefaultToolkit().getSystemClipboard().getContents(this).getTransferData(DataFlavor.stringFlavor));
 			if (table.getSelectedRow() > -1 && table.getSelectedColumn() > -1 &&
-					table.getSelectedColumn() != CompartmentsTableConstants.ABBREVIATION_COLUMN) {
+					table.getSelectedColumn() != CompartmentsConstants.ABBREVIATION_COLUMN) {
 				table.setValueAt(pasteString, table.getSelectedRow(), table.getSelectedColumn());
 				updateTableByRow(table.getSelectedRow());
 			}

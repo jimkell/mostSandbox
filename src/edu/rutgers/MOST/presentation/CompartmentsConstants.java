@@ -2,7 +2,7 @@ package edu.rutgers.MOST.presentation;
 
 import java.util.Arrays;
 
-public class CompartmentsTableConstants {
+public class CompartmentsConstants {
 	
 	public static final String TITLE = GraphicalInterfaceConstants.TITLE + " - " + "Compartments";
 
@@ -26,6 +26,10 @@ public class CompartmentsTableConstants {
 	public static final int HEIGHT = 300;
 	
 	// Compartments Name Dialog
+	public static final String COMPARTMENT_NAME_LABEL = "Compartment";
+	public static final String MEMBRANE_NAME_LABEL = "Membrane";
+	public static final String OUTSIDE_NAME_LABEL = "Outside";
+	
 	public static final String[] CYTOSOL_FILTER =
 		{"cyt"
 		}; 

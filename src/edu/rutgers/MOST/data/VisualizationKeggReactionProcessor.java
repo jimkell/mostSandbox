@@ -41,17 +41,17 @@ public class VisualizationKeggReactionProcessor {
 		}
 	}
 	
-	public String reactionDirection(String reactantComp, String productComp) {
-		String direction = "1";
-		if (reactantComp.equals(LocalConfig.getInstance().getExtraOrganismName()) &&
-				(productComp.equals(LocalConfig.getInstance().getPeriplasmName()) ||
-						productComp.equals(LocalConfig.getInstance().getCytosolName()))) {
-			direction = "-1";
-		} else if (reactantComp.equals(LocalConfig.getInstance().getPeriplasmName()) && 
-				productComp.equals(LocalConfig.getInstance().getCytosolName())) {
-			direction = "-1";
-		}
-		return direction;
-	}
+//	public String reactionDirection(String reactantComp, String productComp) {
+//		String direction = "1";
+//		if (reactantComp.equals(LocalConfig.getInstance().getExtraOrganismName()) &&
+//				(productComp.equals(LocalConfig.getInstance().getPeriplasmName()) ||
+//						productComp.equals(LocalConfig.getInstance().getCytosolName()))) {
+//			direction = "-1";
+//		} else if (reactantComp.equals(LocalConfig.getInstance().getPeriplasmName()) && 
+//				productComp.equals(LocalConfig.getInstance().getCytosolName())) {
+//			direction = "-1";
+//		}
+//		return direction;
+//	}
 	
 }

@@ -17,7 +17,7 @@ Pathway ID,Pathway KEGG Ids,Pathway Level,Pathway Level Position,Pathway Name
 15,-1,12.4,-4.3,Amino sugars
 16,27,21.3,-3,Aspartate group of amino acids
 17,130,31,-4,Sulfur metabolism
-18,-1,17.2,-2,Anaplerotic reactions
+18,-1,17.25,-2,Anaplerotic reactions
 19,98,20,-0.3,Glyoxylate cycle
 20,119,28.35,-0.9,Porphyrins
 21,119,40.6,-0.6,Bile pigments

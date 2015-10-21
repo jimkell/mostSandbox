@@ -35,7 +35,7 @@ public class PathwayMetaboliteNodeFactory {
 			//System.out.println(LocalConfig.getInstance().getKeggIdMetaboliteMap().get(keggId));
 			ArrayList<SBMLMetabolite> m = LocalConfig.getInstance().getKeggIdMetaboliteMap().get(keggId);
 			for (int k = 0; k < m.size(); k++) {
-				if (m.get(k).getCompartment().equals(LocalConfig.getInstance().getCytosolName())) {
+				if (m.get(k).getCompartment().equals(LocalConfig.getInstance().getSelectedCompartmentName())) {
 					//System.out.println(m.get(k).getMetaboliteAbbreviation());
 					metaboliteAbbrevations.add(m.get(k).getMetaboliteAbbreviation());
 					metaboliteNames.add(m.get(k).getMetaboliteName());
@@ -51,7 +51,7 @@ public class PathwayMetaboliteNodeFactory {
 					//System.out.println(LocalConfig.getInstance().getKeggIdMetaboliteMap().get(keggId));
 					ArrayList<SBMLMetabolite> m = LocalConfig.getInstance().getKeggIdMetaboliteMap().get(keggId);
 					for (int k = 0; k < m.size(); k++) {
-						if (m.get(k).getCompartment().equals(LocalConfig.getInstance().getCytosolName())) {
+						if (m.get(k).getCompartment().equals(LocalConfig.getInstance().getSelectedCompartmentName())) {
 							//System.out.println(m.get(k).getMetaboliteAbbreviation());
 							metaboliteAbbrevations.add(m.get(k).getMetaboliteAbbreviation());
 							metaboliteNames.add(m.get(k).getMetaboliteName());
@@ -71,7 +71,7 @@ public class PathwayMetaboliteNodeFactory {
 					//System.out.println(LocalConfig.getInstance().getKeggIdMetaboliteMap().get(keggId));
 					ArrayList<SBMLMetabolite> m = LocalConfig.getInstance().getKeggIdMetaboliteMap().get(keggId);
 					for (int k = 0; k < m.size(); k++) {
-						if (m.get(k).getCompartment().equals(LocalConfig.getInstance().getCytosolName())) {
+						if (m.get(k).getCompartment().equals(LocalConfig.getInstance().getSelectedCompartmentName())) {
 							//System.out.println(m.get(k).getMetaboliteAbbreviation());
 							metaboliteAbbrevations.add(m.get(k).getMetaboliteAbbreviation());
 							metaboliteNames.add(m.get(k).getMetaboliteName());

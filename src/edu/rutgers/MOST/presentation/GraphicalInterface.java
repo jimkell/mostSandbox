@@ -201,6 +201,33 @@ public class GraphicalInterface extends JFrame {
 			return c;
 		}		
 	}; 
+	
+	public static JXTable compartmentsTable = new JXTable(){  
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+
+		public boolean isCellEditable(int row, int column){	    	   
+			if (column == CompartmentsConstants.ABBREVIATION_COLUMN) {
+				return false;
+			}
+			return true;  
+		}
+
+		public Component prepareEditor(
+				TableCellEditor editor, int row, int column)
+		{
+			Component c = super.prepareEditor(editor, row, column);
+
+			if (c instanceof JTextComponent)
+			{
+				((JTextField)c).selectAll();
+			}
+
+			return c;
+		}		
+	}; 
 
 	protected GraphicalInterface gi;
 
@@ -352,16 +379,6 @@ public class GraphicalInterface extends JFrame {
 	public static void setAddReactionRowsDialog(
 			AddReactionRowsDialog addReactionRowsDialog) {
 		GraphicalInterface.addReactionRowsDialog = addReactionRowsDialog;
-	}
-	
-	private static CompartmentsTable compartmentsTable;
-
-	public static CompartmentsTable getCompartmentsTable() {
-		return compartmentsTable;
-	}
-
-	public static void setCompartmentsTable(CompartmentsTable compartmentsTable) {
-		GraphicalInterface.compartmentsTable = compartmentsTable;
 	}
 
 	private static CompartmentNameDialog compNameDialog;
@@ -710,8 +727,7 @@ public class GraphicalInterface extends JFrame {
 	public final JMenuItem unsortReacMenuItem = new JMenuItem("Unsort Reactions Table");
 	public final JMenuItem unsortMetabMenuItem = new JMenuItem("Unsort Metabolites Table");
 	//public final JMenuItem arrangeCompMenu = new JMenuItem("Arrange Compartments");
-	public final JMenuItem visualizeMenu = new JMenuItem("Visualize Prokaryotic Cell");
-	public final JMenuItem visualizeCompartmentMenu = new JMenuItem("Visualize Single Compartment");
+	public final JMenuItem visualizeMenu = new JMenuItem("Visualize Compartment");
 	public final JMenuItem setUpSolver = new JMenuItem("Select Solvers");
 	public final JMenuItem gurobiParametersItem = new JMenuItem(GurobiParameters.GUROBI_PARAMETERS_MENU_ITEM);
 	public final JMenuItem glpkParametersItem = new JMenuItem( GLPKParameters.GLPK_PARAMETERS_MENU_ITEM );
@@ -1246,25 +1262,6 @@ public class GraphicalInterface extends JFrame {
 		
 		ArrayList<SBMLCompartment> listOfCompartments = new ArrayList<SBMLCompartment>();
 		LocalConfig.getInstance().setListOfCompartments(listOfCompartments);
-		
-		CompartmentsTable compTable = new CompartmentsTable();
-		compTable.setIconImages(icons);
-		compTable.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-		compTable.setAlwaysOnTop(true);				
-		compTable.setLocationRelativeTo(null);
-		compTable.setVisible(false);
-		setCompartmentsTable(compTable);
-		CompartmentsTable.okButton.addActionListener(compartmentsTableOKButtonActionListener);
-		CompartmentsTable.cancelButton.addActionListener(compartmentsTableCancelButtonActionListener);
-		compTable.addWindowListener(new WindowAdapter() {
-			public void windowClosing(WindowEvent evt) {
-				loadExistingItem.setEnabled(true);
-				getCompartmentsTable().setVisible(false);
-				getCompartmentsTable().dispose();
-				enableLoadItems();
-				disableMenuItemsForFVA(false);
-			}
-		});	
 		
 		File f = new File(ModelCollectionConstants.MODEL_COLLECTION_FILE_NAME);
 		ModelCollectionTable mcTable = new ModelCollectionTable(f);
@@ -2313,19 +2310,6 @@ public class GraphicalInterface extends JFrame {
 				visualizeMenuProcesses();
 				//processVisualizationsData();
 				//visualizeMenuProcesses();
-			}
-		});
-		
-		visualizationMenu.add(visualizeCompartmentMenu);
-		visualizeCompartmentMenu.setMnemonic(KeyEvent.VK_C);
-
-		visualizeCompartmentMenu.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent ae) {
-				getCompartmentsTable().loadTable();
-				getCompartmentsTable().setVisible(true);
-				loadExistingItem.setEnabled(false);
-				disableLoadItems();
-				disableMenuItemsForFVA(true);
 			}
 		});
         
@@ -11898,7 +11882,6 @@ public class GraphicalInterface extends JFrame {
 	public void enableVisualizationItems(boolean state) {
 		//arrangeCompMenu.setEnabled(state);
 		visualizeMenu.setEnabled(state);
-		visualizeCompartmentMenu.setEnabled(state);
 	}
 	
 	/**
@@ -12486,9 +12469,9 @@ public class GraphicalInterface extends JFrame {
 	
 	ActionListener compartmentNameAbbrOKActionListener = new ActionListener() {
 		public void actionPerformed(ActionEvent ae) {
-			LocalConfig.getInstance().setCytosolName(compNameFromCombo(getCompNameDialog().cbCytosolName));
-			LocalConfig.getInstance().setExtraOrganismName(compNameFromCombo(getCompNameDialog().cbExtraOrganismName));
-			LocalConfig.getInstance().setPeriplasmName(compNameFromCombo(getCompNameDialog().cbPeriplasmName));
+			LocalConfig.getInstance().setSelectedCompartmentName(compNameFromCombo(getCompNameDialog().cbCompartmentName));
+			LocalConfig.getInstance().setOutsideName(compNameFromCombo(getCompNameDialog().cbOutsideName));
+			LocalConfig.getInstance().setMembraneName(compNameFromCombo(getCompNameDialog().cbMembraneName));
 			getCompNameDialog().setVisible(false);
 			getCompNameDialog().dispose();
 			processVisualizationsData();
@@ -12699,8 +12682,8 @@ public class GraphicalInterface extends JFrame {
 	public void visualizeModel() {
 		ReactionFactory rf = new ReactionFactory("SBML");
 		Vector<SBMLReaction> rxns = null;
-		if (LocalConfig.getInstance().getCytosolName() != null && LocalConfig.getInstance().getCytosolName().length() > 0) {
-			rxns = rf.getReactionsByCompartment(LocalConfig.getInstance().getCytosolName());
+		if (LocalConfig.getInstance().getSelectedCompartmentName() != null && LocalConfig.getInstance().getSelectedCompartmentName().length() > 0) {
+			rxns = rf.getReactionsByCompartment(LocalConfig.getInstance().getSelectedCompartmentName());
 		} else {
 			rxns = rf.getAllReactions();
 		}
