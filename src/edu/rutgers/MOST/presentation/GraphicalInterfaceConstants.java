@@ -398,9 +398,9 @@ public class GraphicalInterfaceConstants {
     public static final String DELETE_ASSOCIATED_FILES = "Delete Associated log Files?";
     
     // tab names
-    public static final String DEFAULT_METABOLITE_TABLE_TAB_NAME = "Metabolites";
-    
     public static final String DEFAULT_REACTION_TABLE_TAB_NAME = " Reactions ";
+    public static final String DEFAULT_METABOLITE_TABLE_TAB_NAME = "Metabolites";
+    public static final String DEFAULT_COMPARTMENT_TABLE_TAB_NAME = "Compartments";
     
     // help
     public static final String HELP_TOPICS_URL = "http://most.ccib.rutgers.edu/help.html";

@@ -3532,7 +3532,17 @@ public class GraphicalInterface extends JFrame {
 		metabRowLabel.setFont(rowLabel.getFont().deriveFont(Font.PLAIN));		
 		scrollPaneMetab.setCorner(JScrollPane.UPPER_LEFT_CORNER, metabRowLabel);
 		tabbedPane.addTab(GraphicalInterfaceConstants.DEFAULT_METABOLITE_TABLE_TAB_NAME, scrollPaneMetab);
-		tabbedPane.setMnemonicAt(1, KeyEvent.VK_B);  
+		tabbedPane.setMnemonicAt(1, KeyEvent.VK_M);  
+		
+		JScrollPane scrollPaneComp = new JScrollPane(compartmentsTable);
+		LineNumberTableRowHeader tableCompLineNumber = new LineNumberTableRowHeader(scrollPaneComp, metabolitesTable);
+		tableCompLineNumber.setBackground(new Color(240, 240, 240));
+		scrollPaneComp.setRowHeaderView(tableCompLineNumber);		
+		JLabel compRowLabel = new JLabel(GraphicalInterfaceConstants.ROW_HEADER_TITLE);
+		compRowLabel.setFont(rowLabel.getFont().deriveFont(Font.PLAIN));		
+		scrollPaneComp.setCorner(JScrollPane.UPPER_LEFT_CORNER, compRowLabel);
+		tabbedPane.addTab(GraphicalInterfaceConstants.DEFAULT_COMPARTMENT_TABLE_TAB_NAME, scrollPaneComp);
+		tabbedPane.setMnemonicAt(2, KeyEvent.VK_C); 
 
 		tabbedPane.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e) {
