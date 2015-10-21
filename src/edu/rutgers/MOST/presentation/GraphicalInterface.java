@@ -1115,6 +1115,8 @@ public class GraphicalInterface extends JFrame {
 	public Integer selectedMetabolitesRowEndIndex;
 	public Integer selectedMetabolitesColumnStartIndex;
 	public Integer selectedMetabolitesColumnEndIndex;
+	
+	CompartmentsTableUpdater compartmentsTableUpdater;
 
 	public GraphicalInterface() {		
 		// make this true only when troubleshooting, false for actual use
@@ -1215,6 +1217,8 @@ public class GraphicalInterface extends JFrame {
 		progressBar.setLocationRelativeTo(null);
 		progressBar.setVisible(false);
 		progressBar.setAlwaysOnTop(true);
+		
+		compartmentsTableUpdater = new CompartmentsTableUpdater();
 
 		CSVLoadInterface csvLoadInterface = new CSVLoadInterface();
 		csvLoadInterface.setIconImages(icons);					
@@ -3307,7 +3311,36 @@ public class GraphicalInterface extends JFrame {
 		metabolitesTable.registerKeyboardAction(metabolitesSaveActionListener,metabSave,JComponent.WHEN_IN_FOCUSED_WINDOW);
 		metabolitesTable.registerKeyboardAction(metabolitesSaveActionListener,metabSave,JComponent.WHEN_FOCUSED);
 		metabolitesTable.registerKeyboardAction(metabolitesSelectAllActionListener,metabSelectAll,JComponent.WHEN_FOCUSED);  			
-
+		
+		ActionListener compartmentsCopyActionListener = new ActionListener() {
+			public void actionPerformed(ActionEvent actionEvent) {
+				if (compartmentsTable.getSelectedRow() > -1 && compartmentsTable.getSelectedColumn() > -1) {
+					compartmentsTableUpdater.tableCopy(compartmentsTable);
+				}			
+			}
+		};
+		
+		ActionListener compartmentsPasteActionListener = new ActionListener() {
+			public void actionPerformed(ActionEvent actionEvent) {
+				if (compartmentsTable.getSelectedRow() > -1 && compartmentsTable.getSelectedColumn() > -1 && 
+						compartmentsTable.getSelectedColumn() != CompartmentsConstants.ABBREVIATION_COLUMN) {
+					compartmentsTableUpdater.tablePaste(compartmentsTable);
+				}			
+			}
+		};
+		
+		DefaultTableModel blankCompModel = createBlankCompartmentsTableModel();
+		setUpCompartmentsTable(blankCompModel);
+		new TableCellListener(compartmentsTable, compTableAction);
+		CompartmentsTablePopupListener compartmentsTablePopupListener = new CompartmentsTablePopupListener();
+		compartmentsTable.addMouseListener(compartmentsTablePopupListener);
+		compartmentsTable.setRowHeight(20);
+		KeyStroke compartmentsCopyKey = KeyStroke.getKeyStroke(KeyEvent.VK_C,ActionEvent.CTRL_MASK,false);
+		KeyStroke compartmentsPasteKey = KeyStroke.getKeyStroke(KeyEvent.VK_V,ActionEvent.CTRL_MASK,false);
+		
+		compartmentsTable.registerKeyboardAction(compartmentsCopyActionListener, compartmentsCopyKey, JComponent.WHEN_FOCUSED);
+		compartmentsTable.registerKeyboardAction(compartmentsPasteActionListener, compartmentsPasteKey, JComponent.WHEN_FOCUSED);
+		
 		DynamicTreePanel.getTreePanel().setNodeSelected(0);
 		
 		/************************************************************************/
@@ -3551,6 +3584,7 @@ public class GraphicalInterface extends JFrame {
 				int tabIndex = tabbedPane.getSelectedIndex();
 				String reactionRow = Integer.toString((reactionsTable.getSelectedRow() + 1));
 				String metaboliteRow = Integer.toString((metabolitesTable.getSelectedRow() + 1));
+				String compartmentRow = Integer.toString((compartmentsTable.getSelectedRow() + 1));
 				if (tabIndex == 0 && reactionsTable.getSelectedRow() > - 1) {
 					selectedCellChanged = true;
 					maybeDisplaySuspiciousMetabMessage(reactionRow);
@@ -3576,6 +3610,14 @@ public class GraphicalInterface extends JFrame {
 						setTableCellOldValue(formulaBar.getText());
 					}
 					enableOrDisableMetabolitesItems();
+				} else if (tabIndex == 2 && compartmentsTable.getSelectedRow() > - 1) {
+					selectedCellChanged = true;
+					maybeDisplaySuspiciousMetabMessage(compartmentRow);
+					if (compartmentsTable.getSelectedRow() > -1 && compartmentsTable.getSelectedColumn() > 0) {
+						int viewRow = compartmentsTable.convertRowIndexToModel(compartmentsTable.getSelectedRow());
+						formulaBar.setText((String) compartmentsTable.getModel().getValueAt(viewRow, compartmentsTable.getSelectedColumn())); 
+						setTableCellOldValue(formulaBar.getText());
+					}
 				} else {
 					maybeDisplaySuspiciousMetabMessage(statusBarRow());
 					formulaBar.setText("");
@@ -5051,6 +5093,23 @@ public class GraphicalInterface extends JFrame {
 			}			
 		}
 	};
+	
+	Action compTableAction = new AbstractAction()
+	{
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+
+		public void actionPerformed(ActionEvent e)
+		{   	  
+			TableCellListener tcl = (TableCellListener)e.getSource();
+		
+			if (tcl.getOldValue() != tcl.getNewValue()) {
+				compartmentsTableUpdater.updateTableByRow(compartmentsTable, tcl.getRow());
+			}			
+		}
+	};
 
 	/**
 	 * updates reactions table with new value is valid, else reverts to old value
@@ -5871,6 +5930,13 @@ public class GraphicalInterface extends JFrame {
 		unsortMetabMenuItem.setEnabled(false);
 	}
 	
+	public void setUpCompartmentsTable(DefaultTableModel model) {
+		compartmentsTable.setModel(model);
+		setCompartmentsTableLayout();
+		maybeDisplaySuspiciousMetabMessage(statusBarRow());	
+		statusBar.setText("Row 1");	
+	}
+	
 	/**
 	 * This method is called whenever the metabolites table is reloaded
 	 * @param model
@@ -6125,6 +6191,17 @@ public class GraphicalInterface extends JFrame {
 			reactionsModel.addRow(reacRow);
 		}
 		return reactionsModel;
+	}
+	
+	public static DefaultTableModel createBlankCompartmentsTableModel() {
+		DefaultTableModel blankCompModel = new DefaultTableModel();
+		for (int m = 0; m < CompartmentsConstants.VISIBLE_COLUMN_NAMES.length; m++) {
+			blankCompModel.addColumn(CompartmentsConstants.VISIBLE_COLUMN_NAMES[m]);
+		}
+		for (int j = 0; j < CompartmentsConstants.BLANK_TABLE_ROW_COUNT; j++) {
+			blankCompModel.addRow(createCompartmentsRow(j));
+		}
+		return blankCompModel;
 	}
 
 	public static DefaultTableModel createBlankMetabolitesTableModel() {
@@ -7093,6 +7170,127 @@ public class GraphicalInterface extends JFrame {
 			}
 		}	  
 	}
+	
+	private class CompartmentsRowListener implements ListSelectionListener {
+		public void valueChanged(ListSelectionEvent event) {
+			if (LocalConfig.getInstance().findReplaceFocusLost) {
+				findButtonMetabolitesClicked = false;
+				throwNotFoundError = false;
+				if (getFindReplaceDialog() != null && !LocalConfig.getInstance().addReactantPromptShown) {
+					
+					FindReplaceDialog.replaceButton.setEnabled(false);
+					
+					FindReplaceDialog.replaceAllButton.setEnabled(false);
+					//getFindReplaceDialog().replaceFindButton.setEnabled(false);
+				}
+			}
+			String compartmentsRow = Integer.toString((compartmentsTable.getSelectedRow() + 1));
+			maybeDisplaySuspiciousMetabMessage(compartmentsRow);
+			if (compartmentsTable.getRowCount() > 0 && compartmentsTable.getSelectedRow() > -1 && tabbedPane.getSelectedIndex() == 2) {
+				// if any cell selected any existing find all highlighting is unhighlighted
+				reactionsFindAll = false;
+				metabolitesFindAll = false;	
+				reactionsTable.repaint();
+				metabolitesTable.repaint();  
+				selectedCellChanged = true;
+				//changeMetaboliteFindSelection = true;
+				if (compartmentsTable.getSelectedRow() < compartmentsTable.getRowCount()) {
+					int viewRow = compartmentsTable.convertRowIndexToModel(compartmentsTable.getSelectedRow());
+					if (compartmentsTable.getSelectedColumn() > -1) {
+						try {
+							formulaBar.setText((String) compartmentsTable.getModel().getValueAt(viewRow, compartmentsTable.getSelectedColumn()));
+						} catch (Throwable t) {
+
+						} 
+					} 
+				}				   			  						
+			} else {
+				// to catch strange error "Attempt to mutate in notification" 
+				try {
+					formulaBar.setText("");
+				} catch (Throwable t) {
+
+				}
+
+			}
+			if (event.getValueIsAdjusting()) {
+				return;
+			}
+		}
+	}
+
+	private class CompartmentsColumnListener implements ListSelectionListener {
+		public void valueChanged(ListSelectionEvent event) {
+			if (LocalConfig.getInstance().findReplaceFocusLost) {
+				findButtonMetabolitesClicked = false;
+				throwNotFoundError = false;
+				if (getFindReplaceDialog() != null && !LocalConfig.getInstance().addReactantPromptShown) {
+					
+					FindReplaceDialog.replaceButton.setEnabled(false);
+					
+					FindReplaceDialog.replaceAllButton.setEnabled(false);
+					//getFindReplaceDialog().replaceFindButton.setEnabled(false);
+				}				
+			}
+			if (compartmentsTable.getSelectedRow() > -1 && compartmentsTable.getSelectedColumn() > -1 && tabbedPane.getSelectedIndex() == 2) {
+				String compartmentsRow = Integer.toString((compartmentsTable.getSelectedRow() + 1));
+				maybeDisplaySuspiciousMetabMessage(compartmentsRow);
+				// if any cell selected any existing find all highlighting is unhighlighted
+				reactionsFindAll = false;
+				metabolitesFindAll = false;	
+				reactionsTable.repaint();
+				metabolitesTable.repaint();
+				selectedCellChanged = true;	
+				//changeReactionFindSelection = true;
+				if (compartmentsTable.getSelectedRow() < compartmentsTable.getRowCount()) {
+					int viewRow = metabolitesTable.convertRowIndexToModel(compartmentsTable.getSelectedRow());
+					if (compartmentsTable.getSelectedColumn() > -1) {
+						try {
+							formulaBar.setText((String) compartmentsTable.getModel().getValueAt(viewRow, compartmentsTable.getSelectedColumn()));				
+						} catch (Throwable t) {
+
+						}					
+					}
+				}								
+			} else {
+				formulaBar.setText("");
+			} 
+			if (event.getValueIsAdjusting()) {
+				return;
+			}
+		}
+	}
+	
+	public void setCompartmentsTableLayout() {
+		compartmentsTable.getSelectionModel().addListSelectionListener(new CompartmentsRowListener());
+		compartmentsTable.getColumnModel().getSelectionModel().
+		addListSelectionListener(new CompartmentsColumnListener());
+
+		compartmentsTable.setAutoResizeMode(JXTable.AUTO_RESIZE_OFF);
+		compartmentsTable.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+		
+		// from http://www.java2s.com/Tutorial/Java/0240__Swing/thelastcolumnismovedtothefirstposition.htm
+		// columns cannot be rearranged by dragging 
+		compartmentsTable.getTableHeader().setReorderingAllowed(false);  
+		
+		int r = compartmentsTable.getModel().getColumnCount();	
+		for (int i = 0; i < r; i++) {
+			//set background of id column to grey
+			CompartmentsTableCellRenderer renderer = new CompartmentsTableCellRenderer();
+			TableColumn column = compartmentsTable.getColumnModel().getColumn(i);  
+			column.setCellRenderer(renderer);
+            // Column widths can be changed here           
+            if (i == CompartmentsConstants.ABBREVIATION_COLUMN) {
+            	column.setPreferredWidth(CompartmentsConstants.ABBREVIATION_WIDTH);
+            }
+            if (i == CompartmentsConstants.NAME_COLUMN) {
+            	column.setPreferredWidth(CompartmentsConstants.NAME_WIDTH);
+            }
+            if (i == CompartmentsConstants.OUTSIDE_COLUMN) {
+            	column.setPreferredWidth(CompartmentsConstants.OUTSIDE_WIDTH);
+            }
+		}	
+	}
 
 	public static Vector<String> createReactionsRow(int id)
 	{
@@ -7138,6 +7336,15 @@ public class GraphicalInterface extends JFrame {
 		}
 		return row;
 	}
+	
+	public static Vector<String> createCompartmentsRow(int id)
+	{
+		Vector<String> row = new Vector<String>();
+		for (int i = 0; i < CompartmentsConstants.VISIBLE_COLUMN_NAMES.length; i++) {
+			row.addElement("");	
+		}
+		return row;
+	}
 
 	/************************************************************************************/
 	//end table layouts
@@ -7176,6 +7383,9 @@ public class GraphicalInterface extends JFrame {
 		metabolitesTable.setColumnSelectionAllowed(false);
 		metabolitesTable.setRowSelectionAllowed(false); 
 		metabolitesTable.setCellSelectionEnabled(true);
+		compartmentsTable.setColumnSelectionAllowed(false);
+		compartmentsTable.setRowSelectionAllowed(false); 
+		compartmentsTable.setCellSelectionEnabled(true);
 	}
 
 	// sets sorted by db id and ascending
@@ -7406,7 +7616,7 @@ public class GraphicalInterface extends JFrame {
 					//int mcol = reactionsTable.getColumn(reactionsTable.getColumnName(col)).getModelIndex();
 
 					if (row >= 0 && row < reactionsTable.getRowCount()) {
-						cancelCellEditing();
+						//cancelCellEditing();
 						maybeChangeSelection(row, col, reactionsTable);
 						// create reaction equation column popup menu
 						if (col == GraphicalInterfaceConstants.REACTION_EQUN_ABBR_COLUMN) {
@@ -7438,12 +7648,12 @@ public class GraphicalInterface extends JFrame {
 		}
 	}
 
-	private void cancelCellEditing() {
-		CellEditor ce = reactionsTable.getCellEditor();
-		if (ce != null) {
-			ce.cancelCellEditing();
-		}
-	}
+//	private void cancelCellEditing() {
+//		CellEditor ce = reactionsTable.getCellEditor();
+//		if (ce != null) {
+//			ce.cancelCellEditing();
+//		}
+//	}
 
 	/*******************************************************************************/
 	//begin reaction equation context menu
@@ -8453,7 +8663,7 @@ public class GraphicalInterface extends JFrame {
 					//int mcol = metabolitesTable.getColumn(metabolitesTable.getColumnName(col)).getModelIndex();
 
 					if (row >= 0 && row < metabolitesTable.getRowCount()) {
-						cancelCellEditing(); 
+						//cancelCellEditing(); 
 						maybeChangeSelection(row, col, metabolitesTable);
 						// create popup menu for abbreviation column
 						if (col == GraphicalInterfaceConstants.METABOLITE_ABBREVIATION_COLUMN ||
@@ -9436,8 +9646,6 @@ public class GraphicalInterface extends JFrame {
 		}	
 	}
 
-	
-	
 	public boolean isMetabolitesEntryValid(int columnIndex, String value) {
 		if (columnIndex == GraphicalInterfaceConstants.CHARGE_COLUMN) {
 			if (value != null && value.trim().length() > 0) {
@@ -9527,6 +9735,74 @@ public class GraphicalInterface extends JFrame {
 	//end metabolitesTable context menu methods
 	/**************************************************************************/
 
+	/**************************************************************************/
+	//compartmentsTable context menu methods
+	/**************************************************************************/
+	
+	// from http://docs.oracle.com/javase/tutorial/uiswing/components/menu.html
+	public class CompartmentsTablePopupListener extends MouseAdapter {
+
+		public void maybeShowPopup(MouseEvent e) {
+			if (e.isPopupTrigger() && compartmentsTable.isEnabled()) {
+				Point p = new Point(e.getX(), e.getY());
+				int col = compartmentsTable.columnAtPoint(p);
+				int row = compartmentsTable.rowAtPoint(p);
+				// translate table index to model index
+				//int mcol = reactionsTable.getColumn(reactionsTable.getColumnName(col)).getModelIndex();
+
+				if (row >= 0 && row < compartmentsTable.getRowCount()) {
+					//cancelCellEditing();            
+					JPopupMenu contextMenu = createContextMenu(row, col);
+					if (contextMenu != null
+							&& contextMenu.getComponentCount() > 0) {
+						contextMenu.show(compartmentsTable, p.x, p.y);
+					}
+				}
+			}
+		}
+
+		public void mousePressed(MouseEvent e) {
+			maybeShowPopup(e);
+		}
+
+		public void mouseReleased(MouseEvent e) {
+			maybeShowPopup(e);
+		}
+	}
+
+	private JPopupMenu createContextMenu(final int rowIndex,
+			final int columnIndex) {
+		JPopupMenu contextMenu = new JPopupMenu();
+
+		JMenuItem copyMenu = new JMenuItem("Copy");
+		copyMenu.setAccelerator(KeyStroke.getKeyStroke(
+				KeyEvent.VK_C, ActionEvent.CTRL_MASK));
+		copyMenu.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				compartmentsTableUpdater.tableCopy(compartmentsTable);
+			}
+		});
+		contextMenu.add(copyMenu);
+		JMenuItem pasteMenu = new JMenuItem("Paste");
+		if (columnIndex == CompartmentsConstants.ABBREVIATION_COLUMN) {
+			pasteMenu.setEnabled(false);
+		}
+		pasteMenu.setAccelerator(KeyStroke.getKeyStroke(
+				KeyEvent.VK_V, ActionEvent.CTRL_MASK));
+		pasteMenu.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				compartmentsTableUpdater.tablePaste(compartmentsTable);
+			}
+		});
+		contextMenu.add(pasteMenu);
+
+		return contextMenu;
+	}
+	
+	/**************************************************************************/
+	//end compartmentsTable context menu methods
+	/**************************************************************************/
+	
 	/*******************************************************************************/
 	//output pane methods
 	/*******************************************************************************/
@@ -12508,30 +12784,6 @@ public class GraphicalInterface extends JFrame {
 		}
 		return abbr;
 	}
-	
-	ActionListener compartmentsTableOKButtonActionListener = new ActionListener() {
-		public void actionPerformed(ActionEvent ae) {						
-			System.out.println(LocalConfig.getInstance().getSelectedCompartmentName());
-			ReactionFactory rf = new ReactionFactory("SBML");
-			if (LocalConfig.getInstance().getSelectedCompartmentName() != null && LocalConfig.getInstance().getSelectedCompartmentName().length() > 0) {
-				Vector<SBMLReaction> rxns = rf.getReactionsByCompartment(LocalConfig.getInstance().getSelectedCompartmentName());
-//				for (int i = 0; i < rxns.size(); i++) {
-//					System.out.println(rxns.get(i).getId());
-//					System.out.println(rxns.get(i).getReactionEqunAbbr());
-//					System.out.println(rxns.get(i).getReactionEqunNames());
-//				}
-			} 
-			enableLoadItems();
-			disableMenuItemsForFVA(false);
-		}
-	};
-	
-	ActionListener compartmentsTableCancelButtonActionListener = new ActionListener() {
-		public void actionPerformed(ActionEvent ae) {						
-			enableLoadItems();
-			disableMenuItemsForFVA(false);
-		}
-	};
 	
 	public void assignKeggReactionIds() {
 		VisualizationKeggReactionProcessor processor = new VisualizationKeggReactionProcessor();

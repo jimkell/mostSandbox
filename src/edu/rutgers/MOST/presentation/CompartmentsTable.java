@@ -120,14 +120,6 @@ class CompartmentsTable
 			
 				if (tcl.getOldValue() != tcl.getNewValue()) {
 					updateTableByRow(tcl.getRow());
-//					for (int i = 0; i < LocalConfig.getInstance().getListOfCompartments().size(); i++) {
-//						if (LocalConfig.getInstance().getListOfCompartments().get(i).getId().equals(table.getModel().getValueAt(tcl.getRow(), CompartmentsConstants.ABBREVIATION_COLUMN))) {
-////							LocalConfig.getInstance().getListOfCompartments().get(i).setName((String) table.getModel().getValueAt(tcl.getRow(), CompartmentsConstants.NAME_COLUMN));
-////							LocalConfig.getInstance().getListOfCompartments().get(i).setOutside((String) table.getModel().getValueAt(tcl.getRow(), CompartmentsConstants.OUTSIDE_COLUMN));
-//							updateCompartment(LocalConfig.getInstance().getListOfCompartments().get(i), tcl.getRow());
-//							System.out.println(LocalConfig.getInstance().getListOfCompartments().get(i));
-//						}
-//					}
 				}			
 			}
 		};
