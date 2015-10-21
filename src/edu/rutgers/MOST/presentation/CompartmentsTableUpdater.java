@@ -7,7 +7,6 @@ import java.util.Vector;
 
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumn;
 
 import org.jdesktop.swingx.JXTable;
 
@@ -41,9 +40,13 @@ public class CompartmentsTableUpdater {
 		table.setModel(model);
 	}
 	
-	public void loadTable(JXTable table) {
+	/**
+	 * Creates Compartments table model from List of SBML Compartments
+	 * @param table
+	 * @return
+	 */
+	public DefaultTableModel createCompartmentsTableModel(JXTable table) {
 		createColumns(table);
-		setUpTable(table);
 		DefaultTableModel model = (DefaultTableModel) table.getModel();
 		for (int k = 0; k < LocalConfig.getInstance().getListOfCompartments().size(); k++) {
 			Vector <String> row = new Vector<String>();
@@ -52,47 +55,8 @@ public class CompartmentsTableUpdater {
 			row.add(LocalConfig.getInstance().getListOfCompartments().get(k).getOutside());
 			model.addRow(row);
 		}
-		table.setModel(model);
-	}
-	
-	public void setCompartmentsTableLayout(JXTable table) {
-		int r = table.getModel().getColumnCount();	
-		for (int i = 0; i < r; i++) {
-			//set background of id column to grey
-			CompartmentsTableCellRenderer renderer = new CompartmentsTableCellRenderer();
-			TableColumn column = table.getColumnModel().getColumn(i);  
-			column.setCellRenderer(renderer);
-            // Column widths can be changed here           
-            if (i == CompartmentsConstants.ABBREVIATION_COLUMN) {
-            	column.setPreferredWidth(CompartmentsConstants.ABBREVIATION_WIDTH);
-            }
-            if (i == CompartmentsConstants.NAME_COLUMN) {
-            	column.setPreferredWidth(CompartmentsConstants.NAME_WIDTH);
-            }
-            if (i == CompartmentsConstants.OUTSIDE_COLUMN) {
-            	column.setPreferredWidth(CompartmentsConstants.OUTSIDE_WIDTH);
-            }
-		}	
-	}
-	
-	public void setUpTable(JXTable table) {
-		int r = table.getModel().getColumnCount();	
-		for (int i = 0; i < r; i++) {
-			//set background of id column to grey
-			CompartmentsTableCellRenderer renderer = new CompartmentsTableCellRenderer();
-			TableColumn column = table.getColumnModel().getColumn(i);  
-			column.setCellRenderer(renderer);
-            // Column widths can be changed here           
-            if (i == CompartmentsConstants.ABBREVIATION_COLUMN) {
-            	column.setPreferredWidth(CompartmentsConstants.ABBREVIATION_WIDTH);
-            }
-            if (i == CompartmentsConstants.NAME_COLUMN) {
-            	column.setPreferredWidth(CompartmentsConstants.NAME_WIDTH);
-            }
-            if (i == CompartmentsConstants.OUTSIDE_COLUMN) {
-            	column.setPreferredWidth(CompartmentsConstants.OUTSIDE_WIDTH);
-            }
-		}	
+		
+		return model;
 	}
 	
 	public void updateTableByRow(JXTable table, int row) {

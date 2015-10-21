@@ -3416,7 +3416,10 @@ public class GraphicalInterface extends JFrame {
 						} catch (Throwable t) {
 
 						}						
-					} 
+					} else if (tabbedPane.getSelectedIndex() == 2 && compartmentsTable.getSelectedRow() > -1 && compartmentsTable.getSelectedColumn() > 0) {
+						compartmentsTable.setValueAt(formulaBar.getText(), compartmentsTable.getSelectedRow(), compartmentsTable.getSelectedColumn());
+						compartmentsTableUpdater.updateTableByRow(compartmentsTable, compartmentsTable.getSelectedRow());
+					}
 				}
 			}
 		}
@@ -12482,6 +12485,8 @@ public class GraphicalInterface extends JFrame {
 				LocalConfig.getInstance().getReactionsTableModelMap().put(LocalConfig.getInstance().getModelName(), SBMLModelReader.getReactionsTableModel());
 				setUpMetabolitesTable(SBMLModelReader.getMetabolitesTableModel());
 				LocalConfig.getInstance().getMetabolitesTableModelMap().put(LocalConfig.getInstance().getModelName(), SBMLModelReader.getMetabolitesTableModel());	
+				DefaultTableModel compModel = compartmentsTableUpdater.createCompartmentsTableModel(compartmentsTable);
+				setUpCompartmentsTable(compModel);
 				setUpTables();
 				progressBar.setVisible(false);		
 				timer.stop();
