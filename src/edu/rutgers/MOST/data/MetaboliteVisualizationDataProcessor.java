@@ -28,11 +28,11 @@ public class MetaboliteVisualizationDataProcessor {
 					if (keggId != null && keggId.length() > 0) {
 						// replace key from model with key from KEGG database in case where KEGG id from
 						// model is not in KEGG database (depreciated?)
-//						for (int j = 0; j < additionalMetaboliteKeys.size(); j++) {
-//							if (LocalConfig.getInstance().getAdditionalMetabolitesMap().get(additionalMetaboliteKeys.get(j)).contains(keggId)) {
-//								keggId = additionalMetaboliteKeys.get(j);
-//							}
-//						}
+						for (int j = 0; j < additionalMetaboliteKeys.size(); j++) {
+							if (LocalConfig.getInstance().getAdditionalMetabolitesMap().get(additionalMetaboliteKeys.get(j)).contains(keggId)) {
+								keggId = additionalMetaboliteKeys.get(j);
+							}
+						}
 						String originalKeggId = keggId;
 						for (int k = 0; k < metaboliteSubstitutionKeys.size(); k++) {
 							if (LocalConfig.getInstance().getMetaboliteSubstitutionsMap().get(metaboliteSubstitutionKeys.get(k)).contains(keggId)) {
