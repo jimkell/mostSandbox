@@ -240,8 +240,9 @@ public class PathwayReactionNodeFactory {
 	 */
 	public boolean speciesMatch(ArrayList<String> dataIds, ArrayList<String> modelIds) {
 		boolean speciesMatch = true;
-		for (int i = 0; i < dataIds.size(); i++) {
-			if (!modelIds.contains(dataIds.get(i))) {
+		ArrayList<String> data = removedSpeciesBeforeComparison(VisualizationConstants.IGNORE_FOR_IDENTIFIED_REACTION_LIST, dataIds);
+		for (int i = 0; i < data.size(); i++) {
+			if (!modelIds.contains(data.get(i))) {
 				speciesMatch = false;
 				break;
 			}
@@ -259,14 +260,14 @@ public class PathwayReactionNodeFactory {
 	public boolean speciesExactMatch(ArrayList<String> dataIds, ArrayList<String> modelIds) {
 		boolean speciesMatch = false;
 		//System.out.println(modelIds);
-		ArrayList<String> data = removedSpeciesBeforeComparison(dataIds);
-		ArrayList<String> model = removedSpeciesBeforeComparison(modelIds);
+		ArrayList<String> data = removedSpeciesBeforeComparison(VisualizationConstants.REMOVE_BEFORE_REACTION_COMPARISON, dataIds);
+		ArrayList<String> model = removedSpeciesBeforeComparison(VisualizationConstants.REMOVE_BEFORE_REACTION_COMPARISON, modelIds);
 		//System.out.println(model);
 		Collections.sort(data);
 		Collections.sort(model);
 		if (data.equals(model)) {
 			speciesMatch = true;
-		}
+		} 
 		if (speciesMatch) {
 //			System.out.println(speciesMatch);
 //			System.out.println(data);
@@ -275,10 +276,10 @@ public class PathwayReactionNodeFactory {
 		return speciesMatch;
 	}
 	
-	public ArrayList<String> removedSpeciesBeforeComparison(ArrayList<String> list) {
-		for (int i = 0; i < VisualizationConstants.REMOVE_BEFORE_REACTION_COMPARISON.length; i++) {
-			if (list.contains(VisualizationConstants.REMOVE_BEFORE_REACTION_COMPARISON[i])) {
-				list.remove(list.indexOf(VisualizationConstants.REMOVE_BEFORE_REACTION_COMPARISON[i]));
+	public ArrayList<String> removedSpeciesBeforeComparison(String[] removeList, ArrayList<String> list) {
+		for (int i = 0; i < removeList.length; i++) {
+			if (list.contains(removeList[i])) {
+				list.remove(list.indexOf(removeList[i]));
 			}
 		}
 		return list;

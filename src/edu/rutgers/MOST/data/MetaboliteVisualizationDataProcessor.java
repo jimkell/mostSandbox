@@ -28,11 +28,11 @@ public class MetaboliteVisualizationDataProcessor {
 					if (keggId != null && keggId.length() > 0) {
 						// replace key from model with key from KEGG database in case where KEGG id from
 						// model is not in KEGG database (depreciated?)
-						for (int j = 0; j < additionalMetaboliteKeys.size(); j++) {
-							if (LocalConfig.getInstance().getAdditionalMetabolitesMap().get(additionalMetaboliteKeys.get(j)).contains(keggId)) {
-								keggId = additionalMetaboliteKeys.get(j);
-							}
-						}
+//						for (int j = 0; j < additionalMetaboliteKeys.size(); j++) {
+//							if (LocalConfig.getInstance().getAdditionalMetabolitesMap().get(additionalMetaboliteKeys.get(j)).contains(keggId)) {
+//								keggId = additionalMetaboliteKeys.get(j);
+//							}
+//						}
 						String originalKeggId = keggId;
 						for (int k = 0; k < metaboliteSubstitutionKeys.size(); k++) {
 							if (LocalConfig.getInstance().getMetaboliteSubstitutionsMap().get(metaboliteSubstitutionKeys.get(k)).contains(keggId)) {
@@ -55,12 +55,12 @@ public class MetaboliteVisualizationDataProcessor {
 //								}
 							}
 						}
-						for (int m = 0; m < metaboliteAlternativeKeys.size(); m++) {
-							if (LocalConfig.getInstance().getMetaboliteAlternativesMap().get(metaboliteAlternativeKeys.get(m)).contains(keggId)) {
+//						for (int m = 0; m < metaboliteAlternativeKeys.size(); m++) {
+//							if (LocalConfig.getInstance().getMetaboliteAlternativesMap().get(metaboliteAlternativeKeys.get(m)).contains(keggId)) {
 //								System.out.println(keggId);
 //								System.out.println(LocalConfig.getInstance().getMetaboliteAlternativesMap().get(metaboliteAlternativeKeys.get(m)));
-							}
-						}
+//							}
+//						}
 						// map used to match metabolite ids from model with KEGG ids
 						LocalConfig.getInstance().getMetaboliteIdKeggIdMap().put(metabId, keggId);
 						if (LocalConfig.getInstance().getKeggIdMetaboliteMap().containsKey(keggId)) {

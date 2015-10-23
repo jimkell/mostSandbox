@@ -15,7 +15,7 @@ Pathway ID,Pathway KEGG Ids,Pathway Level,Pathway Level Position,Pathway Name
 13,-1,10.7,-1.1,Methane oxidation
 14,2,7.4,-0.8,Pentose cycle
 15,-1,12.4,-4.3,Amino sugars
-16,27,21.3,-3,Aspartate group of amino acids
+16,27,21.3,-3.025,Aspartate group of amino acids
 17,130,31,-4,Sulfur metabolism
 18,-1,17.25,-2,Anaplerotic reactions
 19,98,20,-0.3,Glyoxylate cycle
