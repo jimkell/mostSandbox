@@ -1,8 +1,8 @@
 KEGG ID,Additional KEGG IDs,Name,Additional Names,,
 C00003,C00006,NAD,,,
 C00004,C00005,NADH,,,
-C00028,C00016|C00125|C01070|C00399|C00828|C15602,Acceptor,"FAD, Ferricytochrome c, Ferricytochrome c-553, q8, mqn8, q",,
-C00030,C01352|C00126|C01071|C00390|C05818|C05819|C15603,Reduced acceptor,"FADH2, Ferrocytochrome c, Ferrocytochrome c-553, q8h2, mql8, qh2",,
+C00028,C00016|C00125|C01070|C00399|C00828|C15602|C00139,Acceptor,"FAD, Ferricytochrome c, Ferricytochrome c-553, q8, mqn8, q, Oxidized ferredoxin",,
+C00030,C01352|C00126|C01071|C00390|C05818|C05819|C15603|C00138,Reduced acceptor,"FADH2, Ferrocytochrome c, Ferrocytochrome c-553, q8h2, mql8, Reduced ferredoxinqh2",,
 C00031,C00221|C00267,D-Glucose,beta|alpha,,
 C00040,C00136|C05270|C01944|C05274|C01832|C02593|C00154,Acyl-CoA,,,
 C00095,C01496|C10906,D-Fructose,,,C10906 is a second entry
