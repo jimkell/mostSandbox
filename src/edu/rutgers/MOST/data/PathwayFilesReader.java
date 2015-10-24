@@ -946,21 +946,21 @@ public class PathwayFilesReader {
 		File pathwayGraph = new File(PathwaysCSVFileConstants.PATHWAY_GRAPH_FILE_NAME);
 		File metabolites = new File(PathwaysCSVFileConstants.METABOLITES_FILE_NAME);
 		File additionalMetabolites = new File(PathwaysCSVFileConstants.ADDITIONAL_METABOLITES_FILE_NAME);
-		File metaboliteSubstitutions = new File(PathwaysCSVFileConstants.METABOLITE_SUBSTITUTIONS_FILE_NAME);
 		File metaboliteAlternatives = new File(PathwaysCSVFileConstants.METABOLITE_ALTERNATIVES_FILE_NAME);
 		File reactions = new File(PathwaysCSVFileConstants.REACTIONS_FILE_NAME);
 		File drawOrder = new File(PathwaysCSVFileConstants.PATHWAY_DRAW_ORDER_FILE_NAME);
 		File sideSpecies = new File(PathwaysCSVFileConstants.PATHWAY_SIDE_SPECIES_FILE_NAME);
+		File metaboliteSubstitutions = new File(PathwaysCSVFileConstants.METABOLITE_SUBSTITUTIONS_FILE_NAME);
 		PathwayFilesReader reader = new PathwayFilesReader();
 		reader.readPathwayNamesFile(pathwayNames);
 		reader.readPathwayGraphFile(pathwayGraph);
 		reader.readMetabolitesFile(metabolites);
 		reader.readAdditionalMetabolitesFile(additionalMetabolites);
-		reader.readMetaboliteSubstitutionsFile(metaboliteSubstitutions);
 		reader.readMetaboliteAlternativesFile(metaboliteAlternatives);
 		reader.readReactionsFile(reactions);
 		reader.readDrawOrderFile(drawOrder);
 		reader.readSideSpeciesFile(sideSpecies);
+		reader.readMetaboliteSubstitutionsFile(metaboliteSubstitutions);
 	}
 	
 	/**
@@ -972,12 +972,16 @@ public class PathwayFilesReader {
 		File reactionPositions = new File(PathwaysCSVFileConstants.REACTION_POSITIONS_FILE_NAME);
 		File externalMetabolites = new File(PathwaysCSVFileConstants.EXTERNAL_METABOLITES_FILE_NAME);
 		File transportMetabolites = new File(PathwaysCSVFileConstants.TRANSPORT_METABOLITES_FILE_NAME);
+		// TODO: remove after done updating database
+		File metaboliteSubstitutions = new File(PathwaysCSVFileConstants.METABOLITE_SUBSTITUTIONS_FILE_NAME);
 		PathwayFilesReader reader = new PathwayFilesReader();
 		reader.readPathwaysFile(pathways);
 		reader.readMetabolitePositionsFile(metabolitePositions);
 		reader.readReactionPositionsFile(reactionPositions);
 		reader.readExternalMetabolitesFile(externalMetabolites);
 		reader.readTransportMetabolitesFile(transportMetabolites);
+		// TODO: remove after done updating database
+		reader.readMetaboliteSubstitutionsFile(metaboliteSubstitutions);
 	}
 	
 	/**
