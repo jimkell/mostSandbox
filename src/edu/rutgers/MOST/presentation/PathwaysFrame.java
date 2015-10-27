@@ -651,6 +651,9 @@ public class PathwaysFrame extends JApplet {
 								fluxMap.put(displayName + "reactant " + Integer.toString(r), edgeThickness(pn.getFluxValue()));
 								if (pn.getFluxValue() == 0 && !koReactions.contains(displayName)) {
 									edgeColor = PathwaysFrameConstants.GRAY_COLOR_VALUE;
+								} 
+								if (!foundReactionsList.contains(displayName)) {
+									edgeColor = PathwaysFrameConstants.BLUE_NOT_FOUND_COLOR_VALUE;
 								}
 								colorMap.put(displayName + "reactant " + Integer.toString(r), edgeColor);
 							}
@@ -662,6 +665,9 @@ public class PathwaysFrame extends JApplet {
 								fluxMap.put(displayName + "product " + Integer.toString(p), edgeThickness(pn.getFluxValue()));
 								if (pn.getFluxValue() == 0 && !koReactions.contains(displayName)) {
 									edgeColor = PathwaysFrameConstants.GRAY_COLOR_VALUE;
+								}
+								if (!foundReactionsList.contains(displayName)) {
+									edgeColor = PathwaysFrameConstants.BLUE_NOT_FOUND_COLOR_VALUE;
 								}
 								colorMap.put(displayName + "product " + Integer.toString(p), edgeColor);
 							}
@@ -1088,10 +1094,12 @@ public class PathwaysFrame extends JApplet {
         			return Color.GRAY;
         		} else if (color == PathwaysFrameConstants.RED_COLOR_VALUE) {
         			return Color.RED;
-        		} else if (color == PathwaysFrameConstants.BLACK_COLOR_VALUE) {
+        		} else if (color == PathwaysFrameConstants.GREEN_COLOR_VALUE) {
         			return Color.GREEN;
-        		} else if (color == PathwaysFrameConstants.BLACK_COLOR_VALUE) {
+        		} else if (color == PathwaysFrameConstants.BLUE_COLOR_VALUE) {
         			return Color.BLUE;
+        		} else if (color == PathwaysFrameConstants.BLUE_NOT_FOUND_COLOR_VALUE) {
+        			return PathwaysFrameConstants.REACTION_EDGE_NOT_FOUND_COLOR;
         		}
         	}
         	return Color.BLACK;

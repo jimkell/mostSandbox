@@ -154,6 +154,9 @@ public class PathwaysFrameConstants {
 	public static final double RED_COLOR_VALUE = 2.0;
 	public static final double GREEN_COLOR_VALUE = 3.0;
 	public static final double BLUE_COLOR_VALUE = 4.0;
+	public static final double BLUE_NOT_FOUND_COLOR_VALUE = 5.0;
+	
+	public static final Color REACTION_EDGE_NOT_FOUND_COLOR = new Color(153,204,255);
 	
 	public static final double DEFAULT_COLOR_VALUE = BLACK_COLOR_VALUE;
 	

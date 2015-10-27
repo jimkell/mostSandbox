@@ -162,9 +162,7 @@ public class PathwayReactionNodeFactory {
 							//System.out.println(reac.get(r).getId());
 							LocalConfig.getInstance().getUnplottedReactionIds().remove(LocalConfig.getInstance().getUnplottedReactionIds().indexOf(reac.get(r).getId()));
 						}
-					} else {
-		
-					}
+					} 
 				}
 			} else {
 				//addReactionIfNotPresent(reactions, reac.get(r), keggReactantIds, keggProductIds);
@@ -188,7 +186,11 @@ public class PathwayReactionNodeFactory {
 			if (correctMainSpecies(r, keggReactantIds, keggProductIds, exactMatch)) {
 				reactions.add(r);
 				//System.out.println(reactions);
-			} 
+			} else {
+				if (!LocalConfig.getInstance().getUnplottedReactionIds().contains(id)) {
+					LocalConfig.getInstance().getUnplottedReactionIds().add(id);
+				}
+			}
 		}
 	}
 	
@@ -267,7 +269,15 @@ public class PathwayReactionNodeFactory {
 		Collections.sort(model);
 		if (data.equals(model)) {
 			speciesMatch = true;
-		} 
+		} else {
+			ArrayList<String> data1 = removedSpeciesBeforeComparison(VisualizationConstants.IGNORE_FOR_IDENTIFIED_REACTION_LIST, data);
+			ArrayList<String> model1 = removedSpeciesBeforeComparison(VisualizationConstants.IGNORE_FOR_IDENTIFIED_REACTION_LIST, model);
+			Collections.sort(data1);
+			Collections.sort(model1);
+			if (data1.equals(model1)) {
+				speciesMatch = true;
+			}
+		}
 		if (speciesMatch) {
 //			System.out.println(speciesMatch);
 //			System.out.println(data);
@@ -299,6 +309,7 @@ public class PathwayReactionNodeFactory {
 		ArrayList<String> ecNumbers = new ArrayList<String>();
 		ArrayList<String> keggReactionIds = new ArrayList<String>();
 		ArrayList<String> equations = new ArrayList<String>();
+		ArrayList<String> equationNames = new ArrayList<String>();
 		ArrayList<String> subsystems = new ArrayList<String>();
 		ArrayList<Double> fluxes = new ArrayList<Double>();
 		if (reactions.size() > 0) {
@@ -327,6 +338,10 @@ public class PathwayReactionNodeFactory {
 						String htmlEquation = reactions.get(i).getReactionEqunAbbr().replace("<", "&lt;");
 						equations.add(htmlEquation);
 					}
+					if (!equationNames.contains(reactions.get(i).getReactionEqunNames())) {
+						String htmlEquation = reactions.get(i).getReactionEqunNames().replace("<", "&lt;");
+						equationNames.add(htmlEquation);
+					}
 					if (!subsystems.contains(reactions.get(i).getSubsystem())) {
 						subsystems.add(reactions.get(i).getSubsystem());
 					}
@@ -344,6 +359,7 @@ public class PathwayReactionNodeFactory {
 					+ "<p> Equation: " + name
 					+ displaySubsystem(subsystems)
 					+ displayModelEquation(equations)
+					+ displayModelEquation(equationNames)
 					+ "<p> Fluxes: " + fluxes.toString();
 		}
 		return displayName;
