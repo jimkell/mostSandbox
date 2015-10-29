@@ -125,6 +125,8 @@ public class PathwaysFrame extends JApplet {
    	ArrayList<String> foundReactionsList = new ArrayList<String>();
    	Map<String, Icon> iconMap = new HashMap<String, Icon>(); 
    	
+   	String compartmentLabel = "Model Name: " + LocalConfig.getInstance().getModelName();
+   	
    	private double layoutScale;
    	private double viewScale;
   
@@ -705,7 +707,14 @@ public class PathwaysFrame extends JApplet {
 		String borderBottomY = Double.toString(maxY + PathwaysFrameConstants.BOTTOM_SPACE + PathwaysFrameConstants.METABOLITE_NODE_HEIGHT);
 		
 		// draw cell border
-		drawBorder(borderLeftX, borderRightX, borderTopY, borderBottomY);	
+		drawCompartmentBorder(borderLeftX, borderRightX, borderTopY, borderBottomY);
+		
+		String compartmentLabelXOffset = Integer.toString(PathwaysFrameConstants.BORDER_WIDTH +
+				PathwaysFrameConstants.COMPARTMENT_LABEL_X_OFFSET + 20);
+		String compartmentLabelYOffset = Integer.toString(PathwaysFrameConstants.BORDER_HEIGHT +
+				PathwaysFrameConstants.COMPARTMENT_LABEL_Y_OFFSET + 20);
+		
+		drawCompartmentLabel(compartmentLabel, compartmentLabelXOffset, compartmentLabelYOffset);
 		
 		//Collections.sort(foundEcNumbers);
 		//System.out.println("found " + foundEcNumbers);
@@ -733,13 +742,13 @@ public class PathwaysFrame extends JApplet {
 		}
     }
     
-    public void drawBorder(String borderLeftX, String borderRightX, 
+    public void drawCompartmentBorder(String borderLeftX, String borderRightX, 
     		String borderTopY, String borderBottomY) {
 		// draw cell border
 		metabPosMap.put("1", new String[] {borderLeftX, borderTopY}); 
 		metabPosMap.put("2", new String[] {borderRightX, borderTopY}); 
 		metabPosMap.put("3", new String[] {borderRightX, borderBottomY});
-		metabPosMap.put("4", new String[] {borderLeftX, borderBottomY});                                                         
+		metabPosMap.put("4", new String[] {borderLeftX, borderBottomY}); 
 
 		reactionMap.put("1", new String[] {"1", "2", "false"});
 		reactionMap.put("2", new String[] {"2", "3", "false"});
@@ -754,6 +763,10 @@ public class PathwaysFrame extends JApplet {
 		for (int b = 1; b < 5; b++) {
 			borderList.add(Integer.toString(b));
 		}
+    }
+    
+    public void drawCompartmentLabel(String text, String xOffset, String yOffset) {
+    	metabPosMap.put(text, new String[] {xOffset, yOffset});
     }
     
     public void createGraph() {
@@ -830,6 +843,9 @@ public class PathwaysFrame extends JApplet {
         	if (borderList.contains(name)) {
         		width = (int) PathwaysFrameConstants.BORDER_THICKNESS;
         		height = (int) PathwaysFrameConstants.BORDER_THICKNESS;
+        	} else if (name.equals(compartmentLabel)) {
+        		width = PathwaysFrameConstants.COMPARTMENT_LABEL_NODE_WIDTH;
+            	height = PathwaysFrameConstants.COMPARTMENT_LABEL_NODE_HEIGHT;
         	} else if (metabolites.contains(name)) {
         		if (!noBorderList.contains(name)) {
         			width = PathwaysFrameConstants.METABOLITE_NODE_WIDTH;
@@ -867,6 +883,13 @@ public class PathwaysFrame extends JApplet {
 //            	graphics.drawString(name, 5, 15);
         		alignCenterString(graphics, name, width, PathwaysFrameConstants.PATHWAY_NAME_NODE_XPOS, PathwaysFrameConstants.PATHWAY_NAME_NODE_YPOS, PathwaysFrameConstants.PATHWAY_NAME_NODE_FONT_SIZE);
             	drawBorder(graphics, width, height, PathwaysFrameConstants.PATHWAY_NAME_BORDER_WIDTH);
+        	} else if (name.equals(compartmentLabel)) {
+        		graphics.setFont(new Font("Arial", Font.TYPE1_FONT, PathwaysFrameConstants.COMPARTMENT_LABEL_NODE_FONT_SIZE));
+        		graphics.drawString(compartmentLabel, PathwaysFrameConstants.COMPARTMENT_LABEL_NODE_XPOS, PathwaysFrameConstants.COMPARTMENT_LABEL_NODE_YPOS);
+        		graphics.drawString("Compartment Name: " + LocalConfig.getInstance().getSelectedCompartmentName(), PathwaysFrameConstants.COMPARTMENT_LABEL_NODE_XPOS, 
+        				PathwaysFrameConstants.COMPARTMENT_LABEL_LINE_OFFSET + PathwaysFrameConstants.COMPARTMENT_LABEL_NODE_YPOS);
+        		//alignCenterString(graphics, compartmentLabel, width, PathwaysFrameConstants.COMPARTMENT_LABEL_NODE_XPOS, PathwaysFrameConstants.COMPARTMENT_LABEL_NODE_YPOS, PathwaysFrameConstants.COMPARTMENT_LABEL_NODE_FONT_SIZE);
+        		//drawBorder(graphics, width, height, PathwaysFrameConstants.PATHWAY_NAME_BORDER_WIDTH);
         	} else {
         		if (metabolites.contains(name)) {
         			if (!foundMetabolitesList.contains(name) && LocalConfig.getInstance().isHighlightMissingMetabolitesSelected()) {
@@ -966,6 +989,10 @@ public class PathwaysFrame extends JApplet {
     		if (s.length() > PathwaysFrameConstants.REACTION_NODE_MAX_CHARS) {
         		s = s.substring(0, PathwaysFrameConstants.REACTION_NODE_MAX_CHARS - PathwaysFrameConstants.REACTION_NODE_ELLIPSIS_CORRECTION) + "...";
         	}
+    	} else if (s.equals(compartmentLabel)) {
+    		if (s.length() > PathwaysFrameConstants.COMPARTMENT_LABEL_NODE_MAX_CHARS) {
+        		s = s.substring(0, PathwaysFrameConstants.COMPARTMENT_LABEL_NODE_MAX_CHARS - PathwaysFrameConstants.COMPARTMENT_LABEL_NODE_ELLIPSIS_CORRECTION) + "...";
+        	}	
     	} else if (pathwayNames.contains(s)) {
     		if (s.length() > PathwaysFrameConstants.PATHWAY_NAME_NODE_MAX_CHARS) {
         		s = s.substring(0, PathwaysFrameConstants.PATHWAY_NAME_NODE_MAX_CHARS - PathwaysFrameConstants.PATHWAY_NAME_NODE_ELLIPSIS_CORRECTION) + "...";

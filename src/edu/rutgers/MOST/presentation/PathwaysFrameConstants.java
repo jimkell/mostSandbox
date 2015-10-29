@@ -32,6 +32,12 @@ public class PathwaysFrameConstants {
 	public static final int VERTICAL_INCREMENT = 380; // was 360, change made TCA cycle more circular
 	public static final int PATHWAY_NAME_NODE_WIDTH = 200;
 	public static final int PATHWAY_NAME_NODE_HEIGHT = 48;
+	public static final int COMPARTMENT_LABEL_NODE_WIDTH = 4000;
+	public static final int COMPARTMENT_LABEL_NODE_HEIGHT = 230;
+	public static final int COMPARTMENT_LABEL_X_OFFSET = 2000;
+	public static final int COMPARTMENT_LABEL_Y_OFFSET = 115;
+	public static final int COMPARTMENT_LABEL_LINE_OFFSET = 100;
+	
 	public static final int SIDE_NODE_WIDTH = 90;
 	public static final int SIDE_NODE_HEIGHT = 28;
 	public static final int METABOLITE_NODE_WIDTH = 100;
@@ -43,6 +49,7 @@ public class PathwaysFrameConstants {
 	public static final int REACTION_NODE_WIDTH = 120;
 	public static final int REACTION_NODE_HEIGHT = 36;
 	public static final int PATHWAY_NAME_NODE_FONT_SIZE = 36;
+	public static final int COMPARTMENT_LABEL_NODE_FONT_SIZE = 100;
 	public static final int METABOLITE_NODE_FONT_SIZE = 28;
 	public static final int SMALL_MAIN_METABOLITE_NODE_FONT_SIZE = 28;
 	public static final int SIDE_METABOLITE_NODE_FONT_SIZE = 14;
@@ -53,15 +60,20 @@ public class PathwaysFrameConstants {
 	public static final int SIDE_METABOLITE_NODE_MAX_CHARS = 5;
 	public static final int REACTION_NODE_MAX_CHARS = 7;
 	public static final int PATHWAY_NAME_NODE_MAX_CHARS = 10;
+	public static final int COMPARTMENT_LABEL_NODE_MAX_CHARS = 60;
 	
 	public static final int METABOLITE_NODE_ELLIPSIS_CORRECTION = 2;
 	public static final int SMALL_MAIN_METABOLITE_NODE_ELLIPSIS_CORRECTION = 2;
 	public static final int SIDE_METABOLITE_NODE_ELLIPSIS_CORRECTION = 2;
 	public static final int REACTION_NODE_ELLIPSIS_CORRECTION = 2;
 	public static final int PATHWAY_NAME_NODE_ELLIPSIS_CORRECTION = 2;
+	public static final int COMPARTMENT_LABEL_NODE_ELLIPSIS_CORRECTION = 2;
+	
 	// positions to start text in node
 	public static final int PATHWAY_NAME_NODE_XPOS = 0;
 	public static final int PATHWAY_NAME_NODE_YPOS = 34;
+	public static final int COMPARTMENT_LABEL_NODE_XPOS = 30;
+	public static final int COMPARTMENT_LABEL_NODE_YPOS = 100;
 	public static final int METABOLITE_NODE_XPOS = 0;
 	public static final int METABOLITE_NODE_YPOS = 23;
 	public static final int SMALL_MAIN_METABOLITE_NODE_XPOS = 0;
