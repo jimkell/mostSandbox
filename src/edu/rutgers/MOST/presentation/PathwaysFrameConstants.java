@@ -37,6 +37,7 @@ public class PathwaysFrameConstants {
 	public static final int COMPARTMENT_LABEL_X_OFFSET = 2000;
 	public static final int COMPARTMENT_LABEL_Y_OFFSET = 115;
 	public static final int COMPARTMENT_LABEL_LINE_OFFSET = 100;
+	public static final int ADDITIONAL_COMPARTMENT_OFFSET = 440;
 	
 	public static final int SIDE_NODE_WIDTH = 90;
 	public static final int SIDE_NODE_HEIGHT = 28;

@@ -442,11 +442,6 @@ public class PathwaysFrame extends JApplet {
     	ReactionFactory f = new ReactionFactory("SBML");
     	Vector<SBMLReaction> rxns = compartmentReactions(f, LocalConfig.getInstance().getSelectedCompartmentName());
     	Map<Integer, SBMLReaction> idReactionMap = createCompartmentIdReactionMap(f, rxns);
-    	//Map<Integer, SBMLReaction> idReactionMap = new HashMap<Integer, SBMLReaction>();
-    	Vector<SBMLReaction> membraneRxns = compartmentReactions(f, LocalConfig.getInstance().getMembraneName());
-    	Map<Integer, SBMLReaction> membraneIdReactionMap = createCompartmentIdReactionMap(f, membraneRxns);
-    	Vector<SBMLReaction> outsideRxns = compartmentReactions(f, LocalConfig.getInstance().getOutsideName());
-    	Map<Integer, SBMLReaction> outsideIdReactionMap = createCompartmentIdReactionMap(f, outsideRxns);
 //		// temporary lists to keep track of what ec numbers have been found
 //		ArrayList<String> foundEcNumbers = new ArrayList<String>();
 //	    ArrayList<String> notFoundEcNumbers = new ArrayList<String>(LocalConfig.getInstance().getEcNumberReactionMap().keySet());
@@ -472,35 +467,17 @@ public class PathwaysFrame extends JApplet {
 		}
 		drawMetabolites(pathway, component, LocalConfig.getInstance().getSelectedCompartmentName());
 		drawReactions(pathway, component, rxns, idReactionMap);
-
-		Collections.sort(plottedIds);
-//		System.out.println("pf plotted " + plottedIds);
-//		System.out.println("pf unplotted " + LocalConfig.getInstance().getUnplottedReactionIds());
-		
-		if (component == PathwaysFrameConstants.PATHWAYS_COMPONENT) {
-			for(int p = 0; p < LocalConfig.getInstance().getPathwayNameMap().size(); p++) {
-				String pathwayName = LocalConfig.getInstance().getPathwayNameMap().get(Integer.toString(p)).getName();
-				pathwayNames.add(pathwayName);
-				PathwayNameNode pnn = new PathwayNameNode();
-				double x = 0;
-				double y = 0;
-				pnn.setDataId(LocalConfig.getInstance().getPathwayNameMap().get(Integer.toString(p)).getId());
-				pnn.setName(pathwayName);
-				x = startX + PathwaysFrameConstants.HORIZONTAL_INCREMENT*LocalConfig.getInstance().getPathwayNameMap().get(Integer.toString(p)).getLevel();
-				y = startY + PathwaysFrameConstants.VERTICAL_INCREMENT*LocalConfig.getInstance().getPathwayNameMap().get(Integer.toString(p)).getLevelPosition();
-				pnn.setxPosition(x);
-				pnn.setyPosition(y);
-				metabPosMap.put(pathwayName, new String[] {Double.toString(x), Double.toString(y)});
-			}
-		}
+		drawPathwayNames(component);
 		
 		String borderLeftX = Integer.toString(PathwaysFrameConstants.BORDER_WIDTH);
 		String borderRightX = Double.toString(maxX + PathwaysFrameConstants.RIGHT_BORDER_INCREMENT + PathwaysFrameConstants.METABOLITE_NODE_WIDTH);
 		String borderTopY = Integer.toString(PathwaysFrameConstants.BORDER_HEIGHT);
 		String borderBottomY = Double.toString(maxY + PathwaysFrameConstants.BOTTOM_SPACE + PathwaysFrameConstants.METABOLITE_NODE_HEIGHT);
+		System.out.println(borderTopY);
+		System.out.println(borderBottomY);
 		
 		// draw cell border
-		drawCompartmentBorder(borderLeftX, borderRightX, borderTopY, borderBottomY);
+		drawCompartmentBorder(borderLeftX, borderRightX, borderTopY, borderBottomY, 0);
 		
 		String compartmentLabelXOffset = Integer.toString(PathwaysFrameConstants.BORDER_WIDTH +
 				PathwaysFrameConstants.COMPARTMENT_LABEL_X_OFFSET + 20);
@@ -510,6 +487,64 @@ public class PathwaysFrame extends JApplet {
 		if (component == PathwaysFrameConstants.PATHWAYS_COMPONENT) {
 			drawCompartmentLabel(compartmentLabel, compartmentLabelXOffset, compartmentLabelYOffset);
 		}
+		
+		if (LocalConfig.getInstance().getMembraneName() != null && LocalConfig.getInstance().getMembraneName().length() > 0
+				&& component == PathwaysFrameConstants.PATHWAYS_COMPONENT) {
+			maxY += PathwaysFrameConstants.ADDITIONAL_COMPARTMENT_OFFSET;
+			Vector<SBMLReaction> membraneRxns = compartmentReactions(f, LocalConfig.getInstance().getMembraneName());
+	    	Map<Integer, SBMLReaction> membraneIdReactionMap = createCompartmentIdReactionMap(f, membraneRxns);
+	    	drawMetabolites(pathway, component, LocalConfig.getInstance().getMembraneName());
+			drawReactions(pathway, component, membraneRxns, membraneIdReactionMap);
+			drawPathwayNames(component);
+	    	borderLeftX = Integer.toString(PathwaysFrameConstants.BORDER_WIDTH);
+			borderRightX = Double.toString(maxX + PathwaysFrameConstants.RIGHT_BORDER_INCREMENT + PathwaysFrameConstants.METABOLITE_NODE_WIDTH);
+			borderTopY = Double.toString(maxY);
+			borderBottomY = Double.toString(2*maxY - PathwaysFrameConstants.BORDER_HEIGHT + PathwaysFrameConstants.BOTTOM_SPACE + 
+					PathwaysFrameConstants.METABOLITE_NODE_HEIGHT - PathwaysFrameConstants.ADDITIONAL_COMPARTMENT_OFFSET);
+			System.out.println(borderTopY);
+			System.out.println(borderBottomY);
+			drawCompartmentBorder(borderLeftX, borderRightX, borderTopY, borderBottomY, 4);
+		}
+		if (LocalConfig.getInstance().getOutsideName() != null && LocalConfig.getInstance().getOutsideName().length() > 0
+				&& component == PathwaysFrameConstants.PATHWAYS_COMPONENT) {
+			if (LocalConfig.getInstance().getMembraneName() != null && LocalConfig.getInstance().getMembraneName().length() > 0) {
+//				maxY += maxY + PathwaysFrameConstants.ADDITIONAL_COMPARTMENT_OFFSET;
+//				borderLeftX = Integer.toString(PathwaysFrameConstants.BORDER_WIDTH);
+//				borderRightX = Double.toString(maxX + PathwaysFrameConstants.RIGHT_BORDER_INCREMENT + PathwaysFrameConstants.METABOLITE_NODE_WIDTH);
+//				borderTopY = Double.toString(maxY);
+//				borderBottomY = Double.toString(2*maxY - PathwaysFrameConstants.BORDER_HEIGHT + PathwaysFrameConstants.BOTTOM_SPACE + 
+//						PathwaysFrameConstants.METABOLITE_NODE_HEIGHT - PathwaysFrameConstants.ADDITIONAL_COMPARTMENT_OFFSET);
+//				System.out.println(borderTopY);
+//				System.out.println(borderBottomY);
+//				drawCompartmentBorder(borderLeftX, borderRightX, borderTopY, borderBottomY, 4);
+			} else {
+				maxY += PathwaysFrameConstants.ADDITIONAL_COMPARTMENT_OFFSET;
+				borderLeftX = Integer.toString(PathwaysFrameConstants.BORDER_WIDTH);
+				borderRightX = Double.toString(maxX + PathwaysFrameConstants.RIGHT_BORDER_INCREMENT + PathwaysFrameConstants.METABOLITE_NODE_WIDTH);
+				borderTopY = Double.toString(maxY);
+				borderBottomY = Double.toString(2*maxY - PathwaysFrameConstants.BORDER_HEIGHT + PathwaysFrameConstants.BOTTOM_SPACE + 
+						PathwaysFrameConstants.METABOLITE_NODE_HEIGHT - PathwaysFrameConstants.ADDITIONAL_COMPARTMENT_OFFSET);
+				System.out.println(borderTopY);
+				System.out.println(borderBottomY);
+				drawCompartmentBorder(borderLeftX, borderRightX, borderTopY, borderBottomY, 4);
+			}
+//			Vector<SBMLReaction> outsideRxns = compartmentReactions(f, LocalConfig.getInstance().getOutsideName());
+//			Map<Integer, SBMLReaction> outsideIdReactionMap = createCompartmentIdReactionMap(f, outsideRxns);
+//	    	drawMetabolites(pathway, component, LocalConfig.getInstance().getOutsideName());
+//			drawReactions(pathway, component, outsideRxns, outsideIdReactionMap);
+//			drawPathwayNames(component);
+//			borderLeftX = Integer.toString(PathwaysFrameConstants.BORDER_WIDTH);
+//			borderRightX = Double.toString(maxX + PathwaysFrameConstants.RIGHT_BORDER_INCREMENT + PathwaysFrameConstants.METABOLITE_NODE_WIDTH);
+//			borderTopY = Double.toString(maxY);
+//			borderBottomY = Double.toString(maxY - PathwaysFrameConstants.BORDER_HEIGHT + PathwaysFrameConstants.BOTTOM_SPACE + PathwaysFrameConstants.METABOLITE_NODE_HEIGHT);
+//			System.out.println(borderTopY);
+//			System.out.println(borderBottomY);
+//			drawCompartmentBorder(borderLeftX, borderRightX, borderTopY, borderBottomY, 8);
+		}
+		
+		Collections.sort(plottedIds);
+//		System.out.println("pf plotted " + plottedIds);
+//		System.out.println("pf unplotted " + LocalConfig.getInstance().getUnplottedReactionIds());
 		
 		//Collections.sort(foundEcNumbers);
 		//System.out.println("found " + foundEcNumbers);
@@ -743,6 +778,25 @@ public class PathwaysFrame extends JApplet {
 		}
     }
     
+    public void drawPathwayNames(int component) {
+    	if (component == PathwaysFrameConstants.PATHWAYS_COMPONENT) {
+			for(int p = 0; p < LocalConfig.getInstance().getPathwayNameMap().size(); p++) {
+				String pathwayName = LocalConfig.getInstance().getPathwayNameMap().get(Integer.toString(p)).getName();
+				pathwayNames.add(pathwayName);
+				PathwayNameNode pnn = new PathwayNameNode();
+				double x = 0;
+				double y = 0;
+				pnn.setDataId(LocalConfig.getInstance().getPathwayNameMap().get(Integer.toString(p)).getId());
+				pnn.setName(pathwayName);
+				x = startX + PathwaysFrameConstants.HORIZONTAL_INCREMENT*LocalConfig.getInstance().getPathwayNameMap().get(Integer.toString(p)).getLevel();
+				y = startY + PathwaysFrameConstants.VERTICAL_INCREMENT*LocalConfig.getInstance().getPathwayNameMap().get(Integer.toString(p)).getLevelPosition();
+				pnn.setxPosition(x);
+				pnn.setyPosition(y);
+				metabPosMap.put(pathwayName, new String[] {Double.toString(x), Double.toString(y)});
+			}
+		}
+    }
+    
     public void classifyMetabolite(String type, String metabName, String keggId) {
 		if (type.equals(PathwaysCSVFileConstants.MAIN_METABOLITE_TYPE)) {
 			metabolites.add(metabName);
@@ -757,24 +811,29 @@ public class PathwaysFrame extends JApplet {
     }
     
     public void drawCompartmentBorder(String borderLeftX, String borderRightX, 
-    		String borderTopY, String borderBottomY) {
+    		String borderTopY, String borderBottomY, int startNumber) {
 		// draw cell border
-		metabPosMap.put("1", new String[] {borderLeftX, borderTopY}); 
-		metabPosMap.put("2", new String[] {borderRightX, borderTopY}); 
-		metabPosMap.put("3", new String[] {borderRightX, borderBottomY});
-		metabPosMap.put("4", new String[] {borderLeftX, borderBottomY}); 
+    	String topLeft = Integer.toString(startNumber + 1);
+    	String topRight = Integer.toString(startNumber + 2);
+    	String bottomRight = Integer.toString(startNumber + 3);
+    	String bottomLeft = Integer.toString(startNumber + 4);
+    	
+		metabPosMap.put(topLeft, new String[] {borderLeftX, borderTopY}); 
+		metabPosMap.put(topRight, new String[] {borderRightX, borderTopY}); 
+		metabPosMap.put(bottomRight, new String[] {borderRightX, borderBottomY});
+		metabPosMap.put(bottomLeft, new String[] {borderLeftX, borderBottomY}); 
 
-		reactionMap.put("1", new String[] {"1", "2", "false"});
-		reactionMap.put("2", new String[] {"2", "3", "false"});
-		reactionMap.put("3", new String[] {"3", "4", "false"});
-		reactionMap.put("4", new String[] {"4", "1", "false"});
+		reactionMap.put(topLeft, new String[] {topLeft, topRight, "false"});
+		reactionMap.put(topRight, new String[] {topRight, bottomRight, "false"});
+		reactionMap.put(bottomRight, new String[] {bottomRight, bottomLeft, "false"});
+		reactionMap.put(bottomLeft, new String[] {bottomLeft, topLeft, "false"});
 
-		fluxMap.put("1", PathwaysFrameConstants.BORDER_THICKNESS);
-		fluxMap.put("2", PathwaysFrameConstants.BORDER_THICKNESS);
-		fluxMap.put("3", PathwaysFrameConstants.BORDER_THICKNESS);
-		fluxMap.put("4", PathwaysFrameConstants.BORDER_THICKNESS);
+		fluxMap.put(topLeft, PathwaysFrameConstants.BORDER_THICKNESS);
+		fluxMap.put(topRight, PathwaysFrameConstants.BORDER_THICKNESS);
+		fluxMap.put(bottomRight, PathwaysFrameConstants.BORDER_THICKNESS);
+		fluxMap.put(bottomLeft, PathwaysFrameConstants.BORDER_THICKNESS);
 
-		for (int b = 1; b < 5; b++) {
+		for (int b = startNumber + 1; b < startNumber + 5; b++) {
 			borderList.add(Integer.toString(b));
 		}
     }
