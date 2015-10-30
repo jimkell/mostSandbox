@@ -682,24 +682,22 @@ public class PathwaysFrame extends JApplet {
 //		System.out.println("pf plotted " + plottedIds);
 //		System.out.println("pf unplotted " + LocalConfig.getInstance().getUnplottedReactionIds());
 		
-		for(int p = 0; p < LocalConfig.getInstance().getPathwayNameMap().size(); p++) {
-			String pathwayName = LocalConfig.getInstance().getPathwayNameMap().get(Integer.toString(p)).getName();
-			pathwayNames.add(pathwayName);
-			PathwayNameNode pnn = new PathwayNameNode();
-			double x = 0;
-			double y = 0;
-			pnn.setDataId(LocalConfig.getInstance().getPathwayNameMap().get(Integer.toString(p)).getId());
-			pnn.setName(pathwayName);
-			x = startX + PathwaysFrameConstants.HORIZONTAL_INCREMENT*LocalConfig.getInstance().getPathwayNameMap().get(Integer.toString(p)).getLevel();
-			y = startY + PathwaysFrameConstants.VERTICAL_INCREMENT*LocalConfig.getInstance().getPathwayNameMap().get(Integer.toString(p)).getLevelPosition();
-			pnn.setxPosition(x);
-			pnn.setyPosition(y);
-			metabPosMap.put(pathwayName, new String[] {Double.toString(x), Double.toString(y)});
+		if (component == PathwaysFrameConstants.PATHWAYS_COMPONENT) {
+			for(int p = 0; p < LocalConfig.getInstance().getPathwayNameMap().size(); p++) {
+				String pathwayName = LocalConfig.getInstance().getPathwayNameMap().get(Integer.toString(p)).getName();
+				pathwayNames.add(pathwayName);
+				PathwayNameNode pnn = new PathwayNameNode();
+				double x = 0;
+				double y = 0;
+				pnn.setDataId(LocalConfig.getInstance().getPathwayNameMap().get(Integer.toString(p)).getId());
+				pnn.setName(pathwayName);
+				x = startX + PathwaysFrameConstants.HORIZONTAL_INCREMENT*LocalConfig.getInstance().getPathwayNameMap().get(Integer.toString(p)).getLevel();
+				y = startY + PathwaysFrameConstants.VERTICAL_INCREMENT*LocalConfig.getInstance().getPathwayNameMap().get(Integer.toString(p)).getLevelPosition();
+				pnn.setxPosition(x);
+				pnn.setyPosition(y);
+				metabPosMap.put(pathwayName, new String[] {Double.toString(x), Double.toString(y)});
+			}
 		}
-		
-		if (LocalConfig.getInstance().getMembraneName() != null && LocalConfig.getInstance().getMembraneName().length() > 0) {
-	    	
-	    }
 		
 		String borderLeftX = Integer.toString(PathwaysFrameConstants.BORDER_WIDTH);
 		String borderRightX = Double.toString(maxX + PathwaysFrameConstants.RIGHT_BORDER_INCREMENT + PathwaysFrameConstants.METABOLITE_NODE_WIDTH);
@@ -714,7 +712,17 @@ public class PathwaysFrame extends JApplet {
 		String compartmentLabelYOffset = Integer.toString(PathwaysFrameConstants.BORDER_HEIGHT +
 				PathwaysFrameConstants.COMPARTMENT_LABEL_Y_OFFSET + 20);
 		
-		drawCompartmentLabel(compartmentLabel, compartmentLabelXOffset, compartmentLabelYOffset);
+		if (component == PathwaysFrameConstants.PATHWAYS_COMPONENT) {
+			drawCompartmentLabel(compartmentLabel, compartmentLabelXOffset, compartmentLabelYOffset);
+		}
+		
+		if (LocalConfig.getInstance().getMembraneName() != null && LocalConfig.getInstance().getMembraneName().length() > 0) {
+	    	
+	    }
+		
+		if (LocalConfig.getInstance().getOutsideName() != null && LocalConfig.getInstance().getOutsideName().length() > 0) {
+	    	
+	    }
 		
 		//Collections.sort(foundEcNumbers);
 		//System.out.println("found " + foundEcNumbers);
