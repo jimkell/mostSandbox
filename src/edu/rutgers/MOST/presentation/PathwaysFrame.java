@@ -124,6 +124,9 @@ public class PathwaysFrame extends JApplet {
    	ArrayList<String> foundMetabolitesList = new ArrayList<String>();
    	ArrayList<String> foundReactionsList = new ArrayList<String>();
    	Map<String, Icon> iconMap = new HashMap<String, Icon>(); 
+   	ArrayList<Integer> plottedIds = new ArrayList<Integer>();
+   	
+   	PathwayReactionNodeFactory prnf = new PathwayReactionNodeFactory();
    	
    	String compartmentLabel = "Model Name: " + LocalConfig.getInstance().getModelName();
    	
@@ -452,9 +455,9 @@ public class PathwaysFrame extends JApplet {
 	    //ArrayList<String> foundReactionsList = new ArrayList<String>();
 //		ArrayList<PathwayMetaboliteNode> externalMetaboliteNodeList = new ArrayList<PathwayMetaboliteNode>();
 //		ArrayList<PathwayMetaboliteNode> transportMetaboliteNodeList = new ArrayList<PathwayMetaboliteNode>();
-		ArrayList<Integer> plottedIds = new ArrayList<Integer>();
+//		ArrayList<Integer> plottedIds = new ArrayList<Integer>();
 		
-		PathwayReactionNodeFactory prnf = new PathwayReactionNodeFactory();
+//		PathwayReactionNodeFactory prnf = new PathwayReactionNodeFactory();
 		MetabolicPathway pathway = LocalConfig.getInstance().getMetabolicPathways().get("0");
 		if (pathway.getComponent() == PathwaysFrameConstants.PATHWAYS_COMPONENT) {
 			if (startPosMap.containsKey(pathway.getId())) {
@@ -468,7 +471,146 @@ public class PathwaysFrame extends JApplet {
 			//System.out.println("start " + startX + " " + startY);
 		}
 		drawMetabolites(pathway, component, LocalConfig.getInstance().getSelectedCompartmentName());
-		for (int k = 0; k < pathway.getReactionsData().size(); k++) {
+		drawReactions(pathway, component, rxns, idReactionMap);
+
+		Collections.sort(plottedIds);
+//		System.out.println("pf plotted " + plottedIds);
+//		System.out.println("pf unplotted " + LocalConfig.getInstance().getUnplottedReactionIds());
+		
+		if (component == PathwaysFrameConstants.PATHWAYS_COMPONENT) {
+			for(int p = 0; p < LocalConfig.getInstance().getPathwayNameMap().size(); p++) {
+				String pathwayName = LocalConfig.getInstance().getPathwayNameMap().get(Integer.toString(p)).getName();
+				pathwayNames.add(pathwayName);
+				PathwayNameNode pnn = new PathwayNameNode();
+				double x = 0;
+				double y = 0;
+				pnn.setDataId(LocalConfig.getInstance().getPathwayNameMap().get(Integer.toString(p)).getId());
+				pnn.setName(pathwayName);
+				x = startX + PathwaysFrameConstants.HORIZONTAL_INCREMENT*LocalConfig.getInstance().getPathwayNameMap().get(Integer.toString(p)).getLevel();
+				y = startY + PathwaysFrameConstants.VERTICAL_INCREMENT*LocalConfig.getInstance().getPathwayNameMap().get(Integer.toString(p)).getLevelPosition();
+				pnn.setxPosition(x);
+				pnn.setyPosition(y);
+				metabPosMap.put(pathwayName, new String[] {Double.toString(x), Double.toString(y)});
+			}
+		}
+		
+		String borderLeftX = Integer.toString(PathwaysFrameConstants.BORDER_WIDTH);
+		String borderRightX = Double.toString(maxX + PathwaysFrameConstants.RIGHT_BORDER_INCREMENT + PathwaysFrameConstants.METABOLITE_NODE_WIDTH);
+		String borderTopY = Integer.toString(PathwaysFrameConstants.BORDER_HEIGHT);
+		String borderBottomY = Double.toString(maxY + PathwaysFrameConstants.BOTTOM_SPACE + PathwaysFrameConstants.METABOLITE_NODE_HEIGHT);
+		
+		// draw cell border
+		drawCompartmentBorder(borderLeftX, borderRightX, borderTopY, borderBottomY);
+		
+		String compartmentLabelXOffset = Integer.toString(PathwaysFrameConstants.BORDER_WIDTH +
+				PathwaysFrameConstants.COMPARTMENT_LABEL_X_OFFSET + 20);
+		String compartmentLabelYOffset = Integer.toString(PathwaysFrameConstants.BORDER_HEIGHT +
+				PathwaysFrameConstants.COMPARTMENT_LABEL_Y_OFFSET + 20);
+		
+		if (component == PathwaysFrameConstants.PATHWAYS_COMPONENT) {
+			drawCompartmentLabel(compartmentLabel, compartmentLabelXOffset, compartmentLabelYOffset);
+		}
+		
+		//Collections.sort(foundEcNumbers);
+		//System.out.println("found " + foundEcNumbers);
+		//Collections.sort(notFoundEcNumbers);
+		//System.out.println("not found " + notFoundEcNumbers);
+                                                                                                                     
+   		metaboliteList = new ArrayList<String>(metabPosMap.keySet()); 
+   		Collections.sort(metaboliteList);
+   		//System.out.println("m " + metaboliteList);
+   		
+   		reactionList = new ArrayList<String>(reactionMap.keySet()); 
+   		Collections.sort(reactionList);
+    }
+    
+    public void drawMetabolites(MetabolicPathway pathway, int component, String compartment) {
+		for (int j = 0; j < pathway.getMetabolitesData().size(); j++) {
+			if (pathway.getComponent() == component) {
+				String metabName = pathway.getMetabolitesData().get(Integer.toString(j)).getName();
+				String type = pathway.getMetabolitesData().get(Integer.toString(j)).getType();
+				//if (pathway.getComponent() == PathwaysFrameConstants.PROCESSES_COMPONENT ||
+				String keggId = pathway.getMetabolitesData().get(Integer.toString(j)).getKeggId();
+				//ArrayList<String> metabolteSubstitutions = pathway.getMetabolitesData().get(Integer.toString(j)).getMetaboliteSubstitutions();
+				boolean drawMetabolite = true;
+				if (LocalConfig.getInstance().getKeggIdMetaboliteMap().containsKey(keggId)) {
+					for (int k = 0; k < LocalConfig.getInstance().getKeggIdMetaboliteMap().get(keggId).size(); k++) {
+						if (LocalConfig.getInstance().getKeggIdMetaboliteMap().get(keggId).get(k).getCompartment().
+								equals(compartment)) {
+							foundMetabolitesList.add(metabName);
+						} else {
+							//								if (!LocalConfig.getInstance().isGraphMissingMetabolitesSelected()) {
+							//									drawMetabolite = false;
+							//									System.out.println(metabName);
+							//								}
+						}
+					}
+				} else {
+					if (!LocalConfig.getInstance().isGraphMissingMetabolitesSelected()) {
+						drawMetabolite = false;
+						//System.out.println(metabName);
+					}
+				}
+				if (drawMetabolite) {
+					//if (LocalConfig.getInstance().getSideSpeciesList().contains(pathway.getMetabolitesData().get(Integer.toString(j)).getKeggId()) ||
+					if (pathway.getMetabolitesData().get(Integer.toString(j)).getBorder().equals("0")) {
+						noBorderList.add(pathway.getMetabolitesData().get(Integer.toString(j)).getName());
+					}
+					classifyMetabolite(type, metabName, keggId);
+					double x = 0;
+					double y = 0;
+					x = startX + PathwaysFrameConstants.HORIZONTAL_INCREMENT*pathway.getMetabolitesData().get(Integer.toString(j)).getLevel();
+					y = startY + PathwaysFrameConstants.VERTICAL_INCREMENT*pathway.getMetabolitesData().get(Integer.toString(j)).getLevelPosition();
+					if (x > maxX) {
+						maxX = x;
+					}
+					if (y > maxY) {
+						maxY = y;
+					}
+					PathwayMetaboliteNodeFactory pmnf = new PathwayMetaboliteNodeFactory();
+					PathwayMetaboliteNode pn = pmnf.createPathwayMetaboliteNode(pathway.getMetabolitesData().get(Integer.toString(j)).getId(), 
+							x, y, type, pathway.getMetabolitesData().get(Integer.toString(j)).getAbbreviation(), 
+							pathway.getMetabolitesData().get(Integer.toString(j)).getName(), keggId);
+					//if (LocalConfig.getInstance().getMetaboliteSubstitutionsFoundMap().containsKey(keggId)) {
+					//							System.out.println(keggId);
+					//							System.out.println(LocalConfig.getInstance().getMetaboliteSubstitutionsFoundMap().get(keggId));
+					//}
+					String displayName = pmnf.createDisplayName(metabName, pn.getAbbreviation(), pn.getName(), keggId);
+					//System.out.println(displayName);
+					pathway.getMetabolitesNodes().put(pn.getDataId(), pn);
+					metabPosMap.put(metabName, new String[] {Double.toString(x), Double.toString(y)});
+					// create transport metabolite if kegg id in transport metabolite file
+					//String keggId = pathway.getMetabolitesData().get(Integer.toString(j)).getKeggId();
+					//						if (pathway.getTransportMetabolitesData().containsKey(keggId)) {
+					//							ExternalMetaboliteData emd = pathway.getTransportMetabolitesData().get(keggId);
+					//							ExternalMetaboliteNodeFactory emnf = new ExternalMetaboliteNodeFactory();
+					//							ExternalMetaboliteNode emn = emnf.createExternalMetaboliteNode(pn.getxPosition(), pn.getyPosition(), emd.getKeggMetaboliteId(), 
+					//									emd.getAbbreviation(), emd.getName(), emd.getPosition(), 
+					//									emd.getOffset(), emd.getDirection());
+					//							transportMetaboliteNodeList.add(emn);
+					//							TransportReactionNode trn = new TransportReactionNode();
+					//							trn.setCytosolName(metabName);
+					//							if (LocalConfig.getInstance().getKeggIdTransportReactionsMap().containsKey(keggId)) {
+					//								ArrayList<TransportReactionNode> trnList = LocalConfig.getInstance().getKeggIdTransportReactionsMap().get(keggId);
+					//								for (int t = 0; t < trnList.size(); t++) {
+					//									if (trnList.get(t).getTransportType().equals(TransportReactionConstants.CYTOSOL_EXTRAORGANISM_TRANSPORT) ||
+					//											trnList.get(t).getTransportType().equals(TransportReactionConstants.CYTOSOL_PERIPLASM_TRANSPORT)) {
+					//										trnList.get(t).setCytosolName(metabName);
+					//									}
+					//									trnList.get(t).setPosition(emd.getPosition());
+					//									System.out.println("key " + trnList.get(t));	
+					//								}
+					//							} else {
+					//								System.out.println(keggId + " not present");
+					//							}
+					//						}
+				}
+			}
+		}
+    }
+    
+    public void drawReactions(MetabolicPathway pathway, int component, Vector<SBMLReaction> rxns, Map<Integer, SBMLReaction> idReactionMap) {
+    	for (int k = 0; k < pathway.getReactionsData().size(); k++) {
 			if (pathway.getComponent() == component) {
 				// only draw cytosol for now
 				PathwayReactionNode pn = prnf.createPathwayReactionNode(pathway.getReactionsData().get(Integer.toString(k)).getEcNumbers(),
@@ -596,148 +738,6 @@ public class PathwaysFrame extends JApplet {
 							colorMap.put(displayName + "product " + Integer.toString(p), edgeColor);
 						}
 					}
-				}
-			}
-		}
-		Collections.sort(plottedIds);
-//		System.out.println("pf plotted " + plottedIds);
-//		System.out.println("pf unplotted " + LocalConfig.getInstance().getUnplottedReactionIds());
-		
-		if (component == PathwaysFrameConstants.PATHWAYS_COMPONENT) {
-			for(int p = 0; p < LocalConfig.getInstance().getPathwayNameMap().size(); p++) {
-				String pathwayName = LocalConfig.getInstance().getPathwayNameMap().get(Integer.toString(p)).getName();
-				pathwayNames.add(pathwayName);
-				PathwayNameNode pnn = new PathwayNameNode();
-				double x = 0;
-				double y = 0;
-				pnn.setDataId(LocalConfig.getInstance().getPathwayNameMap().get(Integer.toString(p)).getId());
-				pnn.setName(pathwayName);
-				x = startX + PathwaysFrameConstants.HORIZONTAL_INCREMENT*LocalConfig.getInstance().getPathwayNameMap().get(Integer.toString(p)).getLevel();
-				y = startY + PathwaysFrameConstants.VERTICAL_INCREMENT*LocalConfig.getInstance().getPathwayNameMap().get(Integer.toString(p)).getLevelPosition();
-				pnn.setxPosition(x);
-				pnn.setyPosition(y);
-				metabPosMap.put(pathwayName, new String[] {Double.toString(x), Double.toString(y)});
-			}
-		}
-		
-		String borderLeftX = Integer.toString(PathwaysFrameConstants.BORDER_WIDTH);
-		String borderRightX = Double.toString(maxX + PathwaysFrameConstants.RIGHT_BORDER_INCREMENT + PathwaysFrameConstants.METABOLITE_NODE_WIDTH);
-		String borderTopY = Integer.toString(PathwaysFrameConstants.BORDER_HEIGHT);
-		String borderBottomY = Double.toString(maxY + PathwaysFrameConstants.BOTTOM_SPACE + PathwaysFrameConstants.METABOLITE_NODE_HEIGHT);
-		
-		// draw cell border
-		drawCompartmentBorder(borderLeftX, borderRightX, borderTopY, borderBottomY);
-		
-		String compartmentLabelXOffset = Integer.toString(PathwaysFrameConstants.BORDER_WIDTH +
-				PathwaysFrameConstants.COMPARTMENT_LABEL_X_OFFSET + 20);
-		String compartmentLabelYOffset = Integer.toString(PathwaysFrameConstants.BORDER_HEIGHT +
-				PathwaysFrameConstants.COMPARTMENT_LABEL_Y_OFFSET + 20);
-		
-		if (component == PathwaysFrameConstants.PATHWAYS_COMPONENT) {
-			drawCompartmentLabel(compartmentLabel, compartmentLabelXOffset, compartmentLabelYOffset);
-		}
-		
-		if (LocalConfig.getInstance().getMembraneName() != null && LocalConfig.getInstance().getMembraneName().length() > 0) {
-	    	
-	    }
-		
-		if (LocalConfig.getInstance().getOutsideName() != null && LocalConfig.getInstance().getOutsideName().length() > 0) {
-	    	
-	    }
-		
-		//Collections.sort(foundEcNumbers);
-		//System.out.println("found " + foundEcNumbers);
-		//Collections.sort(notFoundEcNumbers);
-		//System.out.println("not found " + notFoundEcNumbers);
-                                                                                                                     
-   		metaboliteList = new ArrayList<String>(metabPosMap.keySet()); 
-   		Collections.sort(metaboliteList);
-   		//System.out.println("m " + metaboliteList);
-   		
-   		reactionList = new ArrayList<String>(reactionMap.keySet()); 
-   		Collections.sort(reactionList);
-    }
-    
-    public void drawMetabolites(MetabolicPathway pathway, int component, String compartment) {
-		for (int j = 0; j < pathway.getMetabolitesData().size(); j++) {
-			if (pathway.getComponent() == component) {
-				String metabName = pathway.getMetabolitesData().get(Integer.toString(j)).getName();
-				String type = pathway.getMetabolitesData().get(Integer.toString(j)).getType();
-				//if (pathway.getComponent() == PathwaysFrameConstants.PROCESSES_COMPONENT ||
-				String keggId = pathway.getMetabolitesData().get(Integer.toString(j)).getKeggId();
-				//ArrayList<String> metabolteSubstitutions = pathway.getMetabolitesData().get(Integer.toString(j)).getMetaboliteSubstitutions();
-				boolean drawMetabolite = true;
-				if (LocalConfig.getInstance().getKeggIdMetaboliteMap().containsKey(keggId)) {
-					for (int k = 0; k < LocalConfig.getInstance().getKeggIdMetaboliteMap().get(keggId).size(); k++) {
-						if (LocalConfig.getInstance().getKeggIdMetaboliteMap().get(keggId).get(k).getCompartment().
-								equals(compartment)) {
-							foundMetabolitesList.add(metabName);
-						} else {
-							//								if (!LocalConfig.getInstance().isGraphMissingMetabolitesSelected()) {
-							//									drawMetabolite = false;
-							//									System.out.println(metabName);
-							//								}
-						}
-					}
-				} else {
-					if (!LocalConfig.getInstance().isGraphMissingMetabolitesSelected()) {
-						drawMetabolite = false;
-						//System.out.println(metabName);
-					}
-				}
-				if (drawMetabolite) {
-					//if (LocalConfig.getInstance().getSideSpeciesList().contains(pathway.getMetabolitesData().get(Integer.toString(j)).getKeggId()) ||
-					if (pathway.getMetabolitesData().get(Integer.toString(j)).getBorder().equals("0")) {
-						noBorderList.add(pathway.getMetabolitesData().get(Integer.toString(j)).getName());
-					}
-					classifyMetabolite(type, metabName, keggId);
-					double x = 0;
-					double y = 0;
-					x = startX + PathwaysFrameConstants.HORIZONTAL_INCREMENT*pathway.getMetabolitesData().get(Integer.toString(j)).getLevel();
-					y = startY + PathwaysFrameConstants.VERTICAL_INCREMENT*pathway.getMetabolitesData().get(Integer.toString(j)).getLevelPosition();
-					if (x > maxX) {
-						maxX = x;
-					}
-					if (y > maxY) {
-						maxY = y;
-					}
-					PathwayMetaboliteNodeFactory pmnf = new PathwayMetaboliteNodeFactory();
-					PathwayMetaboliteNode pn = pmnf.createPathwayMetaboliteNode(pathway.getMetabolitesData().get(Integer.toString(j)).getId(), 
-							x, y, type, pathway.getMetabolitesData().get(Integer.toString(j)).getAbbreviation(), 
-							pathway.getMetabolitesData().get(Integer.toString(j)).getName(), keggId);
-					//if (LocalConfig.getInstance().getMetaboliteSubstitutionsFoundMap().containsKey(keggId)) {
-					//							System.out.println(keggId);
-					//							System.out.println(LocalConfig.getInstance().getMetaboliteSubstitutionsFoundMap().get(keggId));
-					//}
-					String displayName = pmnf.createDisplayName(metabName, pn.getAbbreviation(), pn.getName(), keggId);
-					//System.out.println(displayName);
-					pathway.getMetabolitesNodes().put(pn.getDataId(), pn);
-					metabPosMap.put(metabName, new String[] {Double.toString(x), Double.toString(y)});
-					// create transport metabolite if kegg id in transport metabolite file
-					//String keggId = pathway.getMetabolitesData().get(Integer.toString(j)).getKeggId();
-					//						if (pathway.getTransportMetabolitesData().containsKey(keggId)) {
-					//							ExternalMetaboliteData emd = pathway.getTransportMetabolitesData().get(keggId);
-					//							ExternalMetaboliteNodeFactory emnf = new ExternalMetaboliteNodeFactory();
-					//							ExternalMetaboliteNode emn = emnf.createExternalMetaboliteNode(pn.getxPosition(), pn.getyPosition(), emd.getKeggMetaboliteId(), 
-					//									emd.getAbbreviation(), emd.getName(), emd.getPosition(), 
-					//									emd.getOffset(), emd.getDirection());
-					//							transportMetaboliteNodeList.add(emn);
-					//							TransportReactionNode trn = new TransportReactionNode();
-					//							trn.setCytosolName(metabName);
-					//							if (LocalConfig.getInstance().getKeggIdTransportReactionsMap().containsKey(keggId)) {
-					//								ArrayList<TransportReactionNode> trnList = LocalConfig.getInstance().getKeggIdTransportReactionsMap().get(keggId);
-					//								for (int t = 0; t < trnList.size(); t++) {
-					//									if (trnList.get(t).getTransportType().equals(TransportReactionConstants.CYTOSOL_EXTRAORGANISM_TRANSPORT) ||
-					//											trnList.get(t).getTransportType().equals(TransportReactionConstants.CYTOSOL_PERIPLASM_TRANSPORT)) {
-					//										trnList.get(t).setCytosolName(metabName);
-					//									}
-					//									trnList.get(t).setPosition(emd.getPosition());
-					//									System.out.println("key " + trnList.get(t));	
-					//								}
-					//							} else {
-					//								System.out.println(keggId + " not present");
-					//							}
-					//						}
 				}
 			}
 		}
