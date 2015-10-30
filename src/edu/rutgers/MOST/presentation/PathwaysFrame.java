@@ -414,35 +414,39 @@ public class PathwaysFrame extends JApplet {
         //controls.add(reset);                                                                                         
         add(controls, BorderLayout.SOUTH);  
        
-    }   
+    }  
     
-    public void processData(int component) {
-//    	startX = PathwaysFrameConstants.BORDER_WIDTH + PathwaysFrameConstants.HORIZONTAL_INCREMENT;
-//		startY = PathwaysFrameConstants.START_Y;
-//		maxX = 0;
-//		maxY = 0;
-    	ReactionFactory f = new ReactionFactory("SBML");
-    	Map<Integer, SBMLReaction> idReactionMap = new HashMap<Integer, SBMLReaction>();
+    public Vector<SBMLReaction> compartmentReactions(ReactionFactory f, String compartment) {
     	Vector<SBMLReaction> rxns = null;
-		if (LocalConfig.getInstance().getSelectedCompartmentName() != null && LocalConfig.getInstance().getSelectedCompartmentName().length() > 0) {
-			rxns = f.getReactionsByCompartment(LocalConfig.getInstance().getSelectedCompartmentName());
+    	if (compartment != null && compartment.length() > 0) {
+			rxns = f.getReactionsByCompartment(compartment);
 		} else {
 			rxns = f.getAllReactions();
 		}
+		return rxns;
+    }
+    
+    public Map<Integer, SBMLReaction> createCompartmentIdReactionMap(ReactionFactory f, Vector<SBMLReaction> rxns) {
+    	Map<Integer, SBMLReaction> idReactionMap = new HashMap<Integer, SBMLReaction>();
 		for (int i = 0; i < rxns.size(); i++) {
 			idReactionMap.put(rxns.get(i).getId(), rxns.get(i));
 		}
+    	
+		return idReactionMap;
+    }
+    
+    public void processData(int component) {
+    	ReactionFactory f = new ReactionFactory("SBML");
+    	Vector<SBMLReaction> rxns = compartmentReactions(f, LocalConfig.getInstance().getSelectedCompartmentName());
+    	Map<Integer, SBMLReaction> idReactionMap = createCompartmentIdReactionMap(f, rxns);
+    	//Map<Integer, SBMLReaction> idReactionMap = new HashMap<Integer, SBMLReaction>();
+    	Vector<SBMLReaction> membraneRxns = compartmentReactions(f, LocalConfig.getInstance().getMembraneName());
+    	Map<Integer, SBMLReaction> membraneIdReactionMap = createCompartmentIdReactionMap(f, membraneRxns);
+    	Vector<SBMLReaction> outsideRxns = compartmentReactions(f, LocalConfig.getInstance().getOutsideName());
+    	Map<Integer, SBMLReaction> outsideIdReactionMap = createCompartmentIdReactionMap(f, outsideRxns);
 //		// temporary lists to keep track of what ec numbers have been found
 //		ArrayList<String> foundEcNumbers = new ArrayList<String>();
 //	    ArrayList<String> notFoundEcNumbers = new ArrayList<String>(LocalConfig.getInstance().getEcNumberReactionMap().keySet());
-		 
-//	    double startX = PathwaysFrameConstants.BORDER_WIDTH + PathwaysFrameConstants.HORIZONTAL_INCREMENT;
-//		double startY = PathwaysFrameConstants.START_Y;
-//		double maxX = 0;
-//		double maxY = 0;
-	    if (LocalConfig.getInstance().getMembraneName() != null && LocalConfig.getInstance().getMembraneName().length() > 0) {
-	    	
-	    }
 		
 	    //ArrayList<String> foundMetabolitesList = new ArrayList<String>();
 	    //ArrayList<String> foundReactionsList = new ArrayList<String>();
