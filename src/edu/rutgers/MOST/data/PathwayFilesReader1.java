@@ -583,44 +583,6 @@ public class PathwayFilesReader1 {
 		}	
 	}
 	
-	public void readDrawOrderFile(File drawOrder) {
-		CSVReader reader;
-
-		int count = 0;
-		ArrayList<String> drawOrderList = new ArrayList<String>();
-
-		try {
-			reader = new CSVReader(new FileReader(drawOrder), ',');
-			String [] dataArray;
-			try {
-				while ((dataArray = reader.readNext()) != null) {
-					if (count > 0) {
-						for (int s = 0; s < dataArray.length; s++) {	
-							if (s == PathwaysCSVFileConstants.PATHWAY_DRAW_ORDER_PATHWAY_ID_COLUMN) {
-								drawOrderList.add(dataArray[s]);
-							}
-						}
-					}
-					count += 1;
-				}
-				reader.close();
-				LocalConfig.getInstance().setDrawOrder(drawOrderList);
-			} catch (IOException e) {
-				JOptionPane.showMessageDialog(null,                
-						"File Not Found Error.",                
-						"Error",                                
-						JOptionPane.ERROR_MESSAGE);
-				//e.printStackTrace();
-			}
-		} catch (FileNotFoundException e) {
-			JOptionPane.showMessageDialog(null,                
-					"File Not Found Error.",                
-					"Error",                                
-					JOptionPane.ERROR_MESSAGE);
-			//e.printStackTrace();
-		}	
-	}
-	
 	public void readSideSpeciesFile(File sideSpecies) {
 		CSVReader reader;
 

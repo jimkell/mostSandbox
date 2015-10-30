@@ -149,6 +149,8 @@ public class PathwayReactionNodeFactory {
 		return pn;
 	}
 	
+	// TODO: check if compartment is redundant since reactions from reaction factory are already
+	// given by compartment
 	public void addReactions(ArrayList<SBMLReaction> reactions, ArrayList<SBMLReaction> reac, String compartment, 
 			ArrayList<String> keggReactantIds, ArrayList<String> keggProductIds, boolean exactMatch) {
 		for (int r = 0; r < reac.size(); r++) {

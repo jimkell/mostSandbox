@@ -13,7 +13,6 @@ public class PathwaysCSVFileConstants {
 	public static final String METABOLITE_POSITIONS_FILE_NAME = "etc/visualization/pathway_metabolite_positions1.csv";
 	public static final String REACTIONS_FILE_NAME = "etc/visualization/reactions.csv";
 	public static final String REACTION_POSITIONS_FILE_NAME = "etc/visualization/pathways_reaction_positions1.csv";
-	public static final String PATHWAY_DRAW_ORDER_FILE_NAME = "etc/visualization/pathway_draw_order1.csv";
 	public static final String PATHWAY_SIDE_SPECIES_FILE_NAME = "etc/visualization/pathway_side_species.csv";
 	public static final String EXTERNAL_METABOLITES_FILE_NAME = "etc/visualization/external_metabolites1.csv";
 	public static final String TRANSPORT_METABOLITES_FILE_NAME = "etc/visualization/transport_metabolites1.csv";
@@ -78,11 +77,6 @@ public class PathwaysCSVFileConstants {
 		"Level", "Level Position", "KEGG IDs"
 		};
 	
-	public static final String[] PATHWAY_DRAW_ORDER_COLUMN_NAMES = 
-		{
-		"Pathway ID"
-		};
-	
 	public static final String[] PATHWAY_SIDE_SPECIES_COLUMN_NAMES = 
 		{
 		"Species Name"
@@ -108,7 +102,6 @@ public class PathwaysCSVFileConstants {
 	private static java.util.List<String> metabolitePositionsList = Arrays.asList(METABOLITE_POSITIONS_COLUMN_NAMES);
 	private static java.util.List<String> reactionsColumnsList = Arrays.asList(REACTIONS_COLUMN_NAMES);
 	private static java.util.List<String> reactionPositionsColumnsList = Arrays.asList(REACTION_POSITIONS_COLUMN_NAMES);
-	private static java.util.List<String> pathwayDrawOrderColumnsList = Arrays.asList(PATHWAY_DRAW_ORDER_COLUMN_NAMES);
 	private static java.util.List<String> pathwaySideSpeciesColumnsList = Arrays.asList(PATHWAY_SIDE_SPECIES_COLUMN_NAMES);
 	private static java.util.List<String> externalMetabolitesColumnsList = Arrays.asList(EXTERNAL_METABOLITES_COLUMN_NAMES);
 	private static java.util.List<String> transportMetabolitesColumnsList = Arrays.asList(TRANSPORT_METABOLITES_COLUMN_NAMES);
@@ -177,8 +170,6 @@ public class PathwaysCSVFileConstants {
 	public static final int REACTIONS_LEVEL_COLUMN = reactionPositionsColumnsList.indexOf("Level");
 	public static final int REACTIONS_POSITION_COLUMN = reactionPositionsColumnsList.indexOf("Level Position");
 	public static final int REACTIONS_POSITION_KEGG_IDS_COLUMN = reactionPositionsColumnsList.indexOf("KEGG IDs");
-	
-	public static final int PATHWAY_DRAW_ORDER_PATHWAY_ID_COLUMN = pathwayDrawOrderColumnsList.indexOf("Pathway ID");
 
 	public static final int PATHWAY_SIDE_SPECIES_NAME_COLUMN = pathwaySideSpeciesColumnsList.indexOf("Species Name");
 	

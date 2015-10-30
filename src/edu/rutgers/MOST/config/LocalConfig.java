@@ -900,16 +900,6 @@ public class LocalConfig {
 			Map<String, ArrayList<String>> metaboliteAlternativesMap) {
 		this.metaboliteAlternativesMap = metaboliteAlternativesMap;
 	}
-
-	private ArrayList<String> drawOrder;
-
-	public ArrayList<String> getDrawOrder() {
-		return drawOrder;
-	}
-
-	public void setDrawOrder(ArrayList<String> drawOrder) {
-		this.drawOrder = drawOrder;
-	}
 	
 	private Map<String, ArrayList<String>> ecNumberKeggReactionIdMap;
 
