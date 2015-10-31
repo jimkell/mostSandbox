@@ -180,7 +180,8 @@ public class PathwaysFrameConstants {
 		"C00006", "C00002", "C00035", "C00044", "C00055", "C00063",
 		"C00075", "C00101", "C00105", "C00112", "C00131", "C00144", "C00206", "C00234",
 		"C00239", "C00268", "C00272",
-		"C00360","C00361", "C00362", "C00363", "C00364", "C00365", "C00664"
+		"C00360","C00361", "C00362", "C00363", "C00364", "C00365", 
+		"C00445", "C00664"
 		};
 
 	public static java.util.List<String> cofactorList = Arrays.asList(COFACTOR_KEGG_IDS);
