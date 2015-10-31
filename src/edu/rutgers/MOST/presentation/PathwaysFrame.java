@@ -473,8 +473,8 @@ public class PathwaysFrame extends JApplet {
 		String borderRightX = Double.toString(maxX + PathwaysFrameConstants.RIGHT_BORDER_INCREMENT + PathwaysFrameConstants.METABOLITE_NODE_WIDTH);
 		String borderTopY = Integer.toString(PathwaysFrameConstants.BORDER_HEIGHT);
 		String borderBottomY = Double.toString(maxY + PathwaysFrameConstants.BOTTOM_SPACE + PathwaysFrameConstants.METABOLITE_NODE_HEIGHT);
-		System.out.println(borderTopY);
-		System.out.println(borderBottomY);
+//		System.out.println(borderTopY);
+//		System.out.println(borderBottomY);
 		
 		// draw cell border
 		drawCompartmentBorder(borderLeftX, borderRightX, borderTopY, borderBottomY, 0);
@@ -501,8 +501,8 @@ public class PathwaysFrame extends JApplet {
 			borderTopY = Double.toString(maxY);
 			borderBottomY = Double.toString(2*maxY - PathwaysFrameConstants.BORDER_HEIGHT + PathwaysFrameConstants.BOTTOM_SPACE + 
 					PathwaysFrameConstants.METABOLITE_NODE_HEIGHT - PathwaysFrameConstants.ADDITIONAL_COMPARTMENT_OFFSET);
-			System.out.println(borderTopY);
-			System.out.println(borderBottomY);
+//			System.out.println(borderTopY);
+//			System.out.println(borderBottomY);
 			drawCompartmentBorder(borderLeftX, borderRightX, borderTopY, borderBottomY, 4);
 		}
 		if (LocalConfig.getInstance().getOutsideName() != null && LocalConfig.getInstance().getOutsideName().length() > 0
@@ -524,8 +524,8 @@ public class PathwaysFrame extends JApplet {
 				borderTopY = Double.toString(maxY);
 				borderBottomY = Double.toString(2*maxY - PathwaysFrameConstants.BORDER_HEIGHT + PathwaysFrameConstants.BOTTOM_SPACE + 
 						PathwaysFrameConstants.METABOLITE_NODE_HEIGHT - PathwaysFrameConstants.ADDITIONAL_COMPARTMENT_OFFSET);
-				System.out.println(borderTopY);
-				System.out.println(borderBottomY);
+//				System.out.println(borderTopY);
+//				System.out.println(borderBottomY);
 				drawCompartmentBorder(borderLeftX, borderRightX, borderTopY, borderBottomY, 4);
 			}
 //			Vector<SBMLReaction> outsideRxns = compartmentReactions(f, LocalConfig.getInstance().getOutsideName());
