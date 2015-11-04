@@ -491,11 +491,11 @@ public class PathwaysFrame extends JApplet {
 		if (LocalConfig.getInstance().getMembraneName() != null && LocalConfig.getInstance().getMembraneName().length() > 0
 				&& component == PathwaysFrameConstants.PATHWAYS_COMPONENT) {
 			maxY += PathwaysFrameConstants.ADDITIONAL_COMPARTMENT_OFFSET;
-			Vector<SBMLReaction> membraneRxns = compartmentReactions(f, LocalConfig.getInstance().getMembraneName());
-	    	Map<Integer, SBMLReaction> membraneIdReactionMap = createCompartmentIdReactionMap(f, membraneRxns);
-	    	drawMetabolites(pathway, component, LocalConfig.getInstance().getMembraneName());
-			drawReactions(pathway, component, membraneRxns, membraneIdReactionMap);
-			drawPathwayNames(component);
+//			Vector<SBMLReaction> membraneRxns = compartmentReactions(f, LocalConfig.getInstance().getMembraneName());
+//	    	Map<Integer, SBMLReaction> membraneIdReactionMap = createCompartmentIdReactionMap(f, membraneRxns);
+//	    	drawMetabolites(pathway, component, LocalConfig.getInstance().getMembraneName());
+//			drawReactions(pathway, component, membraneRxns, membraneIdReactionMap);
+//			drawPathwayNames(component);
 	    	borderLeftX = Integer.toString(PathwaysFrameConstants.BORDER_WIDTH);
 			borderRightX = Double.toString(maxX + PathwaysFrameConstants.RIGHT_BORDER_INCREMENT + PathwaysFrameConstants.METABOLITE_NODE_WIDTH);
 			borderTopY = Double.toString(maxY);
