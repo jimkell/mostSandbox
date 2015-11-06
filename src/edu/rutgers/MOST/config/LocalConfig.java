@@ -1234,7 +1234,7 @@ public class LocalConfig {
 	// Visualization options
 	private boolean graphMissingReactionsSelected;
 	private boolean highlightMissingReactionsSelected;
-	private boolean gapFillingSelected;
+//	private boolean gapFillingSelected;
 	private boolean graphMissingMetabolitesSelected;
 	private boolean highlightMissingMetabolitesSelected;
 	private boolean scaleEdgeThicknessSelected;
@@ -1257,13 +1257,13 @@ public class LocalConfig {
 		this.highlightMissingReactionsSelected = highlightMissingReactionsSelected;
 	}
 
-	public boolean isGapFillingSelected() {
-		return gapFillingSelected;
-	}
-
-	public void setGapFillingSelected(boolean gapFillingSelected) {
-		this.gapFillingSelected = gapFillingSelected;
-	}
+//	public boolean isGapFillingSelected() {
+//		return gapFillingSelected;
+//	}
+//
+//	public void setGapFillingSelected(boolean gapFillingSelected) {
+//		this.gapFillingSelected = gapFillingSelected;
+//	}
 
 	public boolean isGraphMissingMetabolitesSelected() {
 		return graphMissingMetabolitesSelected;

@@ -12842,10 +12842,10 @@ public class GraphicalInterface extends JFrame {
 		LocalConfig.getInstance().setGraphMissingReactionsSelected(VisualizationOptionsConstants.GRAPH_MISSING_REACTIONS_DEFAULT);
 		if (VisualizationOptionsConstants.GRAPH_MISSING_REACTIONS_DEFAULT) {
 			LocalConfig.getInstance().setHighlightMissingReactionsSelected(VisualizationOptionsConstants.HIGHLIGHT_MISSING_REACTIONS_DEFAULT);
-			LocalConfig.getInstance().setGapFillingSelected(VisualizationOptionsConstants.USE_GAP_FILLING_DEFAULT);
+//			LocalConfig.getInstance().setGapFillingSelected(VisualizationOptionsConstants.USE_GAP_FILLING_DEFAULT);
 		} else {
 			LocalConfig.getInstance().setHighlightMissingReactionsSelected(VisualizationOptionsConstants.HIGHLIGHT_MISSING_REACTIONS_GRAYED_DEFAULT);
-			LocalConfig.getInstance().setGapFillingSelected(VisualizationOptionsConstants.USE_GAP_FILLING_GRAYED_DEFAULT);
+//			LocalConfig.getInstance().setGapFillingSelected(VisualizationOptionsConstants.USE_GAP_FILLING_GRAYED_DEFAULT);
 		}
 		LocalConfig.getInstance().setGraphMissingMetabolitesSelected(VisualizationOptionsConstants.GRAPH_MISSING_REACTIONS_DEFAULT);
 		if (VisualizationOptionsConstants.GRAPH_MISSING_METABOLITES_DEFAULT) {

@@ -34,7 +34,7 @@ public class VisualizationOptionsDialog extends JDialog {
 	// only enabled if graphMissingReactions is checked
 	private JCheckBox highlightMissingReactionsCheckBox = new JCheckBox("Highlight Missing Reactions");
 	// only enabled if graphMissingReactions is checked
-	private JCheckBox gapFillingCheckBox = new JCheckBox("Use Gap Filling for Missing Reactions");
+//	private JCheckBox gapFillingCheckBox = new JCheckBox("Use Gap Filling for Missing Reactions");
 	
 	private JCheckBox scaleEdgeThicknessCheckBox = new JCheckBox("Scale Edge Thickness Using Flux Values");
 	
@@ -55,14 +55,14 @@ public class VisualizationOptionsDialog extends JDialog {
 		highlightMissingMetabolitesCheckBox.setSelected(LocalConfig.getInstance().isHighlightMissingMetabolitesSelected());
 		graphMissingReactionsCheckBox.setSelected(LocalConfig.getInstance().isGraphMissingReactionsSelected());
 		highlightMissingReactionsCheckBox.setSelected(LocalConfig.getInstance().isHighlightMissingReactionsSelected());
-		gapFillingCheckBox.setSelected(LocalConfig.getInstance().isGapFillingSelected());
+//		gapFillingCheckBox.setSelected(LocalConfig.getInstance().isGapFillingSelected());
 		scaleEdgeThicknessCheckBox.setSelected(LocalConfig.getInstance().isScaleEdgeThicknessSelected());
 		
 		graphMissingMetabolitesCheckBox.setMnemonic(KeyEvent.VK_R);
 		highlightMissingMetabolitesCheckBox.setMnemonic(KeyEvent.VK_I);
 		graphMissingReactionsCheckBox.setMnemonic(KeyEvent.VK_G);
 		highlightMissingReactionsCheckBox.setMnemonic(KeyEvent.VK_H);
-		gapFillingCheckBox.setMnemonic(KeyEvent.VK_F);
+//		gapFillingCheckBox.setMnemonic(KeyEvent.VK_F);
 		scaleEdgeThicknessCheckBox.setMnemonic(KeyEvent.VK_S);
 		
 		//box layout
@@ -72,7 +72,7 @@ public class VisualizationOptionsDialog extends JDialog {
 		Box hbHighlightMissingMetabolites = Box.createHorizontalBox();
 		Box hbGraphMissingReactions = Box.createHorizontalBox();
 		Box hbHighlightMissingReactions = Box.createHorizontalBox();
-		Box hbGapFilling = Box.createHorizontalBox();
+//		Box hbGapFilling = Box.createHorizontalBox();
 		Box hbScaleEdgeThickness = Box.createHorizontalBox();
 		Box hbButton = Box.createHorizontalBox();
 		
@@ -118,15 +118,15 @@ public class VisualizationOptionsDialog extends JDialog {
 
 		hbHighlightMissingReactions.add(leftJustify(hbHighlightMissingReactionsPanel));
 		
-		JPanel hbGapFillingPanel = new JPanel();
-		hbGapFillingPanel.setLayout(new BoxLayout(hbGapFillingPanel, BoxLayout.X_AXIS));
-		hbGapFillingPanel.add(gapFillingCheckBox);
-		hbGapFillingPanel.setBorder(BorderFactory.createEmptyBorder(0, 
-				VisualizationOptionsConstants.LEFT_BORDER + VisualizationOptionsConstants.LEFT_INDENT, 
-				VisualizationOptionsConstants.MAIN_TOPIC_GAP, 
-				VisualizationOptionsConstants.RIGHT_BORDER));
-
-		hbGapFilling.add(leftJustify(hbGapFillingPanel));
+//		JPanel hbGapFillingPanel = new JPanel();
+//		hbGapFillingPanel.setLayout(new BoxLayout(hbGapFillingPanel, BoxLayout.X_AXIS));
+//		hbGapFillingPanel.add(gapFillingCheckBox);
+//		hbGapFillingPanel.setBorder(BorderFactory.createEmptyBorder(0, 
+//				VisualizationOptionsConstants.LEFT_BORDER + VisualizationOptionsConstants.LEFT_INDENT, 
+//				VisualizationOptionsConstants.MAIN_TOPIC_GAP, 
+//				VisualizationOptionsConstants.RIGHT_BORDER));
+//
+//		hbGapFilling.add(leftJustify(hbGapFillingPanel));
 		
 		JPanel hbScaleEdgeThicknessPanel = new JPanel();
 		hbScaleEdgeThicknessPanel.setLayout(new BoxLayout(hbScaleEdgeThicknessPanel, BoxLayout.X_AXIS));
@@ -155,7 +155,7 @@ public class VisualizationOptionsDialog extends JDialog {
 		vb.add(hbHighlightMissingMetabolites);
 		vb.add(hbGraphMissingReactions);
 		vb.add(hbHighlightMissingReactions);
-		vb.add(hbGapFilling);
+//		vb.add(hbGapFilling);
 		vb.add(hbScaleEdgeThickness);
 		vb.add(hbButton);
 		add(vb);
@@ -180,7 +180,7 @@ public class VisualizationOptionsDialog extends JDialog {
 			public void actionPerformed(ActionEvent prodActionEvent) {
 				LocalConfig.getInstance().setGraphMissingReactionsSelected(graphMissingReactionsCheckBox.isSelected());
 				LocalConfig.getInstance().setHighlightMissingReactionsSelected(highlightMissingReactionsCheckBox.isSelected());
-				LocalConfig.getInstance().setGapFillingSelected(gapFillingCheckBox.isSelected());
+//				LocalConfig.getInstance().setGapFillingSelected(gapFillingCheckBox.isSelected());
 				LocalConfig.getInstance().setGraphMissingMetabolitesSelected(graphMissingMetabolitesCheckBox.isSelected());
 				LocalConfig.getInstance().setHighlightMissingMetabolitesSelected(highlightMissingMetabolitesCheckBox.isSelected());
 				LocalConfig.getInstance().setScaleEdgeThicknessSelected(scaleEdgeThicknessCheckBox.isSelected());
@@ -212,14 +212,14 @@ public class VisualizationOptionsDialog extends JDialog {
 	public void setGraphMissingReactionsDefaults() {
 		if (graphMissingReactionsCheckBox.isSelected()) {
 			highlightMissingReactionsCheckBox.setSelected(VisualizationOptionsConstants.HIGHLIGHT_MISSING_REACTIONS_DEFAULT);
-			gapFillingCheckBox.setSelected(VisualizationOptionsConstants.USE_GAP_FILLING_DEFAULT);
+//			gapFillingCheckBox.setSelected(VisualizationOptionsConstants.USE_GAP_FILLING_DEFAULT);
 			highlightMissingReactionsCheckBox.setEnabled(true);
-			gapFillingCheckBox.setEnabled(true);
+//			gapFillingCheckBox.setEnabled(true);
 		} else {
 			highlightMissingReactionsCheckBox.setSelected(VisualizationOptionsConstants.HIGHLIGHT_MISSING_REACTIONS_GRAYED_DEFAULT);
-			gapFillingCheckBox.setSelected(VisualizationOptionsConstants.USE_GAP_FILLING_GRAYED_DEFAULT);
+//			gapFillingCheckBox.setSelected(VisualizationOptionsConstants.USE_GAP_FILLING_GRAYED_DEFAULT);
 			highlightMissingReactionsCheckBox.setEnabled(false);
-			gapFillingCheckBox.setEnabled(false);
+//			gapFillingCheckBox.setEnabled(false);
 		}
 	}
 	
