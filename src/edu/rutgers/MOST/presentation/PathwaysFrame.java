@@ -572,7 +572,7 @@ public class PathwaysFrame extends JApplet {
 					for (int k = 0; k < LocalConfig.getInstance().getKeggIdMetaboliteMap().get(keggId).size(); k++) {
 						if (LocalConfig.getInstance().getKeggIdMetaboliteMap().get(keggId).get(k).getCompartment().
 								equals(compartment)) {
-							foundMetabolitesList.add(metabName);
+							//foundMetabolitesList.add(metabName);
 						} else {
 							//								if (!LocalConfig.getInstance().isGraphMissingMetabolitesSelected()) {
 							//									drawMetabolite = false;
@@ -680,6 +680,20 @@ public class PathwaysFrame extends JApplet {
 				boolean drawReaction = true;
 				if (pn.getReactions().size() > 0) {
 					foundReactionsList.add(displayName);
+					for (int r = 0; r < pathway.getReactionsData().get(Integer.toString(k)).getReactantIds().size(); r++) {
+						String metabName = pathway.getMetabolitesData().get(pathway.getReactionsData().get(Integer.toString(k)).getReactantIds().get(r)).getName();
+						if (!foundMetabolitesList.contains(metabName)) {
+							System.out.println(metabName);
+							foundMetabolitesList.add(metabName);
+						}
+					}
+					for (int p = 0; p < pathway.getReactionsData().get(Integer.toString(k)).getProductIds().size(); p++) {
+						String metabName = pathway.getMetabolitesData().get(pathway.getReactionsData().get(Integer.toString(k)).getProductIds().get(p)).getName();
+						if (!foundMetabolitesList.contains(metabName)) {
+							System.out.println(metabName);
+							foundMetabolitesList.add(metabName);
+						}
+					}
 					// for bookkeeping only
 					for (int z = 0; z < pn.getReactions().size(); z++) {
 						//if (!plottedIds.contains(pn.getReactions().get(z).getId())) {
@@ -691,7 +705,7 @@ public class PathwaysFrame extends JApplet {
 				} else {
 					if (!LocalConfig.getInstance().isGraphMissingReactionsSelected()) {
 						drawReaction = false;
-					}
+					} 
 				}
 				if (drawReaction) {
 					reactions.add(displayName);
