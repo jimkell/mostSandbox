@@ -569,17 +569,12 @@ public class PathwaysFrame extends JApplet {
 				//ArrayList<String> metabolteSubstitutions = pathway.getMetabolitesData().get(Integer.toString(j)).getMetaboliteSubstitutions();
 				boolean drawMetabolite = true;
 				if (LocalConfig.getInstance().getKeggIdMetaboliteMap().containsKey(keggId)) {
-					for (int k = 0; k < LocalConfig.getInstance().getKeggIdMetaboliteMap().get(keggId).size(); k++) {
-						if (LocalConfig.getInstance().getKeggIdMetaboliteMap().get(keggId).get(k).getCompartment().
-								equals(compartment)) {
-							//foundMetabolitesList.add(metabName);
-						} else {
-							//								if (!LocalConfig.getInstance().isGraphMissingMetabolitesSelected()) {
-							//									drawMetabolite = false;
-							//									System.out.println(metabName);
-							//								}
-						}
-					}
+//					for (int k = 0; k < LocalConfig.getInstance().getKeggIdMetaboliteMap().get(keggId).size(); k++) {
+//						if (LocalConfig.getInstance().getKeggIdMetaboliteMap().get(keggId).get(k).getCompartment().
+//								equals(compartment)) {
+//							//foundMetabolitesList.add(metabName);
+//						} 
+//					}
 				} else {
 					if (!LocalConfig.getInstance().isGraphMissingMetabolitesSelected()) {
 						drawMetabolite = false;
@@ -610,7 +605,7 @@ public class PathwaysFrame extends JApplet {
 					//							System.out.println(keggId);
 					//							System.out.println(LocalConfig.getInstance().getMetaboliteSubstitutionsFoundMap().get(keggId));
 					//}
-					String displayName = pmnf.createDisplayName(metabName, pn.getAbbreviation(), pn.getName(), keggId);
+					//String displayName = pmnf.createDisplayName(metabName, pn.getAbbreviation(), pn.getName(), keggId);
 					//System.out.println(displayName);
 					pathway.getMetabolitesNodes().put(pn.getDataId(), pn);
 					metabPosMap.put(metabName, new String[] {Double.toString(x), Double.toString(y)});
@@ -645,6 +640,7 @@ public class PathwaysFrame extends JApplet {
     }
     
     public void drawReactions(MetabolicPathway pathway, int component, Vector<SBMLReaction> rxns, Map<Integer, SBMLReaction> idReactionMap) {
+    	ArrayList<String> metabPosKeys = new ArrayList<String>(metabPosMap.keySet());
     	for (int k = 0; k < pathway.getReactionsData().size(); k++) {
 			if (pathway.getComponent() == component) {
 				// only draw cytosol for now
@@ -683,14 +679,14 @@ public class PathwaysFrame extends JApplet {
 					for (int r = 0; r < pathway.getReactionsData().get(Integer.toString(k)).getReactantIds().size(); r++) {
 						String metabName = pathway.getMetabolitesData().get(pathway.getReactionsData().get(Integer.toString(k)).getReactantIds().get(r)).getName();
 						if (!foundMetabolitesList.contains(metabName)) {
-							System.out.println(metabName);
+							//System.out.println(metabName);
 							foundMetabolitesList.add(metabName);
 						}
 					}
 					for (int p = 0; p < pathway.getReactionsData().get(Integer.toString(k)).getProductIds().size(); p++) {
 						String metabName = pathway.getMetabolitesData().get(pathway.getReactionsData().get(Integer.toString(k)).getProductIds().get(p)).getName();
 						if (!foundMetabolitesList.contains(metabName)) {
-							System.out.println(metabName);
+							//System.out.println(metabName);
 							foundMetabolitesList.add(metabName);
 						}
 					}
@@ -787,6 +783,13 @@ public class PathwaysFrame extends JApplet {
 							colorMap.put(displayName + "product " + Integer.toString(p), edgeColor);
 						}
 					}
+				}
+			}
+		}
+    	if (!LocalConfig.getInstance().isGraphMissingMetabolitesSelected()) {
+			for (int i = 0; i < metabPosKeys.size(); i++) {
+				if (!foundMetabolitesList.contains(metabPosKeys.get(i))) {
+					metabPosMap.remove(metabPosKeys.get(i));
 				}
 			}
 		}
@@ -922,7 +925,7 @@ public class PathwaysFrame extends JApplet {
     public void createIconMap() {
     	//Map<String, Icon> iconMap = new HashMap<String, Icon>();   
     	iconMap.clear();
-        for(int i = 0; i < metaboliteList.size(); i++) {                                                                                                        
+        for (int i = 0; i < metaboliteList.size(); i++) {                                                                                                        
         	String name = metaboliteList.get(i);
         	String abbr = LocalConfig.getInstance().getMetaboliteNameAbbrMap().get(name);
         	int width = (int) PathwaysFrameConstants.BORDER_THICKNESS;
@@ -1019,7 +1022,7 @@ public class PathwaysFrame extends JApplet {
         		}
         	}
         	Icon icon = new ImageIcon(bufferedImage);
-        	iconMap.put(name, icon);                                                                                                                                         
+            iconMap.put(name, icon);                                                                                                                                        
         } 
     }
                                                                                                                      
