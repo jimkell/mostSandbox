@@ -75,6 +75,7 @@ public class MetaboliteVisualizationDataProcessor {
 							LocalConfig.getInstance().getKeggIdMetaboliteMap().put(keggId, metabolitesList);
 						}
 						if (!originalKeggId.equals(keggId)) {
+							LocalConfig.getInstance().getSubstitutedMetabolitesMap().put(originalKeggId, keggId);
 							if (LocalConfig.getInstance().getKeggIdMetaboliteMap().containsKey(originalKeggId)) {
 								ArrayList<SBMLMetabolite> metabolitesList = LocalConfig.getInstance().getKeggIdMetaboliteMap().get(originalKeggId);
 								metabolitesList.add(metabolites.get(i));

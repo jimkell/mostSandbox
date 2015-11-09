@@ -253,7 +253,17 @@ public class PathwayReactionNodeFactory {
 		for (int i = 0; i < data.size(); i++) {
 			if (!modelIds.contains(data.get(i))) {
 				speciesMatch = false;
-				break;
+				// check if metabolite was substituted
+				if (!speciesMatch && LocalConfig.getInstance().getSubstitutedMetabolitesMap().containsKey(data.get(i))) {
+					if (!modelIds.contains(LocalConfig.getInstance().getSubstitutedMetabolitesMap().get(data.get(i)))) {
+						speciesMatch = false;
+					} else {
+						speciesMatch = true;
+					}
+				}
+				if (!speciesMatch) {
+					break;
+				}
 			}
 		}
 //		System.out.println(speciesMatch);

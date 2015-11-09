@@ -1477,6 +1477,8 @@ public class GraphicalInterface extends JFrame {
 		LocalConfig.getInstance().setMetaboliteNameAbbrMap(metaboliteNameAbbrMap);
 		Map<Object, String> metaboliteIdCompartmentMap = new HashMap<Object, String>();
 		LocalConfig.getInstance().setMetaboliteIdCompartmentMap(metaboliteIdCompartmentMap);
+		Map<String, String> substitutedMetabolitesMap = new HashMap<String, String>();
+		LocalConfig.getInstance().setSubstitutedMetabolitesMap(substitutedMetabolitesMap);
 		
 		// sbml read
 		Map<String, ArrayList<String>> keggIdCompartmentMap = new HashMap<String, ArrayList<String>>();
@@ -12896,6 +12898,7 @@ public class GraphicalInterface extends JFrame {
 		LocalConfig.getInstance().getMetaboliteIdKeggIdMap().clear();
 		LocalConfig.getInstance().getKeggIdMetaboliteMap().clear();
 		LocalConfig.getInstance().getKeggIdCompartmentMap().clear();
+		LocalConfig.getInstance().getSubstitutedMetabolitesMap().clear();
 	}
 	
 	public void processVisualizationsData() {
