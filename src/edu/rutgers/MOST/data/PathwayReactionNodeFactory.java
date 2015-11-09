@@ -20,6 +20,9 @@ public class PathwayReactionNodeFactory {
 	 * @param compartment
 	 * @return
 	 */
+	
+	//ArrayList<String> substitutionKeys = new ArrayList<String>(LocalConfig.getInstance().getMetaboliteSubstitutionsMap().keySet());
+	
 	public PathwayReactionNode createPathwayReactionNode(ArrayList<String> ec, ArrayList<String> keggReactionIds, 
 			ArrayList<String> keggReactantIds, ArrayList<String> keggProductIds, String compartment, int component, 
 			Vector<SBMLReaction> allReactions, Map<Integer, SBMLReaction> idReactionMap) {
@@ -243,6 +246,8 @@ public class PathwayReactionNodeFactory {
 	 * @return
 	 */
 	public boolean speciesMatch(ArrayList<String> dataIds, ArrayList<String> modelIds) {
+//		System.out.println("d " + dataIds);
+//		System.out.println("m " + modelIds);
 		boolean speciesMatch = true;
 		ArrayList<String> data = removedSpeciesBeforeComparison(VisualizationConstants.IGNORE_FOR_IDENTIFIED_REACTION_LIST, dataIds);
 		for (int i = 0; i < data.size(); i++) {
@@ -251,6 +256,7 @@ public class PathwayReactionNodeFactory {
 				break;
 			}
 		}
+//		System.out.println(speciesMatch);
 		return speciesMatch;
 	}
 	

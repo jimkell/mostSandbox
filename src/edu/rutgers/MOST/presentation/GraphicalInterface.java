@@ -1475,6 +1475,8 @@ public class GraphicalInterface extends JFrame {
 		LocalConfig.getInstance().setMetabolicPathways(metabolicPathways);
 		Map<String, String> metaboliteNameAbbrMap = new HashMap<String, String>();
 		LocalConfig.getInstance().setMetaboliteNameAbbrMap(metaboliteNameAbbrMap);
+		Map<Object, String> metaboliteIdCompartmentMap = new HashMap<Object, String>();
+		LocalConfig.getInstance().setMetaboliteIdCompartmentMap(metaboliteIdCompartmentMap);
 		
 		// sbml read
 		Map<String, ArrayList<String>> keggIdCompartmentMap = new HashMap<String, ArrayList<String>>();
@@ -1486,6 +1488,7 @@ public class GraphicalInterface extends JFrame {
 		
 		Map<String, ArrayList<SBMLReaction>> ecNumberReactionMap = new HashMap<String, ArrayList<SBMLReaction>>();
 		LocalConfig.getInstance().setEcNumberReactionMap(ecNumberReactionMap);
+		
 		
 		// categorize reactions
 //		ArrayList<Integer> cytosolIds = new ArrayList<Integer>();
@@ -5500,36 +5503,64 @@ public class GraphicalInterface extends JFrame {
 				String abbrev = unprocessedEqun.getReactants().get(i).getMetaboliteAbbreviation();
 				unprocessedEqun.getReactants().get(i).setMetaboliteId((Integer) LocalConfig.getInstance().getMetaboliteAbbreviationIdMap().get(abbrev));
 				reac.add(unprocessedEqun.getReactants().get(i));
-				String metaboliteName = idMetaboliteMap.get(unprocessedEqun.getReactants().get(i).getMetaboliteId()).getMetaboliteName();
-				unprocessedEqun.getReactants().get(i).setMetaboliteName(metaboliteName);
-				String comp = idMetaboliteMap.get(unprocessedEqun.getReactants().get(i).getMetaboliteId()).getCompartment();
-				if (comp != null && comp.length() > 0) {
-					if (!compartmentList.contains(comp)) {
-						compartmentList.add(comp);
+				String metaboliteName = abbrev;
+				if (idMetaboliteMap.containsKey(unprocessedEqun.getReactants().get(i).getMetaboliteId())) {
+					metaboliteName = idMetaboliteMap.get(unprocessedEqun.getReactants().get(i).getMetaboliteId()).getMetaboliteName();
+					String comp = idMetaboliteMap.get(unprocessedEqun.getReactants().get(i).getMetaboliteId()).getCompartment();
+					if (comp != null && comp.length() > 0) {
+						if (!compartmentList.contains(comp)) {
+							compartmentList.add(comp);
+						}
+						if (!compartmentReactantsList.contains(comp)) {
+							compartmentReactantsList.add(comp);
+						}
+						unprocessedEqun.getReactants().get(i).setCompartment(comp);
 					}
-					if (!compartmentReactantsList.contains(comp)) {
-						compartmentReactantsList.add(comp);
-					}
-					unprocessedEqun.getReactants().get(i).setCompartment(comp);
 				}
+				//String metaboliteName = idMetaboliteMap.get(unprocessedEqun.getReactants().get(i).getMetaboliteId()).getMetaboliteName();
+				unprocessedEqun.getReactants().get(i).setMetaboliteName(metaboliteName);
+//				String comp = idMetaboliteMap.get(unprocessedEqun.getReactants().get(i).getMetaboliteId()).getCompartment();
+//				if (comp != null && comp.length() > 0) {
+//					if (!compartmentList.contains(comp)) {
+//						compartmentList.add(comp);
+//					}
+//					if (!compartmentReactantsList.contains(comp)) {
+//						compartmentReactantsList.add(comp);
+//					}
+//					unprocessedEqun.getReactants().get(i).setCompartment(comp);
+//				}
 			}
 			for (int i = 0; i < unprocessedEqun.getProducts().size(); i++) {
 				unprocessedEqun.getProducts().get(i).setReactionId(reactionId);
 				String abbrev = unprocessedEqun.getProducts().get(i).getMetaboliteAbbreviation();
 				unprocessedEqun.getProducts().get(i).setMetaboliteId((Integer) LocalConfig.getInstance().getMetaboliteAbbreviationIdMap().get(abbrev));
 				prod.add(unprocessedEqun.getProducts().get(i));
-				String metaboliteName = idMetaboliteMap.get(unprocessedEqun.getProducts().get(i).getMetaboliteId()).getMetaboliteName();
-				unprocessedEqun.getProducts().get(i).setMetaboliteName(metaboliteName);
-				String comp = idMetaboliteMap.get(unprocessedEqun.getProducts().get(i).getMetaboliteId()).getCompartment();
-				if (comp != null && comp.length() > 0) {
-					if (!compartmentList.contains(comp)) {
-						compartmentList.add(comp);
+				String metaboliteName = abbrev;
+				if (idMetaboliteMap.containsKey(unprocessedEqun.getProducts().get(i).getMetaboliteId())) {
+					metaboliteName = idMetaboliteMap.get(unprocessedEqun.getProducts().get(i).getMetaboliteId()).getMetaboliteName();
+					String comp = idMetaboliteMap.get(unprocessedEqun.getProducts().get(i).getMetaboliteId()).getCompartment();
+					if (comp != null && comp.length() > 0) {
+						if (!compartmentList.contains(comp)) {
+							compartmentList.add(comp);
+						}
+						if (!compartmentProductsList.contains(comp)) {
+							compartmentProductsList.add(comp);
+						}
+						unprocessedEqun.getProducts().get(i).setCompartment(comp);
 					}
-					if (!compartmentProductsList.contains(comp)) {
-						compartmentProductsList.add(comp);
-					}
-					unprocessedEqun.getProducts().get(i).setCompartment(comp);
 				}
+				//String metaboliteName = idMetaboliteMap.get(unprocessedEqun.getProducts().get(i).getMetaboliteId()).getMetaboliteName();
+				unprocessedEqun.getProducts().get(i).setMetaboliteName(metaboliteName);
+//				String comp = idMetaboliteMap.get(unprocessedEqun.getProducts().get(i).getMetaboliteId()).getCompartment();
+//				if (comp != null && comp.length() > 0) {
+//					if (!compartmentList.contains(comp)) {
+//						compartmentList.add(comp);
+//					}
+//					if (!compartmentProductsList.contains(comp)) {
+//						compartmentProductsList.add(comp);
+//					}
+//					unprocessedEqun.getProducts().get(i).setCompartment(comp);
+//				}
 			}
 			equation.setReactants(reac);
 			equation.setProducts(prod);
