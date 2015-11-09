@@ -296,11 +296,12 @@ public class PathwayReactionNodeFactory {
 				speciesMatch = true;
 			}
 		}
-		if (speciesMatch) {
+		// TODO: need to account for substituted metabolites
+//		if (speciesMatch) {
 //			System.out.println(speciesMatch);
 //			System.out.println(data);
 //			System.out.println(model);
-		}
+//		}
 		return speciesMatch;
 	}
 	
