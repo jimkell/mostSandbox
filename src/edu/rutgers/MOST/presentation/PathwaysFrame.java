@@ -619,7 +619,7 @@ public class PathwaysFrame extends JApplet {
 				// update temporary lists to keep track of what ec numbers have been found
 				double edgeColor = PathwaysFrameConstants.BLACK_COLOR_VALUE;
 				double flux = 0;
-				pn.setFluxValue(flux);
+				//pn.setFluxValue(flux);
 				for (int z = 0; z < pn.getReactions().size(); z++) {
 					if (pn.getReactions().get(z) != null) {
 						flux += pn.getReactions().get(z).getFluxValue();
@@ -631,10 +631,8 @@ public class PathwaysFrame extends JApplet {
 						}
 					}
 				}
-				// set average flux if multiple reactions
-				if (pn.getReactions().size() > 0) {
-					pn.setFluxValue(flux/pn.getReactions().size());
-				}
+				// set sum for flux
+				pn.setFluxValue(flux);
 				boolean drawReaction = true;
 				if (pn.getReactions().size() > 0) {
 					foundReactionsList.add(displayName);
