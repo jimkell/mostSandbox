@@ -101,11 +101,10 @@ public class MetaboliteVisualizationDataProcessor {
 					}
 				}
 			}
-			//System.out.println(LocalConfig.getInstance().getKeggIdCompartmentMap());
-			//System.out.println(LocalConfig.getInstance().getMetaboliteIdKeggIdMap());
-			//System.out.println(LocalConfig.getInstance().getKeggIdMetaboliteMap());
+//			System.out.println(LocalConfig.getInstance().getKeggIdCompartmentMap());
+//			System.out.println(LocalConfig.getInstance().getMetaboliteIdKeggIdMap());
+//			System.out.println(LocalConfig.getInstance().getKeggIdMetaboliteMap());
 		}
-		//LocalConfig.getInstance().setMetaboliteSubstitutionsFoundMap(metaboliteSubstitutionsFoundMap);
 	}
 
 	private boolean metaboliteAbbreviationValid(SBMLMetabolite metabolite) {

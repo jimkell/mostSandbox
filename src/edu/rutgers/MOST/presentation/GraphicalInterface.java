@@ -12836,6 +12836,7 @@ public class GraphicalInterface extends JFrame {
 		int keggIdColumn = rf.getKeggIdColumnIndex();
 		createReactionsIdRowMap();
 		ArrayList<String> reactionDataKeggIds = new ArrayList<String>(LocalConfig.getInstance().getReactionDataKeggIdMap().keySet());
+		System.out.println(LocalConfig.getInstance().getUnplottedReactionIds());
 		for (int i = 0; i < LocalConfig.getInstance().getUnplottedReactionIds().size(); i++) {
 			if (LocalConfig.getInstance().getModelKeggEquationMap().containsKey(Integer.toString(LocalConfig.getInstance().getUnplottedReactionIds().get(i)))) {
 				// data from model
@@ -13010,7 +13011,8 @@ public class GraphicalInterface extends JFrame {
 		// key = reaction id, value = PathwayReactionData (lists of KEGG ids of reactants and products)
 		ModelKeggEquationMapCreator modelKeggEquationMapCreator = new ModelKeggEquationMapCreator();
 		modelKeggEquationMapCreator.createKeggEquationMap();
-		assignKeggReactionIds();
+		// It is probably not valid to assign KEGG reaction ids. 
+		//assignKeggReactionIds();
 		categorizeTransportReactions();
 		KEGGIdReactionMapCreator keggIdReactionMapCreator = new KEGGIdReactionMapCreator();
 		keggIdReactionMapCreator.createKEGGIdReactionMap(rxns);

@@ -27,9 +27,6 @@ public class PathwayReactionNodeFactory {
 			ArrayList<String> keggReactantIds, ArrayList<String> keggProductIds, String compartment, int component, 
 			Vector<SBMLReaction> allReactions, Map<Integer, SBMLReaction> idReactionMap) {
 		PathwayReactionNode pn = new PathwayReactionNode();
-		//ArrayList<String> sideReactants = new ArrayList<String>();
-		//ArrayList<String> sideProducts = new ArrayList<String>();
-		//ArrayList<String> enzymeDataEquations = new ArrayList<String>();
 		ArrayList<SBMLReaction> reactions = new ArrayList<SBMLReaction>();
 		
 		for (int m = 0; m < ec.size(); m++) {
@@ -76,12 +73,11 @@ public class PathwayReactionNodeFactory {
 				}
 			}
 		}
-		//System.out.println("ni " + LocalConfig.getInstance().getNoIdentifierIds());
+//		System.out.println("ni " + LocalConfig.getInstance().getNoIdentifierIds());
 		for (int i = 0; i < LocalConfig.getInstance().getNoIdentifierIds().size(); i++) {
 			SBMLReaction r = idReactionMap.get(LocalConfig.getInstance().getNoIdentifierIds().get(i));
 			ArrayList<SBMLReaction> reac = new ArrayList<SBMLReaction>();
 			reac.add(r);
-			//System.out.println(reac);
 			if (component == PathwaysFrameConstants.PROCESSES_COMPONENT) {
 				//reactions.add(reac.get(0));
 			} else {
@@ -340,7 +336,7 @@ public class PathwayReactionNodeFactory {
 					if (!reactionNames.contains(reactions.get(i).getReactionName())) {
 						reactionNames.add(reactions.get(i).getReactionName());
 					}
-					if (!ecNumbers.contains(reactions.get(i).getEcNumber())) {
+					if (reactions.get(i).getEcNumber() != null && reactions.get(i).getEcNumber().length() > 0 && !ecNumbers.contains(reactions.get(i).getEcNumber())) {
 						ecNumbers.add(reactions.get(i).getEcNumber());
 					}
 					// since ec number reaction map made before kegg reaction ids assigned, these are

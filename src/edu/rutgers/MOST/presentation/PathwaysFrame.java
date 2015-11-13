@@ -608,7 +608,6 @@ public class PathwaysFrame extends JApplet {
     	ArrayList<String> metabPosKeys = new ArrayList<String>(metabPosMap.keySet());
     	for (int k = 0; k < pathway.getReactionsData().size(); k++) {
 			if (pathway.getComponent() == component) {
-				// only draw cytosol for now
 				PathwayReactionNode pn = prnf.createPathwayReactionNode(pathway.getReactionsData().get(Integer.toString(k)).getEcNumbers(),
 						pathway.getReactionsData().get(Integer.toString(k)).getKeggReactionIds(), pathway.getReactionsData().get(Integer.toString(k)).getKeggReactantIds(),
 						pathway.getReactionsData().get(Integer.toString(k)).getKeggProductIds(), LocalConfig.getInstance().getSelectedCompartmentName(), pathway.getComponent(), rxns, 
@@ -619,12 +618,9 @@ public class PathwaysFrame extends JApplet {
 				// update temporary lists to keep track of what ec numbers have been found
 				double edgeColor = PathwaysFrameConstants.BLACK_COLOR_VALUE;
 				double flux = 0;
-				//pn.setFluxValue(flux);
 				for (int z = 0; z < pn.getReactions().size(); z++) {
 					if (pn.getReactions().get(z) != null) {
 						flux += pn.getReactions().get(z).getFluxValue();
-//						// set last one for now
-//						pn.setFluxValue(pn.getReactions().get(z).getFluxValue());
 						if (pn.getReactions().get(z).getKnockout().equals(GraphicalInterfaceConstants.BOOLEAN_VALUES[1])) {
 							koReactions.add(displayName);
 							edgeColor = PathwaysFrameConstants.RED_COLOR_VALUE;
