@@ -34126,6 +34126,7 @@ forward 755 KEGG Rxn Id R01802 [2.7.8.11] [7] [9] C00137 = C01194
 [C00269, C00137] [CDPDDDECG, INOST] [CDP-diacylglycerol, myo-Inositol] level [0.9] level pos [-8.0] 
 [C00055, C01194] [CMP, (3-Phosphatidyl)-1-D-inositol] [Cytidine-5'-monophosphate, (3-Phosphatidyl)-1-D-inositol] level [1.0] level pos [-7.0] 
 
+// done
 forward 756 KEGG Rxn Id R00582 [3.1.3.3] [110] [652] C01005 = C00065
 [C01005, C00001] [PSER_L, H2O] [3P-Serine, Water] level [11.0] level pos [2.5] 
 [C00065, C00009] [SER_L, PI] [L-Serine, Phosphate] level [5.6] level pos [5.0] 
