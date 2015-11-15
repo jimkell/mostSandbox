@@ -1,0 +1,268 @@
+// no KEGG id LalaDgluMdap, LalaDgluMdapDala
+117
+M_LalaDgluMdapDala_p + M_h2o_p --> M_LalaDgluMdap_p + M_ala_DASH_D_p
+C_p.L-alanine-D-glutamate-meso-2,6-diaminoheptanedioate-D-alanine + C_p.H2O --> C_p.L-alanine-D-glutamate-meso-2,6-diaminoheptanedioate + C_p.D-Alanine
+228
+M_anhgm3p_p + M_h2o_p --> M_LalaDgluMdap_p + M_anhgm_p
+C_p.N-Acetyl-D-glucosamine(anhydrous)N-Acetylmuramyl-tripeptide + C_p.H2O --> C_p.L-alanine-D-glutamate-meso-2,6-diaminoheptanedioate + C_p.N-Acetyl-D-glucosamine(anhydrous)N-Acetylmuramic acid
+232
+M_anhgm4p_p + M_h2o_p --> M_LalaDgluMdapDala_p + M_anhgm_p
+C_p.N-Acetyl-D-glucosamine(anhydrous)N-Acetylmuramyl-tetrapeptide + C_p.H2O --> C_p.L-alanine-D-glutamate-meso-2,6-diaminoheptanedioate-D-alanine + C_p.N-Acetyl-D-glucosamine(anhydrous)N-Acetylmuramic acid
+
+// no KEGG id acgal1p
+154
+M_acgal1p_p + M_h2o_p --> M_acgal_p + M_pi_p
+C_p.N-Acetyl-D-galactosamine 1-phosphate + C_p.H2O --> C_p.N-Acetyl-D-galactosamine + C_p.Phosphate
+
+// no KEGG id anhgm4p, anhgm3p
+234
+M_anhgm4p_p + M_h2o_p --> M_ala_DASH_D_p + M_anhgm3p_p
+C_p.N-Acetyl-D-glucosamine(anhydrous)N-Acetylmuramyl-tetrapeptide + C_p.H2O --> C_p.D-Alanine + C_p.N-Acetyl-D-glucosamine(anhydrous)N-Acetylmuramyl-tripeptide
+
+// no KEGG id g3ps
+1309
+M_g3ps_p + M_h2o_p --> M_glyc3p_p + M_h_p + M_ser_DASH_L_p
+C_p.Glycerophosphoserine + C_p.H2O --> C_p.Glycerol 3-phosphate + C_p.H+ + C_p.L-Serine
+
+// no KEGG id unagamuf, eca2und
+675
+2 M_unagamuf_p --> M_eca2und_p + M_h_p + M_udcpdp_p
+2 C_p.Undecaprenyl-diphospho N-acetylglucosamine-N-acetylmannosaminuronate-N-acetamido-4,6-dideoxy-D-galactose --> C_p.(enterobacterial common antigen)x2 undecaprenyl-diphosphate + C_p.H+ + C_p.Undecaprenyl diphosphate
+676
+M_eca2und_p + M_unagamuf_p --> M_eca3und_p + M_h_p + M_udcpdp_p
+C_p.(enterobacterial common antigen)x2 undecaprenyl-diphosphate + C_p.Undecaprenyl-diphospho N-acetylglucosamine-N-acetylmannosaminuronate-N-acetamido-4,6-dideoxy-D-galactose --> C_p.(enterobacterial common antigen)x3 undecaprenyl-diphosphate + C_p.H+ + C_p.Undecaprenyl diphosphate
+677
+M_eca3und_p + M_unagamuf_p --> M_eca4und_p + M_h_p + M_udcpdp_p
+C_p.(enterobacterial common antigen)x3 undecaprenyl-diphosphate + C_p.Undecaprenyl-diphospho N-acetylglucosamine-N-acetylmannosaminuronate-N-acetamido-4,6-dideoxy-D-galactose --> C_p.(enterobacterial common antigen)x4 undecaprenyl-diphosphate + C_p.H+ + C_p.Undecaprenyl diphosphate
+674
+M_colipa_p + M_eca4und_p --> M_eca4colipa_p + M_h_p + M_udcpdp_p
+C_p.core oligosaccharide lipid A + C_p.(enterobacterial common antigen)x4 undecaprenyl-diphosphate --> C_p.(enterobacterial common antigen)x4 core oligosaccharide lipid A + C_p.H+ + C_p.Undecaprenyl diphosphate
+
+// no KEGG id 14glucan
+137
+M_14glucan_p --> M_malthx_p
+C_p._1,4-alpha-D-glucan --> C_p.Maltohexaose
+
+// no kegg id 1agpg120
+1997
+M_h2o_p + M_pg120_p --> M_1agpg120_p + M_ddca_p + M_h_p
+C_p.H2O + C_p.Phosphatidylglycerol (didodecanoyl, n-C12:0) --> C_p._1-Acyl-sn-glycero-3-phosphoglycerol (n-C12:0) + C_p.Dodecanoate (n-C12:0) + C_p.H+
+1998
+M_h2o_p + M_pg140_p --> M_1agpg140_p + M_h_p + M_ttdca_p
+C_p.H2O + C_p.Phosphatidylglycerol (ditetradecanoyl, n-C14:0) --> C_p._1-Acyl-sn-glycero-3-phosphoglycerol (n-C14:0) + C_p.H+ + C_p.tetradecanoate (n-C14:0)
+1999
+M_h2o_p + M_pg141_p --> M_1agpg141_p + M_h_p + M_ttdcea_p
+C_p.H2O + C_p.Phosphatidylglycerol (ditetradec-7-enoyl, n-C14:1) --> C_p._1-Acyl-sn-glycero-3-phosphoglycerol (n-C14:1) + C_p.H+ + C_p.tetradecenoate (n-C14:1)
+2000
+M_h2o_p + M_pg160_p --> M_1agpg160_p + M_h_p + M_hdca_p
+C_p.H2O + C_p.Phosphatidylglycerol (dihexadecanoyl, n-C16:0) --> C_p._1-Acyl-sn-glycero-3-phosphoglycerol (n-C16:0) + C_p.H+ + C_p.Hexadecanoate (n-C16:0)
+2001
+M_h2o_p + M_pg161_p --> M_1agpg161_p + M_h_p + M_hdcea_p
+C_p.H2O + C_p.Phosphatidylglycerol (dihexadec-9-enoyl, n-C16:1) --> C_p._1-Acyl-sn-glycero-3-phosphoglycerol (n-C16:1) + C_p.H+ + C_p.Hexadecenoate (n-C16:1)
+2002
+M_h2o_p + M_pg180_p --> M_1agpg180_p + M_h_p + M_ocdca_p
+C_p.H2O + C_p.Phosphatidylglycerol (dioctadecanoyl, n-C18:0) --> C_p._1-Acyl-sn-glycero-3-phosphoglycerol (n-C18:0) + C_p.H+ + C_p.octadecanoate (n-C18:0)
+2003
+M_h2o_p + M_pg181_p --> M_1agpg181_p + M_h_p + M_ocdcea_p
+C_p.H2O + C_p.Phosphatidylglycerol (dioctadec-11-enoyl, n-C18:1) --> C_p._1-Acyl-sn-glycero-3-phosphoglycerol (n-C18:1) + C_p.H+ + C_p.octadecenoate (n-C18:1)
+
+// no kegg id 2agpg120
+1976
+M_h2o_p + M_pg120_p --> M_2agpg120_p + M_ddca_p + M_h_p
+C_p.H2O + C_p.Phosphatidylglycerol (didodecanoyl, n-C12:0) --> C_p._2-Acyl-sn-glycero-3-phosphoglycerol (n-C12:0) + C_p.Dodecanoate (n-C12:0) + C_p.H+
+1977
+M_h2o_p + M_pg140_p --> M_2agpg140_p + M_h_p + M_ttdca_p
+C_p.H2O + C_p.Phosphatidylglycerol (ditetradecanoyl, n-C14:0) --> C_p._2-Acyl-sn-glycero-3-phosphoglycerol (n-C14:0) + C_p.H+ + C_p.tetradecanoate (n-C14:0)
+1978
+M_h2o_p + M_pg141_p --> M_2agpg141_p + M_h_p + M_ttdcea_p
+C_p.H2O + C_p.Phosphatidylglycerol (ditetradec-7-enoyl, n-C14:1) --> C_p._2-Acyl-sn-glycero-3-phosphoglycerol (n-C14:1) + C_p.H+ + C_p.tetradecenoate (n-C14:1)
+1979
+M_h2o_p + M_pg160_p --> M_2agpg160_p + M_h_p + M_hdca_p
+C_p.H2O + C_p.Phosphatidylglycerol (dihexadecanoyl, n-C16:0) --> C_p._2-Acyl-sn-glycero-3-phosphoglycerol (n-C16:0) + C_p.H+ + C_p.Hexadecanoate (n-C16:0)
+1980
+M_h2o_p + M_pg161_p --> M_2agpg161_p + M_h_p + M_hdcea_p
+C_p.H2O + C_p.Phosphatidylglycerol (dihexadec-9-enoyl, n-C16:1) --> C_p._2-Acyl-sn-glycero-3-phosphoglycerol (n-C16:1) + C_p.H+ + C_p.Hexadecenoate (n-C16:1)
+1981
+M_h2o_p + M_pg180_p --> M_2agpg180_p + M_h_p + M_ocdca_p
+C_p.H2O + C_p.Phosphatidylglycerol (dioctadecanoyl, n-C18:0) --> C_p._2-Acyl-sn-glycero-3-phosphoglycerol (n-C18:0) + C_p.H+ + C_p.octadecanoate (n-C18:0)
+1982
+M_h2o_p + M_pg181_p --> M_2agpg181_p + M_h_p + M_ocdcea_p
+C_p.H2O + C_p.Phosphatidylglycerol (dioctadec-11-enoyl, n-C18:1) --> C_p._2-Acyl-sn-glycero-3-phosphoglycerol (n-C18:1) + C_p.H+ + C_p.octadecenoate (n-C18:1)
+
+
+// no KEGG ids
+629
+M_dsbcox_p + 2 M_gthrd_p --> M_dsbcrd_p + M_gthox_p
+C_p.protein disulfide isomerase II (oxidized) + 2 C_p.Reduced glutathione --> C_p.protein disulfide isomerase II (reduced) + C_p.Oxidized glutathione
+631
+M_dsbgox_p + 2 M_gthrd_p --> M_dsbgrd_p + M_gthox_p
+C_p.periplasmic disulfide isomerase/thiol-disulphide oxidase (oxidized) + 2 C_p.Reduced glutathione --> C_p.periplasmic disulfide isomerase/thiol-disulphide oxidase (reduced) + C_p.Oxidized glutathione
+
+// no KEGG ids fatty acids 14:1, 16:1, 18:1
+1512
+M_1agpe141_p + M_h2o_p --> M_g3pe_p + M_h_p + M_ttdcea_p
+C_p._1-Acyl-sn-glycero-3-phosphoethanolamine (n-C14:1) + C_p.H2O --> C_p.sn-Glycero-3-phosphoethanolamine + C_p.H+ + C_p.tetradecenoate (n-C14:1)
+1514
+M_1agpe161_p + M_h2o_p --> M_g3pe_p + M_h_p + M_hdcea_p
+C_p._1-Acyl-sn-glycero-3-phosphoethanolamine (n-C16:1) + C_p.H2O --> C_p.sn-Glycero-3-phosphoethanolamine + C_p.H+ + C_p.Hexadecenoate (n-C16:1)
+1516
+M_1agpe181_p + M_h2o_p --> M_g3pe_p + M_h_p + M_ocdcea_p
+C_p._1-Acyl-sn-glycero-3-phosphoethanolamine (n-C18:1) + C_p.H2O --> C_p.sn-Glycero-3-phosphoethanolamine + C_p.H+ + C_p.octadecenoate (n-C18:1)
+1971
+M_h2o_p + M_pe141_p --> M_2agpe141_p + M_h_p + M_ttdcea_p
+C_p.H2O + C_p.phosphatidylethanolamine (ditetradec-7-enoyl, n-C14:1) --> C_p._2-Acyl-sn-glycero-3-phosphoethanolamine (n-C14:1) + C_p.H+ + C_p.tetradecenoate (n-C14:1)
+1973
+M_h2o_p + M_pe161_p --> M_2agpe161_p + M_h_p + M_hdcea_p
+C_p.H2O + C_p.phosphatidylethanolamine (dihexadec-9enoyl, n-C16:1) --> C_p._2-Acyl-sn-glycero-3-phosphoethanolamine (n-C16:1) + C_p.H+ + C_p.Hexadecenoate (n-C16:1)
+1975
+M_h2o_p + M_pe181_p --> M_2agpe181_p + M_h_p + M_ocdcea_p
+C_p.H2O + C_p.phosphatidylethanolamine (dioctadec-11-enoyl, n-C18:1) --> C_p._2-Acyl-sn-glycero-3-phosphoethanolamine (n-C18:1) + C_p.H+ + C_p.octadecenoate (n-C18:1)
+
+
+// no KEGG id murein
+1609
+M_murein5p5p_p --> M_ala_DASH_D_p + M_murein5px4p_p
+C_p.two linked disacharide pentapeptide murein units (uncrosslinked, middle of chain) --> C_p.D-Alanine + C_p.two disacharide linked murein units, pentapeptide crosslinked tetrapeptide (A2pm->D-ala) (middle of chain)
+1610
+M_murein5p5p_p --> M_alaala_p + M_murein5px3p_p
+C_p.two linked disacharide pentapeptide murein units (uncrosslinked, middle of chain) --> C_p.D-Alanyl-D-alanine + C_p.two disacharide linked murein units, pentapeptide corsslinked tripeptide (A2pm->A2pm) (middle of chain)
+1611
+M_murein5p5p5p_p --> 2 M_ala_DASH_D_p + M_murein5px4px4p_p
+C_p.three linked disacharide pentapeptide murein units (uncrosslinked, middle of chain) --> 2 C_p.D-Alanine + C_p.three disacharide linked murein units (pentapeptide crosslinked tetrapeptide (A2pm->D-ala) tetrapeptide corsslinked tetrapeptide (A2pm->D-ala)) (middle of chain)
+1612
+M_h2o_p + M_murein5px4p_p --> M_ala_DASH_D_p + M_murein4px4p_p
+C_p.H2O + C_p.two disacharide linked murein units, pentapeptide crosslinked tetrapeptide (A2pm->D-ala) (middle of chain) --> C_p.D-Alanine + C_p.two disacharide linked murein units, tetrapeptide corsslinked tetrapeptide (A2pm->D-ala) (middle of chain)
+1613
+M_h2o_p + M_murein5px4px4p_p --> M_ala_DASH_D_p + M_murein4px4px4p_p
+C_p.H2O + C_p.three disacharide linked murein units (pentapeptide crosslinked tetrapeptide (A2pm->D-ala) tetrapeptide corsslinked tetrapeptide (A2pm->D-ala)) (middle of chain) --> C_p.D-Alanine + C_p.three disacharide linked murein units (tetrapeptide crosslinked tetrapeptide (A2pm->D-ala) _ tetrapeptide corsslinked tetrapeptide (A2pm->D-ala)) (middle of chain)
+1614
+M_h2o_p + M_murein5p5p_p --> M_ala_DASH_D_p + M_murein5p4p_p
+C_p.H2O + C_p.two linked disacharide pentapeptide murein units (uncrosslinked, middle of chain) --> C_p.D-Alanine + C_p.two linked disacharide pentapeptide and tetrapeptide murein units (uncrosslinked, middle of chain)
+1615
+M_h2o_p + M_murein5p4p_p --> M_ala_DASH_D_p + M_murein4p4p_p
+C_p.H2O + C_p.two linked disacharide pentapeptide and tetrapeptide murein units (uncrosslinked, middle of chain) --> C_p.D-Alanine + C_p.two linked disacharide tetrapeptide murein units (uncrosslinked, middle of chain)
+1616
+M_h2o_p + M_murein5p3p_p --> M_ala_DASH_D_p + M_murein4p3p_p
+C_p.H2O + C_p.two linked disacharide pentapeptide and tripeptide murein units (uncrosslinked, middle of chain) --> C_p.D-Alanine + C_p.two linked disacharide tetrapeptide and tripeptide murein units (uncrosslinked, middle of chain)
+1617
+M_h2o_p + M_murein4px4p_p --> M_murein4p4p_p
+C_p.H2O + C_p.two disacharide linked murein units, tetrapeptide corsslinked tetrapeptide (A2pm->D-ala) (middle of chain) --> C_p.two linked disacharide tetrapeptide murein units (uncrosslinked, middle of chain)
+1618
+M_h2o_p + M_murein3px4p_p --> M_murein4p3p_p
+C_p.H2O + C_p.two disacharide linked murein units, tripeptide crosslinked tetrapeptide (A2pm->D-ala) (middle of chain) --> C_p.two linked disacharide tetrapeptide and tripeptide murein units (uncrosslinked, middle of chain)
+1619
+M_h2o_p + M_murein5px4p_p --> M_murein5p4p_p
+C_p.H2O + C_p.two disacharide linked murein units, pentapeptide crosslinked tetrapeptide (A2pm->D-ala) (middle of chain) --> C_p.two linked disacharide pentapeptide and tetrapeptide murein units (uncrosslinked, middle of chain)
+1620
+M_h2o_p + M_murein4px4px4p_p --> M_murein4px4p4p_p
+C_p.H2O + C_p.three disacharide linked murein units (tetrapeptide crosslinked tetrapeptide (A2pm->D-ala) _ tetrapeptide corsslinked tetrapeptide (A2pm->D-ala)) (middle of chain) --> C_p.three disacharide linked murein units (tetrapeptide crosslinked tetrapeptide (A2pm->D-ala), one uncrosslinked tetrapaptide) (middle of chain)
+1656
+M_h2o_p + M_murein5px4p_p --> M_alaala_p + M_murein3px4p_p
+C_p.H2O + C_p.two disacharide linked murein units, pentapeptide crosslinked tetrapeptide (A2pm->D-ala) (middle of chain) --> C_p.D-Alanyl-D-alanine + C_p.two disacharide linked murein units, tripeptide crosslinked tetrapeptide (A2pm->D-ala) (middle of chain)
+1657
+M_h2o_p + M_murein4p4p_p --> M_ala_DASH_D_p + M_murein4p3p_p
+C_p.H2O + C_p.two linked disacharide tetrapeptide murein units (uncrosslinked, middle of chain) --> C_p.D-Alanine + C_p.two linked disacharide tetrapeptide and tripeptide murein units (uncrosslinked, middle of chain)
+1658
+M_h2o_p + M_murein5p5p_p --> M_alaala_p + M_murein5p3p_p
+C_p.H2O + C_p.two linked disacharide pentapeptide murein units (uncrosslinked, middle of chain) --> C_p.D-Alanyl-D-alanine + C_p.two linked disacharide pentapeptide and tripeptide murein units (uncrosslinked, middle of chain)
+1659
+M_h2o_p + M_murein4p3p_p --> M_ala_DASH_D_p + M_murein3p3p_p
+C_p.H2O + C_p.two linked disacharide tetrapeptide and tripeptide murein units (uncrosslinked, middle of chain) --> C_p.D-Alanine + C_p.two linked disacharide tripeptide murein units (uncrosslinked, middle of chain)
+1660
+M_h2o_p + M_murein5px3p_p --> M_alaala_p + M_murein3px3p_p
+C_p.H2O + C_p.two disacharide linked murein units, pentapeptide corsslinked tripeptide (A2pm->A2pm) (middle of chain) --> C_p.D-Alanyl-D-alanine + C_p.two disacharide linked murein units, tripeptide crosslinked tripeptide (A2pm->A2pm) (middle of chain)
+1661
+M_h2o_p + M_murein3px3p_p --> M_murein3p3p_p
+C_p.H2O + C_p.two disacharide linked murein units, tripeptide crosslinked tripeptide (A2pm->A2pm) (middle of chain) --> C_p.two linked disacharide tripeptide murein units (uncrosslinked, middle of chain)
+1662
+M_h2o_p + M_murein5px3p_p --> M_murein5p3p_p
+C_p.H2O + C_p.two disacharide linked murein units, pentapeptide corsslinked tripeptide (A2pm->A2pm) (middle of chain) --> C_p.two linked disacharide pentapeptide and tripeptide murein units (uncrosslinked, middle of chain)
+1668
+M_murein4p4p_p --> 2 M_anhgm4p_p
+C_p.two linked disacharide tetrapeptide murein units (uncrosslinked, middle of chain) --> 2 C_p.N-Acetyl-D-glucosamine(anhydrous)N-Acetylmuramyl-tetrapeptide
+1669
+M_murein4p3p_p --> M_anhgm3p_p + M_anhgm4p_p
+C_p.two linked disacharide tetrapeptide and tripeptide murein units (uncrosslinked, middle of chain) --> C_p.N-Acetyl-D-glucosamine(anhydrous)N-Acetylmuramyl-tripeptide + C_p.N-Acetyl-D-glucosamine(anhydrous)N-Acetylmuramyl-tetrapeptide
+1670
+M_murein3p3p_p --> 2 M_anhgm3p_p
+C_p.two linked disacharide tripeptide murein units (uncrosslinked, middle of chain) --> 2 C_p.N-Acetyl-D-glucosamine(anhydrous)N-Acetylmuramyl-tripeptide
+1671
+M_murein4px4p4p_p --> M_anhgm4p_p + M_murein4px4p_p
+C_p.three disacharide linked murein units (tetrapeptide crosslinked tetrapeptide (A2pm->D-ala), one uncrosslinked tetrapaptide) (middle of chain) --> C_p.N-Acetyl-D-glucosamine(anhydrous)N-Acetylmuramyl-tetrapeptide + C_p.two disacharide linked murein units, tetrapeptide corsslinked tetrapeptide (A2pm->D-ala) (middle of chain)
+
+// no KEGG ids colipa, o16
+1817
+M_colipa_p + M_o16a4und_p --> M_h_p + M_o16a4colipa_p + M_udcpdp_p
+C_p.core oligosaccharide lipid A + C_p.(O16 antigen)x4 undecaprenyl diphosphate --> C_p.H+ + C_p.(O16 antigen)x4 core oligosaccharide lipid A + C_p.Undecaprenyl diphosphate
+1818
+2 M_o16aund_p --> M_h_p + M_o16a2und_p + M_udcpdp_p
+2 C_p.O16 antigen undecaprenyl diphosphate --> C_p.H+ + C_p.(O16 antigen)x2 undecaprenyl diphosphate + C_p.Undecaprenyl diphosphate
+1819
+M_o16a2und_p + M_o16aund_p --> M_h_p + M_o16a3und_p + M_udcpdp_p
+C_p.(O16 antigen)x2 undecaprenyl diphosphate + C_p.O16 antigen undecaprenyl diphosphate --> C_p.H+ + C_p.(O16 antigen)x3 undecaprenyl diphosphate + C_p.Undecaprenyl diphosphate
+1820
+M_o16a3und_p + M_o16aund_p --> M_h_p + M_o16a4und_p + M_udcpdp_p
+C_p.(O16 antigen)x3 undecaprenyl diphosphate + C_p.O16 antigen undecaprenyl diphosphate --> C_p.H+ + C_p.(O16 antigen)x4 undecaprenyl diphosphate + C_p.Undecaprenyl diphosphate
+
+// no KEGG id enlipa
+1904
+M_lipa_p + M_pe161_p --> M_12dgr161_p + M_enlipa_p
+C_p.KDO(2)-lipid (A) + C_p.phosphatidylethanolamine (dihexadec-9enoyl, n-C16:1) --> C_p._1,2-Diacyl-sn-glycerol (dihexadec-9-enoyl, n-C16:1) + C_p.phosphoethanolamine KDO(2)-lipid (A)
+1905
+M_lipa_p + M_pe181_p --> M_12dgr181_p + M_enlipa_p
+C_p.KDO(2)-lipid (A) + C_p.phosphatidylethanolamine (dioctadec-11-enoyl, n-C18:1) --> C_p._1,2-Diacyl-sn-glycerol (dioctadec-11-enoyl, n-C18:1) + C_p.phosphoethanolamine KDO(2)-lipid (A)
+
+// minohp not in Roche map
+1958
+6 M_h2o_p + M_minohp_p --> M_inost_p + 6 M_pi_p
+6 C_p.H2O + C_p.myo-Inositol hexakisphosphate --> C_p.myo-Inositol + 6 C_p.Phosphate
+
+
+// g3pi not in KEGG or Roche maps
+1313
+M_g3pi_p + M_h2o_p --> M_glyc3p_p + M_h_p + M_inost_p
+C_p.sn-Glycero-3-phospho-1-inositol + C_p.H2O --> C_p.Glycerol 3-phosphate + C_p.H+ + C_p.myo-Inositol
+
+// g3pg_p not in KEGG or Roche
+1311
+M_g3pg_p + M_h2o_p --> M_glyc_p + M_glyc3p_p + M_h_p
+C_p.Glycerophosphoglycerol + C_p.H2O --> C_p.Glycerol + C_p.Glycerol 3-phosphate + C_p.H+
+1517
+M_1agpg120_p + M_h2o_p --> M_ddca_p + M_g3pg_p + M_h_p
+C_p._1-Acyl-sn-glycero-3-phosphoglycerol (n-C12:0) + C_p.H2O --> C_p.Dodecanoate (n-C12:0) + C_p.Glycerophosphoglycerol + C_p.H+
+1518
+M_1agpg140_p + M_h2o_p --> M_g3pg_p + M_h_p + M_ttdca_p
+C_p._1-Acyl-sn-glycero-3-phosphoglycerol (n-C14:0) + C_p.H2O --> C_p.Glycerophosphoglycerol + C_p.H+ + C_p.tetradecanoate (n-C14:0)
+1519
+M_1agpg141_p + M_h2o_p --> M_g3pg_p + M_h_p + M_ttdcea_p
+C_p._1-Acyl-sn-glycero-3-phosphoglycerol (n-C14:1) + C_p.H2O --> C_p.Glycerophosphoglycerol + C_p.H+ + C_p.tetradecenoate (n-C14:1)
+1520
+M_1agpg160_p + M_h2o_p --> M_g3pg_p + M_h_p + M_hdca_p
+C_p._1-Acyl-sn-glycero-3-phosphoglycerol (n-C16:0) + C_p.H2O --> C_p.Glycerophosphoglycerol + C_p.H+ + C_p.Hexadecanoate (n-C16:0)
+1521
+M_1agpg161_p + M_h2o_p --> M_g3pg_p + M_h_p + M_hdcea_p
+C_p._1-Acyl-sn-glycero-3-phosphoglycerol (n-C16:1) + C_p.H2O --> C_p.Glycerophosphoglycerol + C_p.H+ + C_p.Hexadecenoate (n-C16:1)
+1522
+M_1agpg180_p + M_h2o_p --> M_g3pg_p + M_h_p + M_ocdca_p
+C_p._1-Acyl-sn-glycero-3-phosphoglycerol (n-C18:0) + C_p.H2O --> C_p.Glycerophosphoglycerol + C_p.H+ + C_p.octadecanoate (n-C18:0)
+1523
+M_1agpg181_p + M_h2o_p --> M_g3pg_p + M_h_p + M_ocdcea_p
+C_p._1-Acyl-sn-glycero-3-phosphoglycerol (n-C18:1) + C_p.H2O --> C_p.Glycerophosphoglycerol + C_p.H+ + C_p.octadecenoate (n-C18:1)
+
+// not in Roche
+288
+M_alpp_p + M_pe160_p --> M_2agpe160_p + M_lpp_p
+C_p.applipoprotein + C_p.phosphatidylethanolamine (dihexadecanoyl, n-C16:0) --> C_p._2-Acyl-sn-glycero-3-phosphoethanolamine (n-C16:0) + C_p.lipoprotein
+289
+M_alpp_p + M_pg160_p --> M_2agpg160_p + M_lpp_p
+C_p.applipoprotein + C_p.Phosphatidylglycerol (dihexadecanoyl, n-C16:0) --> C_p._2-Acyl-sn-glycero-3-phosphoglycerol (n-C16:0) + C_p.lipoprotein
+
+// not in Roche
+1901
+M_h2o_p + M_o2_p + M_peamn_p --> M_h2o2_p + M_nh4_p + M_pacald_p
+C_p.H2O + C_p.O2 + C_p.Phenethylamine --> C_p.Hydrogen peroxide + C_p.Ammonium + C_p.Phenylacetaldehyde
+
+// isomers not mapped
+1181
+M_gal_DASH_bD_p --> M_gal_p
+C_p.beta D-Galactose --> C_p.D-Galactose
