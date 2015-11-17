@@ -1,5 +1,4 @@
-Purine, pyrimidine metabolism - need to add to graph
-
+Purine, pyrimidine metabolism
 19
 M_23cump_p + M_h2o_p --> M_3ump_p + M_h_p
 C_p._2',3'-Cyclic UMP + C_p.H2O --> C_p._3'-UMP + C_p.H+
