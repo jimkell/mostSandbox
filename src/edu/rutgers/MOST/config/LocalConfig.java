@@ -1078,6 +1078,17 @@ public class LocalConfig {
 		this.ecNumberReactionMap = ecNumberReactionMap;
 	}
 	
+	private Map<String, ArrayList<SBMLReaction>> ecNumberMembraneReactionMap;
+	
+	public Map<String, ArrayList<SBMLReaction>> getEcNumberMembraneReactionMap() {
+		return ecNumberMembraneReactionMap;
+	}
+
+	public void setEcNumberMembraneReactionMap(
+			Map<String, ArrayList<SBMLReaction>> ecNumberMembraneReactionMap) {
+		this.ecNumberMembraneReactionMap = ecNumberMembraneReactionMap;
+	}
+
 	private Map<String, ArrayList<SBMLReaction>> keggIdReactionMap;
 
 	public Map<String, ArrayList<SBMLReaction>> getKeggIdReactionMap() {
@@ -1089,6 +1100,17 @@ public class LocalConfig {
 		this.keggIdReactionMap = keggIdReactionMap;
 	}
 	
+	private Map<String, ArrayList<SBMLReaction>> keggIdMembraneReactionMap;
+	
+	public Map<String, ArrayList<SBMLReaction>> getKeggIdMembraneReactionMap() {
+		return keggIdMembraneReactionMap;
+	}
+
+	public void setKeggIdMembraneReactionMap(
+			Map<String, ArrayList<SBMLReaction>> keggIdMembraneReactionMap) {
+		this.keggIdMembraneReactionMap = keggIdMembraneReactionMap;
+	}
+
 	private Map<String, PathwayReactionData> modelKeggEquationMap;
 
 	public Map<String, PathwayReactionData> getModelKeggEquationMap() {

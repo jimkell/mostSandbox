@@ -10,7 +10,8 @@ import edu.rutgers.MOST.config.LocalConfig;
 
 public class KEGGIdReactionMapCreator {
 	
-	public void createKEGGIdReactionMap(Vector<SBMLReaction> rxns) {
+	//public void createKEGGIdReactionMap(Vector<SBMLReaction> rxns) {
+	public Map<String, ArrayList<SBMLReaction>> createKEGGIdReactionMap(Vector<SBMLReaction> rxns) {
 		Map<String, ArrayList<SBMLReaction>> keggIdReactionMap = new HashMap<String, ArrayList<SBMLReaction>>();
 		//ReactionFactory rf = new ReactionFactory("SBML");
 		//Vector<SBMLReaction> rxns = rf.getAllReactions();
@@ -39,13 +40,14 @@ public class KEGGIdReactionMapCreator {
 //		Collections.sort(LocalConfig.getInstance().getUnplottedReactionIds());
 		//System.out.println("not plotted " + LocalConfig.getInstance().getUnplottedReactionIds());
 		//System.out.println("kegg rxn id " + keggIdReactionMap);
-		LocalConfig.getInstance().setKeggIdReactionMap(keggIdReactionMap);
+		//LocalConfig.getInstance().setKeggIdReactionMap(keggIdReactionMap);
 //		ArrayList<String> keggList = new ArrayList<String>(keggIdReactionMap.keySet());
 //		for (int i = 0; i < keggList.size(); i++) {
 //			if (keggIdReactionMap.get(keggList.get(i)).size() == 1) {
 //				System.out.println("ident " + keggIdReactionMap.get(keggList.get(i)));
 //			}
 //		}
+		return keggIdReactionMap;
 	}
 
 }

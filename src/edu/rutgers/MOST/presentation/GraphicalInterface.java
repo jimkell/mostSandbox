@@ -1490,7 +1490,12 @@ public class GraphicalInterface extends JFrame {
 		
 		Map<String, ArrayList<SBMLReaction>> ecNumberReactionMap = new HashMap<String, ArrayList<SBMLReaction>>();
 		LocalConfig.getInstance().setEcNumberReactionMap(ecNumberReactionMap);
-		
+		Map<String, ArrayList<SBMLReaction>> ecNumberMembraneReactionMap = new HashMap<String, ArrayList<SBMLReaction>>();
+		LocalConfig.getInstance().setEcNumberMembraneReactionMap(ecNumberMembraneReactionMap);
+		Map<String, ArrayList<SBMLReaction>> keggIdReactionMap = new HashMap<String, ArrayList<SBMLReaction>>();
+		LocalConfig.getInstance().setKeggIdReactionMap(keggIdReactionMap);
+		Map<String, ArrayList<SBMLReaction>> keggIdMembraneReactionMap = new HashMap<String, ArrayList<SBMLReaction>>();
+		LocalConfig.getInstance().setKeggIdMembraneReactionMap(keggIdMembraneReactionMap);
 		
 		// categorize reactions
 //		ArrayList<Integer> cytosolIds = new ArrayList<Integer>();
@@ -12984,6 +12989,7 @@ public class GraphicalInterface extends JFrame {
 	public void visualizeModel() {
 		ReactionFactory rf = new ReactionFactory("SBML");
 		Vector<SBMLReaction> rxns = null;
+		Vector<SBMLReaction> membraneRxns = null;
 		if (LocalConfig.getInstance().getSelectedCompartmentName() != null && LocalConfig.getInstance().getSelectedCompartmentName().length() > 0) {
 			rxns = rf.getReactionsByCompartment(LocalConfig.getInstance().getSelectedCompartmentName());
 		} else {
@@ -13007,7 +13013,9 @@ public class GraphicalInterface extends JFrame {
 //		}
 		// should only run this if ec number column exists
 		ECNumberMapCreator ecMapCreator = new ECNumberMapCreator();
-		ecMapCreator.createEcNumberReactionMap(rxns);
+		Map<String, ArrayList<SBMLReaction>> ecNumberReactionMap = ecMapCreator.createEcNumberReactionMap(rxns);
+		LocalConfig.getInstance().setEcNumberReactionMap(ecNumberReactionMap);
+		//System.out.println(ecNumberReactionMap);
 		// key = reaction id, value = PathwayReactionData (lists of KEGG ids of reactants and products)
 		ModelKeggEquationMapCreator modelKeggEquationMapCreator = new ModelKeggEquationMapCreator();
 		modelKeggEquationMapCreator.createKeggEquationMap();
@@ -13015,7 +13023,8 @@ public class GraphicalInterface extends JFrame {
 		//assignKeggReactionIds();
 		categorizeTransportReactions();
 		KEGGIdReactionMapCreator keggIdReactionMapCreator = new KEGGIdReactionMapCreator();
-		keggIdReactionMapCreator.createKEGGIdReactionMap(rxns);
+		Map<String, ArrayList<SBMLReaction>> keggIdReactionMap = keggIdReactionMapCreator.createKEGGIdReactionMap(rxns);
+		LocalConfig.getInstance().setKeggIdReactionMap(keggIdReactionMap);
 //		System.out.println("g ids " + LocalConfig.getInstance().getIdentifierIds());
 //		System.out.println("g nt " + LocalConfig.getInstance().getNoTransportReactionIds());
 		ArrayList<Integer> noIdentifierIds = new ArrayList<Integer>();
@@ -13025,6 +13034,14 @@ public class GraphicalInterface extends JFrame {
 			}
 		}
 		LocalConfig.getInstance().setNoIdentifierIds(noIdentifierIds);
+		if (LocalConfig.getInstance().getMembraneName() != null && LocalConfig.getInstance().getMembraneName().length() > 0) {
+			membraneRxns = rf.getReactionsByCompartment(LocalConfig.getInstance().getMembraneName());
+			Map<String, ArrayList<SBMLReaction>> ecNumberMembraneReactionMap = ecMapCreator.createEcNumberReactionMap(membraneRxns);
+			LocalConfig.getInstance().setEcNumberMembraneReactionMap(ecNumberMembraneReactionMap);
+			Map<String, ArrayList<SBMLReaction>> keggIdMembraneReactionMap = keggIdReactionMapCreator.createKEGGIdReactionMap(membraneRxns);
+			LocalConfig.getInstance().setKeggIdMembraneReactionMap(keggIdMembraneReactionMap);
+			//System.out.println(ecNumberMembraneReactionMap);
+		}
 //		System.out.println("g no " + noIdentifierIds);
 //		if (LocalConfig.getInstance().getExtraOrganismName() != null && LocalConfig.getInstance().getExtraOrganismName().length() > 0) {
 //			Vector<SBMLReaction> eRxns = rf.getReactionsByCompartment(LocalConfig.getInstance().getExtraOrganismName());

@@ -25,7 +25,8 @@ public class ECNumberMapCreator {
 	 * if main species in reaction are different from main species in visualization diagram.
 	 * This often occurs with sugars for example.
 	 */
-	public void createEcNumberReactionMap(Vector<SBMLReaction> rxns) {
+	//public void createEcNumberReactionMap(Vector<SBMLReaction> rxns) {
+	public Map<String, ArrayList<SBMLReaction>> createEcNumberReactionMap(Vector<SBMLReaction> rxns) {	
 		Map<String, ArrayList<SBMLReaction>> ecNumberReactionMap = new HashMap<String, ArrayList<SBMLReaction>>();
 		//ReactionFactory rf = new ReactionFactory("SBML");
 		//Vector<SBMLReaction> rxns = rf.getReactionsByCompartment(LocalConfig.getInstance().getCytosolName());
@@ -63,8 +64,9 @@ public class ECNumberMapCreator {
 		processor.setFluxes(fluxes);
 		processor.processFluxes();
 
-		LocalConfig.getInstance().setEcNumberReactionMap(ecNumberReactionMap);
+		//LocalConfig.getInstance().setEcNumberReactionMap(ecNumberReactionMap);
 		//System.out.println("ec " + ecNumberReactionMap);
+		return ecNumberReactionMap;
 	}
 	
 }
