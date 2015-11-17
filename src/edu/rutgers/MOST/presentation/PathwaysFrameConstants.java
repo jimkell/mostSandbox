@@ -11,10 +11,12 @@ public class PathwaysFrameConstants {
 	public static final float START_SCALING_FACTOR = (float) 0.1;
 	public static final int GRAPH_WIDTH = 24000;
 	public static final int GRAPH_HEIGHT = 18000;
-	public static final int BORDER_WIDTH = 100;
-	public static final int BORDER_HEIGHT = -150;
 	public static final int TRANSPORT_WIDTH_INCREMENT = 200;
 	public static final int TRANSPORT_HEIGHT_INCREMENT = 100;
+	public static final double BORDER_LEFT = -2;
+	public static final double BORDER_RIGHT = 43;
+	public static final double BORDER_TOP = -1;
+	public static final double BORDER_BOTTOM = 31;
 	
 	public static final int OFFSET_WIDTH = 140;
 	public static final int OFFSET_HEIGHT = 70;
@@ -22,13 +24,9 @@ public class PathwaysFrameConstants {
 	public static final double BORDER_THICKNESS = 4;
 	
 	public static final int TOP_SPACE = 300;
-	public static final int BOTTOM_SPACE = 400;
 	public static final int START_Y = 5600;
    	
-//	public static final int HORIZONTAL_INCREMENT = 350;
-//	public static final int VERTICAL_INCREMENT = 175;
 	public static final int HORIZONTAL_INCREMENT = 400; 
-//	public static final int VERTICAL_INCREMENT = 160;
 	public static final int VERTICAL_INCREMENT = 380; // was 360, change made TCA cycle more circular
 	public static final int PATHWAY_NAME_NODE_WIDTH = 200;
 	public static final int PATHWAY_NAME_NODE_HEIGHT = 48;
@@ -110,24 +108,9 @@ public class PathwaysFrameConstants {
 	public static final double LOWER_MID_FLUX_WIDTH = 2.0;
 	public static final double MINIMUM_FLUX_RATIO = 0.02;
 	public static final double MINIMUM_FLUX_WIDTH = 1.0;
-//	public static final double TOP_FLUX_RATIO = 0.5;
-//	public static final double TOP_FLUX_WIDTH = 8.0;
-//	public static final double MID_FLUX_RATIO = 0.25;
-//	public static final double MID_FLUX_WIDTH = 6.0;
-//	public static final double LOW_MID_FLUX_RATIO = 0.125;
-//	public static final double LOW_MID_FLUX_WIDTH = 4.0;
-//	public static final double LOWER_MID_FLUX_RATIO = 0.05;
-//	public static final double LOWER_MID_FLUX_WIDTH = 3.0;
-//	public static final double MINIMUM_FLUX_RATIO = 0.025;
-//	public static final double MINIMUM_FLUX_WIDTH = 2.0;
 	
 	public static final int PATHWAYS_COMPONENT = 0;
 	public static final int PROCESSES_COMPONENT = 1;
-	
-	//public static final int PHOSPHORYLATION_X_OFFSET = 3*HORIZONTAL_INCREMENT;
-	public static final int PHOSPHORYLATION_X_OFFSET = 1400;
-	public static final int PHOSPHORYLATION_Y_OFFSET = VERTICAL_INCREMENT;
-	public static final int RIGHT_BORDER_INCREMENT = 0;
 	
 	public static final String PERIPLASM_SUFFIX = "_p";
 	public static final String EXTRAORGANISM_SUFFIX = "_e";
