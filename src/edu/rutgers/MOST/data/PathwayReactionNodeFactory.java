@@ -60,7 +60,7 @@ public class PathwayReactionNodeFactory {
 //						}
 //					}
 //				}		
-			}
+			} 
 		}
 		for (int n = 0; n < keggReactionIds.size(); n++) {
 			if (LocalConfig.getInstance().getKeggIdReactionMap() != null && 
@@ -84,6 +84,19 @@ public class PathwayReactionNodeFactory {
 				addReactions(reactions, reac, compartment, keggReactantIds, keggProductIds, true);
 			}
 		}
+		if (reactions.size() == 0) {
+			for (int u = 0; u < LocalConfig.getInstance().getUnplottedReactionIds().size(); u++) {
+				SBMLReaction r = idReactionMap.get(LocalConfig.getInstance().getUnplottedReactionIds().get(u));
+				ArrayList<SBMLReaction> reac = new ArrayList<SBMLReaction>();
+				reac.add(r);
+				if (component == PathwaysFrameConstants.PROCESSES_COMPONENT) {
+					//reactions.add(reac.get(0));
+				} else {
+					addReactions(reactions, reac, compartment, keggReactantIds, keggProductIds, true);
+				}
+			}
+		}
+		
 //		System.out.println("ids " + LocalConfig.getInstance().getIdentifierIds());
 //		System.out.println("no ids " + LocalConfig.getInstance().getNoIdentifierIds());
 		//System.out.println("un " + LocalConfig.getInstance().getUnplottedReactionIds());
@@ -158,10 +171,11 @@ public class PathwayReactionNodeFactory {
 				if (reac.get(r) != null) {
 					SBMLReactionEquation equn = (SBMLReactionEquation) LocalConfig.getInstance().getReactionEquationMap().get(reac.get(r).getId());
 					if (equn.getCompartmentList().size() == 1 && equn.getCompartmentList().contains(compartment)) {
-						addReactionIfNotPresent(reactions, reac.get(r), keggReactantIds, keggProductIds, exactMatch);
-						if (LocalConfig.getInstance().getUnplottedReactionIds().contains(reac.get(r).getId())) {
-							//System.out.println(reac.get(r).getId());
-							LocalConfig.getInstance().getUnplottedReactionIds().remove(LocalConfig.getInstance().getUnplottedReactionIds().indexOf(reac.get(r).getId()));
+						if (addReactionIfNotPresent(reactions, reac.get(r), keggReactantIds, keggProductIds, exactMatch)) {
+							if (LocalConfig.getInstance().getUnplottedReactionIds().contains(reac.get(r).getId())) {
+								//System.out.println(reac.get(r).getId());
+								LocalConfig.getInstance().getUnplottedReactionIds().remove(LocalConfig.getInstance().getUnplottedReactionIds().indexOf(reac.get(r).getId()));
+							}
 						}
 					} 
 				}
@@ -176,8 +190,9 @@ public class PathwayReactionNodeFactory {
 	 * @param reac
 	 * @param r
 	 */
-	public void addReactionIfNotPresent(ArrayList<SBMLReaction> reactions, SBMLReaction r,
+	public boolean addReactionIfNotPresent(ArrayList<SBMLReaction> reactions, SBMLReaction r,
 			ArrayList<String> keggReactantIds, ArrayList<String> keggProductIds, boolean exactMatch) {
+		boolean match = false;
 		int id = r.getId();
 		ArrayList<Integer> idList = new ArrayList<Integer>();
 		for (int i = 0; i < reactions.size(); i++) {
@@ -187,12 +202,14 @@ public class PathwayReactionNodeFactory {
 			if (correctMainSpecies(r, keggReactantIds, keggProductIds, exactMatch)) {
 				reactions.add(r);
 				//System.out.println(reactions);
+				match = true;
 			} else {
 				if (!LocalConfig.getInstance().getUnplottedReactionIds().contains(id)) {
 					LocalConfig.getInstance().getUnplottedReactionIds().add(id);
 				}
 			}
 		}
+		return match;
 	}
 	
 	/**

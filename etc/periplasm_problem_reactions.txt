@@ -89,6 +89,28 @@ C_p.H2O + C_p.Phosphatidylglycerol (dioctadecanoyl, n-C18:0) --> C_p._2-Acyl-sn-
 M_h2o_p + M_pg181_p --> M_2agpg181_p + M_h_p + M_ocdcea_p
 C_p.H2O + C_p.Phosphatidylglycerol (dioctadec-11-enoyl, n-C18:1) --> C_p._2-Acyl-sn-glycero-3-phosphoglycerol (n-C18:1) + C_p.H+ + C_p.octadecenoate (n-C18:1)
 
+// 2ddecg3p... not in Roche
+1962
+M_h2o_p + M_pa120_p --> M_2ddecg3p_p + M_ddca_p
+C_p.H2O + C_p._1,2-didodecanoyl-sn-glycerol 3-phosphate --> C_p._2-dodecanoyl-sn-glycerol 3-phosphate + C_p.Dodecanoate (n-C12:0)
+1963
+M_h2o_p + M_pa140_p --> M_2tdecg3p_p + M_ttdca_p
+C_p.H2O + C_p._1,2-ditetradecanoyl-sn-glycerol 3-phosphate --> C_p._2-tetradecanoyl-sn-glycerol 3-phosphate + C_p.tetradecanoate (n-C14:0)
+1964
+M_h2o_p + M_pa141_p --> M_2tdec7eg3p_p + M_ttdcea_p
+C_p.H2O + C_p._1,2-ditetradec-7-enoyl-sn-glycerol 3-phosphate --> C_p._2-tetradec-7-enoyl-sn-glycerol 3-phosphate + C_p.tetradecenoate (n-C14:1)
+1965
+M_h2o_p + M_pa160_p --> M_2hdecg3p_p + M_hdca_p
+C_p.H2O + C_p._1,2-dihexadecanoyl-sn-glycerol 3-phosphate --> C_p._2-hexadecanoyl-sn-glycerol 3-phosphate + C_p.Hexadecanoate (n-C16:0)
+1966
+M_h2o_p + M_pa161_p --> M_2hdec9eg3p_p + M_hdcea_p
+C_p.H2O + C_p._1,2-dihexadec-9-enoyl-sn-glycerol 3-phosphate --> C_p._2-hexadec-9-enoyl-sn-glycerol 3-phosphate + C_p.Hexadecenoate (n-C16:1)
+1967
+M_h2o_p + M_pa180_p --> M_2odecg3p_p + M_ocdca_p
+C_p.H2O + C_p._1,2-dioctadecanoyl-sn-glycerol 3-phosphate --> C_p._2-octadecanoyl-sn-glycerol 3-phosphate + C_p.octadecanoate (n-C18:0)
+1968
+M_h2o_p + M_pa181_p --> M_2odec11eg3p_p + M_ocdcea_p
+C_p.H2O + C_p._1,2-dioctadec-11-enoyl-sn-glycerol 3-phosphate --> C_p._2-octadec-11-enoyl-sn-glycerol 3-phosphate + C_p.octadecenoate (n-C18:1)
 
 // no KEGG ids
 629
@@ -117,6 +139,24 @@ C_p.H2O + C_p.phosphatidylethanolamine (dihexadec-9enoyl, n-C16:1) --> C_p._2-Ac
 1975
 M_h2o_p + M_pe181_p --> M_2agpe181_p + M_h_p + M_ocdcea_p
 C_p.H2O + C_p.phosphatidylethanolamine (dioctadec-11-enoyl, n-C18:1) --> C_p._2-Acyl-sn-glycero-3-phosphoethanolamine (n-C18:1) + C_p.H+ + C_p.octadecenoate (n-C18:1)
+1985
+M_h2o_p + M_pa141_p --> M_1tdec7eg3p_p + M_h_p + M_ttdcea_p
+C_p.H2O + C_p._1,2-ditetradec-7-enoyl-sn-glycerol 3-phosphate --> C_p._1-tetradec-7-enoyl-sn-glycerol 3-phosphate + C_p.H+ + C_p.tetradecenoate (n-C14:1)
+1987
+M_h2o_p + M_pa161_p --> M_1hdec9eg3p_p + M_h_p + M_hdcea_p
+C_p.H2O + C_p._1,2-dihexadec-9-enoyl-sn-glycerol 3-phosphate --> C_p._1-hexadec-9-enoyl-sn-glycerol 3-phosphate + C_p.H+ + C_p.Hexadecenoate (n-C16:1)
+1989
+M_h2o_p + M_pa181_p --> M_1odec11eg3p_p + M_h_p + M_ocdcea_p
+C_p.H2O + C_p._1,2-dioctadec-11-enoyl-sn-glycerol 3-phosphate --> C_p._1-octadec-11-enoyl-sn-glycerol 3-phosphate + C_p.H+ + C_p.octadecenoate (n-C18:1)
+1992
+M_h2o_p + M_pe141_p --> M_1agpe141_p + M_h_p + M_ttdcea_p
+C_p.H2O + C_p.phosphatidylethanolamine (ditetradec-7-enoyl, n-C14:1) --> C_p._1-Acyl-sn-glycero-3-phosphoethanolamine (n-C14:1) + C_p.H+ + C_p.tetradecenoate (n-C14:1)
+1994
+M_h2o_p + M_pe161_p --> M_1agpe161_p + M_h_p + M_hdcea_p
+C_p.H2O + C_p.phosphatidylethanolamine (dihexadec-9enoyl, n-C16:1) --> C_p._1-Acyl-sn-glycero-3-phosphoethanolamine (n-C16:1) + C_p.H+ + C_p.Hexadecenoate (n-C16:1)
+1996
+M_h2o_p + M_pe181_p --> M_1agpe181_p + M_h_p + M_ocdcea_p
+C_p.H2O + C_p.phosphatidylethanolamine (dioctadec-11-enoyl, n-C18:1) --> C_p._1-Acyl-sn-glycero-3-phosphoethanolamine (n-C18:1) + C_p.H+ + C_p.octadecenoate (n-C18:1)
 
 
 // no KEGG id murein
@@ -203,6 +243,9 @@ C_p.(O16 antigen)x2 undecaprenyl diphosphate + C_p.O16 antigen undecaprenyl diph
 1820
 M_o16a3und_p + M_o16aund_p --> M_h_p + M_o16a4und_p + M_udcpdp_p
 C_p.(O16 antigen)x3 undecaprenyl diphosphate + C_p.O16 antigen undecaprenyl diphosphate --> C_p.H+ + C_p.(O16 antigen)x4 undecaprenyl diphosphate + C_p.Undecaprenyl diphosphate
+1477
+M_colipa_p + M_uLa4n_p --> M_acolipa_p + M_udcpp_p
+C_p.core oligosaccharide lipid A + C_p.undecaprenyl phosphate-4-amino-4-deoxy-L-arabinose --> C_p._4-Amino-4-deoxy-L-arabinose modified core oligosaccharide lipid A + C_p.Undecaprenyl phosphate
 
 // no KEGG id enlipa
 1904
@@ -212,16 +255,30 @@ C_p.KDO(2)-lipid (A) + C_p.phosphatidylethanolamine (dihexadec-9enoyl, n-C16:1) 
 M_lipa_p + M_pe181_p --> M_12dgr181_p + M_enlipa_p
 C_p.KDO(2)-lipid (A) + C_p.phosphatidylethanolamine (dioctadec-11-enoyl, n-C18:1) --> C_p._1,2-Diacyl-sn-glycerol (dioctadec-11-enoyl, n-C18:1) + C_p.phosphoethanolamine KDO(2)-lipid (A)
 
+// no KEGG id acgal1p
+2292
+M_h2o_p + M_udpacgal_p --> M_acgal1p_p + 2 M_h_p + M_ump_p
+C_p.H2O + C_p.UDP-N-acetyl-D-galactosamine --> C_p.N-Acetyl-D-galactosamine 1-phosphate + 2 C_p.H+ + C_p.UMP
+
 // minohp not in Roche map
 1958
 6 M_h2o_p + M_minohp_p --> M_inost_p + 6 M_pi_p
 6 C_p.H2O + C_p.myo-Inositol hexakisphosphate --> C_p.myo-Inositol + 6 C_p.Phosphate
 
+// acgam1p not in KEGG or Roche maps
+2293
+M_h2o_p + M_uacgam_p --> M_acgam1p_p + 2 M_h_p + M_ump_p
+C_p.H2O + C_p.UDP-N-acetyl-D-glucosamine --> C_p.N-Acetyl-D-glucosamine 1-phosphate + 2 C_p.H+ + C_p.UMP
 
 // g3pi not in KEGG or Roche maps
 1313
 M_g3pi_p + M_h2o_p --> M_glyc3p_p + M_h_p + M_inost_p
 C_p.sn-Glycero-3-phospho-1-inositol + C_p.H2O --> C_p.Glycerol 3-phosphate + C_p.H+ + C_p.myo-Inositol
+
+// not in Roche
+2306
+M_h2o_p + M_udcpdp_p --> M_h_p + M_pi_p + M_udcpp_p
+C_p.H2O + C_p.Undecaprenyl diphosphate --> C_p.H+ + C_p.Phosphate + C_p.Undecaprenyl phosphate
 
 // g3pg_p not in KEGG or Roche
 1311
@@ -261,6 +318,41 @@ C_p.applipoprotein + C_p.Phosphatidylglycerol (dihexadecanoyl, n-C16:0) --> C_p.
 1901
 M_h2o_p + M_o2_p + M_peamn_p --> M_h2o2_p + M_nh4_p + M_pacald_p
 C_p.H2O + C_p.O2 + C_p.Phenethylamine --> C_p.Hydrogen peroxide + C_p.Ammonium + C_p.Phenylacetaldehyde
+
+// not in Roche
+1775
+M_dimp_p + M_h2o_p --> M_din_p + M_pi_p
+C_p.dIMP + C_p.H2O --> C_p.Deoxyinosine + C_p.Phosphate
+
+// duri not in Roche
+1776
+M_dump_p + M_h2o_p --> M_duri_p + M_pi_p
+C_p.dUMP + C_p.H2O --> C_p.Deoxyuridine + C_p.Phosphate
+
+// cgly not in Roche
+1323
+M_gthrd_p + M_h2o_p --> M_cgly_p + M_glu_DASH_L_p
+C_p.Reduced glutathione + C_p.H2O --> C_p.Cys-Gly + C_p.L-Glutamate
+
+// tre not in Roche
+2265
+M_h2o_p + M_tre_p --> 2 M_glc_DASH_D_p
+C_p.H2O + C_p.Trehalose --> 2 C_p.D-Glucose
+
+// tym not in Roche
+2283
+M_h2o_p + M_o2_p + M_tym_p --> M_4hoxpacd_p + M_h2o2_p + M_nh4_p
+C_p.H2O + C_p.O2 + C_p.Tyramine --> C_p._4-Hydroxyphenylacetaldehyde + C_p.Hydrogen peroxide + C_p.Ammonium
+
+// ppt not in Roche
+2037
+M_h2o_p + M_ppt_p --> M_h2_p + M_pi_p
+C_p.H2O + C_p.Phosphonate --> C_p.H2 + C_p.Phosphate
+
+// cu not in Roche?
+489
+4 M_cu_p + 4 M_h_p + M_o2_p --> 4 M_cu2_p + 2 M_h2o_p
+4 C_p.Cu+ + 4 C_p.H+ + C_p.O2 --> 4 C_p.Cu2+ + 2 C_p.H2O
 
 // isomers not mapped
 1181

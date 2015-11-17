@@ -543,8 +543,14 @@ public class PathwaysFrame extends JApplet {
 		}
 		
 		Collections.sort(plottedIds);
-//		System.out.println("pf plotted " + plottedIds);
-//		System.out.println("pf unplotted " + LocalConfig.getInstance().getUnplottedReactionIds());
+		//System.out.println("pf plotted " + plottedIds);
+		//System.out.println("pf unplotted " + LocalConfig.getInstance().getUnplottedReactionIds());
+		for (int p = 0; p < plottedIds.size(); p++) {
+			if (LocalConfig.getInstance().getUnplottedReactionIds().contains(plottedIds.get(p))) {
+				LocalConfig.getInstance().getUnplottedReactionIds().remove(LocalConfig.getInstance().getUnplottedReactionIds().indexOf(plottedIds.get(p)));
+			}
+		}
+		//System.out.println("pf unplotted " + LocalConfig.getInstance().getUnplottedReactionIds());
 		
 		//Collections.sort(foundEcNumbers);
 		//System.out.println("found " + foundEcNumbers);
@@ -648,11 +654,11 @@ public class PathwaysFrame extends JApplet {
 					}
 					// for bookkeeping only
 					for (int z = 0; z < pn.getReactions().size(); z++) {
-						//if (!plottedIds.contains(pn.getReactions().get(z).getId())) {
 						if (pn.getReactions().get(z) != null) {
-							plottedIds.add(pn.getReactions().get(z).getId());
+							if (!plottedIds.contains(pn.getReactions().get(z).getId())) {
+								plottedIds.add(pn.getReactions().get(z).getId());
+							}
 						}	
-						//}
 					}
 				} else {
 					if (!LocalConfig.getInstance().isGraphMissingReactionsSelected()) {

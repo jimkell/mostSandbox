@@ -57,6 +57,9 @@ C_p.CMP + C_p.H2O --> C_p.Cytidine + C_p.Phosphate
 M_dtmp_p + M_h2o_p --> M_pi_p + M_thymd_p
 C_p.dTMP + C_p.H2O --> C_p.Phosphate + C_p.Thymidine
 
+1798
+M_gtp_p + M_h2o_p --> M_gdp_p + M_h_p + M_pi_p
+C_p.GTP + C_p.H2O --> C_p.GDP + C_p.H+ + C_p.Phosphate
 
 // amino acids
 333
@@ -78,6 +81,7 @@ C_p.H2O + C_p.L-Threonine O-3-phosphate --> C_p.Phosphate + C_p.L-Threonine
 M_h2o_p + M_tyrp_p --> M_pi_p + M_tyr_DASH_L_p
 C_p.H2O + C_p.Phosphotyrosine --> C_p.Phosphate + C_p.L-Tyrosine
 
+
 // sugars
 1168
 M_gal1p_p + M_h2o_p --> M_gal_p + M_pi_p
@@ -91,6 +95,15 @@ C_p.H2O + C_p.alpha-D-Ribose 5-phosphate --> C_p.Phosphate + C_p.D-Ribose
 1479
 M_h2o_p + M_lcts_p --> M_gal_p + M_glc_DASH_D_p
 C_p.H2O + C_p.Lactose --> C_p.D-Galactose + C_p.D-Glucose
+2311
+M_h2o_p + M_udpgal_p --> M_gal1p_p + 2 M_h_p + M_ump_p
+C_p.H2O + C_p.UDPgalactose --> C_p.alpha-D-Galactose 1-phosphate + 2 C_p.H+ + C_p.UMP
+2316
+M_h2o_p + M_udpg_p --> M_g1p_p + 2 M_h_p + M_ump_p
+C_p.H2O + C_p.UDPglucose --> C_p.D-Glucose 1-phosphate + 2 C_p.H+ + C_p.UMP
+2319
+M_h2o_p + M_udpglcur_p --> M_glcur1p_p + 2 M_h_p + M_ump_p
+C_p.H2O + C_p.UDP-D-glucuronate --> C_p.D-Glucuronate 1-phosphate + 2 C_p.H+ + C_p.UMP
 
 
 // other
@@ -247,9 +260,37 @@ C_p.H2O + C_p.phosphatidylethanolamine (dihexadecanoyl, n-C16:0) --> C_p._2-Acyl
 M_h2o_p + M_pe180_p --> M_2agpe180_p + M_h_p + M_ocdca_p
 C_p.H2O + C_p.phosphatidylethanolamine (dioctadecanoyl, n-C18:0) --> C_p._2-Acyl-sn-glycero-3-phosphoethanolamine (n-C18:0) + C_p.H+ + C_p.octadecanoate (n-C18:0)
 
+1983
+M_h2o_p + M_pa120_p --> M_1ddecg3p_p + M_ddca_p + M_h_p
+C_p.H2O + C_p._1,2-didodecanoyl-sn-glycerol 3-phosphate --> C_p._1-dodecanoyl-sn-glycerol 3-phosphate + C_p.Dodecanoate (n-C12:0) + C_p.H+
+1984
+M_h2o_p + M_pa140_p --> M_1tdecg3p_p + M_h_p + M_ttdca_p
+C_p.H2O + C_p._1,2-ditetradecanoyl-sn-glycerol 3-phosphate --> C_p._1-tetradecanoyl-sn-glycerol 3-phosphate + C_p.H+ + C_p.tetradecanoate (n-C14:0)
+1986
+M_h2o_p + M_pa160_p --> M_1hdecg3p_p + M_h_p + M_hdca_p
+C_p.H2O + C_p._1,2-dihexadecanoyl-sn-glycerol 3-phosphate --> C_p._1-hexadecanoyl-sn-glycerol 3-phosphate + C_p.H+ + C_p.Hexadecanoate (n-C16:0)
+1988
+M_h2o_p + M_pa180_p --> M_1odecg3p_p + M_h_p + M_ocdca_p
+C_p.H2O + C_p._1,2-dioctadecanoyl-sn-glycerol 3-phosphate --> C_p._1-octadecanoyl-sn-glycerol 3-phosphate + C_p.H+ + C_p.octadecanoate (n-C18:0)
+
+1990
+M_h2o_p + M_pe120_p --> M_1agpe120_p + M_ddca_p + M_h_p
+C_p.H2O + C_p.phosphatidylethanolamine (didodecanoyl, n-C12:0) --> C_p._1-Acyl-sn-glycero-3-phosphoethanolamine (n-C12:0) + C_p.Dodecanoate (n-C12:0) + C_p.H+
+1991
+M_h2o_p + M_pe140_p --> M_1agpe140_p + M_h_p + M_ttdca_p
+C_p.H2O + C_p.phosphatidylethanolamine (ditetradecanoyl, n-C14:0) --> C_p._1-Acyl-sn-glycero-3-phosphoethanolamine (n-C14:0) + C_p.H+ + C_p.tetradecanoate (n-C14:0)
+1993
+M_h2o_p + M_pe160_p --> M_1agpe160_p + M_h_p + M_hdca_p
+C_p.H2O + C_p.phosphatidylethanolamine (dihexadecanoyl, n-C16:0) --> C_p._1-Acyl-sn-glycero-3-phosphoethanolamine (n-C16:0) + C_p.H+ + C_p.Hexadecanoate (n-C16:0)
+1995
+M_h2o_p + M_pe180_p --> M_1agpe180_p + M_h_p + M_ocdca_p
+C_p.H2O + C_p.phosphatidylethanolamine (dioctadecanoyl, n-C18:0) --> C_p._1-Acyl-sn-glycero-3-phosphoethanolamine (n-C18:0) + C_p.H+ + C_p.octadecanoate (n-C18:0)
 
 
 // inorganic
 497
 M_cyan_p + M_tsul_p --> M_h_p + M_so3_p + M_tcynt_p
 C_p.Hydrogen cyanide + C_p.Thiosulfate --> C_p.H+ + C_p.Sulfite + C_p.Thiocyanate
+2182
+2 M_h_p + 2 M_o2s_p --> M_h2o2_p + M_o2_p
+2 C_p.H+ + 2 C_p.Superoxide anion --> C_p.Hydrogen peroxide + C_p.O2
