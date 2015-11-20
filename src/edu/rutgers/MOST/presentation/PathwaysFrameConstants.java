@@ -9,8 +9,10 @@ public class PathwaysFrameConstants {
 	
 	public static final float SCALING_FACTOR = (float) 1.2;
 	public static final float START_SCALING_FACTOR = (float) 0.1;
-	public static final int GRAPH_WIDTH = 24000;
-	public static final int GRAPH_HEIGHT = 18000;
+//	public static final int GRAPH_WIDTH = 24000;
+//	public static final int GRAPH_HEIGHT = 18000;
+	public static final int GRAPH_WIDTH = 8000;
+	public static final int GRAPH_HEIGHT = 15000;
 	public static final int TRANSPORT_WIDTH_INCREMENT = 200;
 	public static final int TRANSPORT_HEIGHT_INCREMENT = 100;
 	public static final double BORDER_LEFT = -2;

@@ -18,6 +18,8 @@ import java.awt.event.MouseEvent;
 import java.awt.geom.AffineTransform;                                                                                
 import java.awt.geom.Point2D;                                                                                        
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;                                                                                          
 import java.util.Arrays;
 import java.util.Collections;
@@ -26,6 +28,7 @@ import java.util.Map;
                                                                                                                      
 import java.util.Vector;
 
+import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;                                                                                        
 import javax.swing.JApplet;                                                                                          
@@ -41,6 +44,16 @@ import javax.swing.JPopupMenu;
 import org.apache.commons.collections15.Transformer;                                                                 
 import org.apache.commons.collections15.functors.ChainedTransformer;                                                 
                                                                                                                      
+
+
+
+
+
+
+
+import com.sun.corba.se.impl.orbutil.graph.Node;
+import com.sun.javafx.geom.Edge;
+
 import edu.rutgers.MOST.config.LocalConfig;
 import edu.rutgers.MOST.data.ExternalMetaboliteData;
 import edu.rutgers.MOST.data.ExternalMetaboliteNode;
@@ -65,6 +78,7 @@ import edu.uci.ics.jung.graph.util.EdgeType;
 import edu.uci.ics.jung.visualization.GraphZoomScrollPane;                                                           
 import edu.uci.ics.jung.visualization.Layer;                                                                         
 import edu.uci.ics.jung.visualization.RenderContext;
+import edu.uci.ics.jung.visualization.VisualizationImageServer;
 import edu.uci.ics.jung.visualization.VisualizationViewer;                                                           
 import edu.uci.ics.jung.visualization.control.AbstractModalGraphMouse;                                               
 import edu.uci.ics.jung.visualization.control.CrossoverScalingControl;                                               
@@ -100,7 +114,7 @@ public class PathwaysFrame extends JApplet {
      */                                                                                                              
     VisualizationViewer<String, Number> vv;  
     
-    public final JMenuItem visualizationOptionsItem = new JMenuItem(VisualizationOptionsConstants.VISUALIZATION_OPTIONS_MENU_ITEM_NAME);
+    //public final JMenuItem visualizationOptionsItem = new JMenuItem(VisualizationOptionsConstants.VISUALIZATION_OPTIONS_MENU_ITEM_NAME);
                                                                                                                      
 	Map<String, String[]> metabPosMap = new HashMap<String, String[]>();                                                       
 	ArrayList<String> metaboliteList = new ArrayList<String>(); 
@@ -136,6 +150,7 @@ public class PathwaysFrame extends JApplet {
    	private double startX = 0;
    	private double startY = PathwaysFrameConstants.START_Y;
    
+   	private final JMenuItem saveItem = new JMenuItem("Save");
    	private final JCheckBoxMenuItem transformItem = new JCheckBoxMenuItem("Transform");
    	
    	private NodeInformationDialog nodeInformationDialog;
@@ -187,6 +202,15 @@ public class PathwaysFrame extends JApplet {
 
     	JMenu fileMenu = new JMenu("File");
     	fileMenu.setMnemonic(KeyEvent.VK_F);
+    	
+    	fileMenu.add(saveItem);
+    	saveItem.setMnemonic(KeyEvent.VK_S);
+    	
+    	saveItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ae) {
+				saveAsImage();
+			}
+		});
 
     	menuBar.add(fileMenu);
     	
@@ -411,6 +435,46 @@ public class PathwaysFrame extends JApplet {
         add(controls, BorderLayout.SOUTH);  
        
     }  
+    
+    public void saveAsImage() {
+    	// based on code from http://stackoverflow.com/questions/10420779/jung-save-whole-graph-not-only-visible-part-as-image
+    	// Create the VisualizationImageServer
+    	// vv is the VisualizationViewer containing my graph
+    	VisualizationImageServer<String, Number> vis =
+    	    new VisualizationImageServer<String,Number>(vv.getGraphLayout(),
+    	            vv.getGraphLayout().getSize());
+    	// Configure the VisualizationImageServer the same way
+    	// you did your VisualizationViewer. In my case e.g.
+
+    	vis.setBackground(Color.WHITE);
+//    	vis.getRenderContext().setEdgeLabelTransformer(new ToStringLabeller<Number>());
+    	
+    	vis.getRenderContext().setVertexShapeTransformer(vv.getRenderContext().getVertexShapeTransformer());
+    	vis.getRenderContext().setVertexIconTransformer(vv.getRenderContext().getVertexIconTransformer());
+
+    	vis.getRenderContext().setEdgeDrawPaintTransformer(vv.getRenderContext().getEdgeDrawPaintTransformer());
+    	vis.getRenderContext().setEdgeShapeTransformer(vv.getRenderContext().getEdgeShapeTransformer());
+    	vis.getRenderContext().setEdgeStrokeTransformer(vv.getRenderContext().getEdgeStrokeTransformer());
+    	vis.getRenderContext().setEdgeArrowTransformer(vv.getRenderContext().getEdgeArrowTransformer());
+    	vis.getRenderContext().setArrowFillPaintTransformer(vv.getRenderContext().getArrowFillPaintTransformer());
+    	vis.getRenderContext().setArrowDrawPaintTransformer(vv.getRenderContext().getArrowDrawPaintTransformer());
+    	vis.getRenderContext().setEdgeShapeTransformer(new EdgeShape.Line<String, Number>());
+
+    	// Create the buffered image
+    	BufferedImage image = (BufferedImage) vis.getImage(
+    	    new Point2D.Double(vv.getGraphLayout().getSize().getWidth() / 2,
+    	    vv.getGraphLayout().getSize().getHeight() / 2),
+    	    new Dimension(vv.getGraphLayout().getSize()));
+
+    	// Write image to a png file
+    	File outputfile = new File("graph.png");
+
+    	try {
+    	    ImageIO.write(image, "png", outputfile);
+    	} catch (IOException e) {
+    	    // Exception handling
+    	}
+    }
     
     public Vector<SBMLReaction> compartmentReactions(ReactionFactory f, String compartment) {
     	Vector<SBMLReaction> rxns = null;
