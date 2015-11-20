@@ -15,10 +15,14 @@ public class PathwaysFrameConstants {
 	public static final int GRAPH_HEIGHT = 15000;
 	public static final int TRANSPORT_WIDTH_INCREMENT = 200;
 	public static final int TRANSPORT_HEIGHT_INCREMENT = 100;
-	public static final double BORDER_LEFT = -2;
-	public static final double BORDER_RIGHT = 43;
-	public static final double BORDER_TOP = -1;
-	public static final double BORDER_BOTTOM = 31;
+//	public static final double BORDER_LEFT = -2;
+//	public static final double BORDER_RIGHT = 43;
+//	public static final double BORDER_TOP = -1;
+//	public static final double BORDER_BOTTOM = 31;
+	public static final double BORDER_LEFT = 0.1;
+	public static final double BORDER_RIGHT = 45.5;
+	public static final double BORDER_TOP = 0.1;
+	public static final double BORDER_BOTTOM = 32.5;
 	
 	public static final int OFFSET_WIDTH = 140;
 	public static final int OFFSET_HEIGHT = 70;
@@ -26,7 +30,8 @@ public class PathwaysFrameConstants {
 	public static final double BORDER_THICKNESS = 4;
 	
 	public static final int TOP_SPACE = 300;
-	public static final int START_Y = 5600;
+	//public static final int START_Y = 5600;
+	public static final int START_Y = 6000;
    	
 	public static final int HORIZONTAL_INCREMENT = 400; 
 	public static final int VERTICAL_INCREMENT = 380; // was 360, change made TCA cycle more circular
@@ -38,6 +43,8 @@ public class PathwaysFrameConstants {
 	public static final int COMPARTMENT_LABEL_Y_OFFSET = 115;
 	public static final int COMPARTMENT_LABEL_LINE_OFFSET = 100;
 	public static final int ADDITIONAL_COMPARTMENT_OFFSET = 440;
+	public static final int COMPARTMENT_LABEL_LEFT_PADDING = 25;
+	public static final int COMPARTMENT_LABEL_TOP_PADDING = 25;
 	
 	public static final int SIDE_NODE_WIDTH = 90;
 	public static final int SIDE_NODE_HEIGHT = 28;

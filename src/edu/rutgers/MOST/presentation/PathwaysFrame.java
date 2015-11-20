@@ -147,7 +147,9 @@ public class PathwaysFrame extends JApplet {
 //   	private double layoutScale;
 //   	private double viewScale;
    	
-   	private double startX = 0;
+//   	private double startX = 0;
+//   	private double startY = PathwaysFrameConstants.START_Y;
+   	private double startX = 2*PathwaysFrameConstants.HORIZONTAL_INCREMENT;
    	private double startY = PathwaysFrameConstants.START_Y;
    
    	private final JMenuItem saveItem = new JMenuItem("Save");
@@ -444,10 +446,9 @@ public class PathwaysFrame extends JApplet {
     	    new VisualizationImageServer<String,Number>(vv.getGraphLayout(),
     	            vv.getGraphLayout().getSize());
     	// Configure the VisualizationImageServer the same way
-    	// you did your VisualizationViewer. In my case e.g.
+    	// you did your VisualizationViewer.
 
     	vis.setBackground(Color.WHITE);
-//    	vis.getRenderContext().setEdgeLabelTransformer(new ToStringLabeller<Number>());
     	
     	vis.getRenderContext().setVertexShapeTransformer(vv.getRenderContext().getVertexShapeTransformer());
     	vis.getRenderContext().setVertexIconTransformer(vv.getRenderContext().getVertexIconTransformer());
@@ -531,8 +532,14 @@ public class PathwaysFrame extends JApplet {
 		// draw cell border
 		drawCompartmentBorder(borderLeftX, borderRightX, borderTopY, borderBottomY, 0);
 		
-		String compartmentLabelXOffset = Double.toString(PathwaysFrameConstants.COMPARTMENT_LABEL_NODE_WIDTH/2);
-		String compartmentLabelYOffset = Double.toString(PathwaysFrameConstants.BORDER_TOP);
+		String compartmentLabelXOffset = Double.toString(
+				PathwaysFrameConstants.BORDER_TOP*PathwaysFrameConstants.VERTICAL_INCREMENT + 
+				PathwaysFrameConstants.COMPARTMENT_LABEL_NODE_WIDTH/2 + 
+				PathwaysFrameConstants.COMPARTMENT_LABEL_TOP_PADDING);
+		String compartmentLabelYOffset = Double.toString(
+				PathwaysFrameConstants.BORDER_LEFT*PathwaysFrameConstants.HORIZONTAL_INCREMENT + 
+				PathwaysFrameConstants.COMPARTMENT_LABEL_NODE_HEIGHT/2 + 
+				PathwaysFrameConstants.COMPARTMENT_LABEL_LEFT_PADDING);
 		
 		if (component == PathwaysFrameConstants.PATHWAYS_COMPONENT) {
 			drawCompartmentLabel(compartmentLabel, compartmentLabelXOffset, compartmentLabelYOffset);
