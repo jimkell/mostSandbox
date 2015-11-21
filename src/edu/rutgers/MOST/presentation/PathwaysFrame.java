@@ -9,6 +9,8 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;                                                                                          
 import java.awt.Image;
 import java.awt.Paint;
+import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.Stroke;
 import java.awt.event.ActionEvent;                                                                                   
@@ -21,7 +23,6 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;                                                                                          
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;                                                                                            
 import java.util.Map;                                                                                                
@@ -47,17 +48,8 @@ import org.apache.commons.collections15.functors.ChainedTransformer;
 
 
 
-
-
-
-
-import com.sun.corba.se.impl.orbutil.graph.Node;
-import com.sun.javafx.geom.Edge;
-
 import edu.rutgers.MOST.config.LocalConfig;
-import edu.rutgers.MOST.data.ExternalMetaboliteData;
 import edu.rutgers.MOST.data.ExternalMetaboliteNode;
-import edu.rutgers.MOST.data.ExternalMetaboliteNodeFactory;
 import edu.rutgers.MOST.data.MetabolicPathway;
 import edu.rutgers.MOST.data.PathwayMetaboliteNode;
 import edu.rutgers.MOST.data.PathwayMetaboliteNodeFactory;
@@ -67,7 +59,6 @@ import edu.rutgers.MOST.data.PathwayReactionNodeFactory;
 import edu.rutgers.MOST.data.PathwaysCSVFileConstants;
 import edu.rutgers.MOST.data.ReactionFactory;
 import edu.rutgers.MOST.data.SBMLReaction;
-import edu.rutgers.MOST.data.TransportReactionConstants;
 import edu.rutgers.MOST.data.TransportReactionNode;
 import edu.uci.ics.jung.algorithms.layout.Layout;                                                                    
 import edu.uci.ics.jung.algorithms.layout.StaticLayout;                                                              
@@ -258,13 +249,16 @@ public class PathwaysFrame extends JApplet {
         				new PixelTransformer(new Dimension(PathwaysFrameConstants.GRAPH_WIDTH, PathwaysFrameConstants.GRAPH_HEIGHT))                                         
         		}));                                                                                                 
         	                                                                                                         
-        layout.setSize(layoutSize);                                                                                  
+        layout.setSize(layoutSize);   
         vv =  new VisualizationViewer<String,Number>(layout,                                                         
-        		new Dimension(1000,600));   
+        		new Dimension(PathwaysFrameConstants.GRAPH_WINDOW_WIDTH, 
+        				PathwaysFrameConstants.GRAPH_WINDOW_HEIGHT));   
         
         final ScalingControl scaler = new CrossoverScalingControl();
         
-        scaler.scale(vv, PathwaysFrameConstants.START_SCALING_FACTOR, vv.getCenter());
+        Point2D.Float p = new Point2D.Float(0.f, 0.f);
+        scaler.scale(vv, PathwaysFrameConstants.START_SCALING_FACTOR, p);
+        //scaler.scale(vv, PathwaysFrameConstants.START_SCALING_FACTOR, vv.getCenter());
         
         vv.setBackground(Color.white);
         
@@ -461,11 +455,30 @@ public class PathwaysFrame extends JApplet {
     	vis.getRenderContext().setArrowDrawPaintTransformer(vv.getRenderContext().getArrowDrawPaintTransformer());
     	vis.getRenderContext().setEdgeShapeTransformer(new EdgeShape.Line<String, Number>());
 
+//    	double centerX = vv.getVisibleRect().getCenterX();
+//    	double centerY = vv.getVisibleRect().getCenterY();
+//    	double width = vv.getVisibleRect().getWidth();
+//    	double height = vv.getVisibleRect().getHeight();
+    	double centerX = 2000;
+    	double centerY = 3750;
+    	double width = 4000;
+    	double height = 7500;
+    	System.out.println(centerX);
+    	System.out.println(centerY);
+    	System.out.println(width);
+    	System.out.println(height);
+    	System.out.println(vv.getVisibleRect().getSize());
+    	
     	// Create the buffered image
     	BufferedImage image = (BufferedImage) vis.getImage(
-    	    new Point2D.Double(vv.getGraphLayout().getSize().getWidth() / 2,
-    	    vv.getGraphLayout().getSize().getHeight() / 2),
-    	    new Dimension(vv.getGraphLayout().getSize()));
+    	    new Point2D.Double(centerX, centerY),
+    	    new Dimension((int) width, (int) height));
+    	
+    	// Create the buffered image
+//    	BufferedImage image = (BufferedImage) vis.getImage(
+//    	    new Point2D.Double(vv.getGraphLayout().getSize().getWidth() / 2,
+//    	    vv.getGraphLayout().getSize().getHeight() / 2),
+//    	    new Dimension(vv.getGraphLayout().getSize()));
 
     	// Write image to a png file
     	File outputfile = new File("graph.png");
