@@ -137,7 +137,8 @@ public class PathwaysFrame extends JApplet {
    	private double startX = 2*PathwaysFrameConstants.HORIZONTAL_INCREMENT;
    	private double startY = PathwaysFrameConstants.START_Y;
    
-   	private final JMenuItem saveItem = new JMenuItem("Save");
+   	private final JMenuItem saveGraphPNGItem = new JMenuItem("Save Graph As PNG");
+   	private final JMenuItem saveWindowPNGItem = new JMenuItem("Save Window As PNG");
    	private final JCheckBoxMenuItem transformItem = new JCheckBoxMenuItem("Transform");
    	
    	private NodeInformationDialog nodeInformationDialog;
@@ -190,12 +191,21 @@ public class PathwaysFrame extends JApplet {
     	JMenu fileMenu = new JMenu("File");
     	fileMenu.setMnemonic(KeyEvent.VK_F);
     	
-    	fileMenu.add(saveItem);
-    	saveItem.setMnemonic(KeyEvent.VK_S);
+    	fileMenu.add(saveGraphPNGItem);
+    	saveGraphPNGItem.setMnemonic(KeyEvent.VK_G);
     	
-    	saveItem.addActionListener(new ActionListener() {
+    	saveGraphPNGItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
-				saveAsImage();
+				saveGraphAsPNG();
+			}
+		});
+    	
+    	fileMenu.add(saveWindowPNGItem);
+    	saveWindowPNGItem.setMnemonic(KeyEvent.VK_W);
+    	
+    	saveWindowPNGItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ae) {
+				saveWindowAsPNG();
 			}
 		});
 
@@ -426,7 +436,12 @@ public class PathwaysFrame extends JApplet {
        
     }  
     
-    public void saveAsImage() {
+    public void saveGraphAsPNG() {
+    	double centerX = 2000;
+    	double centerY = 2000;
+    	double width = 6000;
+    	double height = 18000;
+    	vv.getGraphLayout().setSize(new Dimension((int) width, (int) height));
     	// based on code from http://stackoverflow.com/questions/10420779/jung-save-whole-graph-not-only-visible-part-as-image
     	// Create the VisualizationImageServer
     	// vv is the VisualizationViewer containing my graph
@@ -448,22 +463,23 @@ public class PathwaysFrame extends JApplet {
     	vis.getRenderContext().setArrowFillPaintTransformer(vv.getRenderContext().getArrowFillPaintTransformer());
     	vis.getRenderContext().setArrowDrawPaintTransformer(vv.getRenderContext().getArrowDrawPaintTransformer());
     	vis.getRenderContext().setEdgeShapeTransformer(new EdgeShape.Line<String, Number>());
-
+    	
 //    	double centerX = vv.getVisibleRect().getCenterX();
 //    	double centerY = vv.getVisibleRect().getCenterY();
 //    	double width = vv.getVisibleRect().getWidth();
 //    	double height = vv.getVisibleRect().getHeight();
-    	double centerX = 2000;
-    	double centerY = 3750;
-    	double width = 4000;
-    	double height = 7500;
-    	System.out.println(centerX);
-    	System.out.println(centerY);
-    	System.out.println(width);
-    	System.out.println(height);
-    	System.out.println(vv.getVisibleRect().getSize());
-    	
-    	// Create the buffered image
+//    	double width = 8000;
+//    	double height = 15000;
+//    	System.out.println("cx " + centerX);
+//    	System.out.println("cy " + centerY);
+//    	System.out.println("w " + width);
+//    	System.out.println("h " + height);
+//    	System.out.println("cx2 " + vv.getGraphLayout().getSize().getWidth() / 2);
+//    	System.out.println("cy2 " + vv.getGraphLayout().getSize().getHeight() / 2);
+//    	System.out.println("s " + vv.getGraphLayout().getSize());
+//    	System.out.println(vv.getVisibleRect().getSize());
+//    	
+//    	// Create the buffered image
     	BufferedImage image = (BufferedImage) vis.getImage(
     	    new Point2D.Double(centerX, centerY),
     	    new Dimension((int) width, (int) height));
@@ -473,7 +489,7 @@ public class PathwaysFrame extends JApplet {
 //    	    new Point2D.Double(vv.getGraphLayout().getSize().getWidth() / 2,
 //    	    vv.getGraphLayout().getSize().getHeight() / 2),
 //    	    new Dimension(vv.getGraphLayout().getSize()));
-
+    	
     	// Write image to a png file
     	File outputfile = new File("graph.png");
 
@@ -482,6 +498,26 @@ public class PathwaysFrame extends JApplet {
     	} catch (IOException e) {
     	    // Exception handling
     	}
+    }
+    
+    public void saveWindowAsPNG() {
+    	Dimension vsDims = getSize();
+
+    	int width = vsDims.width;
+        int height = vsDims.height;
+        Color bg = getBackground();
+
+        BufferedImage im = new BufferedImage(width,height,BufferedImage.TYPE_INT_BGR);
+        Graphics2D graphics = im.createGraphics();
+        graphics.setColor(bg);
+        graphics.fillRect(0,0, width, height);
+        paintComponents(graphics);
+
+        try{
+           ImageIO.write(im,"png",new File("window.png"));
+        }catch(Exception e){
+            e.printStackTrace();
+        }
     }
     
     public Vector<SBMLReaction> compartmentReactions(ReactionFactory f, String compartment) {
