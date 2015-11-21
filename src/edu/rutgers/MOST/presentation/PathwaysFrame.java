@@ -501,6 +501,7 @@ public class PathwaysFrame extends JApplet {
     }
     
     public void saveWindowAsPNG() {
+    	// based on http://stackoverflow.com/questions/8518390/exporting-jung-graphs-to-hi-res-images-preferably-vector-based
     	Dimension vsDims = getSize();
 
     	int width = vsDims.width;
@@ -512,9 +513,12 @@ public class PathwaysFrame extends JApplet {
         graphics.setColor(bg);
         graphics.fillRect(0,0, width, height);
         paintComponents(graphics);
+        
+        // create a cropped image from the original image
+        BufferedImage croppedImage = im.getSubimage(0, 23, width - 17, height - 76);
 
         try{
-           ImageIO.write(im,"png",new File("window.png"));
+           ImageIO.write(croppedImage,"png",new File("window.png"));
         }catch(Exception e){
             e.printStackTrace();
         }
