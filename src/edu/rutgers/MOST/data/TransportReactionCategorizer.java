@@ -13,6 +13,15 @@ public class TransportReactionCategorizer {
 	private Vector<SBMLReaction> compartmentOutsideRxns;
 	private Vector<SBMLReaction> compartmentMembraneRxns;
 	private Vector<SBMLReaction> membraneOutsideRxns;
+	private Vector<SBMLReaction> compartmentOutsideDiffusionRxns;
+	private Vector<SBMLReaction> compartmentMembraneDiffusionRxns;
+	private Vector<SBMLReaction> membraneOutsideDiffusionRxns;
+	private Vector<SBMLReaction> compartmentOutsideSymportRxns;
+	private Vector<SBMLReaction> compartmentMembraneSymportRxns;
+	private Vector<SBMLReaction> membraneOutsideSymportRxns;
+	private Vector<SBMLReaction> compartmentOutsideAntiportRxns;
+	private Vector<SBMLReaction> compartmentMembraneAntiportRxns;
+	private Vector<SBMLReaction> membraneOutsideAntiportRxns;
 	private ArrayList<Integer> transportIds;
 	
 	TransportCollectionsCreator transportCollectionsCreator = new TransportCollectionsCreator();
@@ -100,6 +109,7 @@ public class TransportReactionCategorizer {
 				LocalConfig.getInstance().getOutsideName().length() > 0) {
 			compartmentOutsideRxns = rf.getTransportReactionsByCompartments(LocalConfig.getInstance().getSelectedCompartmentName(), 
 					LocalConfig.getInstance().getOutsideName());
+			//System.out.println(compartmentOutsideRxns);
 			removeTransportReactionsFromUnplottedList(compartmentOutsideRxns);
 			if (LocalConfig.getInstance().getMembraneName() != null &&
 					LocalConfig.getInstance().getMembraneName().length() > 0) {

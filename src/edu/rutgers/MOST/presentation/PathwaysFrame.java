@@ -9,8 +9,6 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;                                                                                          
 import java.awt.Image;
 import java.awt.Paint;
-import java.awt.Point;
-import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.Stroke;
 import java.awt.event.ActionEvent;                                                                                   
@@ -46,10 +44,7 @@ import org.apache.commons.collections15.Transformer;
 import org.apache.commons.collections15.functors.ChainedTransformer;                                                 
                                                                                                                      
 
-
-
 import edu.rutgers.MOST.config.LocalConfig;
-import edu.rutgers.MOST.data.ExternalMetaboliteNode;
 import edu.rutgers.MOST.data.MetabolicPathway;
 import edu.rutgers.MOST.data.PathwayMetaboliteNode;
 import edu.rutgers.MOST.data.PathwayMetaboliteNodeFactory;
@@ -59,7 +54,6 @@ import edu.rutgers.MOST.data.PathwayReactionNodeFactory;
 import edu.rutgers.MOST.data.PathwaysCSVFileConstants;
 import edu.rutgers.MOST.data.ReactionFactory;
 import edu.rutgers.MOST.data.SBMLReaction;
-import edu.rutgers.MOST.data.TransportReactionNode;
 import edu.uci.ics.jung.algorithms.layout.Layout;                                                                    
 import edu.uci.ics.jung.algorithms.layout.StaticLayout;                                                              
 import edu.uci.ics.jung.graph.Graph;  
@@ -706,45 +700,6 @@ public class PathwaysFrame extends JApplet {
 					String reversible = prnf.reversibleString(pathway.getReactionsData().get(Integer.toString(k)).getReversible());
 					pn.setReversible(reversible);
 					pathway.getReactionsNodes().put(pn.getDataId(), pn);
-					//					System.out.println(pn.getSideReactants());
-					//					System.out.println(pn.getSideProducts());
-					//System.out.println("max ub " + LocalConfig.getInstance().getMaxUpperBound());
-					//System.out.println(pathway.getReactionsData().get(Integer.toString(k)).getReactionId());
-					// create external metabolite nodes
-					//						if (pathway.getExternalMetabolitesData().containsKey(pathway.getReactionsData().get(Integer.toString(k)).getReactionId())) {
-					//							//System.out.println("e " + pathway.getExternalMetabolitesData().get(pathway.getReactionsData().get(Integer.toString(k)).getReactionId()));
-					//							ExternalMetaboliteNode emn = new ExternalMetaboliteNode();
-					//							ExternalMetaboliteData emd = pathway.getExternalMetabolitesData().get(pathway.getReactionsData().get(Integer.toString(k)).getReactionId());
-					//							emn.setxPosition(pn.getxPosition());
-					//							emn.setyPosition(pn.getyPosition());
-					//							emn.setFluxValue(pn.getFluxValue());
-					//							String abbr = emd.getAbbreviation();
-					//							String name = emd.getName();
-					//							if (LocalConfig.getInstance().getKeggIdMetaboliteMap().containsKey(emd.getKeggMetaboliteId())) {
-					//								String metabAbbr = LocalConfig.getInstance().getKeggIdMetaboliteMap().get(emd.getKeggMetaboliteId()).get(0).getMetaboliteAbbreviation();
-					//								// check if metabolite ends with "_x"
-					//								String ch = metabAbbr.substring(metabAbbr.length() - 2, metabAbbr.length() - 1);
-					//								if (ch.equals("_")) {
-					//									abbr = metabAbbr.substring(2, metabAbbr.length() - 2);
-					//								} else {
-					//									abbr = metabAbbr.substring(2);
-					//								}
-					//								name += " " + abbr;
-					//							}
-					//							//						if (LocalConfig.getInstance().getMetaboliteNameAbbrMap().containsKey(name)) {
-					//							//							name = name + duplicateSuffix(name, LocalConfig.getInstance().getMetaboliteNameAbbrMap());
-					//							//						}
-					//							LocalConfig.getInstance().getMetaboliteNameAbbrMap().put(name, abbr);
-					//							emn.setAbbreviation(abbr);
-					//							emn.setName(name);
-					//							emn.setKeggId(emd.getKeggMetaboliteId());
-					//							emn.setPosition(emd.getPosition());
-					//							emn.setOffset(emd.getOffset());
-					//							emn.setDirection(emd.getDirection());
-					//							emn.setReversible(reversible);
-					//							emn.setReactionDisplayName(displayName);
-					//							externalMetaboliteNodeList.add(emn);
-					//						}
 					for (int r = 0; r < pathway.getReactionsData().get(Integer.toString(k)).getReactantIds().size(); r++) {
 						if (pathway.getMetabolitesData().containsKey((pathway.getReactionsData().get(Integer.toString(k)).getReactantIds().get(r)))) {
 							String reac = pathway.getMetabolitesData().get((pathway.getReactionsData().get(Integer.toString(k)).getReactantIds().get(r))).getName();
@@ -1253,69 +1208,6 @@ public class PathwaysFrame extends JApplet {
     	}
     		
 		return thickness;
-    }
-    
-    /**
-     * Updates x and/or y positions of external metabolite positions based on
-     * top, bottom, left, or right location
-     * @param externalMetaboliteNode
-     * @param borderTopY
-     * @param borderBottomY
-     * @param borderLeftX
-     * @param borderRightX
-     * @param h
-     * @param w
-     */
-    public void updateExternalMetabolitePosition(PathwayMetaboliteNode externalMetaboliteNode, 
-    		String borderTopY, String borderBottomY, String borderLeftX, String borderRightX, int h, int w) {
-    	if (((ExternalMetaboliteNode) externalMetaboliteNode).getPosition().equals("t")) {
-    		externalMetaboliteNode.setyPosition(Double.parseDouble(borderTopY) - h);
-    	} else if (((ExternalMetaboliteNode) externalMetaboliteNode).getPosition().equals("b")) {
-    		externalMetaboliteNode.setyPosition(Double.parseDouble(borderBottomY) + h);
-    	} else if (((ExternalMetaboliteNode) externalMetaboliteNode).getPosition().equals("l")) {
-    		externalMetaboliteNode.setxPosition(Double.parseDouble(borderLeftX) - w);
-    	} else if (((ExternalMetaboliteNode) externalMetaboliteNode).getPosition().equals("r")) {
-    		externalMetaboliteNode.setxPosition(Double.parseDouble(borderRightX) + w);
-    	}
-    }
-    
-    public void updateExternalMetaboliteOffset(PathwayMetaboliteNode externalMetaboliteNode) {
-    	if (((ExternalMetaboliteNode) externalMetaboliteNode).getPosition().equals("t") ||
-    			((ExternalMetaboliteNode) externalMetaboliteNode).getPosition().equals("b")) {
-    		externalMetaboliteNode.setxPosition(externalMetaboliteNode.getxPosition() + 
-        			((ExternalMetaboliteNode) externalMetaboliteNode).getOffset()*PathwaysFrameConstants.OFFSET_WIDTH);
-    	} else if (((ExternalMetaboliteNode) externalMetaboliteNode).getPosition().equals("l") ||
-    			((ExternalMetaboliteNode) externalMetaboliteNode).getPosition().equals("r")) {
-    		externalMetaboliteNode.setyPosition(externalMetaboliteNode.getyPosition() + 
-                	((ExternalMetaboliteNode) externalMetaboliteNode).getOffset()*PathwaysFrameConstants.OFFSET_HEIGHT);
-    	}	
-    }
-    
-    public void updateTransportReactionNodePosition(TransportReactionNode transportReactionNode, 
-    		String borderTopY, String borderBottomY, String borderLeftX, String borderRightX, int h, int w,
-    		double x, double y, int reactionCount) {
-    	//reactionCount -= 1;
-    	int offset = 0;
-    	if (reactionCount % 2 == 0) {
-    		offset = -(reactionCount/2);
-    	} else {
-    		offset = reactionCount/2;
-    	}
-    	//System.out.println("off " + offset);
-    	double off = offset*PathwaysFrameConstants.NODE_SPACING_CORRECTION;
-    	if (transportReactionNode.getPosition().equals("t")) {
-    		transportReactionNode.setxPosition(x + off*PathwaysFrameConstants.REACTION_NODE_WIDTH);
-    		transportReactionNode.setyPosition(Double.parseDouble(borderTopY) - h);
-    	} else if (transportReactionNode.getPosition().equals("b")) {
-    		transportReactionNode.setxPosition(x + off*PathwaysFrameConstants.REACTION_NODE_WIDTH);
-    		transportReactionNode.setyPosition(Double.parseDouble(borderBottomY) + h);
-    	} else if (transportReactionNode.getPosition().equals("l")) {
-    		transportReactionNode.setxPosition(Double.parseDouble(borderLeftX) - w);
-    		transportReactionNode.setyPosition(y + off*PathwaysFrameConstants.REACTION_NODE_HEIGHT);
-    	} else if (transportReactionNode.getPosition().equals("r")) {
-    		transportReactionNode.setxPosition(Double.parseDouble(borderRightX) + w);
-    		transportReactionNode.setyPosition(y + off*PathwaysFrameConstants.REACTION_NODE_HEIGHT);
-    	}
     }
     
     /**
