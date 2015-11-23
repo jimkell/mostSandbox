@@ -93,6 +93,7 @@ public class PathwaysFrame extends JApplet {
      */                                                                                                              
     Graph<String, Number> graph; 
     public JButton redrawButton = new JButton("Redraw");
+    public JPanel controls = new JPanel();
                                                                                                                      
     /**                                                                                                              
      * the visual component and renderer for the graph                                                               
@@ -427,7 +428,7 @@ public class PathwaysFrame extends JApplet {
 //
 //        	}});
 
-        JPanel controls = new JPanel();                                                                              
+        //JPanel controls = new JPanel();                                                                              
         controls.add(plus);                                                                                          
         controls.add(minus); 
         controls.add(redrawButton);
@@ -514,8 +515,13 @@ public class PathwaysFrame extends JApplet {
         graphics.fillRect(0,0, width, height);
         paintComponents(graphics);
         
+        // there does not seem to be any way to programmatically determine the scroll bar width
+        // and height but it seems to remain constant at 17 any way the window is resized
+        int scrollBarSize = 17;
+        int heightCorrection = controls.getHeight() + getJMenuBar().getHeight() + scrollBarSize;
         // create a cropped image from the original image
-        BufferedImage croppedImage = im.getSubimage(0, 23, width - 17, height - 76);
+        BufferedImage croppedImage = im.getSubimage(0, getJMenuBar().getHeight(), width - scrollBarSize, height - heightCorrection);
+        //BufferedImage croppedImage = im.getSubimage(0, 23, width - 17, height - 76);
 
         try{
            ImageIO.write(croppedImage,"png",new File("window.png"));

@@ -13102,6 +13102,7 @@ public class GraphicalInterface extends JFrame {
 		});
         frame.add(visualizationTabbedPane);
         frame.setSize(1300, 700);
+        frame.setMinimumSize(new Dimension(400, 300));
         frame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         frame.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent evt) {
