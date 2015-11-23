@@ -33,16 +33,24 @@ import javax.swing.ImageIcon;
 import javax.swing.JApplet;                                                                                          
 import javax.swing.JButton;                                                                                          
 import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JFileChooser;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;                                                                                           
                                                                                                                      
 import javax.swing.JPopupMenu;
+import javax.swing.JTextArea;
 
 import org.apache.commons.collections15.Transformer;                                                                 
 import org.apache.commons.collections15.functors.ChainedTransformer;                                                 
                                                                                                                      
+
+
+
+
+
 
 import edu.rutgers.MOST.config.LocalConfig;
 import edu.rutgers.MOST.data.MetabolicPathway;
@@ -54,6 +62,7 @@ import edu.rutgers.MOST.data.PathwayReactionNodeFactory;
 import edu.rutgers.MOST.data.PathwaysCSVFileConstants;
 import edu.rutgers.MOST.data.ReactionFactory;
 import edu.rutgers.MOST.data.SBMLReaction;
+import edu.rutgers.MOST.data.SettingsConstants;
 import edu.uci.ics.jung.algorithms.layout.Layout;                                                                    
 import edu.uci.ics.jung.algorithms.layout.StaticLayout;                                                              
 import edu.uci.ics.jung.graph.Graph;  
@@ -206,7 +215,59 @@ public class PathwaysFrame extends JApplet {
     	
     	saveWindowPNGItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
-				saveWindowAsPNG();
+				JTextArea output = null;
+				JFileChooser fileChooser = new JFileChooser();
+				fileChooser.setDialogTitle("Save PNG File");
+				fileChooser.setFileFilter(new PNGFileFilter());
+				fileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+				
+				String lastPNG_path = GraphicalInterface.curSettings.get("LastPNGPath");
+				Utilities u = new Utilities();
+				// if path is null or does not exist, default used, else last path used		
+				fileChooser.setCurrentDirectory(new File(u.lastPath(lastPNG_path, fileChooser)));
+				
+				boolean done = false;
+				while (!done) {
+					//... Open a file dialog.
+					int retval = fileChooser.showSaveDialog(output);
+					if (retval == JFileChooser.CANCEL_OPTION) {
+						done = true;
+						//exit = false;
+					}
+					if (retval == JFileChooser.APPROVE_OPTION) {
+						//... The user selected a file, get it, use it.
+						String rawPathName = fileChooser.getSelectedFile().getAbsolutePath();
+						if (!rawPathName.endsWith(".png")) {
+							rawPathName = rawPathName + ".png";
+						}
+						GraphicalInterface.curSettings.add("LastPNGPath", rawPathName);
+
+						//checks if filename endswith .png else renames file to end with .png
+						String path = fileChooser.getSelectedFile().getPath();
+						if (!path.endsWith(".png")) {
+							path = path + ".png";
+						}
+
+						File file = new File(path);
+						if (file.exists()) {
+							int confirmDialog = JOptionPane.showConfirmDialog(fileChooser, "Replace existing file?");
+							if (confirmDialog == JOptionPane.YES_OPTION) {
+								done = true;
+
+								saveWindowAsPNG(path);
+
+							} else if (confirmDialog == JOptionPane.NO_OPTION) {        		    	  
+								done = false;
+							} else {
+								done = true;
+							}       		    	  
+						} else {
+							done = true;
+							
+							saveWindowAsPNG(path);
+						}
+					}
+				}
 			}
 		});
 
@@ -501,33 +562,34 @@ public class PathwaysFrame extends JApplet {
     	}
     }
     
-    public void saveWindowAsPNG() {
+    public void saveWindowAsPNG(String path) {
     	// based on http://stackoverflow.com/questions/8518390/exporting-jung-graphs-to-hi-res-images-preferably-vector-based
     	Dimension vsDims = getSize();
 
     	int width = vsDims.width;
-        int height = vsDims.height;
-        Color bg = getBackground();
+    	int height = vsDims.height;
+    	Color bg = getBackground();
 
-        BufferedImage im = new BufferedImage(width,height,BufferedImage.TYPE_INT_BGR);
-        Graphics2D graphics = im.createGraphics();
-        graphics.setColor(bg);
-        graphics.fillRect(0,0, width, height);
-        paintComponents(graphics);
-        
-        // there does not seem to be any way to programmatically determine the scroll bar width
-        // and height but it seems to remain constant at 17 any way the window is resized
-        int scrollBarSize = 17;
-        int heightCorrection = controls.getHeight() + getJMenuBar().getHeight() + scrollBarSize;
-        // create a cropped image from the original image
-        BufferedImage croppedImage = im.getSubimage(0, getJMenuBar().getHeight(), width - scrollBarSize, height - heightCorrection);
-        //BufferedImage croppedImage = im.getSubimage(0, 23, width - 17, height - 76);
+    	BufferedImage im = new BufferedImage(width,height,BufferedImage.TYPE_INT_BGR);
+    	Graphics2D graphics = im.createGraphics();
+    	graphics.setColor(bg);
+    	graphics.fillRect(0,0, width, height);
+    	paintComponents(graphics);
 
-        try{
-           ImageIO.write(croppedImage,"png",new File("window.png"));
-        }catch(Exception e){
-            e.printStackTrace();
-        }
+    	// there does not seem to be any way to programmatically determine the scroll bar width
+    	// and height but it seems to remain constant at 17 any way the window is resized
+    	int scrollBarSize = 17;
+    	int heightCorrection = controls.getHeight() + getJMenuBar().getHeight() + scrollBarSize;
+    	// create a cropped image from the original image
+    	BufferedImage croppedImage = im.getSubimage(0, getJMenuBar().getHeight(), width - scrollBarSize, height - heightCorrection);
+    	//BufferedImage croppedImage = im.getSubimage(0, 23, width - 17, height - 76);
+
+    	try{
+    		ImageIO.write(croppedImage,"png",new File(path));
+    		//ImageIO.write(croppedImage,"png",new File("window.png"));
+    	}catch(Exception e){
+    		e.printStackTrace();
+    	}
     }
     
     public Vector<SBMLReaction> compartmentReactions(ReactionFactory f, String compartment) {
@@ -1272,6 +1334,16 @@ public class PathwaysFrame extends JApplet {
 			duplicateSuffix = duplicateSuffix.replace("1", Integer.toString(duplicateCount + 1));
 		}
 		return duplicateSuffix;
+	}
+	
+	class PNGFileFilter extends javax.swing.filechooser.FileFilter {
+		public boolean accept(File f) {
+			return f.isDirectory() || f.getName().toLowerCase().endsWith(".png");
+		}
+
+		public String getDescription() {
+			return ".png files";
+		}
 	}
     
     public static void main(String[] args) {                                                                         
