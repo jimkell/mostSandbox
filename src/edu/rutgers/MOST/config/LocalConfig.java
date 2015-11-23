@@ -1219,6 +1219,16 @@ public class LocalConfig {
 		this.metaboliteAbbrKeggIdMap = metaboliteAbbrKeggIdMap;
 	}
 	
+	private Map<String, String> chebiIdKeggIdMap;
+
+	public Map<String, String> getChebiIdKeggIdMap() {
+		return chebiIdKeggIdMap;
+	}
+
+	public void setChebiIdKeggIdMap(Map<String, String> chebiIdKeggIdMap) {
+		this.chebiIdKeggIdMap = chebiIdKeggIdMap;
+	}
+
 	// used to add ec numbers from supplementary data 
 	private Map<String, String> reactionAbbrECNumberMap;
 

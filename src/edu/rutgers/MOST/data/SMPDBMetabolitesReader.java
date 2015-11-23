@@ -11,9 +11,6 @@ import java.util.Map;
 
 import javax.swing.JOptionPane;
 
-import edu.rutgers.MOST.config.LocalConfig;
-import edu.rutgers.MOST.presentation.GraphicalInterface;
-import edu.rutgers.MOST.presentation.GraphicalInterfaceConstants;
 import au.com.bytecode.opencsv.CSVReader;
 import au.com.bytecode.opencsv.CSVWriter;
 
@@ -111,7 +108,9 @@ public class SMPDBMetabolitesReader {
 		SMPDBMetabolitesReader reader = new SMPDBMetabolitesReader();
 		File f = new File("etc/smpdb_metabolites/metabolites.csv");
 		reader.readFile(f);
-		reader.writeFile("etc/visualization/chebiIds_keggIds.csv");
+		// Errors were found in metabolites.csv and have been manually fixed
+		reader.writeFile("etc/visualization/chebiIds_keggIds1.csv");
+		//reader.writeFile("etc/visualization/chebiIds_keggIds.csv");
 	}
 	
 }

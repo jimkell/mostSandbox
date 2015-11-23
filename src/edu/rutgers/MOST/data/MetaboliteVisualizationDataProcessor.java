@@ -21,10 +21,22 @@ public class MetaboliteVisualizationDataProcessor {
 				// if metabolite abbreviation is not empty and KEGG id is not empty
 				// and not a boundary metabolite, process metabolite
 				if (metaboliteAbbreviationValid(metabolites.get(i)) &&
-						!isBoundaryMetabolite(metabolites.get(i)) &&
-						keggIdValid(metabolites.get(i))) {
+						!isBoundaryMetabolite(metabolites.get(i))) {
+					
 					String metabId = Integer.toString(metabolites.get(i).getId());
 					String keggId = metabolites.get(i).getKeggId();
+					if (keggId == null || keggId.length() == 0) {
+						if (f.getChebiIdColumnIndex() > -1) {
+							String chebiId = metabolites.get(i).getChebiId();
+							if (chebiId != null && chebiId.length() > 0) {
+								if (LocalConfig.getInstance().getChebiIdKeggIdMap().containsKey(chebiId)) {
+//									System.out.println(chebiId);
+//									System.out.println(LocalConfig.getInstance().getChebiIdKeggIdMap().get(chebiId));
+									keggId = LocalConfig.getInstance().getChebiIdKeggIdMap().get(chebiId);
+								}
+							}
+						}
+					}
 					if (keggId != null && keggId.length() > 0) {
 						// replace key from model with key from KEGG database in case where KEGG id from
 						// model is not in KEGG database (depreciated?)
@@ -110,15 +122,6 @@ public class MetaboliteVisualizationDataProcessor {
 	private boolean metaboliteAbbreviationValid(SBMLMetabolite metabolite) {
 		if (metabolite.getMetaboliteAbbreviation() != null &&
 						metabolite.getMetaboliteAbbreviation().length() > 0) {
-			return true;
-		}
-		return false;
-		
-	}
-	
-	private boolean keggIdValid(SBMLMetabolite metabolite) {
-		if (metabolite.getKeggId() != null &&
-						metabolite.getKeggId().length() > 0) {
 			return true;
 		}
 		return false;

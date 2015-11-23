@@ -288,6 +288,10 @@ public class GraphicalInterfaceConstants {
     	{"KEGG", "Kegg"
         };
     
+    public static final String[] CHEBI_ID_METABOLITES_COLUMN_NAMES = 
+    	{"CHEBI", "Chebi"
+        };
+    
     // messages box titles and messages
     // general 
     public static final String NUMERIC_VALUE_ERROR_TITLE = "Invalid numeric entry.";

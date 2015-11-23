@@ -26,6 +26,8 @@ public class PathwayFilesReader {
 	Map<String, ArrayList<String>> metaboliteAlternativesMap = new HashMap<String, ArrayList<String>>();
 	Map<String, PathwayReactionData> reactionDataKeggIdMap = new HashMap<String, PathwayReactionData>();
 	Map<String, ArrayList<String>> ecNumberKeggReactionIdMap = new HashMap<String, ArrayList<String>>();
+	Map<String, String> chebiIdKeggIdMap = new HashMap<String, String>();
+	Map<String, ArrayList<String>> chebiIdKeggIdListMap = new HashMap<String, ArrayList<String>>();
 	
 	Utilities util = new Utilities();
 	
@@ -897,6 +899,54 @@ public class PathwayFilesReader {
 		}	
 	}
 	
+	public void readChebiIdsKeggIdsFile(File chebiIdsKeggIds) {
+		// currently all lists have length 1, but there are errors in the file that were manually corrected, therefore
+		// the file may contain other errors, so this functionality will be left in for future sources
+		CSVReader reader;
+		
+		int count = 0;
+		
+		try {
+			reader = new CSVReader(new FileReader(chebiIdsKeggIds), ',');
+			String [] dataArray;
+			try {
+				while ((dataArray = reader.readNext()) != null) {
+					if (count > 0) {
+						chebiIdKeggIdMap.put(dataArray[PathwaysCSVFileConstants.CHEBI_IDS_KEGG_IDS_CHEBI_ID_COLUMN], 
+								dataArray[PathwaysCSVFileConstants.CHEBI_IDS_KEGG_IDS_KEGG_ID_COLUMN]);
+						if (chebiIdKeggIdListMap.containsKey(dataArray[PathwaysCSVFileConstants.CHEBI_IDS_KEGG_IDS_CHEBI_ID_COLUMN])) {
+							ArrayList<String> keggIds = chebiIdKeggIdListMap.get(dataArray[PathwaysCSVFileConstants.CHEBI_IDS_KEGG_IDS_CHEBI_ID_COLUMN]);
+							if (!keggIds.contains(dataArray[PathwaysCSVFileConstants.CHEBI_IDS_KEGG_IDS_KEGG_ID_COLUMN])) {
+								keggIds.add(dataArray[PathwaysCSVFileConstants.CHEBI_IDS_KEGG_IDS_KEGG_ID_COLUMN]);
+								chebiIdKeggIdListMap.put(dataArray[PathwaysCSVFileConstants.CHEBI_IDS_KEGG_IDS_CHEBI_ID_COLUMN], keggIds);
+							}
+						} else {
+							ArrayList<String> keggIds = new ArrayList<String>();
+							keggIds.add(dataArray[PathwaysCSVFileConstants.CHEBI_IDS_KEGG_IDS_KEGG_ID_COLUMN]);
+							chebiIdKeggIdListMap.put(dataArray[PathwaysCSVFileConstants.CHEBI_IDS_KEGG_IDS_CHEBI_ID_COLUMN], keggIds);
+						}
+					}
+					count += 1;
+				}
+				//System.out.println(chebiIdKeggIdMap);
+				LocalConfig.getInstance().setChebiIdKeggIdMap(chebiIdKeggIdMap);
+				reader.close();
+			} catch (IOException e) {
+				JOptionPane.showMessageDialog(null,                
+						"File Not Found Error.",                
+						"Error",                                
+						JOptionPane.ERROR_MESSAGE);
+				//e.printStackTrace();
+			}
+		} catch (FileNotFoundException e) {
+			JOptionPane.showMessageDialog(null,                
+					"File Not Found Error.",                
+					"Error",                                
+					JOptionPane.ERROR_MESSAGE);
+			//e.printStackTrace();
+		}
+	}
+	
 	/**
 	 * Files where data is read once and the data structure is not modified in any way.
 	 * Most of these are large files and it is beneficial to read only once.
@@ -912,6 +962,7 @@ public class PathwayFilesReader {
 		File reactions = new File(PathwaysCSVFileConstants.REACTIONS_FILE_NAME);
 		File sideSpecies = new File(PathwaysCSVFileConstants.PATHWAY_SIDE_SPECIES_FILE_NAME);
 		File metaboliteSubstitutions = new File(PathwaysCSVFileConstants.METABOLITE_SUBSTITUTIONS_FILE_NAME);
+		File chebiIdsKeggIds = new File(PathwaysCSVFileConstants.CHEBI_IDS_KEGG_IDS_FILE_NAME);
 		PathwayFilesReader reader = new PathwayFilesReader();
 		reader.readPathwayNamesFile(pathwayNames);
 		reader.readPathwayGraphFile(pathwayGraph);
@@ -921,6 +972,7 @@ public class PathwayFilesReader {
 		reader.readReactionsFile(reactions);
 		reader.readSideSpeciesFile(sideSpecies);
 		reader.readMetaboliteSubstitutionsFile(metaboliteSubstitutions);
+		reader.readChebiIdsKeggIdsFile(chebiIdsKeggIds);
 	}
 	
 	/**

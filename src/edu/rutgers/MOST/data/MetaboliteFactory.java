@@ -195,6 +195,9 @@ public class MetaboliteFactory {
 					if (getKeggIdColumnIndex() > -1) {
 						metabolite.setKeggId((String) GraphicalInterface.metabolitesTable.getModel().getValueAt(i, getKeggIdColumnIndex()));
 					}
+					if (getChebiIdColumnIndex() > -1) {
+						metabolite.setChebiId((String) GraphicalInterface.metabolitesTable.getModel().getValueAt(i, getChebiIdColumnIndex()));
+					}
 					metabolites.add(metabolite);
 				}													
 			}
@@ -218,8 +221,22 @@ public class MetaboliteFactory {
 		return index;
 	}
 	
+	// get index of column with Kegg Id
+	public Integer getChebiIdColumnIndex() {
+		int index = -1;
+		for (int i = 0; i < LocalConfig.getInstance().getMetabolitesMetaColumnNames().size(); i++) {
+			if (LocalConfig.getInstance().getMetabolitesMetaColumnNames().get(i).contains(GraphicalInterfaceConstants.CHEBI_ID_METABOLITES_COLUMN_NAMES[0])) {
+				index = GraphicalInterfaceConstants.METABOLITES_COLUMN_NAMES.length + i;
+			} else if (LocalConfig.getInstance().getMetabolitesMetaColumnNames().get(i).contains(GraphicalInterfaceConstants.CHEBI_ID_METABOLITES_COLUMN_NAMES[1])) {
+				index = GraphicalInterfaceConstants.METABOLITES_COLUMN_NAMES.length + i;
+			}
+		}
+
+		return index;
+	}
+
 	public static void main(String[] args) {
-		
+
 	}
 
 }
