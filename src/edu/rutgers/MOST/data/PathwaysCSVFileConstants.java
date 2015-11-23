@@ -93,6 +93,10 @@ public class PathwaysCSVFileConstants {
 		"Pathway ID", "Metabolite ID", "Metabolite Name", "Metabolite Abbreviation", "Position", "Offset",
 		"Direction", "KEGG Metabolite ID"
 		};
+	public static final String[] CHEBL_ID_KEGG_ID_COLUMN_NAMES = 
+		{
+		"CHEBI ID", "KEGG ID"
+		};
 	
 	private static java.util.List<String> pathwayColumnsList = Arrays.asList(PATHWAYS_COLUMN_NAMES);
 	private static java.util.List<String> pathwayNamesColumnsList = Arrays.asList(PATHWAY_NAMES_COLUMN_NAMES);
