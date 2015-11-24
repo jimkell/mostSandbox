@@ -499,11 +499,11 @@ public class PathwaysFrame extends JApplet {
     }  
     
     public void saveGraphAsPNG() {
-    	double centerX = 2000;
-    	double centerY = 2000;
-    	double width = 6000;
-    	double height = 18000;
-    	vv.getGraphLayout().setSize(new Dimension((int) width, (int) height));
+//    	double centerX = 2000;
+//    	double centerY = 2000;
+//    	double width = 6000;
+//    	double height = 18000;
+//    	vv.getGraphLayout().setSize(new Dimension((int) width, (int) height));
     	// based on code from http://stackoverflow.com/questions/10420779/jung-save-whole-graph-not-only-visible-part-as-image
     	// Create the VisualizationImageServer
     	// vv is the VisualizationViewer containing my graph
@@ -542,15 +542,15 @@ public class PathwaysFrame extends JApplet {
 //    	System.out.println(vv.getVisibleRect().getSize());
 //    	
 //    	// Create the buffered image
-    	BufferedImage image = (BufferedImage) vis.getImage(
-    	    new Point2D.Double(centerX, centerY),
-    	    new Dimension((int) width, (int) height));
+//    	BufferedImage image = (BufferedImage) vis.getImage(
+//    	    new Point2D.Double(centerX, centerY),
+//    	    new Dimension((int) width, (int) height));
     	
     	// Create the buffered image
-//    	BufferedImage image = (BufferedImage) vis.getImage(
-//    	    new Point2D.Double(vv.getGraphLayout().getSize().getWidth() / 2,
-//    	    vv.getGraphLayout().getSize().getHeight() / 2),
-//    	    new Dimension(vv.getGraphLayout().getSize()));
+    	BufferedImage image = (BufferedImage) vis.getImage(
+    	    new Point2D.Double(vv.getGraphLayout().getSize().getWidth() / 2,
+    	    vv.getGraphLayout().getSize().getHeight() / 2),
+    	    new Dimension(vv.getGraphLayout().getSize()));
     	
     	// Write image to a png file
     	File outputfile = new File("graph.png");

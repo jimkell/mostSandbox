@@ -1,7 +1,2 @@
-Pathway ID,Pathway Name,Direction,Component
-0,Glycolysis / Gluconeogenesis,horizontal,0
-2,Pentose Phosphate Pathway,horizontal,0
-1,Citrate cycle (TCA cycle),horizontal,0
-24," Alanine, Aspartate and Glutamate metabolism",vertical,0
-90,Pyruvate Metabolism,vertical,0
-17,Oxidative phosphorylation,vertical,1
+Pathway ID,Pathway Name,Component
+0,1,0

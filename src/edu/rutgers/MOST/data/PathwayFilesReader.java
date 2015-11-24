@@ -745,160 +745,6 @@ public class PathwayFilesReader {
 		}	
 	}
 	
-	/**
-	 * processes data for metabolites in periplasm or
-	 * extraorganism compartments that participate in reactions
-	 * @param externalMetabolites
-	 */
-	public void readExternalMetabolitesFile(File externalMetabolites) {
-		CSVReader reader;
-
-		int count = 0;
-		
-		try {
-			reader = new CSVReader(new FileReader(externalMetabolites), ',');
-			String [] dataArray;
-			try {
-				while ((dataArray = reader.readNext()) != null) {
-					if (count > 0) {
-						ExternalMetaboliteData em = new ExternalMetaboliteData();
-						String id = dataArray[PathwaysCSVFileConstants.EXTERNAL_METABOLITE_PATHWAY_ID_COLUMN];
-						for (int s = 0; s < dataArray.length; s++) {
-							if (s == PathwaysCSVFileConstants.EXTERNAL_METABOLITE_PATHWAY_ID_COLUMN) {
-								em.setPathwayId(dataArray[s]);
-							}
-							if (s == PathwaysCSVFileConstants.EXTERNAL_METABOLITE_REACTION_ID_COLUMN) {
-								em.setReactionId(dataArray[s]);
-							}
-							if (s == PathwaysCSVFileConstants.EXTERNAL_METABOLITE_ABBR_COLUMN) {
-								em.setAbbreviation(dataArray[s]);
-							}
-							if (s == PathwaysCSVFileConstants.EXTERNAL_METABOLITE_NAME_COLUMN) {
-								// need to escape pipe: http://stackoverflow.com/questions/21524642/splitting-string-with-pipe-character
-//								String[] names = dataArray[s].split("\\|");
-//								ArrayList<String> namesList = new ArrayList<String>();
-//								for (int i = 0; i < names.length; i++) {
-//									namesList.add(names[i]);
-//								}
-//								em.setNames(namesList);
-								em.setName(dataArray[s]);
-							}
-							if (s == PathwaysCSVFileConstants.EXTERNAL_METABOLITE_POSITION_COLUMN) {
-								em.setPosition(dataArray[s]);
-							}
-							if (s == PathwaysCSVFileConstants.EXTERNAL_METABOLITE_OFFSET_COLUMN) {
-								em.setOffset(Double.parseDouble(dataArray[s]));
-							}
-							if (s == PathwaysCSVFileConstants.EXTERNAL_METABOLITE_DIRECTION_COLUMN) {
-								em.setDirection(Integer.valueOf(dataArray[s]));
-							}
-							if (s == PathwaysCSVFileConstants.EXTERNAL_KEGG_METABOLITE_ID_COLUMN) {
-								em.setKeggMetaboliteId(dataArray[s]);
-								Map<String, PathwayReactionData> reactionsData = LocalConfig.getInstance().getMetabolicPathways().get(em.getPathwayId()).getReactionsData();
-								if (em.getDirection() == -1) {
-									ArrayList<String> keggReactantIds = reactionsData.get(em.getReactionId()).getKeggReactantIds();
-									keggReactantIds.add(dataArray[s]);
-									reactionsData.get(em.getReactionId()).setKeggReactantIds(keggReactantIds);
-									//System.out.println(reactionsData.get(em.getReactionId()).getKeggReactantIds());
-								} else if (em.getDirection() == 1) {
-									ArrayList<String> keggProductIds = reactionsData.get(em.getReactionId()).getKeggProductIds();
-									keggProductIds.add(dataArray[s]);
-									reactionsData.get(em.getReactionId()).setKeggProductIds(keggProductIds);
-									//System.out.println(reactionsData.get(em.getReactionId()).getKeggProductIds());
-								}
-							}
-							if (s == PathwaysCSVFileConstants.EXTERNAL_EC_NUMBER_COLUMN) {
-								em.setEcNumber(dataArray[s]);
-							}
-							if (s == PathwaysCSVFileConstants.EXTERNAL_KEGG_REACTION_ID_COLUMN) {
-								em.setKeggReactionId(dataArray[s]);
-							}
-						}
-						metabolicPathways.get(id).getExternalMetabolitesData().put(em.getReactionId(), em);
-						//System.out.println(em);
-					}
-					count += 1;
-				}
-				reader.close();
-			} catch (IOException e) {
-				JOptionPane.showMessageDialog(null,                
-						"File Not Found Error.",                
-						"Error",                                
-						JOptionPane.ERROR_MESSAGE);
-				//e.printStackTrace();
-			}
-		} catch (FileNotFoundException e) {
-			JOptionPane.showMessageDialog(null,                
-					"File Not Found Error.",                
-					"Error",                                
-					JOptionPane.ERROR_MESSAGE);
-			//e.printStackTrace();
-		}	
-	}
-	
-	public void readTransportMetabolitesFile(File transportMetabolites) {
-		CSVReader reader;
-
-		ArrayList<String> transportMetaboliteIds = new ArrayList<String>();
-		int count = 0;
-		
-		try {
-			reader = new CSVReader(new FileReader(transportMetabolites), ',');
-			String [] dataArray;
-			try {
-				while ((dataArray = reader.readNext()) != null) {
-					if (count > 0) {
-						ExternalMetaboliteData em = new ExternalMetaboliteData();
-						String id = dataArray[PathwaysCSVFileConstants.TRANSPORT_METABOLITE_PATHWAY_ID_COLUMN];
-						for (int s = 0; s < dataArray.length; s++) {
-							if (s == PathwaysCSVFileConstants.TRANSPORT_METABOLITE_PATHWAY_ID_COLUMN) {
-								em.setPathwayId(dataArray[s]);
-							}
-							if (s == PathwaysCSVFileConstants.TRANSPORT_METABOLITE_ABBR_COLUMN) {
-								em.setAbbreviation(dataArray[s]);
-							}
-							if (s == PathwaysCSVFileConstants.TRANSPORT_METABOLITE_NAME_COLUMN) {
-								em.setName(dataArray[s]);
-							}
-							if (s == PathwaysCSVFileConstants.TRANSPORT_METABOLITE_POSITION_COLUMN) {
-								em.setPosition(dataArray[s]);
-							}
-							if (s == PathwaysCSVFileConstants.TRANSPORT_METABOLITE_OFFSET_COLUMN) {
-								em.setOffset(Double.parseDouble(dataArray[s]));
-							}
-							if (s == PathwaysCSVFileConstants.TRANSPORT_METABOLITE_DIRECTION_COLUMN) {
-								em.setDirection(Integer.valueOf(dataArray[s]));
-							}
-							if (s == PathwaysCSVFileConstants.TRANSPORT_KEGG_METABOLITE_ID_COLUMN) {
-								em.setKeggMetaboliteId(dataArray[s]);
-								if (!transportMetaboliteIds.contains(dataArray[s])) {
-									transportMetaboliteIds.add(dataArray[s]);
-								}
-							}
-						}
-						metabolicPathways.get(id).getTransportMetabolitesData().put(em.getKeggMetaboliteId(), em);
-						//System.out.println(em);
-					}
-					count += 1;
-				}
-				reader.close();
-				LocalConfig.getInstance().setTransportMetaboliteIds(transportMetaboliteIds);
-			} catch (IOException e) {
-				JOptionPane.showMessageDialog(null,                
-						"File Not Found Error.",                
-						"Error",                                
-						JOptionPane.ERROR_MESSAGE);
-				//e.printStackTrace();
-			}
-		} catch (FileNotFoundException e) {
-			JOptionPane.showMessageDialog(null,                
-					"File Not Found Error.",                
-					"Error",                                
-					JOptionPane.ERROR_MESSAGE);
-			//e.printStackTrace();
-		}	
-	}
-	
 	public void readChebiIdsKeggIdsFile(File chebiIdsKeggIds) {
 		// currently all lists have length 1, but there are errors in the file that were manually corrected, therefore
 		// the file may contain other errors, so this functionality will be left in for future sources
@@ -982,16 +828,11 @@ public class PathwayFilesReader {
 		File pathways = new File(PathwaysCSVFileConstants.PATHWAYS_FILE_NAME);
 		File metabolitePositions = new File(PathwaysCSVFileConstants.METABOLITE_POSITIONS_FILE_NAME);
 		File reactionPositions = new File(PathwaysCSVFileConstants.REACTION_POSITIONS_FILE_NAME);
-		File externalMetabolites = new File(PathwaysCSVFileConstants.EXTERNAL_METABOLITES_FILE_NAME);
-		File transportMetabolites = new File(PathwaysCSVFileConstants.TRANSPORT_METABOLITES_FILE_NAME);
-		// TODO: remove after done updating database
 		File metaboliteSubstitutions = new File(PathwaysCSVFileConstants.METABOLITE_SUBSTITUTIONS_FILE_NAME);
 		PathwayFilesReader reader = new PathwayFilesReader();
 		reader.readPathwaysFile(pathways);
 		reader.readMetabolitePositionsFile(metabolitePositions);
 		reader.readReactionPositionsFile(reactionPositions);
-		reader.readExternalMetabolitesFile(externalMetabolites);
-		reader.readTransportMetabolitesFile(transportMetabolites);
 		// TODO: remove after done updating database
 		reader.readMetaboliteSubstitutionsFile(metaboliteSubstitutions);
 	}
