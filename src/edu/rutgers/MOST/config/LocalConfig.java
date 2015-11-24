@@ -1077,17 +1077,6 @@ public class LocalConfig {
 			Map<String, ArrayList<SBMLReaction>> ecNumberReactionMap) {
 		this.ecNumberReactionMap = ecNumberReactionMap;
 	}
-	
-	private Map<String, ArrayList<SBMLReaction>> ecNumberMembraneReactionMap;
-	
-	public Map<String, ArrayList<SBMLReaction>> getEcNumberMembraneReactionMap() {
-		return ecNumberMembraneReactionMap;
-	}
-
-	public void setEcNumberMembraneReactionMap(
-			Map<String, ArrayList<SBMLReaction>> ecNumberMembraneReactionMap) {
-		this.ecNumberMembraneReactionMap = ecNumberMembraneReactionMap;
-	}
 
 	private Map<String, ArrayList<SBMLReaction>> keggIdReactionMap;
 
@@ -1174,38 +1163,6 @@ public class LocalConfig {
 	public void setCytosolIds(ArrayList<Integer> cytosolIds) {
 		this.cytosolIds = cytosolIds;
 	}
-
-//	private ArrayList<Integer> cytosolExtraOrganismIds;
-//
-//	public ArrayList<Integer> getCytosolExtraOrganismIds() {
-//		return cytosolExtraOrganismIds;
-//	}
-//
-//	public void setCytosolExtraOrganismIds(
-//			ArrayList<Integer> cytosolExtraOrganismIds) {
-//		this.cytosolExtraOrganismIds = cytosolExtraOrganismIds;
-//	}
-	
-//	private ArrayList<Integer> cytosolPeriplasmIds;
-//
-//	public ArrayList<Integer> getCytosolPeriplasmIds() {
-//		return cytosolPeriplasmIds;
-//	}
-//
-//	public void setCytosolPeriplasmIds(ArrayList<Integer> cytosolPeriplasmIds) {
-//		this.cytosolPeriplasmIds = cytosolPeriplasmIds;
-//	}
-//	
-//	private ArrayList<Integer> periplasmExtraOrganismIds;
-//
-//	public ArrayList<Integer> getPeriplasmExtraOrganismIds() {
-//		return periplasmExtraOrganismIds;
-//	}
-//
-//	public void setPeriplasmExtraOrganismIds(
-//			ArrayList<Integer> periplasmExtraOrganismIds) {
-//		this.periplasmExtraOrganismIds = periplasmExtraOrganismIds;
-//	}
 	
 	// used to add kegg ids to metabolites table from supplementary data
 	private Map<String, String> metaboliteAbbrKeggIdMap;

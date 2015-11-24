@@ -1490,8 +1490,6 @@ public class GraphicalInterface extends JFrame {
 		
 		Map<String, ArrayList<SBMLReaction>> ecNumberReactionMap = new HashMap<String, ArrayList<SBMLReaction>>();
 		LocalConfig.getInstance().setEcNumberReactionMap(ecNumberReactionMap);
-		Map<String, ArrayList<SBMLReaction>> ecNumberMembraneReactionMap = new HashMap<String, ArrayList<SBMLReaction>>();
-		LocalConfig.getInstance().setEcNumberMembraneReactionMap(ecNumberMembraneReactionMap);
 		Map<String, ArrayList<SBMLReaction>> keggIdReactionMap = new HashMap<String, ArrayList<SBMLReaction>>();
 		LocalConfig.getInstance().setKeggIdReactionMap(keggIdReactionMap);
 		Map<String, ArrayList<SBMLReaction>> keggIdMembraneReactionMap = new HashMap<String, ArrayList<SBMLReaction>>();
@@ -13034,14 +13032,6 @@ public class GraphicalInterface extends JFrame {
 			}
 		}
 		LocalConfig.getInstance().setNoIdentifierIds(noIdentifierIds);
-		if (LocalConfig.getInstance().getMembraneName() != null && LocalConfig.getInstance().getMembraneName().length() > 0) {
-			membraneRxns = rf.getReactionsByCompartment(LocalConfig.getInstance().getMembraneName());
-			Map<String, ArrayList<SBMLReaction>> ecNumberMembraneReactionMap = ecMapCreator.createEcNumberReactionMap(membraneRxns);
-			LocalConfig.getInstance().setEcNumberMembraneReactionMap(ecNumberMembraneReactionMap);
-			Map<String, ArrayList<SBMLReaction>> keggIdMembraneReactionMap = keggIdReactionMapCreator.createKEGGIdReactionMap(membraneRxns);
-			LocalConfig.getInstance().setKeggIdMembraneReactionMap(keggIdMembraneReactionMap);
-			//System.out.println(ecNumberMembraneReactionMap);
-		}
 //		System.out.println("g no " + noIdentifierIds);
 //		if (LocalConfig.getInstance().getExtraOrganismName() != null && LocalConfig.getInstance().getExtraOrganismName().length() > 0) {
 //			Vector<SBMLReaction> eRxns = rf.getReactionsByCompartment(LocalConfig.getInstance().getExtraOrganismName());

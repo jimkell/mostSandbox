@@ -13,16 +13,6 @@ public class TransportReactionCategorizer {
 	private Vector<SBMLReaction> compartmentOutsideRxns;
 	private Vector<SBMLReaction> compartmentMembraneRxns;
 	private Vector<SBMLReaction> membraneOutsideRxns;
-	private Vector<SBMLReaction> compartmentOutsideDiffusionRxns;
-	private Vector<SBMLReaction> compartmentMembraneDiffusionRxns;
-	private Vector<SBMLReaction> membraneOutsideDiffusionRxns;
-	private Vector<SBMLReaction> compartmentOutsideSymportRxns;
-	private Vector<SBMLReaction> compartmentMembraneSymportRxns;
-	private Vector<SBMLReaction> membraneOutsideSymportRxns;
-	private Vector<SBMLReaction> compartmentOutsideAntiportRxns;
-	private Vector<SBMLReaction> compartmentMembraneAntiportRxns;
-	private Vector<SBMLReaction> membraneOutsideAntiportRxns;
-	private ArrayList<Integer> transportIds;
 	
 	TransportCollectionsCreator transportCollectionsCreator = new TransportCollectionsCreator();
 	public void removeExternalReactions() {
