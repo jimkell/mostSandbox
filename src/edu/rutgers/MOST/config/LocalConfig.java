@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Vector;
 
 import javax.swing.SortOrder;
 import javax.swing.table.DefaultTableModel;
@@ -201,6 +202,17 @@ public class LocalConfig {
 	public void setMetaboliteIdCompartmentMap(
 			Map<Object, String> metaboliteIdCompartmentMap) {
 		this.metaboliteIdCompartmentMap = metaboliteIdCompartmentMap;
+	}
+	
+	private ArrayList<ArrayList<String>> listOfCompartmentLists;
+
+	public ArrayList<ArrayList<String>> getListOfCompartmentLists() {
+		return listOfCompartmentLists;
+	}
+
+	public void setListOfCompartmentLists(
+			ArrayList<ArrayList<String>> listOfCompartmentLists) {
+		this.listOfCompartmentLists = listOfCompartmentLists;
 	}
 
 	//used for determining id when adding a metabolite when a reaction is

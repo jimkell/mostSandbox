@@ -1487,6 +1487,8 @@ public class GraphicalInterface extends JFrame {
 		LocalConfig.getInstance().setKeggIdMetaboliteMap(keggIdMetaboliteMap);
 		Map<String, String> metaboliteIdKeggIdMap = new HashMap<String, String>();
 		LocalConfig.getInstance().setMetaboliteIdKeggIdMap(metaboliteIdKeggIdMap);
+		ArrayList<ArrayList<String>> listOfCompartmentLists = new ArrayList<ArrayList<String>>();
+		LocalConfig.getInstance().setListOfCompartmentLists(listOfCompartmentLists);
 		
 		Map<String, ArrayList<SBMLReaction>> ecNumberReactionMap = new HashMap<String, ArrayList<SBMLReaction>>();
 		LocalConfig.getInstance().setEcNumberReactionMap(ecNumberReactionMap);
@@ -12826,50 +12828,50 @@ public class GraphicalInterface extends JFrame {
 		return abbr;
 	}
 	
-	public void assignKeggReactionIds() {
-		VisualizationKeggReactionProcessor processor = new VisualizationKeggReactionProcessor();
-		setCurrentReactionsRow(reactionsTable.getSelectedRow());
-		setCurrentReactionsColumn(reactionsTable.getSelectedColumn());
-		ReactionFactory rf = new ReactionFactory("SBML");
-		if (rf.getKeggIdColumnIndex() == -1) {
-			addReactionsColumn(GraphicalInterfaceConstants.REACTION_KEGG_ID_COLUMN_NAME);
-		}
-		LocalConfig.getInstance().setKeggReactionIdColumnName(GraphicalInterfaceConstants.REACTION_KEGG_ID_COLUMN_NAME);
-		//ReactionFactory rf = new ReactionFactory("SBML");
-		int keggIdColumn = rf.getKeggIdColumnIndex();
-		createReactionsIdRowMap();
-		ArrayList<String> reactionDataKeggIds = new ArrayList<String>(LocalConfig.getInstance().getReactionDataKeggIdMap().keySet());
-		System.out.println(LocalConfig.getInstance().getUnplottedReactionIds());
-		for (int i = 0; i < LocalConfig.getInstance().getUnplottedReactionIds().size(); i++) {
-			if (LocalConfig.getInstance().getModelKeggEquationMap().containsKey(Integer.toString(LocalConfig.getInstance().getUnplottedReactionIds().get(i)))) {
-				// data from model
-				PathwayReactionData modelData = LocalConfig.getInstance().getModelKeggEquationMap().get(Integer.toString(LocalConfig.getInstance().getUnplottedReactionIds().get(i)));
-				for (int k = 0; k < reactionDataKeggIds.size(); k++) {
-					// data from reactions.csv file
-					PathwayReactionData fileData = LocalConfig.getInstance().getReactionDataKeggIdMap().get(reactionDataKeggIds.get(k));
-					// compare metabolite kegg id reactant and product lists from reaction equations 
-					// from model with reactant and product lists in file
-					if (processor.keggReactionIdFound(fileData.getKeggReactantIds(), fileData.getKeggProductIds(), 
-							modelData.getKeggReactantIds(), modelData.getKeggProductIds(), "forward")) {
-						updateReactionsCellById(fileData.getKeggReactionId(), Integer.valueOf(modelData.getReactionId()), keggIdColumn);
-						if (LocalConfig.getInstance().getUnplottedReactionIds().contains(Integer.parseInt(modelData.getReactionId()))) {
-							LocalConfig.getInstance().getUnplottedReactionIds().remove(LocalConfig.getInstance().getUnplottedReactionIds().indexOf(Integer.parseInt(modelData.getReactionId())));
-						}
-					} else {
-						if (processor.keggReactionIdFound(fileData.getKeggReactantIds(), fileData.getKeggProductIds(), 
-								modelData.getKeggProductIds(), modelData.getKeggReactantIds(), "reverse")) {
-							updateReactionsCellById(fileData.getKeggReactionId(), Integer.valueOf(modelData.getReactionId()), keggIdColumn);
-							if (LocalConfig.getInstance().getUnplottedReactionIds().contains(Integer.parseInt(modelData.getReactionId()))) {
-								LocalConfig.getInstance().getUnplottedReactionIds().remove(LocalConfig.getInstance().getUnplottedReactionIds().indexOf(Integer.parseInt(modelData.getReactionId())));
-							}
-						}
-					}
-				}
-			} else {
-//				System.out.println(LocalConfig.getInstance().getUnplottedReactionIds().get(i) + " has no kegg ids");
-			}
-		}
-	}
+//	public void assignKeggReactionIds() {
+//		VisualizationKeggReactionProcessor processor = new VisualizationKeggReactionProcessor();
+//		setCurrentReactionsRow(reactionsTable.getSelectedRow());
+//		setCurrentReactionsColumn(reactionsTable.getSelectedColumn());
+//		ReactionFactory rf = new ReactionFactory("SBML");
+//		if (rf.getKeggIdColumnIndex() == -1) {
+//			addReactionsColumn(GraphicalInterfaceConstants.REACTION_KEGG_ID_COLUMN_NAME);
+//		}
+//		LocalConfig.getInstance().setKeggReactionIdColumnName(GraphicalInterfaceConstants.REACTION_KEGG_ID_COLUMN_NAME);
+//		//ReactionFactory rf = new ReactionFactory("SBML");
+//		int keggIdColumn = rf.getKeggIdColumnIndex();
+//		createReactionsIdRowMap();
+//		ArrayList<String> reactionDataKeggIds = new ArrayList<String>(LocalConfig.getInstance().getReactionDataKeggIdMap().keySet());
+//		System.out.println(LocalConfig.getInstance().getUnplottedReactionIds());
+//		for (int i = 0; i < LocalConfig.getInstance().getUnplottedReactionIds().size(); i++) {
+//			if (LocalConfig.getInstance().getModelKeggEquationMap().containsKey(Integer.toString(LocalConfig.getInstance().getUnplottedReactionIds().get(i)))) {
+//				// data from model
+//				PathwayReactionData modelData = LocalConfig.getInstance().getModelKeggEquationMap().get(Integer.toString(LocalConfig.getInstance().getUnplottedReactionIds().get(i)));
+//				for (int k = 0; k < reactionDataKeggIds.size(); k++) {
+//					// data from reactions.csv file
+//					PathwayReactionData fileData = LocalConfig.getInstance().getReactionDataKeggIdMap().get(reactionDataKeggIds.get(k));
+//					// compare metabolite kegg id reactant and product lists from reaction equations 
+//					// from model with reactant and product lists in file
+//					if (processor.keggReactionIdFound(fileData.getKeggReactantIds(), fileData.getKeggProductIds(), 
+//							modelData.getKeggReactantIds(), modelData.getKeggProductIds(), "forward")) {
+//						updateReactionsCellById(fileData.getKeggReactionId(), Integer.valueOf(modelData.getReactionId()), keggIdColumn);
+//						if (LocalConfig.getInstance().getUnplottedReactionIds().contains(Integer.parseInt(modelData.getReactionId()))) {
+//							LocalConfig.getInstance().getUnplottedReactionIds().remove(LocalConfig.getInstance().getUnplottedReactionIds().indexOf(Integer.parseInt(modelData.getReactionId())));
+//						}
+//					} else {
+//						if (processor.keggReactionIdFound(fileData.getKeggReactantIds(), fileData.getKeggProductIds(), 
+//								modelData.getKeggProductIds(), modelData.getKeggReactantIds(), "reverse")) {
+//							updateReactionsCellById(fileData.getKeggReactionId(), Integer.valueOf(modelData.getReactionId()), keggIdColumn);
+//							if (LocalConfig.getInstance().getUnplottedReactionIds().contains(Integer.parseInt(modelData.getReactionId()))) {
+//								LocalConfig.getInstance().getUnplottedReactionIds().remove(LocalConfig.getInstance().getUnplottedReactionIds().indexOf(Integer.parseInt(modelData.getReactionId())));
+//							}
+//						}
+//					}
+//				}
+//			} else {
+////				System.out.println(LocalConfig.getInstance().getUnplottedReactionIds().get(i) + " has no kegg ids");
+//			}
+//		}
+//	}
 	
 	/**
 	 * Sets Visualization Options defaults on startup of Graphical Interface

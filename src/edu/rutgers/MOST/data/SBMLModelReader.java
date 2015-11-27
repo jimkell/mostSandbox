@@ -1,6 +1,7 @@
 package edu.rutgers.MOST.data;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
@@ -335,6 +336,7 @@ public class SBMLModelReader {
 
 		ArrayList<String> reactionsMetaColumnNames = new ArrayList<String>();
 		ListOf<Reaction> reactions = doc.getModel().getListOfReactions();
+		ArrayList<ArrayList<String>> listOfCompartmentLists = new ArrayList<ArrayList<String>>();
 		boolean locusColumnName = false;
 		for (int j = 0; j < reactions.size(); j++) {
 			if (j%10 == 0) {
@@ -510,6 +512,12 @@ public class SBMLModelReader {
             equation.setIrreversibleArrow(GraphicalInterfaceConstants.NOT_REVERSIBLE_ARROWS[1]);
             equation.writeReactionEquation();
             equation.setCompartmentList(compartmentList);
+            if (compartmentList.size()> 1) {
+            	Collections.sort(compartmentList);
+            	if (!listOfCompartmentLists.contains(compartmentList)) {
+            		listOfCompartmentLists.add(compartmentList);
+            	}
+            }
             equation.setCompartmentReactantsList(compartmentReactantsList);
             equation.setCompartmentProductsList(compartmentProductsList);
 //            System.out.println("c " + compartmentList);
@@ -822,6 +830,8 @@ public class SBMLModelReader {
 		if (containsMinFlux && containsMaxFlux) {
 			LocalConfig.getInstance().getShowFVAColumnsList().add(LocalConfig.getInstance().getModelName());
 		}
+//		System.out.println(listOfCompartmentLists);
+		LocalConfig.getInstance().setListOfCompartmentLists(listOfCompartmentLists);
 		//System.out.println(LocalConfig.getInstance().getShowFVAColumnsList());
 		finished = true;
 		//System.out.println("Done");

@@ -10,10 +10,6 @@ import edu.rutgers.MOST.config.LocalConfig;
 
 public class TransportReactionCategorizer {
 
-	private Vector<SBMLReaction> compartmentOutsideRxns;
-	private Vector<SBMLReaction> compartmentMembraneRxns;
-	private Vector<SBMLReaction> membraneOutsideRxns;
-	
 	TransportCollectionsCreator transportCollectionsCreator = new TransportCollectionsCreator();
 	public void removeExternalReactions() {
 		ReactionFactory rf = new ReactionFactory("SBML");
@@ -21,11 +17,8 @@ public class TransportReactionCategorizer {
 		ArrayList<Integer> externalReactionIds = new ArrayList<Integer>();
 		MetaboliteFactory f = new MetaboliteFactory("SBML");
 		ArrayList<Integer> metaboliteExternalIdList = f.metaboliteExternalIdList();
-		//System.out.println("unpl " + LocalConfig.getInstance().getUnplottedReactionIds());
 		for (int i = 0; i < reactions.size(); i++) {
-//		for (int j = 0; j < LocalConfig.getInstance().getUnplottedReactionIds().size(); j++) {
 			int id = reactions.get(i).getId();
-//			int id = LocalConfig.getInstance().getUnplottedReactionIds().get(j);
 			SBMLReactionEquation equn = (SBMLReactionEquation) LocalConfig.getInstance().getReactionEquationMap().get(id);
 			//System.out.println("eq " + equn);
 			// get external reactions, not plotted
@@ -93,25 +86,100 @@ public class TransportReactionCategorizer {
 		ReactionFactory rf = new ReactionFactory("SBML");
 		removeExternalReactions();
 		removeBiomassReactions();
-		if (LocalConfig.getInstance().getSelectedCompartmentName() != null &&
-				LocalConfig.getInstance().getSelectedCompartmentName().length() > 0 &&
-				LocalConfig.getInstance().getOutsideName() != null &&
-				LocalConfig.getInstance().getOutsideName().length() > 0) {
-			compartmentOutsideRxns = rf.getTransportReactionsByCompartments(LocalConfig.getInstance().getSelectedCompartmentName(), 
-					LocalConfig.getInstance().getOutsideName());
-			//System.out.println(compartmentOutsideRxns);
-			removeTransportReactionsFromUnplottedList(compartmentOutsideRxns);
-			if (LocalConfig.getInstance().getMembraneName() != null &&
-					LocalConfig.getInstance().getMembraneName().length() > 0) {
-				compartmentMembraneRxns = rf.getTransportReactionsByCompartments(LocalConfig.getInstance().getSelectedCompartmentName(), 
-						LocalConfig.getInstance().getMembraneName());
-				removeTransportReactionsFromUnplottedList(compartmentMembraneRxns);
-				membraneOutsideRxns = rf.getTransportReactionsByCompartments(LocalConfig.getInstance().getMembraneName(), 
-						LocalConfig.getInstance().getOutsideName());
-				removeTransportReactionsFromUnplottedList(membraneOutsideRxns);
+		for (int i = 0; i < LocalConfig.getInstance().getListOfCompartmentLists().size(); i++) {
+			if (LocalConfig.getInstance().getListOfCompartmentLists().get(i).size() == 2) {
+				Vector<SBMLReaction> transportRxns = rf.getTransportReactionsByCompartments(LocalConfig.getInstance().getListOfCompartmentLists().get(i).get(0), 
+						LocalConfig.getInstance().getListOfCompartmentLists().get(i).get(1));
+				for (int j = 0; j < transportRxns.size(); j++) {
+					SBMLReactionEquation equn = (SBMLReactionEquation) LocalConfig.getInstance().getReactionEquationMap().get(transportRxns.get(j).getId());
+					if (LocalConfig.getInstance().getModelKeggEquationMap().containsKey(Integer.toString(transportRxns.get(j).getId()))) {
+						PathwayReactionData modelData = LocalConfig.getInstance().getModelKeggEquationMap().get(Integer.toString(transportRxns.get(j).getId()));
+						// symport reactions
+						if (equn.getCompartmentReactantsList().size() == 1 && equn.getCompartmentProductsList().size() == 1) {
+							if (modelData.getKeggReactantIds().size() == 1 && modelData.getKeggProductIds().size() == 1) {
+								if (modelData.getKeggReactantIds().equals(modelData.getKeggProductIds())) {
+									// diffusion, passive transport
+//									System.out.println("e " + modelData.getKeggReactantIds());
+								} else {
+									// this doesn't seem to occur
+//									System.out.println("r " + modelData.getKeggReactantIds());
+//									System.out.println("p " + modelData.getKeggProductIds());
+								}
+								// symport reactions
+							} else {
+//								// proton symport
+								if (modelData.getKeggReactantIds().size() == 2 && modelData.getKeggProductIds().size() == 2 &&
+										modelData.getKeggReactantIds().contains("C00080") && modelData.getKeggReactantIds().contains("C00080")) {
+									//System.out.println(equn.equationAbbreviations);
+									// pi symport
+								} else if (modelData.getKeggReactantIds().size() == 2 && modelData.getKeggProductIds().size() == 2 &&
+										modelData.getKeggReactantIds().contains("C00009") && modelData.getKeggReactantIds().contains("C00009")) {
+									//System.out.println(equn.equationAbbreviations);
+									// na1 symport
+								} else if (modelData.getKeggReactantIds().size() == 2 && modelData.getKeggProductIds().size() == 2 &&
+										modelData.getKeggReactantIds().contains("C01330") && modelData.getKeggReactantIds().contains("C01330")) {
+									//System.out.println(equn.equationAbbreviations);
+								} else {
+									//System.out.println(equn.equationAbbreviations);
+								}
+							}
+							// antiport reactions
+						} else if (equn.getCompartmentReactantsList().size() == 2 && equn.getCompartmentProductsList().size() == 2) {
+							//System.out.println(equn.equationAbbreviations);
+							// proton antiport
+							if (modelData.getKeggReactantIds().size() == 2 && modelData.getKeggProductIds().size() == 2 &&
+									modelData.getKeggReactantIds().contains("C00080") && modelData.getKeggReactantIds().contains("C00080")) {
+//								System.out.println(equn.equationAbbreviations);
+							// pi antiport
+							} else if (modelData.getKeggReactantIds().size() == 2 && modelData.getKeggProductIds().size() == 2 &&
+									modelData.getKeggReactantIds().contains("C00009") && modelData.getKeggReactantIds().contains("C00009")) {
+								//System.out.println(equn.equationAbbreviations);
+							} else if (modelData.getKeggReactantIds().size() == 2 && modelData.getKeggProductIds().size() == 2 &&
+									modelData.getKeggReactantIds().contains("C01330") && modelData.getKeggReactantIds().contains("C01330")) {
+								//System.out.println(equn.equationAbbreviations);
+							} else {
+								//System.out.println(equn.equationAbbreviations);
+							}
+						} else {
+							// get Phosphotransferase System (PTS) reactions
+							if ((modelData.getKeggReactantIds().contains("C00074") && modelData.getKeggProductIds().contains("C00022")) ||
+									modelData.getKeggProductIds().contains("C00074") && modelData.getKeggReactantIds().contains("C00022")) {
+//								System.out.println(equn.equationAbbreviations);
+							// get ABC transporters (ATP/ADP)
+							} else if ((modelData.getKeggReactantIds().contains("C00002") && modelData.getKeggProductIds().contains("C00008")) ||
+									modelData.getKeggProductIds().contains("C00002") && modelData.getKeggReactantIds().contains("C00008")) {
+//								System.out.println(equn.equationAbbreviations);
+							} else {
+//								System.out.println(equn.equationAbbreviations);								
+							}
+						}
+					}
+				}
+				removeTransportReactionsFromUnplottedList(transportRxns);
+			} else if (LocalConfig.getInstance().getListOfCompartmentLists().get(i).size() > 2) {
+				System.out.println(LocalConfig.getInstance().getListOfCompartmentLists().get(i));
 			}
-			LocalConfig.getInstance().setNoTransportReactionIds(LocalConfig.getInstance().getUnplottedReactionIds());
 		}
+		LocalConfig.getInstance().setNoTransportReactionIds(LocalConfig.getInstance().getUnplottedReactionIds());
+//		if (LocalConfig.getInstance().getSelectedCompartmentName() != null &&
+//				LocalConfig.getInstance().getSelectedCompartmentName().length() > 0 &&
+//				LocalConfig.getInstance().getOutsideName() != null &&
+//				LocalConfig.getInstance().getOutsideName().length() > 0) {
+//			compartmentOutsideRxns = rf.getTransportReactionsByCompartments(LocalConfig.getInstance().getSelectedCompartmentName(), 
+//					LocalConfig.getInstance().getOutsideName());
+//			//System.out.println(compartmentOutsideRxns);
+//			removeTransportReactionsFromUnplottedList(compartmentOutsideRxns);
+//			if (LocalConfig.getInstance().getMembraneName() != null &&
+//					LocalConfig.getInstance().getMembraneName().length() > 0) {
+//				compartmentMembraneRxns = rf.getTransportReactionsByCompartments(LocalConfig.getInstance().getSelectedCompartmentName(), 
+//						LocalConfig.getInstance().getMembraneName());
+//				removeTransportReactionsFromUnplottedList(compartmentMembraneRxns);
+//				membraneOutsideRxns = rf.getTransportReactionsByCompartments(LocalConfig.getInstance().getMembraneName(), 
+//						LocalConfig.getInstance().getOutsideName());
+//				removeTransportReactionsFromUnplottedList(membraneOutsideRxns);
+//			}
+//			LocalConfig.getInstance().setNoTransportReactionIds(LocalConfig.getInstance().getUnplottedReactionIds());
+//		}
 	}
 	
 	public void createUnplottedReactionsList() {
