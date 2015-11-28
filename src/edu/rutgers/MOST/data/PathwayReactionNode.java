@@ -21,14 +21,14 @@ public class PathwayReactionNode {
 	private double fluxValue;
 	
 	// data from enzyme.dat
-	private ArrayList<String> enzymeDataEquations;
-	private ArrayList<String> mainReactants;
-	private ArrayList<String> mainProducts;
-	private ArrayList<String> sideReactants;
-	private ArrayList<String> sideProducts;
+//	private ArrayList<String> enzymeDataEquations;
+//	private ArrayList<String> mainReactants;
+//	private ArrayList<String> mainProducts;
+//	private ArrayList<String> sideReactants;
+//	private ArrayList<String> sideProducts;
 	
-	private ArrayList<PathwayMetaboliteNode> mainPathwayReactants;
-	private ArrayList<PathwayMetaboliteNode> mainPathwayProducts;
+//	private ArrayList<PathwayMetaboliteNode> mainPathwayReactants;
+//	private ArrayList<PathwayMetaboliteNode> mainPathwayProducts;
 	private String reversible;
 	//private ArrayList<String> ecNumbers;
 	private double xPosition;
@@ -138,63 +138,63 @@ public class PathwayReactionNode {
 		this.fluxValue = fluxValue;
 	}
 
-	public ArrayList<String> getEnzymeDataEquations() {
-		return enzymeDataEquations;
-	}
+//	public ArrayList<String> getEnzymeDataEquations() {
+//		return enzymeDataEquations;
+//	}
+//
+//	public void setEnzymeDataEquations(ArrayList<String> enzymeDataEquations) {
+//		this.enzymeDataEquations = enzymeDataEquations;
+//	}
+//
+//	public ArrayList<String> getMainReactants() {
+//		return mainReactants;
+//	}
+//
+//	public void setMainReactants(ArrayList<String> mainReactants) {
+//		this.mainReactants = mainReactants;
+//	}
+//
+//	public ArrayList<String> getMainProducts() {
+//		return mainProducts;
+//	}
+//
+//	public void setMainProducts(ArrayList<String> mainProducts) {
+//		this.mainProducts = mainProducts;
+//	}
+//
+//	public ArrayList<String> getSideReactants() {
+//		return sideReactants;
+//	}
+//
+//	public void setSideReactants(ArrayList<String> sideReactants) {
+//		this.sideReactants = sideReactants;
+//	}
+//
+//	public ArrayList<String> getSideProducts() {
+//		return sideProducts;
+//	}
+//
+//	public void setSideProducts(ArrayList<String> sideProducts) {
+//		this.sideProducts = sideProducts;
+//	}
 
-	public void setEnzymeDataEquations(ArrayList<String> enzymeDataEquations) {
-		this.enzymeDataEquations = enzymeDataEquations;
-	}
-
-	public ArrayList<String> getMainReactants() {
-		return mainReactants;
-	}
-
-	public void setMainReactants(ArrayList<String> mainReactants) {
-		this.mainReactants = mainReactants;
-	}
-
-	public ArrayList<String> getMainProducts() {
-		return mainProducts;
-	}
-
-	public void setMainProducts(ArrayList<String> mainProducts) {
-		this.mainProducts = mainProducts;
-	}
-
-	public ArrayList<String> getSideReactants() {
-		return sideReactants;
-	}
-
-	public void setSideReactants(ArrayList<String> sideReactants) {
-		this.sideReactants = sideReactants;
-	}
-
-	public ArrayList<String> getSideProducts() {
-		return sideProducts;
-	}
-
-	public void setSideProducts(ArrayList<String> sideProducts) {
-		this.sideProducts = sideProducts;
-	}
-
-	public ArrayList<PathwayMetaboliteNode> getMainPathwayReactants() {
-		return mainPathwayReactants;
-	}
-
-	public void setMainPathwayReactants(
-			ArrayList<PathwayMetaboliteNode> mainPathwayReactants) {
-		this.mainPathwayReactants = mainPathwayReactants;
-	}
-
-	public ArrayList<PathwayMetaboliteNode> getMainPathwayProducts() {
-		return mainPathwayProducts;
-	}
-
-	public void setMainPathwayProducts(
-			ArrayList<PathwayMetaboliteNode> mainPathwayProducts) {
-		this.mainPathwayProducts = mainPathwayProducts;
-	}
+//	public ArrayList<PathwayMetaboliteNode> getMainPathwayReactants() {
+//		return mainPathwayReactants;
+//	}
+//
+//	public void setMainPathwayReactants(
+//			ArrayList<PathwayMetaboliteNode> mainPathwayReactants) {
+//		this.mainPathwayReactants = mainPathwayReactants;
+//	}
+//
+//	public ArrayList<PathwayMetaboliteNode> getMainPathwayProducts() {
+//		return mainPathwayProducts;
+//	}
+//
+//	public void setMainPathwayProducts(
+//			ArrayList<PathwayMetaboliteNode> mainPathwayProducts) {
+//		this.mainPathwayProducts = mainPathwayProducts;
+//	}
 
 	public String getReversible() {
 		return reversible;
@@ -288,13 +288,13 @@ public class PathwayReactionNode {
 		//+ ", modelEquation=" + modelEquation
 		//+ ", modelEquations=" + modelEquations
 		//+ ", fluxes=" + fluxes
-		+ ", enzymeDataEquations=" + enzymeDataEquations
+		//+ ", enzymeDataEquations=" + enzymeDataEquations
 		//+ ", mainReactants=" + mainReactants		
 		//+ ", mainProducts=" + mainProducts
-		+ ", sideReactants=" + sideReactants		
-		+ ", sideProducts=" + sideProducts
-		+ ", mainPathwayReactants=" + mainPathwayReactants		
-		+ ", mainPathwayProducts=" + mainPathwayProducts
+		//+ ", sideReactants=" + sideReactants		
+		//+ ", sideProducts=" + sideProducts
+		//+ ", mainPathwayReactants=" + mainPathwayReactants		
+		//+ ", mainPathwayProducts=" + mainPathwayProducts
 		+ ", reversible=" + reversible
 		//+ ", ecNumbers=" + ecNumbers
 		+ ", xPosition=" + xPosition

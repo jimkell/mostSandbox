@@ -52,6 +52,7 @@ import org.apache.commons.collections15.functors.ChainedTransformer;
 
 
 
+
 import edu.rutgers.MOST.config.LocalConfig;
 import edu.rutgers.MOST.data.MetabolicPathway;
 import edu.rutgers.MOST.data.PathwayMetaboliteNode;
@@ -62,6 +63,7 @@ import edu.rutgers.MOST.data.PathwayReactionNodeFactory;
 import edu.rutgers.MOST.data.PathwaysCSVFileConstants;
 import edu.rutgers.MOST.data.ReactionFactory;
 import edu.rutgers.MOST.data.SBMLReaction;
+import edu.rutgers.MOST.data.SBMLReactionEquation;
 import edu.rutgers.MOST.data.SettingsConstants;
 import edu.uci.ics.jung.algorithms.layout.Layout;                                                                    
 import edu.uci.ics.jung.algorithms.layout.StaticLayout;                                                              
@@ -613,6 +615,79 @@ public class PathwaysFrame extends JApplet {
     
     public void processData(int component) {
     	ReactionFactory f = new ReactionFactory("SBML");
+    	Map<Integer, SBMLReaction> idReactionMapAllReactions = new HashMap<Integer, SBMLReaction>();
+		Vector<SBMLReaction> allReactions = f.getAllReactions();
+		for (int i = 0; i < allReactions.size(); i++) {
+			idReactionMapAllReactions.put(allReactions.get(i).getId(), allReactions.get(i));
+		}
+    	if (component == PathwaysFrameConstants.PROCESSES_COMPONENT) {
+    		double xPos = 200;
+			double yPos = 300;
+			for (int i = 0; i < LocalConfig.getInstance().getTransportReactionsByCompartmentsList().size(); i++) {
+				//System.out.println(LocalConfig.getInstance().getTransportReactionsByCompartmentsList().get(i).getCompartmentIdsList());
+				ArrayList<String> reactantKeggIds = new ArrayList<String>();
+				ArrayList<String> productKeggIds = new ArrayList<String>();
+				for (int j = 0; j < LocalConfig.getInstance().getTransportReactionsByCompartmentsList().get(i).getDiffusionReactions().size(); j++) {
+					SBMLReactionEquation equn = LocalConfig.getInstance().getTransportReactionsByCompartmentsList().get(i).getDiffusionReactions().get(j);
+					for (int r = 0; r < equn.getReactants().size(); r++) {
+						String reactantName = equn.getReactants().get(r).getMetaboliteAbbreviation();
+						if (LocalConfig.getInstance().getMetaboliteIdKeggIdMap().containsKey(Integer.toString(equn.getReactants().get(r).getMetaboliteId()))) {
+							String keggId = LocalConfig.getInstance().getMetaboliteIdKeggIdMap().get(Integer.toString(equn.getReactants().get(r).getMetaboliteId()));
+							//System.out.println(keggId);
+							if (!reactantKeggIds.contains(keggId)) {
+								reactantKeggIds.add(keggId);
+								//System.out.println(idReactionMapAllReactions.get(equn.getReactants().get(r).getReactionId()).getReactionAbbreviation());
+								//System.out.println(equn.getReactants().get(r).getMetaboliteAbbreviation());
+//								System.out.println(equn.getReactants().get(r).getCompartment());
+								if (!metabPosMap.containsKey(equn.getReactants().get(r).getMetaboliteAbbreviation())) {
+									metabolites.add(equn.getReactants().get(r).getMetaboliteAbbreviation());
+									LocalConfig.getInstance().getMetaboliteNameAbbrMap().put(equn.getReactants().get(r).getMetaboliteAbbreviation(), equn.getReactants().get(r).getMetaboliteAbbreviation());
+									foundMetabolitesList.add(equn.getReactants().get(r).getMetaboliteAbbreviation());
+									metabPosMap.put(equn.getReactants().get(r).getMetaboliteAbbreviation(), new String[] {Double.toString(xPos), Double.toString(yPos)});
+									//xPos += 300;
+								} else {
+									
+								}
+							} else {
+								// add to name
+							}
+						}
+					}
+					for (int p = 0; p < equn.getProducts().size(); p++) {
+						String productName = equn.getProducts().get(p).getMetaboliteAbbreviation();
+						if (LocalConfig.getInstance().getMetaboliteIdKeggIdMap().containsKey(Integer.toString(equn.getProducts().get(p).getMetaboliteId()))) {
+							String keggId = LocalConfig.getInstance().getMetaboliteIdKeggIdMap().get(Integer.toString(equn.getProducts().get(p).getMetaboliteId()));
+							//System.out.println(keggId);
+							if (!productKeggIds.contains(keggId)) {
+								productKeggIds.add(keggId);
+								//System.out.println(idReactionMapAllReactions.get(equn.getProducts().get(p).getReactionId()).getReactionAbbreviation());
+								//System.out.println(equn.getProducts().get(p).getMetaboliteAbbreviation());
+//								System.out.println(equn.getProducts().get(p).getCompartment());
+								if (!metabPosMap.containsKey(equn.getProducts().get(p).getMetaboliteAbbreviation())) {
+									metabolites.add(equn.getProducts().get(p).getMetaboliteAbbreviation());
+									LocalConfig.getInstance().getMetaboliteNameAbbrMap().put(equn.getProducts().get(p).getMetaboliteAbbreviation(), equn.getProducts().get(p).getMetaboliteAbbreviation());
+									foundMetabolitesList.add(equn.getProducts().get(p).getMetaboliteAbbreviation());
+									metabPosMap.put(equn.getProducts().get(p).getMetaboliteAbbreviation(), new String[] {Double.toString(xPos), Double.toString(yPos + 200)});
+									xPos += 300;
+								} else {
+									
+								}
+							} else {
+								// add to name
+							}
+						}
+//						System.out.println(idReactionMapAllReactions.get(equn.getProducts().get(p).getReactionId()).getReactionAbbreviation());
+//						System.out.println(equn.getProducts().get(p).getMetaboliteAbbreviation());
+//						if (LocalConfig.getInstance().getMetaboliteIdKeggIdMap().containsKey(Integer.toString(equn.getProducts().get(p).getMetaboliteId()))) {
+//							System.out.println(LocalConfig.getInstance().getMetaboliteIdKeggIdMap().get(Integer.toString(equn.getProducts().get(p).getMetaboliteId())));
+//						}
+//						System.out.println(equn.getProducts().get(p).getCompartment());
+					}
+				}
+				xPos = 200;
+				yPos += 500;
+			}
+    	}
     	Vector<SBMLReaction> rxns = compartmentReactions(f, LocalConfig.getInstance().getSelectedCompartmentName());
     	Map<Integer, SBMLReaction> idReactionMap = createCompartmentIdReactionMap(f, rxns);
 //		// temporary lists to keep track of what ec numbers have been found
@@ -621,8 +696,6 @@ public class PathwaysFrame extends JApplet {
 		
 	    //ArrayList<String> foundMetabolitesList = new ArrayList<String>();
 	    //ArrayList<String> foundReactionsList = new ArrayList<String>();
-//		ArrayList<PathwayMetaboliteNode> externalMetaboliteNodeList = new ArrayList<PathwayMetaboliteNode>();
-//		ArrayList<PathwayMetaboliteNode> transportMetaboliteNodeList = new ArrayList<PathwayMetaboliteNode>();
 //		ArrayList<Integer> plottedIds = new ArrayList<Integer>();
 		
 //		PathwayReactionNodeFactory prnf = new PathwayReactionNodeFactory();
@@ -632,12 +705,15 @@ public class PathwaysFrame extends JApplet {
 				startX = startPosMap.get(pathway.getId()).get(0);
 				startY = startPosMap.get(pathway.getId()).get(1);
 			}
+			drawMetabolites(pathway, component, LocalConfig.getInstance().getSelectedCompartmentName());
+			drawReactions(pathway, component, rxns, idReactionMap);
+			drawPathwayNames(component);
 		} else if (pathway.getComponent() == PathwaysFrameConstants.PROCESSES_COMPONENT) {
 			
 		}
-		drawMetabolites(pathway, component, LocalConfig.getInstance().getSelectedCompartmentName());
-		drawReactions(pathway, component, rxns, idReactionMap);
-		drawPathwayNames(component);
+//		drawMetabolites(pathway, component, LocalConfig.getInstance().getSelectedCompartmentName());
+//		drawReactions(pathway, component, rxns, idReactionMap);
+//		drawPathwayNames(component);
 		
 		String borderLeftX = Double.toString(PathwaysFrameConstants.HORIZONTAL_INCREMENT*PathwaysFrameConstants.BORDER_LEFT);
 		String borderRightX = Double.toString(PathwaysFrameConstants.HORIZONTAL_INCREMENT*PathwaysFrameConstants.BORDER_RIGHT);

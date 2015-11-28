@@ -69,8 +69,7 @@ import edu.rutgers.MOST.data.TextMetabolitesWriter;
 import edu.rutgers.MOST.data.TextReactionsModelReader;
 import edu.rutgers.MOST.data.TextReactionsWriter;
 import edu.rutgers.MOST.data.TransportReactionCategorizer;
-import edu.rutgers.MOST.data.TransportReactionConstants;
-import edu.rutgers.MOST.data.TransportReactionNode;
+import edu.rutgers.MOST.data.TransportReactionsByCompartments;
 import edu.rutgers.MOST.data.UndoConstants;
 import edu.rutgers.MOST.data.VisualizationKeggReactionProcessor;
 import edu.rutgers.MOST.logic.ReactionParser;
@@ -1479,6 +1478,8 @@ public class GraphicalInterface extends JFrame {
 		LocalConfig.getInstance().setMetaboliteIdCompartmentMap(metaboliteIdCompartmentMap);
 		Map<String, String> substitutedMetabolitesMap = new HashMap<String, String>();
 		LocalConfig.getInstance().setSubstitutedMetabolitesMap(substitutedMetabolitesMap);
+		ArrayList<TransportReactionsByCompartments> transportReactionsByCompartmentsList = new ArrayList<TransportReactionsByCompartments>();
+		LocalConfig.getInstance().setTransportReactionsByCompartmentsList(transportReactionsByCompartmentsList);
 		
 		// sbml read
 		Map<String, ArrayList<String>> keggIdCompartmentMap = new HashMap<String, ArrayList<String>>();
@@ -1521,10 +1522,6 @@ public class GraphicalInterface extends JFrame {
 		
 		Map<String, String> sideSpeciesTransportMetaboliteKeggIdMap = new HashMap<String, String>();
 		LocalConfig.getInstance().setSideSpeciesTransportMetaboliteKeggIdMap(sideSpeciesTransportMetaboliteKeggIdMap);
-		Map<String, ArrayList<TransportReactionNode>> sideSpeciesTransportReactionNodeMap = new HashMap<String, ArrayList<TransportReactionNode>>();
-		LocalConfig.getInstance().setSideSpeciesTransportReactionNodeMap(sideSpeciesTransportReactionNodeMap);
-		Map<String, ArrayList<TransportReactionNode>> keggIdTransportReactionsMap = new HashMap<String, ArrayList<TransportReactionNode>>();
-		LocalConfig.getInstance().setKeggIdTransportReactionsMap(keggIdTransportReactionsMap);
 		
 		LocalConfig.getInstance().setKeggReactionIdColumnName("");
 		
@@ -12899,7 +12896,6 @@ public class GraphicalInterface extends JFrame {
 		// collections from PathwayFilesReader
 		LocalConfig.getInstance().getMetabolicPathways().clear();
 		LocalConfig.getInstance().getMetaboliteNameAbbrMap().clear();
-		LocalConfig.getInstance().getKeggIdTransportReactionsMap().clear();
 		// collections from MetaboliteVisualizationDataProcessor
 		LocalConfig.getInstance().getMetaboliteIdKeggIdMap().clear();
 		LocalConfig.getInstance().getKeggIdMetaboliteMap().clear();

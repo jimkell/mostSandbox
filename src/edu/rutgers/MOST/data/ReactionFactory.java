@@ -462,6 +462,26 @@ public class ReactionFactory {
 		//System.out.println(transportReactionsByCompartments);
 		return transportReactionsByCompartments;
 	}
+	
+	/**
+	 * This condition only appears to occur in bacteria for a few reactions
+	 * @param comp1
+	 * @param comp2
+	 * @return
+	 */
+	public Vector<SBMLReaction> getTransportReactionsByThreeCompartments(String comp1, String comp2, String comp3) {
+		Vector<SBMLReaction> reactions = getAllReactions();
+		Vector<SBMLReaction> transportReactionsByCompartments = new Vector<SBMLReaction>();
+		for (int i = 0; i < reactions.size(); i++) {
+			SBMLReactionEquation equn = (SBMLReactionEquation) LocalConfig.getInstance().getReactionEquationMap().get(reactions.get(i).getId());
+			if (equn.getCompartmentList().contains(comp1) && equn.getCompartmentList().contains(comp2) && equn.getCompartmentList().contains(comp3)) {
+				//System.out.println(equn.getCompartmentList());
+				transportReactionsByCompartments.add(reactions.get(i));
+			}
+		}
+		//System.out.println(transportReactionsByCompartments);
+		return transportReactionsByCompartments;
+	}
 
 	private void processStackTrace( Exception e ) {
 		//e.printStackTrace();

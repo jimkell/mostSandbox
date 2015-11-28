@@ -4,7 +4,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Vector;
 
 import javax.swing.SortOrder;
 import javax.swing.table.DefaultTableModel;
@@ -18,7 +17,7 @@ import edu.rutgers.MOST.data.PathwayReactionData;
 import edu.rutgers.MOST.data.SBMLCompartment;
 import edu.rutgers.MOST.data.SBMLMetabolite;
 import edu.rutgers.MOST.data.SBMLReaction;
-import edu.rutgers.MOST.data.TransportReactionNode;
+import edu.rutgers.MOST.data.TransportReactionsByCompartments;
 
 public class LocalConfig {	
 
@@ -1058,17 +1057,6 @@ public class LocalConfig {
 		this.keggIdMetaboliteMap = keggIdMetaboliteMap;
 	}
 
-	Map<String, ArrayList<TransportReactionNode>> keggIdTransportReactionsMap;
-
-	public Map<String, ArrayList<TransportReactionNode>> getKeggIdTransportReactionsMap() {
-		return keggIdTransportReactionsMap;
-	}
-
-	public void setKeggIdTransportReactionsMap(
-			Map<String, ArrayList<TransportReactionNode>> keggIdTransportReactionsMap) {
-		this.keggIdTransportReactionsMap = keggIdTransportReactionsMap;
-	}
-
 	private Map<String, String> metaboliteIdKeggIdMap;
 
 	public Map<String, String> getMetaboliteIdKeggIdMap() {
@@ -1222,17 +1210,6 @@ public class LocalConfig {
 		this.sideSpeciesTransportMetaboliteKeggIdMap = sideSpeciesTransportMetaboliteKeggIdMap;
 	}
 	
-	private Map<String, ArrayList<TransportReactionNode>> sideSpeciesTransportReactionNodeMap;
-
-	public Map<String, ArrayList<TransportReactionNode>> getSideSpeciesTransportReactionNodeMap() {
-		return sideSpeciesTransportReactionNodeMap;
-	}
-
-	public void setSideSpeciesTransportReactionNodeMap(
-			Map<String, ArrayList<TransportReactionNode>> sideSpeciesTransportReactionNodeMap) {
-		this.sideSpeciesTransportReactionNodeMap = sideSpeciesTransportReactionNodeMap;
-	}
-	
 	private ArrayList<String> transportMetaboliteIds;
 	
 	public ArrayList<String> getTransportMetaboliteIds() {
@@ -1332,6 +1309,17 @@ public class LocalConfig {
 
 	public void setOutsideName(String outsideName) {
 		this.outsideName = outsideName;
+	}
+	
+	private ArrayList<TransportReactionsByCompartments> transportReactionsByCompartmentsList;
+
+	public ArrayList<TransportReactionsByCompartments> getTransportReactionsByCompartmentsList() {
+		return transportReactionsByCompartmentsList;
+	}
+
+	public void setTransportReactionsByCompartmentsList(
+			ArrayList<TransportReactionsByCompartments> transportReactionsByCompartmentsList) {
+		this.transportReactionsByCompartmentsList = transportReactionsByCompartmentsList;
 	}
 
 	private String keggReactionIdColumnName;

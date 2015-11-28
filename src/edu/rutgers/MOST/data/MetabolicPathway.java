@@ -12,10 +12,6 @@ public class MetabolicPathway {
 	private Map<String, PathwayMetaboliteNode> metabolitesNodes = new HashMap<String, PathwayMetaboliteNode>();
 	private Map<String, PathwayReactionData> reactionsData = new HashMap<String, PathwayReactionData>();
 	private Map<String, PathwayReactionNode> reactionsNodes = new HashMap<String, PathwayReactionNode>();
-	private Map<String, ExternalMetaboliteData> externalMetabolitesData = new HashMap<String, ExternalMetaboliteData>();
-	private Map<String, ExternalMetaboliteNode> externalMetabolitesNodes = new HashMap<String, ExternalMetaboliteNode>();
-	private Map<String, ExternalMetaboliteData> transportMetabolitesData = new HashMap<String, ExternalMetaboliteData>();
-	private Map<String, ExternalMetaboliteNode> transportMetabolitesNodes = new HashMap<String, ExternalMetaboliteNode>();
 	private ArrayList<PathwayEdge> edges;
 	private ArrayList<ArrayList<String>> ecNumbers = new ArrayList<ArrayList<String>>();
 	// horizontal or vertical
@@ -65,34 +61,6 @@ public class MetabolicPathway {
 	public void setReactionsNodes(Map<String, PathwayReactionNode> reactionsNodes) {
 		this.reactionsNodes = reactionsNodes;
 	}
-	public Map<String, ExternalMetaboliteData> getExternalMetabolitesData() {
-		return externalMetabolitesData;
-	}
-	public void setExternalMetabolitesData(
-			Map<String, ExternalMetaboliteData> externalMetabolitesData) {
-		this.externalMetabolitesData = externalMetabolitesData;
-	}
-	public Map<String, ExternalMetaboliteNode> getExternalMetabolitesNodes() {
-		return externalMetabolitesNodes;
-	}
-	public void setExternalMetabolitesNodes(
-			Map<String, ExternalMetaboliteNode> externalMetabolitesNodes) {
-		this.externalMetabolitesNodes = externalMetabolitesNodes;
-	}
-	public Map<String, ExternalMetaboliteData> getTransportMetabolitesData() {
-		return transportMetabolitesData;
-	}
-	public void setTransportMetabolitesData(
-			Map<String, ExternalMetaboliteData> transportMetabolitesData) {
-		this.transportMetabolitesData = transportMetabolitesData;
-	}
-	public Map<String, ExternalMetaboliteNode> getTransportMetabolitesNodes() {
-		return transportMetabolitesNodes;
-	}
-	public void setTransportMetabolitesNodes(
-			Map<String, ExternalMetaboliteNode> transportMetabolitesNodes) {
-		this.transportMetabolitesNodes = transportMetabolitesNodes;
-	}
 	public ArrayList<ArrayList<String>> getEcNumbers() {
 		return ecNumbers;
 	}
@@ -121,10 +89,6 @@ public class MetabolicPathway {
 		+ ", metabolitesNodes=" + metabolitesNodes
 		+ ", reactionsData=" + reactionsData
 		+ ", reactionsNodes=" + reactionsNodes
-		+ ", externalMetabolitesData=" + externalMetabolitesData
-		+ ", externalMetabolitesNodes=" + externalMetabolitesNodes
-		+ ", transportMetabolitesData=" + transportMetabolitesData
-		+ ", transportMetabolitesNodes=" + transportMetabolitesNodes
 		+ ", edges=" + edges
 		+ ", ecNumbers=" + ecNumbers
 		+ ", component=" + component + "]\n";

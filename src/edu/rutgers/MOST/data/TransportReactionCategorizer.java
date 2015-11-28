@@ -86,7 +86,22 @@ public class TransportReactionCategorizer {
 		ReactionFactory rf = new ReactionFactory("SBML");
 		removeExternalReactions();
 		removeBiomassReactions();
+		ArrayList<TransportReactionsByCompartments> transportReactionsByCompartmentsList = new ArrayList<TransportReactionsByCompartments>();
 		for (int i = 0; i < LocalConfig.getInstance().getListOfCompartmentLists().size(); i++) {
+			TransportReactionsByCompartments trbc = new TransportReactionsByCompartments();
+			ArrayList<SBMLReactionEquation> diffusionReactions = new ArrayList<SBMLReactionEquation>();
+			ArrayList<SBMLReactionEquation> symportProtonReactions = new ArrayList<SBMLReactionEquation>();
+			ArrayList<SBMLReactionEquation> symportPhosphateReactions = new ArrayList<SBMLReactionEquation>();
+			ArrayList<SBMLReactionEquation> symportSodiumReactions = new ArrayList<SBMLReactionEquation>();
+			ArrayList<SBMLReactionEquation> symportReactions = new ArrayList<SBMLReactionEquation>();
+			ArrayList<SBMLReactionEquation> antiportProtonReactions = new ArrayList<SBMLReactionEquation>();
+			ArrayList<SBMLReactionEquation> antiportPhosphateReactions = new ArrayList<SBMLReactionEquation>();
+			ArrayList<SBMLReactionEquation> antiportSodiumReactions = new ArrayList<SBMLReactionEquation>();
+			ArrayList<SBMLReactionEquation> antiportReactions = new ArrayList<SBMLReactionEquation>();
+			ArrayList<SBMLReactionEquation> ptsReactions = new ArrayList<SBMLReactionEquation>();
+			ArrayList<SBMLReactionEquation> abcReactions = new ArrayList<SBMLReactionEquation>();
+			ArrayList<SBMLReactionEquation> otherTransportReactions = new ArrayList<SBMLReactionEquation>();
+			trbc.setCompartmentIdsList(LocalConfig.getInstance().getListOfCompartmentLists().get(i));
 			if (LocalConfig.getInstance().getListOfCompartmentLists().get(i).size() == 2) {
 				Vector<SBMLReaction> transportRxns = rf.getTransportReactionsByCompartments(LocalConfig.getInstance().getListOfCompartmentLists().get(i).get(0), 
 						LocalConfig.getInstance().getListOfCompartmentLists().get(i).get(1));
@@ -99,6 +114,7 @@ public class TransportReactionCategorizer {
 							if (modelData.getKeggReactantIds().size() == 1 && modelData.getKeggProductIds().size() == 1) {
 								if (modelData.getKeggReactantIds().equals(modelData.getKeggProductIds())) {
 									// diffusion, passive transport
+									diffusionReactions.add(equn);
 //									System.out.println("e " + modelData.getKeggReactantIds());
 								} else {
 									// this doesn't seem to occur
@@ -110,16 +126,20 @@ public class TransportReactionCategorizer {
 //								// proton symport
 								if (modelData.getKeggReactantIds().size() == 2 && modelData.getKeggProductIds().size() == 2 &&
 										modelData.getKeggReactantIds().contains("C00080") && modelData.getKeggReactantIds().contains("C00080")) {
+									symportProtonReactions.add(equn);
 									//System.out.println(equn.equationAbbreviations);
 									// pi symport
 								} else if (modelData.getKeggReactantIds().size() == 2 && modelData.getKeggProductIds().size() == 2 &&
 										modelData.getKeggReactantIds().contains("C00009") && modelData.getKeggReactantIds().contains("C00009")) {
+									symportPhosphateReactions.add(equn);
 									//System.out.println(equn.equationAbbreviations);
 									// na1 symport
 								} else if (modelData.getKeggReactantIds().size() == 2 && modelData.getKeggProductIds().size() == 2 &&
 										modelData.getKeggReactantIds().contains("C01330") && modelData.getKeggReactantIds().contains("C01330")) {
+									symportSodiumReactions.add(equn);
 									//System.out.println(equn.equationAbbreviations);
 								} else {
+									symportReactions.add(equn);
 									//System.out.println(equn.equationAbbreviations);
 								}
 							}
@@ -129,38 +149,74 @@ public class TransportReactionCategorizer {
 							// proton antiport
 							if (modelData.getKeggReactantIds().size() == 2 && modelData.getKeggProductIds().size() == 2 &&
 									modelData.getKeggReactantIds().contains("C00080") && modelData.getKeggReactantIds().contains("C00080")) {
-//								System.out.println(equn.equationAbbreviations);
+								antiportProtonReactions.add(equn);
+								//System.out.println(equn.equationAbbreviations);
 							// pi antiport
 							} else if (modelData.getKeggReactantIds().size() == 2 && modelData.getKeggProductIds().size() == 2 &&
 									modelData.getKeggReactantIds().contains("C00009") && modelData.getKeggReactantIds().contains("C00009")) {
+								antiportPhosphateReactions.add(equn);
 								//System.out.println(equn.equationAbbreviations);
+							// na1 antiport
 							} else if (modelData.getKeggReactantIds().size() == 2 && modelData.getKeggProductIds().size() == 2 &&
 									modelData.getKeggReactantIds().contains("C01330") && modelData.getKeggReactantIds().contains("C01330")) {
+								antiportSodiumReactions.add(equn);
 								//System.out.println(equn.equationAbbreviations);
 							} else {
+								antiportReactions.add(equn);
 								//System.out.println(equn.equationAbbreviations);
 							}
 						} else {
 							// get Phosphotransferase System (PTS) reactions
 							if ((modelData.getKeggReactantIds().contains("C00074") && modelData.getKeggProductIds().contains("C00022")) ||
 									modelData.getKeggProductIds().contains("C00074") && modelData.getKeggReactantIds().contains("C00022")) {
-//								System.out.println(equn.equationAbbreviations);
+								ptsReactions.add(equn);
+								//System.out.println(equn.equationAbbreviations);
 							// get ABC transporters (ATP/ADP)
 							} else if ((modelData.getKeggReactantIds().contains("C00002") && modelData.getKeggProductIds().contains("C00008")) ||
 									modelData.getKeggProductIds().contains("C00002") && modelData.getKeggReactantIds().contains("C00008")) {
-//								System.out.println(equn.equationAbbreviations);
+								abcReactions.add(equn);
+								//System.out.println(equn.equationAbbreviations);
 							} else {
-//								System.out.println(equn.equationAbbreviations);								
+								otherTransportReactions.add(equn);
+								otherTransportReactions.add(equn);
+								//System.out.println(equn.equationAbbreviations);								
 							}
 						}
 					}
 				}
 				removeTransportReactionsFromUnplottedList(transportRxns);
 			} else if (LocalConfig.getInstance().getListOfCompartmentLists().get(i).size() > 2) {
-				System.out.println(LocalConfig.getInstance().getListOfCompartmentLists().get(i));
+				if (LocalConfig.getInstance().getListOfCompartmentLists().get(i).size() == 3) {
+					Vector<SBMLReaction> transportRxns = rf.getTransportReactionsByThreeCompartments(LocalConfig.getInstance().getListOfCompartmentLists().get(i).get(0), 
+							LocalConfig.getInstance().getListOfCompartmentLists().get(i).get(1), LocalConfig.getInstance().getListOfCompartmentLists().get(i).get(2));
+					for (int j = 0; j < transportRxns.size(); j++) {
+						SBMLReactionEquation equn = (SBMLReactionEquation) LocalConfig.getInstance().getReactionEquationMap().get(transportRxns.get(j).getId());
+//						if (LocalConfig.getInstance().getModelKeggEquationMap().containsKey(Integer.toString(transportRxns.get(j).getId()))) {
+//							PathwayReactionData modelData = LocalConfig.getInstance().getModelKeggEquationMap().get(Integer.toString(transportRxns.get(j).getId()));
+//						}
+						//System.out.println(equn.equationAbbreviations);
+					}
+				} else {
+					// it is doubtful that there will be a reaction with four compartments
+					System.out.println(LocalConfig.getInstance().getListOfCompartmentLists().get(i));
+				}
 			}
+			trbc.setDiffusionReactions(diffusionReactions);
+			trbc.setSymportProtonReactions(symportProtonReactions);
+			trbc.setSymportPhosphateReactions(symportPhosphateReactions);
+			trbc.setSymportSodiumReactions(symportSodiumReactions);
+			trbc.setSymportReactions(symportReactions);
+			trbc.setAntiportProtonReactions(antiportProtonReactions);
+			trbc.setAntiportPhosphateReactions(antiportPhosphateReactions);
+			trbc.setAntiportSodiumReactions(antiportSodiumReactions);
+			trbc.setAntiportReactions(antiportReactions);
+			trbc.setPtsReactions(ptsReactions);
+			trbc.setAbcReactions(abcReactions);
+			trbc.setOtherTransportReactions(otherTransportReactions);
+			transportReactionsByCompartmentsList.add(trbc);
 		}
 		LocalConfig.getInstance().setNoTransportReactionIds(LocalConfig.getInstance().getUnplottedReactionIds());
+		LocalConfig.getInstance().setTransportReactionsByCompartmentsList(transportReactionsByCompartmentsList);
 //		if (LocalConfig.getInstance().getSelectedCompartmentName() != null &&
 //				LocalConfig.getInstance().getSelectedCompartmentName().length() > 0 &&
 //				LocalConfig.getInstance().getOutsideName() != null &&
