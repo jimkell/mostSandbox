@@ -625,67 +625,69 @@ public class PathwaysFrame extends JApplet {
 			double yPos = 300;
 			for (int i = 0; i < LocalConfig.getInstance().getTransportReactionsByCompartmentsList().size(); i++) {
 				//System.out.println(LocalConfig.getInstance().getTransportReactionsByCompartmentsList().get(i).getCompartmentIdsList());
-				ArrayList<String> reactantKeggIds = new ArrayList<String>();
-				ArrayList<String> productKeggIds = new ArrayList<String>();
+				Map<String, ArrayList<SBMLReactionEquation>> keggIdReactionsMap = new HashMap<String, ArrayList<SBMLReactionEquation>>();
+				// preprocessing step to consolidate multiple compounds that have the same KEGG id
 				for (int j = 0; j < LocalConfig.getInstance().getTransportReactionsByCompartmentsList().get(i).getDiffusionReactions().size(); j++) {
 					SBMLReactionEquation equn = LocalConfig.getInstance().getTransportReactionsByCompartmentsList().get(i).getDiffusionReactions().get(j);
-					for (int r = 0; r < equn.getReactants().size(); r++) {
-						String reactantName = equn.getReactants().get(r).getMetaboliteAbbreviation();
-						if (LocalConfig.getInstance().getMetaboliteIdKeggIdMap().containsKey(Integer.toString(equn.getReactants().get(r).getMetaboliteId()))) {
-							String keggId = LocalConfig.getInstance().getMetaboliteIdKeggIdMap().get(Integer.toString(equn.getReactants().get(r).getMetaboliteId()));
-							//System.out.println(keggId);
-							if (!reactantKeggIds.contains(keggId)) {
-								reactantKeggIds.add(keggId);
-								//System.out.println(idReactionMapAllReactions.get(equn.getReactants().get(r).getReactionId()).getReactionAbbreviation());
-								//System.out.println(equn.getReactants().get(r).getMetaboliteAbbreviation());
-//								System.out.println(equn.getReactants().get(r).getCompartment());
-								if (!metabPosMap.containsKey(equn.getReactants().get(r).getMetaboliteAbbreviation())) {
-									metabolites.add(equn.getReactants().get(r).getMetaboliteAbbreviation());
-									LocalConfig.getInstance().getMetaboliteNameAbbrMap().put(equn.getReactants().get(r).getMetaboliteAbbreviation(), equn.getReactants().get(r).getMetaboliteAbbreviation());
-									foundMetabolitesList.add(equn.getReactants().get(r).getMetaboliteAbbreviation());
-									metabPosMap.put(equn.getReactants().get(r).getMetaboliteAbbreviation(), new String[] {Double.toString(xPos), Double.toString(yPos)});
-									//xPos += 300;
-								} else {
-									
-								}
-							} else {
-								// add to name
-							}
+					if (LocalConfig.getInstance().getMetaboliteIdKeggIdMap().containsKey(Integer.toString(equn.getReactants().get(0).getMetaboliteId()))) {
+						String keggId = LocalConfig.getInstance().getMetaboliteIdKeggIdMap().get(Integer.toString(equn.getReactants().get(0).getMetaboliteId()));
+						if (!keggIdReactionsMap.containsKey(keggId)) {
+							ArrayList<SBMLReactionEquation> eqList = new ArrayList<SBMLReactionEquation>();
+							eqList.add(equn);
+							keggIdReactionsMap.put(keggId, eqList);
+						} else {
+							ArrayList<SBMLReactionEquation> eqList = keggIdReactionsMap.get(keggId);
+							eqList.add(equn);
+							keggIdReactionsMap.put(keggId, eqList);
 						}
 					}
-					for (int p = 0; p < equn.getProducts().size(); p++) {
-						String productName = equn.getProducts().get(p).getMetaboliteAbbreviation();
-						if (LocalConfig.getInstance().getMetaboliteIdKeggIdMap().containsKey(Integer.toString(equn.getProducts().get(p).getMetaboliteId()))) {
-							String keggId = LocalConfig.getInstance().getMetaboliteIdKeggIdMap().get(Integer.toString(equn.getProducts().get(p).getMetaboliteId()));
-							//System.out.println(keggId);
-							if (!productKeggIds.contains(keggId)) {
-								productKeggIds.add(keggId);
-								//System.out.println(idReactionMapAllReactions.get(equn.getProducts().get(p).getReactionId()).getReactionAbbreviation());
-								//System.out.println(equn.getProducts().get(p).getMetaboliteAbbreviation());
-//								System.out.println(equn.getProducts().get(p).getCompartment());
-								if (!metabPosMap.containsKey(equn.getProducts().get(p).getMetaboliteAbbreviation())) {
-									metabolites.add(equn.getProducts().get(p).getMetaboliteAbbreviation());
-									LocalConfig.getInstance().getMetaboliteNameAbbrMap().put(equn.getProducts().get(p).getMetaboliteAbbreviation(), equn.getProducts().get(p).getMetaboliteAbbreviation());
-									foundMetabolitesList.add(equn.getProducts().get(p).getMetaboliteAbbreviation());
-									metabPosMap.put(equn.getProducts().get(p).getMetaboliteAbbreviation(), new String[] {Double.toString(xPos), Double.toString(yPos + 200)});
-									xPos += 300;
-								} else {
-									
-								}
-							} else {
-								// add to name
+				}
+				ArrayList<String> keggIds = new ArrayList<String>(keggIdReactionsMap.keySet());
+				for (int k = 0; k < keggIds.size(); k++) {
+					ArrayList<SBMLReactionEquation> equns = keggIdReactionsMap.get(keggIds.get(k));
+					String reactantName = "";
+					String productName = "";
+					String reactionName = "";
+					for (int m = 0; m < equns.size(); m++) {
+						for (int r = 0; r < equns.get(m).getReactants().size(); r++) {
+							// if reactant and product are same this will work
+							System.out.println(idReactionMapAllReactions.get(equns.get(m).getReactants().get(r).getReactionId()).getReactionAbbreviation());
+							String name = equns.get(m).getReactants().get(r).getMetaboliteAbbreviation();
+							if (name.startsWith("M_")) {
+								name = name.substring(2);
 							}
+							reactantName += name + " ";
 						}
-//						System.out.println(idReactionMapAllReactions.get(equn.getProducts().get(p).getReactionId()).getReactionAbbreviation());
-//						System.out.println(equn.getProducts().get(p).getMetaboliteAbbreviation());
-//						if (LocalConfig.getInstance().getMetaboliteIdKeggIdMap().containsKey(Integer.toString(equn.getProducts().get(p).getMetaboliteId()))) {
-//							System.out.println(LocalConfig.getInstance().getMetaboliteIdKeggIdMap().get(Integer.toString(equn.getProducts().get(p).getMetaboliteId())));
-//						}
-//						System.out.println(equn.getProducts().get(p).getCompartment());
+						// to make name unique. will be changed
+						reactantName += " " + equns.get(m).equationAbbreviations;
+						for (int p = 0; p < equns.get(m).getProducts().size(); p++) {
+							String name = equns.get(m).getProducts().get(p).getMetaboliteAbbreviation();
+							if (name.startsWith("M_")) {
+								name = name.substring(2);
+							}
+							productName += name + " ";
+						}
+						productName += " " + equns.get(m).equationAbbreviations;
+					}
+					
+					if (reactantName != null && reactantName.length() > 0 && productName != null && productName.length() > 0) {
+						if (!metabPosMap.containsKey(reactantName) && !metabPosMap.containsKey(productName)) {
+							metabolites.add(reactantName);
+							LocalConfig.getInstance().getMetaboliteNameAbbrMap().put(reactantName, reactantName);
+							foundMetabolitesList.add(reactantName);
+							metabPosMap.put(reactantName, new String[] {Double.toString(xPos), Double.toString(yPos)});
+							metabolites.add(productName);
+							LocalConfig.getInstance().getMetaboliteNameAbbrMap().put(productName, productName);
+							foundMetabolitesList.add(productName);
+							metabPosMap.put(productName, new String[] {Double.toString(xPos), Double.toString(yPos + 400)});
+							xPos += 300;
+						} else {
+							System.out.println(reactantName);
+						}
 					}
 				}
 				xPos = 200;
-				yPos += 500;
+				yPos += 700;
 			}
     	}
     	Vector<SBMLReaction> rxns = compartmentReactions(f, LocalConfig.getInstance().getSelectedCompartmentName());
