@@ -4,7 +4,7 @@ Pathway ID,Pathway KEGG Ids,Pathway Level,Pathway Level Position,Pathway Name
 2,20,10.5,-9.7,Purine biosynthesis
 3,38,10.5,-9.3,Histidine metabolism
 4,20,30.7,-11.4,Purines
-5,116,38.3,-12.3,Pterine biosynthesis
+5,116,38,-11.75,Pterine biosynthesis
 6,48,12.2,-7.9,Aromatic amino acids
 7,32,32.2,-7.3,Lysine metabolism
 8,34,38.4,-7.4,beta-Lactam antibiotics
@@ -28,7 +28,7 @@ Pathway ID,Pathway KEGG Ids,Pathway Level,Pathway Level Position,Pathway Name
 26,-1,25.2,1.4,Glutamate decarboxylation pathway
 27,98|104,27.3,2.3,Mesaconate pathway
 28,-1,10.6,4.9,Lipid metabolism
-29,105,0.9,5.6,One carbon pool
+29,105,0.95,5.55,One carbon pool
 30,23,41,6.6,Pyrimidines
 31,-1,27,6.9,Glutamate group of amino acids
 32,23,27.3,8.4,Pyrimidine biosynthesis
