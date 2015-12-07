@@ -9,6 +9,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;                                                                                          
 import java.awt.Image;
 import java.awt.Paint;
+import java.awt.Point;
 import java.awt.Shape;
 import java.awt.Stroke;
 import java.awt.event.ActionEvent;                                                                                   
@@ -46,6 +47,7 @@ import javax.swing.JTextArea;
 import org.apache.commons.collections15.Transformer;                                                                 
 import org.apache.commons.collections15.functors.ChainedTransformer;                                                 
                                                                                                                      
+
 
 
 
@@ -142,7 +144,7 @@ public class PathwaysFrame extends JApplet {
    	String compartmentLabel = "Model Name: " + LocalConfig.getInstance().getModelName();
    	
 //   	private double layoutScale;
-//   	private double viewScale;
+   	private double viewScale = PathwaysFrameConstants.START_SCALING_FACTOR;
    	
 //   	private double startX = 0;
 //   	private double startY = PathwaysFrameConstants.START_Y;
@@ -152,6 +154,8 @@ public class PathwaysFrame extends JApplet {
    	private final JMenuItem saveGraphPNGItem = new JMenuItem("Save Graph As PNG");
    	private final JMenuItem saveWindowPNGItem = new JMenuItem("Save Window As PNG");
    	private final JCheckBoxMenuItem transformItem = new JCheckBoxMenuItem("Transform");
+   	
+   	private final JMenuItem findItem = new JMenuItem("Find");
    	
    	private NodeInformationDialog nodeInformationDialog;
 
@@ -188,7 +192,8 @@ public class PathwaysFrame extends JApplet {
      */                                                                                                              
     @SuppressWarnings({ "rawtypes", "unchecked" })
 	public PathwaysFrame(int component) { 
-        setLayout(new BorderLayout()); 
+        setLayout(new BorderLayout());
+        final ScalingControl scaler = new CrossoverScalingControl();
         
         transformItem.setState(false);
         
@@ -272,6 +277,29 @@ public class PathwaysFrame extends JApplet {
 				}
 			}
 		});
+    	
+    	fileMenu.add(saveWindowPNGItem);
+    	
+    	fileMenu.add(findItem);
+    	findItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ae) {
+				double x = 0;
+				double y = 0;
+				for (int i = 0; i < metaboliteList.size(); i++) {
+					if (metaboliteList.get(i).contains("pyr")) {
+						System.out.println(metabPosMap.get(metaboliteList.get(i))[0]);
+						System.out.println(metabPosMap.get(metaboliteList.get(i))[1]);
+//						x = Double.parseDouble(metabPosMap.get(metaboliteList.get(i))[0]);
+//						y = Double.parseDouble(metabPosMap.get(metaboliteList.get(i))[1]);
+					}
+				}
+				//Point2D.Float p = new Point2D.Float((float) 0, (float) 500.0);
+            	Point2D.Float p = new Point2D.Float((float) x, (float) y);
+            	double zoom = 1/viewScale;
+            	System.out.println("z " + zoom);
+                scaler.scale(vv, (float) zoom, vv.getCenter());
+			}
+		});
 
     	menuBar.add(fileMenu);
     	
@@ -322,7 +350,7 @@ public class PathwaysFrame extends JApplet {
         		new Dimension(PathwaysFrameConstants.GRAPH_WINDOW_WIDTH, 
         				PathwaysFrameConstants.GRAPH_WINDOW_HEIGHT));   
         
-        final ScalingControl scaler = new CrossoverScalingControl();
+        //final ScalingControl scaler = new CrossoverScalingControl();
         
         Point2D.Float p = new Point2D.Float(0.f, 0.f);
         scaler.scale(vv, PathwaysFrameConstants.START_SCALING_FACTOR, p);
@@ -440,7 +468,7 @@ public class PathwaysFrame extends JApplet {
                    
         vv.getRenderContext().setEdgeShapeTransformer(new EdgeShape.Line<String,Number>());
         
-        final GraphZoomScrollPane panel = new GraphZoomScrollPane(vv);                                               
+        final GraphZoomScrollPane panel = new GraphZoomScrollPane(vv);
         add(panel);
         final AbstractModalGraphMouse graphMouse = new DefaultModalGraphMouse(); 
 		graphMouse.setMode(ModalGraphMouse.Mode.TRANSFORMING);
@@ -453,12 +481,12 @@ public class PathwaysFrame extends JApplet {
                                                                                                                      
         JButton plus = new JButton("+");                                                                             
         plus.addActionListener(new ActionListener() {                                                                
-            public void actionPerformed(ActionEvent e) {                                                             
-                scaler.scale(vv, PathwaysFrameConstants.SCALING_FACTOR, vv.getCenter()); 
+            public void actionPerformed(ActionEvent e) { 
+                scaler.scale(vv, PathwaysFrameConstants.SCALING_FACTOR, vv.getCenter());
 //                System.out.println("layout scale " + vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.LAYOUT).getScale());
-//				System.out.println("view scale " + vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.VIEW).getScale());
+				System.out.println("view scale " + vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.VIEW).getScale());
 //                layoutScale = vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.LAYOUT).getScale();
-//				viewScale = vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.VIEW).getScale();
+				viewScale = vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.VIEW).getScale();
             }                                                                                                        
         });                                                                                                          
         JButton minus = new JButton("-");                                                                            
@@ -466,9 +494,9 @@ public class PathwaysFrame extends JApplet {
             public void actionPerformed(ActionEvent e) {                                                             
                 scaler.scale(vv, 1/PathwaysFrameConstants.SCALING_FACTOR, vv.getCenter());
 //                System.out.println("layout scale " + vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.LAYOUT).getScale());
-//				System.out.println("view scale " + vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.VIEW).getScale());
+				System.out.println("view scale " + vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.VIEW).getScale());
 //                layoutScale = vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.LAYOUT).getScale();
-//				viewScale = vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.VIEW).getScale();
+				viewScale = vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.VIEW).getScale();
             }                                                                                                        
         });                                                                                                          
                                                                                                                      
