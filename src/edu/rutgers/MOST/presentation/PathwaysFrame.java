@@ -3,15 +3,12 @@ package edu.rutgers.MOST.presentation;
 import java.awt.BasicStroke;
 import java.awt.BorderLayout;                                                                                        
 import java.awt.Color;                                                                                               
-import java.awt.Component;
 import java.awt.Dimension;                                                                                           
 import java.awt.Font;
 import java.awt.Graphics;                                                                                            
 import java.awt.Graphics2D;                                                                                          
 import java.awt.Image;
 import java.awt.Paint;
-import java.awt.Point;
-import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.Stroke;
 import java.awt.event.ActionEvent;                                                                                   
@@ -71,7 +68,6 @@ import edu.rutgers.MOST.data.PathwaysCSVFileConstants;
 import edu.rutgers.MOST.data.ReactionFactory;
 import edu.rutgers.MOST.data.SBMLReaction;
 import edu.rutgers.MOST.data.SBMLReactionEquation;
-import edu.rutgers.MOST.data.SettingsConstants;
 import edu.uci.ics.jung.algorithms.layout.Layout;                                                                    
 import edu.uci.ics.jung.algorithms.layout.StaticLayout;                                                              
 import edu.uci.ics.jung.graph.Graph;  
@@ -297,9 +293,9 @@ public class PathwaysFrame extends JApplet {
 				double x = 0;
 				double y = 0;
 				for (int i = 0; i < metaboliteList.size(); i++) {
-					if (metaboliteList.get(i).contains("pyr")) {
-//						System.out.println(metabPosMap.get(metaboliteList.get(i))[0]);
-//						System.out.println(metabPosMap.get(metaboliteList.get(i))[1]);
+					if (metaboliteList.get(i).contains("Bile acids")) {
+						System.out.println(metabPosMap.get(metaboliteList.get(i))[0]);
+						System.out.println(metabPosMap.get(metaboliteList.get(i))[1]);
 //						x = Double.parseDouble(metabPosMap.get(metaboliteList.get(i))[0]);
 //						y = Double.parseDouble(metabPosMap.get(metaboliteList.get(i))[1]);
 					}
@@ -307,11 +303,7 @@ public class PathwaysFrame extends JApplet {
 				// zoom in to full scale
             	double zoom = 1/viewScale;
             	viewScale = 1;
-//            	System.out.println("z " + zoom);
-//            	System.out.println("v " + vv.getCenter().getX());
-//            	System.out.println("v " + vv.getCenter().getY());
             	Point2D.Float p = new Point2D.Float((float) vv.getCenter().getX(), (float) vv.getCenter().getY());
-                //scaler.scale(vv, (float) zoom, vv.getCenter());
             	scaler.scale(vv, (float) zoom, p);
             	
             	// based on code from http://stackoverflow.com/questions/5745183/how-to-programatically-pan-a-visualizationviewer-with-jung-the-java-library
@@ -319,8 +311,6 @@ public class PathwaysFrame extends JApplet {
             	MutableTransformer view = vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.VIEW);
             	MutableTransformer layout = vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.LAYOUT);
             	Point2D ctr = vv.getCenter();
-//            	System.out.println("c " + ctr.getX());
-//                System.out.println("c " + ctr.getY());
 
                 //Point2D pnt = view.inverseTransform(ctr);
                 Point2D pnt = layout.inverseTransform(ctr);
@@ -332,10 +322,16 @@ public class PathwaysFrame extends JApplet {
 //                double deltaY = (pnt.getY() - p1.getY());
                 double deltaX = (pnt.getX()/viewScale);
                 double deltaY = (pnt.getY()/viewScale);
-                //Point2D delta = new Point2D.Double(deltaX, deltaY);
 
-                //layout.translate(deltaX, deltaY);
-                layout.translate(deltaX + 5650, deltaY + 2500);
+                deltaX += 5680;
+                deltaY += 2570;
+                
+                // upper left
+                //layout.translate(deltaX - 40, deltaY - 38);
+                // lower right
+                //layout.translate(deltaX - 18200, deltaY - 12350);
+                // Bile acids
+                layout.translate(deltaX - 17520, deltaY - 11624);
 			}
 		});
     	
@@ -785,6 +781,10 @@ public class PathwaysFrame extends JApplet {
 		
 		// draw cell border
 		drawCompartmentBorder(borderLeftX, borderRightX, borderTopY, borderBottomY, 0);
+//		System.out.println("lt " + borderLeftX);
+//		System.out.println("tp " + borderTopY);
+//		System.out.println("rt " + borderRightX);
+//		System.out.println("bt " + borderBottomY);
 		
 		String compartmentLabelXOffset = Double.toString(
 				PathwaysFrameConstants.BORDER_TOP*PathwaysFrameConstants.VERTICAL_INCREMENT + 
