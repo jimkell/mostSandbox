@@ -3,6 +3,7 @@ package edu.rutgers.MOST.presentation;
 import java.awt.BasicStroke;
 import java.awt.BorderLayout;                                                                                        
 import java.awt.Color;                                                                                               
+import java.awt.Component;
 import java.awt.Dimension;                                                                                           
 import java.awt.Font;
 import java.awt.Graphics;                                                                                            
@@ -10,6 +11,7 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Paint;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.Stroke;
 import java.awt.event.ActionEvent;                                                                                   
@@ -55,6 +57,9 @@ import org.apache.commons.collections15.functors.ChainedTransformer;
 
 
 
+
+
+
 import edu.rutgers.MOST.config.LocalConfig;
 import edu.rutgers.MOST.data.MetabolicPathway;
 import edu.rutgers.MOST.data.PathwayMetaboliteNode;
@@ -89,6 +94,7 @@ import edu.uci.ics.jung.visualization.decorators.EdgeShape;
 import edu.uci.ics.jung.visualization.decorators.EllipseVertexShapeTransformer;
 import edu.uci.ics.jung.visualization.decorators.ToStringLabeller;                                                   
 import edu.uci.ics.jung.visualization.decorators.VertexIconShapeTransformer;
+import edu.uci.ics.jung.visualization.transform.MutableTransformer;
 import edu.uci.ics.jung.visualization.util.ArrowFactory;
                                                                                                                      
                                                                                                                      
@@ -279,32 +285,59 @@ public class PathwaysFrame extends JApplet {
 		});
     	
     	fileMenu.add(saveWindowPNGItem);
+
+    	menuBar.add(fileMenu);
     	
-    	fileMenu.add(findItem);
+    	JMenu editMenu = new JMenu("Edit");
+    	fileMenu.setMnemonic(KeyEvent.VK_E);
+    	
+    	editMenu.add(findItem);
     	findItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
 				double x = 0;
 				double y = 0;
 				for (int i = 0; i < metaboliteList.size(); i++) {
 					if (metaboliteList.get(i).contains("pyr")) {
-						System.out.println(metabPosMap.get(metaboliteList.get(i))[0]);
-						System.out.println(metabPosMap.get(metaboliteList.get(i))[1]);
+//						System.out.println(metabPosMap.get(metaboliteList.get(i))[0]);
+//						System.out.println(metabPosMap.get(metaboliteList.get(i))[1]);
 //						x = Double.parseDouble(metabPosMap.get(metaboliteList.get(i))[0]);
 //						y = Double.parseDouble(metabPosMap.get(metaboliteList.get(i))[1]);
 					}
 				}
-				//Point2D.Float p = new Point2D.Float((float) 0, (float) 500.0);
-            	Point2D.Float p = new Point2D.Float((float) x, (float) y);
+				// zoom in to full scale
             	double zoom = 1/viewScale;
-            	System.out.println("z " + zoom);
-                scaler.scale(vv, (float) zoom, vv.getCenter());
+            	viewScale = 1;
+//            	System.out.println("z " + zoom);
+//            	System.out.println("v " + vv.getCenter().getX());
+//            	System.out.println("v " + vv.getCenter().getY());
+            	Point2D.Float p = new Point2D.Float((float) vv.getCenter().getX(), (float) vv.getCenter().getY());
+                //scaler.scale(vv, (float) zoom, vv.getCenter());
+            	scaler.scale(vv, (float) zoom, p);
+            	
+            	// based on code from http://stackoverflow.com/questions/5745183/how-to-programatically-pan-a-visualizationviewer-with-jung-the-java-library
+            	// scroll to location
+            	MutableTransformer view = vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.VIEW);
+            	MutableTransformer layout = vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.LAYOUT);
+            	Point2D ctr = vv.getCenter();
+//            	System.out.println("c " + ctr.getX());
+//                System.out.println("c " + ctr.getY());
+
+                //Point2D pnt = view.inverseTransform(ctr);
+                Point2D pnt = layout.inverseTransform(ctr);
+//                System.out.println("p " + pnt.getX());
+//                System.out.println("p " + pnt.getY());
+
+                Point2D.Float p1 = new Point2D.Float((float) 0, (float) 0);
+//                double deltaX = (pnt.getX() - p1.getX());
+//                double deltaY = (pnt.getY() - p1.getY());
+                double deltaX = (pnt.getX()/viewScale);
+                double deltaY = (pnt.getY()/viewScale);
+                //Point2D delta = new Point2D.Double(deltaX, deltaY);
+
+                //layout.translate(deltaX, deltaY);
+                layout.translate(deltaX + 5650, deltaY + 2500);
 			}
 		});
-
-    	menuBar.add(fileMenu);
-    	
-    	JMenu editMenu = new JMenu("Edit");
-    	fileMenu.setMnemonic(KeyEvent.VK_E);
     	
     	editMenu.add(transformItem);
     	transformItem.setMnemonic(KeyEvent.VK_T);
@@ -366,7 +399,7 @@ public class PathwaysFrame extends JApplet {
 				// TODO Auto-generated method stub
 				if (me.getButton() == MouseEvent.BUTTON3) {
 					final VisualizationViewer<String,String> vv =(VisualizationViewer<String,String>)me.getSource();
-			        //final Point2D p = me.getPoint();
+//			        final Point2D p = me.getPoint();
 			        JPopupMenu popup = new JPopupMenu();
 			        JMenuItem nodeInformationMenu = new JMenuItem("View Node Information");
 			        nodeInformationMenu.addActionListener(new ActionListener() {
@@ -484,7 +517,7 @@ public class PathwaysFrame extends JApplet {
             public void actionPerformed(ActionEvent e) { 
                 scaler.scale(vv, PathwaysFrameConstants.SCALING_FACTOR, vv.getCenter());
 //                System.out.println("layout scale " + vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.LAYOUT).getScale());
-				System.out.println("view scale " + vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.VIEW).getScale());
+//				System.out.println("view scale " + vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.VIEW).getScale());
 //                layoutScale = vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.LAYOUT).getScale();
 				viewScale = vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.VIEW).getScale();
             }                                                                                                        
@@ -494,7 +527,7 @@ public class PathwaysFrame extends JApplet {
             public void actionPerformed(ActionEvent e) {                                                             
                 scaler.scale(vv, 1/PathwaysFrameConstants.SCALING_FACTOR, vv.getCenter());
 //                System.out.println("layout scale " + vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.LAYOUT).getScale());
-				System.out.println("view scale " + vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.VIEW).getScale());
+//				System.out.println("view scale " + vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.VIEW).getScale());
 //                layoutScale = vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.LAYOUT).getScale();
 				viewScale = vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.VIEW).getScale();
             }                                                                                                        
