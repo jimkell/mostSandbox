@@ -294,12 +294,13 @@ public class PathwaysFrame extends JApplet {
 				double y = 0;
 				for (int i = 0; i < metaboliteList.size(); i++) {
 					if (metaboliteList.get(i).contains("Bile acids")) {
-						System.out.println(metabPosMap.get(metaboliteList.get(i))[0]);
-						System.out.println(metabPosMap.get(metaboliteList.get(i))[1]);
+//						System.out.println(metabPosMap.get(metaboliteList.get(i))[0]);
+//						System.out.println(metabPosMap.get(metaboliteList.get(i))[1]);
 //						x = Double.parseDouble(metabPosMap.get(metaboliteList.get(i))[0]);
 //						y = Double.parseDouble(metabPosMap.get(metaboliteList.get(i))[1]);
 					}
 				}
+				System.out.println("v b " + viewScale);
 				// zoom in to full scale
             	double zoom = 1/viewScale;
             	viewScale = 1;
@@ -322,16 +323,19 @@ public class PathwaysFrame extends JApplet {
 //                double deltaY = (pnt.getY() - p1.getY());
                 double deltaX = (pnt.getX()/viewScale);
                 double deltaY = (pnt.getY()/viewScale);
+//                System.out.println("v a " + viewScale);
 
-                deltaX += 5680;
-                deltaY += 2570;
+                //deltaX += 5680;   // start
+                deltaX += 6050;  // full
+                //deltaY += 2570;  // start
+                deltaY += 2730;   // full
                 
                 // upper left
-                //layout.translate(deltaX - 40, deltaY - 38);
+                layout.translate(deltaX - 40, deltaY - 38);
                 // lower right
                 //layout.translate(deltaX - 18200, deltaY - 12350);
                 // Bile acids
-                layout.translate(deltaX - 17520, deltaY - 11624);
+                //layout.translate(deltaX - 17520, deltaY - 11624);
 			}
 		});
     	
