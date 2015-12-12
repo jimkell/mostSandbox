@@ -10917,13 +10917,13 @@ public class GraphicalInterface extends JFrame {
     	}    	
     }
     
-    public int redoAddRowScrollRow(JXTable table) {
-    	int maxRow = table.getModel().getRowCount();
-		int row = table.convertRowIndexToView(maxRow - 1);
-		row += 1;
-		
-		return row;
-    }
+//    public int redoAddRowScrollRow(JXTable table) {
+//    	int maxRow = table.getModel().getRowCount();
+//		int row = table.convertRowIndexToView(maxRow - 1);
+//		row += 1;
+//		
+//		return row;
+//    }
     
     public int redoAddColumnScrollColumn(String tableName) {
     	int col = 0;

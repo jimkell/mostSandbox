@@ -308,6 +308,7 @@ public class PathwayFilesReader {
 				}
 				reader.close();
 				LocalConfig.getInstance().setMetaboliteSubstitutionsMap(metaboliteSubstitutionsMap);
+				//System.out.println(metaboliteSubstitutionsMap);
 			} catch (IOException e) {
 				JOptionPane.showMessageDialog(null,                
 						"File Not Found Error.",                

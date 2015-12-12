@@ -49,7 +49,7 @@ public class MetaboliteVisualizationDataProcessor {
 						for (int k = 0; k < metaboliteSubstitutionKeys.size(); k++) {
 							if (LocalConfig.getInstance().getMetaboliteSubstitutionsMap().get(metaboliteSubstitutionKeys.get(k)).contains(keggId)) {
 //								System.out.println("ki " + keggId);
-//								System.out.println(LocalConfig.getInstance().getMetaboliteSubstitutionsMap().get(metaboliteSubstitutionKeys.get(k)));
+//								System.out.println(LocalConfig.getInstance().getMetaboliteSubstitutionsMap().get(keggId));
 								keggId = metaboliteSubstitutionKeys.get(k);
 //								if (metaboliteSubstitutionsFoundMap.containsKey(keggId)) {
 //									ArrayList<String> m = metaboliteSubstitutionsFoundMap.get(keggId);
