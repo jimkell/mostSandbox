@@ -300,7 +300,7 @@ public class PathwaysFrame extends JApplet {
 //						y = Double.parseDouble(metabPosMap.get(metaboliteList.get(i))[1]);
 					}
 				}
-				System.out.println("v b " + viewScale);
+				//System.out.println("v b " + viewScale);
 				// zoom in to full scale
             	double zoom = 1/viewScale;
             	viewScale = 1;
@@ -712,7 +712,7 @@ public class PathwaysFrame extends JApplet {
 					for (int m = 0; m < equns.size(); m++) {
 						for (int r = 0; r < equns.get(m).getReactants().size(); r++) {
 							// if reactant and product are same this will work
-							System.out.println(idReactionMapAllReactions.get(equns.get(m).getReactants().get(r).getReactionId()).getReactionAbbreviation());
+							//System.out.println(idReactionMapAllReactions.get(equns.get(m).getReactants().get(r).getReactionId()).getReactionAbbreviation());
 							String name = equns.get(m).getReactants().get(r).getMetaboliteAbbreviation();
 							if (name.startsWith("M_")) {
 								name = name.substring(2);
