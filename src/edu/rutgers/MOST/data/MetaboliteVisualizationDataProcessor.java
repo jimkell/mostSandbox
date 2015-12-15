@@ -38,6 +38,10 @@ public class MetaboliteVisualizationDataProcessor {
 						}
 					}
 					if (keggId != null && keggId.length() > 0) {
+						if (keggId.contains("|")) {
+							keggId = keggId.substring(0, keggId.indexOf("|"));
+							//System.out.println(keggId);
+						}
 						// replace key from model with key from KEGG database in case where KEGG id from
 						// model is not in KEGG database (depreciated?)
 						for (int j = 0; j < additionalMetaboliteKeys.size(); j++) {
