@@ -683,7 +683,7 @@ public class PathwayFilesReader {
 						}
 						pr.writeReactionEquation();
 						pr.setName(pr.getEquation());
-						pr.setDisplayName("<html>" + pr.getEquation() +"<p> EC Number(s): " + pr.getEcNumbers());
+						pr.setDisplayName("<html>" + pr.getEquation() +"<p> EC Number(s): " + pr.getEcNumbers() + "<p> Reaction ID: " + pr.getReactionId());
 						pr.setKeggReactantIds(keggReactantIds);
 						pr.setKeggProductIds(keggProductIds);
 						metabolicPathways.get(id).getReactionsData().put(pr.getReactionId(), pr);

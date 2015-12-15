@@ -335,7 +335,7 @@ public class PathwayReactionNodeFactory {
 	 * @param reactions
 	 * @return
 	 */
-	public String createDisplayName(String displayName, String name, ArrayList<SBMLReaction> reactions, Map<Integer, SBMLReaction> idReactionMap) {
+	public String createDisplayName(String displayName, String name, String id, ArrayList<SBMLReaction> reactions, Map<Integer, SBMLReaction> idReactionMap) {
 		ArrayList<String> reactionAbbrevations = new ArrayList<String>();
 		ArrayList<String> reactionNames = new ArrayList<String>();
 		ArrayList<String> ecNumbers = new ArrayList<String>();
@@ -392,7 +392,8 @@ public class PathwayReactionNodeFactory {
 					+ displaySubsystem(subsystems)
 					+ displayModelEquation(equations)
 					+ displayModelEquation(equationNames)
-					+ "<p> Fluxes: " + fluxes.toString();
+					+ "<p> Fluxes: " + fluxes.toString()
+					+ "<p> Reaction ID: " + id;
 		}
 		return displayName;
 	}

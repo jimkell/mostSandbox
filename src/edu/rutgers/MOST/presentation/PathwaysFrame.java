@@ -57,6 +57,7 @@ import org.apache.commons.collections15.functors.ChainedTransformer;
 
 
 
+
 import edu.rutgers.MOST.config.LocalConfig;
 import edu.rutgers.MOST.data.MetabolicPathway;
 import edu.rutgers.MOST.data.PathwayMetaboliteNode;
@@ -892,7 +893,7 @@ public class PathwaysFrame extends JApplet {
 						pathway.getReactionsData().get(Integer.toString(k)).getKeggProductIds(), LocalConfig.getInstance().getSelectedCompartmentName(), pathway.getComponent(), rxns, 
 						idReactionMap);
 				String displayName = prnf.createDisplayName(pathway.getReactionsData().get(Integer.toString(k)).getDisplayName(),
-						pathway.getReactionsData().get(Integer.toString(k)).getName(),
+						pathway.getReactionsData().get(Integer.toString(k)).getName(), pathway.getReactionsData().get(Integer.toString(k)).getReactionId(),
 						pn.getReactions(), idReactionMap);
 				// update temporary lists to keep track of what ec numbers have been found
 				double edgeColor = PathwaysFrameConstants.BLACK_COLOR_VALUE;
