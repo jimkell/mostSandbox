@@ -25,6 +25,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;                                                                                          
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;                                                                                            
 import java.util.Map;                                                                                                
                                                                                                                      
@@ -76,6 +77,10 @@ import org.apache.commons.collections15.functors.ChainedTransformer;
 
 
 
+
+
+
+import cern.colt.Arrays;
 import edu.rutgers.MOST.config.LocalConfig;
 import edu.rutgers.MOST.data.MetabolicPathway;
 import edu.rutgers.MOST.data.PathwayMetaboliteNode;
@@ -1662,6 +1667,13 @@ public class PathwaysFrame extends JApplet {
 			notFoundAction();
 		} else {
 				getVisualizationsFindDialog().requestFocus();
+				ArrayList<String> findXCoordinates = new ArrayList<String>(findLocationsMap.keySet());
+				//System.out.println(findXCoordinates);
+				Collections.sort(findXCoordinates, new NumComparator());
+				System.out.println(findXCoordinates);
+				for (int i = 0; i < findXCoordinates.size(); i++) {
+					System.out.println(findLocationsMap.get(findXCoordinates.get(i)));
+				}
 //				// if not at end of list increment, else start over
 //				int count = LocalConfig.getInstance().getReactionsLocationsListCount();
 //				if (!searchBackwards) {
@@ -1717,12 +1729,18 @@ public class PathwaysFrame extends JApplet {
 				y = Double.parseDouble(metabPosMap.get(metaboliteList.get(i))[1]);
 				coordinates.add(x);
 				coordinates.add(y);
-				findLocationsMap.put(Integer.toString((int) x), coordinates);
+				findLocationsMap.put(Double.toString(x), coordinates);
 			}
 		}
 		
 		return findLocationsMap;
 
+	}
+	
+	class NumComparator implements Comparator<String> {
+	    public int compare(String a, String b) {
+	        return Float.valueOf(a.toString()).compareTo(Float.valueOf(b.toString()));
+	    }
 	}
     
     public static void main(String[] args) {                                                                         
