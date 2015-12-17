@@ -36,6 +36,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JApplet;                                                                                          
 import javax.swing.JButton;                                                                                          
 import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -45,11 +46,14 @@ import javax.swing.JPanel;
                                                                                                                      
 import javax.swing.JPopupMenu;
 import javax.swing.JTextArea;
+import javax.swing.KeyStroke;
 import javax.swing.WindowConstants;
 
 import org.apache.commons.collections15.Transformer;                                                                 
 import org.apache.commons.collections15.functors.ChainedTransformer;                                                 
                                                                                                                      
+
+
 
 
 
@@ -238,6 +242,16 @@ public class PathwaysFrame extends JApplet {
         final ScalingControl scaler = new CrossoverScalingControl();
         
         transformItem.setState(false);
+        
+        // register actions
+ 		ActionListener findActionListener = new ActionListener() {
+ 			public void actionPerformed(ActionEvent actionEvent) {
+ 				showFindReplace();							
+ 			}
+ 		};
+        
+        KeyStroke find = KeyStroke.getKeyStroke(KeyEvent.VK_F,ActionEvent.CTRL_MASK,false);
+        getRootPane().registerKeyboardAction(findActionListener,find,JComponent.WHEN_IN_FOCUSED_WINDOW); 
         
         /**************************************************************************/
     	// create menu bar
