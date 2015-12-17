@@ -70,6 +70,12 @@ import org.apache.commons.collections15.functors.ChainedTransformer;
 
 
 
+
+
+
+
+
+
 import edu.rutgers.MOST.config.LocalConfig;
 import edu.rutgers.MOST.data.MetabolicPathway;
 import edu.rutgers.MOST.data.PathwayMetaboliteNode;
@@ -246,9 +252,11 @@ public class PathwaysFrame extends JApplet {
         // register actions
  		ActionListener findActionListener = new ActionListener() {
  			public void actionPerformed(ActionEvent actionEvent) {
- 				showFindReplace();							
+ 				showFindDialog();							
  			}
  		};
+ 		
+ 		//VisualizationsFindDialog.findButton.addActionListener(findNextButtonActionListener);
         
         KeyStroke find = KeyStroke.getKeyStroke(KeyEvent.VK_F,ActionEvent.CTRL_MASK,false);
         getRootPane().registerKeyboardAction(findActionListener,find,JComponent.WHEN_IN_FOCUSED_WINDOW); 
@@ -345,18 +353,18 @@ public class PathwaysFrame extends JApplet {
     	findItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
 				if (!findMode) {
-					showFindReplace();
+					showFindDialog();
 				}	
-				double x = 0;
-				double y = 0;
-				for (int i = 0; i < metaboliteList.size(); i++) {
-					if (metaboliteList.get(i).contains("Bile acids")) {
-//						System.out.println(metabPosMap.get(metaboliteList.get(i))[0]);
-//						System.out.println(metabPosMap.get(metaboliteList.get(i))[1]);
-//						x = Double.parseDouble(metabPosMap.get(metaboliteList.get(i))[0]);
-//						y = Double.parseDouble(metabPosMap.get(metaboliteList.get(i))[1]);
-					}
-				}
+//				double x = 0;
+//				double y = 0;
+//				for (int i = 0; i < metaboliteList.size(); i++) {
+//					if (metaboliteList.get(i).contains("Bile acids")) {
+////						System.out.println(metabPosMap.get(metaboliteList.get(i))[0]);
+////						System.out.println(metabPosMap.get(metaboliteList.get(i))[1]);
+////						x = Double.parseDouble(metabPosMap.get(metaboliteList.get(i))[0]);
+////						y = Double.parseDouble(metabPosMap.get(metaboliteList.get(i))[1]);
+//					}
+//				}
 				//System.out.println("v b " + viewScale);
 				// zoom in to full scale
             	double zoom = 1/viewScale;
@@ -1546,12 +1554,14 @@ public class PathwaysFrame extends JApplet {
 		}
 	}
 	
-	public void showFindReplace() {
+	@SuppressWarnings("static-access")
+	public void showFindDialog() {
 //		LocalConfig.getInstance().setReactionsLocationsListCount(0);
 //		LocalConfig.getInstance().setMetabolitesLocationsListCount(0);
 		findFieldChanged = false;
 		VisualizationsFindDialog findDialog = new VisualizationsFindDialog();
 		setVisualizationsFindDialog(findDialog);
+		getVisualizationsFindDialog().findButton.addActionListener(findNextButtonActionListener);
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
 		int y = (screenSize.height - findDialog.getSize().height)/2;
@@ -1585,6 +1595,134 @@ public class PathwaysFrame extends JApplet {
 	
 	public void findDialogCloseAction() {
 		findMode = false;
+	}
+	
+	ActionListener findNextButtonActionListener = new ActionListener() {
+		public void actionPerformed(ActionEvent ae) {
+			findAction();
+			findButtonClicked = true;
+		}
+	};
+	
+	public void findAction() {
+		findNext();
+//		HashMap<String, ArrayList<Double>> findLocationsMap = findLocationsMap();
+//		setFindLocationsMap(findLocationsMap);
+//		// uses window listener for focus event and row column change to reset button
+//		// to not clicked if user changes selected cell.
+//		// for first click of find button, find starts from first cell after (or before when backwards)
+//		// that contains string, after this first click, find just iterates through list				
+//		if (!findButtonClicked) {
+////			if (reactionsFindStartIndex() > -1) {
+////				LocalConfig.getInstance().setReactionsLocationsListCount(reactionsFindStartIndex());
+////				findNext();
+////			} else {
+////				notFoundAction();	
+////				if (wrapAround) {
+////					if (searchBackwards) {
+////						//LocalConfig.getInstance().setReactionsLocationsListCount(getReactionsFindLocationsList().size() - 1);
+////					} else {
+////						//LocalConfig.getInstance().setReactionsLocationsListCount(0);
+////					}
+////				}
+////			}					
+//		} else {
+//			findNext();
+//		}
+	}
+
+	public void notFoundAction() {
+		getVisualizationsFindDialog().setAlwaysOnTop(false);
+		Object[] options = {"    Yes    ", "    No    ",};
+		int choice = JOptionPane.showOptionDialog(null, 
+				"MOST has not found the item you are searching for.\nDo you want to start over from the beginning?", 
+				"Item Not Found", 
+				JOptionPane.YES_NO_OPTION, 
+				JOptionPane.QUESTION_MESSAGE, 
+				null, options, options[0]);
+		if (choice == JOptionPane.YES_OPTION) {
+			wrapAround = true; 
+			
+			VisualizationsFindDialog.wrapCheckBox.setSelected(true);
+			if (searchBackwards) {
+				//LocalConfig.getInstance().setReactionsLocationsListCount(getReactionsFindLocationsList().size() - 1);
+			} else {
+				//LocalConfig.getInstance().setReactionsLocationsListCount(0);
+			}
+		}
+		if (choice == JOptionPane.NO_OPTION) {
+
+		}
+		getVisualizationsFindDialog().setAlwaysOnTop(true);
+	}
+
+	public void findNext() {
+		HashMap<String, ArrayList<Double>> findLocationsMap = findLocationsMap();
+		if (findLocationsMap.size() == 0) {
+			notFoundAction();
+		} else {
+				getVisualizationsFindDialog().requestFocus();
+//				// if not at end of list increment, else start over
+//				int count = LocalConfig.getInstance().getReactionsLocationsListCount();
+//				if (!searchBackwards) {
+//					if (LocalConfig.getInstance().getReactionsLocationsListCount() < (getReactionsFindLocationsList().size() - 1)) {
+//						count += 1;
+//						LocalConfig.getInstance().setReactionsLocationsListCount(count);
+//					} else {
+//						if (wrapAround) {							
+//							count = 0;
+//							LocalConfig.getInstance().setReactionsLocationsListCount(count);							
+//						} else {							
+//							if (throwNotFoundError) {															
+//								notFoundAction();
+//								throwNotFoundError = false;
+//							}
+//							throwNotFoundError = true;
+//						}
+//					}
+//				} else {
+//					if (LocalConfig.getInstance().getReactionsLocationsListCount() > 0) {
+//						count -= 1;
+//						LocalConfig.getInstance().setReactionsLocationsListCount(count);
+//					} else {
+//						if (wrapAround) {							
+//							count = locationList.size() - 1;
+//							LocalConfig.getInstance().setReactionsLocationsListCount(count);							
+//						} else {							
+//							if (throwNotFoundError) {															
+//								notFoundAction();
+//								throwNotFoundError = false;
+//							}
+//							throwNotFoundError = true;
+//						}
+//					}
+//				}															
+		}
+		getVisualizationsFindDialog().requestFocus();
+	}
+	
+	public HashMap<String, ArrayList<Double>> findLocationsMap() {		
+		HashMap<String, ArrayList<Double>> findLocationsMap = new HashMap<String, ArrayList<Double>>();
+		
+		String findValue = getVisualizationsFindDialog().findBox.getSelectedItem().toString();
+		System.out.println("fv " + findValue);
+		double x = 0;
+		double y = 0;
+		for (int i = 0; i < metaboliteList.size(); i++) {
+			if (metaboliteList.get(i).contains(findValue)) {
+				ArrayList<Double> coordinates = new ArrayList<Double>();
+				System.out.println(metabPosMap.get(metaboliteList.get(i))[0]);
+				System.out.println(metabPosMap.get(metaboliteList.get(i))[1]);
+				x = Double.parseDouble(metabPosMap.get(metaboliteList.get(i))[0]);
+				y = Double.parseDouble(metabPosMap.get(metaboliteList.get(i))[1]);
+				coordinates.add(x);
+				coordinates.add(y);
+				findLocationsMap.put(Integer.toString((int) x), coordinates);
+			}
+		}
+		
+		return findLocationsMap;
+
 	}
     
     public static void main(String[] args) {                                                                         

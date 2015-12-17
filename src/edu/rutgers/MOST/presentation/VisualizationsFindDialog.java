@@ -51,9 +51,8 @@ public class VisualizationsFindDialog extends JDialog {
 	public static final JMenuItem findDeleteItem = new JMenuItem("Delete");
 	public static final JMenuItem findSelectAllItem = new JMenuItem("Select All");
 	
-	// undo changes in find, replace text fields
+	// undo changes in find text field
 	public static final TextFieldUndoItem findUndoItem = new TextFieldUndoItem();
-	public static final TextFieldUndoItem replaceUndoItem = new TextFieldUndoItem();
 		
 	private String findText;
 
@@ -64,17 +63,7 @@ public class VisualizationsFindDialog extends JDialog {
 	public String getFindText() {
 		return findText;
 	}
-	
-	private String replaceText;
 
-	public void setReplaceText(String replaceText) {
-		this.replaceText = replaceText;
-	}
-
-	public String getReplaceText() {
-		return replaceText;
-	}
-	
 	private String oldFindValue;
 	
 	public String getOldFindValue() {
@@ -83,16 +72,6 @@ public class VisualizationsFindDialog extends JDialog {
 
 	public void setOldFindValue(String oldFindValue) {
 		this.oldFindValue = oldFindValue;
-	}
-
-	private String oldReplaceValue;
-	
-	public String getOldReplaceValue() {
-		return oldReplaceValue;
-	}
-
-	public void setOldReplaceValue(String oldReplaceValue) {
-		this.oldReplaceValue = oldReplaceValue;
 	}
 
 	private WindowFocusListener windowFocusListener;
@@ -108,7 +87,6 @@ public class VisualizationsFindDialog extends JDialog {
         JLabel placeholder = new JLabel(""); 
         
         populateComboBox(findBox, LocalConfig.getInstance().getFindEntryList());
-//        populateComboBox(replaceBox, LocalConfig.getInstance().getReplaceEntryList());
          
         findBox.setSelectedIndex(-1);
         findBox.setEditable(true);
@@ -130,7 +108,6 @@ public class VisualizationsFindDialog extends JDialog {
         findBox.add(findPopupMenu);
         
         setOldFindValue("");
-        setOldReplaceValue("");
         
         findField.addMouseListener(new MouseAdapter() {
 
