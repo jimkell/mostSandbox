@@ -583,6 +583,11 @@ public class LocalConfig {
 	public boolean findReplaceFocusLost;
 	public boolean findReplaceFocusGained;
 	
+	// visualizations find
+	public boolean visualizationsFindFieldChanged;
+	public boolean visualizationsFindFocusLost;
+	public boolean visualizationsFindFocusGained;
+	
 	public boolean addReactantPromptShown;
 	public boolean reactionEditorVisible;
 	public boolean loadExistingVisible;

@@ -11,10 +11,13 @@ import java.awt.Image;
 import java.awt.Paint;
 import java.awt.Shape;
 import java.awt.Stroke;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;                                                                                   
 import java.awt.event.ActionListener;                                                                                
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.awt.geom.AffineTransform;                                                                                
 import java.awt.geom.Point2D;                                                                                        
 import java.awt.image.BufferedImage;
@@ -42,10 +45,15 @@ import javax.swing.JPanel;
                                                                                                                      
 import javax.swing.JPopupMenu;
 import javax.swing.JTextArea;
+import javax.swing.WindowConstants;
 
 import org.apache.commons.collections15.Transformer;                                                                 
 import org.apache.commons.collections15.functors.ChainedTransformer;                                                 
                                                                                                                      
+
+
+
+
 
 
 
@@ -110,8 +118,30 @@ public class PathwaysFrame extends JApplet {
     Graph<String, Number> graph; 
     public JButton redrawButton = new JButton("Redraw");
     public JPanel controls = new JPanel();
-                                                                                                                     
-    /**                                                                                                              
+    
+    private static VisualizationsFindDialog visualizationsFindDialog;                                                                                                              
+	
+	public static VisualizationsFindDialog getVisualizationsFindDialog() {
+		return visualizationsFindDialog;
+	}
+
+	public static void setVisualizationsFindDialog(
+			VisualizationsFindDialog visualizationsFindDialog) {
+		PathwaysFrame.visualizationsFindDialog = visualizationsFindDialog;
+	}
+
+	private static HashMap<String, ArrayList<Double>> findLocationsMap;
+
+	public static HashMap<String, ArrayList<Double>> getFindLocationsMap() {
+		return findLocationsMap;
+	}
+
+	public static void setFindLocationsMap(
+			HashMap<String, ArrayList<Double>> findLocationsMap) {
+		PathwaysFrame.findLocationsMap = findLocationsMap;
+	}
+
+	/**                                                                                                              
      * the visual component and renderer for the graph                                                               
      */                                                                                                              
     VisualizationViewer<String, Number> vv;  
@@ -188,6 +218,15 @@ public class PathwaysFrame extends JApplet {
 	
 	private Map<String, ArrayList<Double>> startPosMap = new HashMap<String, ArrayList<Double>>();
 
+	// find-replace values 
+	private boolean findMode;
+	private boolean findButtonClicked;
+	private boolean matchCase;
+	private boolean wrapAround;
+	private boolean searchBackwards;
+	private boolean throwNotFoundError;
+	private boolean findFieldChanged;
+	
 	/**                                                                                                              
      * create an instance of a simple graph with controls to                                                         
      * demo the zoom features.                                                                                       
@@ -291,6 +330,9 @@ public class PathwaysFrame extends JApplet {
     	editMenu.add(findItem);
     	findItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
+				if (!findMode) {
+					showFindReplace();
+				}	
 				double x = 0;
 				double y = 0;
 				for (int i = 0; i < metaboliteList.size(); i++) {
@@ -1488,6 +1530,47 @@ public class PathwaysFrame extends JApplet {
 		public String getDescription() {
 			return ".png files";
 		}
+	}
+	
+	public void showFindReplace() {
+//		LocalConfig.getInstance().setReactionsLocationsListCount(0);
+//		LocalConfig.getInstance().setMetabolitesLocationsListCount(0);
+		findFieldChanged = false;
+		VisualizationsFindDialog findDialog = new VisualizationsFindDialog();
+		setVisualizationsFindDialog(findDialog);
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+
+		int y = (screenSize.height - findDialog.getSize().height)/2;
+
+		final ArrayList<Image> icons = new ArrayList<Image>(); 
+		icons.add(new ImageIcon("etc/most16.jpg").getImage()); 
+		icons.add(new ImageIcon("etc/most32.jpg").getImage());
+		findDialog.setIconImages(icons);
+		findDialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+		findDialog.setAlwaysOnTop(true);        
+		//findDialog.setLocation(x + 420, y);
+		// Find/Replace positioned at far right on screen so it does not obscure scroll bar
+		findDialog.setLocation((screenSize.width - findDialog.getSize().width) - 10, y);
+		findDialog.setVisible(true);
+		findDialog.addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent evt) {
+				findDialogCloseAction();
+				getVisualizationsFindDialog().setVisible(false);
+				getVisualizationsFindDialog().dispose();
+			}
+		});
+		VisualizationsFindDialog.findBox.setEnabled(true);
+		
+		findButtonClicked = false;
+		// ensure states of boolean values match states of findReplace frame
+		searchBackwards = FindReplaceConstants.SEARCH_BACKWARDS_DEFAULT;
+		matchCase = FindReplaceConstants.MATCH_CASE_DEFAULT;
+		wrapAround = FindReplaceConstants.WRAP_AROUND_DEFAULT;
+		findMode = true;
+	}	
+	
+	public void findDialogCloseAction() {
+		findMode = false;
 	}
     
     public static void main(String[] args) {                                                                         
