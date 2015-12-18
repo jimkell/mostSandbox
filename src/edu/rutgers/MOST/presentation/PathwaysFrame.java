@@ -80,7 +80,6 @@ import org.apache.commons.collections15.functors.ChainedTransformer;
 
 
 
-import cern.colt.Arrays;
 import edu.rutgers.MOST.config.LocalConfig;
 import edu.rutgers.MOST.data.MetabolicPathway;
 import edu.rutgers.MOST.data.PathwayMetaboliteNode;
@@ -1736,7 +1735,7 @@ public class PathwaysFrame extends JApplet {
 		return findLocationsMap;
 
 	}
-	
+	// based on http://stackoverflow.com/questions/6686007/how-to-sort-array-of-strings-in-numerical-order
 	class NumComparator implements Comparator<String> {
 	    public int compare(String a, String b) {
 	        return Float.valueOf(a.toString()).compareTo(Float.valueOf(b.toString()));
