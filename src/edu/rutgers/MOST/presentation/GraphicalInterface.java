@@ -25,10 +25,6 @@ import org.jdesktop.swingx.decorator.HighlightPredicate;
 import org.sbml.jsbml.SBMLDocument;
 import org.sbml.jsbml.SBMLReader;
 
-import sun.rmi.transport.TransportConstants;
-
-import com.sun.xml.internal.bind.v2.schemagen.xmlschema.LocalAttribute;
-
 import edu.rutgers.MOST.Analysis.Eflux2;
 import edu.rutgers.MOST.Analysis.FBA;
 import edu.rutgers.MOST.Analysis.GDBB;
@@ -49,7 +45,6 @@ import edu.rutgers.MOST.data.ModelKeggEquationMapCreator;
 import edu.rutgers.MOST.data.ModelReactionEquation;
 import edu.rutgers.MOST.data.ObjectCloner;
 import edu.rutgers.MOST.data.PathwayFilesReader;
-import edu.rutgers.MOST.data.PathwayReactionData;
 import edu.rutgers.MOST.data.ReactionEquationUpdater;
 import edu.rutgers.MOST.data.ReactionFactory;
 import edu.rutgers.MOST.data.ReactionSupplementaryMaterialReader;
@@ -71,13 +66,11 @@ import edu.rutgers.MOST.data.TextReactionsWriter;
 import edu.rutgers.MOST.data.TransportReactionCategorizer;
 import edu.rutgers.MOST.data.TransportReactionsByCompartments;
 import edu.rutgers.MOST.data.UndoConstants;
-import edu.rutgers.MOST.data.VisualizationKeggReactionProcessor;
 import edu.rutgers.MOST.logic.ReactionParser;
 import edu.rutgers.MOST.optimization.solvers.GurobiSolver;
 
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Image;
