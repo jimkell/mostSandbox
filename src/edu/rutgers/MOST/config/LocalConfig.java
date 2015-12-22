@@ -1093,17 +1093,6 @@ public class LocalConfig {
 			Map<String, ArrayList<SBMLReaction>> keggIdReactionMap) {
 		this.keggIdReactionMap = keggIdReactionMap;
 	}
-	
-	private Map<String, ArrayList<SBMLReaction>> keggIdMembraneReactionMap;
-	
-	public Map<String, ArrayList<SBMLReaction>> getKeggIdMembraneReactionMap() {
-		return keggIdMembraneReactionMap;
-	}
-
-	public void setKeggIdMembraneReactionMap(
-			Map<String, ArrayList<SBMLReaction>> keggIdMembraneReactionMap) {
-		this.keggIdMembraneReactionMap = keggIdMembraneReactionMap;
-	}
 
 	private Map<String, PathwayReactionData> modelKeggEquationMap;
 
@@ -1296,25 +1285,25 @@ public class LocalConfig {
 		this.selectedCompartmentName = selectedCompartmentName;
 	}
 	
-	private String membraneName;
-
-	public String getMembraneName() {
-		return membraneName;
-	}
-
-	public void setMembraneName(String membraneName) {
-		this.membraneName = membraneName;
-	}
-	
-	private String outsideName;
-
-	public String getOutsideName() {
-		return outsideName;
-	}
-
-	public void setOutsideName(String outsideName) {
-		this.outsideName = outsideName;
-	}
+//	private String membraneName;
+//
+//	public String getMembraneName() {
+//		return membraneName;
+//	}
+//
+//	public void setMembraneName(String membraneName) {
+//		this.membraneName = membraneName;
+//	}
+//	
+//	private String outsideName;
+//
+//	public String getOutsideName() {
+//		return outsideName;
+//	}
+//
+//	public void setOutsideName(String outsideName) {
+//		this.outsideName = outsideName;
+//	}
 	
 	private ArrayList<TransportReactionsByCompartments> transportReactionsByCompartmentsList;
 

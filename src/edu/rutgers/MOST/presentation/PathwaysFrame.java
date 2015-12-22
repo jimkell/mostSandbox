@@ -872,15 +872,15 @@ public class PathwaysFrame extends JApplet {
 			drawCompartmentLabel(compartmentLabel, compartmentLabelXOffset, compartmentLabelYOffset);
 		}
 		
-		if (LocalConfig.getInstance().getMembraneName() != null && LocalConfig.getInstance().getMembraneName().length() > 0
-				&& component == PathwaysFrameConstants.PATHWAYS_COMPONENT) {
+//		if (LocalConfig.getInstance().getMembraneName() != null && LocalConfig.getInstance().getMembraneName().length() > 0
+//				&& component == PathwaysFrameConstants.PATHWAYS_COMPONENT) {
 //			maxY += PathwaysFrameConstants.ADDITIONAL_COMPARTMENT_OFFSET;
 //			Vector<SBMLReaction> membraneRxns = compartmentReactions(f, LocalConfig.getInstance().getMembraneName());
 //	    	Map<Integer, SBMLReaction> membraneIdReactionMap = createCompartmentIdReactionMap(f, membraneRxns);
 //	    	drawMetabolites(pathway, component, LocalConfig.getInstance().getMembraneName());
 //			drawReactions(pathway, component, membraneRxns, membraneIdReactionMap);
 //			drawPathwayNames(component);
-		}
+//		}
 //		if (LocalConfig.getInstance().getOutsideName() != null && LocalConfig.getInstance().getOutsideName().length() > 0
 //				&& component == PathwaysFrameConstants.PATHWAYS_COMPONENT) {
 //			if (LocalConfig.getInstance().getMembraneName() != null && LocalConfig.getInstance().getMembraneName().length() > 0) {

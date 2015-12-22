@@ -1488,8 +1488,6 @@ public class GraphicalInterface extends JFrame {
 		LocalConfig.getInstance().setEcNumberReactionMap(ecNumberReactionMap);
 		Map<String, ArrayList<SBMLReaction>> keggIdReactionMap = new HashMap<String, ArrayList<SBMLReaction>>();
 		LocalConfig.getInstance().setKeggIdReactionMap(keggIdReactionMap);
-		Map<String, ArrayList<SBMLReaction>> keggIdMembraneReactionMap = new HashMap<String, ArrayList<SBMLReaction>>();
-		LocalConfig.getInstance().setKeggIdMembraneReactionMap(keggIdMembraneReactionMap);
 		
 		// categorize reactions
 //		ArrayList<Integer> cytosolIds = new ArrayList<Integer>();
@@ -12789,8 +12787,8 @@ public class GraphicalInterface extends JFrame {
 	ActionListener compartmentNameAbbrOKActionListener = new ActionListener() {
 		public void actionPerformed(ActionEvent ae) {
 			LocalConfig.getInstance().setSelectedCompartmentName(compNameFromCombo(getCompNameDialog().cbCompartmentName));
-			LocalConfig.getInstance().setOutsideName(compNameFromCombo(getCompNameDialog().cbOutsideName));
-			LocalConfig.getInstance().setMembraneName(compNameFromCombo(getCompNameDialog().cbMembraneName));
+//			LocalConfig.getInstance().setOutsideName(compNameFromCombo(getCompNameDialog().cbOutsideName));
+//			LocalConfig.getInstance().setMembraneName(compNameFromCombo(getCompNameDialog().cbMembraneName));
 			getCompNameDialog().setVisible(false);
 			getCompNameDialog().dispose();
 			processVisualizationsData();
@@ -12978,7 +12976,7 @@ public class GraphicalInterface extends JFrame {
 	public void visualizeModel() {
 		ReactionFactory rf = new ReactionFactory("SBML");
 		Vector<SBMLReaction> rxns = null;
-		Vector<SBMLReaction> membraneRxns = null;
+//		Vector<SBMLReaction> membraneRxns = null;
 		if (LocalConfig.getInstance().getSelectedCompartmentName() != null && LocalConfig.getInstance().getSelectedCompartmentName().length() > 0) {
 			rxns = rf.getReactionsByCompartment(LocalConfig.getInstance().getSelectedCompartmentName());
 		} else {
