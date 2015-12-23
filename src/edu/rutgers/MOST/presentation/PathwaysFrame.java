@@ -1395,22 +1395,26 @@ public class PathwaysFrame extends JApplet {
         public Stroke transform(E e)
         {
         	int strokeWidth = 1;
-            if (edge_weight.containsKey(e)) {
-            	double value = edge_weight.get(e).doubleValue();
-            	//System.out.println(value);
-                if (value > 0.1) {
-                	if (value == PathwaysFrameConstants.BORDER_THICKNESS) {
-                		strokeWidth = (int) PathwaysFrameConstants.BORDER_THICKNESS;
-                	} else {
-                		strokeWidth = (int) value;
-                	}
-                	return new BasicStroke(strokeWidth);
+        	if (LocalConfig.getInstance().isScaleEdgeThicknessSelected()) {
+        		if (edge_weight.containsKey(e)) {
+                	double value = edge_weight.get(e).doubleValue();
+                	//System.out.println(value);
+                    if (value > 0.1) {
+                    	if (value == PathwaysFrameConstants.BORDER_THICKNESS) {
+                    		strokeWidth = (int) PathwaysFrameConstants.BORDER_THICKNESS;
+                    	} else {
+                    		strokeWidth = (int) value;
+                    	}
+                    	return new BasicStroke(strokeWidth);
+                    } else {
+                    	return RenderContext.DOTTED;
+                    }  
                 } else {
                 	return RenderContext.DOTTED;
-                }  
-            } else {
-            	return RenderContext.DOTTED;
-            }
+                }
+        	} else {
+        		return new BasicStroke(strokeWidth);
+        	}
         }
     }
     
@@ -1443,12 +1447,16 @@ public class PathwaysFrame extends JApplet {
         public Shape transform(Context<Graph<V,E>,E> context)
         {
         	double value = 1.0;
-        	if (edge_weight.containsKey(context.element)) {
-            	value = edge_weight.get(context.element).doubleValue();
+        	if (LocalConfig.getInstance().isScaleEdgeThicknessSelected()) {
+        		if (edge_weight.containsKey(context.element)) {
+                	value = edge_weight.get(context.element).doubleValue();
+            	}
         	}
         	double arrowSize = 0.25;
-        	if (value >= 1) {
-        		arrowSize = Math.sqrt(value)/2;
+        	if (LocalConfig.getInstance().isScaleEdgeThicknessSelected()) {
+        		if (value >= 1) {
+            		arrowSize = Math.sqrt(value)/2;
+            	}
         	}
         	directed_arrow = ArrowFactory.getNotchedArrow((float) (arrowSize*width), 
         			(float) (arrowSize*length), (float) (arrowSize*notch_depth));
