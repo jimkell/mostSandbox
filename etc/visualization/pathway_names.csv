@@ -41,7 +41,7 @@ Pathway ID,Pathway KEGG Ids,Pathway Level,Pathway Level Position,Pathway Name
 39,-1,1.5,9.3,Branched chain amino acids
 40,16,18.1,10.4,Phytosterols
 41,16,17.1,12.1,Mycosterols
-42,16,24.8,9.4,Mineralocorticoids
+42,16,24.85,9.7,Mineralocorticoids
 43,16,26,9.8,Gestagen
 44,16,24.8,12.1,Corticoids and Gestagens
 45,16|12,24.8,12.8,Zoosterols
