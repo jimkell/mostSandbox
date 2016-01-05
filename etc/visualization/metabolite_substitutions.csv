@@ -19,6 +19,7 @@ C00226,C00756|C01633|C02277|C00823,"1-Alcohol (even chain, missing C14, C18)","1
 C00264,C05269|C05267|C05265|C05263|C05261|C05259,3-Oxoacyl-CoA,,,
 C00268,C15522,Dihydrobiopterin,4a-Hydroxytetrahydrobiopterin,,
 C00317,C01702,"Amylose, Glycogen",,,
+C00404,C00536|C00013|C00009,Polyphosphate,"Triphosphate, Diphosphate, Phosphate",,
 C00462,C01327|C13645,HX (2.5.1.18),"Hydrochloric acid, Hydrobromic acid",,
 C00492,C01613|C08252|C01235|C05402|C05401|C01235|R01329|C05399|C04737|C01613|C06126|C06037|C05404|C00031|C00159|C00089|C00794|C05402|C02686|C03692,"Raffinose, Stachyose,  Verbascose, Galactinol, Melibiose, Galactosylglycerol, C01235, Epimelibiose, Melibiitol, C04737, Stachyose, Digalactosylceramide, D-glycerol, Manninotriose, D-Glucose, Mannose, Sucrose, Sorbitol, Melibiose, Galactosylceramide, MGDG",,,
 C00605,C05272|C05276|C03221|C05273|C05275|C05270,"2,3-Dehydroacyl-CoA","trans-Hexadec-2-enoyl-CoA, trans-Oct-2-enoyl-CoA, 2-trans-Dodecenoyl-CoA, trans-Tetradec-2-enoyl-CoA, trans-Dec-2-enoyl-CoA, Hexanoyl-CoA",,
