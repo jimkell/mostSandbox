@@ -224,9 +224,8 @@ public class PathwayReactionNodeFactory {
 		boolean match = false;
 		if (r != null && LocalConfig.getInstance().getModelKeggEquationMap().containsKey(Integer.toString(r.getId()))) {
 			PathwayReactionData modelData = LocalConfig.getInstance().getModelKeggEquationMap().get(Integer.toString(r.getId()));
-//			System.out.println(modelData);
-//			System.out.println("m " + modelData.getKeggReactantIds());
-//			System.out.println("m " + modelData.getKeggProductIds());
+//			System.out.println("mr " + modelData.getKeggReactantIds());
+//			System.out.println("mp " + modelData.getKeggProductIds());
 //			System.out.println("d " + keggReactantIds);
 //			System.out.println("d " + keggProductIds);
 			if (exactMatch) {
@@ -292,7 +291,8 @@ public class PathwayReactionNodeFactory {
 	 */
 	public boolean speciesExactMatch(ArrayList<String> dataIds, ArrayList<String> modelIds) {
 		boolean speciesMatch = false;
-		//System.out.println(modelIds);
+//		System.out.println("data " + dataIds);
+//		System.out.println("model " + modelIds);
 		ArrayList<String> data = removedSpeciesBeforeComparison(VisualizationConstants.REMOVE_BEFORE_REACTION_COMPARISON, dataIds);
 		ArrayList<String> model = removedSpeciesBeforeComparison(VisualizationConstants.REMOVE_BEFORE_REACTION_COMPARISON, modelIds);
 		//System.out.println(model);
