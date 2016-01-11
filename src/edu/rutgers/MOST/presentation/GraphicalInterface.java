@@ -13041,13 +13041,13 @@ public class GraphicalInterface extends JFrame {
         setVisualizationsPane(frame);
         frame.setIconImages(icons);
         frame.setTitle(gi.getTitle());
-        final JTabbedPane visualizationTabbedPane = new JTabbedPane(3); 
+//        final JTabbedPane visualizationTabbedPane = new JTabbedPane(3); 
         final PathwaysFrame pf1 = new PathwaysFrame(PathwaysFrameConstants.PATHWAYS_COMPONENT);
-        final PathwaysFrame pf2 = new PathwaysFrame(PathwaysFrameConstants.PROCESSES_COMPONENT);
-        visualizationTabbedPane.addTab("Metabolic Pathways", pf1);
-        visualizationTabbedPane.setMnemonicAt(0, KeyEvent.VK_M);
-        visualizationTabbedPane.addTab("Cellular and Molecular Processes", pf2);
-        visualizationTabbedPane.setMnemonicAt(1, KeyEvent.VK_P);
+//        final PathwaysFrame pf2 = new PathwaysFrame(PathwaysFrameConstants.PROCESSES_COMPONENT);
+//        visualizationTabbedPane.addTab("Metabolic Pathways", pf1);
+//        visualizationTabbedPane.setMnemonicAt(0, KeyEvent.VK_M);
+//        visualizationTabbedPane.addTab("Cellular and Molecular Processes", pf2);
+//        visualizationTabbedPane.setMnemonicAt(1, KeyEvent.VK_P);
         pf1.redrawButton.addActionListener(new ActionListener() {                                                               
         	public void actionPerformed(ActionEvent e) { 
         		pf1.removeVertices();
@@ -13062,24 +13062,25 @@ public class GraphicalInterface extends JFrame {
         		pf1.createEdges();
         		frame.setTitle(gi.getTitle());
         		// refresh display by switching tabs
-        		visualizationTabbedPane.setSelectedIndex(1);
-        		visualizationTabbedPane.setSelectedIndex(0);
+//        		visualizationTabbedPane.setSelectedIndex(1);
+//        		visualizationTabbedPane.setSelectedIndex(0);
         	}});
-        pf2.redrawButton.addActionListener(new ActionListener() {                                                               
-        	public void actionPerformed(ActionEvent e) {                                                             
-        		
-        	}});
-        visualizationTabbedPane.addChangeListener(new ChangeListener() {
-			public void stateChanged(ChangeEvent e) {
-				if (pf1.getNodeInformationDialog() != null) {
-					pf1.getNodeInformationDialog().dispose();
-				}
-				if (pf2.getNodeInformationDialog() != null) {
-					pf2.getNodeInformationDialog().dispose();
-				}
-			}
-		});
-        frame.add(visualizationTabbedPane);
+//        pf2.redrawButton.addActionListener(new ActionListener() {                                                               
+//        	public void actionPerformed(ActionEvent e) {                                                             
+//        		
+//        	}});
+//        visualizationTabbedPane.addChangeListener(new ChangeListener() {
+//			public void stateChanged(ChangeEvent e) {
+//				if (pf1.getNodeInformationDialog() != null) {
+//					pf1.getNodeInformationDialog().dispose();
+//				}
+//				if (pf2.getNodeInformationDialog() != null) {
+//					pf2.getNodeInformationDialog().dispose();
+//				}
+//			}
+//		});
+//        frame.add(visualizationTabbedPane);
+        frame.add(pf1);
         frame.setSize(1300, 700);
         frame.setMinimumSize(new Dimension(400, 300));
         frame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
@@ -13088,9 +13089,9 @@ public class GraphicalInterface extends JFrame {
 				if (pf1.getNodeInformationDialog() != null) {
 					pf1.getNodeInformationDialog().dispose();
 				}
-				if (pf2.getNodeInformationDialog() != null) {
-					pf2.getNodeInformationDialog().dispose();
-				}
+//				if (pf2.getNodeInformationDialog() != null) {
+//					pf2.getNodeInformationDialog().dispose();
+//				}
 				frame.setVisible(false);
 				enableLoadItems();
 				disableMenuItemsForFVA(false);
