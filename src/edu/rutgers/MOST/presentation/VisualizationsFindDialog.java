@@ -286,8 +286,6 @@ public class VisualizationsFindDialog extends JDialog {
 
 			public void enableFindButtons() {
 				if (findField.getText() != null && findField.getText().trim().length() > 0) {
-					LocalConfig.getInstance().setReactionsLocationsListCount(0);
-					LocalConfig.getInstance().findFieldChanged = true;
 					findButton.setEnabled(true);
 					backwardsCheckBox.setEnabled(true);
 				} else {
@@ -322,7 +320,7 @@ public class VisualizationsFindDialog extends JDialog {
         			}
         			if (value.trim().length() > 0) {
         				updateComboBox(findBox, LocalConfig.getInstance().getFindEntryList(), findField.getText()); 
-        				findField.setText(value);             			
+        				findField.setText(value);  
         			} 
 //        			System.out.println("undo old = " + findUndoItem.getOldValue());
 //        			System.out.println("undo new = " + findUndoItem.getNewValue());

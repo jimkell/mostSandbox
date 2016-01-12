@@ -241,7 +241,10 @@ public class PathwaysFrame extends JApplet {
 	private boolean wrapAround;
 	private boolean searchBackwards;
 	private boolean throwNotFoundError;
-	private boolean findFieldChanged;
+//	private boolean findFieldChanged;
+	
+	private String oldFindValue = "";
+	private int findStartIndex = 0;
 	
 	final ScalingControl scaler = new CrossoverScalingControl();
 	
@@ -1532,7 +1535,7 @@ public class PathwaysFrame extends JApplet {
 	public void showFindDialog() {
 //		LocalConfig.getInstance().setReactionsLocationsListCount(0);
 //		LocalConfig.getInstance().setMetabolitesLocationsListCount(0);
-		findFieldChanged = false;
+//		findFieldChanged = false;
 		VisualizationsFindDialog findDialog = new VisualizationsFindDialog();
 		setVisualizationsFindDialog(findDialog);
 		//getVisualizationsFindDialog().findButton.addActionListener(findNextButtonActionListener);
@@ -1618,58 +1621,61 @@ public class PathwaysFrame extends JApplet {
 		}
 		getVisualizationsFindDialog().setAlwaysOnTop(true);
 	}
+	
+	private boolean findValueChanged(String findValue) {
+		boolean changed = false;
+		if (findValue.equals(oldFindValue)) {
+
+		} else {
+			changed = true;
+		}
+//		System.out.println("changed " + changed);
+		return changed;
+	}
 
 	public void findNext() {
+		String findValue = "";
+		if (matchCase) {
+			findValue = VisualizationsFindDialog.findBox.getSelectedItem().toString();
+		} else {
+			findValue = VisualizationsFindDialog.findBox.getSelectedItem().toString().toLowerCase();
+		}
 		HashMap<String, ArrayList<Double>> findLocationsMap = findLocationsMap();
+		if (findValueChanged(findValue)) {
+			if (searchBackwards) {
+				findStartIndex = findLocationsMap.size() - 1;
+			} else {
+				findStartIndex = 0;
+			}
+		} 
+		oldFindValue = findValue;
+		//HashMap<String, ArrayList<Double>> findLocationsMap = findLocationsMap();
 		if (findLocationsMap.size() == 0) {
 			notFoundAction();
-			System.out.println("nf");
 		} else {
 			getVisualizationsFindDialog().requestFocus();
 			ArrayList<String> findXCoordinates = new ArrayList<String>(findLocationsMap.keySet());
 			//System.out.println(findXCoordinates);
 			Collections.sort(findXCoordinates, new NumComparator());
-			System.out.println(findXCoordinates);
-			ArrayList<Double> findPositions = findLocationsMap.get(findXCoordinates.get(0));
+//			System.out.println(findXCoordinates);
+			ArrayList<Double> findPositions = findLocationsMap.get(findXCoordinates.get(findStartIndex));
 			findNodeByLocation(findPositions.get(0), findPositions.get(1));
 			for (int i = 0; i < findXCoordinates.size(); i++) {
-				System.out.println(findLocationsMap.get(findXCoordinates.get(i)));
+				//System.out.println(findLocationsMap.get(findXCoordinates.get(i)));
 			}
-			//				// if not at end of list increment, else start over
-			//				int count = LocalConfig.getInstance().getReactionsLocationsListCount();
-			//				if (!searchBackwards) {
-			//					if (LocalConfig.getInstance().getReactionsLocationsListCount() < (getReactionsFindLocationsList().size() - 1)) {
-			//						count += 1;
-			//						LocalConfig.getInstance().setReactionsLocationsListCount(count);
-			//					} else {
-			//						if (wrapAround) {							
-			//							count = 0;
-			//							LocalConfig.getInstance().setReactionsLocationsListCount(count);							
-			//						} else {							
-			//							if (throwNotFoundError) {															
-			//								notFoundAction();
-			//								throwNotFoundError = false;
-			//							}
-			//							throwNotFoundError = true;
-			//						}
-			//					}
-			//				} else {
-			//					if (LocalConfig.getInstance().getReactionsLocationsListCount() > 0) {
-			//						count -= 1;
-			//						LocalConfig.getInstance().setReactionsLocationsListCount(count);
-			//					} else {
-			//						if (wrapAround) {							
-			//							count = locationList.size() - 1;
-			//							LocalConfig.getInstance().setReactionsLocationsListCount(count);							
-			//						} else {							
-			//							if (throwNotFoundError) {															
-			//								notFoundAction();
-			//								throwNotFoundError = false;
-			//							}
-			//							throwNotFoundError = true;
-			//						}
-			//					}
-			//				}															
+			if (searchBackwards) {
+				if (findStartIndex > 0) {
+					findStartIndex -= 1;
+				} else if (wrapAround) {
+					findStartIndex = findLocationsMap.size() - 1;
+				}
+			} else {
+				if (findStartIndex < (findLocationsMap.size() - 1)) {
+					findStartIndex += 1;
+				} else if (wrapAround) {
+					findStartIndex = 0;
+				}
+			}													
 		}
 		getVisualizationsFindDialog().requestFocus();
 	}
@@ -1683,7 +1689,7 @@ public class PathwaysFrame extends JApplet {
 		} else {
 			findValue = VisualizationsFindDialog.findBox.getSelectedItem().toString().toLowerCase();
 		}
-		System.out.println("fv " + findValue);
+//		System.out.println("fv " + findValue);
 		double x = 0;
 		double y = 0;
 		for (int i = 0; i < metaboliteList.size(); i++) {
@@ -1695,8 +1701,8 @@ public class PathwaysFrame extends JApplet {
 			}
 			if (s.contains(findValue)) {
 				ArrayList<Double> coordinates = new ArrayList<Double>();
-				System.out.println(metabPosMap.get(metaboliteList.get(i))[0]);
-				System.out.println(metabPosMap.get(metaboliteList.get(i))[1]);
+//				System.out.println(metabPosMap.get(metaboliteList.get(i))[0]);
+//				System.out.println(metabPosMap.get(metaboliteList.get(i))[1]);
 				x = Double.parseDouble(metabPosMap.get(metaboliteList.get(i))[0]);
 				y = Double.parseDouble(metabPosMap.get(metaboliteList.get(i))[1]);
 				coordinates.add(x);
@@ -1767,26 +1773,11 @@ public class PathwaysFrame extends JApplet {
 		public void actionPerformed(ActionEvent actionEvent) {
 			AbstractButton abstractButton = (AbstractButton) actionEvent.getSource();
 			searchBackwards = abstractButton.getModel().isSelected();
-//			int count = LocalConfig.getInstance().getReactionsLocationsListCount();
-//			if (!searchBackwards && count > 0 && count < getReactionsFindLocationsList().size() - 1) {
-//				count += 1;
-//				LocalConfig.getInstance().setReactionsLocationsListCount(count);
-//			} else if (searchBackwards && count > 0 && count < getReactionsFindLocationsList().size() - 1) {
-//				count -= 1;
-//				LocalConfig.getInstance().setReactionsLocationsListCount(count);
-//			}
-			// only change cell if selected cell has been changed
-			if (!findButtonClicked) {
-//				if (searchBackwards) {	
-//					ArrayList<ArrayList<Integer>> locationList = reactionsLocationsList();
-//					setReactionsFindLocationsList(locationList);
-//					if (!findButtonReactionsClicked && getReactionsFindLocationsList().size() > 1) {
-//						LocalConfig.getInstance().setReactionsLocationsListCount(getReactionsFindLocationsList().size() - 1);
-//					}
-//				} else {
-//					LocalConfig.getInstance().setReactionsLocationsListCount(0);
-//				}
-			} 
+			if (searchBackwards && getFindLocationsMap() != null && getFindLocationsMap().size() > 0) {
+				findStartIndex = getFindLocationsMap().size() - 1;
+			} else {
+				findStartIndex = 0;
+			}
 		}
 	};
 
