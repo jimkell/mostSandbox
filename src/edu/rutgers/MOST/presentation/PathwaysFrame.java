@@ -82,6 +82,7 @@ import org.apache.commons.collections15.functors.ChainedTransformer;
 
 
 
+
 import edu.rutgers.MOST.config.LocalConfig;
 import edu.rutgers.MOST.data.MetabolicPathway;
 import edu.rutgers.MOST.data.PathwayMetaboliteNode;
@@ -1582,29 +1583,6 @@ public class PathwaysFrame extends JApplet {
 	
 	public void findAction() {
 		findNext();
-//		HashMap<String, ArrayList<Double>> findLocationsMap = findLocationsMap();
-//		setFindLocationsMap(findLocationsMap);
-//		// uses window listener for focus event and row column change to reset button
-//		// to not clicked if user changes selected cell.
-//		// for first click of find button, find starts from first cell after (or before when backwards)
-//		// that contains string, after this first click, find just iterates through list				
-//		if (!findButtonClicked) {
-////			if (reactionsFindStartIndex() > -1) {
-////				LocalConfig.getInstance().setReactionsLocationsListCount(reactionsFindStartIndex());
-////				findNext();
-////			} else {
-////				notFoundAction();	
-////				if (wrapAround) {
-////					if (searchBackwards) {
-////						//LocalConfig.getInstance().setReactionsLocationsListCount(getReactionsFindLocationsList().size() - 1);
-////					} else {
-////						//LocalConfig.getInstance().setReactionsLocationsListCount(0);
-////					}
-////				}
-////			}					
-//		} else {
-//			findNext();
-//		}
 	}
 
 	public void notFoundAction() {
@@ -1618,6 +1596,33 @@ public class PathwaysFrame extends JApplet {
 				null, options, options[0]);
 		if (choice == JOptionPane.YES_OPTION) {
 			
+		}
+		getVisualizationsFindDialog().setAlwaysOnTop(true);
+	}
+	
+	public void endFindAction() {
+		getVisualizationsFindDialog().setAlwaysOnTop(false);
+		Object[] options = {"    Yes    ", "    No    ",};
+		int choice = JOptionPane.showOptionDialog(null, 
+				"MOST has not found the item you are searching for.\nDo you want to start over from the beginning?", 
+				"Item Not Found", 
+				JOptionPane.YES_NO_OPTION, 
+				JOptionPane.QUESTION_MESSAGE, 
+				null, options, options[0]);
+		if (choice == JOptionPane.YES_OPTION) {
+			wrapAround = true; 
+			
+			VisualizationsFindDialog.wrapCheckBox.setSelected(true);
+			if (searchBackwards) {
+				if (searchBackwards && getFindLocationsMap() != null && getFindLocationsMap().size() > 0) {
+					findStartIndex = getFindLocationsMap().size() - 1;
+				}
+			} else {
+				findStartIndex = 0;
+			}
+		}
+		if (choice == JOptionPane.NO_OPTION) {
+
 		}
 		getVisualizationsFindDialog().setAlwaysOnTop(true);
 	}
@@ -1666,14 +1671,22 @@ public class PathwaysFrame extends JApplet {
 			if (searchBackwards) {
 				if (findStartIndex > 0) {
 					findStartIndex -= 1;
-				} else if (wrapAround) {
-					findStartIndex = findLocationsMap.size() - 1;
+				} else {
+					if (wrapAround) {
+						findStartIndex = findLocationsMap.size() - 1;
+					} else {
+						endFindAction();
+					}
 				}
 			} else {
 				if (findStartIndex < (findLocationsMap.size() - 1)) {
 					findStartIndex += 1;
-				} else if (wrapAround) {
-					findStartIndex = 0;
+				} else {
+					if (wrapAround) {
+						findStartIndex = 0;
+					} else {
+						endFindAction();
+					}
 				}
 			}													
 		}
