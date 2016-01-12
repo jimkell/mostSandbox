@@ -13048,23 +13048,23 @@ public class GraphicalInterface extends JFrame {
 //        visualizationTabbedPane.setMnemonicAt(0, KeyEvent.VK_M);
 //        visualizationTabbedPane.addTab("Cellular and Molecular Processes", pf2);
 //        visualizationTabbedPane.setMnemonicAt(1, KeyEvent.VK_P);
-        pf1.redrawButton.addActionListener(new ActionListener() {                                                               
-        	public void actionPerformed(ActionEvent e) { 
-        		pf1.removeVertices();
-        		pf1.removeEdges();
-        		processVisualizationsData();
-        		pf1.processData(PathwaysFrameConstants.PATHWAYS_COMPONENT);
+//        pf1.redrawButton.addActionListener(new ActionListener() {                                                               
+//        	public void actionPerformed(ActionEvent e) { 
+//        		pf1.removeVertices();
+//        		pf1.removeEdges();
+//        		processVisualizationsData();
+//        		pf1.processData(PathwaysFrameConstants.PATHWAYS_COMPONENT);
 //        		pf2.processData(PathwaysFrameConstants.PROCESSES_COMPONENT);
 //        		pf1.removeVertices();
 //        		pf1.removeEdges();
-        		pf1.createIconMap();
-        		pf1.createVertices();
-        		pf1.createEdges();
-        		frame.setTitle(gi.getTitle());
+//        		pf1.createIconMap();
+//        		pf1.createVertices();
+//        		pf1.createEdges();
+//        		frame.setTitle(gi.getTitle());
         		// refresh display by switching tabs
 //        		visualizationTabbedPane.setSelectedIndex(1);
 //        		visualizationTabbedPane.setSelectedIndex(0);
-        	}});
+//        	}});
 //        pf2.redrawButton.addActionListener(new ActionListener() {                                                               
 //        	public void actionPerformed(ActionEvent e) {                                                             
 //        		

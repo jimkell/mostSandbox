@@ -130,7 +130,7 @@ public class PathwaysFrame extends JApplet {
      * the graph                                                                                                     
      */                                                                                                              
     Graph<String, Number> graph; 
-    public JButton redrawButton = new JButton("Redraw");
+    //public JButton redrawButton = new JButton("Redraw");
     public JPanel controls = new JPanel();
     
     private static VisualizationsFindDialog visualizationsFindDialog;                                                                                                              
@@ -241,6 +241,8 @@ public class PathwaysFrame extends JApplet {
 	private boolean throwNotFoundError;
 	private boolean findFieldChanged;
 	
+	final ScalingControl scaler = new CrossoverScalingControl();
+	
 	/**                                                                                                              
      * create an instance of a simple graph with controls to                                                         
      * demo the zoom features.                                                                                       
@@ -249,7 +251,7 @@ public class PathwaysFrame extends JApplet {
     @SuppressWarnings({ "rawtypes", "unchecked" })
 	public PathwaysFrame(int component) { 
         setLayout(new BorderLayout());
-        final ScalingControl scaler = new CrossoverScalingControl();
+        //final ScalingControl scaler = new CrossoverScalingControl();
         
         transformItem.setState(false);
         
@@ -260,7 +262,7 @@ public class PathwaysFrame extends JApplet {
  			}
  		};
  		
- 		//VisualizationsFindDialog.findButton.addActionListener(findNextButtonActionListener);
+ 		VisualizationsFindDialog.findButton.addActionListener(findNextButtonActionListener);
         
         KeyStroke find = KeyStroke.getKeyStroke(KeyEvent.VK_F,ActionEvent.CTRL_MASK,false);
         getRootPane().registerKeyboardAction(findActionListener,find,JComponent.WHEN_IN_FOCUSED_WINDOW); 
@@ -359,52 +361,6 @@ public class PathwaysFrame extends JApplet {
 				if (!findMode) {
 					showFindDialog();
 				}	
-//				double x = 0;
-//				double y = 0;
-//				for (int i = 0; i < metaboliteList.size(); i++) {
-//					if (metaboliteList.get(i).contains("Bile acids")) {
-////						System.out.println(metabPosMap.get(metaboliteList.get(i))[0]);
-////						System.out.println(metabPosMap.get(metaboliteList.get(i))[1]);
-////						x = Double.parseDouble(metabPosMap.get(metaboliteList.get(i))[0]);
-////						y = Double.parseDouble(metabPosMap.get(metaboliteList.get(i))[1]);
-//					}
-//				}
-				//System.out.println("v b " + viewScale);
-				// zoom in to full scale
-            	double zoom = 1/viewScale;
-            	viewScale = 1;
-            	Point2D.Float p = new Point2D.Float((float) vv.getCenter().getX(), (float) vv.getCenter().getY());
-            	scaler.scale(vv, (float) zoom, p);
-            	
-            	// based on code from http://stackoverflow.com/questions/5745183/how-to-programatically-pan-a-visualizationviewer-with-jung-the-java-library
-            	// scroll to location
-            	MutableTransformer view = vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.VIEW);
-            	MutableTransformer layout = vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.LAYOUT);
-            	Point2D ctr = vv.getCenter();
-
-                //Point2D pnt = view.inverseTransform(ctr);
-                Point2D pnt = layout.inverseTransform(ctr);
-//                System.out.println("p " + pnt.getX());
-//                System.out.println("p " + pnt.getY());
-
-                Point2D.Float p1 = new Point2D.Float((float) 0, (float) 0);
-//                double deltaX = (pnt.getX() - p1.getX());
-//                double deltaY = (pnt.getY() - p1.getY());
-                double deltaX = (pnt.getX()/viewScale);
-                double deltaY = (pnt.getY()/viewScale);
-//                System.out.println("v a " + viewScale);
-
-                //deltaX += 5680;   // start
-                deltaX += 6050;  // full
-                //deltaY += 2570;  // start
-                deltaY += 2730;   // full
-                
-                // upper left
-                layout.translate(deltaX - 40, deltaY - 38);
-                // lower right
-                //layout.translate(deltaX - 18200, deltaY - 12350);
-                // Bile acids
-                //layout.translate(deltaX - 17520, deltaY - 11624);
 			}
 		});
     	
@@ -624,7 +580,7 @@ public class PathwaysFrame extends JApplet {
         //JPanel controls = new JPanel();                                                                              
         controls.add(plus);                                                                                          
         controls.add(minus); 
-        controls.add(redrawButton);
+        //controls.add(redrawButton);
         //controls.add(reset);                                                                                         
         add(controls, BorderLayout.SOUTH);  
        
@@ -1673,49 +1629,51 @@ public class PathwaysFrame extends JApplet {
 		if (findLocationsMap.size() == 0) {
 			notFoundAction();
 		} else {
-				getVisualizationsFindDialog().requestFocus();
-				ArrayList<String> findXCoordinates = new ArrayList<String>(findLocationsMap.keySet());
-				//System.out.println(findXCoordinates);
-				Collections.sort(findXCoordinates, new NumComparator());
-				System.out.println(findXCoordinates);
-				for (int i = 0; i < findXCoordinates.size(); i++) {
-					System.out.println(findLocationsMap.get(findXCoordinates.get(i)));
-				}
-//				// if not at end of list increment, else start over
-//				int count = LocalConfig.getInstance().getReactionsLocationsListCount();
-//				if (!searchBackwards) {
-//					if (LocalConfig.getInstance().getReactionsLocationsListCount() < (getReactionsFindLocationsList().size() - 1)) {
-//						count += 1;
-//						LocalConfig.getInstance().setReactionsLocationsListCount(count);
-//					} else {
-//						if (wrapAround) {							
-//							count = 0;
-//							LocalConfig.getInstance().setReactionsLocationsListCount(count);							
-//						} else {							
-//							if (throwNotFoundError) {															
-//								notFoundAction();
-//								throwNotFoundError = false;
-//							}
-//							throwNotFoundError = true;
-//						}
-//					}
-//				} else {
-//					if (LocalConfig.getInstance().getReactionsLocationsListCount() > 0) {
-//						count -= 1;
-//						LocalConfig.getInstance().setReactionsLocationsListCount(count);
-//					} else {
-//						if (wrapAround) {							
-//							count = locationList.size() - 1;
-//							LocalConfig.getInstance().setReactionsLocationsListCount(count);							
-//						} else {							
-//							if (throwNotFoundError) {															
-//								notFoundAction();
-//								throwNotFoundError = false;
-//							}
-//							throwNotFoundError = true;
-//						}
-//					}
-//				}															
+			getVisualizationsFindDialog().requestFocus();
+			ArrayList<String> findXCoordinates = new ArrayList<String>(findLocationsMap.keySet());
+			//System.out.println(findXCoordinates);
+			Collections.sort(findXCoordinates, new NumComparator());
+			System.out.println(findXCoordinates);
+			ArrayList<Double> findPositions = findLocationsMap.get(findXCoordinates.get(0));
+			findNodeByLocation(findPositions.get(0), findPositions.get(1));
+			for (int i = 0; i < findXCoordinates.size(); i++) {
+				System.out.println(findLocationsMap.get(findXCoordinates.get(i)));
+			}
+			//				// if not at end of list increment, else start over
+			//				int count = LocalConfig.getInstance().getReactionsLocationsListCount();
+			//				if (!searchBackwards) {
+			//					if (LocalConfig.getInstance().getReactionsLocationsListCount() < (getReactionsFindLocationsList().size() - 1)) {
+			//						count += 1;
+			//						LocalConfig.getInstance().setReactionsLocationsListCount(count);
+			//					} else {
+			//						if (wrapAround) {							
+			//							count = 0;
+			//							LocalConfig.getInstance().setReactionsLocationsListCount(count);							
+			//						} else {							
+			//							if (throwNotFoundError) {															
+			//								notFoundAction();
+			//								throwNotFoundError = false;
+			//							}
+			//							throwNotFoundError = true;
+			//						}
+			//					}
+			//				} else {
+			//					if (LocalConfig.getInstance().getReactionsLocationsListCount() > 0) {
+			//						count -= 1;
+			//						LocalConfig.getInstance().setReactionsLocationsListCount(count);
+			//					} else {
+			//						if (wrapAround) {							
+			//							count = locationList.size() - 1;
+			//							LocalConfig.getInstance().setReactionsLocationsListCount(count);							
+			//						} else {							
+			//							if (throwNotFoundError) {															
+			//								notFoundAction();
+			//								throwNotFoundError = false;
+			//							}
+			//							throwNotFoundError = true;
+			//						}
+			//					}
+			//				}															
 		}
 		getVisualizationsFindDialog().requestFocus();
 	}
@@ -1748,6 +1706,41 @@ public class PathwaysFrame extends JApplet {
 	    public int compare(String a, String b) {
 	        return Float.valueOf(a.toString()).compareTo(Float.valueOf(b.toString()));
 	    }
+	}
+	
+	/**
+	 * Zoom to full scale and move node to center
+	 * @param x
+	 * @param y
+	 */
+	private void findNodeByLocation(double x, double y) {
+		// zoom in to full scale
+    	double zoom = 1/viewScale;
+    	viewScale = 1;
+    	Point2D.Float p = new Point2D.Float((float) vv.getCenter().getX(), (float) vv.getCenter().getY());
+    	scaler.scale(vv, (float) zoom, p);
+    	
+    	// based on code from http://stackoverflow.com/questions/5745183/how-to-programatically-pan-a-visualizationviewer-with-jung-the-java-library
+    	// scroll to location
+    	MutableTransformer view = vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.VIEW);
+    	MutableTransformer layout = vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.LAYOUT);
+    	Point2D ctr = vv.getCenter();
+    	
+    	Point2D pnt = layout.inverseTransform(ctr);
+    	Point2D.Float p1 = new Point2D.Float((float) 0, (float) 0);
+    	double deltaX = (pnt.getX()/viewScale);
+        double deltaY = (pnt.getY()/viewScale);
+        
+        deltaX += 5680;   // start
+        deltaY += 2700;  // start
+//        deltaY += 2570;  // start (before removing tabbed pane)
+        // does not move exactly to center when in full screen, but values
+        // above seem to work well enough
+//        deltaX += 6050;  // full
+//        deltaY += 2960;   // full
+//        deltaY += 2830;   // full (before removing tabbed pane)       
+        
+        layout.translate(deltaX - x, deltaY - y);
 	}
     
     public static void main(String[] args) {                                                                         
