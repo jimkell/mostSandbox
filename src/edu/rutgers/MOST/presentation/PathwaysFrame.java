@@ -32,6 +32,7 @@ import java.util.Map;
 import java.util.Vector;
 
 import javax.imageio.ImageIO;
+import javax.swing.AbstractButton;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;                                                                                        
 import javax.swing.JApplet;                                                                                          
@@ -53,6 +54,7 @@ import javax.swing.WindowConstants;
 import org.apache.commons.collections15.Transformer;                                                                 
 import org.apache.commons.collections15.functors.ChainedTransformer;                                                 
                                                                                                                      
+
 
 
 
@@ -263,6 +265,10 @@ public class PathwaysFrame extends JApplet {
  		};
  		
  		VisualizationsFindDialog.findButton.addActionListener(findNextButtonActionListener);
+ 		VisualizationsFindDialog.doneButton.addActionListener(findDoneButtonActionListener);
+ 		VisualizationsFindDialog.caseCheckBox.addActionListener(matchCaseActionListener);
+ 		VisualizationsFindDialog.wrapCheckBox.addActionListener(wrapAroundActionListener);
+ 		VisualizationsFindDialog.backwardsCheckBox.addActionListener(searchBackwardsActionListener);
         
         KeyStroke find = KeyStroke.getKeyStroke(KeyEvent.VK_F,ActionEvent.CTRL_MASK,false);
         getRootPane().registerKeyboardAction(findActionListener,find,JComponent.WHEN_IN_FOCUSED_WINDOW); 
@@ -1522,14 +1528,14 @@ public class PathwaysFrame extends JApplet {
 		}
 	}
 	
-	@SuppressWarnings("static-access")
+//	@SuppressWarnings("static-access")
 	public void showFindDialog() {
 //		LocalConfig.getInstance().setReactionsLocationsListCount(0);
 //		LocalConfig.getInstance().setMetabolitesLocationsListCount(0);
 		findFieldChanged = false;
 		VisualizationsFindDialog findDialog = new VisualizationsFindDialog();
 		setVisualizationsFindDialog(findDialog);
-		getVisualizationsFindDialog().findButton.addActionListener(findNextButtonActionListener);
+		//getVisualizationsFindDialog().findButton.addActionListener(findNextButtonActionListener);
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
 		int y = (screenSize.height - findDialog.getSize().height)/2;
@@ -1540,7 +1546,6 @@ public class PathwaysFrame extends JApplet {
 		findDialog.setIconImages(icons);
 		findDialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		findDialog.setAlwaysOnTop(true);        
-		//findDialog.setLocation(x + 420, y);
 		// Find/Replace positioned at far right on screen so it does not obscure scroll bar
 		findDialog.setLocation((screenSize.width - findDialog.getSize().width) - 10, y);
 		findDialog.setVisible(true);
@@ -1601,25 +1606,15 @@ public class PathwaysFrame extends JApplet {
 
 	public void notFoundAction() {
 		getVisualizationsFindDialog().setAlwaysOnTop(false);
-		Object[] options = {"    Yes    ", "    No    ",};
+		Object[] options = {"OK"};
 		int choice = JOptionPane.showOptionDialog(null, 
-				"MOST has not found the item you are searching for.\nDo you want to start over from the beginning?", 
+				"MOST has not found the item you are searching for.", 
 				"Item Not Found", 
-				JOptionPane.YES_NO_OPTION, 
+				JOptionPane.YES_OPTION, 
 				JOptionPane.QUESTION_MESSAGE, 
 				null, options, options[0]);
 		if (choice == JOptionPane.YES_OPTION) {
-			wrapAround = true; 
 			
-			VisualizationsFindDialog.wrapCheckBox.setSelected(true);
-			if (searchBackwards) {
-				//LocalConfig.getInstance().setReactionsLocationsListCount(getReactionsFindLocationsList().size() - 1);
-			} else {
-				//LocalConfig.getInstance().setReactionsLocationsListCount(0);
-			}
-		}
-		if (choice == JOptionPane.NO_OPTION) {
-
 		}
 		getVisualizationsFindDialog().setAlwaysOnTop(true);
 	}
@@ -1628,6 +1623,7 @@ public class PathwaysFrame extends JApplet {
 		HashMap<String, ArrayList<Double>> findLocationsMap = findLocationsMap();
 		if (findLocationsMap.size() == 0) {
 			notFoundAction();
+			System.out.println("nf");
 		} else {
 			getVisualizationsFindDialog().requestFocus();
 			ArrayList<String> findXCoordinates = new ArrayList<String>(findLocationsMap.keySet());
@@ -1681,12 +1677,23 @@ public class PathwaysFrame extends JApplet {
 	public HashMap<String, ArrayList<Double>> findLocationsMap() {		
 		HashMap<String, ArrayList<Double>> findLocationsMap = new HashMap<String, ArrayList<Double>>();
 		
-		String findValue = getVisualizationsFindDialog().findBox.getSelectedItem().toString();
+		String findValue = "";
+		if (matchCase) {
+			findValue = VisualizationsFindDialog.findBox.getSelectedItem().toString();
+		} else {
+			findValue = VisualizationsFindDialog.findBox.getSelectedItem().toString().toLowerCase();
+		}
 		System.out.println("fv " + findValue);
 		double x = 0;
 		double y = 0;
 		for (int i = 0; i < metaboliteList.size(); i++) {
-			if (metaboliteList.get(i).contains(findValue)) {
+			String s = "";
+			if (matchCase) {
+				s = metaboliteList.get(i);
+			} else {
+				s = metaboliteList.get(i).toLowerCase();
+			}
+			if (s.contains(findValue)) {
 				ArrayList<Double> coordinates = new ArrayList<Double>();
 				System.out.println(metabPosMap.get(metaboliteList.get(i))[0]);
 				System.out.println(metabPosMap.get(metaboliteList.get(i))[1]);
@@ -1727,7 +1734,6 @@ public class PathwaysFrame extends JApplet {
     	Point2D ctr = vv.getCenter();
     	
     	Point2D pnt = layout.inverseTransform(ctr);
-    	Point2D.Float p1 = new Point2D.Float((float) 0, (float) 0);
     	double deltaX = (pnt.getX()/viewScale);
         double deltaY = (pnt.getY()/viewScale);
         
@@ -1742,6 +1748,53 @@ public class PathwaysFrame extends JApplet {
         
         layout.translate(deltaX - x, deltaY - y);
 	}
+	
+	ActionListener matchCaseActionListener = new ActionListener() {
+		public void actionPerformed(ActionEvent actionEvent) {
+			AbstractButton abstractButton = (AbstractButton) actionEvent.getSource();
+			matchCase = abstractButton.getModel().isSelected();
+		}
+	};
+
+	ActionListener wrapAroundActionListener = new ActionListener() {
+		public void actionPerformed(ActionEvent actionEvent) {
+			AbstractButton abstractButton = (AbstractButton) actionEvent.getSource();
+			wrapAround = abstractButton.getModel().isSelected();
+		}
+	};
+
+	ActionListener searchBackwardsActionListener = new ActionListener() {
+		public void actionPerformed(ActionEvent actionEvent) {
+			AbstractButton abstractButton = (AbstractButton) actionEvent.getSource();
+			searchBackwards = abstractButton.getModel().isSelected();
+//			int count = LocalConfig.getInstance().getReactionsLocationsListCount();
+//			if (!searchBackwards && count > 0 && count < getReactionsFindLocationsList().size() - 1) {
+//				count += 1;
+//				LocalConfig.getInstance().setReactionsLocationsListCount(count);
+//			} else if (searchBackwards && count > 0 && count < getReactionsFindLocationsList().size() - 1) {
+//				count -= 1;
+//				LocalConfig.getInstance().setReactionsLocationsListCount(count);
+//			}
+			// only change cell if selected cell has been changed
+			if (!findButtonClicked) {
+//				if (searchBackwards) {	
+//					ArrayList<ArrayList<Integer>> locationList = reactionsLocationsList();
+//					setReactionsFindLocationsList(locationList);
+//					if (!findButtonReactionsClicked && getReactionsFindLocationsList().size() > 1) {
+//						LocalConfig.getInstance().setReactionsLocationsListCount(getReactionsFindLocationsList().size() - 1);
+//					}
+//				} else {
+//					LocalConfig.getInstance().setReactionsLocationsListCount(0);
+//				}
+			} 
+		}
+	};
+
+	ActionListener findDoneButtonActionListener = new ActionListener() {
+		public void actionPerformed(ActionEvent ae) {	
+			findDialogCloseAction();
+		}
+	};	
     
     public static void main(String[] args) {                                                                         
         // create a frome to hold the graph                                                                          

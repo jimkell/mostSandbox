@@ -42,7 +42,8 @@ public class VisualizationsFindDialog extends JDialog {
 	public static final SizedComboBox findBox = new SizedComboBox();
 	public static final JCheckBox caseCheckBox = new JCheckBox("Match Case");//1
 	public static final JCheckBox wrapCheckBox = new JCheckBox("Wrap Around");
-	public static final JCheckBox selectedAreaCheckBox = new JCheckBox("Selected Area  ");
+//	public static final JCheckBox selectedAreaCheckBox = new JCheckBox("Selected Area  ");
+	public static JLabel placeholderLabel = new JLabel(" ");
 	public static final JCheckBox backwardsCheckBox = new JCheckBox("Backwards");
 	public static final JMenuItem findUndoMenuItem = new JMenuItem("Undo");
 	public static final JMenuItem findCutItem = new JMenuItem("Cut");
@@ -185,7 +186,7 @@ public class VisualizationsFindDialog extends JDialog {
 		
         caseCheckBox.setSelected(false);
     	wrapCheckBox.setSelected(true);
-    	selectedAreaCheckBox.setSelected(false);
+//    	selectedAreaCheckBox.setSelected(false);
         backwardsCheckBox.setSelected(false);
         
         findLabel.setDisplayedMnemonic('F');
@@ -195,7 +196,7 @@ public class VisualizationsFindDialog extends JDialog {
         
         caseCheckBox.setMnemonic(KeyEvent.VK_M);
         wrapCheckBox.setMnemonic(KeyEvent.VK_W);
-        selectedAreaCheckBox.setMnemonic(KeyEvent.VK_S);
+//        selectedAreaCheckBox.setMnemonic(KeyEvent.VK_S);
         backwardsCheckBox.setMnemonic(KeyEvent.VK_B);
         
         findButton.setEnabled(false);
@@ -206,7 +207,8 @@ public class VisualizationsFindDialog extends JDialog {
         caseCheckBox.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
         wrapCheckBox.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
         backwardsCheckBox.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
-        selectedAreaCheckBox.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
+//        selectedAreaCheckBox.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
+        placeholderLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
  
         findCutItem.setEnabled(false);
 		findCopyItem.setEnabled(false);
@@ -232,7 +234,7 @@ public class VisualizationsFindDialog extends JDialog {
                         .addGroup(layout.createParallelGroup(LEADING)
                         		.addComponent(wrapCheckBox) 
                                 .addComponent(placeholder, getTextAreaWidth(), getTextAreaWidth(), getTextAreaWidth())
-                                .addComponent(selectedAreaCheckBox)
+                                .addComponent(placeholderLabel)
                                 .addComponent(doneButton, getButtonWidth(), getButtonWidth(), getButtonWidth()))))
                           
             );
@@ -254,7 +256,7 @@ public class VisualizationsFindDialog extends JDialog {
                         .addGap(10)		 
                         .addGroup(layout.createParallelGroup(BASELINE)
                         		 .addComponent(backwardsCheckBox)
-                        		 .addComponent(selectedAreaCheckBox))                        		 
+                        		 .addComponent(placeholderLabel))                        		 
                         .addGap(20)	
                         .addGroup(layout.createParallelGroup(BASELINE)
                         		.addComponent(findButton)
