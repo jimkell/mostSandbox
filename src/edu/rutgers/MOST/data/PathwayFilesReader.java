@@ -21,9 +21,10 @@ public class PathwayFilesReader {
 	Map<String, PathwayNameData> pathwayNameMap = new HashMap<String, PathwayNameData>();
 	Map<String, PathwayMetaboliteData> metaboliteDataKeggIdMap = new HashMap<String, PathwayMetaboliteData>();
 	Map<String, String> metaboliteNameAbbrMap = new HashMap<String, String>();
+	Map<String, PathwayMetaboliteData> metaboliteNameDataMap = new HashMap<String, PathwayMetaboliteData>();
 	Map<String, ArrayList<String>> additionalMetabolitesMap = new HashMap<String, ArrayList<String>>();
+	Map<String, ArrayList<String>> alternateMetabolitesMap = new HashMap<String, ArrayList<String>>();
 	Map<String, ArrayList<String>> metaboliteSubstitutionsMap = new HashMap<String, ArrayList<String>>();
-	Map<String, ArrayList<String>> metaboliteAlternativesMap = new HashMap<String, ArrayList<String>>();
 	Map<String, PathwayReactionData> reactionDataKeggIdMap = new HashMap<String, PathwayReactionData>();
 	Map<String, ArrayList<String>> ecNumberKeggReactionIdMap = new HashMap<String, ArrayList<String>>();
 	Map<String, ArrayList<String>> keggReactionIdECNumberMap = new HashMap<String, ArrayList<String>>();
@@ -346,7 +347,7 @@ public class PathwayFilesReader {
 								for (int i = 0; i < ids.length; i++) {
 									idsList.add(ids[i]);
 								}
-								metaboliteAlternativesMap.put(keggId, idsList);
+								alternateMetabolitesMap.put(keggId, idsList);
 //								System.out.println("sub kegg id " + keggId);
 //								System.out.println("sub list " + idsList);
 							}
@@ -355,7 +356,7 @@ public class PathwayFilesReader {
 					count += 1;
 				}
 				reader.close();
-				LocalConfig.getInstance().setMetaboliteAlternativesMap(metaboliteAlternativesMap);
+				LocalConfig.getInstance().setAlternateMetabolitesMap(alternateMetabolitesMap);
 			} catch (IOException e) {
 				JOptionPane.showMessageDialog(null,                
 						"File Not Found Error.",                
@@ -420,6 +421,9 @@ public class PathwayFilesReader {
 							if (LocalConfig.getInstance().getAdditionalMetabolitesMap().containsKey(pm.getKeggId())) {
 								pm.setAdditionalMetabolites(LocalConfig.getInstance().getAdditionalMetabolitesMap().get(pm.getKeggId()));
 							}
+							if (LocalConfig.getInstance().getAlternateMetabolitesMap().containsKey(pm.getKeggId())) {
+								pm.setAlternateMetabolites(LocalConfig.getInstance().getAlternateMetabolitesMap().get(pm.getKeggId()));
+							}
 							if (LocalConfig.getInstance().getMetaboliteSubstitutionsMap().containsKey(pm.getKeggId())) {
 								pm.setMetaboliteSubstitutions(LocalConfig.getInstance().getMetaboliteSubstitutionsMap().get(pm.getKeggId()));
 							}
@@ -429,52 +433,53 @@ public class PathwayFilesReader {
 						String abbr = pm.getAbbreviation();
 						if (LocalConfig.getInstance().getKeggIdMetaboliteMap().containsKey(pm.getKeggId())) {
 							String metabAbbr = pm.getNames().get(0);
-							ArrayList<String> abbrList = new ArrayList<String>();
-							ArrayList<String> nameList = new ArrayList<String>();
-							ArrayList<String> keggIdList = new ArrayList<String>();
-							ArrayList<String> chargeList = new ArrayList<String>();
+//							ArrayList<String> abbrList = new ArrayList<String>();
+//							ArrayList<String> nameList = new ArrayList<String>();
+//							ArrayList<String> keggIdList = new ArrayList<String>();
+//							ArrayList<String> chargeList = new ArrayList<String>();
 							for (int j = 0; j < LocalConfig.getInstance().getKeggIdMetaboliteMap().get(pm.getKeggId()).size(); j++) {
 								if (LocalConfig.getInstance().getKeggIdMetaboliteMap().get(pm.getKeggId()).get(j).getCompartment().
 										equals(LocalConfig.getInstance().getSelectedCompartmentName())) {
-									abbrList.add(LocalConfig.getInstance().getKeggIdMetaboliteMap().get(pm.getKeggId()).get(j).getMetaboliteAbbreviation());
-									nameList.add(LocalConfig.getInstance().getKeggIdMetaboliteMap().get(pm.getKeggId()).get(j).getMetaboliteName());
-									if (!keggIdList.contains(pm.getKeggId())) {
-										keggIdList.add(pm.getKeggId());
-									}
-									String charge = LocalConfig.getInstance().getKeggIdMetaboliteMap().get(pm.getKeggId()).get(j).getCharge();
-									if (charge != null && charge.length() > 0 && !chargeList.contains(charge.trim())) {
-										chargeList.add(charge.trim());
-									}
+									metabAbbr = LocalConfig.getInstance().getKeggIdMetaboliteMap().get(pm.getKeggId()).get(j).getMetaboliteAbbreviation();
+//									abbrList.add(LocalConfig.getInstance().getKeggIdMetaboliteMap().get(pm.getKeggId()).get(j).getMetaboliteAbbreviation());
+//									nameList.add(LocalConfig.getInstance().getKeggIdMetaboliteMap().get(pm.getKeggId()).get(j).getMetaboliteName());
+//									if (!keggIdList.contains(pm.getKeggId())) {
+//										keggIdList.add(pm.getKeggId());
+//									}
+//									String charge = LocalConfig.getInstance().getKeggIdMetaboliteMap().get(pm.getKeggId()).get(j).getCharge();
+//									if (charge != null && charge.length() > 0 && !chargeList.contains(charge.trim())) {
+//										chargeList.add(charge.trim());
+//									}
 								}
 							}
-							for (int k = 0; k < pm.getMetaboliteSubstitutions().size(); k++) {
-								//keggIdList.add(pm.getMetaboliteSubstitutions().get(k));
-								if (LocalConfig.getInstance().getKeggIdMetaboliteMap().containsKey(pm.getMetaboliteSubstitutions().get(k))) {
-									ArrayList<SBMLMetabolite> subList = LocalConfig.getInstance().getKeggIdMetaboliteMap().get(pm.getMetaboliteSubstitutions().get(k));
-									for (int s = 0; s < subList.size(); s++) {
-										if (subList.get(s).getCompartment().equals(LocalConfig.getInstance().getSelectedCompartmentName())) {
-											keggIdList.add(pm.getMetaboliteSubstitutions().get(k));
-										}
-									}
-								}
-							}
+//							for (int k = 0; k < pm.getMetaboliteSubstitutions().size(); k++) {
+//								//keggIdList.add(pm.getMetaboliteSubstitutions().get(k));
+//								if (LocalConfig.getInstance().getKeggIdMetaboliteMap().containsKey(pm.getMetaboliteSubstitutions().get(k))) {
+//									ArrayList<SBMLMetabolite> subList = LocalConfig.getInstance().getKeggIdMetaboliteMap().get(pm.getMetaboliteSubstitutions().get(k));
+//									for (int s = 0; s < subList.size(); s++) {
+//										if (subList.get(s).getCompartment().equals(LocalConfig.getInstance().getSelectedCompartmentName())) {
+//											keggIdList.add(pm.getMetaboliteSubstitutions().get(k));
+//										}
+//									}
+//								}
+//							}
 							//System.out.println(abbrList);
-							if (abbrList.size() > 0) {
-								name = abbrList.get(0);
-								if (abbrList.size() > 1) {
-									for (int k = 1; k < abbrList.size(); k++) {
-										name += ", " + abbrList.get(k);
-									}
-								} 
-								metabAbbr = name;
-							} else {
-								name = metabAbbr;
-							}
+//							if (abbrList.size() > 0) {
+//								name = abbrList.get(0);
+//								if (abbrList.size() > 1) {
+//									for (int k = 1; k < abbrList.size(); k++) {
+//										name += ", " + abbrList.get(k);
+//									}
+//								} 
+//								metabAbbr = name;
+//							} else {
+//								name = metabAbbr;
+//							}
 							abbr = util.maybeRemovePrefixAndSuffix(metabAbbr);
-							name = "<html>" + name + "<p> Metabolite Names: " + nameList.toString() +
-									"<p> Metabolite Abbreviations: " + abbrList.toString() +
-									"<p>KEGG Ids: " + keggIdList.toString() +
-									"<p>Charge: " + chargeList.toString() + "<p>";
+//							name = "<html>" + name + "<p> Metabolite Names: " + nameList.toString() +
+//									"<p> Metabolite Abbreviations: " + abbrList.toString() +
+//									"<p>KEGG Ids: " + keggIdList.toString() +
+//									"<p>Charge: " + chargeList.toString() + "<p>";
 						}
 //						name = "<html>" + name + "<p>" + pm.getNames().get(0);
 						if (metaboliteNameAbbrMap.containsKey(name)) {
@@ -482,13 +487,18 @@ public class PathwayFilesReader {
 						}
 						//name += "<p>" + pm.getNames().get(0);
 						pm.setName(name);
+//						System.out.println("a " + abbr);
+						pm.setAbbreviation(abbr);
+//						System.out.println("p " + pm.getAbbreviation());
 						metaboliteNameAbbrMap.put(name, abbr);
+						metaboliteNameDataMap.put(name, pm);
 					}
 					count += 1;
 				}
 				reader.close();
 				LocalConfig.getInstance().setMetabolicPathways(metabolicPathways);
 				LocalConfig.getInstance().setMetaboliteNameAbbrMap(metaboliteNameAbbrMap);
+				LocalConfig.getInstance().setMetaboliteNameDataMap(metaboliteNameDataMap);
 			} catch (IOException e) {
 				JOptionPane.showMessageDialog(null,                
 						"File Not Found Error.",                
@@ -626,6 +636,8 @@ public class PathwayFilesReader {
 						Map<String, PathwayMetaboliteData> metabolitesData = LocalConfig.getInstance().getMetabolicPathways().get(id).getMetabolitesData();
 						ArrayList<String> keggReactantIds = new ArrayList<String>();
 						ArrayList<String> keggProductIds = new ArrayList<String>();
+						ArrayList<PathwayMetaboliteData> reactantData = new ArrayList<PathwayMetaboliteData>();
+						ArrayList<PathwayMetaboliteData> productData = new ArrayList<PathwayMetaboliteData>();
 						for (int s = 0; s < dataArray.length; s++) {
 							if (s == PathwaysCSVFileConstants.REACTIONS_PATHWAY_ID_COLUMN) {
 								pr.setPathwayId(dataArray[s]);
@@ -640,9 +652,11 @@ public class PathwayFilesReader {
 									reactantIds.add(reac[i]);
 									if (metabolitesData.containsKey(reac[i])) {
 										keggReactantIds.add(metabolitesData.get(reac[i]).getKeggId());
+										reactantData.add(metabolitesData.get(reac[i]));
 									}
 								}
 								pr.setReactantIds(reactantIds);
+								pr.setReactantData(reactantData);
 								//System.out.println(keggReactantIds);
 							}
 							if (s == PathwaysCSVFileConstants.REACTIONS_PRODUCTS_COLUMN) {
@@ -652,9 +666,11 @@ public class PathwayFilesReader {
 									productIds.add(prod[i]);
 									if (metabolitesData.containsKey(prod[i])) {
 										keggProductIds.add(metabolitesData.get(prod[i]).getKeggId());
+										productData.add(metabolitesData.get(prod[i]));
 									}
 								}
 								pr.setProductIds(productIds);
+								pr.setProductData(productData);
 								//System.out.println(keggProductIds);
 							}
 							if (s == PathwaysCSVFileConstants.REACTIONS_REVERSIBLE_COLUMN) {

@@ -922,9 +922,8 @@ public class PathwaysFrame extends JApplet {
     	ArrayList<String> metabPosKeys = new ArrayList<String>(metabPosMap.keySet());
     	for (int k = 0; k < pathway.getReactionsData().size(); k++) {
 			if (pathway.getComponent() == component) {
-				PathwayReactionNode pn = prnf.createPathwayReactionNode(pathway.getReactionsData().get(Integer.toString(k)).getEcNumbers(),
-						pathway.getReactionsData().get(Integer.toString(k)).getKeggReactionIds(), pathway.getReactionsData().get(Integer.toString(k)).getKeggReactantIds(),
-						pathway.getReactionsData().get(Integer.toString(k)).getKeggProductIds(), LocalConfig.getInstance().getSelectedCompartmentName(), pathway.getComponent(), rxns, 
+				PathwayReactionNode pn = prnf.createPathwayReactionNode(pathway.getReactionsData().get(Integer.toString(k)), 
+						LocalConfig.getInstance().getSelectedCompartmentName(), pathway.getComponent(), rxns, 
 						idReactionMap);
 				String displayName = prnf.createDisplayName(pathway.getReactionsData().get(Integer.toString(k)).getDisplayName(),
 						pathway.getReactionsData().get(Integer.toString(k)).getName(), pathway.getReactionsData().get(Integer.toString(k)).getReactionId(),

@@ -7,6 +7,7 @@ public class PathwayMetaboliteData {
 	private String id;
 	private String keggId;
 	private ArrayList<String> additionalMetabolites = new ArrayList<String>();
+	private ArrayList<String> alternateMetabolites = new ArrayList<String>();
 	private ArrayList<String> metaboliteSubstitutions = new ArrayList<String>();
 	private int occurence;
 	private ArrayList<String> names = new ArrayList<String>();
@@ -39,6 +40,14 @@ public class PathwayMetaboliteData {
 
 	public void setAdditionalMetabolites(ArrayList<String> additionalMetabolites) {
 		this.additionalMetabolites = additionalMetabolites;
+	}
+
+	public ArrayList<String> getAlternateMetabolites() {
+		return alternateMetabolites;
+	}
+
+	public void setAlternateMetabolites(ArrayList<String> alternateMetabolites) {
+		this.alternateMetabolites = alternateMetabolites;
 	}
 
 	public ArrayList<String> getMetaboliteSubstitutions() {
@@ -118,9 +127,11 @@ public class PathwayMetaboliteData {
 		return "PathwayMetabolite Data [id=" + id
 		+ ", keggId=" + keggId
 		+ ", additionalMetabolites=" + additionalMetabolites
+		+ ", alternateMetabolites=" + alternateMetabolites
 		+ ", metaboliteSubstitutions=" + metaboliteSubstitutions
 		+ ", occurence=" + occurence
 		+ ", names=" + names
+		+ ", name=" + name
 		+ ", abbreviation=" + abbreviation
 		+ ", level=" + level
 		+ ", levelPosition=" + levelPosition

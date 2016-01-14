@@ -18,6 +18,8 @@ public class PathwayReactionData {
 	private ArrayList<String> keggReactantIds;
 	private ArrayList<String> keggProductIds;
 	private ArrayList<String> keggIds;
+	private ArrayList<PathwayMetaboliteData> reactantData;
+	private ArrayList<PathwayMetaboliteData> productData;
 	private String reversible;
 	private ArrayList<String> ecNumbers;
 	private double level;
@@ -106,6 +108,22 @@ public class PathwayReactionData {
 
 	public void setKeggIds(ArrayList<String> keggIds) {
 		this.keggIds = keggIds;
+	}
+
+	public ArrayList<PathwayMetaboliteData> getReactantData() {
+		return reactantData;
+	}
+
+	public void setReactantData(ArrayList<PathwayMetaboliteData> reactantData) {
+		this.reactantData = reactantData;
+	}
+
+	public ArrayList<PathwayMetaboliteData> getProductData() {
+		return productData;
+	}
+
+	public void setProductData(ArrayList<PathwayMetaboliteData> productData) {
+		this.productData = productData;
 	}
 
 	public String getReversible() {

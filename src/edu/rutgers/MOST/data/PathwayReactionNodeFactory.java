@@ -23,31 +23,31 @@ public class PathwayReactionNodeFactory {
 	
 	//ArrayList<String> substitutionKeys = new ArrayList<String>(LocalConfig.getInstance().getMetaboliteSubstitutionsMap().keySet());
 	
-	public PathwayReactionNode createPathwayReactionNode(ArrayList<String> ec, ArrayList<String> keggReactionIds, 
-			ArrayList<String> keggReactantIds, ArrayList<String> keggProductIds, String compartment, int component, 
+	public PathwayReactionNode createPathwayReactionNode(PathwayReactionData prd, 
+			String compartment, int component, 
 			Vector<SBMLReaction> allReactions, Map<Integer, SBMLReaction> idReactionMap) {
 		PathwayReactionNode pn = new PathwayReactionNode();
 		ArrayList<SBMLReaction> reactions = new ArrayList<SBMLReaction>();
 		
-		for (int m = 0; m < ec.size(); m++) {
-			if (LocalConfig.getInstance().getEcNumberReactionMap().containsKey(ec.get(m))) {
+		for (int m = 0; m < prd.getEcNumbers().size(); m++) {
+			if (LocalConfig.getInstance().getEcNumberReactionMap().containsKey(prd.getEcNumbers().get(m))) {
 				// attributes from SBML Reaction
-				ArrayList<SBMLReaction> reac = LocalConfig.getInstance().getEcNumberReactionMap().get(ec.get(m));
+				ArrayList<SBMLReaction> reac = LocalConfig.getInstance().getEcNumberReactionMap().get(prd.getEcNumbers().get(m));
 //				if (component == PathwaysFrameConstants.PROCESSES_COMPONENT) {
 //					//reactions.add(reac.get(0));
 //				} else {
-					addReactions(reactions, reac, compartment, keggReactantIds, keggProductIds, false);
+					addReactions(reactions, reac, compartment, prd.getKeggReactantIds(), prd.getKeggProductIds(), false);
 //				}
 			} 
 		}
-		for (int n = 0; n < keggReactionIds.size(); n++) {
+		for (int n = 0; n < prd.getKeggReactionIds().size(); n++) {
 			if (LocalConfig.getInstance().getKeggIdReactionMap() != null && 
-					LocalConfig.getInstance().getKeggIdReactionMap().containsKey(keggReactionIds.get(n))) {
-				ArrayList<SBMLReaction> reac = LocalConfig.getInstance().getKeggIdReactionMap().get(keggReactionIds.get(n));
+					LocalConfig.getInstance().getKeggIdReactionMap().containsKey(prd.getKeggReactionIds().get(n))) {
+				ArrayList<SBMLReaction> reac = LocalConfig.getInstance().getKeggIdReactionMap().get(prd.getKeggReactionIds().get(n));
 //				if (keggReactionIds.size() == 1 && component == PathwaysFrameConstants.PROCESSES_COMPONENT) {
 //					//reactions.add(reac.get(0));
 //				} else {
-					addReactions(reactions, reac, compartment, keggReactantIds, keggProductIds, false);
+					addReactions(reactions, reac, compartment, prd.getKeggReactantIds(), prd.getKeggProductIds(), false);
 //				}
 			}
 		}
@@ -59,7 +59,7 @@ public class PathwayReactionNodeFactory {
 //			if (component == PathwaysFrameConstants.PROCESSES_COMPONENT) {
 //				//reactions.add(reac.get(0));
 //			} else {
-				addReactions(reactions, reac, compartment, keggReactantIds, keggProductIds, true);
+				addReactions(reactions, reac, compartment, prd.getKeggReactantIds(), prd.getKeggProductIds(), true);
 //			}
 		}
 		if (reactions.size() == 0) {
@@ -70,7 +70,7 @@ public class PathwayReactionNodeFactory {
 //				if (component == PathwaysFrameConstants.PROCESSES_COMPONENT) {
 //					//reactions.add(reac.get(0));
 //				} else {
-					addReactions(reactions, reac, compartment, keggReactantIds, keggProductIds, true);
+					addReactions(reactions, reac, compartment, prd.getKeggReactantIds(), prd.getKeggProductIds(), true);
 //				}
 			}
 		}
@@ -176,10 +176,10 @@ public class PathwayReactionNodeFactory {
 	 * @return
 	 */
 	public boolean speciesMatch(ArrayList<String> dataIds, ArrayList<String> modelIds) {
-		if (dataIds.contains("C00091") && dataIds.contains("C00011")) {
-			System.out.println("d " + dataIds);
-			System.out.println("m " + modelIds);
-		}
+//		if (dataIds.contains("C00091") && dataIds.contains("C00011")) {
+//			System.out.println("d " + dataIds);
+//			System.out.println("m " + modelIds);
+//		}
 //		System.out.println("d " + dataIds);
 //		System.out.println("m " + modelIds);
 		boolean speciesMatch = true;
@@ -188,13 +188,13 @@ public class PathwayReactionNodeFactory {
 			if (!modelIds.contains(data.get(i))) {
 				speciesMatch = false;
 				// check if metabolite was substituted
-				if (!speciesMatch && LocalConfig.getInstance().getSubstitutedMetabolitesMap().containsKey(data.get(i))) {
-					if (!modelIds.contains(LocalConfig.getInstance().getSubstitutedMetabolitesMap().get(data.get(i)))) {
-						speciesMatch = false;
-					} else {
-						speciesMatch = true;
-					}
-				}
+//				if (!speciesMatch && LocalConfig.getInstance().getSubstitutedMetabolitesMap().containsKey(data.get(i))) {
+//					if (!modelIds.contains(LocalConfig.getInstance().getSubstitutedMetabolitesMap().get(data.get(i)))) {
+//						speciesMatch = false;
+//					} else {
+//						speciesMatch = true;
+//					}
+//				}
 				if (!speciesMatch) {
 					break;
 				}

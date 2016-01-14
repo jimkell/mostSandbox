@@ -883,6 +883,17 @@ public class LocalConfig {
 			Map<String, ArrayList<String>> additionalMetabolitesMap) {
 		this.additionalMetabolitesMap = additionalMetabolitesMap;
 	}
+	
+	private Map<String, ArrayList<String>> alternateMetabolitesMap;
+
+	public Map<String, ArrayList<String>> getAlternateMetabolitesMap() {
+		return alternateMetabolitesMap;
+	}
+
+	public void setAlternateMetabolitesMap(
+			Map<String, ArrayList<String>> alternateMetabolitesMap) {
+		this.alternateMetabolitesMap = alternateMetabolitesMap;
+	}
 
 	private Map<String, ArrayList<String>> metaboliteSubstitutionsMap;
 	
@@ -895,16 +906,16 @@ public class LocalConfig {
 		this.metaboliteSubstitutionsMap = metaboliteSubstitutionsMap;
 	}
 	
-	private Map<String, String> substitutedMetabolitesMap;
-	
-	public Map<String, String> getSubstitutedMetabolitesMap() {
-		return substitutedMetabolitesMap;
-	}
-
-	public void setSubstitutedMetabolitesMap(
-			Map<String, String> substitutedMetabolitesMap) {
-		this.substitutedMetabolitesMap = substitutedMetabolitesMap;
-	}
+//	private Map<String, String> substitutedMetabolitesMap;
+//	
+//	public Map<String, String> getSubstitutedMetabolitesMap() {
+//		return substitutedMetabolitesMap;
+//	}
+//
+//	public void setSubstitutedMetabolitesMap(
+//			Map<String, String> substitutedMetabolitesMap) {
+//		this.substitutedMetabolitesMap = substitutedMetabolitesMap;
+//	}
 	
 //	private Map<String, ArrayList<String>> metaboliteSubstitutionsFoundMap;
 //	
@@ -916,17 +927,6 @@ public class LocalConfig {
 //			Map<String, ArrayList<String>> metaboliteSubstitutionsFoundMap) {
 //		this.metaboliteSubstitutionsFoundMap = metaboliteSubstitutionsFoundMap;
 //	}
-
-	private Map<String, ArrayList<String>> metaboliteAlternativesMap;
-
-	public Map<String, ArrayList<String>> getMetaboliteAlternativesMap() {
-		return metaboliteAlternativesMap;
-	}
-
-	public void setMetaboliteAlternativesMap(
-			Map<String, ArrayList<String>> metaboliteAlternativesMap) {
-		this.metaboliteAlternativesMap = metaboliteAlternativesMap;
-	}
 	
 	private Map<String, ArrayList<String>> ecNumberKeggReactionIdMap;
 
@@ -991,6 +991,17 @@ public class LocalConfig {
 		this.metaboliteNameAbbrMap = metaboliteNameAbbrMap;
 	}
 	
+	Map<String, PathwayMetaboliteData> metaboliteNameDataMap;
+	
+	public Map<String, PathwayMetaboliteData> getMetaboliteNameDataMap() {
+		return metaboliteNameDataMap;
+	}
+
+	public void setMetaboliteNameDataMap(
+			Map<String, PathwayMetaboliteData> metaboliteNameDataMap) {
+		this.metaboliteNameDataMap = metaboliteNameDataMap;
+	}
+
 	private Map<String, PathwayReactionData> reactionDataKeggIdMap;
 
 	public Map<String, PathwayReactionData> getReactionDataKeggIdMap() {
