@@ -36,7 +36,7 @@ public class PathwayReactionNodeFactory {
 //				if (component == PathwaysFrameConstants.PROCESSES_COMPONENT) {
 //					//reactions.add(reac.get(0));
 //				} else {
-					addReactions(reactions, reac, compartment, prd.getKeggReactantIds(), prd.getKeggProductIds(), false);
+					addReactions(reactions, reac, compartment, prd, false);
 //				}
 			} 
 		}
@@ -47,7 +47,7 @@ public class PathwayReactionNodeFactory {
 //				if (keggReactionIds.size() == 1 && component == PathwaysFrameConstants.PROCESSES_COMPONENT) {
 //					//reactions.add(reac.get(0));
 //				} else {
-					addReactions(reactions, reac, compartment, prd.getKeggReactantIds(), prd.getKeggProductIds(), false);
+					addReactions(reactions, reac, compartment, prd, false);
 //				}
 			}
 		}
@@ -59,7 +59,7 @@ public class PathwayReactionNodeFactory {
 //			if (component == PathwaysFrameConstants.PROCESSES_COMPONENT) {
 //				//reactions.add(reac.get(0));
 //			} else {
-				addReactions(reactions, reac, compartment, prd.getKeggReactantIds(), prd.getKeggProductIds(), true);
+				addReactions(reactions, reac, compartment, prd, true);
 //			}
 		}
 		if (reactions.size() == 0) {
@@ -70,7 +70,7 @@ public class PathwayReactionNodeFactory {
 //				if (component == PathwaysFrameConstants.PROCESSES_COMPONENT) {
 //					//reactions.add(reac.get(0));
 //				} else {
-					addReactions(reactions, reac, compartment, prd.getKeggReactantIds(), prd.getKeggProductIds(), true);
+					addReactions(reactions, reac, compartment, prd, true);
 //				}
 			}
 		}
@@ -82,14 +82,14 @@ public class PathwayReactionNodeFactory {
 	// TODO: check if compartment is redundant since reactions from reaction factory are already
 	// given by compartment
 	public void addReactions(ArrayList<SBMLReaction> reactions, ArrayList<SBMLReaction> reac, String compartment, 
-			ArrayList<String> keggReactantIds, ArrayList<String> keggProductIds, boolean exactMatch) {
+			PathwayReactionData prd, boolean exactMatch) {
 		for (int r = 0; r < reac.size(); r++) {
 			// if compartment not defined, just draw everything for now
 			if (compartment != null && compartment.length() > 0) {
 				if (reac.get(r) != null) {
 					SBMLReactionEquation equn = (SBMLReactionEquation) LocalConfig.getInstance().getReactionEquationMap().get(reac.get(r).getId());
 					if (equn.getCompartmentList().size() == 1 && equn.getCompartmentList().contains(compartment)) {
-						if (addReactionIfNotPresent(reactions, reac.get(r), keggReactantIds, keggProductIds, exactMatch)) {
+						if (addReactionIfNotPresent(reactions, reac.get(r), prd, exactMatch)) {
 							if (LocalConfig.getInstance().getUnplottedReactionIds().contains(reac.get(r).getId())) {
 								//System.out.println(reac.get(r).getId());
 								LocalConfig.getInstance().getUnplottedReactionIds().remove(LocalConfig.getInstance().getUnplottedReactionIds().indexOf(reac.get(r).getId()));
@@ -109,7 +109,7 @@ public class PathwayReactionNodeFactory {
 	 * @param r
 	 */
 	public boolean addReactionIfNotPresent(ArrayList<SBMLReaction> reactions, SBMLReaction r,
-			ArrayList<String> keggReactantIds, ArrayList<String> keggProductIds, boolean exactMatch) {
+			PathwayReactionData prd, boolean exactMatch) {
 		boolean match = false;
 		int id = r.getId();
 		ArrayList<Integer> idList = new ArrayList<Integer>();
@@ -117,7 +117,7 @@ public class PathwayReactionNodeFactory {
 			idList.add(reactions.get(i).getId());
 		}
 		if (!idList.contains(id)) {
-			if (correctMainSpecies(r, keggReactantIds, keggProductIds, exactMatch)) {
+			if (correctMainSpecies(r, prd, exactMatch)) {
 				reactions.add(r);
 				//System.out.println(reactions);
 				match = true;
@@ -137,7 +137,7 @@ public class PathwayReactionNodeFactory {
 	 * @param keggProductIds
 	 * @return
 	 */
-	public boolean correctMainSpecies(SBMLReaction r, ArrayList<String> keggReactantIds, ArrayList<String> keggProductIds, 
+	public boolean correctMainSpecies(SBMLReaction r, PathwayReactionData prd, 
 			boolean exactMatch) {
 		boolean match = false;
 		if (r != null && LocalConfig.getInstance().getModelKeggEquationMap().containsKey(Integer.toString(r.getId()))) {
@@ -147,19 +147,19 @@ public class PathwayReactionNodeFactory {
 //			System.out.println("d " + keggReactantIds);
 //			System.out.println("d " + keggProductIds);
 			if (exactMatch) {
-				if (speciesExactMatch(keggReactantIds, modelData.getKeggReactantIds()) && 
-						speciesExactMatch(keggProductIds, modelData.getKeggProductIds())) {
+				if (speciesExactMatch(prd.getKeggReactantIds(), modelData.getKeggReactantIds(), prd) && 
+						speciesExactMatch(prd.getKeggProductIds(), modelData.getKeggProductIds(), prd)) {
 					match = true;
-				} else if (speciesExactMatch(keggReactantIds, modelData.getKeggProductIds()) && 
-						speciesExactMatch(keggProductIds, modelData.getKeggReactantIds())) {
+				} else if (speciesExactMatch(prd.getKeggReactantIds(), modelData.getKeggProductIds(), prd) && 
+						speciesExactMatch(prd.getKeggProductIds(), modelData.getKeggReactantIds(), prd)) {
 					match = true;
 				}
 			} else {
-				if (speciesMatch(keggReactantIds, modelData.getKeggReactantIds()) && 
-						speciesMatch(keggProductIds, modelData.getKeggProductIds())) {
+				if (speciesMatch(prd.getKeggReactantIds(), modelData.getKeggReactantIds(), prd) && 
+						speciesMatch(prd.getKeggProductIds(), modelData.getKeggProductIds(), prd)) {
 					match = true;
-				} else if (speciesMatch(keggReactantIds, modelData.getKeggProductIds()) && 
-						speciesMatch(keggProductIds, modelData.getKeggReactantIds())) {
+				} else if (speciesMatch(prd.getKeggReactantIds(), modelData.getKeggProductIds(), prd) && 
+						speciesMatch(prd.getKeggProductIds(), modelData.getKeggReactantIds(), prd)) {
 					match = true;
 				}
 			}
@@ -175,7 +175,30 @@ public class PathwayReactionNodeFactory {
 	 * @param modelIds
 	 * @return
 	 */
-	public boolean speciesMatch(ArrayList<String> dataIds, ArrayList<String> modelIds) {
+	public boolean speciesMatch(ArrayList<String> dataIds, ArrayList<String> modelIds, PathwayReactionData prd) {
+		for (int j = 0; j < prd.getReactantData().size(); j++) {
+			if (prd.getReactantData().get(j).getMetaboliteSubstitutions().size() > 0) {
+				if (!modelIds.contains(prd.getReactantData().get(j).getKeggId())) {
+					for (int k = 0; k < prd.getReactantData().get(j).getMetaboliteSubstitutions().size(); k++) {
+//						if (modelIds.contains(prd.getReactantData().get(j).getMetaboliteSubstitutions().get(k))) {
+//							System.out.println("sub " + prd.getReactantData().get(j).getMetaboliteSubstitutions());
+//							System.out.println("sub " + prd.getReactantData().get(j).getMetaboliteSubstitutions().get(k));
+//						}
+					}
+				}
+			}
+			if (prd.getReactantData().get(j).getType().equals(PathwaysCSVFileConstants.SIDE_METABOLITE_TYPE) &&
+					prd.getReactantData().get(j).getAlternateMetabolites().size() > 0) {
+				if (!modelIds.contains(prd.getReactantData().get(j).getKeggId())) {
+					for (int m = 0; m < prd.getReactantData().get(j).getAlternateMetabolites().size(); m++) {
+//						if (modelIds.contains(prd.getReactantData().get(j).getAlternateMetabolites().get(m))) {
+//							System.out.println("alt " + prd.getReactantData().get(j).getAlternateMetabolites());
+//							System.out.println("alt " + prd.getReactantData().get(j).getAlternateMetabolites().get(m));
+//						}
+					}
+				}
+			}
+		}
 //		if (dataIds.contains("C00091") && dataIds.contains("C00011")) {
 //			System.out.println("d " + dataIds);
 //			System.out.println("m " + modelIds);
@@ -183,7 +206,8 @@ public class PathwayReactionNodeFactory {
 //		System.out.println("d " + dataIds);
 //		System.out.println("m " + modelIds);
 		boolean speciesMatch = true;
-		ArrayList<String> data = removedSpeciesBeforeComparison(VisualizationConstants.IGNORE_FOR_IDENTIFIED_REACTION_LIST, dataIds);
+//		ArrayList<String> data = removedSpeciesBeforeComparison(VisualizationConstants.IGNORE_FOR_IDENTIFIED_REACTION_LIST, dataIds);
+		ArrayList<String> data = dataIds;
 		for (int i = 0; i < data.size(); i++) {
 			if (!modelIds.contains(data.get(i))) {
 				speciesMatch = false;
@@ -211,8 +235,31 @@ public class PathwayReactionNodeFactory {
 	 * @param modelIds
 	 * @return
 	 */
-	public boolean speciesExactMatch(ArrayList<String> dataIds, ArrayList<String> modelIds) {
+	public boolean speciesExactMatch(ArrayList<String> dataIds, ArrayList<String> modelIds, PathwayReactionData prd) {
 		boolean speciesMatch = false;
+		for (int j = 0; j < prd.getReactantData().size(); j++) {
+			if (prd.getReactantData().get(j).getMetaboliteSubstitutions().size() > 0) {
+				if (!modelIds.contains(prd.getReactantData().get(j).getKeggId())) {
+					for (int k = 0; k < prd.getReactantData().get(j).getMetaboliteSubstitutions().size(); k++) {
+//						if (modelIds.contains(prd.getReactantData().get(j).getMetaboliteSubstitutions().get(k))) {
+//							System.out.println("sub " + prd.getReactantData().get(j).getMetaboliteSubstitutions());
+//							System.out.println("sub " + prd.getReactantData().get(j).getMetaboliteSubstitutions().get(k));
+//						}
+					}
+				}
+			}
+			if (prd.getReactantData().get(j).getType().equals(PathwaysCSVFileConstants.SIDE_METABOLITE_TYPE) &&
+					prd.getReactantData().get(j).getAlternateMetabolites().size() > 0) {
+				if (!modelIds.contains(prd.getReactantData().get(j).getKeggId())) {
+					for (int m = 0; m < prd.getReactantData().get(j).getAlternateMetabolites().size(); m++) {
+//						if (modelIds.contains(prd.getReactantData().get(j).getAlternateMetabolites().get(m))) {
+//							System.out.println("alt " + prd.getReactantData().get(j).getAlternateMetabolites());
+//							System.out.println("alt " + prd.getReactantData().get(j).getAlternateMetabolites().get(m));
+//						}
+					}
+				}
+			}
+		}
 //		System.out.println("data " + dataIds);
 //		System.out.println("model " + modelIds);
 		ArrayList<String> data = removedSpeciesBeforeComparison(VisualizationConstants.REMOVE_BEFORE_REACTION_COMPARISON, dataIds);
