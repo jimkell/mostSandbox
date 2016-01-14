@@ -939,6 +939,17 @@ public class LocalConfig {
 		this.ecNumberKeggReactionIdMap = ecNumberKeggReactionIdMap;
 	}
 	
+	private Map<String, ArrayList<String>> keggReactionIdECNumberMap;
+	
+	public Map<String, ArrayList<String>> getKeggReactionIdECNumberMap() {
+		return keggReactionIdECNumberMap;
+	}
+
+	public void setKeggReactionIdECNumberMap(
+			Map<String, ArrayList<String>> keggReactionIdECNumberMap) {
+		this.keggReactionIdECNumberMap = keggReactionIdECNumberMap;
+	}
+
 	private Map<String, MetabolicPathway> metabolicPathways;
 
 	public Map<String, MetabolicPathway> getMetabolicPathways() {

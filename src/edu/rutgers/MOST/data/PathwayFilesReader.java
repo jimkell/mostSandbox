@@ -26,6 +26,7 @@ public class PathwayFilesReader {
 	Map<String, ArrayList<String>> metaboliteAlternativesMap = new HashMap<String, ArrayList<String>>();
 	Map<String, PathwayReactionData> reactionDataKeggIdMap = new HashMap<String, PathwayReactionData>();
 	Map<String, ArrayList<String>> ecNumberKeggReactionIdMap = new HashMap<String, ArrayList<String>>();
+	Map<String, ArrayList<String>> keggReactionIdECNumberMap = new HashMap<String, ArrayList<String>>();
 	Map<String, String> chebiIdKeggIdMap = new HashMap<String, String>();
 	Map<String, ArrayList<String>> chebiIdKeggIdListMap = new HashMap<String, ArrayList<String>>();
 	
@@ -566,6 +567,7 @@ public class PathwayFilesReader {
 										}
 									}
 								}
+								keggReactionIdECNumberMap.put(keggReactionId, ecNumbersList);
 								pr.setEcNumbers(ecNumbersList);
 							}
 							if (s == PathwaysCSVFileConstants.REACTIONS_OCCURENCES_COLUMN) {
@@ -590,6 +592,7 @@ public class PathwayFilesReader {
 				LocalConfig.getInstance().setReactionDataKeggIdMap(reactionDataKeggIdMap);
 				//System.out.println(reactionDataKeggIdMap);
 				LocalConfig.getInstance().setEcNumberKeggReactionIdMap(ecNumberKeggReactionIdMap);
+				LocalConfig.getInstance().setKeggReactionIdECNumberMap(keggReactionIdECNumberMap);
 				//System.out.println("ec num kegg rxn " + ecNumberKeggReactionIdMap);
 			} catch (IOException e) {
 				JOptionPane.showMessageDialog(null,                

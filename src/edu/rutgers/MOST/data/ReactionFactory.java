@@ -97,7 +97,9 @@ public class ReactionFactory {
 					reaction.setEcNumber((String) GraphicalInterface.reactionsTable.getModel().getValueAt(i, ecColumn));
 					if (keggColumn > -1) {
 						try {
-							reaction.setKeggReactionId((String) GraphicalInterface.reactionsTable.getModel().getValueAt(i, keggColumn));
+							// accounts for models where KEGG ids start with "r"
+							String keggId = (String) GraphicalInterface.reactionsTable.getModel().getValueAt(i, keggColumn);
+							reaction.setKeggReactionId(keggId.toUpperCase());
 						} catch (Exception e) {
 							
 						}
@@ -412,6 +414,8 @@ public class ReactionFactory {
 				index = GraphicalInterfaceConstants.REACTIONS_COLUMN_NAMES.length + LocalConfig.getInstance().getReactionsMetaColumnNames().indexOf(GraphicalInterfaceConstants.EC_NUMBER_COLUMN_NAMES[0]);
 			} else if (LocalConfig.getInstance().getReactionsMetaColumnNames().get(i).equals(GraphicalInterfaceConstants.EC_NUMBER_COLUMN_NAMES[1])) {
 				index = GraphicalInterfaceConstants.REACTIONS_COLUMN_NAMES.length + LocalConfig.getInstance().getReactionsMetaColumnNames().indexOf(GraphicalInterfaceConstants.EC_NUMBER_COLUMN_NAMES[1]);
+			} else if (LocalConfig.getInstance().getReactionsMetaColumnNames().get(i).equals(GraphicalInterfaceConstants.EC_NUMBER_COLUMN_NAMES[2])) {
+				index = GraphicalInterfaceConstants.REACTIONS_COLUMN_NAMES.length + LocalConfig.getInstance().getReactionsMetaColumnNames().indexOf(GraphicalInterfaceConstants.EC_NUMBER_COLUMN_NAMES[2]);
 			}
 		}
 		if (index == -1) {

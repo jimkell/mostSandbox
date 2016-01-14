@@ -27,6 +27,7 @@ recon2model.v02,Homo sapiens,1789,7440,9798,"Thiele et al., 2013",sbml/recon2_02
 iYL1228,Klebsiella pneumoniae MGH 78578,1228,2262,1658,"Liao et al, 2011",sbml/Klebsiella pneumoniae,sbml,http://dx.doi.org/10.1128/JB.01218-10
 iAC560,Leishmania major Friedlin,560,1112,1165,"Chivali et al., 2008",sbml/Leishmania major,sbml,http://dx.doi.org/10.1038/msb.2008.15
 iNJ661,Mycobacterium tuberculosis H37Rv,661,1025,912,"Jamshidi and Palsson, 2007",sbml/Mycobacterium tuberculosis,sbml,http://dx.doi.org/10.1186/1752-0509-1-26
+tpj13081,Phaeodactylum tricornutum,-,850,754,"Kim et al., 2015",sbml/Phaeodactylum tricornutum,sbml,http://dx.doi.org/10.1111/tpj.13081
 msb201060-s4,Plasmodium falciparum 3D7,366,1001,1025,"Plata et al., 2010",sbml/Plasmodium falciparum,sbml,http://dx.doi.org/10.1038/msb.2010.60
 iND750,Saccharomyces cerevisiae Sc288,750,1266,1177,"Duarte et al., 2004",sbml/Saccharomyces cerevisiae,sbml,http://dx.doi.org/10.1101%2Fgr.2250904
 yeast_7.5_cobra,Saccharomyces cerevisiae Yeast v6.0,900,3490,3370,"Aung et al., 2013",sbml/Yeast_7.5,sbml,http://dx.doi.org/10.1089/ind.2013.0013

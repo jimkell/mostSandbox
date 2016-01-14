@@ -193,7 +193,9 @@ public class MetaboliteFactory {
 					metabolite.setCompartment((String) GraphicalInterface.metabolitesTable.getModel().getValueAt(i, GraphicalInterfaceConstants.COMPARTMENT_COLUMN));
 					metabolite.setBoundary((String) GraphicalInterface.metabolitesTable.getModel().getValueAt(i, GraphicalInterfaceConstants.BOUNDARY_COLUMN));
 					if (getKeggIdColumnIndex() > -1) {
-						metabolite.setKeggId((String) GraphicalInterface.metabolitesTable.getModel().getValueAt(i, getKeggIdColumnIndex()));
+						String keggId = (String) GraphicalInterface.metabolitesTable.getModel().getValueAt(i, getKeggIdColumnIndex());
+						// accounts for models where KEGG ids start with "c"
+						metabolite.setKeggId(keggId.toUpperCase());
 					}
 					if (getChebiIdColumnIndex() > -1) {
 						metabolite.setChebiId((String) GraphicalInterface.metabolitesTable.getModel().getValueAt(i, getChebiIdColumnIndex()));

@@ -270,10 +270,13 @@ public class Utilities {
 	}
 	
 	public boolean hasCompartmentSuffix(String metabAbbr) {
-		String ch = metabAbbr.substring(metabAbbr.length() - 2, metabAbbr.length() - 1);
-		if (ch.equals("_")) {
-			return true;
+		if (metabAbbr.length() > 2) {
+			String ch = metabAbbr.substring(metabAbbr.length() - 2, metabAbbr.length() - 1);
+			if (ch.equals("_")) {
+				return true;
+			}
 		}
+		
 		return false;
 		
 	}
