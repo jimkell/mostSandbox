@@ -1,6 +1,8 @@
 package edu.rutgers.MOST.data;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import edu.rutgers.MOST.config.LocalConfig;
 import edu.rutgers.MOST.presentation.GraphicalInterfaceConstants;
@@ -18,8 +20,8 @@ public class PathwayReactionData {
 	private ArrayList<String> keggReactantIds;
 	private ArrayList<String> keggProductIds;
 	private ArrayList<String> keggIds;
-	private ArrayList<PathwayMetaboliteData> reactantData;
-	private ArrayList<PathwayMetaboliteData> productData;
+	private Map<String, PathwayMetaboliteData> keggReactantIdsDataMap;
+	private Map<String, PathwayMetaboliteData> keggProductIdsDataMap;
 	private String reversible;
 	private ArrayList<String> ecNumbers;
 	private double level;
@@ -110,20 +112,22 @@ public class PathwayReactionData {
 		this.keggIds = keggIds;
 	}
 
-	public ArrayList<PathwayMetaboliteData> getReactantData() {
-		return reactantData;
+	public Map<String, PathwayMetaboliteData> getKeggReactantIdsDataMap() {
+		return keggReactantIdsDataMap;
 	}
 
-	public void setReactantData(ArrayList<PathwayMetaboliteData> reactantData) {
-		this.reactantData = reactantData;
+	public void setKeggReactantIdsDataMap(
+			Map<String, PathwayMetaboliteData> keggReactantIdsDataMap) {
+		this.keggReactantIdsDataMap = keggReactantIdsDataMap;
 	}
 
-	public ArrayList<PathwayMetaboliteData> getProductData() {
-		return productData;
+	public Map<String, PathwayMetaboliteData> getKeggProductIdsDataMap() {
+		return keggProductIdsDataMap;
 	}
 
-	public void setProductData(ArrayList<PathwayMetaboliteData> productData) {
-		this.productData = productData;
+	public void setKeggProductIdsDataMap(
+			Map<String, PathwayMetaboliteData> keggProductIdsDataMap) {
+		this.keggProductIdsDataMap = keggProductIdsDataMap;
 	}
 
 	public String getReversible() {

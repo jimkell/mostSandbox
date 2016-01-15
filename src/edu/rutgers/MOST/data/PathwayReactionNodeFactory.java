@@ -147,19 +147,19 @@ public class PathwayReactionNodeFactory {
 //			System.out.println("d " + keggReactantIds);
 //			System.out.println("d " + keggProductIds);
 			if (exactMatch) {
-				if (speciesExactMatch(prd.getKeggReactantIds(), modelData.getKeggReactantIds(), prd) && 
-						speciesExactMatch(prd.getKeggProductIds(), modelData.getKeggProductIds(), prd)) {
+				if (speciesExactMatch(prd.getKeggReactantIds(), prd.getKeggReactantIdsDataMap(), modelData.getKeggReactantIds()) && 
+						speciesExactMatch(prd.getKeggProductIds(), prd.getKeggProductIdsDataMap(), modelData.getKeggProductIds())) {
 					match = true;
-				} else if (speciesExactMatch(prd.getKeggReactantIds(), modelData.getKeggProductIds(), prd) && 
-						speciesExactMatch(prd.getKeggProductIds(), modelData.getKeggReactantIds(), prd)) {
+				} else if (speciesExactMatch(prd.getKeggReactantIds(), prd.getKeggReactantIdsDataMap(), modelData.getKeggProductIds()) && 
+						speciesExactMatch(prd.getKeggProductIds(), prd.getKeggProductIdsDataMap(), modelData.getKeggReactantIds())) {
 					match = true;
 				}
 			} else {
-				if (speciesMatch(prd.getKeggReactantIds(), modelData.getKeggReactantIds(), prd) && 
-						speciesMatch(prd.getKeggProductIds(), modelData.getKeggProductIds(), prd)) {
+				if (speciesMatch(prd.getKeggReactantIds(), prd.getKeggReactantIdsDataMap(), modelData.getKeggReactantIds()) && 
+						speciesMatch(prd.getKeggProductIds(), prd.getKeggProductIdsDataMap(), modelData.getKeggProductIds())) {
 					match = true;
-				} else if (speciesMatch(prd.getKeggReactantIds(), modelData.getKeggProductIds(), prd) && 
-						speciesMatch(prd.getKeggProductIds(), modelData.getKeggReactantIds(), prd)) {
+				} else if (speciesMatch(prd.getKeggReactantIds(), prd.getKeggReactantIdsDataMap(), modelData.getKeggProductIds()) && 
+						speciesMatch(prd.getKeggProductIds(), prd.getKeggProductIdsDataMap(), modelData.getKeggReactantIds())) {
 					match = true;
 				}
 			}
@@ -170,35 +170,15 @@ public class PathwayReactionNodeFactory {
 	}
 	
 	/**
-	 * Checks if all KEGG Ids from data are present in KEGG Id list from model.
+	 * Checks if all KEGG Ids from data are present in KEGG Id list from model. 
+	 * If any species are in alternatives or substitutions, speciesExactMatch
+	 * is used.
 	 * @param dataIds
+	 * @param keggIdsDataMap
 	 * @param modelIds
 	 * @return
 	 */
-	public boolean speciesMatch(ArrayList<String> dataIds, ArrayList<String> modelIds, PathwayReactionData prd) {
-		for (int j = 0; j < prd.getReactantData().size(); j++) {
-			if (prd.getReactantData().get(j).getMetaboliteSubstitutions().size() > 0) {
-				if (!modelIds.contains(prd.getReactantData().get(j).getKeggId())) {
-					for (int k = 0; k < prd.getReactantData().get(j).getMetaboliteSubstitutions().size(); k++) {
-//						if (modelIds.contains(prd.getReactantData().get(j).getMetaboliteSubstitutions().get(k))) {
-//							System.out.println("sub " + prd.getReactantData().get(j).getMetaboliteSubstitutions());
-//							System.out.println("sub " + prd.getReactantData().get(j).getMetaboliteSubstitutions().get(k));
-//						}
-					}
-				}
-			}
-			if (prd.getReactantData().get(j).getType().equals(PathwaysCSVFileConstants.SIDE_METABOLITE_TYPE) &&
-					prd.getReactantData().get(j).getAlternateMetabolites().size() > 0) {
-				if (!modelIds.contains(prd.getReactantData().get(j).getKeggId())) {
-					for (int m = 0; m < prd.getReactantData().get(j).getAlternateMetabolites().size(); m++) {
-//						if (modelIds.contains(prd.getReactantData().get(j).getAlternateMetabolites().get(m))) {
-//							System.out.println("alt " + prd.getReactantData().get(j).getAlternateMetabolites());
-//							System.out.println("alt " + prd.getReactantData().get(j).getAlternateMetabolites().get(m));
-//						}
-					}
-				}
-			}
-		}
+	public boolean speciesMatch(ArrayList<String> dataIds, Map<String, PathwayMetaboliteData> keggIdsDataMap, ArrayList<String> modelIds) {
 //		if (dataIds.contains("C00091") && dataIds.contains("C00011")) {
 //			System.out.println("d " + dataIds);
 //			System.out.println("m " + modelIds);
@@ -211,14 +191,6 @@ public class PathwayReactionNodeFactory {
 		for (int i = 0; i < data.size(); i++) {
 			if (!modelIds.contains(data.get(i))) {
 				speciesMatch = false;
-				// check if metabolite was substituted
-//				if (!speciesMatch && LocalConfig.getInstance().getSubstitutedMetabolitesMap().containsKey(data.get(i))) {
-//					if (!modelIds.contains(LocalConfig.getInstance().getSubstitutedMetabolitesMap().get(data.get(i)))) {
-//						speciesMatch = false;
-//					} else {
-//						speciesMatch = true;
-//					}
-//				}
 				if (!speciesMatch) {
 					break;
 				}
@@ -235,55 +207,99 @@ public class PathwayReactionNodeFactory {
 	 * @param modelIds
 	 * @return
 	 */
-	public boolean speciesExactMatch(ArrayList<String> dataIds, ArrayList<String> modelIds, PathwayReactionData prd) {
+	public boolean speciesExactMatch(ArrayList<String> dataIds, Map<String, PathwayMetaboliteData> keggIdsDataMap, ArrayList<String> modelIds) {
 		boolean speciesMatch = false;
-		for (int j = 0; j < prd.getReactantData().size(); j++) {
-			if (prd.getReactantData().get(j).getMetaboliteSubstitutions().size() > 0) {
-				if (!modelIds.contains(prd.getReactantData().get(j).getKeggId())) {
-					for (int k = 0; k < prd.getReactantData().get(j).getMetaboliteSubstitutions().size(); k++) {
-//						if (modelIds.contains(prd.getReactantData().get(j).getMetaboliteSubstitutions().get(k))) {
-//							System.out.println("sub " + prd.getReactantData().get(j).getMetaboliteSubstitutions());
-//							System.out.println("sub " + prd.getReactantData().get(j).getMetaboliteSubstitutions().get(k));
-//						}
-					}
-				}
-			}
-			if (prd.getReactantData().get(j).getType().equals(PathwaysCSVFileConstants.SIDE_METABOLITE_TYPE) &&
-					prd.getReactantData().get(j).getAlternateMetabolites().size() > 0) {
-				if (!modelIds.contains(prd.getReactantData().get(j).getKeggId())) {
-					for (int m = 0; m < prd.getReactantData().get(j).getAlternateMetabolites().size(); m++) {
-//						if (modelIds.contains(prd.getReactantData().get(j).getAlternateMetabolites().get(m))) {
-//							System.out.println("alt " + prd.getReactantData().get(j).getAlternateMetabolites());
-//							System.out.println("alt " + prd.getReactantData().get(j).getAlternateMetabolites().get(m));
-//						}
-					}
-				}
-			}
-		}
 //		System.out.println("data " + dataIds);
 //		System.out.println("model " + modelIds);
 		ArrayList<String> data = removedSpeciesBeforeComparison(VisualizationConstants.REMOVE_BEFORE_REACTION_COMPARISON, dataIds);
 		ArrayList<String> model = removedSpeciesBeforeComparison(VisualizationConstants.REMOVE_BEFORE_REACTION_COMPARISON, modelIds);
 		//System.out.println(model);
+		if (data.size() != model.size()) {
+			//System.out.println("f");
+			return false;
+		} 
 		Collections.sort(data);
 		Collections.sort(model);
 		if (data.equals(model)) {
 			speciesMatch = true;
 		} else {
-			ArrayList<String> data1 = removedSpeciesBeforeComparison(VisualizationConstants.IGNORE_FOR_IDENTIFIED_REACTION_LIST, data);
-			ArrayList<String> model1 = removedSpeciesBeforeComparison(VisualizationConstants.IGNORE_FOR_IDENTIFIED_REACTION_LIST, model);
+			ArrayList<String> data1 = new ArrayList<String>();
+			ArrayList<String> model1 = new ArrayList<String>();
+			// copy lists to avoid altering original lists for future comparison
+			for (int i = 0; i < data.size(); i++) {
+				data1.add(data.get(i));
+			}
+			for (int i = 0; i < model.size(); i++) {
+				model1.add(model.get(i));
+			}
+//			System.out.println("d1 " + data1);
+//			System.out.println("m1 " + model1);
+			// remove all common entries
+			for (int i = 0; i < data1.size(); i++) {
+				if (model1.contains(data1.get(i))) {
+					model1.remove(model1.indexOf(data1.get(i)));
+					data1.remove(data1.indexOf(data1.get(i)));
+				}
+			}
+			// may not be necessary, should already be sorted
 			Collections.sort(data1);
 			Collections.sort(model1);
-			if (data1.equals(model1)) {
+//			System.out.println("d2 " + data1);
+//			System.out.println("m2 " + model1);
+			ArrayList<String> model2 = new ArrayList<String>();
+			// data1 and model1 should be same size. replace substitutions and alternates (if side
+			// species) with keys to enforce A -> B model where if B is present it is considered
+			// to be a replacement for A. Substitutions can be main nodes or side nodes, alternates 
+			// can only be side nodes. This prevents NAD, ATP main nodes from having multiple 
+			// entries, but fatty acids can have multiple entries.
+			for (int i = 0; i < data1.size(); i++) {
+				String entry = model1.get(i);
+				if (LocalConfig.getInstance().getMetaboliteSubstitutionsMap().containsKey(data1.get(i))) {
+//					System.out.println("s " + LocalConfig.getInstance().getMetaboliteSubstitutionsMap().get(data1.get(i)));
+					for (int j = 0; j < model1.size(); j++) {
+						if (LocalConfig.getInstance().getMetaboliteSubstitutionsMap().get(data1.get(i)).contains(model1.get(j))) {
+//							System.out.println("ks " + data1.get(i));
+//							System.out.println("ms " + model1.get(j));
+//							if (keggIdsDataMap.containsKey(data1.get(i))) {
+//								System.out.println("ds " + keggIdsDataMap.get(data1.get(i)));
+//							}
+							// replace substitution with key
+							entry = data1.get(i);
+						} 
+					}
+//					for (int j = 0; j < LocalConfig.getInstance().getMetaboliteSubstitutionsMap().get(data1.get(i)).size(); j++) {
+//						if (model1.contains(LocalConfig.getInstance().getMetaboliteSubstitutionsMap().get(data1.get(i)).get(j))) {
+//							System.out.println("s " + LocalConfig.getInstance().getMetaboliteSubstitutionsMap().get(data1.get(i)).get(j));
+//							if (keggIdsDataMap.containsKey(data1.get(i))) {
+//								System.out.println("d " + keggIdsDataMap.get(data1.get(i)));
+//							}
+//						}
+//					}
+				} else if (keggIdsDataMap.get(data1.get(i)).getType().equals(PathwaysCSVFileConstants.SIDE_METABOLITE_TYPE) &&
+						LocalConfig.getInstance().getAlternateMetabolitesMap().containsKey(data1.get(i))) {
+					for (int j = 0; j < model1.size(); j++) {
+						if (LocalConfig.getInstance().getAlternateMetabolitesMap().get(data1.get(i)).contains(model1.get(j))) {
+//							System.out.println("ka " + data1.get(i));
+//							System.out.println("ma " + model1.get(j));
+//							if (keggIdsDataMap.containsKey(data1.get(i))) {
+//								System.out.println("da " + keggIdsDataMap.get(data1.get(i)));
+//							}
+							// replace alternate with key
+							entry = data1.get(i);
+						} 
+					}
+				}
+				model2.add(entry);
+			}
+			Collections.sort(model2);
+			if (data1.equals(model2)) {
+//				System.out.println("d " + data1);
+//				System.out.println("1 " + model1);
+//				System.out.println("2 " + model2);
 				speciesMatch = true;
 			}
 		}
-		// TODO: need to account for substituted metabolites
-//		if (speciesMatch) {
-//			System.out.println(speciesMatch);
-//			System.out.println(data);
-//			System.out.println(model);
-//		}
+		
 		return speciesMatch;
 	}
 	
