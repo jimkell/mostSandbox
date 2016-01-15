@@ -1019,6 +1019,7 @@ public class PathwaysFrame extends JApplet {
 				}
 			}
 		}
+    	System.out.println("m " + prnf.getRenameMetabolitesMap());
     	if (!LocalConfig.getInstance().isGraphMissingMetabolitesSelected()) {
 			for (int i = 0; i < metabPosKeys.size(); i++) {
 				if (!foundMetabolitesList.contains(metabPosKeys.get(i))) {

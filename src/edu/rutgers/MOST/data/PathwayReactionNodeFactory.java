@@ -22,7 +22,17 @@ public class PathwayReactionNodeFactory {
 	 */
 	
 	//ArrayList<String> substitutionKeys = new ArrayList<String>(LocalConfig.getInstance().getMetaboliteSubstitutionsMap().keySet());
-	
+	private Map<String, ArrayList<String>> renameMetabolitesMap = new HashMap<String, ArrayList<String>>();
+
+	public Map<String, ArrayList<String>> getRenameMetabolitesMap() {
+		return renameMetabolitesMap;
+	}
+
+	public void setRenameMetabolitesMap(
+			Map<String, ArrayList<String>> renameMetabolitesMap) {
+		this.renameMetabolitesMap = renameMetabolitesMap;
+	}
+
 	public PathwayReactionNode createPathwayReactionNode(PathwayReactionData prd, 
 			String compartment, int component, 
 			Vector<SBMLReaction> allReactions, Map<Integer, SBMLReaction> idReactionMap) {
@@ -252,6 +262,7 @@ public class PathwayReactionNodeFactory {
 			// to be a replacement for A. Substitutions can be main nodes or side nodes, alternates 
 			// can only be side nodes. This prevents NAD, ATP main nodes from having multiple 
 			// entries, but fatty acids can have multiple entries.
+			Map<String, String> nameReplacedId = new HashMap<String, String>();
 			for (int i = 0; i < data1.size(); i++) {
 				String entry = model1.get(i);
 				if (LocalConfig.getInstance().getMetaboliteSubstitutionsMap().containsKey(data1.get(i))) {
@@ -260,11 +271,12 @@ public class PathwayReactionNodeFactory {
 						if (LocalConfig.getInstance().getMetaboliteSubstitutionsMap().get(data1.get(i)).contains(model1.get(j))) {
 //							System.out.println("ks " + data1.get(i));
 //							System.out.println("ms " + model1.get(j));
-//							if (keggIdsDataMap.containsKey(data1.get(i))) {
-//								System.out.println("ds " + keggIdsDataMap.get(data1.get(i)));
-//							}
-							// replace substitution with key
-							entry = data1.get(i);
+							if (keggIdsDataMap.containsKey(data1.get(i))) {
+//								System.out.println("ds " + keggIdsDataMap.get(data1.get(i)).getName());
+								// replace substitution with key
+								entry = data1.get(i);
+								nameReplacedId.put(keggIdsDataMap.get(data1.get(i)).getName(), model1.get(j));
+							}
 						} 
 					}
 //					for (int j = 0; j < LocalConfig.getInstance().getMetaboliteSubstitutionsMap().get(data1.get(i)).size(); j++) {
@@ -281,11 +293,12 @@ public class PathwayReactionNodeFactory {
 						if (LocalConfig.getInstance().getAlternateMetabolitesMap().get(data1.get(i)).contains(model1.get(j))) {
 //							System.out.println("ka " + data1.get(i));
 //							System.out.println("ma " + model1.get(j));
-//							if (keggIdsDataMap.containsKey(data1.get(i))) {
-//								System.out.println("da " + keggIdsDataMap.get(data1.get(i)));
-//							}
-							// replace alternate with key
-							entry = data1.get(i);
+							if (keggIdsDataMap.containsKey(data1.get(i))) {
+//								System.out.println("da " + keggIdsDataMap.get(data1.get(i)).getName());
+								// replace alternate with key
+								entry = data1.get(i);
+								nameReplacedId.put(keggIdsDataMap.get(data1.get(i)).getName(), model1.get(j));
+							}
 						} 
 					}
 				}
@@ -297,6 +310,24 @@ public class PathwayReactionNodeFactory {
 //				System.out.println("1 " + model1);
 //				System.out.println("2 " + model2);
 				speciesMatch = true;
+//				System.out.println(nameReplacedId);
+				ArrayList<String> names = new ArrayList<String>(nameReplacedId.keySet());
+				for (int i = 0; i < names.size(); i++) {
+					if (renameMetabolitesMap.containsKey(names.get(i))) {
+						ArrayList<String> keggIds = renameMetabolitesMap.get(names.get(i));
+						if (!keggIds.contains(nameReplacedId.get(names.get(i)))) {
+							keggIds.add(nameReplacedId.get(names.get(i)));
+							renameMetabolitesMap.put(names.get(i), keggIds);
+						}
+					} else {
+						ArrayList<String> keggIds = new ArrayList<String>();
+						if (!keggIds.contains(nameReplacedId.get(names.get(i)))) {
+							keggIds.add(nameReplacedId.get(names.get(i)));
+							renameMetabolitesMap.put(names.get(i), keggIds);
+						}
+					}
+				}
+					
 			}
 		}
 		
