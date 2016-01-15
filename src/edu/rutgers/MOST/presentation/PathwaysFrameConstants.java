@@ -48,10 +48,10 @@ public class PathwaysFrameConstants {
 	public static final int COMPARTMENT_LABEL_LEFT_PADDING = 25;
 	public static final int COMPARTMENT_LABEL_TOP_PADDING = 25;
 	
-	public static final int SIDE_NODE_WIDTH = 90;
-	public static final int SIDE_NODE_HEIGHT = 28;
-	public static final int METABOLITE_NODE_WIDTH = 100;
-	public static final int METABOLITE_NODE_HEIGHT = 36;
+	public static final int METABOLITE_NO_BORDER_NODE_WIDTH = 90;
+	public static final int METABOLITE_NO_BORDER_NODE_HEIGHT = 28;
+	public static final int METABOLITE_BORDER_NODE_WIDTH = 100;
+	public static final int METABOLITE_BORDER_NODE_HEIGHT = 36;
 	public static final int SMALL_MAIN_METABOLITE_NODE_WIDTH = 70;
 	public static final int SMALL_MAIN_METABOLITE_NODE_HEIGHT = 36;
 	public static final int SIDE_METABOLITE_NODE_WIDTH = 60;

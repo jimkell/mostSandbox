@@ -433,23 +433,23 @@ public class PathwayFilesReader {
 						String abbr = pm.getAbbreviation();
 						if (LocalConfig.getInstance().getKeggIdMetaboliteMap().containsKey(pm.getKeggId())) {
 							String metabAbbr = pm.getNames().get(0);
-//							ArrayList<String> abbrList = new ArrayList<String>();
-//							ArrayList<String> nameList = new ArrayList<String>();
-//							ArrayList<String> keggIdList = new ArrayList<String>();
-//							ArrayList<String> chargeList = new ArrayList<String>();
+							ArrayList<String> abbrList = new ArrayList<String>();
+							ArrayList<String> nameList = new ArrayList<String>();
+							ArrayList<String> keggIdList = new ArrayList<String>();
+							ArrayList<String> chargeList = new ArrayList<String>();
 							for (int j = 0; j < LocalConfig.getInstance().getKeggIdMetaboliteMap().get(pm.getKeggId()).size(); j++) {
 								if (LocalConfig.getInstance().getKeggIdMetaboliteMap().get(pm.getKeggId()).get(j).getCompartment().
 										equals(LocalConfig.getInstance().getSelectedCompartmentName())) {
-									metabAbbr = LocalConfig.getInstance().getKeggIdMetaboliteMap().get(pm.getKeggId()).get(j).getMetaboliteAbbreviation();
-//									abbrList.add(LocalConfig.getInstance().getKeggIdMetaboliteMap().get(pm.getKeggId()).get(j).getMetaboliteAbbreviation());
-//									nameList.add(LocalConfig.getInstance().getKeggIdMetaboliteMap().get(pm.getKeggId()).get(j).getMetaboliteName());
-//									if (!keggIdList.contains(pm.getKeggId())) {
-//										keggIdList.add(pm.getKeggId());
-//									}
-//									String charge = LocalConfig.getInstance().getKeggIdMetaboliteMap().get(pm.getKeggId()).get(j).getCharge();
-//									if (charge != null && charge.length() > 0 && !chargeList.contains(charge.trim())) {
-//										chargeList.add(charge.trim());
-//									}
+									//metabAbbr = LocalConfig.getInstance().getKeggIdMetaboliteMap().get(pm.getKeggId()).get(j).getMetaboliteAbbreviation();
+									abbrList.add(LocalConfig.getInstance().getKeggIdMetaboliteMap().get(pm.getKeggId()).get(j).getMetaboliteAbbreviation());
+									nameList.add(LocalConfig.getInstance().getKeggIdMetaboliteMap().get(pm.getKeggId()).get(j).getMetaboliteName());
+									if (!keggIdList.contains(pm.getKeggId())) {
+										keggIdList.add(pm.getKeggId());
+									}
+									String charge = LocalConfig.getInstance().getKeggIdMetaboliteMap().get(pm.getKeggId()).get(j).getCharge();
+									if (charge != null && charge.length() > 0 && !chargeList.contains(charge.trim())) {
+										chargeList.add(charge.trim());
+									}
 								}
 							}
 //							for (int k = 0; k < pm.getMetaboliteSubstitutions().size(); k++) {
@@ -464,22 +464,24 @@ public class PathwayFilesReader {
 //								}
 //							}
 							//System.out.println(abbrList);
-//							if (abbrList.size() > 0) {
-//								name = abbrList.get(0);
-//								if (abbrList.size() > 1) {
-//									for (int k = 1; k < abbrList.size(); k++) {
-//										name += ", " + abbrList.get(k);
-//									}
-//								} 
-//								metabAbbr = name;
-//							} else {
-//								name = metabAbbr;
-//							}
+							// the code below must be used to account for when multiple
+							// metabolites have the same KEGG id
+							if (abbrList.size() > 0) {
+								name = abbrList.get(0);
+								if (abbrList.size() > 1) {
+									for (int k = 1; k < abbrList.size(); k++) {
+										name += ", " + abbrList.get(k);
+									}
+								} 
+								metabAbbr = name;
+							} else {
+								name = metabAbbr;
+							}
 							abbr = util.maybeRemovePrefixAndSuffix(metabAbbr);
-//							name = "<html>" + name + "<p> Metabolite Names: " + nameList.toString() +
-//									"<p> Metabolite Abbreviations: " + abbrList.toString() +
-//									"<p>KEGG Ids: " + keggIdList.toString() +
-//									"<p>Charge: " + chargeList.toString() + "<p>";
+							name = "<html>" + name + "<p> Metabolite Names: " + nameList.toString() +
+									"<p> Metabolite Abbreviations: " + abbrList.toString() +
+									"<p>KEGG Ids: " + keggIdList.toString() +
+									"<p>Charge: " + chargeList.toString() + "<p>";
 						}
 //						name = "<html>" + name + "<p>" + pm.getNames().get(0);
 						if (metaboliteNameAbbrMap.containsKey(name)) {

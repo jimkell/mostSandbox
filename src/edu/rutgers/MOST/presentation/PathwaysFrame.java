@@ -164,19 +164,22 @@ public class PathwaysFrame extends JApplet {
     VisualizationViewer<String, Number> vv;  
     
     //public final JMenuItem visualizationOptionsItem = new JMenuItem(VisualizationOptionsConstants.VISUALIZATION_OPTIONS_MENU_ITEM_NAME);
-                                                                                                                     
-	Map<String, String[]> metabPosMap = new HashMap<String, String[]>();                                                       
-	ArrayList<String> metaboliteList = new ArrayList<String>(); 
+ 
+    // map with node names and positions
+	Map<String, String[]> nodeNamePositionMap = new HashMap<String, String[]>();
+	// keyset of node names
+	ArrayList<String> nodeNameList = new ArrayList<String>(); 
    	
    	// key = name of rxn, value = reactant, product, reversible
    	Map<String, String[]> reactionMap = new HashMap<String, String[]>(); 
+   	// keyset of reactions
    	ArrayList<String> reactionList = new ArrayList<String>();
    	
    	// lists used to distinguish node types
    	ArrayList<String> borderList = new ArrayList<String>();   // compartment border
    	ArrayList<String> noBorderList = new ArrayList<String>();   // metabolite node border
    	ArrayList<String> pathwayNames = new ArrayList<String>();
-   	ArrayList<String> metabolites = new ArrayList<String>();
+   	ArrayList<String> mainMetabolites = new ArrayList<String>();
    	ArrayList<String> smallMainMetabolites = new ArrayList<String>();
    	ArrayList<String> sideMetabolites = new ArrayList<String>();
    	ArrayList<String> cofactors = new ArrayList<String>();
@@ -409,7 +412,7 @@ public class PathwaysFrame extends JApplet {
                                                                                                                      
         Layout<String,Number> layout = new StaticLayout<String,Number>(graph,                                        
         		new ChainedTransformer(new Transformer[]{                                                            
-        				new MetabTransformer(metabPosMap),                                                                    
+        				new MetabTransformer(nodeNamePositionMap),                                                                    
         				new PixelTransformer(new Dimension(PathwaysFrameConstants.GRAPH_WIDTH, PathwaysFrameConstants.GRAPH_HEIGHT))                                         
         		}));                                                                                                 
         	                                                                                                         
@@ -767,15 +770,15 @@ public class PathwaysFrame extends JApplet {
 //					}
 //					
 //					if (reactantName != null && reactantName.length() > 0 && productName != null && productName.length() > 0) {
-//						if (!metabPosMap.containsKey(reactantName) && !metabPosMap.containsKey(productName)) {
+//						if (!nodeNamePositionMap.containsKey(reactantName) && !nodeNamePositionMap.containsKey(productName)) {
 //							metabolites.add(reactantName);
 //							LocalConfig.getInstance().getMetaboliteNameAbbrMap().put(reactantName, reactantName);
 //							foundMetabolitesList.add(reactantName);
-//							metabPosMap.put(reactantName, new String[] {Double.toString(xPos), Double.toString(yPos)});
+//							nodeNamePositionMap.put(reactantName, new String[] {Double.toString(xPos), Double.toString(yPos)});
 //							metabolites.add(productName);
 //							LocalConfig.getInstance().getMetaboliteNameAbbrMap().put(productName, productName);
 //							foundMetabolitesList.add(productName);
-//							metabPosMap.put(productName, new String[] {Double.toString(xPos), Double.toString(yPos + 400)});
+//							nodeNamePositionMap.put(productName, new String[] {Double.toString(xPos), Double.toString(yPos + 400)});
 //							xPos += 300;
 //						} else {
 //							System.out.println(reactantName);
@@ -871,9 +874,9 @@ public class PathwaysFrame extends JApplet {
 		//Collections.sort(notFoundEcNumbers);
 		//System.out.println("not found " + notFoundEcNumbers);
                                                                                                                      
-   		metaboliteList = new ArrayList<String>(metabPosMap.keySet()); 
-   		Collections.sort(metaboliteList);
-   		//System.out.println("m " + metaboliteList);
+   		nodeNameList = new ArrayList<String>(nodeNamePositionMap.keySet()); 
+   		Collections.sort(nodeNameList);
+   		//System.out.println("m " + nodeNameList);
    		
    		reactionList = new ArrayList<String>(reactionMap.keySet()); 
    		Collections.sort(reactionList);
@@ -912,14 +915,14 @@ public class PathwaysFrame extends JApplet {
 							x, y, type, pathway.getMetabolitesData().get(Integer.toString(j)).getAbbreviation(), 
 							pathway.getMetabolitesData().get(Integer.toString(j)).getName(), keggId);
 					pathway.getMetabolitesNodes().put(pn.getDataId(), pn);
-					metabPosMap.put(metabName, new String[] {Double.toString(x), Double.toString(y)});
+					nodeNamePositionMap.put(metabName, new String[] {Double.toString(x), Double.toString(y)});
 				}
 			}
 		}
     }
     
     public void drawReactions(MetabolicPathway pathway, int component, Vector<SBMLReaction> rxns, Map<Integer, SBMLReaction> idReactionMap) {
-    	ArrayList<String> metabPosKeys = new ArrayList<String>(metabPosMap.keySet());
+    	ArrayList<String> metabPosKeys = new ArrayList<String>(nodeNamePositionMap.keySet());
     	for (int k = 0; k < pathway.getReactionsData().size(); k++) {
 			if (pathway.getComponent() == component) {
 				PathwayReactionNode pn = prnf.createPathwayReactionNode(pathway.getReactionsData().get(Integer.toString(k)), 
@@ -978,7 +981,7 @@ public class PathwaysFrame extends JApplet {
 					double y = 0;
 					x = startX + PathwaysFrameConstants.HORIZONTAL_INCREMENT*pathway.getReactionsData().get(Integer.toString(k)).getLevel();
 					y = startY + PathwaysFrameConstants.VERTICAL_INCREMENT*pathway.getReactionsData().get(Integer.toString(k)).getLevelPosition();
-					metabPosMap.put(displayName, new String[] {Double.toString(x), Double.toString(y)});  
+					nodeNamePositionMap.put(displayName, new String[] {Double.toString(x), Double.toString(y)});  
 					pn.setDataId(pathway.getReactionsData().get(Integer.toString(k)).getReactionId());
 					pn.setxPosition(x);
 					pn.setyPosition(y);
@@ -1019,7 +1022,7 @@ public class PathwaysFrame extends JApplet {
     	if (!LocalConfig.getInstance().isGraphMissingMetabolitesSelected()) {
 			for (int i = 0; i < metabPosKeys.size(); i++) {
 				if (!foundMetabolitesList.contains(metabPosKeys.get(i))) {
-					metabPosMap.remove(metabPosKeys.get(i));
+					nodeNamePositionMap.remove(metabPosKeys.get(i));
 				}
 			}
 		}
@@ -1039,14 +1042,14 @@ public class PathwaysFrame extends JApplet {
 				y = startY + PathwaysFrameConstants.VERTICAL_INCREMENT*LocalConfig.getInstance().getPathwayNameMap().get(Integer.toString(p)).getLevelPosition();
 				pnn.setxPosition(x);
 				pnn.setyPosition(y);
-				metabPosMap.put(pathwayName, new String[] {Double.toString(x), Double.toString(y)});
+				nodeNamePositionMap.put(pathwayName, new String[] {Double.toString(x), Double.toString(y)});
 			}
 		}
     }
     
     public void classifyMetabolite(String type, String metabName, String keggId) {
 		if (type.equals(PathwaysCSVFileConstants.MAIN_METABOLITE_TYPE)) {
-			metabolites.add(metabName);
+			mainMetabolites.add(metabName);
 		} else if (type.equals(PathwaysCSVFileConstants.SMALL_MAIN_METABOLITE_TYPE)) {
 			smallMainMetabolites.add(metabName);
 		} else if (type.equals(PathwaysCSVFileConstants.SIDE_METABOLITE_TYPE)) {
@@ -1065,10 +1068,10 @@ public class PathwaysFrame extends JApplet {
     	String bottomRight = Integer.toString(startNumber + 3);
     	String bottomLeft = Integer.toString(startNumber + 4);
     	
-		metabPosMap.put(topLeft, new String[] {borderLeftX, borderTopY}); 
-		metabPosMap.put(topRight, new String[] {borderRightX, borderTopY}); 
-		metabPosMap.put(bottomRight, new String[] {borderRightX, borderBottomY});
-		metabPosMap.put(bottomLeft, new String[] {borderLeftX, borderBottomY}); 
+		nodeNamePositionMap.put(topLeft, new String[] {borderLeftX, borderTopY}); 
+		nodeNamePositionMap.put(topRight, new String[] {borderRightX, borderTopY}); 
+		nodeNamePositionMap.put(bottomRight, new String[] {borderRightX, borderBottomY});
+		nodeNamePositionMap.put(bottomLeft, new String[] {borderLeftX, borderBottomY}); 
 
 		reactionMap.put(topLeft, new String[] {topLeft, topRight, "false"});
 		reactionMap.put(topRight, new String[] {topRight, bottomRight, "false"});
@@ -1086,7 +1089,7 @@ public class PathwaysFrame extends JApplet {
     }
     
     public void drawCompartmentLabel(String text, String xOffset, String yOffset) {
-    	metabPosMap.put(text, new String[] {xOffset, yOffset});
+    	nodeNamePositionMap.put(text, new String[] {xOffset, yOffset});
     }
     
     public void createGraph() {
@@ -1099,13 +1102,13 @@ public class PathwaysFrame extends JApplet {
      * @return the Vertices in an array                                                                              
      */                                                                                                              
     public void createVertices() {                                                                                  
-        for (String met : metabPosMap.keySet()) {
+        for (String met : nodeNamePositionMap.keySet()) {
             graph.addVertex(met); 
         } 
     } 
     
     public void removeVertices() {                                                                                  
-        for (String met : metabPosMap.keySet()) {
+        for (String met : nodeNamePositionMap.keySet()) {
             graph.removeVertex(met); 
         } 
     } 
@@ -1155,8 +1158,8 @@ public class PathwaysFrame extends JApplet {
     public void createIconMap() {
     	//Map<String, Icon> iconMap = new HashMap<String, Icon>();   
     	iconMap.clear();
-        for (int i = 0; i < metaboliteList.size(); i++) {                                                                                                        
-        	String name = metaboliteList.get(i);
+        for (int i = 0; i < nodeNameList.size(); i++) {                                                                                                        
+        	String name = nodeNameList.get(i);
         	String abbr = LocalConfig.getInstance().getMetaboliteNameAbbrMap().get(name);
         	int width = (int) PathwaysFrameConstants.BORDER_THICKNESS;
     		int height = (int) PathwaysFrameConstants.BORDER_THICKNESS;
@@ -1166,13 +1169,13 @@ public class PathwaysFrame extends JApplet {
         	} else if (name.equals(compartmentLabel)) {
         		width = PathwaysFrameConstants.COMPARTMENT_LABEL_NODE_WIDTH;
             	height = PathwaysFrameConstants.COMPARTMENT_LABEL_NODE_HEIGHT;
-        	} else if (metabolites.contains(name)) {
+        	} else if (mainMetabolites.contains(name)) {
         		if (!noBorderList.contains(name)) {
-        			width = PathwaysFrameConstants.METABOLITE_NODE_WIDTH;
-                	height = PathwaysFrameConstants.METABOLITE_NODE_HEIGHT;
+        			width = PathwaysFrameConstants.METABOLITE_BORDER_NODE_WIDTH;
+                	height = PathwaysFrameConstants.METABOLITE_BORDER_NODE_HEIGHT;
         		} else {
-        			width = PathwaysFrameConstants.SIDE_NODE_WIDTH;
-                	height = PathwaysFrameConstants.SIDE_NODE_HEIGHT;
+        			width = PathwaysFrameConstants.METABOLITE_NO_BORDER_NODE_WIDTH;
+                	height = PathwaysFrameConstants.METABOLITE_NO_BORDER_NODE_HEIGHT;
         		}
         	} else if (smallMainMetabolites.contains(name)) {	
         		width = PathwaysFrameConstants.SMALL_MAIN_METABOLITE_NODE_WIDTH;
@@ -1211,7 +1214,7 @@ public class PathwaysFrame extends JApplet {
         		//alignCenterString(graphics, compartmentLabel, width, PathwaysFrameConstants.COMPARTMENT_LABEL_NODE_XPOS, PathwaysFrameConstants.COMPARTMENT_LABEL_NODE_YPOS, PathwaysFrameConstants.COMPARTMENT_LABEL_NODE_FONT_SIZE);
         		//drawBorder(graphics, width, height, PathwaysFrameConstants.PATHWAY_NAME_BORDER_WIDTH);
         	} else {
-        		if (metabolites.contains(name)) {
+        		if (mainMetabolites.contains(name)) {
         			if (!foundMetabolitesList.contains(name) && LocalConfig.getInstance().isHighlightMissingMetabolitesSelected()) {
         				graphics.setColor(PathwaysFrameConstants.METABOLITE_NOT_FOUND_COLOR);
         			}
@@ -1242,7 +1245,7 @@ public class PathwaysFrame extends JApplet {
         			alignCenterString(graphics, name, width, PathwaysFrameConstants.REACTION_NODE_XPOS, PathwaysFrameConstants.REACTION_NODE_YPOS, PathwaysFrameConstants.REACTION_NODE_FONT_SIZE);
         		}
         	}
-        	if (metabolites.contains(name) || smallMainMetabolites.contains(name)) {
+        	if (mainMetabolites.contains(name) || smallMainMetabolites.contains(name)) {
         		if (!noBorderList.contains(name)) {
         			drawBorder(graphics, width, height, PathwaysFrameConstants.METABOLITE_BORDER_WIDTH);
         		}
@@ -1704,19 +1707,19 @@ public class PathwaysFrame extends JApplet {
 //		System.out.println("fv " + findValue);
 		double x = 0;
 		double y = 0;
-		for (int i = 0; i < metaboliteList.size(); i++) {
+		for (int i = 0; i < nodeNameList.size(); i++) {
 			String s = "";
 			if (matchCase) {
-				s = metaboliteList.get(i);
+				s = nodeNameList.get(i);
 			} else {
-				s = metaboliteList.get(i).toLowerCase();
+				s = nodeNameList.get(i).toLowerCase();
 			}
 			if (s.contains(findValue)) {
 				ArrayList<Double> coordinates = new ArrayList<Double>();
-//				System.out.println(metabPosMap.get(metaboliteList.get(i))[0]);
-//				System.out.println(metabPosMap.get(metaboliteList.get(i))[1]);
-				x = Double.parseDouble(metabPosMap.get(metaboliteList.get(i))[0]);
-				y = Double.parseDouble(metabPosMap.get(metaboliteList.get(i))[1]);
+//				System.out.println(nodeNamePositionMap.get(nodeNameList.get(i))[0]);
+//				System.out.println(nodeNamePositionMap.get(nodeNameList.get(i))[1]);
+				x = Double.parseDouble(nodeNamePositionMap.get(nodeNameList.get(i))[0]);
+				y = Double.parseDouble(nodeNamePositionMap.get(nodeNameList.get(i))[1]);
 				coordinates.add(x);
 				coordinates.add(y);
 				findLocationsMap.put(Double.toString(x), coordinates);
