@@ -203,10 +203,33 @@ public class PathwayReactionNodeFactory {
 				speciesMatch = false;
 				if (!speciesMatch) {
 					break;
+				} 
+			}
+		}
+		//System.out.println(speciesMatch);
+		if (speciesMatch) {
+			for (int j = 0; j < modelIds.size(); j++) {
+				if (LocalConfig.getInstance().getAlternateMetabolitesMap().containsKey(modelIds.get(j)) ||
+						LocalConfig.getInstance().getMetaboliteSubstitutionsMap().containsKey(modelIds.get(j))) {
+					if (keggIdsDataMap.containsKey(modelIds.get(j))) {
+						String name = keggIdsDataMap.get(modelIds.get(j)).getName();
+						if (renameMetabolitesMap.containsKey(name)) {
+							ArrayList<String> keggIds = renameMetabolitesMap.get(name);
+							if (!keggIds.contains(modelIds.get(j))) {
+								keggIds.add(modelIds.get(j));
+								renameMetabolitesMap.put(name, keggIds);
+							}
+						} else {
+							ArrayList<String> keggIds = new ArrayList<String>();
+							if (!keggIds.contains(modelIds.get(j))) {
+								keggIds.add(modelIds.get(j));
+								renameMetabolitesMap.put(name, keggIds);
+							}
+						}
+					} 
 				}
 			}
 		}
-//		System.out.println(speciesMatch);
 		return speciesMatch;
 	}
 	
@@ -231,6 +254,25 @@ public class PathwayReactionNodeFactory {
 		Collections.sort(data);
 		Collections.sort(model);
 		if (data.equals(model)) {
+			for (int i = 0; i < model.size(); i++) {
+				if (LocalConfig.getInstance().getAlternateMetabolitesMap().containsKey(model.get(i)) ||
+						LocalConfig.getInstance().getMetaboliteSubstitutionsMap().containsKey(model.get(i))) {
+					String name = keggIdsDataMap.get(model.get(i)).getName();
+					if (renameMetabolitesMap.containsKey(name)) {
+						ArrayList<String> keggIds = renameMetabolitesMap.get(name);
+						if (!keggIds.contains(model.get(i))) {
+							keggIds.add(model.get(i));
+							renameMetabolitesMap.put(name, keggIds);
+						}
+					} else {
+						ArrayList<String> keggIds = new ArrayList<String>();
+						if (!keggIds.contains(model.get(i))) {
+							keggIds.add(model.get(i));
+							renameMetabolitesMap.put(name, keggIds);
+						}
+					}
+				}
+			}
 			speciesMatch = true;
 		} else {
 			ArrayList<String> data1 = new ArrayList<String>();
@@ -247,8 +289,29 @@ public class PathwayReactionNodeFactory {
 			// remove all common entries
 			for (int i = 0; i < data1.size(); i++) {
 				if (model1.contains(data1.get(i))) {
+					String ki = data1.get(i);
 					model1.remove(model1.indexOf(data1.get(i)));
 					data1.remove(data1.indexOf(data1.get(i)));
+					// add any removed keys in alternate or substitution to map
+					if (LocalConfig.getInstance().getAlternateMetabolitesMap().containsKey(ki) ||
+							LocalConfig.getInstance().getMetaboliteSubstitutionsMap().containsKey(ki)) {
+						if (keggIdsDataMap.containsKey(ki)) {
+							String name = keggIdsDataMap.get(ki).getName();
+							if (renameMetabolitesMap.containsKey(name)) {
+								ArrayList<String> keggIds = renameMetabolitesMap.get(name);
+								if (!keggIds.contains(ki)) {
+									keggIds.add(ki);
+									renameMetabolitesMap.put(name, keggIds);
+								}
+							} else {
+								ArrayList<String> keggIds = new ArrayList<String>();
+								if (!keggIds.contains(ki)) {
+									keggIds.add(ki);
+									renameMetabolitesMap.put(name, keggIds);
+								}
+							}
+						} 
+					}
 				}
 			}
 			// may not be necessary, should already be sorted
@@ -279,14 +342,6 @@ public class PathwayReactionNodeFactory {
 							}
 						} 
 					}
-//					for (int j = 0; j < LocalConfig.getInstance().getMetaboliteSubstitutionsMap().get(data1.get(i)).size(); j++) {
-//						if (model1.contains(LocalConfig.getInstance().getMetaboliteSubstitutionsMap().get(data1.get(i)).get(j))) {
-//							System.out.println("s " + LocalConfig.getInstance().getMetaboliteSubstitutionsMap().get(data1.get(i)).get(j));
-//							if (keggIdsDataMap.containsKey(data1.get(i))) {
-//								System.out.println("d " + keggIdsDataMap.get(data1.get(i)));
-//							}
-//						}
-//					}
 				} else if (keggIdsDataMap.get(data1.get(i)).getType().equals(PathwaysCSVFileConstants.SIDE_METABOLITE_TYPE) &&
 						LocalConfig.getInstance().getAlternateMetabolitesMap().containsKey(data1.get(i))) {
 					for (int j = 0; j < model1.size(); j++) {
