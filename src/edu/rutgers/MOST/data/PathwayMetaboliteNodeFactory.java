@@ -1,8 +1,10 @@
 package edu.rutgers.MOST.data;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import edu.rutgers.MOST.config.LocalConfig;
+import edu.rutgers.MOST.presentation.GraphicalInterfaceConstants;
 
 public class PathwayMetaboliteNodeFactory {
 
@@ -129,6 +131,24 @@ public class PathwayMetaboliteNodeFactory {
 	}
 	
 	/**
+	 * Creates html name from lists of parameters
+	 * @param name
+	 * @param abbrList
+	 * @param nameList
+	 * @param keggIdList
+	 * @param chargeList
+	 * @return
+	 */
+	public String htmlDisplayName(String name, ArrayList<String> abbrList, ArrayList<String> nameList,
+			ArrayList<String> keggIdList, ArrayList<String> chargeList) {
+		String htmlName = "<html>" + name + "<p> Metabolite Names: " + nameList.toString() +
+				"<p> Metabolite Abbreviations: " + abbrList.toString() +
+				"<p>KEGG Ids: " + keggIdList.toString() +
+				"<p>Charge: " + chargeList.toString() + "<p>";
+		return htmlName;
+	}
+	
+	/**
 	 * Returns plural heading plus list to String if length of input list > 1. 
 	 * Else returns singular heading plus input String.
 	 * @param items
@@ -144,6 +164,24 @@ public class PathwayMetaboliteNodeFactory {
 			item = "<p>" + heading + "(s): " + items.toString();
 		}
 		return item;
+	}
+	
+	/**
+	 * Adds suffix to duplicate metabolite names
+	 * @param value
+	 * @param metaboliteNameAbbrMap
+	 * @return
+	 */
+	public String duplicateSuffix(String value, Map<String, String> metaboliteNameAbbrMap) {
+		String duplicateSuffix = GraphicalInterfaceConstants.DUPLICATE_SUFFIX;
+		if (metaboliteNameAbbrMap.containsKey(value + duplicateSuffix)) {
+			int duplicateCount = Integer.valueOf(duplicateSuffix.substring(1, duplicateSuffix.length() - 1));
+			while (metaboliteNameAbbrMap.containsKey(value + duplicateSuffix.replace("1", Integer.toString(duplicateCount + 1)))) {
+				duplicateCount += 1;
+			}
+			duplicateSuffix = duplicateSuffix.replace("1", Integer.toString(duplicateCount + 1));
+		}
+		return duplicateSuffix;
 	}
 	
 }

@@ -281,4 +281,23 @@ public class Utilities {
 		
 	}
 	
+	/**
+	 * Make comma separated from ArrayList
+	 * @param list
+	 * @return
+	 */
+	public String makeCommaSeparatedList(ArrayList<String> list) {
+		String name = "";
+		if (list.size() > 0) {
+			name = list.get(0);
+			if (list.size() > 1) {
+				for (int k = 1; k < list.size(); k++) {
+					name += ", " + list.get(k);
+				}
+			}
+		}
+		
+		return name; 
+	}
+	
 }
