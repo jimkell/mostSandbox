@@ -878,8 +878,8 @@ public class PathwaysFrame extends JApplet {
 		//Collections.sort(notFoundEcNumbers);
 		//System.out.println("not found " + notFoundEcNumbers);
                                                                                                                      
-   		nodeNameList = new ArrayList<String>(nodeNamePositionMap.keySet()); 
-   		Collections.sort(nodeNameList);
+//   		nodeNameList = new ArrayList<String>(nodeNamePositionMap.keySet()); 
+//   		Collections.sort(nodeNameList);
    		//System.out.println("m " + nodeNameList);
    		
    		reactionList = new ArrayList<String>(reactionMap.keySet()); 
@@ -1034,12 +1034,12 @@ public class PathwaysFrame extends JApplet {
     	ArrayList<String> renameMetaboliteKeys = new ArrayList<String>(prnf.getRenameMetabolitesMap().keySet());
     	for (int y = 0; y < renameMetaboliteKeys.size(); y++) {
     		boolean contains = true;
-    		System.out.println("k " + prnf.getRenameMetabolitesMap().get(renameMetaboliteKeys.get(y)));
+//    		System.out.println("k " + prnf.getRenameMetabolitesMap().get(renameMetaboliteKeys.get(y)));
     		// construct new name from kegg ids and put name and abbr into metaboliteNameAbbrMap
     		// get old abbreviation in case MetaboliteNameAbbrMap doesn't contain key
 			String abbr = "";
 			if (LocalConfig.getInstance().getMetaboliteNameAbbrMap().containsKey(renameMetaboliteKeys.get(y))) {
-    			System.out.println("a " + LocalConfig.getInstance().getMetaboliteNameAbbrMap().get(renameMetaboliteKeys.get(y)));
+//    			System.out.println("a " + LocalConfig.getInstance().getMetaboliteNameAbbrMap().get(renameMetaboliteKeys.get(y)));
     			abbr = LocalConfig.getInstance().getMetaboliteNameAbbrMap().get(renameMetaboliteKeys.get(y));
     		}
 			String metabName = renameMetaboliteKeys.get(y);
@@ -1078,30 +1078,50 @@ public class PathwaysFrame extends JApplet {
 					name = pmnf.htmlDisplayName(name, nameList, abbrList, keggIdList, chargeList);
     			}
     		}
-    		System.out.println("abbr " + abbr);
-			System.out.println("name " + name);
+//    		System.out.println("abbr " + abbr);
+//			System.out.println("name " + name);
     		
 			// these maps should all contain this key, but this avoids null pointers
     		if (nodeNamePositionMap.containsKey(renameMetaboliteKeys.get(y))) {
-    			System.out.println("r " + renameMetaboliteKeys.get(y));
-    			System.out.println("v " + nodeNamePositionMap.get(renameMetaboliteKeys.get(y)));
+//    			System.out.println("r " + renameMetaboliteKeys.get(y));
+//    			try {
+//    				System.out.println("v " + nodeNamePositionMap.get(renameMetaboliteKeys.get(y))[0]);
+//        			System.out.println("v " + nodeNamePositionMap.get(renameMetaboliteKeys.get(y))[1]);
+//    			} catch (Exception e) {
+//    				//contains = false;
+//    			}
     		} else {
     			contains = false;
     		}
     		if (LocalConfig.getInstance().getMetaboliteNameAbbrMap().containsKey(renameMetaboliteKeys.get(y))) {
-    			System.out.println("a " + LocalConfig.getInstance().getMetaboliteNameAbbrMap().get(renameMetaboliteKeys.get(y)));
+//    			System.out.println("a " + LocalConfig.getInstance().getMetaboliteNameAbbrMap().get(renameMetaboliteKeys.get(y)));
     		} else {
     			contains = false;
     		}
     		if (LocalConfig.getInstance().getMetaboliteNameDataMap().containsKey(renameMetaboliteKeys.get(y))) {
-    			System.out.println("m " + LocalConfig.getInstance().getMetaboliteNameDataMap().get(renameMetaboliteKeys.get(y)).getType());
-    			System.out.println("m " + LocalConfig.getInstance().getMetaboliteNameDataMap().get(renameMetaboliteKeys.get(y)).getBorder());
+//    			System.out.println("m " + LocalConfig.getInstance().getMetaboliteNameDataMap().get(renameMetaboliteKeys.get(y)).getType());
+//    			System.out.println("m " + LocalConfig.getInstance().getMetaboliteNameDataMap().get(renameMetaboliteKeys.get(y)).getBorder());
     		} else {
     			contains = false;
     		}
     		// rename node if all required information is present
-    		if (contains && name != null && name.length() > 0 && abbr != null && abbr.length() > 0) {
-    			System.out.println("re");
+    		if (contains && abbr != null && abbr.length() > 0) {
+    			System.out.println("abbr " + abbr);
+    			System.out.println("name " + name);
+    			System.out.println("old " + metabName);
+//    			nodeNameList.remove(nodeNameList.indexOf(metabName));
+//    			nodeNameList.add(name);
+//    			LocalConfig.getInstance().getMetaboliteNameAbbrMap().remove(metabName);
+//    			LocalConfig.getInstance().getMetaboliteNameAbbrMap().put(name, abbr);
+//    			nodeNamePositionMap.remove(metabName);
+//    			nodeNamePositionMap.put(name, nodeNamePositionMap.get(renameMetaboliteKeys.get(y)));
+    			if (LocalConfig.getInstance().getMetaboliteNameDataMap().get(renameMetaboliteKeys.get(y)).getBorder().equals("0")) {
+    				noBorderList.add(name);
+    			}
+    			for (int k = 0; k < keggIdList.size(); k ++) {
+    				classifyMetabolite(LocalConfig.getInstance().getMetaboliteNameDataMap().get(renameMetaboliteKeys.get(y)).getType(), 
+        					name, keggIdList.get(k));
+    			}
     		}
     	}
     }
@@ -1127,13 +1147,21 @@ public class PathwaysFrame extends JApplet {
     
     public void classifyMetabolite(String type, String metabName, String keggId) {
 		if (type.equals(PathwaysCSVFileConstants.MAIN_METABOLITE_TYPE)) {
-			mainMetabolites.add(metabName);
+			if (!mainMetabolites.contains(metabName)) {
+				mainMetabolites.add(metabName);
+			}
 		} else if (type.equals(PathwaysCSVFileConstants.SMALL_MAIN_METABOLITE_TYPE)) {
-			smallMainMetabolites.add(metabName);
+			if (!smallMainMetabolites.contains(metabName)) {
+				smallMainMetabolites.add(metabName);
+			}
 		} else if (type.equals(PathwaysCSVFileConstants.SIDE_METABOLITE_TYPE)) {
-			sideMetabolites.add(metabName);
-			if (PathwaysFrameConstants.cofactorList.contains(keggId)) {
-				cofactors.add(metabName);
+			if (!sideMetabolites.contains(metabName)) {
+				sideMetabolites.add(metabName);
+				if (PathwaysFrameConstants.cofactorList.contains(keggId)) {
+					if (!cofactors.contains(metabName)) {
+						cofactors.add(metabName);
+					}
+				}
 			}
 		}
     }
@@ -1236,6 +1264,8 @@ public class PathwaysFrame extends JApplet {
     public void createIconMap() {
     	//Map<String, Icon> iconMap = new HashMap<String, Icon>();   
     	iconMap.clear();
+    	nodeNameList = new ArrayList<String>(nodeNamePositionMap.keySet()); 
+//   		Collections.sort(nodeNameList);
         for (int i = 0; i < nodeNameList.size(); i++) {                                                                                                        
         	String name = nodeNameList.get(i);
         	String abbr = LocalConfig.getInstance().getMetaboliteNameAbbrMap().get(name);
