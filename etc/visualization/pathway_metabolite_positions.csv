@@ -4062,7 +4062,7 @@ Pathway ID,Metabolite ID,Metabolite Level,Metabolite Level Position,Metabolite N
 0,4060,15.7,2.45,Acceptor,Acceptor,C00028,0,s,,,,
 0,4061,16,2.2,Reduced acceptor,Reduced acceptor,C00030,0,s,,,,
 0,4062,16.4,1.45,Nicotinamide adenine dinucleotide,NAD,C00003,0,s,,,,
-0,4063,16.8,1.05,Reduced nicotinamide adenine dinucleotide,NADH,C00004,0,s,,,,
+0,4063,16.85,1.15,Reduced nicotinamide adenine dinucleotide,NADH,C00004,0,s,,,,
 0,4064,21.2,-0.95,Nicotinamide adenine dinucleotide,NAD,C00003,0,s,,,,
 0,4065,21,-1.35,Reduced nicotinamide adenine dinucleotide,NADH,C00004,0,s,,,,
 0,4066,20.75,-0.85,Acceptor,Acceptor,C00028,0,s,,,,

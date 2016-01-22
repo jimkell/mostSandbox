@@ -448,37 +448,29 @@ public class PathwayFilesReader {
 									}
 								}
 							}
-							//System.out.println(abbrList);
-							// the code below must be used to account for when multiple
-							// metabolites have the same KEGG id
 							if (abbrList.size() > 0) {
 								name = util.makeCommaSeparatedList(abbrList);
-//								name = abbrList.get(0);
-//								if (abbrList.size() > 1) {
-//									for (int k = 1; k < abbrList.size(); k++) {
-//										name += ", " + abbrList.get(k);
-//									}
-//								} 
 								metabAbbr = name;
 							} else {
 								name = metabAbbr;
 							}
-							abbr = util.maybeRemovePrefixAndSuffix(metabAbbr);
-							name = pmnf.htmlDisplayName(name, nameList, abbrList, keggIdList, chargeList);
-//							name = "<html>" + name + "<p> Metabolite Names: " + nameList.toString() +
-//									"<p> Metabolite Abbreviations: " + abbrList.toString() +
-//									"<p>KEGG Ids: " + keggIdList.toString() +
-//									"<p>Charge: " + chargeList.toString() + "<p>";
+							if (abbrList.size() > 1) {
+		    					ArrayList<String> abbrNoPrefixOrSuffix = new ArrayList<String>();
+		    					for (int p = 0; p < abbrList.size(); p++) {
+		    						abbrNoPrefixOrSuffix.add(util.maybeRemovePrefixAndSuffix(abbrList.get(p)));
+		    					}
+		    					abbr = util.makeCommaSeparatedList(abbrNoPrefixOrSuffix);
+		    				} else {
+		    					abbr = util.maybeRemovePrefixAndSuffix(metabAbbr);
+		    				}
+							//abbr = util.maybeRemovePrefixAndSuffix(metabAbbr);
+							name = pmnf.htmlDisplayName(abbr, nameList, abbrList, keggIdList, chargeList);
 						}
-//						name = "<html>" + name + "<p>" + pm.getNames().get(0);
 						if (metaboliteNameAbbrMap.containsKey(name)) {
 							name = name + pmnf.duplicateSuffix(name, metaboliteNameAbbrMap);
 						}
-						//name += "<p>" + pm.getNames().get(0);
 						pm.setName(name);
-//						System.out.println("a " + abbr);
 						pm.setAbbreviation(abbr);
-//						System.out.println("p " + pm.getAbbreviation());
 						metaboliteNameAbbrMap.put(name, abbr);
 						metaboliteNameDataMap.put(name, pm);
 					}

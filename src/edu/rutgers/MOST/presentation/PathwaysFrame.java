@@ -193,6 +193,7 @@ public class PathwaysFrame extends JApplet {
    	ArrayList<String> foundReactionsList = new ArrayList<String>();
    	Map<String, Icon> iconMap = new HashMap<String, Icon>(); 
    	ArrayList<Integer> plottedIds = new ArrayList<Integer>();
+   	Map<String, String> oldNameNewNameMap = new HashMap<String, String>(); 
    	
    	PathwayReactionNodeFactory prnf = new PathwayReactionNodeFactory();
    	PathwayMetaboliteNodeFactory pmnf = new PathwayMetaboliteNodeFactory();
@@ -539,7 +540,7 @@ public class PathwaysFrame extends JApplet {
         // based on http://stackoverflow.com/questions/31940238/settooltip-in-jung-for-several-vertices
         vv.setVertexToolTipTransformer(new Transformer<String,String>() {                                              
         	public String transform(String v) {
-        		return "test";                                                    
+        		return nodeName(v);                                                    
         	}});                                
         // no tooltips on edges for now
         vv.setEdgeToolTipTransformer(new Transformer<Number,String>() {                                              
@@ -1037,11 +1038,9 @@ public class PathwaysFrame extends JApplet {
 				}
 			}
 		}
-    	System.out.println("m " + prnf.getRenameMetabolitesMap());
+//    	System.out.println("m " + prnf.getRenameMetabolitesMap());
     	ArrayList<String> renameMetaboliteKeys = new ArrayList<String>(prnf.getRenameMetabolitesMap().keySet());
     	for (int y = 0; y < renameMetaboliteKeys.size(); y++) {
-    		boolean contains = true;
-//    		System.out.println("k " + prnf.getRenameMetabolitesMap().get(renameMetaboliteKeys.get(y)));
     		// construct new name from kegg ids and put name and abbr into metaboliteNameAbbrMap
     		// get old abbreviation in case MetaboliteNameAbbrMap doesn't contain key
 			String abbr = "";
@@ -1069,9 +1068,6 @@ public class PathwaysFrame extends JApplet {
         					if (!nameList.contains(LocalConfig.getInstance().getKeggIdMetaboliteMap().get(prnf.getRenameMetabolitesMap().get(renameMetaboliteKeys.get(y)).get(z)).get(j).getMetaboliteName())) {
         						nameList.add(LocalConfig.getInstance().getKeggIdMetaboliteMap().get(prnf.getRenameMetabolitesMap().get(renameMetaboliteKeys.get(y)).get(z)).get(j).getMetaboliteName());
         					}
-        					//							if (!keggIdList.contains(prnf.getRenameMetabolitesMap().get(renameMetaboliteKeys.get(y)).get(z))) {
-        					//								keggIdList.add(prnf.getRenameMetabolitesMap().get(renameMetaboliteKeys.get(y)).get(z));
-        					//							}
         					String charge = LocalConfig.getInstance().getKeggIdMetaboliteMap().get(prnf.getRenameMetabolitesMap().get(renameMetaboliteKeys.get(y)).get(z)).get(j).getCharge();
         					if (charge != null && charge.length() > 0 && !chargeList.contains(charge.trim())) {
         						chargeList.add(charge.trim());
@@ -1096,51 +1092,11 @@ public class PathwaysFrame extends JApplet {
 					name = pmnf.htmlDisplayName(abbr, nameList, abbrList, keggIdList, chargeList);
     			}
     		}
-    		System.out.println("abbr " + abbr);
-			System.out.println("name " + name);
-    		
-			// these maps should all contain this key, but this avoids null pointers
-//    		if (nodeNamePositionMap.containsKey(renameMetaboliteKeys.get(y))) {
-//    			System.out.println("r " + renameMetaboliteKeys.get(y));
-//    			try {
-//    				System.out.println("v " + nodeNamePositionMap.get(renameMetaboliteKeys.get(y))[0]);
-//        			System.out.println("v " + nodeNamePositionMap.get(renameMetaboliteKeys.get(y))[1]);
-//    			} catch (Exception e) {
-//    				//contains = false;
-//    			}
-//    		} else {
-//    			contains = false;
-//    		}
-//    		if (LocalConfig.getInstance().getMetaboliteNameAbbrMap().containsKey(renameMetaboliteKeys.get(y))) {
-////    			System.out.println("a " + LocalConfig.getInstance().getMetaboliteNameAbbrMap().get(renameMetaboliteKeys.get(y)));
-//    		} else {
-//    			contains = false;
-//    		}
-//    		if (LocalConfig.getInstance().getMetaboliteNameDataMap().containsKey(renameMetaboliteKeys.get(y))) {
-////    			System.out.println("m " + LocalConfig.getInstance().getMetaboliteNameDataMap().get(renameMetaboliteKeys.get(y)).getType());
-////    			System.out.println("m " + LocalConfig.getInstance().getMetaboliteNameDataMap().get(renameMetaboliteKeys.get(y)).getBorder());
-//    		} else {
-//    			contains = false;
-//    		}
-//    		// rename node if all required information is present
-//    		if (contains && abbr != null && abbr.length() > 0) {
-//    			System.out.println("abbr " + abbr);
-//    			System.out.println("name " + name);
-//    			System.out.println("old " + metabName);
-//    			nodeNameList.remove(nodeNameList.indexOf(metabName));
-//    			nodeNameList.add(name);
-//    			LocalConfig.getInstance().getMetaboliteNameAbbrMap().remove(metabName);
-//    			LocalConfig.getInstance().getMetaboliteNameAbbrMap().put(name, abbr);
-//    			nodeNamePositionMap.remove(metabName);
-//    			nodeNamePositionMap.put(name, nodeNamePositionMap.get(renameMetaboliteKeys.get(y)));
-//    			if (LocalConfig.getInstance().getMetaboliteNameDataMap().get(renameMetaboliteKeys.get(y)).getBorder().equals("0")) {
-//    				noBorderList.add(name);
-//    			}
-//    			for (int k = 0; k < keggIdList.size(); k ++) {
-//    				classifyMetabolite(LocalConfig.getInstance().getMetaboliteNameDataMap().get(renameMetaboliteKeys.get(y)).getType(), 
-//        					name, keggIdList.get(k));
-//    			}
-//    		}
+//    		System.out.println("abbr " + abbr);
+//			System.out.println("name " + name);
+//			System.out.println("old " + metabName);
+			oldNameNewNameMap.put(metabName, name);
+			LocalConfig.getInstance().getMetaboliteNameAbbrMap().put(metabName, abbr);
     	}
     }
     
@@ -1599,8 +1555,7 @@ public class PathwaysFrame extends JApplet {
 		if (getNodeInformationDialog() != null) {
 			getNodeInformationDialog().dispose();
 		}
-		//NodeInformationDialog frame = new NodeInformationDialog(arg0.toString());
-		NodeInformationDialog frame = new NodeInformationDialog("test");
+		NodeInformationDialog frame = new NodeInformationDialog(nodeName(arg0.toString()));
 		setNodeInformationDialog(frame);
 
 		frame.setIconImages(icons);
@@ -1634,6 +1589,19 @@ public class PathwaysFrame extends JApplet {
     }
     
     /**
+     * Returns name of renamed node if oldNameNewNameMap contains name, else returns name.
+     * @param name
+     * @return
+     */
+    public String nodeName(String name) {
+    	if (oldNameNewNameMap.containsKey(name)) {
+    		return oldNameNewNameMap.get(name);
+    	}
+		return name;
+    	
+    }
+    
+    /**
 	 * Adds suffix to duplicate names
 	 * @param value
 	 * @param metaboliteNameAbbrMap
@@ -1661,7 +1629,9 @@ public class PathwaysFrame extends JApplet {
 		}
 	}
 	
-//	@SuppressWarnings("static-access")
+	/*******************************************************************************************/
+	// Find
+	/*******************************************************************************************/
 	public void showFindDialog() {
 //		LocalConfig.getInstance().setReactionsLocationsListCount(0);
 //		LocalConfig.getInstance().setMetabolitesLocationsListCount(0);
@@ -1928,6 +1898,10 @@ public class PathwaysFrame extends JApplet {
 			findDialogCloseAction();
 		}
 	};	
+	
+	/*******************************************************************************************/
+	// End Find
+	/*******************************************************************************************/
     
     public static void main(String[] args) {                                                                         
         // create a frome to hold the graph                                                                          
