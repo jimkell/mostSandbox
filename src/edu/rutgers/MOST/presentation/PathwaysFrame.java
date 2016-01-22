@@ -1060,19 +1060,22 @@ public class PathwaysFrame extends JApplet {
 //    			System.out.println("k1 " + prnf.getRenameMetabolitesMap().get(renameMetaboliteKeys.get(y)).get(z));
     			if (LocalConfig.getInstance().getKeggIdMetaboliteMap().containsKey(prnf.getRenameMetabolitesMap().get(renameMetaboliteKeys.get(y)).get(z))) {	
     				for (int j = 0; j < LocalConfig.getInstance().getKeggIdMetaboliteMap().get(prnf.getRenameMetabolitesMap().get(renameMetaboliteKeys.get(y)).get(z)).size(); j++) {
-    					metabAbbr = LocalConfig.getInstance().getKeggIdMetaboliteMap().get(prnf.getRenameMetabolitesMap().get(renameMetaboliteKeys.get(y)).get(z)).get(j).getMetaboliteAbbreviation();
-    					if (!abbrList.contains(LocalConfig.getInstance().getKeggIdMetaboliteMap().get(prnf.getRenameMetabolitesMap().get(renameMetaboliteKeys.get(y)).get(z)).get(j).getMetaboliteAbbreviation())) {
-    						abbrList.add(LocalConfig.getInstance().getKeggIdMetaboliteMap().get(prnf.getRenameMetabolitesMap().get(renameMetaboliteKeys.get(y)).get(z)).get(j).getMetaboliteAbbreviation());
-    					}
-    					if (!nameList.contains(LocalConfig.getInstance().getKeggIdMetaboliteMap().get(prnf.getRenameMetabolitesMap().get(renameMetaboliteKeys.get(y)).get(z)).get(j).getMetaboliteName())) {
-    						nameList.add(LocalConfig.getInstance().getKeggIdMetaboliteMap().get(prnf.getRenameMetabolitesMap().get(renameMetaboliteKeys.get(y)).get(z)).get(j).getMetaboliteName());
-    					}
-    					//							if (!keggIdList.contains(prnf.getRenameMetabolitesMap().get(renameMetaboliteKeys.get(y)).get(z))) {
-    					//								keggIdList.add(prnf.getRenameMetabolitesMap().get(renameMetaboliteKeys.get(y)).get(z));
-    					//							}
-    					String charge = LocalConfig.getInstance().getKeggIdMetaboliteMap().get(prnf.getRenameMetabolitesMap().get(renameMetaboliteKeys.get(y)).get(z)).get(j).getCharge();
-    					if (charge != null && charge.length() > 0 && !chargeList.contains(charge.trim())) {
-    						chargeList.add(charge.trim());
+    					if (LocalConfig.getInstance().getKeggIdMetaboliteMap().get(prnf.getRenameMetabolitesMap().get(renameMetaboliteKeys.get(y)).get(z)).get(j).getCompartment().
+    							equals(LocalConfig.getInstance().getSelectedCompartmentName())) {
+    						metabAbbr = LocalConfig.getInstance().getKeggIdMetaboliteMap().get(prnf.getRenameMetabolitesMap().get(renameMetaboliteKeys.get(y)).get(z)).get(j).getMetaboliteAbbreviation();
+        					if (!abbrList.contains(LocalConfig.getInstance().getKeggIdMetaboliteMap().get(prnf.getRenameMetabolitesMap().get(renameMetaboliteKeys.get(y)).get(z)).get(j).getMetaboliteAbbreviation())) {
+        						abbrList.add(LocalConfig.getInstance().getKeggIdMetaboliteMap().get(prnf.getRenameMetabolitesMap().get(renameMetaboliteKeys.get(y)).get(z)).get(j).getMetaboliteAbbreviation());
+        					}
+        					if (!nameList.contains(LocalConfig.getInstance().getKeggIdMetaboliteMap().get(prnf.getRenameMetabolitesMap().get(renameMetaboliteKeys.get(y)).get(z)).get(j).getMetaboliteName())) {
+        						nameList.add(LocalConfig.getInstance().getKeggIdMetaboliteMap().get(prnf.getRenameMetabolitesMap().get(renameMetaboliteKeys.get(y)).get(z)).get(j).getMetaboliteName());
+        					}
+        					//							if (!keggIdList.contains(prnf.getRenameMetabolitesMap().get(renameMetaboliteKeys.get(y)).get(z))) {
+        					//								keggIdList.add(prnf.getRenameMetabolitesMap().get(renameMetaboliteKeys.get(y)).get(z));
+        					//							}
+        					String charge = LocalConfig.getInstance().getKeggIdMetaboliteMap().get(prnf.getRenameMetabolitesMap().get(renameMetaboliteKeys.get(y)).get(z)).get(j).getCharge();
+        					if (charge != null && charge.length() > 0 && !chargeList.contains(charge.trim())) {
+        						chargeList.add(charge.trim());
+        					}
     					}
     				}
     				if (abbrList.size() > 0) {
@@ -1081,15 +1084,23 @@ public class PathwaysFrame extends JApplet {
 					} else {
 						name = metabAbbr;
 					}
-					abbr = util.maybeRemovePrefixAndSuffix(metabAbbr);
-					name = pmnf.htmlDisplayName(name, nameList, abbrList, keggIdList, chargeList);
+    				if (abbrList.size() > 1) {
+    					ArrayList<String> abbrNoPrefixOrSuffix = new ArrayList<String>();
+    					for (int p = 0; p < abbrList.size(); p++) {
+    						abbrNoPrefixOrSuffix.add(util.maybeRemovePrefixAndSuffix(abbrList.get(p)));
+    					}
+    					abbr = util.makeCommaSeparatedList(abbrNoPrefixOrSuffix);
+    				} else {
+    					abbr = util.maybeRemovePrefixAndSuffix(metabAbbr);
+    				}
+					name = pmnf.htmlDisplayName(abbr, nameList, abbrList, keggIdList, chargeList);
     			}
     		}
-//    		System.out.println("abbr " + abbr);
-//			System.out.println("name " + name);
+    		System.out.println("abbr " + abbr);
+			System.out.println("name " + name);
     		
 			// these maps should all contain this key, but this avoids null pointers
-    		if (nodeNamePositionMap.containsKey(renameMetaboliteKeys.get(y))) {
+//    		if (nodeNamePositionMap.containsKey(renameMetaboliteKeys.get(y))) {
 //    			System.out.println("r " + renameMetaboliteKeys.get(y));
 //    			try {
 //    				System.out.println("v " + nodeNamePositionMap.get(renameMetaboliteKeys.get(y))[0]);
@@ -1097,39 +1108,39 @@ public class PathwaysFrame extends JApplet {
 //    			} catch (Exception e) {
 //    				//contains = false;
 //    			}
-    		} else {
-    			contains = false;
-    		}
-    		if (LocalConfig.getInstance().getMetaboliteNameAbbrMap().containsKey(renameMetaboliteKeys.get(y))) {
-//    			System.out.println("a " + LocalConfig.getInstance().getMetaboliteNameAbbrMap().get(renameMetaboliteKeys.get(y)));
-    		} else {
-    			contains = false;
-    		}
-    		if (LocalConfig.getInstance().getMetaboliteNameDataMap().containsKey(renameMetaboliteKeys.get(y))) {
-//    			System.out.println("m " + LocalConfig.getInstance().getMetaboliteNameDataMap().get(renameMetaboliteKeys.get(y)).getType());
-//    			System.out.println("m " + LocalConfig.getInstance().getMetaboliteNameDataMap().get(renameMetaboliteKeys.get(y)).getBorder());
-    		} else {
-    			contains = false;
-    		}
-    		// rename node if all required information is present
-    		if (contains && abbr != null && abbr.length() > 0) {
-    			System.out.println("abbr " + abbr);
-    			System.out.println("name " + name);
-    			System.out.println("old " + metabName);
+//    		} else {
+//    			contains = false;
+//    		}
+//    		if (LocalConfig.getInstance().getMetaboliteNameAbbrMap().containsKey(renameMetaboliteKeys.get(y))) {
+////    			System.out.println("a " + LocalConfig.getInstance().getMetaboliteNameAbbrMap().get(renameMetaboliteKeys.get(y)));
+//    		} else {
+//    			contains = false;
+//    		}
+//    		if (LocalConfig.getInstance().getMetaboliteNameDataMap().containsKey(renameMetaboliteKeys.get(y))) {
+////    			System.out.println("m " + LocalConfig.getInstance().getMetaboliteNameDataMap().get(renameMetaboliteKeys.get(y)).getType());
+////    			System.out.println("m " + LocalConfig.getInstance().getMetaboliteNameDataMap().get(renameMetaboliteKeys.get(y)).getBorder());
+//    		} else {
+//    			contains = false;
+//    		}
+//    		// rename node if all required information is present
+//    		if (contains && abbr != null && abbr.length() > 0) {
+//    			System.out.println("abbr " + abbr);
+//    			System.out.println("name " + name);
+//    			System.out.println("old " + metabName);
 //    			nodeNameList.remove(nodeNameList.indexOf(metabName));
 //    			nodeNameList.add(name);
 //    			LocalConfig.getInstance().getMetaboliteNameAbbrMap().remove(metabName);
 //    			LocalConfig.getInstance().getMetaboliteNameAbbrMap().put(name, abbr);
 //    			nodeNamePositionMap.remove(metabName);
 //    			nodeNamePositionMap.put(name, nodeNamePositionMap.get(renameMetaboliteKeys.get(y)));
-    			if (LocalConfig.getInstance().getMetaboliteNameDataMap().get(renameMetaboliteKeys.get(y)).getBorder().equals("0")) {
-    				noBorderList.add(name);
-    			}
-    			for (int k = 0; k < keggIdList.size(); k ++) {
-    				classifyMetabolite(LocalConfig.getInstance().getMetaboliteNameDataMap().get(renameMetaboliteKeys.get(y)).getType(), 
-        					name, keggIdList.get(k));
-    			}
-    		}
+//    			if (LocalConfig.getInstance().getMetaboliteNameDataMap().get(renameMetaboliteKeys.get(y)).getBorder().equals("0")) {
+//    				noBorderList.add(name);
+//    			}
+//    			for (int k = 0; k < keggIdList.size(); k ++) {
+//    				classifyMetabolite(LocalConfig.getInstance().getMetaboliteNameDataMap().get(renameMetaboliteKeys.get(y)).getType(), 
+//        					name, keggIdList.get(k));
+//    			}
+//    		}
     	}
     }
     

@@ -139,7 +139,7 @@ public class PathwayMetaboliteNodeFactory {
 	 * @param chargeList
 	 * @return
 	 */
-	public String htmlDisplayName(String name, ArrayList<String> abbrList, ArrayList<String> nameList,
+	public String htmlDisplayName(String name, ArrayList<String> nameList, ArrayList<String> abbrList,
 			ArrayList<String> keggIdList, ArrayList<String> chargeList) {
 		String htmlName = "<html>" + name + "<p> Metabolite Names: " + nameList.toString() +
 				"<p> Metabolite Abbreviations: " + abbrList.toString() +
