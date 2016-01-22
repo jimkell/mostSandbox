@@ -533,7 +533,14 @@ public class PathwaysFrame extends JApplet {
         vv.getRenderContext().setArrowDrawPaintTransformer(colorTransformer);
         
         // add listeners for ToolTips  
-        vv.setVertexToolTipTransformer(new ToStringLabeller()); 
+        //vv.setVertexToolTipTransformer(new ToStringLabeller()); 
+        
+        // Tooltips can be set programmatically
+        // based on http://stackoverflow.com/questions/31940238/settooltip-in-jung-for-several-vertices
+        vv.setVertexToolTipTransformer(new Transformer<String,String>() {                                              
+        	public String transform(String v) {
+        		return "test";                                                    
+        	}});                                
         // no tooltips on edges for now
         vv.setEdgeToolTipTransformer(new Transformer<Number,String>() {                                              
         	public String transform(Number edge) {
@@ -1581,7 +1588,8 @@ public class PathwaysFrame extends JApplet {
 		if (getNodeInformationDialog() != null) {
 			getNodeInformationDialog().dispose();
 		}
-		NodeInformationDialog frame = new NodeInformationDialog(arg0.toString());
+		//NodeInformationDialog frame = new NodeInformationDialog(arg0.toString());
+		NodeInformationDialog frame = new NodeInformationDialog("test");
 		setNodeInformationDialog(frame);
 
 		frame.setIconImages(icons);
