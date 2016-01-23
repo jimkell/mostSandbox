@@ -336,16 +336,20 @@ public class PathwayReactionNodeFactory {
 	public void updateRenameMetabolitesMap(String name, String keggId, boolean containsProton) {
 		if (renameMetabolitesMap.containsKey(name)) {
 			ArrayList<String> keggIds = renameMetabolitesMap.get(name);
-			updateKeggIdList(name, keggId, keggIds);
+			updateKeggIdList(name, keggId, keggIds, containsProton);
 		} else {
 			ArrayList<String> keggIds = new ArrayList<String>();
-			updateKeggIdList(name, keggId, keggIds);
+			updateKeggIdList(name, keggId, keggIds, containsProton);
 		}
 	}
 	
-	public void updateKeggIdList(String name, String keggId, ArrayList<String> keggIds) {
+	public void updateKeggIdList(String name, String keggId, ArrayList<String> keggIds, boolean containsProton) {
 		if (!keggIds.contains(keggId)) {
 			keggIds.add(keggId);
+			if (containsProton && maybeAddProton(keggId) && !keggIds.contains("C00080")) {
+				keggIds.add("C00080");
+				//System.out.println(keggIds);
+			}
 			renameMetabolitesMap.put(name, keggIds);
 		}
 	}
@@ -353,11 +357,6 @@ public class PathwayReactionNodeFactory {
 	public ArrayList<String> removedSpeciesBeforeComparison(String[] removeList, ArrayList<String> list) {
 		java.util.List<String> removeArrayList = Arrays.asList(removeList);
 		ArrayList<String> list2 = new ArrayList<String>();
-//		for (int i = 0; i < removeList.length; i++) {
-//			if (list.contains(removeList[i])) {
-//				list.remove(list.indexOf(removeList[i]));
-//			}
-//		}
 		// make a new list since removing items modifies original list
 		for (int i = 0; i < list.size(); i++) {
 			if (!removeArrayList.contains(list.get(i))) {
