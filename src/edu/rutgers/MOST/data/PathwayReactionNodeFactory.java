@@ -1,6 +1,7 @@
 package edu.rutgers.MOST.data;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -199,6 +200,8 @@ public class PathwayReactionNodeFactory {
 		boolean containsProton = false;
 		if (modelIds.contains("C00080")) {
 			containsProton = true;
+//			System.out.println("model " + modelIds);
+//			System.out.println("1 " + containsProton);
 		}
 		ArrayList<String> data = dataIds;
 		for (int i = 0; i < data.size(); i++) {
@@ -216,25 +219,7 @@ public class PathwayReactionNodeFactory {
 						LocalConfig.getInstance().getMetaboliteSubstitutionsMap().containsKey(modelIds.get(j))) {
 					if (keggIdsDataMap.containsKey(modelIds.get(j))) {
 						String name = keggIdsDataMap.get(modelIds.get(j)).getName();
-						if (renameMetabolitesMap.containsKey(name)) {
-							ArrayList<String> keggIds = renameMetabolitesMap.get(name);
-							if (!keggIds.contains(modelIds.get(j))) {
-								keggIds.add(modelIds.get(j));
-								if (containsProton && maybeAddProton(modelIds.get(j)) && !keggIds.contains("C00080")) {
-									keggIds.add("C00080");
-								}
-								renameMetabolitesMap.put(name, keggIds);
-							}
-						} else {
-							ArrayList<String> keggIds = new ArrayList<String>();
-							if (!keggIds.contains(modelIds.get(j))) {
-								keggIds.add(modelIds.get(j));
-								if (containsProton && maybeAddProton(modelIds.get(j)) && !keggIds.contains("C00080")) {
-									keggIds.add("C00080");
-								}
-								renameMetabolitesMap.put(name, keggIds);
-							}
-						}
+						updateRenameMetabolitesMap(name, modelIds.get(j), containsProton);
 					} 
 				}
 			}
@@ -259,9 +244,7 @@ public class PathwayReactionNodeFactory {
 		}
 		ArrayList<String> data = removedSpeciesBeforeComparison(VisualizationConstants.REMOVE_BEFORE_REACTION_COMPARISON, dataIds);
 		ArrayList<String> model = removedSpeciesBeforeComparison(VisualizationConstants.REMOVE_BEFORE_REACTION_COMPARISON, modelIds);
-		//System.out.println(model);
 		if (data.size() != model.size()) {
-			//System.out.println("f");
 			return false;
 		} 
 		Collections.sort(data);
@@ -271,25 +254,7 @@ public class PathwayReactionNodeFactory {
 				if (LocalConfig.getInstance().getAlternateMetabolitesMap().containsKey(model.get(i)) ||
 						LocalConfig.getInstance().getMetaboliteSubstitutionsMap().containsKey(model.get(i))) {
 					String name = keggIdsDataMap.get(model.get(i)).getName();
-					if (renameMetabolitesMap.containsKey(name)) {
-						ArrayList<String> keggIds = renameMetabolitesMap.get(name);
-						if (!keggIds.contains(model.get(i))) {
-							keggIds.add(model.get(i));
-							if (containsProton && maybeAddProton(model.get(i)) && !keggIds.contains("C00080")) {
-								keggIds.add("C00080");
-							}
-							renameMetabolitesMap.put(name, keggIds);
-						}
-					} else {
-						ArrayList<String> keggIds = new ArrayList<String>();
-						if (!keggIds.contains(model.get(i))) {
-							keggIds.add(model.get(i));
-							if (containsProton && maybeAddProton(model.get(i)) && !keggIds.contains("C00080")) {
-								keggIds.add("C00080");
-							}
-							renameMetabolitesMap.put(name, keggIds);
-						}
-					}
+					updateRenameMetabolitesMap(name, model.get(i), containsProton);
 				}
 			}
 			speciesMatch = true;
@@ -303,8 +268,6 @@ public class PathwayReactionNodeFactory {
 			for (int i = 0; i < model.size(); i++) {
 				model1.add(model.get(i));
 			}
-//			System.out.println("d1 " + data1);
-//			System.out.println("m1 " + model1);
 			// remove all common entries
 			for (int i = 0; i < data1.size(); i++) {
 				if (model1.contains(data1.get(i))) {
@@ -316,25 +279,7 @@ public class PathwayReactionNodeFactory {
 							LocalConfig.getInstance().getMetaboliteSubstitutionsMap().containsKey(ki)) {
 						if (keggIdsDataMap.containsKey(ki)) {
 							String name = keggIdsDataMap.get(ki).getName();
-							if (renameMetabolitesMap.containsKey(name)) {
-								ArrayList<String> keggIds = renameMetabolitesMap.get(name);
-								if (!keggIds.contains(ki)) {
-									keggIds.add(ki);
-									if (containsProton && maybeAddProton(ki) && !keggIds.contains("C00080")) {
-										keggIds.add("C00080");
-									}
-									renameMetabolitesMap.put(name, keggIds);
-								}
-							} else {
-								ArrayList<String> keggIds = new ArrayList<String>();
-								if (!keggIds.contains(ki)) {
-									keggIds.add(ki);
-									if (containsProton && maybeAddProton(ki) && !keggIds.contains("C00080")) {
-										keggIds.add("C00080");
-									}
-									renameMetabolitesMap.put(name, keggIds);
-								}
-							}
+							updateRenameMetabolitesMap(name, ki, containsProton);
 						} 
 					}
 				}
@@ -342,8 +287,6 @@ public class PathwayReactionNodeFactory {
 			// may not be necessary, should already be sorted
 			Collections.sort(data1);
 			Collections.sort(model1);
-//			System.out.println("d2 " + data1);
-//			System.out.println("m2 " + model1);
 			ArrayList<String> model2 = new ArrayList<String>();
 			// data1 and model1 should be same size. replace substitutions and alternates (if side
 			// species) with keys to enforce A -> B model where if B is present it is considered
@@ -354,13 +297,9 @@ public class PathwayReactionNodeFactory {
 			for (int i = 0; i < data1.size(); i++) {
 				String entry = model1.get(i);
 				if (LocalConfig.getInstance().getMetaboliteSubstitutionsMap().containsKey(data1.get(i))) {
-//					System.out.println("s " + LocalConfig.getInstance().getMetaboliteSubstitutionsMap().get(data1.get(i)));
 					for (int j = 0; j < model1.size(); j++) {
 						if (LocalConfig.getInstance().getMetaboliteSubstitutionsMap().get(data1.get(i)).contains(model1.get(j))) {
-//							System.out.println("ks " + data1.get(i));
-//							System.out.println("ms " + model1.get(j));
 							if (keggIdsDataMap.containsKey(data1.get(i))) {
-//								System.out.println("ds " + keggIdsDataMap.get(data1.get(i)).getName());
 								// replace substitution with key
 								entry = data1.get(i);
 								nameReplacedId.put(keggIdsDataMap.get(data1.get(i)).getName(), model1.get(j));
@@ -371,10 +310,7 @@ public class PathwayReactionNodeFactory {
 						LocalConfig.getInstance().getAlternateMetabolitesMap().containsKey(data1.get(i))) {
 					for (int j = 0; j < model1.size(); j++) {
 						if (LocalConfig.getInstance().getAlternateMetabolitesMap().get(data1.get(i)).contains(model1.get(j))) {
-//							System.out.println("ka " + data1.get(i));
-//							System.out.println("ma " + model1.get(j));
 							if (keggIdsDataMap.containsKey(data1.get(i))) {
-//								System.out.println("da " + keggIdsDataMap.get(data1.get(i)).getName());
 								// replace alternate with key
 								entry = data1.get(i);
 								nameReplacedId.put(keggIdsDataMap.get(data1.get(i)).getName(), model1.get(j));
@@ -386,32 +322,10 @@ public class PathwayReactionNodeFactory {
 			}
 			Collections.sort(model2);
 			if (data1.equals(model2)) {
-//				System.out.println("d " + data1);
-//				System.out.println("1 " + model1);
-//				System.out.println("2 " + model2);
 				speciesMatch = true;
-//				System.out.println(nameReplacedId);
 				ArrayList<String> names = new ArrayList<String>(nameReplacedId.keySet());
 				for (int i = 0; i < names.size(); i++) {
-					if (renameMetabolitesMap.containsKey(names.get(i))) {
-						ArrayList<String> keggIds = renameMetabolitesMap.get(names.get(i));
-						if (!keggIds.contains(nameReplacedId.get(names.get(i)))) {
-							keggIds.add(nameReplacedId.get(names.get(i)));
-							if (containsProton && maybeAddProton(nameReplacedId.get(names.get(i))) && !keggIds.contains("C00080")) {
-								keggIds.add("C00080");
-							}
-							renameMetabolitesMap.put(names.get(i), keggIds);
-						}
-					} else {
-						ArrayList<String> keggIds = new ArrayList<String>();
-						if (!keggIds.contains(nameReplacedId.get(names.get(i)))) {
-							keggIds.add(nameReplacedId.get(names.get(i)));
-							if (containsProton && maybeAddProton(nameReplacedId.get(names.get(i))) && !keggIds.contains("C00080")) {
-								keggIds.add("C00080");
-							}
-							renameMetabolitesMap.put(names.get(i), keggIds);
-						}
-					}
+					updateRenameMetabolitesMap(names.get(i), nameReplacedId.get(names.get(i)), containsProton);
 				}
 			}
 		}
@@ -419,13 +333,38 @@ public class PathwayReactionNodeFactory {
 		return speciesMatch;
 	}
 	
+	public void updateRenameMetabolitesMap(String name, String keggId, boolean containsProton) {
+		if (renameMetabolitesMap.containsKey(name)) {
+			ArrayList<String> keggIds = renameMetabolitesMap.get(name);
+			updateKeggIdList(name, keggId, keggIds);
+		} else {
+			ArrayList<String> keggIds = new ArrayList<String>();
+			updateKeggIdList(name, keggId, keggIds);
+		}
+	}
+	
+	public void updateKeggIdList(String name, String keggId, ArrayList<String> keggIds) {
+		if (!keggIds.contains(keggId)) {
+			keggIds.add(keggId);
+			renameMetabolitesMap.put(name, keggIds);
+		}
+	}
+	
 	public ArrayList<String> removedSpeciesBeforeComparison(String[] removeList, ArrayList<String> list) {
-		for (int i = 0; i < removeList.length; i++) {
-			if (list.contains(removeList[i])) {
-				list.remove(list.indexOf(removeList[i]));
+		java.util.List<String> removeArrayList = Arrays.asList(removeList);
+		ArrayList<String> list2 = new ArrayList<String>();
+//		for (int i = 0; i < removeList.length; i++) {
+//			if (list.contains(removeList[i])) {
+//				list.remove(list.indexOf(removeList[i]));
+//			}
+//		}
+		// make a new list since removing items modifies original list
+		for (int i = 0; i < list.size(); i++) {
+			if (!removeArrayList.contains(list.get(i))) {
+				list2.add(list.get(i));
 			}
 		}
-		return list;
+		return list2;
 	}
 	
 	public boolean maybeAddProton(String keggId) {
