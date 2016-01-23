@@ -1054,6 +1054,9 @@ public class PathwaysFrame extends JApplet {
 			ArrayList<String> abbrList = new ArrayList<String>();
 			ArrayList<String> nameList = new ArrayList<String>();
 			ArrayList<String> keggIdList = prnf.getRenameMetabolitesMap().get(renameMetaboliteKeys.get(y));
+			if (keggIdList.contains("C00080")) {
+				System.out.println(keggIdList);
+			}
 			ArrayList<String> chargeList = new ArrayList<String>();
     		for (int z = 0; z < prnf.getRenameMetabolitesMap().get(renameMetaboliteKeys.get(y)).size(); z++) {
 //    			System.out.println("k1 " + prnf.getRenameMetabolitesMap().get(renameMetaboliteKeys.get(y)).get(z));

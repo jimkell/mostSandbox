@@ -4126,3 +4126,5 @@ Pathway ID,Metabolite ID,Metabolite Level,Metabolite Level Position,Metabolite N
 0,4124,15.3,-13.9,Phosphate,PI,C00009,0,s,,,,
 0,4125,14.7,-14.7,Amylose,Amylose,C00718,1,s,,,,
 0,4126,15.1,-14.7,Adenosine 5'-diphosphate,ADP,C00008,0,s,,,,
+0,4127,38.7,1.15,H+,H,C00080,0,s,,,,
+0,4128,38.7,1.9,H+,H,C00080,0,s,,,,

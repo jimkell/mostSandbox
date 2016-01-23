@@ -196,7 +196,10 @@ public class PathwayReactionNodeFactory {
 //		System.out.println("d " + dataIds);
 //		System.out.println("m " + modelIds);
 		boolean speciesMatch = true;
-//		ArrayList<String> data = removedSpeciesBeforeComparison(VisualizationConstants.IGNORE_FOR_IDENTIFIED_REACTION_LIST, dataIds);
+		boolean containsProton = false;
+		if (modelIds.contains("C00080")) {
+			containsProton = true;
+		}
 		ArrayList<String> data = dataIds;
 		for (int i = 0; i < data.size(); i++) {
 			if (!modelIds.contains(data.get(i))) {
@@ -217,12 +220,18 @@ public class PathwayReactionNodeFactory {
 							ArrayList<String> keggIds = renameMetabolitesMap.get(name);
 							if (!keggIds.contains(modelIds.get(j))) {
 								keggIds.add(modelIds.get(j));
+								if (containsProton && maybeAddProton(modelIds.get(j)) && !keggIds.contains("C00080")) {
+									keggIds.add("C00080");
+								}
 								renameMetabolitesMap.put(name, keggIds);
 							}
 						} else {
 							ArrayList<String> keggIds = new ArrayList<String>();
 							if (!keggIds.contains(modelIds.get(j))) {
 								keggIds.add(modelIds.get(j));
+								if (containsProton && maybeAddProton(modelIds.get(j)) && !keggIds.contains("C00080")) {
+									keggIds.add("C00080");
+								}
 								renameMetabolitesMap.put(name, keggIds);
 							}
 						}
@@ -242,8 +251,12 @@ public class PathwayReactionNodeFactory {
 	 */
 	public boolean speciesExactMatch(ArrayList<String> dataIds, Map<String, PathwayMetaboliteData> keggIdsDataMap, ArrayList<String> modelIds) {
 		boolean speciesMatch = false;
+		boolean containsProton = false;
 //		System.out.println("data " + dataIds);
 //		System.out.println("model " + modelIds);
+		if (modelIds.contains("C00080")) {
+			containsProton = true;
+		}
 		ArrayList<String> data = removedSpeciesBeforeComparison(VisualizationConstants.REMOVE_BEFORE_REACTION_COMPARISON, dataIds);
 		ArrayList<String> model = removedSpeciesBeforeComparison(VisualizationConstants.REMOVE_BEFORE_REACTION_COMPARISON, modelIds);
 		//System.out.println(model);
@@ -262,12 +275,18 @@ public class PathwayReactionNodeFactory {
 						ArrayList<String> keggIds = renameMetabolitesMap.get(name);
 						if (!keggIds.contains(model.get(i))) {
 							keggIds.add(model.get(i));
+							if (containsProton && maybeAddProton(model.get(i)) && !keggIds.contains("C00080")) {
+								keggIds.add("C00080");
+							}
 							renameMetabolitesMap.put(name, keggIds);
 						}
 					} else {
 						ArrayList<String> keggIds = new ArrayList<String>();
 						if (!keggIds.contains(model.get(i))) {
 							keggIds.add(model.get(i));
+							if (containsProton && maybeAddProton(model.get(i)) && !keggIds.contains("C00080")) {
+								keggIds.add("C00080");
+							}
 							renameMetabolitesMap.put(name, keggIds);
 						}
 					}
@@ -301,12 +320,18 @@ public class PathwayReactionNodeFactory {
 								ArrayList<String> keggIds = renameMetabolitesMap.get(name);
 								if (!keggIds.contains(ki)) {
 									keggIds.add(ki);
+									if (containsProton && maybeAddProton(ki) && !keggIds.contains("C00080")) {
+										keggIds.add("C00080");
+									}
 									renameMetabolitesMap.put(name, keggIds);
 								}
 							} else {
 								ArrayList<String> keggIds = new ArrayList<String>();
 								if (!keggIds.contains(ki)) {
 									keggIds.add(ki);
+									if (containsProton && maybeAddProton(ki) && !keggIds.contains("C00080")) {
+										keggIds.add("C00080");
+									}
 									renameMetabolitesMap.put(name, keggIds);
 								}
 							}
@@ -372,17 +397,22 @@ public class PathwayReactionNodeFactory {
 						ArrayList<String> keggIds = renameMetabolitesMap.get(names.get(i));
 						if (!keggIds.contains(nameReplacedId.get(names.get(i)))) {
 							keggIds.add(nameReplacedId.get(names.get(i)));
+							if (containsProton && maybeAddProton(nameReplacedId.get(names.get(i))) && !keggIds.contains("C00080")) {
+								keggIds.add("C00080");
+							}
 							renameMetabolitesMap.put(names.get(i), keggIds);
 						}
 					} else {
 						ArrayList<String> keggIds = new ArrayList<String>();
 						if (!keggIds.contains(nameReplacedId.get(names.get(i)))) {
 							keggIds.add(nameReplacedId.get(names.get(i)));
+							if (containsProton && maybeAddProton(nameReplacedId.get(names.get(i))) && !keggIds.contains("C00080")) {
+								keggIds.add("C00080");
+							}
 							renameMetabolitesMap.put(names.get(i), keggIds);
 						}
 					}
 				}
-					
 			}
 		}
 		
@@ -396,6 +426,20 @@ public class PathwayReactionNodeFactory {
 			}
 		}
 		return list;
+	}
+	
+	public boolean maybeAddProton(String keggId) {
+		//System.out.println(keggId);
+		for (int i = 0; i < VisualizationConstants.REDUCED_SPECIES_WITH_PROTON.length; i++) {
+			if (VisualizationConstants.REDUCED_SPECIES_WITH_PROTON[i].equals(keggId)) {
+				return true;
+			} else if (LocalConfig.getInstance().getMetaboliteSubstitutionsMap().get("C00030").contains(keggId) ||
+					LocalConfig.getInstance().getMetaboliteSubstitutionsMap().get("C00028").contains(keggId)) {
+				return true;
+			}
+		}
+		return false;
+		
 	}
 	
 	/** 
