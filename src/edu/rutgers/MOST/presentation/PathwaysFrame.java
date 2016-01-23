@@ -1108,7 +1108,15 @@ public class PathwaysFrame extends JApplet {
     		if (containsProton) {
 				String protonAbbr = util.maybeRemovePrefixAndSuffix(LocalConfig.getInstance().getKeggIdMetaboliteMap().get("C00080").get(0).getMetaboliteAbbreviation());
 				abbr += " + " + protonAbbr;
-				System.out.println(abbr);
+				nameList.add(LocalConfig.getInstance().getKeggIdMetaboliteMap().get("C00080").get(0).getMetaboliteName());
+				keggList.add("C00080");
+				for (int k = 0; k < LocalConfig.getInstance().getKeggIdMetaboliteMap().get("C00080").size(); k++) {
+					if (LocalConfig.getInstance().getKeggIdMetaboliteMap().get("C00080").get(k).getCompartment().
+							equals(LocalConfig.getInstance().getSelectedCompartmentName())) {
+						abbrList.add(LocalConfig.getInstance().getKeggIdMetaboliteMap().get("C00080").get(k).getMetaboliteAbbreviation());
+					}
+				}
+				//chargeList.add(LocalConfig.getInstance().getKeggIdMetaboliteMap().get("C00080").get(0).getCharge());
 			} 
     		name = pmnf.htmlDisplayName(abbr, nameList, abbrList, keggList, chargeList);
 			oldNameNewNameMap.put(metabName, name);
