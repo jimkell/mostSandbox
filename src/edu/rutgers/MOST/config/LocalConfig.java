@@ -1377,5 +1377,15 @@ public class LocalConfig {
 	public void setSecondaryMaxFlux(double secondaryMaxFlux) {
 		this.secondaryMaxFlux = secondaryMaxFlux;
 	}
+	
+	private ArrayList<Integer> reactionsMissingKeggId;
+
+	public ArrayList<Integer> getReactionsMissingKeggId() {
+		return reactionsMissingKeggId;
+	}
+
+	public void setReactionsMissingKeggId(ArrayList<Integer> reactionsMissingKeggId) {
+		this.reactionsMissingKeggId = reactionsMissingKeggId;
+	}
 
 }

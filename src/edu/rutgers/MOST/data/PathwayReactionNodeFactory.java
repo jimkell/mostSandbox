@@ -131,6 +131,7 @@ public class PathwayReactionNodeFactory {
 			if (correctMainSpecies(r, prd, exactMatch)) {
 				reactions.add(r);
 				//System.out.println(reactions);
+				//System.out.println("found " + r);
 				match = true;
 			} else {
 				if (!LocalConfig.getInstance().getUnplottedReactionIds().contains(id)) {

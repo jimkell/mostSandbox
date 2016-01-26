@@ -10,6 +10,7 @@ public class ModelKeggEquationMapCreator {
 	
 	public void createKeggEquationMap() {
 		Map<String, PathwayReactionData> modelKeggEquationMap = new HashMap<String, PathwayReactionData>();
+		ArrayList<Integer> reactionsMissingKeggId = new ArrayList<Integer>();
 		for (int j = 0; j < LocalConfig.getInstance().getReactionEquationMap().size(); j++) {
 			boolean found = true;
 			ArrayList<String> keggReactantIds = new ArrayList<String>();
@@ -45,6 +46,8 @@ public class ModelKeggEquationMapCreator {
 					prd.setKeggReactantIds(keggReactantIds);
 					prd.setKeggProductIds(keggProductIds);
 					modelKeggEquationMap.put(Integer.toString(reactionId), prd);
+				} else {
+					reactionsMissingKeggId.add(Integer.valueOf(prd.getReactionId()));
 				}
 			} 
 //			for (int p = 0; p < ((SBMLReactionEquation) LocalConfig.getInstance().getReactionEquationMap().get(j)).getProducts().size(); p++) {
@@ -66,6 +69,7 @@ public class ModelKeggEquationMapCreator {
 		}
 		LocalConfig.getInstance().setModelKeggEquationMap(modelKeggEquationMap);
 		//System.out.println(LocalConfig.getInstance().getModelKeggEquationMap());
+		LocalConfig.getInstance().setReactionsMissingKeggId(reactionsMissingKeggId);
 	}
 
 }

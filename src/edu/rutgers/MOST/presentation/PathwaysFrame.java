@@ -803,15 +803,6 @@ public class PathwaysFrame extends JApplet {
 //    	}
     	Vector<SBMLReaction> rxns = compartmentReactions(f, LocalConfig.getInstance().getSelectedCompartmentName());
     	Map<Integer, SBMLReaction> idReactionMap = createCompartmentIdReactionMap(f, rxns);
-//		// temporary lists to keep track of what ec numbers have been found
-//		ArrayList<String> foundEcNumbers = new ArrayList<String>();
-//	    ArrayList<String> notFoundEcNumbers = new ArrayList<String>(LocalConfig.getInstance().getEcNumberReactionMap().keySet());
-		
-	    //ArrayList<String> foundMetabolitesList = new ArrayList<String>();
-	    //ArrayList<String> foundReactionsList = new ArrayList<String>();
-//		ArrayList<Integer> plottedIds = new ArrayList<Integer>();
-		
-//		PathwayReactionNodeFactory prnf = new PathwayReactionNodeFactory();
 		MetabolicPathway pathway = LocalConfig.getInstance().getMetabolicPathways().get("0");
 //		if (pathway.getComponent() == PathwaysFrameConstants.PATHWAYS_COMPONENT) {
 			if (startPosMap.containsKey(pathway.getId())) {
@@ -820,6 +811,34 @@ public class PathwaysFrame extends JApplet {
 			}
 			drawMetabolites(pathway, component, LocalConfig.getInstance().getSelectedCompartmentName());
 			drawReactions(pathway, component, rxns, idReactionMap);
+			
+			// create reports for reactions found and not found
+			Collections.sort(plottedIds);
+			System.out.println("plotted " + plottedIds);
+			ArrayList<Integer> missingKeggId = new ArrayList<Integer>();
+			ArrayList<Integer> unplottedIds = new ArrayList<Integer>();
+			for (int r = 0; r < rxns.size(); r++) {
+				if (LocalConfig.getInstance().getReactionsMissingKeggId().contains(rxns.get(r).getId())) {
+					missingKeggId.add(rxns.get(r).getId());
+				} else {
+					if (!plottedIds.contains(rxns.get(r).getId())) {
+						unplottedIds.add(rxns.get(r).getId());
+					}
+				}
+			}
+			Collections.sort(missingKeggId);
+			System.out.println("missing KEGG id " + missingKeggId);
+			for (int m = 0; m < missingKeggId.size(); m++) {
+				System.out.println(idReactionMapAllReactions.get(missingKeggId.get(m)).getReactionAbbreviation() + " " +
+						idReactionMapAllReactions.get(missingKeggId.get(m)).getReactionName() + " " +
+						idReactionMapAllReactions.get(missingKeggId.get(m)).getReactionEqunAbbr() + " " +
+						idReactionMapAllReactions.get(missingKeggId.get(m)).getReactionEqunNames());
+			}
+			Collections.sort(unplottedIds);
+			System.out.println("unplotted " + unplottedIds);
+			for (int u = 0; u < unplottedIds.size(); u++) {
+				//System.out.println(idReactionMapAllReactions.get(unplottedIds.get(u)));
+			}
 			drawPathwayNames(component);
 //		} else if (pathway.getComponent() == PathwaysFrameConstants.PROCESSES_COMPONENT) {
 //			
@@ -871,14 +890,14 @@ public class PathwaysFrame extends JApplet {
 //			}
 //		}
 		
-		Collections.sort(plottedIds);
-		//System.out.println("pf plotted " + plottedIds);
+//		Collections.sort(plottedIds);
+//		System.out.println("plotted " + plottedIds);
 		//System.out.println("pf unplotted " + LocalConfig.getInstance().getUnplottedReactionIds());
-		for (int p = 0; p < plottedIds.size(); p++) {
-			if (LocalConfig.getInstance().getUnplottedReactionIds().contains(plottedIds.get(p))) {
-				LocalConfig.getInstance().getUnplottedReactionIds().remove(LocalConfig.getInstance().getUnplottedReactionIds().indexOf(plottedIds.get(p)));
-			}
-		}
+//		for (int p = 0; p < plottedIds.size(); p++) {
+//			if (LocalConfig.getInstance().getUnplottedReactionIds().contains(plottedIds.get(p))) {
+//				LocalConfig.getInstance().getUnplottedReactionIds().remove(LocalConfig.getInstance().getUnplottedReactionIds().indexOf(plottedIds.get(p)));
+//			}
+//		}
 		//System.out.println("pf unplotted " + LocalConfig.getInstance().getUnplottedReactionIds());
 		
 		//Collections.sort(foundEcNumbers);
