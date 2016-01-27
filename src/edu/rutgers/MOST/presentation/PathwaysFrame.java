@@ -813,27 +813,42 @@ public class PathwaysFrame extends JApplet {
 			drawReactions(pathway, component, rxns, idReactionMap);
 			
 			// create reports for reactions found and not found
+			System.out.println("n " + LocalConfig.getInstance().getReactionsContainingKeggIdsNotInGraph());
 			Collections.sort(plottedIds);
 			System.out.println("plotted " + plottedIds);
 			ArrayList<Integer> missingKeggId = new ArrayList<Integer>();
+			ArrayList<Integer> keggIdNotInGraph = new ArrayList<Integer>();
 			ArrayList<Integer> unplottedIds = new ArrayList<Integer>();
 			for (int r = 0; r < rxns.size(); r++) {
 				if (LocalConfig.getInstance().getReactionsMissingKeggId().contains(rxns.get(r).getId())) {
 					missingKeggId.add(rxns.get(r).getId());
 				} else {
-					if (!plottedIds.contains(rxns.get(r).getId())) {
-						unplottedIds.add(rxns.get(r).getId());
-					}
+//					if (!LocalConfig.getInstance().getReactionsContainingKeggIdsNotInGraph().contains(rxns.get(r).getId()) &&
+//							!plottedIds.contains(rxns.get(r).getId())) {
+//						keggIdNotInGraph.add(rxns.get(r).getId());
+//					} else {
+						if (!plottedIds.contains(rxns.get(r).getId())) {
+							unplottedIds.add(rxns.get(r).getId());
+						}
+//					}
 				}
 			}
 			Collections.sort(missingKeggId);
 			System.out.println("missing KEGG id " + missingKeggId);
 			for (int m = 0; m < missingKeggId.size(); m++) {
-				System.out.println(idReactionMapAllReactions.get(missingKeggId.get(m)).getReactionAbbreviation() + " " +
-						idReactionMapAllReactions.get(missingKeggId.get(m)).getReactionName() + " " +
-						idReactionMapAllReactions.get(missingKeggId.get(m)).getReactionEqunAbbr() + " " +
-						idReactionMapAllReactions.get(missingKeggId.get(m)).getReactionEqunNames());
+//				System.out.println(idReactionMapAllReactions.get(missingKeggId.get(m)).getReactionAbbreviation() + " " +
+//						idReactionMapAllReactions.get(missingKeggId.get(m)).getReactionName() + " " +
+//						idReactionMapAllReactions.get(missingKeggId.get(m)).getReactionEqunAbbr() + " " +
+//						idReactionMapAllReactions.get(missingKeggId.get(m)).getReactionEqunNames());
 			}
+//			Collections.sort(keggIdNotInGraph);
+//			System.out.println("kegg id not in graph " + keggIdNotInGraph);
+//			for (int m = 0; m < keggIdNotInGraph.size(); m++) {
+//				System.out.println(idReactionMapAllReactions.get(keggIdNotInGraph.get(m)).getReactionAbbreviation() + " " +
+//						idReactionMapAllReactions.get(keggIdNotInGraph.get(m)).getReactionName() + " " +
+//						idReactionMapAllReactions.get(keggIdNotInGraph.get(m)).getReactionEqunAbbr() + " " +
+//						idReactionMapAllReactions.get(keggIdNotInGraph.get(m)).getReactionEqunNames());
+//			}
 			Collections.sort(unplottedIds);
 			System.out.println("unplotted " + unplottedIds);
 			for (int u = 0; u < unplottedIds.size(); u++) {

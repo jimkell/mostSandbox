@@ -30,6 +30,7 @@ public class PathwayFilesReader {
 	Map<String, ArrayList<String>> keggReactionIdECNumberMap = new HashMap<String, ArrayList<String>>();
 	Map<String, String> chebiIdKeggIdMap = new HashMap<String, String>();
 	Map<String, ArrayList<String>> chebiIdKeggIdListMap = new HashMap<String, ArrayList<String>>();
+	ArrayList<String> keggIdsInGraph = new ArrayList<String>();
 	
 	Utilities util = new Utilities();
 	PathwayMetaboliteNodeFactory pmnf = new PathwayMetaboliteNodeFactory();
@@ -412,6 +413,9 @@ public class PathwayFilesReader {
 							}
 							if (s == PathwaysCSVFileConstants.METABOLITE_POSITIONS_KEGG_ID_COLUMN) {
 								pm.setKeggId(dataArray[s]);
+								if (!keggIdsInGraph.contains(dataArray[s])) {
+									keggIdsInGraph.add(dataArray[s]);
+								}
 							}
 							if (s == PathwaysCSVFileConstants.METABOLITE_POSITIONS_BORDER_COLUMN) {
 								pm.setBorder(dataArray[s]);
@@ -480,6 +484,16 @@ public class PathwayFilesReader {
 				LocalConfig.getInstance().setMetabolicPathways(metabolicPathways);
 				LocalConfig.getInstance().setMetaboliteNameAbbrMap(metaboliteNameAbbrMap);
 				LocalConfig.getInstance().setMetaboliteNameDataMap(metaboliteNameDataMap);
+				ArrayList<String> additionalMetabs = new ArrayList<String>(LocalConfig.getInstance().getAdditionalMetabolitesMap().keySet());
+		    	for (int k = 0; k < additionalMetabs.size(); k++) {
+		    		for (int j = 0; j < LocalConfig.getInstance().getAdditionalMetabolitesMap().get(additionalMetabs.get(k)).size(); j++) {
+		    			if (!keggIdsInGraph.contains(LocalConfig.getInstance().getAdditionalMetabolitesMap().get(additionalMetabs.get(k)).get(j))) {
+							keggIdsInGraph.add(LocalConfig.getInstance().getAdditionalMetabolitesMap().get(additionalMetabs.get(k)).get(j));
+						} 
+		    		}
+		    	}
+				LocalConfig.getInstance().setKeggIdsInGraph(keggIdsInGraph);
+				System.out.println(keggIdsInGraph);
 			} catch (IOException e) {
 				JOptionPane.showMessageDialog(null,                
 						"File Not Found Error.",                

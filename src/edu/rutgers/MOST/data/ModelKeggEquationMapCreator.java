@@ -11,6 +11,7 @@ public class ModelKeggEquationMapCreator {
 	public void createKeggEquationMap() {
 		Map<String, PathwayReactionData> modelKeggEquationMap = new HashMap<String, PathwayReactionData>();
 		ArrayList<Integer> reactionsMissingKeggId = new ArrayList<Integer>();
+		ArrayList<Integer> reactionsContainingKeggIdsNotInGraph = new ArrayList<Integer>();
 		for (int j = 0; j < LocalConfig.getInstance().getReactionEquationMap().size(); j++) {
 			boolean found = true;
 			ArrayList<String> keggReactantIds = new ArrayList<String>();
@@ -26,6 +27,12 @@ public class ModelKeggEquationMapCreator {
 					if (LocalConfig.getInstance().getMetaboliteIdKeggIdMap().get(Integer.toString(metabId)) != null) {
 						//System.out.println("k r " + LocalConfig.getInstance().getMetaboliteIdKeggIdMap().get(Integer.toString(metabId)));
 						keggReactantIds.add(LocalConfig.getInstance().getMetaboliteIdKeggIdMap().get(Integer.toString(metabId)));
+// getting reactions with kegg ids not in graph is not working correctly here
+//						if (!LocalConfig.getInstance().getKeggIdsInGraph().contains(LocalConfig.getInstance().getMetaboliteIdKeggIdMap().get(Integer.toString(metabId)))) {
+//							if (!reactionsContainingKeggIdsNotInGraph.contains(Integer.valueOf(prd.getReactionId()))) {
+//								reactionsContainingKeggIdsNotInGraph.add(Integer.valueOf(prd.getReactionId()));
+//							}
+//						}
 					} else {
 						found = false;
 						keggReactantIds.clear();
@@ -37,6 +44,11 @@ public class ModelKeggEquationMapCreator {
 					if (LocalConfig.getInstance().getMetaboliteIdKeggIdMap().get(Integer.toString(metabId)) != null) {
 						//System.out.println("k p " + LocalConfig.getInstance().getMetaboliteIdKeggIdMap().get(Integer.toString(metabId)));
 						keggProductIds.add(LocalConfig.getInstance().getMetaboliteIdKeggIdMap().get(Integer.toString(metabId)));
+//						if (!LocalConfig.getInstance().getKeggIdsInGraph().contains(LocalConfig.getInstance().getMetaboliteIdKeggIdMap().get(Integer.toString(metabId)))) {
+//							if (!reactionsContainingKeggIdsNotInGraph.contains(Integer.valueOf(prd.getReactionId()))) {
+//								reactionsContainingKeggIdsNotInGraph.add(Integer.valueOf(prd.getReactionId()));
+//							}
+//						}
 					}  else {
 						found = false;
 						keggProductIds.clear();
@@ -70,6 +82,7 @@ public class ModelKeggEquationMapCreator {
 		LocalConfig.getInstance().setModelKeggEquationMap(modelKeggEquationMap);
 		//System.out.println(LocalConfig.getInstance().getModelKeggEquationMap());
 		LocalConfig.getInstance().setReactionsMissingKeggId(reactionsMissingKeggId);
+		LocalConfig.getInstance().setReactionsContainingKeggIdsNotInGraph(reactionsContainingKeggIdsNotInGraph);
 	}
 
 }

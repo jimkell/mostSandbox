@@ -1387,5 +1387,26 @@ public class LocalConfig {
 	public void setReactionsMissingKeggId(ArrayList<Integer> reactionsMissingKeggId) {
 		this.reactionsMissingKeggId = reactionsMissingKeggId;
 	}
+	
+	private ArrayList<String> keggIdsInGraph;
+
+	public ArrayList<String> getKeggIdsInGraph() {
+		return keggIdsInGraph;
+	}
+
+	public void setKeggIdsInGraph(ArrayList<String> keggIdsInGraph) {
+		this.keggIdsInGraph = keggIdsInGraph;
+	}
+	
+	private ArrayList<Integer> reactionsContainingKeggIdsNotInGraph;
+
+	public ArrayList<Integer> getReactionsContainingKeggIdsNotInGraph() {
+		return reactionsContainingKeggIdsNotInGraph;
+	}
+
+	public void setReactionsContainingKeggIdsNotInGraph(
+			ArrayList<Integer> reactionsContainingKeggIdsNotInGraph) {
+		this.reactionsContainingKeggIdsNotInGraph = reactionsContainingKeggIdsNotInGraph;
+	}
 
 }
