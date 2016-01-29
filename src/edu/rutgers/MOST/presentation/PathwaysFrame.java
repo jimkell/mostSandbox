@@ -250,6 +250,7 @@ public class PathwaysFrame extends JApplet {
 	private boolean wrapAround;
 	private boolean searchBackwards;
 	private boolean throwNotFoundError;
+	private boolean exactMatch;
 //	private boolean findFieldChanged;
 	
 	private String oldFindValue = "";
@@ -281,6 +282,7 @@ public class PathwaysFrame extends JApplet {
  		VisualizationsFindDialog.caseCheckBox.addActionListener(matchCaseActionListener);
  		VisualizationsFindDialog.wrapCheckBox.addActionListener(wrapAroundActionListener);
  		VisualizationsFindDialog.backwardsCheckBox.addActionListener(searchBackwardsActionListener);
+ 		VisualizationsFindDialog.exactMatchCheckBox.addActionListener(exactMatchActionListener);
         
         KeyStroke find = KeyStroke.getKeyStroke(KeyEvent.VK_F,ActionEvent.CTRL_MASK,false);
         getRootPane().registerKeyboardAction(findActionListener,find,JComponent.WHEN_IN_FOCUSED_WINDOW); 
@@ -1721,9 +1723,10 @@ public class PathwaysFrame extends JApplet {
 		
 		findButtonClicked = false;
 		// ensure states of boolean values match states of findReplace frame
-		searchBackwards = FindReplaceConstants.SEARCH_BACKWARDS_DEFAULT;
-		matchCase = FindReplaceConstants.MATCH_CASE_DEFAULT;
-		wrapAround = FindReplaceConstants.WRAP_AROUND_DEFAULT;
+		searchBackwards = VisualizationsFindConstants.SEARCH_BACKWARDS_DEFAULT;
+		matchCase = VisualizationsFindConstants.MATCH_CASE_DEFAULT;
+		wrapAround = VisualizationsFindConstants.WRAP_AROUND_DEFAULT;
+		exactMatch = VisualizationsFindConstants.EXACT_MATCH_DEFAULT;
 		findMode = true;
 	}	
 	
@@ -1864,17 +1867,28 @@ public class PathwaysFrame extends JApplet {
 		double y = 0;
 		for (int i = 0; i < nodeNameList.size(); i++) {
 			String s = "";
-			if (matchCase) {
-				s = nodeNameList.get(i);
+			// if node was substituted (acceptor, etc.) and renamed get
+			// display name from map
+			if (oldNameNewNameMap.containsKey(nodeNameList.get(i))) {
+				s = oldNameNewNameMap.get(nodeNameList.get(i));
 			} else {
-				s = nodeNameList.get(i).toLowerCase();
+				s = nodeNameList.get(i);
+			}
+			if (matchCase) {
+
+			} else {
+				s = s.toLowerCase();
 			}
 			if (s.contains(findValue)) {
+//				System.out.println("n " + nodeNameList.get(i));
+//				System.out.println("s " + s);
+//				System.out.println("f " + findValue);
 				ArrayList<Double> coordinates = new ArrayList<Double>();
 //				System.out.println(nodeNamePositionMap.get(nodeNameList.get(i))[0]);
 //				System.out.println(nodeNamePositionMap.get(nodeNameList.get(i))[1]);
 				x = Double.parseDouble(nodeNamePositionMap.get(nodeNameList.get(i))[0]);
 				y = Double.parseDouble(nodeNamePositionMap.get(nodeNameList.get(i))[1]);
+				
 				coordinates.add(x);
 				coordinates.add(y);
 				findLocationsMap.put(Double.toString(x), coordinates);
@@ -1948,6 +1962,13 @@ public class PathwaysFrame extends JApplet {
 			} else {
 				findStartIndex = 0;
 			}
+		}
+	};
+	
+	ActionListener exactMatchActionListener = new ActionListener() {
+		public void actionPerformed(ActionEvent actionEvent) {
+			AbstractButton abstractButton = (AbstractButton) actionEvent.getSource();
+			exactMatch = abstractButton.getModel().isSelected();
 		}
 	};
 

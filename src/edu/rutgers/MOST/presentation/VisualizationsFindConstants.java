@@ -12,5 +12,10 @@ public class VisualizationsFindConstants {
 		};
 		
 		public static java.util.List<String> findByColumnList = Arrays.asList(FIND_BY_COLUMN_LIST);
+		
+		public static boolean MATCH_CASE_DEFAULT = false;
+		public static boolean SEARCH_BACKWARDS_DEFAULT = false;
+		public static boolean WRAP_AROUND_DEFAULT = true;
+		public static boolean EXACT_MATCH_DEFAULT = false;
 
 }
