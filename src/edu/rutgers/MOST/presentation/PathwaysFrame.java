@@ -85,6 +85,7 @@ import org.apache.commons.collections15.functors.ChainedTransformer;
 
 
 
+
 import edu.rutgers.MOST.config.LocalConfig;
 import edu.rutgers.MOST.data.MetabolicPathway;
 import edu.rutgers.MOST.data.PathwayMetaboliteNode;
@@ -1863,41 +1864,59 @@ public class PathwaysFrame extends JApplet {
 			findValue = VisualizationsFindDialog.findBox.getSelectedItem().toString().toLowerCase();
 		}
 //		System.out.println("fv " + findValue);
-		double x = 0;
-		double y = 0;
-		for (int i = 0; i < nodeNameList.size(); i++) {
-			String s = "";
-			// if node was substituted (acceptor, etc.) and renamed get
-			// display name from map
-			if (oldNameNewNameMap.containsKey(nodeNameList.get(i))) {
-				s = oldNameNewNameMap.get(nodeNameList.get(i));
-			} else {
-				s = nodeNameList.get(i);
-			}
-			if (matchCase) {
-
-			} else {
-				s = s.toLowerCase();
-			}
-			if (s.contains(findValue)) {
-//				System.out.println("n " + nodeNameList.get(i));
-//				System.out.println("s " + s);
-//				System.out.println("f " + findValue);
-				ArrayList<Double> coordinates = new ArrayList<Double>();
-//				System.out.println(nodeNamePositionMap.get(nodeNameList.get(i))[0]);
-//				System.out.println(nodeNamePositionMap.get(nodeNameList.get(i))[1]);
-				x = Double.parseDouble(nodeNamePositionMap.get(nodeNameList.get(i))[0]);
-				y = Double.parseDouble(nodeNamePositionMap.get(nodeNameList.get(i))[1]);
+		if (exactMatch) {
+			if (VisualizationsFindDialog.matchByBox.getSelectedItem().equals(
+					GraphicalInterfaceConstants.METABOLITE_ABBREVIATION_COLUMN_NAME)) {
 				
-				coordinates.add(x);
-				coordinates.add(y);
-				findLocationsMap.put(Double.toString(x), coordinates);
+			} else if (VisualizationsFindDialog.matchByBox.getSelectedItem().equals(
+					VisualizationsFindConstants.KEGG_METABOLITE_ID_ITEM)) {
+				
+			} else if (VisualizationsFindDialog.matchByBox.getSelectedItem().equals(
+					VisualizationsFindConstants.EC_NUMBER_ITEM)) {
+				
+			} else if (VisualizationsFindDialog.matchByBox.getSelectedItem().equals(
+					VisualizationsFindConstants.KEGG_REACTION_ID_ITEM)) {
+				
+			} else if (VisualizationsFindDialog.matchByBox.getSelectedItem().equals(
+					GraphicalInterfaceConstants.REACTION_ABBREVIATION_COLUMN_NAME)) {
+				
+			}
+		} else {
+			for (int i = 0; i < nodeNameList.size(); i++) {
+				String s = "";
+				// if node was substituted (acceptor, etc.) and renamed get
+				// display name from map
+				if (oldNameNewNameMap.containsKey(nodeNameList.get(i))) {
+					s = oldNameNewNameMap.get(nodeNameList.get(i));
+				} else {
+					s = nodeNameList.get(i);
+				}
+				if (matchCase) {
+
+				} else {
+					s = s.toLowerCase();
+				}
+				if (s.contains(findValue)) {
+					updateFindLocationsMap(findLocationsMap, nodeNamePositionMap.get(nodeNameList.get(i))[0], 
+							nodeNamePositionMap.get(nodeNameList.get(i))[1]);
+				}
 			}
 		}
 		
 		return findLocationsMap;
 
 	}
+	
+	private void updateFindLocationsMap(HashMap<String, ArrayList<Double>> findLocationsMap, String xString, String yString) {
+		ArrayList<Double> coordinates = new ArrayList<Double>();
+		double x = Double.parseDouble(xString);
+		double y = Double.parseDouble(yString);
+		
+		coordinates.add(x);
+		coordinates.add(y);
+		findLocationsMap.put(xString, coordinates);
+	}
+	
 	// based on http://stackoverflow.com/questions/6686007/how-to-sort-array-of-strings-in-numerical-order
 	class NumComparator implements Comparator<String> {
 	    public int compare(String a, String b) {
