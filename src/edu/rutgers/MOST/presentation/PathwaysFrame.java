@@ -196,6 +196,9 @@ public class PathwaysFrame extends JApplet {
    	ArrayList<Integer> plottedIds = new ArrayList<Integer>();
    	Map<String, String> oldNameNewNameMap = new HashMap<String, String>(); 
    	
+   	// maps for find - exact match
+   	HashMap<String, ArrayList<String[]>> ecNumberPositionsMap = new HashMap<String, ArrayList<String[]>>();
+   	
    	PathwayReactionNodeFactory prnf = new PathwayReactionNodeFactory();
    	PathwayMetaboliteNodeFactory pmnf = new PathwayMetaboliteNodeFactory();
    	Utilities util = new Utilities();
@@ -1025,6 +1028,7 @@ public class PathwaysFrame extends JApplet {
 					} 
 				}
 				if (drawReaction) {
+					System.out.println(pathway.getReactionsData().get(Integer.toString(k)).getEcNumbers());
 					reactions.add(displayName);
 					double x = 0;
 					double y = 0;
@@ -1037,6 +1041,12 @@ public class PathwaysFrame extends JApplet {
 					String reversible = prnf.reversibleString(pathway.getReactionsData().get(Integer.toString(k)).getReversible());
 					pn.setReversible(reversible);
 					pathway.getReactionsNodes().put(pn.getDataId(), pn);
+					// update maps for find exact match
+					for (int e = 0; e < pathway.getReactionsData().get(Integer.toString(k)).getEcNumbers().size(); e++) {
+						updateFindPositionsMap(ecNumberPositionsMap, pathway.getReactionsData().get(Integer.toString(k)).getEcNumbers().get(e), 
+								new String[] {Double.toString(x), Double.toString(y)});
+					}
+					
 					for (int r = 0; r < pathway.getReactionsData().get(Integer.toString(k)).getReactantIds().size(); r++) {
 						if (pathway.getMetabolitesData().containsKey((pathway.getReactionsData().get(Integer.toString(k)).getReactantIds().get(r)))) {
 							String reac = pathway.getMetabolitesData().get((pathway.getReactionsData().get(Integer.toString(k)).getReactantIds().get(r))).getName();
@@ -1873,7 +1883,13 @@ public class PathwaysFrame extends JApplet {
 				
 			} else if (VisualizationsFindDialog.matchByBox.getSelectedItem().equals(
 					VisualizationsFindConstants.EC_NUMBER_ITEM)) {
-				
+				if (ecNumberPositionsMap.containsKey(findValue)) {
+					System.out.println(ecNumberPositionsMap.get(findValue));
+					for (int e = 0; e < ecNumberPositionsMap.get(findValue).size(); e++) {
+						updateFindLocationsMap(findLocationsMap, ecNumberPositionsMap.get(findValue).get(e)[0], 
+								ecNumberPositionsMap.get(findValue).get(e)[1]);
+					}
+				}
 			} else if (VisualizationsFindDialog.matchByBox.getSelectedItem().equals(
 					VisualizationsFindConstants.KEGG_REACTION_ID_ITEM)) {
 				
@@ -1915,13 +1931,6 @@ public class PathwaysFrame extends JApplet {
 		coordinates.add(x);
 		coordinates.add(y);
 		findLocationsMap.put(xString, coordinates);
-	}
-	
-	// based on http://stackoverflow.com/questions/6686007/how-to-sort-array-of-strings-in-numerical-order
-	class NumComparator implements Comparator<String> {
-	    public int compare(String a, String b) {
-	        return Float.valueOf(a.toString()).compareTo(Float.valueOf(b.toString()));
-	    }
 	}
 	
 	/**
@@ -1997,10 +2006,29 @@ public class PathwaysFrame extends JApplet {
 		}
 	};	
 	
+	public void updateFindPositionsMap(HashMap<String, ArrayList<String[]>> positionsMap, String key, String[] pos) {
+		if (positionsMap.containsKey(key)) {
+			ArrayList<String[]> positions = positionsMap.get(key);
+			positions.add(pos);
+			positionsMap.put(key, positions);
+		} else {
+			ArrayList<String[]> positions = new ArrayList<String[]>();
+			positions.add(pos);
+			positionsMap.put(key, positions);
+		}
+	}
+	
 	/*******************************************************************************************/
 	// End Find
 	/*******************************************************************************************/
     
+	// based on http://stackoverflow.com/questions/6686007/how-to-sort-array-of-strings-in-numerical-order
+	class NumComparator implements Comparator<String> {
+		public int compare(String a, String b) {
+			return Float.valueOf(a.toString()).compareTo(Float.valueOf(b.toString()));
+		}
+	}
+	
     public static void main(String[] args) {                                                                         
         // create a frome to hold the graph                                                                          
 //        final JFrame frame = new JFrame();                                                                           
