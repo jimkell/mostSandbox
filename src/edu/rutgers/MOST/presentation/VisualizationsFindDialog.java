@@ -26,7 +26,6 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 import edu.rutgers.MOST.config.LocalConfig;
-
 import edu.rutgers.MOST.data.TextFieldUndoItem;
 import static javax.swing.GroupLayout.Alignment.*;
  
@@ -40,7 +39,9 @@ public class VisualizationsFindDialog extends JDialog {
 	public static JButton doneButton = new JButton("Done");
 	public static JLabel findLabel = new JLabel("Find What:");
 	public static final SizedComboBox findBox = new SizedComboBox();
-	public static final JCheckBox caseCheckBox = new JCheckBox("Match Case");//1
+	public static final SizedComboBox matchByBox = new SizedComboBox();
+	public static final JCheckBox caseCheckBox = new JCheckBox("Match Case");
+	public static final JCheckBox exactMatchCheckBox = new JCheckBox("Exact Match by:");
 	public static final JCheckBox wrapCheckBox = new JCheckBox("Wrap Around");
 //	public static final JCheckBox selectedAreaCheckBox = new JCheckBox("Selected Area  ");
 	public static JLabel placeholderLabel = new JLabel(" ");
@@ -88,9 +89,13 @@ public class VisualizationsFindDialog extends JDialog {
         JLabel placeholder = new JLabel(""); 
         
         populateComboBox(findBox, LocalConfig.getInstance().getFindEntryList());
-         
+        for (int i = 0; i < VisualizationsFindConstants.FIND_BY_COLUMN_LIST.length; i++) {
+			matchByBox.addItem(VisualizationsFindConstants.FIND_BY_COLUMN_LIST[i]);
+		}
+        
         findBox.setSelectedIndex(-1);
         findBox.setEditable(true);
+        
         final JTextField findField = (JTextField)findBox.getEditor().getEditorComponent();
         final JPopupMenu findPopupMenu = new JPopupMenu();
         findUndoMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Z, ActionEvent.CTRL_MASK));
@@ -205,6 +210,7 @@ public class VisualizationsFindDialog extends JDialog {
         // remove redundant default border of check boxes - they would hinder
         // correct spacing and aligning (maybe not needed on some look and feels)
         caseCheckBox.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
+        exactMatchCheckBox.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
         wrapCheckBox.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
         backwardsCheckBox.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
 //        selectedAreaCheckBox.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
@@ -225,6 +231,7 @@ public class VisualizationsFindDialog extends JDialog {
         		.addGroup(layout.createParallelGroup(LEADING)
         				.addComponent(findLabel)
         				.addComponent(caseCheckBox) 
+        				.addComponent(exactMatchCheckBox)
         				.addComponent(searchLabel)
         				.addComponent(backwardsCheckBox)
         				.addComponent(findButton, getButtonWidth(), getButtonWidth(), getButtonWidth()))
@@ -233,7 +240,8 @@ public class VisualizationsFindDialog extends JDialog {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(LEADING)
                         		.addComponent(wrapCheckBox) 
-                                .addComponent(placeholder, getTextAreaWidth(), getTextAreaWidth(), getTextAreaWidth())
+                        		.addComponent(matchByBox, getTextAreaWidth(), getTextAreaWidth(), getTextAreaWidth())
+                                .addComponent(placeholder)
                                 .addComponent(placeholderLabel)
                                 .addComponent(doneButton, getButtonWidth(), getButtonWidth(), getButtonWidth()))))
                           
@@ -249,6 +257,10 @@ public class VisualizationsFindDialog extends JDialog {
                         .addGroup(layout.createParallelGroup(BASELINE)
                         		.addComponent(caseCheckBox)
                         		.addComponent(wrapCheckBox))
+                        .addGap(20)
+                        .addGroup(layout.createParallelGroup(BASELINE)
+                        		.addComponent(exactMatchCheckBox)
+                        		.addComponent(matchByBox, getTextAreaHeight(), getTextAreaHeight(), getTextAreaHeight()))
                         .addGap(20)
                         .addGroup(layout.createParallelGroup(BASELINE)
                         		 .addComponent(searchLabel)
@@ -383,12 +395,12 @@ public class VisualizationsFindDialog extends JDialog {
      
     private int getButtonWidth() 
     { 
-        return 110; 
+        return 160; 
     } 
     
     private int getTextAreaWidth() 
     {  
-        return 120;
+        return 160;
     }
     
     private int getTextAreaHeight() 

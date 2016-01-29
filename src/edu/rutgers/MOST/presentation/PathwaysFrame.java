@@ -813,7 +813,6 @@ public class PathwaysFrame extends JApplet {
 			drawReactions(pathway, component, rxns, idReactionMap);
 			
 			// create reports for reactions found and not found
-			System.out.println("n " + LocalConfig.getInstance().getReactionsContainingKeggIdsNotInGraph());
 			Collections.sort(plottedIds);
 			System.out.println("plotted " + plottedIds);
 			ArrayList<Integer> missingKeggId = new ArrayList<Integer>();
@@ -841,6 +840,7 @@ public class PathwaysFrame extends JApplet {
 //						idReactionMapAllReactions.get(missingKeggId.get(m)).getReactionEqunAbbr() + " " +
 //						idReactionMapAllReactions.get(missingKeggId.get(m)).getReactionEqunNames());
 			}
+// not working
 //			Collections.sort(keggIdNotInGraph);
 //			System.out.println("kegg id not in graph " + keggIdNotInGraph);
 //			for (int m = 0; m < keggIdNotInGraph.size(); m++) {
