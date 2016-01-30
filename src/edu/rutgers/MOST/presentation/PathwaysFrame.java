@@ -950,7 +950,12 @@ public class PathwaysFrame extends JApplet {
 //					}
 				} else {
 					if (!LocalConfig.getInstance().isGraphMissingMetabolitesSelected()) {
-						drawMetabolite = false;
+						if (LocalConfig.getInstance().getAlternateMetabolitesMap().containsKey(keggId) ||
+								LocalConfig.getInstance().getMetaboliteSubstitutionsMap().containsKey(keggId)) {
+							
+						} else {
+							drawMetabolite = false;
+						}
 					}
 				}
 				if (drawMetabolite) {
@@ -1028,7 +1033,7 @@ public class PathwaysFrame extends JApplet {
 					} 
 				}
 				if (drawReaction) {
-					System.out.println(pathway.getReactionsData().get(Integer.toString(k)).getEcNumbers());
+					//System.out.println(pathway.getReactionsData().get(Integer.toString(k)).getEcNumbers());
 					reactions.add(displayName);
 					double x = 0;
 					double y = 0;
@@ -1078,6 +1083,7 @@ public class PathwaysFrame extends JApplet {
 				}
 			}
 		}
+    	// removes "orphan" nodes
     	if (!LocalConfig.getInstance().isGraphMissingMetabolitesSelected()) {
 			for (int i = 0; i < metabPosKeys.size(); i++) {
 				if (!foundMetabolitesList.contains(metabPosKeys.get(i))) {
@@ -1884,7 +1890,6 @@ public class PathwaysFrame extends JApplet {
 			} else if (VisualizationsFindDialog.matchByBox.getSelectedItem().equals(
 					VisualizationsFindConstants.EC_NUMBER_ITEM)) {
 				if (ecNumberPositionsMap.containsKey(findValue)) {
-					System.out.println(ecNumberPositionsMap.get(findValue));
 					for (int e = 0; e < ecNumberPositionsMap.get(findValue).size(); e++) {
 						updateFindLocationsMap(findLocationsMap, ecNumberPositionsMap.get(findValue).get(e)[0], 
 								ecNumberPositionsMap.get(findValue).get(e)[1]);
