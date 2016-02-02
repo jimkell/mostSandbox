@@ -198,6 +198,7 @@ public class PathwaysFrame extends JApplet {
    	
    	// maps for find - exact match
    	HashMap<String, ArrayList<String[]>> ecNumberPositionsMap = new HashMap<String, ArrayList<String[]>>();
+   	HashMap<String, ArrayList<String[]>> keggReactionIdPositionsMap = new HashMap<String, ArrayList<String[]>>();
    	
    	PathwayReactionNodeFactory prnf = new PathwayReactionNodeFactory();
    	PathwayMetaboliteNodeFactory pmnf = new PathwayMetaboliteNodeFactory();
@@ -1051,6 +1052,11 @@ public class PathwaysFrame extends JApplet {
 						updateFindPositionsMap(ecNumberPositionsMap, pathway.getReactionsData().get(Integer.toString(k)).getEcNumbers().get(e), 
 								new String[] {Double.toString(x), Double.toString(y)});
 					}
+					for (int r = 0; r < pathway.getReactionsData().get(Integer.toString(k)).getKeggReactionIds().size(); r++) {
+						updateFindPositionsMap(keggReactionIdPositionsMap, pathway.getReactionsData().get(Integer.toString(k)).getKeggReactionIds().get(r), 
+								new String[] {Double.toString(x), Double.toString(y)});
+						//System.out.println(keggReactionIdPositionsMap);
+					}
 					
 					for (int r = 0; r < pathway.getReactionsData().get(Integer.toString(k)).getReactantIds().size(); r++) {
 						if (pathway.getMetabolitesData().containsKey((pathway.getReactionsData().get(Integer.toString(k)).getReactantIds().get(r)))) {
@@ -1897,7 +1903,15 @@ public class PathwaysFrame extends JApplet {
 				}
 			} else if (VisualizationsFindDialog.matchByBox.getSelectedItem().equals(
 					VisualizationsFindConstants.KEGG_REACTION_ID_ITEM)) {
-				
+				// if match case is not selected, find values are set to lower case. while this works with generic find
+				// this does not work with KEGG ids that are upper case in the reaction positions file
+				String keggReactionId = findValue.toUpperCase();
+				if (keggReactionIdPositionsMap.containsKey(keggReactionId)) {
+					for (int r = 0; r < keggReactionIdPositionsMap.get(keggReactionId).size(); r++) {
+						updateFindLocationsMap(findLocationsMap, keggReactionIdPositionsMap.get(keggReactionId).get(r)[0], 
+								keggReactionIdPositionsMap.get(keggReactionId).get(r)[1]);
+					}
+				}
 			} else if (VisualizationsFindDialog.matchByBox.getSelectedItem().equals(
 					GraphicalInterfaceConstants.REACTION_ABBREVIATION_COLUMN_NAME)) {
 				
@@ -2012,14 +2026,16 @@ public class PathwaysFrame extends JApplet {
 	};	
 	
 	public void updateFindPositionsMap(HashMap<String, ArrayList<String[]>> positionsMap, String key, String[] pos) {
-		if (positionsMap.containsKey(key)) {
-			ArrayList<String[]> positions = positionsMap.get(key);
-			positions.add(pos);
-			positionsMap.put(key, positions);
-		} else {
-			ArrayList<String[]> positions = new ArrayList<String[]>();
-			positions.add(pos);
-			positionsMap.put(key, positions);
+		if (key != null && key.length() > 0) {
+			if (positionsMap.containsKey(key)) {
+				ArrayList<String[]> positions = positionsMap.get(key);
+				positions.add(pos);
+				positionsMap.put(key, positions);
+			} else {
+				ArrayList<String[]> positions = new ArrayList<String[]>();
+				positions.add(pos);
+				positionsMap.put(key, positions);
+			}
 		}
 	}
 	
