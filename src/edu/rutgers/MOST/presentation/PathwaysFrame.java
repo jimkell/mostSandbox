@@ -199,6 +199,7 @@ public class PathwaysFrame extends JApplet {
    	// maps for find - exact match
    	HashMap<String, ArrayList<String[]>> ecNumberPositionsMap = new HashMap<String, ArrayList<String[]>>();
    	HashMap<String, ArrayList<String[]>> keggReactionIdPositionsMap = new HashMap<String, ArrayList<String[]>>();
+   	HashMap<String, ArrayList<String[]>> reactionAbbrPositionsMap = new HashMap<String, ArrayList<String[]>>();
    	
    	PathwayReactionNodeFactory prnf = new PathwayReactionNodeFactory();
    	PathwayMetaboliteNodeFactory pmnf = new PathwayMetaboliteNodeFactory();
@@ -983,6 +984,7 @@ public class PathwaysFrame extends JApplet {
     	ArrayList<String> metabPosKeys = new ArrayList<String>(nodeNamePositionMap.keySet());
     	for (int k = 0; k < pathway.getReactionsData().size(); k++) {
 			if (pathway.getComponent() == component) {
+				ArrayList<String> reacAbbrList = new ArrayList<String>();
 				PathwayReactionNode pn = prnf.createPathwayReactionNode(pathway.getReactionsData().get(Integer.toString(k)), 
 						LocalConfig.getInstance().getSelectedCompartmentName(), pathway.getComponent(), rxns, 
 						idReactionMap);
@@ -1005,6 +1007,10 @@ public class PathwaysFrame extends JApplet {
 				pn.setFluxValue(flux);
 				boolean drawReaction = true;
 				if (pn.getReactions().size() > 0) {
+					for (int i = 0; i < pn.getReactions().size(); i++) {
+						reacAbbrList.add(pn.getReactions().get(i).getReactionAbbreviation());
+					}
+					System.out.println(reacAbbrList);
 					foundReactionsList.add(displayName);
 					for (int r = 0; r < pathway.getReactionsData().get(Integer.toString(k)).getReactantIds().size(); r++) {
 						String metabName = pathway.getMetabolitesData().get(pathway.getReactionsData().get(Integer.toString(k)).getReactantIds().get(r)).getName();
@@ -1056,6 +1062,10 @@ public class PathwaysFrame extends JApplet {
 						updateFindPositionsMap(keggReactionIdPositionsMap, pathway.getReactionsData().get(Integer.toString(k)).getKeggReactionIds().get(r), 
 								new String[] {Double.toString(x), Double.toString(y)});
 						//System.out.println(keggReactionIdPositionsMap);
+					}
+					for (int a = 0; a < reacAbbrList.size(); a++) {
+						updateFindPositionsMap(reactionAbbrPositionsMap, reacAbbrList.get(a), 
+								new String[] {Double.toString(x), Double.toString(y)});
 					}
 					
 					for (int r = 0; r < pathway.getReactionsData().get(Integer.toString(k)).getReactantIds().size(); r++) {
@@ -1880,9 +1890,13 @@ public class PathwaysFrame extends JApplet {
 		HashMap<String, ArrayList<Double>> findLocationsMap = new HashMap<String, ArrayList<Double>>();
 		
 		String findValue = "";
+		// save original entry for exact match
+		String originalFindValue = "";
 		if (matchCase) {
 			findValue = VisualizationsFindDialog.findBox.getSelectedItem().toString();
+			originalFindValue = findValue;
 		} else {
+			originalFindValue = VisualizationsFindDialog.findBox.getSelectedItem().toString();
 			findValue = VisualizationsFindDialog.findBox.getSelectedItem().toString().toLowerCase();
 		}
 //		System.out.println("fv " + findValue);
@@ -1914,7 +1928,12 @@ public class PathwaysFrame extends JApplet {
 				}
 			} else if (VisualizationsFindDialog.matchByBox.getSelectedItem().equals(
 					GraphicalInterfaceConstants.REACTION_ABBREVIATION_COLUMN_NAME)) {
-				
+				if (reactionAbbrPositionsMap.containsKey(originalFindValue)) {
+					for (int r = 0; r < reactionAbbrPositionsMap.get(originalFindValue).size(); r++) {
+						updateFindLocationsMap(findLocationsMap, reactionAbbrPositionsMap.get(originalFindValue).get(r)[0], 
+								reactionAbbrPositionsMap.get(originalFindValue).get(r)[1]);
+					}
+				}
 			}
 		} else {
 			for (int i = 0; i < nodeNameList.size(); i++) {

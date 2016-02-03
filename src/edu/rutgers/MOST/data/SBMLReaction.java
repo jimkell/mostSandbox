@@ -250,6 +250,7 @@ public class SBMLReaction implements ModelReaction {
 	public String toString() {
 		return "SBMLReaction [id=" + id
 		        + ", fluxValue=" + fluxValue
+		        + ", reactionAbbr=" + reactionAbbreviation
 		        + ", reactionName=" + reactionName
 		        + ", keggReactionId=" + keggReactionId
 		        + ", reactionEqunAbbr=" + reactionEqunAbbr + "]";
