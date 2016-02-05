@@ -426,6 +426,11 @@ public class PathwayFilesReader {
 						}
 						metabolicPathways.get(id).getMetabolitesData().put(pm.getId(), pm);
 						String name = pm.getNames().get(0);
+						// add KEGG id to nodes but not if KEGG id does not exist and file contains
+						// entry such as "-1"
+						if (pm.getKeggId().startsWith("C")) {
+							name = "<html>" + pm.getNames().get(0) + "<p>" + "KEGG Id: " + pm.getKeggId();
+						}
 						String abbr = pm.getAbbreviation();
 						if (LocalConfig.getInstance().getKeggIdMetaboliteMap().containsKey(pm.getKeggId())) {
 							String metabAbbr = pm.getNames().get(0);
@@ -450,7 +455,7 @@ public class PathwayFilesReader {
 									if (charge != null && charge.length() > 0 && !chargeList.contains(charge.trim())) {
 										chargeList.add(charge.trim());
 									}
-								}
+								} 
 							}
 							if (abbrList.size() > 0) {
 								name = util.makeCommaSeparatedList(abbrList);
