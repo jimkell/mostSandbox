@@ -1010,20 +1010,28 @@ public class PathwaysFrame extends JApplet {
 					for (int i = 0; i < pn.getReactions().size(); i++) {
 						reacAbbrList.add(pn.getReactions().get(i).getReactionAbbreviation());
 					}
-					System.out.println(reacAbbrList);
+					//System.out.println(reacAbbrList);
 					foundReactionsList.add(displayName);
 					for (int r = 0; r < pathway.getReactionsData().get(Integer.toString(k)).getReactantIds().size(); r++) {
-						String metabName = pathway.getMetabolitesData().get(pathway.getReactionsData().get(Integer.toString(k)).getReactantIds().get(r)).getName();
-						if (!foundMetabolitesList.contains(metabName)) {
-							//System.out.println(metabName);
-							foundMetabolitesList.add(metabName);
+						try {
+							String metabName = pathway.getMetabolitesData().get(pathway.getReactionsData().get(Integer.toString(k)).getReactantIds().get(r)).getName();
+							if (!foundMetabolitesList.contains(metabName)) {
+								//System.out.println(metabName);
+								foundMetabolitesList.add(metabName);
+							}
+						} catch (Exception e) {
+							
 						}
 					}
 					for (int p = 0; p < pathway.getReactionsData().get(Integer.toString(k)).getProductIds().size(); p++) {
-						String metabName = pathway.getMetabolitesData().get(pathway.getReactionsData().get(Integer.toString(k)).getProductIds().get(p)).getName();
-						if (!foundMetabolitesList.contains(metabName)) {
-							//System.out.println(metabName);
-							foundMetabolitesList.add(metabName);
+						try {
+							String metabName = pathway.getMetabolitesData().get(pathway.getReactionsData().get(Integer.toString(k)).getProductIds().get(p)).getName();
+							if (!foundMetabolitesList.contains(metabName)) {
+								//System.out.println(metabName);
+								foundMetabolitesList.add(metabName);
+							}
+						} catch (Exception e) {
+							
 						}
 					}
 					// for bookkeeping only

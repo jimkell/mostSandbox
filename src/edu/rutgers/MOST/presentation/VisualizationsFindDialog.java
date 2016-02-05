@@ -89,6 +89,7 @@ public class VisualizationsFindDialog extends JDialog {
         JLabel placeholder = new JLabel(""); 
         
         populateComboBox(findBox, LocalConfig.getInstance().getFindEntryList());
+        matchByBox.removeAllItems();
         for (int i = 0; i < VisualizationsFindConstants.FIND_BY_COLUMN_LIST.length; i++) {
 			matchByBox.addItem(VisualizationsFindConstants.FIND_BY_COLUMN_LIST[i]);
 		}
