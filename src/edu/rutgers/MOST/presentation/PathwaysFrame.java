@@ -1217,6 +1217,11 @@ public class PathwaysFrame extends JApplet {
     		name = pmnf.htmlDisplayName(abbr, nameList, abbrList, keggList, chargeList);
 			oldNameNewNameMap.put(metabName, name);
 			LocalConfig.getInstance().getMetaboliteNameAbbrMap().put(metabName, abbr);
+			// add positions to map for find exact match
+			for (int n = 0; n < abbrList.size(); n++) {
+				updateFindPositionsMap(metaboliteAbbrPositionsMap, abbrList.get(n), 
+						new String[] {nodeNamePositionMap.get(metabName)[0], nodeNamePositionMap.get(metabName)[1]});
+			}
     	}
     }
     
