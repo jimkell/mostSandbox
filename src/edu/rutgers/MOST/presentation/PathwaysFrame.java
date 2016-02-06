@@ -86,6 +86,7 @@ import org.apache.commons.collections15.functors.ChainedTransformer;
 
 
 
+
 import edu.rutgers.MOST.config.LocalConfig;
 import edu.rutgers.MOST.data.MetabolicPathway;
 import edu.rutgers.MOST.data.PathwayMetaboliteNode;
@@ -95,6 +96,7 @@ import edu.rutgers.MOST.data.PathwayReactionNode;
 import edu.rutgers.MOST.data.PathwayReactionNodeFactory;
 import edu.rutgers.MOST.data.PathwaysCSVFileConstants;
 import edu.rutgers.MOST.data.ReactionFactory;
+import edu.rutgers.MOST.data.SBMLMetabolite;
 import edu.rutgers.MOST.data.SBMLReaction;
 import edu.rutgers.MOST.data.SBMLReactionEquation;
 import edu.uci.ics.jung.algorithms.layout.Layout;                                                                    
@@ -197,6 +199,7 @@ public class PathwaysFrame extends JApplet {
    	Map<String, String> oldNameNewNameMap = new HashMap<String, String>(); 
    	
    	// maps for find - exact match
+   	HashMap<String, ArrayList<String[]>> metaboliteAbbrPositionsMap = new HashMap<String, ArrayList<String[]>>();
    	HashMap<String, ArrayList<String[]>> keggMetaboliteIdPositionsMap = new HashMap<String, ArrayList<String[]>>();
    	HashMap<String, ArrayList<String[]>> ecNumberPositionsMap = new HashMap<String, ArrayList<String[]>>();
    	HashMap<String, ArrayList<String[]>> keggReactionIdPositionsMap = new HashMap<String, ArrayList<String[]>>();
@@ -944,13 +947,22 @@ public class PathwaysFrame extends JApplet {
 				String type = pathway.getMetabolitesData().get(Integer.toString(j)).getType();
 				String keggId = pathway.getMetabolitesData().get(Integer.toString(j)).getKeggId();
 				boolean drawMetabolite = true;
+				ArrayList<String> abbrList = new ArrayList<String>();
 				if (LocalConfig.getInstance().getKeggIdMetaboliteMap().containsKey(keggId)) {
-//					for (int k = 0; k < LocalConfig.getInstance().getKeggIdMetaboliteMap().get(keggId).size(); k++) {
-//						if (LocalConfig.getInstance().getKeggIdMetaboliteMap().get(keggId).get(k).getCompartment().
-//								equals(compartment)) {
-//							//foundMetabolitesList.add(metabName);
-//						} 
-//					}
+					for (int k = 0; k < LocalConfig.getInstance().getKeggIdMetaboliteMap().get(keggId).size(); k++) {
+						if (LocalConfig.getInstance().getKeggIdMetaboliteMap().get(keggId).get(k).getCompartment().
+								equals(compartment)) {
+							//foundMetabolitesList.add(metabName);
+							// kegg ids in these maps will be substituted if node is side type
+							if (type.equals(PathwaysCSVFileConstants.SIDE_METABOLITE_TYPE) && (LocalConfig.getInstance().getAlternateMetabolitesMap().containsKey(keggId) ||
+									LocalConfig.getInstance().getMetaboliteSubstitutionsMap().containsKey(keggId))) {
+								
+							} else {
+								abbrList.add(LocalConfig.getInstance().getKeggIdMetaboliteMap().get(keggId).get(k).getMetaboliteAbbreviation());
+							}
+						} 
+					}
+					//System.out.println(abbrList);
 				} else {
 					if (!LocalConfig.getInstance().isGraphMissingMetabolitesSelected()) {
 						if (LocalConfig.getInstance().getAlternateMetabolitesMap().containsKey(keggId) ||
@@ -976,6 +988,10 @@ public class PathwaysFrame extends JApplet {
 //							pathway.getMetabolitesData().get(Integer.toString(j)).getName(), keggId);
 					//pathway.getMetabolitesNodes().put(pn.getDataId(), pn);
 					nodeNamePositionMap.put(metabName, new String[] {Double.toString(x), Double.toString(y)});
+					for (int i = 0; i < abbrList.size(); i++) {
+						updateFindPositionsMap(metaboliteAbbrPositionsMap, abbrList.get(i), 
+								new String[] {Double.toString(x), Double.toString(y)});
+					}
 					updateFindPositionsMap(keggMetaboliteIdPositionsMap, keggId, 
 							new String[] {Double.toString(x), Double.toString(y)});
 				}
@@ -1914,7 +1930,12 @@ public class PathwaysFrame extends JApplet {
 		if (exactMatch) {
 			if (VisualizationsFindDialog.matchByBox.getSelectedItem().equals(
 					GraphicalInterfaceConstants.METABOLITE_ABBREVIATION_COLUMN_NAME)) {
-				
+				if (metaboliteAbbrPositionsMap.containsKey(originalFindValue)) {
+					for (int r = 0; r < metaboliteAbbrPositionsMap.get(originalFindValue).size(); r++) {
+						updateFindLocationsMap(findLocationsMap, metaboliteAbbrPositionsMap.get(originalFindValue).get(r)[0], 
+								metaboliteAbbrPositionsMap.get(originalFindValue).get(r)[1]);
+					}
+				}
 			} else if (VisualizationsFindDialog.matchByBox.getSelectedItem().equals(
 					VisualizationsFindConstants.KEGG_METABOLITE_ID_ITEM)) {
 				String keggMetaboliteId = findValue.toUpperCase();
