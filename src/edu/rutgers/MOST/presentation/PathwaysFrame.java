@@ -1152,8 +1152,15 @@ public class PathwaysFrame extends JApplet {
 			ArrayList<String> keggList = new ArrayList<String>();
 			ArrayList<String> keggIdList = prnf.getRenameMetabolitesMap().get(renameMetaboliteKeys.get(y));
 			boolean containsProton = false;
+			String compProtonAbbr = "";
 			if (keggIdList.contains("C00080")) {
-				containsProton = true;
+				for (int k = 0; k < LocalConfig.getInstance().getKeggIdMetaboliteMap().get("C00080").size(); k++) {
+					if (LocalConfig.getInstance().getKeggIdMetaboliteMap().get("C00080").get(k).getCompartment().
+							equals(LocalConfig.getInstance().getSelectedCompartmentName())) {
+						compProtonAbbr = LocalConfig.getInstance().getKeggIdMetaboliteMap().get("C00080").get(k).getMetaboliteAbbreviation();
+						containsProton = true;
+					}
+				}
 			}
 			ArrayList<String> chargeList = new ArrayList<String>();
     		for (int z = 0; z < prnf.getRenameMetabolitesMap().get(renameMetaboliteKeys.get(y)).size(); z++) {
@@ -1206,12 +1213,15 @@ public class PathwaysFrame extends JApplet {
 				abbr += " + " + protonAbbr;
 				nameList.add(LocalConfig.getInstance().getKeggIdMetaboliteMap().get("C00080").get(0).getMetaboliteName());
 				keggList.add("C00080");
-				for (int k = 0; k < LocalConfig.getInstance().getKeggIdMetaboliteMap().get("C00080").size(); k++) {
-					if (LocalConfig.getInstance().getKeggIdMetaboliteMap().get("C00080").get(k).getCompartment().
-							equals(LocalConfig.getInstance().getSelectedCompartmentName())) {
-						abbrList.add(LocalConfig.getInstance().getKeggIdMetaboliteMap().get("C00080").get(k).getMetaboliteAbbreviation());
-					}
-				}
+				abbrList.add(compProtonAbbr);
+				updateFindPositionsMap(metaboliteAbbrPositionsMap, compProtonAbbr, 
+						new String[] {nodeNamePositionMap.get(metabName)[0], nodeNamePositionMap.get(metabName)[1]});
+//				for (int k = 0; k < LocalConfig.getInstance().getKeggIdMetaboliteMap().get("C00080").size(); k++) {
+//					if (LocalConfig.getInstance().getKeggIdMetaboliteMap().get("C00080").get(k).getCompartment().
+//							equals(LocalConfig.getInstance().getSelectedCompartmentName())) {
+//						abbrList.add(LocalConfig.getInstance().getKeggIdMetaboliteMap().get("C00080").get(k).getMetaboliteAbbreviation());
+//					}
+//				}
 				//chargeList.add(LocalConfig.getInstance().getKeggIdMetaboliteMap().get("C00080").get(0).getCharge());
 			} 
     		name = pmnf.htmlDisplayName(abbr, nameList, abbrList, keggList, chargeList);
