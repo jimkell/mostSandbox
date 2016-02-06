@@ -195,7 +195,9 @@ public class MetaboliteFactory {
 					if (getKeggIdColumnIndex() > -1) {
 						String keggId = (String) GraphicalInterface.metabolitesTable.getModel().getValueAt(i, getKeggIdColumnIndex());
 						// accounts for models where KEGG ids start with "c"
-						metabolite.setKeggId(keggId.toUpperCase());
+						if (keggId != null) {
+							metabolite.setKeggId(keggId.toUpperCase());
+						}
 					}
 					if (getChebiIdColumnIndex() > -1) {
 						metabolite.setChebiId((String) GraphicalInterface.metabolitesTable.getModel().getValueAt(i, getChebiIdColumnIndex()));

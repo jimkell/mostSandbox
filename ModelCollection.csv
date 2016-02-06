@@ -8,6 +8,7 @@ iJO1366_kegg,Escherichia coli K-12 MG1655,1366,2583,1805,"Orth et al, 2011",sbml
 iJR904_annotations,Escherichia coli K-12 MG1655,904,1075,904,"Reed et al., 2003",sbml/E. Coli,sbml,http://dx.doi.org/10.1186/gb-2003-4-9-r54
 iCA1273_kegg,Escherichia coli W (ATCC 9637),1273,2477,2062,"Archer et al., 2011",sbml/E. Coli,sbml,http://dx.doi.org/10.1186/1471-2164-12-9
 recon2model.v02,Homo sapiens,1789,7440,9798,"Thiele et al., 2013",sbml/recon2_02,sbml,http://dx.doi.org/10.1038/nbt.2488
+GSMmouse190508_kegg,Mus musculus,473,2037,2110,"Sheikh et al., 2005",sbml/Mus musculus,sbml,http://dx.doi.org/10.1021/bp0498138
 pcbi.1003126.s001,Neurospora crassa,836,1845,1008,"Dreyfuss et al., 2013",sbml/Neurospora crassa,sbml,http://dx.doi.org/10.1371%2Fjournal.pcbi.1003126
 tpj13081,Phaeodactylum tricornutum,-,850,754,"Kim et al., 2015",sbml/Phaeodactylum tricornutum,sbml,http://dx.doi.org/10.1111/tpj.13081
 yeast_7.5_cobra,Saccharomyces cerevisiae Yeast v6.0,900,3490,3370,"Aung et al., 2013",sbml/Yeast_7.5,sbml,http://dx.doi.org/10.1089/ind.2013.0013
