@@ -942,6 +942,11 @@ public class PathwaysFrame extends JApplet {
     
     public void drawMetabolites(MetabolicPathway pathway, int component, String compartment) {
 		for (int j = 0; j < pathway.getMetabolitesData().size(); j++) {
+			if (j%10 == 0) {
+				LocalConfig.getInstance().setVisualizationsProgress((j * ProgressConstants.VISUALIZATIONS_METABOLITE_LOAD_PERCENT) / pathway.getMetabolitesData().size()
+						+ ProgressConstants.VISUALIZATIONS_LOAD_PERCENT);	
+				System.out.println(LocalConfig.getInstance().getVisualizationsProgress());
+			}
 			if (pathway.getComponent() == component) {
 				String metabName = pathway.getMetabolitesData().get(Integer.toString(j)).getName();
 				String type = pathway.getMetabolitesData().get(Integer.toString(j)).getType();
@@ -1003,6 +1008,11 @@ public class PathwaysFrame extends JApplet {
     public void drawReactions(MetabolicPathway pathway, int component, Vector<SBMLReaction> rxns, Map<Integer, SBMLReaction> idReactionMap) {
     	ArrayList<String> metabPosKeys = new ArrayList<String>(nodeNamePositionMap.keySet());
     	for (int k = 0; k < pathway.getReactionsData().size(); k++) {
+    		if (k%10 == 0) {
+				LocalConfig.getInstance().setVisualizationsProgress((k * ProgressConstants.VISUALIZATIONS_REACTION_LOAD_PERCENT) / pathway.getReactionsData().size()
+						+ ProgressConstants.VISUALIZATIONS_LOAD_PERCENT + ProgressConstants.VISUALIZATIONS_METABOLITE_LOAD_PERCENT);	
+				System.out.println(LocalConfig.getInstance().getVisualizationsProgress());
+			}
 			if (pathway.getComponent() == component) {
 				ArrayList<String> reacAbbrList = new ArrayList<String>();
 				PathwayReactionNode pn = prnf.createPathwayReactionNode(pathway.getReactionsData().get(Integer.toString(k)), 

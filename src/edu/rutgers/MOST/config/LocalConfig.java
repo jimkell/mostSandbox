@@ -82,7 +82,17 @@ public class LocalConfig {
 		return progress;
 	}
 	
-    private ArrayList<String> invalidReactions = new ArrayList<String>();
+	private Integer visualizationsProgress;
+	
+    public Integer getVisualizationsProgress() {
+		return visualizationsProgress;
+	}
+
+	public void setVisualizationsProgress(Integer visualizationsProgress) {
+		this.visualizationsProgress = visualizationsProgress;
+	}
+
+	private ArrayList<String> invalidReactions = new ArrayList<String>();
 	
 	public ArrayList<String> getInvalidReactions() {
 		return invalidReactions;
