@@ -255,13 +255,13 @@ public class PathwaysFrame extends JApplet {
 
 	// find-replace values 
 	private boolean findMode;
-	private boolean findButtonClicked;
+//	private boolean findButtonClicked;
 	private boolean matchCase;
 	private boolean wrapAround;
 	private boolean searchBackwards;
-	private boolean throwNotFoundError;
 	private boolean exactMatch;
 //	private boolean findFieldChanged;
+	private boolean notFoundShown = false;
 	
 	private String oldFindValue = "";
 	private int findStartIndex = 0;
@@ -1796,7 +1796,7 @@ public class PathwaysFrame extends JApplet {
 		});
 		VisualizationsFindDialog.findBox.setEnabled(true);
 		
-		findButtonClicked = false;
+//		findButtonClicked = false;
 		// ensure states of boolean values match states of findReplace frame
 		searchBackwards = VisualizationsFindConstants.SEARCH_BACKWARDS_DEFAULT;
 		matchCase = VisualizationsFindConstants.MATCH_CASE_DEFAULT;
@@ -1812,7 +1812,7 @@ public class PathwaysFrame extends JApplet {
 	ActionListener findNextButtonActionListener = new ActionListener() {
 		public void actionPerformed(ActionEvent ae) {
 			findAction();
-			findButtonClicked = true;
+//			findButtonClicked = true;
 		}
 	};
 	
@@ -1821,6 +1821,7 @@ public class PathwaysFrame extends JApplet {
 	}
 
 	public void notFoundAction() {
+		notFoundShown = true;
 		getVisualizationsFindDialog().setAlwaysOnTop(false);
 		Object[] options = {"OK"};
 		int choice = JOptionPane.showOptionDialog(null, 
@@ -1829,8 +1830,8 @@ public class PathwaysFrame extends JApplet {
 				JOptionPane.YES_OPTION, 
 				JOptionPane.QUESTION_MESSAGE, 
 				null, options, options[0]);
-		if (choice == JOptionPane.YES_OPTION) {
-			
+		if (choice == JOptionPane.YES_OPTION || choice == JOptionPane.CLOSED_OPTION) {
+			notFoundShown = false;
 		}
 		getVisualizationsFindDialog().setAlwaysOnTop(true);
 	}
@@ -1891,7 +1892,9 @@ public class PathwaysFrame extends JApplet {
 		oldFindValue = findValue;
 		//HashMap<String, ArrayList<Double>> findLocationsMap = findLocationsMap();
 		if (findLocationsMap.size() == 0) {
-			notFoundAction();
+			if (!notFoundShown) {
+				notFoundAction();
+			}
 		} else {
 			getVisualizationsFindDialog().requestFocus();
 			ArrayList<String> findXCoordinates = new ArrayList<String>(findLocationsMap.keySet());
@@ -2038,7 +2041,7 @@ public class PathwaysFrame extends JApplet {
     	
     	// based on code from http://stackoverflow.com/questions/5745183/how-to-programatically-pan-a-visualizationviewer-with-jung-the-java-library
     	// scroll to location
-    	MutableTransformer view = vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.VIEW);
+//    	MutableTransformer view = vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.VIEW);
     	MutableTransformer layout = vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.LAYOUT);
     	Point2D ctr = vv.getCenter();
     	
