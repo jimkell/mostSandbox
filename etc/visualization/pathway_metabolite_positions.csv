@@ -1390,7 +1390,7 @@ Pathway ID,Metabolite ID,Metabolite Level,Metabolite Level Position,Metabolite N
 0,1388,9.15,-0.2,Phosphate,PI,C00009,0,s,,,,
 0,1389,9.35,2.65,Adenosine 5'-diphosphate,ADP,C00008,0,s,,,,
 0,1390,9.55,2.65,Adenosine 5'-triphosphate,ATP,C00002,0,s,,,,
-0,1391,9.1,2.15,Water,H2O,C00001,0,s,,,,
+0,1391,9.15,2.2,Water,H2O,C00001,0,s,,,,
 0,1392,9.7,2.15,Phosphate,PI,C00009,0,s,,,,
 0,1393,10.3,-0.2,Adenosine 5'-diphosphate,ADP,C00008,0,s,,,,
 0,1394,10.7,-0.2,Adenosine 5'-triphosphate,ATP,C00002,0,s,,,,
