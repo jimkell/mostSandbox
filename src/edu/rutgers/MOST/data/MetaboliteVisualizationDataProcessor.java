@@ -11,10 +11,6 @@ public class MetaboliteVisualizationDataProcessor {
 
 	public void processMetabolitesData() {
 		MetaboliteFactory f = new MetaboliteFactory("SBML");
-//		ArrayList<String> additionalMetaboliteKeys = new ArrayList<String>(LocalConfig.getInstance().getAdditionalMetabolitesMap().keySet());
-//		ArrayList<String> metaboliteSubstitutionKeys = new ArrayList<String>(LocalConfig.getInstance().getMetaboliteSubstitutionsMap().keySet());
-//		ArrayList<String> alternateMetaboliteKeys = new ArrayList<String>(LocalConfig.getInstance().getAlternateMetabolitesMap().keySet());
-//		Map<String, ArrayList<String>> metaboliteSubstitutionsFoundMap = new HashMap<String, ArrayList<String>>();
 		if (f.getKeggIdColumnIndex() > -1) {
 			Vector<SBMLMetabolite> metabolites = f.getAllMetabolites();
 			for (int i = 0; i < metabolites.size(); i++) {

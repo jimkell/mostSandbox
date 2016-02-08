@@ -41,7 +41,7 @@ public class PathwaysCSVFileConstants {
 		{
 		"KEGG ID", "Names", "Occurence"
 		};
-		
+	
 	public static final String[] METABOLITE_SUBSTITUTIONS_COLUMN_NAMES = 
 		{
 		"KEGG ID", "Additional KEGG IDs", "Name"
