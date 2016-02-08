@@ -229,59 +229,6 @@ public class PathwayFilesReader {
 		}	
 	}
 	
-	public void readAdditionalMetabolitesFile(File additionalMetabolites) {
-		CSVReader reader;
-		
-		int count = 0;
-		
-		try {
-			reader = new CSVReader(new FileReader(additionalMetabolites), ',');
-			String [] dataArray;
-			try {
-				while ((dataArray = reader.readNext()) != null) {
-					if (count > 0) {
-						for (int s = 0; s < dataArray.length; s++) {
-							String keggId = dataArray[PathwaysCSVFileConstants.ADDITIONAL_METABOLITES_KEGG_ID_COLUMN];
-							if (s == PathwaysCSVFileConstants.ADDITIONAL_METABOLITES_ALTERNATE_KEGG_IDS_COLUMN) {
-								// need to escape pipe: http://stackoverflow.com/questions/21524642/splitting-string-with-pipe-character
-								String[] ids = dataArray[s].split("\\|");
-								ArrayList<String> idsList = new ArrayList<String>();
-								for (int i = 0; i < ids.length; i++) {
-									idsList.add(ids[i]);
-//									PathwayMetaboliteData pm = new PathwayMetaboliteData();
-//									pm.setKeggId(idsList.get(i));
-//									pm.setNames(LocalConfig.getInstance().getMetaboliteDataKeggIdMap().get(keggId).getNames());
-//									pm.setOccurence(0);
-//									//System.out.println("pm " + pm);
-//									LocalConfig.getInstance().getMetaboliteDataKeggIdMap().put(idsList.get(i), pm);
-								}
-								additionalMetabolitesMap.put(keggId, idsList);
-//								System.out.println("addl k " + keggId);
-//								System.out.println("addl list " + idsList);
-							}
-						}
-					}
-					count += 1;
-				}
-				reader.close();
-				//System.out.println("a " + additionalMetabolitesMap);
-				LocalConfig.getInstance().setAdditionalMetabolitesMap(additionalMetabolitesMap);
-			} catch (IOException e) {
-				JOptionPane.showMessageDialog(null,                
-						"File Not Found Error.",                
-						"Error",                                
-						JOptionPane.ERROR_MESSAGE);
-				//e.printStackTrace();
-			}
-		} catch (FileNotFoundException e) {
-			JOptionPane.showMessageDialog(null,                
-					"File Not Found Error.",                
-					"Error",                                
-					JOptionPane.ERROR_MESSAGE);
-			//e.printStackTrace();
-		}	
-	}
-	
 	public void readMetaboliteSubstitutionsFile(File metaboliteSubstitutions) {
 		CSVReader reader;
 		
@@ -489,14 +436,6 @@ public class PathwayFilesReader {
 				LocalConfig.getInstance().setMetabolicPathways(metabolicPathways);
 				LocalConfig.getInstance().setMetaboliteNameAbbrMap(metaboliteNameAbbrMap);
 				LocalConfig.getInstance().setMetaboliteNameDataMap(metaboliteNameDataMap);
-				ArrayList<String> additionalMetabs = new ArrayList<String>(LocalConfig.getInstance().getAdditionalMetabolitesMap().keySet());
-		    	for (int k = 0; k < additionalMetabs.size(); k++) {
-		    		for (int j = 0; j < LocalConfig.getInstance().getAdditionalMetabolitesMap().get(additionalMetabs.get(k)).size(); j++) {
-		    			if (!keggIdsInGraph.contains(LocalConfig.getInstance().getAdditionalMetabolitesMap().get(additionalMetabs.get(k)).get(j))) {
-							keggIdsInGraph.add(LocalConfig.getInstance().getAdditionalMetabolitesMap().get(additionalMetabs.get(k)).get(j));
-						} 
-		    		}
-		    	}
 				LocalConfig.getInstance().setKeggIdsInGraph(keggIdsInGraph);
 				System.out.println(keggIdsInGraph);
 			} catch (IOException e) {
@@ -825,7 +764,6 @@ public class PathwayFilesReader {
 		File pathwayNames = new File(PathwaysCSVFileConstants.PATHWAY_NAMES_FILE_NAME);
 		File pathwayGraph = new File(PathwaysCSVFileConstants.PATHWAY_GRAPH_FILE_NAME);
 		File metabolites = new File(PathwaysCSVFileConstants.METABOLITES_FILE_NAME);
-		File additionalMetabolites = new File(PathwaysCSVFileConstants.ADDITIONAL_METABOLITES_FILE_NAME);
 		File metaboliteAlternatives = new File(PathwaysCSVFileConstants.METABOLITE_ALTERNATIVES_FILE_NAME);
 		File reactions = new File(PathwaysCSVFileConstants.REACTIONS_FILE_NAME);
 		File sideSpecies = new File(PathwaysCSVFileConstants.PATHWAY_SIDE_SPECIES_FILE_NAME);
@@ -835,7 +773,6 @@ public class PathwayFilesReader {
 		reader.readPathwayNamesFile(pathwayNames);
 		reader.readPathwayGraphFile(pathwayGraph);
 		reader.readMetabolitesFile(metabolites);
-		reader.readAdditionalMetabolitesFile(additionalMetabolites);
 		reader.readMetaboliteAlternativesFile(metaboliteAlternatives);
 		reader.readReactionsFile(reactions);
 		reader.readSideSpeciesFile(sideSpecies);
