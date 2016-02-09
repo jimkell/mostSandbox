@@ -424,6 +424,7 @@ public class PathwaysFrame extends JApplet {
         graph = new SparseMultigraph<String, Number>();
         createVertices();
         createEdges(); 
+        LocalConfig.getInstance().setVisualizationsProgress(100);
                                                                                                                                                                                                                                                                                                                       
         Dimension layoutSize = new Dimension(PathwaysFrameConstants.GRAPH_WIDTH, PathwaysFrameConstants.GRAPH_HEIGHT);                                                             
                                                                                                                      
@@ -945,7 +946,7 @@ public class PathwaysFrame extends JApplet {
 			if (j%10 == 0) {
 				LocalConfig.getInstance().setVisualizationsProgress((j * ProgressConstants.VISUALIZATIONS_METABOLITE_LOAD_PERCENT) / pathway.getMetabolitesData().size()
 						+ ProgressConstants.VISUALIZATIONS_LOAD_PERCENT);	
-				System.out.println(LocalConfig.getInstance().getVisualizationsProgress());
+				//System.out.println(LocalConfig.getInstance().getVisualizationsProgress());
 			}
 			if (pathway.getComponent() == component) {
 				String metabName = pathway.getMetabolitesData().get(Integer.toString(j)).getName();
@@ -1011,7 +1012,7 @@ public class PathwaysFrame extends JApplet {
     		if (k%10 == 0) {
 				LocalConfig.getInstance().setVisualizationsProgress((k * ProgressConstants.VISUALIZATIONS_REACTION_LOAD_PERCENT) / pathway.getReactionsData().size()
 						+ ProgressConstants.VISUALIZATIONS_LOAD_PERCENT + ProgressConstants.VISUALIZATIONS_METABOLITE_LOAD_PERCENT);	
-				System.out.println(LocalConfig.getInstance().getVisualizationsProgress());
+				//System.out.println(LocalConfig.getInstance().getVisualizationsProgress());
 			}
 			if (pathway.getComponent() == component) {
 				ArrayList<String> reacAbbrList = new ArrayList<String>();

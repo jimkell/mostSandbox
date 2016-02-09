@@ -246,8 +246,11 @@ public class GraphicalInterface extends JFrame {
 	static protected Runnable solutionListener = null;
 	
 	private Task task;	
-	public final static ProgressBar progressBar = new ProgressBar();	
+	private VisualizeTask visualizeTask;
+	public final static ProgressBar progressBar = new ProgressBar();
+	public final static ProgressBar visualizeProgressBar = new ProgressBar();
 	javax.swing.Timer timer = new javax.swing.Timer(100, new TimeListener());
+	javax.swing.Timer visualizeTimer = new javax.swing.Timer(100, new VisualizeTimeListener());
 
 	/*****************************************************************************/
 	// boolean values
@@ -1201,6 +1204,7 @@ public class GraphicalInterface extends JFrame {
 		setIconsList(icons);
 
 		LocalConfig.getInstance().setProgress(0);
+		LocalConfig.getInstance().setVisualizationsProgress(0);
 		progressBar.pack();
 		progressBar.setIconImages(icons);
 		progressBar.setSize(GraphicalInterfaceConstants.PROGRESS_BAR_WIDTH, GraphicalInterfaceConstants.PROGRESS_BAR_HEIGHT);		
@@ -1210,6 +1214,16 @@ public class GraphicalInterface extends JFrame {
 		progressBar.setLocationRelativeTo(null);
 		progressBar.setVisible(false);
 		progressBar.setAlwaysOnTop(true);
+		
+		visualizeProgressBar.pack();
+		visualizeProgressBar.setIconImages(icons);
+		visualizeProgressBar.setSize(GraphicalInterfaceConstants.PROGRESS_BAR_WIDTH, GraphicalInterfaceConstants.PROGRESS_BAR_HEIGHT);		
+		visualizeProgressBar.setResizable(false);
+		visualizeProgressBar.setTitle("Loading...");
+		//visualizeProgressBar.progress.setIndeterminate(true);
+		visualizeProgressBar.setLocationRelativeTo(null);
+		visualizeProgressBar.setVisible(false);
+		visualizeProgressBar.setAlwaysOnTop(true);
 		
 		compartmentsTableUpdater = new CompartmentsTableUpdater();
 
@@ -2319,7 +2333,7 @@ public class GraphicalInterface extends JFrame {
 		});
         
         menuBar.add(visualizationMenu);
-        
+       
 		//Edit menu
 		JMenu editMenu = new JMenu("Edit");
 		editMenu.setMnemonic(KeyEvent.VK_E);
@@ -12557,6 +12571,48 @@ public class GraphicalInterface extends JFrame {
 		getGdbbDialog().getCounterLabel().setText(GDBBConstants.PROCESSING);
 	}
 	
+	class VisualizeTask extends SwingWorker<Void, Void> {
+
+		@Override
+		public void done() {
+		}
+
+		@Override
+		protected Void doInBackground() throws Exception {
+			visualizeModelActions();
+			while (LocalConfig.getInstance().getVisualizationsProgress() < 100) {
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException ignore) {
+				}			
+			}
+			Thread.sleep( 1000 );
+			visualizeTimer.stop();
+			return null;
+		}
+	}
+	
+	class VisualizeTimeListener implements ActionListener {
+		public void actionPerformed(ActionEvent ae) {
+			System.out.println(LocalConfig.getInstance().getVisualizationsProgress());
+			progressBar.setVisible(true);
+			System.out.println(progressBar.isVisible());
+			if (LocalConfig.getInstance().getVisualizationsProgress() > 0) {
+				progressBar.progress.setIndeterminate(false);
+			}	
+			progressBar.progress.setValue(LocalConfig.getInstance().getVisualizationsProgress());
+			progressBar.progress.repaint();
+			if (LocalConfig.getInstance().getVisualizationsProgress() == 100) {
+				progressBar.setVisible(false);		
+				visualizeTimer.stop();
+				// This appears redundant, but is the only way to not have an extra progress bar on screen
+				progressBar.setVisible(false);
+				progressBar.progress.setIndeterminate(false);
+				enableLoadItems();
+			}
+		}
+	}
+	
 	/*******************************************************************************/
 	//end progressBar methods
 	/*******************************************************************************/
@@ -12760,6 +12816,23 @@ public class GraphicalInterface extends JFrame {
 			LocalConfig.getInstance().fvaColumnsVisible = true;
 		} else {
 			LocalConfig.getInstance().fvaColumnsVisible = false;
+		}
+	}
+	
+	/******************************************************************************************/
+	// Visualization
+	/******************************************************************************************/
+	
+	class VisualizeAction implements ActionListener {
+		public void actionPerformed(ActionEvent ae) {
+			LocalConfig.getInstance().setVisualizationsProgress(0);
+			//LocalConfig.getInstance().setProgress(0);
+			progressBar.setVisible(true);
+			progressBar.progress.setIndeterminate(true);
+			visualizeTimer.start();
+			
+			visualizeTask = new VisualizeTask();
+			visualizeTask.execute();
 		}
 	}
 	
@@ -12978,6 +13051,13 @@ public class GraphicalInterface extends JFrame {
 	}
 	
 	public void visualizeModel() {
+		visualizeTimer.start();
+		
+		visualizeTask = new VisualizeTask();
+		visualizeTask.execute();
+	}
+	
+	public void visualizeModelActions() {
 		ReactionFactory rf = new ReactionFactory("SBML");
 		Vector<SBMLReaction> rxns = null;
 //		Vector<SBMLReaction> membraneRxns = null;
