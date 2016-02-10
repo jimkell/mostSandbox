@@ -12594,16 +12594,15 @@ public class GraphicalInterface extends JFrame {
 	
 	class VisualizeTimeListener implements ActionListener {
 		public void actionPerformed(ActionEvent ae) {
-			System.out.println(LocalConfig.getInstance().getVisualizationsProgress());
 			progressBar.setVisible(true);
-			System.out.println(progressBar.isVisible());
 			if (LocalConfig.getInstance().getVisualizationsProgress() > 0) {
 				progressBar.progress.setIndeterminate(false);
 			}	
 			progressBar.progress.setValue(LocalConfig.getInstance().getVisualizationsProgress());
 			progressBar.progress.repaint();
 			if (LocalConfig.getInstance().getVisualizationsProgress() == 100) {
-				progressBar.setVisible(false);		
+				progressBar.setVisible(false);	
+				LocalConfig.getInstance().setVisualizationsProgress(0);
 				visualizeTimer.stop();
 				// This appears redundant, but is the only way to not have an extra progress bar on screen
 				progressBar.setVisible(false);
