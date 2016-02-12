@@ -136,7 +136,7 @@ public class IdentifierColumnNameDialog extends JDialog {
 						} else {
 							String name = GraphicalInterfaceConstants.metabolitesIdentifiersList.get(selectedIndex -
 									LocalConfig.getInstance().getMetabolitesMetaColumnNames().size());
-							System.out.println(name);
+							//System.out.println(name);
 							if (GraphicalInterfaceConstants.metabolitesList.contains(name)) {
 								index = GraphicalInterfaceConstants.metabolitesList.indexOf(name) +
 										LocalConfig.getInstance().getMetabolitesMetaColumnNames().size();
@@ -154,7 +154,7 @@ public class IdentifierColumnNameDialog extends JDialog {
 						} else {
 							String name = GraphicalInterfaceConstants.reactionsIdentifiersList.get(selectedIndex -
 									LocalConfig.getInstance().getReactionsMetaColumnNames().size());
-							System.out.println(name);
+							//System.out.println(name);
 							if (GraphicalInterfaceConstants.reactionsList.contains(name)) {
 								index = GraphicalInterfaceConstants.reactionsList.indexOf(name) +
 										LocalConfig.getInstance().getReactionsMetaColumnNames().size();
