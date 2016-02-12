@@ -13002,39 +13002,21 @@ public class GraphicalInterface extends JFrame {
 		String missingData = "";
 		boolean showMissingItemMessage = true;
 		if (f.getKeggIdColumnIndex() == -1) {
-			missingItem = "KEGG IDs";
-			missingData = "metabolites in model to items";
+			missingItem = "KEGG Ids";
+			missingData = "metabolites";
 		} else {
 			showMissingItemMessage = false;
 		} 
 		
 		if (showMissingItemMessage) {
-			Object[] options = {"Yes",
-			"No"};
-			int choice = JOptionPane.showOptionDialog(null, 
-					"<html>Since there are no " + missingItem + " in the loaded model, <p>"
-							+ "MOST is unable to link " + missingData + " <p>"
-							+ "in the Visualizations database. Continue anyway?", 
-							"No EC Numbers in Model", 
-							JOptionPane.YES_NO_OPTION, 
-							JOptionPane.QUESTION_MESSAGE, 
-							null, options, options[0]);
-			//options[0] sets "Yes" as default button
-
-			// interpret the user's choice	  
-			if (choice == JOptionPane.YES_OPTION)
-			{
-				if (LocalConfig.getInstance().getListOfCompartments().size() > 0) {
-					createCompartmentNameDialog();
-				} else {
-					visualizeModel();
-				}
-			}
-			//No option actually corresponds to "Yes to All" button
-			if (choice == JOptionPane.NO_OPTION)
-			{
-				// option in future to graph unconstrained
-			}
+			JOptionPane.showMessageDialog(null,                
+					"<html>No " + missingItem + " column present in the loaded model.<p><p>"
+							+ "MOST is unable to link " + missingData + " in model to "
+							+ missingData + " in the Visualizations database.<p><p>"
+							+ "Click Visualize --> Locate KEGG Id Column menu item to "
+							+ "locate KEGG Id column.", 
+							"Unable to Visualize Model",                             
+					JOptionPane.WARNING_MESSAGE);
 		} else {
 			if (LocalConfig.getInstance().getListOfCompartments().size() > 0) {
 				createCompartmentNameDialog();
