@@ -722,8 +722,11 @@ public class GraphicalInterface extends JFrame {
 	public final JMenuItem editorMenu = new JMenuItem("Launch Reaction Editor");
 	public final JMenuItem unsortReacMenuItem = new JMenuItem("Unsort Reactions Table");
 	public final JMenuItem unsortMetabMenuItem = new JMenuItem("Unsort Metabolites Table");
-	//public final JMenuItem arrangeCompMenu = new JMenuItem("Arrange Compartments");
 	public final JMenuItem visualizeMenu = new JMenuItem("Visualize Compartment");
+	public final JMenuItem locateKeggMetaboliteIdColumnMenu = new JMenuItem("Locate KEGG Metabolite Id Column");
+	public final JMenuItem locateChebiIdColumnMenu = new JMenuItem("Locate CHEBI Id Column");
+	public final JMenuItem locateECNumberColumnMenu = new JMenuItem("Locate EC Number Column");
+	public final JMenuItem locateKeggReactionIdColumnMenu = new JMenuItem("Locate KEGG Reaction Id Column");
 	public final JMenuItem setUpSolver = new JMenuItem("Select Solvers");
 	public final JMenuItem gurobiParametersItem = new JMenuItem(GurobiParameters.GUROBI_PARAMETERS_MENU_ITEM);
 	public final JMenuItem glpkParametersItem = new JMenuItem( GLPKParameters.GLPK_PARAMETERS_MENU_ITEM );
@@ -2318,9 +2321,6 @@ public class GraphicalInterface extends JFrame {
         JMenu visualizationMenu = new JMenu("Visualization");
         visualizationMenu.setMnemonic(KeyEvent.VK_V);    
         
-//        visualizationMenu.add(arrangeCompMenu);
-//        arrangeCompMenu.setMnemonic(KeyEvent.VK_A);
-        
         visualizationMenu.add(visualizeMenu);
 		visualizeMenu.setMnemonic(KeyEvent.VK_V);
 
@@ -2329,6 +2329,50 @@ public class GraphicalInterface extends JFrame {
 				visualizeMenuProcesses();
 				//processVisualizationsData();
 				//visualizeMenuProcesses();
+			}
+		});
+		
+		visualizationMenu.add(locateKeggMetaboliteIdColumnMenu);
+		locateKeggMetaboliteIdColumnMenu.setMnemonic(KeyEvent.VK_M);
+
+		locateKeggMetaboliteIdColumnMenu.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ae) {
+				showIdentifierColumnNameDialog(GraphicalInterfaceConstants.METABOLITES_COLUMNS_IDENTIFIER,
+						"Locate KEGG Metabolite Id Column",
+						GraphicalInterfaceConstants.METABOLITE_KEGG_ID_COLUMN_NAME + " Column");
+			}
+		});
+		
+		visualizationMenu.add(locateChebiIdColumnMenu);
+		locateChebiIdColumnMenu.setMnemonic(KeyEvent.VK_C);
+
+		locateChebiIdColumnMenu.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ae) {
+				showIdentifierColumnNameDialog(GraphicalInterfaceConstants.METABOLITES_COLUMNS_IDENTIFIER,
+						"Locate CHEBI Id Column",
+						GraphicalInterfaceConstants.CHEBI_ID_COLUMN_NAME + " Column");
+			}
+		});
+		
+		visualizationMenu.add(locateECNumberColumnMenu);
+		locateECNumberColumnMenu.setMnemonic(KeyEvent.VK_E);
+
+		locateECNumberColumnMenu.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ae) {
+				showIdentifierColumnNameDialog(GraphicalInterfaceConstants.REACTIONS_COLUMNS_IDENTIFIER,
+						"Locate EC Number Column",
+						"EC Number Column");
+			}
+		});
+		
+		visualizationMenu.add(locateKeggReactionIdColumnMenu);
+		locateKeggReactionIdColumnMenu.setMnemonic(KeyEvent.VK_R);
+
+		locateKeggReactionIdColumnMenu.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ae) {
+				showIdentifierColumnNameDialog(GraphicalInterfaceConstants.REACTIONS_COLUMNS_IDENTIFIER,
+						"Locate KEGG Reaction Id Column",
+						GraphicalInterfaceConstants.METABOLITE_KEGG_ID_COLUMN_NAME + " Column");
 			}
 		});
         
@@ -12212,8 +12256,11 @@ public class GraphicalInterface extends JFrame {
 	}
 	
 	public void enableVisualizationItems(boolean state) {
-		//arrangeCompMenu.setEnabled(state);
 		visualizeMenu.setEnabled(state);
+		locateKeggMetaboliteIdColumnMenu.setEnabled(state);
+		locateChebiIdColumnMenu.setEnabled(state);
+		locateECNumberColumnMenu.setEnabled(state);
+		locateKeggReactionIdColumnMenu.setEnabled(state);
 	}
 	
 	/**
@@ -13166,6 +13213,18 @@ public class GraphicalInterface extends JFrame {
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
         enableVisualizationItems(false);
+	}
+	
+	
+	public void showIdentifierColumnNameDialog(String type, String title, String columnType) {
+		IdentifierColumnNameDialog frame = new IdentifierColumnNameDialog(type, title, columnType);
+
+		frame.setIconImages(icons);
+		//frame.setSize(550, 270);
+		frame.pack();
+		frame.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		frame.setLocationRelativeTo(null);
+		frame.setVisible(true);
 	}
 	
 	public static void main(String[] args) {
