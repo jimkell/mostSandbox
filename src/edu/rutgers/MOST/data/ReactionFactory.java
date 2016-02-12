@@ -22,6 +22,7 @@ public class ReactionFactory {
 	private Map<Object, Object> reactionsIdPositionMap;
 	private static String columnName;
 	private boolean objVecWarning = true;
+	
 	private ResizableDialog dialog = new ResizableDialog( "Error",
 			"Error", "Error" );
 

@@ -18,6 +18,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import edu.rutgers.MOST.config.LocalConfig;
+import edu.rutgers.MOST.data.MetaboliteFactory;
+import edu.rutgers.MOST.data.ReactionFactory;
 
 public class IdentifierColumnNameDialog extends JDialog {
 
@@ -30,7 +32,7 @@ public class IdentifierColumnNameDialog extends JDialog {
 	public JButton okButton = new JButton("     OK     ");
 	public JButton cancelButton = new JButton("  Cancel  ");
 
-	public IdentifierColumnNameDialog(String type, String title, String columnType, int selectedIndex) {
+	public IdentifierColumnNameDialog(final String type, String title, final String columnType, final int selectedIndex) {
 
 		getRootPane().setDefaultButton(okButton);
 
@@ -126,7 +128,48 @@ public class IdentifierColumnNameDialog extends JDialog {
 		
 		ActionListener okButtonActionListener = new ActionListener() {
 			public void actionPerformed(ActionEvent prodActionEvent) {
-					
+				int index = -1;
+				if (selectedIndex > -1) {
+					if (type.equals(GraphicalInterfaceConstants.METABOLITES_COLUMNS_IDENTIFIER)) {
+						if (selectedIndex < LocalConfig.getInstance().getMetabolitesMetaColumnNames().size()) {
+							index = selectedIndex + GraphicalInterfaceConstants.METABOLITES_COLUMN_NAMES.length;
+						} else {
+							String name = GraphicalInterfaceConstants.metabolitesIdentifiersList.get(selectedIndex -
+									LocalConfig.getInstance().getMetabolitesMetaColumnNames().size());
+							System.out.println(name);
+							if (GraphicalInterfaceConstants.metabolitesList.contains(name)) {
+								index = GraphicalInterfaceConstants.metabolitesList.indexOf(name) +
+										LocalConfig.getInstance().getMetabolitesMetaColumnNames().size();
+							} 
+						}
+						System.out.println(index);
+						if (columnType.equals(GraphicalInterfaceConstants.METABOLITE_KEGG_ID_COLUMN_NAME)) {
+							
+						} else if (columnType.equals(GraphicalInterfaceConstants.CHEBI_ID_COLUMN_NAME)) {
+
+						}
+					} else if (type.equals(GraphicalInterfaceConstants.REACTIONS_COLUMNS_IDENTIFIER)) {
+						if (selectedIndex < LocalConfig.getInstance().getReactionsMetaColumnNames().size()) {
+							index = selectedIndex + GraphicalInterfaceConstants.REACTIONS_COLUMN_NAMES.length;
+						} else {
+							String name = GraphicalInterfaceConstants.reactionsIdentifiersList.get(selectedIndex -
+									LocalConfig.getInstance().getReactionsMetaColumnNames().size());
+							System.out.println(name);
+							if (GraphicalInterfaceConstants.reactionsList.contains(name)) {
+								index = GraphicalInterfaceConstants.reactionsList.indexOf(name) +
+										LocalConfig.getInstance().getReactionsMetaColumnNames().size();
+							} 
+						}
+						System.out.println(index);
+						if (columnType.equals(GraphicalInterfaceConstants.EC_NUMBER_COLUMN_NAME)) {
+							
+						} else if (columnType.equals(GraphicalInterfaceConstants.REACTION_KEGG_ID_COLUMN_NAME)) {
+
+						}
+					}
+				}
+				setVisible(false);
+				dispose();	
 			}
 		};
 
@@ -134,8 +177,8 @@ public class IdentifierColumnNameDialog extends JDialog {
 
 		ActionListener cancelButtonActionListener = new ActionListener() {
 			public void actionPerformed(ActionEvent prodActionEvent) {
-//				setVisible(false);
-//				dispose();
+				setVisible(false);
+				dispose();
 			}
 		};
 
