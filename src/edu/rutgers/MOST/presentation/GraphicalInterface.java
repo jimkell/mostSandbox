@@ -1347,6 +1347,7 @@ public class GraphicalInterface extends JFrame {
 		setVisualizationOptionsDefaults();
 		setSortDefault();
 		setUpCellSelectionMode();
+		resetIdentifierColumns();
 		setFileType(GraphicalInterfaceConstants.DEFAULT_FILE_TYPE);
 		// TODO: need to account for adding metabolites when creating model in blank gui
 		LocalConfig.getInstance().setMaxMetabolite(0);
@@ -6122,7 +6123,8 @@ public class GraphicalInterface extends JFrame {
 		// enables or disables menu items depending on if there are unused items present
 		createUnusedMetabolitesList();
 		enableMenuItems();
-		setUpCellSelectionMode();		
+		setUpCellSelectionMode();	
+		resetIdentifierColumns();
 		maybeDisplaySuspiciousMetabMessage(statusBarRow());
 		if (saveEnabled) {
 			enableSaveItems(true);
@@ -13260,6 +13262,17 @@ public class GraphicalInterface extends JFrame {
 		frame.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
+	}
+	
+	public void resetIdentifierColumns() {
+		int keggMetaboliteIdColumn = -1;
+		LocalConfig.getInstance().setKeggMetaboliteIdColumn(keggMetaboliteIdColumn);
+		int chebiIdColumn = -1;
+		LocalConfig.getInstance().setChebiIdColumn(chebiIdColumn);
+		int ecNumberColumn = -1;
+		LocalConfig.getInstance().setEcNumberColumn(ecNumberColumn);
+		int keggReactionIdColumn = -1;
+		LocalConfig.getInstance().setKeggReactionIdColumn(keggReactionIdColumn);
 	}
 	
 	public static void main(String[] args) {

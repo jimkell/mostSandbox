@@ -1405,5 +1405,46 @@ public class LocalConfig {
 			ArrayList<Integer> reactionsContainingKeggIdsNotInGraph) {
 		this.reactionsContainingKeggIdsNotInGraph = reactionsContainingKeggIdsNotInGraph;
 	}
+	
+	// identifier column indices
+	private int keggMetaboliteIdColumn;
+
+	public int getKeggMetaboliteIdColumn() {
+		return keggMetaboliteIdColumn;
+	}
+
+	public void setKeggMetaboliteIdColumn(int keggMetaboliteIdColumn) {
+		this.keggMetaboliteIdColumn = keggMetaboliteIdColumn;
+	}
+
+	private int chebiIdColumn;
+
+	public int getChebiIdColumn() {
+		return chebiIdColumn;
+	}
+
+	public void setChebiIdColumn(int chebiIdColumn) {
+		this.chebiIdColumn = chebiIdColumn;
+	}
+	
+	private int ecNumberColumn;
+	
+	public int getEcNumberColumn() {
+		return ecNumberColumn;
+	}
+
+	public void setEcNumberColumn(int ecNumberColumn) {
+		this.ecNumberColumn = ecNumberColumn;
+	}
+	
+	private int keggReactionIdColumn;
+
+	public int getKeggReactionIdColumn() {
+		return keggReactionIdColumn;
+	}
+
+	public void setKeggReactionIdColumn(int keggReactionIdColumn) {
+		this.keggReactionIdColumn = keggReactionIdColumn;
+	}
 
 }
