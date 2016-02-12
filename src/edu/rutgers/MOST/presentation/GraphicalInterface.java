@@ -2337,9 +2337,11 @@ public class GraphicalInterface extends JFrame {
 
 		locateKeggMetaboliteIdColumnMenu.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
+				MetaboliteFactory f = new MetaboliteFactory("SBML");
 				showIdentifierColumnNameDialog(GraphicalInterfaceConstants.METABOLITES_COLUMNS_IDENTIFIER,
 						"Locate KEGG Metabolite Id Column",
-						GraphicalInterfaceConstants.METABOLITE_KEGG_ID_COLUMN_NAME + " Column");
+						GraphicalInterfaceConstants.METABOLITE_KEGG_ID_COLUMN_NAME,
+						f.getKeggIdColumnIndex());
 			}
 		});
 		
@@ -2348,9 +2350,11 @@ public class GraphicalInterface extends JFrame {
 
 		locateChebiIdColumnMenu.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
+				MetaboliteFactory f = new MetaboliteFactory("SBML");
 				showIdentifierColumnNameDialog(GraphicalInterfaceConstants.METABOLITES_COLUMNS_IDENTIFIER,
 						"Locate CHEBI Id Column",
-						GraphicalInterfaceConstants.CHEBI_ID_COLUMN_NAME + " Column");
+						GraphicalInterfaceConstants.CHEBI_ID_COLUMN_NAME,
+						f.getChebiIdColumnIndex());
 			}
 		});
 		
@@ -2359,9 +2363,11 @@ public class GraphicalInterface extends JFrame {
 
 		locateECNumberColumnMenu.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
+				ReactionFactory f = new ReactionFactory("SBML");
 				showIdentifierColumnNameDialog(GraphicalInterfaceConstants.REACTIONS_COLUMNS_IDENTIFIER,
 						"Locate EC Number Column",
-						"EC Number Column");
+						GraphicalInterfaceConstants.EC_NUMBER_COLUMN_NAME, 
+						f.getECColumnColumnIndex());
 			}
 		});
 		
@@ -2370,9 +2376,11 @@ public class GraphicalInterface extends JFrame {
 
 		locateKeggReactionIdColumnMenu.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
+				ReactionFactory f = new ReactionFactory("SBML");
 				showIdentifierColumnNameDialog(GraphicalInterfaceConstants.REACTIONS_COLUMNS_IDENTIFIER,
 						"Locate KEGG Reaction Id Column",
-						GraphicalInterfaceConstants.METABOLITE_KEGG_ID_COLUMN_NAME + " Column");
+						GraphicalInterfaceConstants.METABOLITE_KEGG_ID_COLUMN_NAME,
+						f.getKeggIdColumnIndex());
 			}
 		});
         
@@ -13216,8 +13224,35 @@ public class GraphicalInterface extends JFrame {
 	}
 	
 	
-	public void showIdentifierColumnNameDialog(String type, String title, String columnType) {
-		IdentifierColumnNameDialog frame = new IdentifierColumnNameDialog(type, title, columnType);
+	public void showIdentifierColumnNameDialog(String type, String title, String columnType, int selectedIndex) {
+		if (selectedIndex > -1) {
+			if (type.equals(GraphicalInterfaceConstants.METABOLITES_COLUMNS_IDENTIFIER)) {
+				if (selectedIndex >= GraphicalInterfaceConstants.METABOLITES_COLUMN_NAMES.length) {
+					selectedIndex -= GraphicalInterfaceConstants.METABOLITES_COLUMN_NAMES.length;
+				} else {
+					String name = GraphicalInterfaceConstants.metabolitesList.get(selectedIndex);
+					if (GraphicalInterfaceConstants.metabolitesIdentifiersList.contains(name)) {
+						selectedIndex = GraphicalInterfaceConstants.metabolitesIdentifiersList.indexOf(name) +
+								LocalConfig.getInstance().getMetabolitesMetaColumnNames().size();
+					} else {
+						selectedIndex = -1;
+					}
+				}
+			} else if (type.equals(GraphicalInterfaceConstants.REACTIONS_COLUMNS_IDENTIFIER)) {
+				if (selectedIndex >= GraphicalInterfaceConstants.REACTIONS_COLUMN_NAMES.length) {
+					selectedIndex -= GraphicalInterfaceConstants.REACTIONS_COLUMN_NAMES.length;
+				} else {
+					String name = GraphicalInterfaceConstants.reactionsList.get(selectedIndex);
+					if (GraphicalInterfaceConstants.reactionsIdentifiersList.contains(name)) {
+						selectedIndex = GraphicalInterfaceConstants.reactionsIdentifiersList.indexOf(name) +
+								LocalConfig.getInstance().getReactionsMetaColumnNames().size();
+					} else {
+						selectedIndex = -1;
+					}
+				}
+			}
+		}
+		IdentifierColumnNameDialog frame = new IdentifierColumnNameDialog(type, title, columnType, selectedIndex);
 
 		frame.setIconImages(icons);
 		//frame.setSize(550, 270);

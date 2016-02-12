@@ -18,7 +18,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import edu.rutgers.MOST.config.LocalConfig;
-import edu.rutgers.MOST.data.SBMLCompartment;
 
 public class IdentifierColumnNameDialog extends JDialog {
 
@@ -31,7 +30,7 @@ public class IdentifierColumnNameDialog extends JDialog {
 	public JButton okButton = new JButton("     OK     ");
 	public JButton cancelButton = new JButton("  Cancel  ");
 
-	public IdentifierColumnNameDialog(String type, String title, String columnType) {
+	public IdentifierColumnNameDialog(String type, String title, String columnType, int selectedIndex) {
 
 		getRootPane().setDefaultButton(okButton);
 
@@ -45,7 +44,7 @@ public class IdentifierColumnNameDialog extends JDialog {
 		cbColumnName.setMaximumSize(new Dimension(250, 25));
 		cbColumnName.setMinimumSize(new Dimension(250, 25));
 
-		populateComboBoxes(type);
+		populateComboBoxes(type, selectedIndex);
 		
 		//box layout
 		Box vb = Box.createVerticalBox();
@@ -74,7 +73,7 @@ public class IdentifierColumnNameDialog extends JDialog {
 
 		//column Label and combo
 		JLabel columnLabel = new JLabel();
-		columnLabel.setText(columnType);
+		columnLabel.setText(columnType + " Column");
 		columnLabel.setPreferredSize(new Dimension(150, 25));
 		columnLabel.setMaximumSize(new Dimension(150, 25));
 		columnLabel.setMinimumSize(new Dimension(150, 25));
@@ -144,34 +143,28 @@ public class IdentifierColumnNameDialog extends JDialog {
 
 	} 
 	
-    public void populateComboBoxes(String type) {
-    	if (LocalConfig.getInstance().getListOfCompartments() != null && 
-    			LocalConfig.getInstance().getListOfCompartments().size() > 0) {
-    		cbColumnName.removeAllItems();
-    		//populate combo boxes
-    		if (type.equals(GraphicalInterfaceConstants.REACTIONS_COLUMNS_IDENTIFIER)) {
-    			for (int i = 0; i < LocalConfig.getInstance().getReactionsMetaColumnNames().size(); i++) {
-    				cbColumnName.addItem(LocalConfig.getInstance().getReactionsMetaColumnNames().get(i));
-    			}
-    		} else if (type.equals(GraphicalInterfaceConstants.METABOLITES_COLUMNS_IDENTIFIER)) {
-    			for (int i = 0; i < LocalConfig.getInstance().getMetabolitesMetaColumnNames().size(); i++) {
-    				cbColumnName.addItem(LocalConfig.getInstance().getMetabolitesMetaColumnNames().get(i));
-    			}
-    		}
-    		// add empty item
-    		cbColumnName.addItem("");
-    		cbColumnName.setSelectedIndex(-1);
-    	}
-    }
-    
-    public void setSelectedItemByFilter(JComboBox<String> cb, ArrayList<SBMLCompartment> compList, 
-    		String[] filter, int index) {
-    	if (compList.get(index).getName().contains(filter[0])) {
-			cb.setSelectedIndex(index);
-		} else {
-			cb.setSelectedIndex(-1);
+	public void populateComboBoxes(String type, int selectedIndex) {
+		cbColumnName.removeAllItems();
+		//populate combo boxes
+		if (type.equals(GraphicalInterfaceConstants.REACTIONS_COLUMNS_IDENTIFIER)) {
+			for (int i = 0; i < LocalConfig.getInstance().getReactionsMetaColumnNames().size(); i++) {
+				cbColumnName.addItem(LocalConfig.getInstance().getReactionsMetaColumnNames().get(i));
+			}
+			for (int j = 0; j < GraphicalInterfaceConstants.reactionsIdentifiersList.size(); j++) {
+				cbColumnName.addItem(GraphicalInterfaceConstants.reactionsIdentifiersList.get(j));
+			}
+		} else if (type.equals(GraphicalInterfaceConstants.METABOLITES_COLUMNS_IDENTIFIER)) {
+			for (int i = 0; i < LocalConfig.getInstance().getMetabolitesMetaColumnNames().size(); i++) {
+				cbColumnName.addItem(LocalConfig.getInstance().getMetabolitesMetaColumnNames().get(i));
+			}
+			for (int j = 0; j < GraphicalInterfaceConstants.metabolitesIdentifiersList.size(); j++) {
+				cbColumnName.addItem(GraphicalInterfaceConstants.metabolitesIdentifiersList.get(j));
+			}
 		}
-    }
+		// add empty item
+		cbColumnName.addItem("");
+		cbColumnName.setSelectedIndex(selectedIndex);
+	}
 	
 	public static void main(String[] args) throws Exception {
 		//based on code from http://stackoverflow.com/questions/6403821/how-to-add-an-image-to-a-jframe-title-bar
@@ -179,7 +172,7 @@ public class IdentifierColumnNameDialog extends JDialog {
 		icons.add(new ImageIcon("images/most16.jpg").getImage()); 
 		icons.add(new ImageIcon("images/most32.jpg").getImage());
 
-		IdentifierColumnNameDialog frame = new IdentifierColumnNameDialog("", "Column", "Type");
+		IdentifierColumnNameDialog frame = new IdentifierColumnNameDialog("", "Column", "Type", -1);
 
 		frame.setIconImages(icons);
 		//frame.setSize(550, 270);
