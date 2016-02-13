@@ -215,10 +215,10 @@ public class MetaboliteFactory {
 	public Integer locateKeggIdColumn() {
 		int index = -1;
 		for (int i = 0; i < LocalConfig.getInstance().getMetabolitesMetaColumnNames().size(); i++) {
-			if (LocalConfig.getInstance().getMetabolitesMetaColumnNames().get(i).contains(GraphicalInterfaceConstants.KEGG_ID_METABOLITES_COLUMN_NAMES[0])) {
-				index = GraphicalInterfaceConstants.METABOLITES_COLUMN_NAMES.length + i;
-			} else if (LocalConfig.getInstance().getMetabolitesMetaColumnNames().get(i).contains(GraphicalInterfaceConstants.KEGG_ID_METABOLITES_COLUMN_NAMES[1])) {
-				index = GraphicalInterfaceConstants.METABOLITES_COLUMN_NAMES.length + i;
+			for (int j = 0; j < GraphicalInterfaceConstants.KEGG_ID_METABOLITES_COLUMN_NAMES.length; j++) {
+				if (LocalConfig.getInstance().getMetabolitesMetaColumnNames().get(i).contains(GraphicalInterfaceConstants.KEGG_ID_METABOLITES_COLUMN_NAMES[j])) {
+					index = GraphicalInterfaceConstants.METABOLITES_COLUMN_NAMES.length + i;
+				}
 			}
 		}
 
@@ -229,10 +229,10 @@ public class MetaboliteFactory {
 	public Integer locateChebiIdColumn() {
 		int index = -1;
 		for (int i = 0; i < LocalConfig.getInstance().getMetabolitesMetaColumnNames().size(); i++) {
-			if (LocalConfig.getInstance().getMetabolitesMetaColumnNames().get(i).contains(GraphicalInterfaceConstants.CHEBI_ID_METABOLITES_COLUMN_NAMES[0])) {
-				index = GraphicalInterfaceConstants.METABOLITES_COLUMN_NAMES.length + i;
-			} else if (LocalConfig.getInstance().getMetabolitesMetaColumnNames().get(i).contains(GraphicalInterfaceConstants.CHEBI_ID_METABOLITES_COLUMN_NAMES[1])) {
-				index = GraphicalInterfaceConstants.METABOLITES_COLUMN_NAMES.length + i;
+			for (int j = 0; j < GraphicalInterfaceConstants.CHEBI_ID_METABOLITES_COLUMN_NAMES.length; j++) {
+				if (LocalConfig.getInstance().getMetabolitesMetaColumnNames().get(i).contains(GraphicalInterfaceConstants.CHEBI_ID_METABOLITES_COLUMN_NAMES[j])) {
+					index = GraphicalInterfaceConstants.METABOLITES_COLUMN_NAMES.length + i;
+				}
 			}
 		}
 	

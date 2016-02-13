@@ -301,7 +301,7 @@ public class GraphicalInterfaceConstants {
     };
     
     public static final String[] EC_NUMBER_COLUMN_NAMES = 
-        {"EC", "EC Number", "EC. Number"
+        {"EC", "EC Number", "EC. Number", "E.C. Number"
         };
     
     public static final String[] KEGG_ID_REACTIONS_COLUMN_NAMES = 

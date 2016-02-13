@@ -411,12 +411,10 @@ public class ReactionFactory {
 	public Integer locateECColumnColumn() {
 		int index = -1;
 		for (int i = 0; i < LocalConfig.getInstance().getReactionsMetaColumnNames().size(); i++) {
-			if (LocalConfig.getInstance().getReactionsMetaColumnNames().get(i).equals(GraphicalInterfaceConstants.EC_NUMBER_COLUMN_NAMES[0])) {
-				index = GraphicalInterfaceConstants.REACTIONS_COLUMN_NAMES.length + LocalConfig.getInstance().getReactionsMetaColumnNames().indexOf(GraphicalInterfaceConstants.EC_NUMBER_COLUMN_NAMES[0]);
-			} else if (LocalConfig.getInstance().getReactionsMetaColumnNames().get(i).equals(GraphicalInterfaceConstants.EC_NUMBER_COLUMN_NAMES[1])) {
-				index = GraphicalInterfaceConstants.REACTIONS_COLUMN_NAMES.length + LocalConfig.getInstance().getReactionsMetaColumnNames().indexOf(GraphicalInterfaceConstants.EC_NUMBER_COLUMN_NAMES[1]);
-			} else if (LocalConfig.getInstance().getReactionsMetaColumnNames().get(i).equals(GraphicalInterfaceConstants.EC_NUMBER_COLUMN_NAMES[2])) {
-				index = GraphicalInterfaceConstants.REACTIONS_COLUMN_NAMES.length + LocalConfig.getInstance().getReactionsMetaColumnNames().indexOf(GraphicalInterfaceConstants.EC_NUMBER_COLUMN_NAMES[2]);
+			for (int j = 0; j < GraphicalInterfaceConstants.EC_NUMBER_COLUMN_NAMES.length; j++) {
+				if (LocalConfig.getInstance().getReactionsMetaColumnNames().get(i).equals(GraphicalInterfaceConstants.EC_NUMBER_COLUMN_NAMES[j])) {
+					index = GraphicalInterfaceConstants.REACTIONS_COLUMN_NAMES.length + i;
+				}
 			}
 		}
 		if (index == -1) {
@@ -430,10 +428,10 @@ public class ReactionFactory {
 	public Integer locateKeggIdColumn() {
 		int index = -1;
 		for (int i = 0; i < LocalConfig.getInstance().getReactionsMetaColumnNames().size(); i++) {
-			if (LocalConfig.getInstance().getReactionsMetaColumnNames().get(i).contains(GraphicalInterfaceConstants.KEGG_ID_REACTIONS_COLUMN_NAMES[0])) {
-				index = GraphicalInterfaceConstants.REACTIONS_COLUMN_NAMES.length + i;
-			} else if (LocalConfig.getInstance().getReactionsMetaColumnNames().get(i).contains(GraphicalInterfaceConstants.KEGG_ID_REACTIONS_COLUMN_NAMES[1])) {
-				index = GraphicalInterfaceConstants.REACTIONS_COLUMN_NAMES.length + i;
+			for (int j = 0; j < GraphicalInterfaceConstants.KEGG_ID_REACTIONS_COLUMN_NAMES.length; j++) {
+				if (LocalConfig.getInstance().getReactionsMetaColumnNames().get(i).contains(GraphicalInterfaceConstants.KEGG_ID_REACTIONS_COLUMN_NAMES[j])) {
+					index = GraphicalInterfaceConstants.REACTIONS_COLUMN_NAMES.length + i;
+				}
 			}
 		}
 

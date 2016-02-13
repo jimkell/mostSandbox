@@ -13074,7 +13074,6 @@ public class GraphicalInterface extends JFrame {
 		String missingData = "";
 		boolean showMissingItemMessage = true;
 		// if KEGG id not set by user, attempt to locate programmatically
-		System.out.println(LocalConfig.getInstance().getKeggMetaboliteIdColumn());
 		if (LocalConfig.getInstance().getKeggMetaboliteIdColumn() == -1) {
 			LocalConfig.getInstance().setKeggMetaboliteIdColumn(f.locateKeggIdColumn());
 			LocalConfig.getInstance().setChebiIdColumn(f.locateChebiIdColumn());
@@ -13148,7 +13147,7 @@ public class GraphicalInterface extends JFrame {
 		ECNumberMapCreator ecMapCreator = new ECNumberMapCreator();
 		Map<String, ArrayList<SBMLReaction>> ecNumberReactionMap = ecMapCreator.createEcNumberReactionMap(rxns);
 		LocalConfig.getInstance().setEcNumberReactionMap(ecNumberReactionMap);
-		//System.out.println(ecNumberReactionMap);
+//		System.out.println("e " + ecNumberReactionMap);
 		// key = reaction id, value = PathwayReactionData (lists of KEGG ids of reactants and products)
 		ModelKeggEquationMapCreator modelKeggEquationMapCreator = new ModelKeggEquationMapCreator();
 		modelKeggEquationMapCreator.createKeggEquationMap();

@@ -48,39 +48,41 @@ public class ECNumberMapCreator {
 					} else {
 						ecNum = ecNumbers.get(i);
 					}
-					// KEGG reaction ids are sometimes present in EC Number column
-					if (ecNum.startsWith("R") || ecNum.startsWith("r")) {
-						//System.out.println(ecNum);
-						if (LocalConfig.getInstance().getKeggReactionIdECNumberMap().containsKey(ecNum.toUpperCase())) {
-							if (LocalConfig.getInstance().getKeggReactionIdECNumberMap().get(ecNum.toUpperCase()) != null) {
-								try {
-									//System.out.println(LocalConfig.getInstance().getKeggReactionIdECNumberMap().get(ecNum.toUpperCase()));
-									for (int j = 0; j < LocalConfig.getInstance().getKeggReactionIdECNumberMap().get(ecNum.toUpperCase()).size(); j++) {
-										ecNum = LocalConfig.getInstance().getKeggReactionIdECNumberMap().get(ecNum.toUpperCase()).get(j);
-										if (ecNumberReactionMap.containsKey(ecNum)) {
-											ArrayList<SBMLReaction> rxnsList = ecNumberReactionMap.get(ecNum);
-											rxnsList.add(reaction);
-											ecNumberReactionMap.put(ecNum, rxnsList);
-										} else {
-											ArrayList<SBMLReaction> rxnsList = new ArrayList<SBMLReaction>();
-											rxnsList.add(reaction);
-											ecNumberReactionMap.put(ecNum, rxnsList);
+					if (ecNum != null && ecNum.length() > 0) {
+						// KEGG reaction ids are sometimes present in EC Number column
+						if (ecNum.startsWith("R") || ecNum.startsWith("r")) {
+							//System.out.println(ecNum);
+							if (LocalConfig.getInstance().getKeggReactionIdECNumberMap().containsKey(ecNum.toUpperCase())) {
+								if (LocalConfig.getInstance().getKeggReactionIdECNumberMap().get(ecNum.toUpperCase()) != null) {
+									try {
+										//System.out.println(LocalConfig.getInstance().getKeggReactionIdECNumberMap().get(ecNum.toUpperCase()));
+										for (int j = 0; j < LocalConfig.getInstance().getKeggReactionIdECNumberMap().get(ecNum.toUpperCase()).size(); j++) {
+											ecNum = LocalConfig.getInstance().getKeggReactionIdECNumberMap().get(ecNum.toUpperCase()).get(j);
+											if (ecNumberReactionMap.containsKey(ecNum)) {
+												ArrayList<SBMLReaction> rxnsList = ecNumberReactionMap.get(ecNum);
+												rxnsList.add(reaction);
+												ecNumberReactionMap.put(ecNum, rxnsList);
+											} else {
+												ArrayList<SBMLReaction> rxnsList = new ArrayList<SBMLReaction>();
+												rxnsList.add(reaction);
+												ecNumberReactionMap.put(ecNum, rxnsList);
+											}
 										}
+									} catch (Exception e) {
+										
 									}
-								} catch (Exception e) {
-									
 								}
 							}
 						}
-					}
-					if (ecNumberReactionMap.containsKey(ecNum)) {
-						ArrayList<SBMLReaction> rxnsList = ecNumberReactionMap.get(ecNum);
-						rxnsList.add(reaction);
-						ecNumberReactionMap.put(ecNum, rxnsList);
-					} else {
-						ArrayList<SBMLReaction> rxnsList = new ArrayList<SBMLReaction>();
-						rxnsList.add(reaction);
-						ecNumberReactionMap.put(ecNum, rxnsList);
+						if (ecNumberReactionMap.containsKey(ecNum)) {
+							ArrayList<SBMLReaction> rxnsList = ecNumberReactionMap.get(ecNum);
+							rxnsList.add(reaction);
+							ecNumberReactionMap.put(ecNum, rxnsList);
+						} else {
+							ArrayList<SBMLReaction> rxnsList = new ArrayList<SBMLReaction>();
+							rxnsList.add(reaction);
+							ecNumberReactionMap.put(ecNum, rxnsList);
+						}
 					}
 				}
 				if (!LocalConfig.getInstance().getIdentifierIds().contains(reaction.getId())) {
