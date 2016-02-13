@@ -131,15 +131,17 @@ public class IdentifierColumnNameDialog extends JDialog {
 				int index = -1;
 				if (cbColumnName.getSelectedIndex() > -1) {
 					if (type.equals(GraphicalInterfaceConstants.METABOLITES_COLUMNS_IDENTIFIER)) {
+						// meta columns populated first, so if selected item is < meta column list size, it is a
+						// meta column item, index is fixed columns length + index
 						if (cbColumnName.getSelectedIndex() < LocalConfig.getInstance().getMetabolitesMetaColumnNames().size()) {
 							index = cbColumnName.getSelectedIndex() + GraphicalInterfaceConstants.METABOLITES_COLUMN_NAMES.length;
 						} else {
+							// not a meta column, index is index of item in fixed column
 							String name = GraphicalInterfaceConstants.metabolitesIdentifiersList.get(cbColumnName.getSelectedIndex() -
 									LocalConfig.getInstance().getMetabolitesMetaColumnNames().size());
-							System.out.println(name);
+							//System.out.println(name);
 							if (GraphicalInterfaceConstants.metabolitesList.contains(name)) {
-								index = GraphicalInterfaceConstants.metabolitesList.indexOf(name) +
-										LocalConfig.getInstance().getMetabolitesMetaColumnNames().size();
+								index = GraphicalInterfaceConstants.metabolitesList.indexOf(name);
 							} 
 						}
 						if (columnType.equals(GraphicalInterfaceConstants.METABOLITE_KEGG_ID_COLUMN_NAME)) {
@@ -155,8 +157,7 @@ public class IdentifierColumnNameDialog extends JDialog {
 									LocalConfig.getInstance().getReactionsMetaColumnNames().size());
 							//System.out.println(name);
 							if (GraphicalInterfaceConstants.reactionsList.contains(name)) {
-								index = GraphicalInterfaceConstants.reactionsList.indexOf(name) +
-										LocalConfig.getInstance().getReactionsMetaColumnNames().size();
+								index = GraphicalInterfaceConstants.reactionsList.indexOf(name);
 							} 
 						}
 						//System.out.println(index);

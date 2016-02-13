@@ -2363,7 +2363,7 @@ public class GraphicalInterface extends JFrame {
 				showIdentifierColumnNameDialog(GraphicalInterfaceConstants.METABOLITES_COLUMNS_IDENTIFIER,
 						"Locate CHEBI Id Column",
 						GraphicalInterfaceConstants.CHEBI_ID_COLUMN_NAME,
-						LocalConfig.getInstance().getChebiIdColumn());
+						index);
 			}
 		});
 		
@@ -2372,10 +2372,15 @@ public class GraphicalInterface extends JFrame {
 
 		locateECNumberColumnMenu.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
+				int index = LocalConfig.getInstance().getEcNumberColumn();
+				if (index == -1) {
+					ReactionFactory f = new ReactionFactory("SBML");
+					index = f.locateECColumnColumn();
+				}
 				showIdentifierColumnNameDialog(GraphicalInterfaceConstants.REACTIONS_COLUMNS_IDENTIFIER,
 						"Locate EC Number Column",
 						GraphicalInterfaceConstants.EC_NUMBER_COLUMN_NAME, 
-						LocalConfig.getInstance().getEcNumberColumn());
+						index);
 			}
 		});
 		
@@ -2384,10 +2389,15 @@ public class GraphicalInterface extends JFrame {
 
 		locateKeggReactionIdColumnMenu.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
+				int index = LocalConfig.getInstance().getKeggReactionIdColumn();
+				if (index == -1) {
+					ReactionFactory f = new ReactionFactory("SBML");
+					index = f.locateKeggIdColumn();
+				}
 				showIdentifierColumnNameDialog(GraphicalInterfaceConstants.REACTIONS_COLUMNS_IDENTIFIER,
 						"Locate KEGG Reaction Id Column",
 						GraphicalInterfaceConstants.METABOLITE_KEGG_ID_COLUMN_NAME,
-						LocalConfig.getInstance().getKeggReactionIdColumn());
+						index);
 			}
 		});
         
@@ -13109,6 +13119,9 @@ public class GraphicalInterface extends JFrame {
 	
 	public void visualizeModelActions() {
 		ReactionFactory rf = new ReactionFactory("SBML");
+		if (LocalConfig.getInstance().getEcNumberColumn() == -1) {
+			LocalConfig.getInstance().setEcNumberColumn(rf.locateECColumnColumn());
+		}
 		Vector<SBMLReaction> rxns = null;
 //		Vector<SBMLReaction> membraneRxns = null;
 		if (LocalConfig.getInstance().getSelectedCompartmentName() != null && LocalConfig.getInstance().getSelectedCompartmentName().length() > 0) {
@@ -13132,7 +13145,6 @@ public class GraphicalInterface extends JFrame {
 //			System.out.println(ceRxns.get(i).getReactionEqunAbbr());
 //			System.out.println(ceRxns.get(i).getReactionEqunNames());
 //		}
-		// should only run this if ec number column exists
 		ECNumberMapCreator ecMapCreator = new ECNumberMapCreator();
 		Map<String, ArrayList<SBMLReaction>> ecNumberReactionMap = ecMapCreator.createEcNumberReactionMap(rxns);
 		LocalConfig.getInstance().setEcNumberReactionMap(ecNumberReactionMap);
