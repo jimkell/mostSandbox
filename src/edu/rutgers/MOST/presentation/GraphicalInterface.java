@@ -2338,11 +2338,15 @@ public class GraphicalInterface extends JFrame {
 
 		locateKeggMetaboliteIdColumnMenu.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
-				MetaboliteFactory f = new MetaboliteFactory("SBML");
+				int index = LocalConfig.getInstance().getKeggMetaboliteIdColumn();
+				if (index == -1) {
+					MetaboliteFactory f = new MetaboliteFactory("SBML");
+					index = f.locateKeggIdColumn();
+				}
 				showIdentifierColumnNameDialog(GraphicalInterfaceConstants.METABOLITES_COLUMNS_IDENTIFIER,
 						"Locate KEGG Metabolite Id Column",
 						GraphicalInterfaceConstants.METABOLITE_KEGG_ID_COLUMN_NAME,
-						f.getKeggIdColumnIndex());
+						index);
 			}
 		});
 		
@@ -2351,11 +2355,15 @@ public class GraphicalInterface extends JFrame {
 
 		locateChebiIdColumnMenu.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
-				MetaboliteFactory f = new MetaboliteFactory("SBML");
+				int index = LocalConfig.getInstance().getChebiIdColumn();
+				if (index == -1) {
+					MetaboliteFactory f = new MetaboliteFactory("SBML");
+					index = f.locateChebiIdColumn();
+				}
 				showIdentifierColumnNameDialog(GraphicalInterfaceConstants.METABOLITES_COLUMNS_IDENTIFIER,
 						"Locate CHEBI Id Column",
 						GraphicalInterfaceConstants.CHEBI_ID_COLUMN_NAME,
-						f.getChebiIdColumnIndex());
+						LocalConfig.getInstance().getChebiIdColumn());
 			}
 		});
 		
@@ -2364,11 +2372,10 @@ public class GraphicalInterface extends JFrame {
 
 		locateECNumberColumnMenu.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
-				ReactionFactory f = new ReactionFactory("SBML");
 				showIdentifierColumnNameDialog(GraphicalInterfaceConstants.REACTIONS_COLUMNS_IDENTIFIER,
 						"Locate EC Number Column",
 						GraphicalInterfaceConstants.EC_NUMBER_COLUMN_NAME, 
-						f.getECColumnColumnIndex());
+						LocalConfig.getInstance().getEcNumberColumn());
 			}
 		});
 		
@@ -2377,11 +2384,10 @@ public class GraphicalInterface extends JFrame {
 
 		locateKeggReactionIdColumnMenu.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
-				ReactionFactory f = new ReactionFactory("SBML");
 				showIdentifierColumnNameDialog(GraphicalInterfaceConstants.REACTIONS_COLUMNS_IDENTIFIER,
 						"Locate KEGG Reaction Id Column",
 						GraphicalInterfaceConstants.METABOLITE_KEGG_ID_COLUMN_NAME,
-						f.getKeggIdColumnIndex());
+						LocalConfig.getInstance().getKeggReactionIdColumn());
 			}
 		});
         
@@ -4311,8 +4317,7 @@ public class GraphicalInterface extends JFrame {
 			
 			MetaboliteFactory f = new MetaboliteFactory("SBML");
 			Vector<SBMLMetabolite> metabolites = f.getAllMetabolites();
-			int keggIdCol = f.getKeggIdColumnIndex();
-			if (keggIdCol > -1) {
+			if (LocalConfig.getInstance().getKeggMetaboliteIdColumn() > -1) {
 				// prompt to update current column
 				Object[] options = {"Yes",
 				"No"};
@@ -4328,7 +4333,7 @@ public class GraphicalInterface extends JFrame {
 				// interpret the user's choice	  
 				if (choice == JOptionPane.YES_OPTION)
 				{
-					updateKeggIdColumn(metabolites, modeltrimStartIndex, modeltrimEndIndex, keggIdCol);
+					updateKeggIdColumn(metabolites, modeltrimStartIndex, modeltrimEndIndex, LocalConfig.getInstance().getKeggMetaboliteIdColumn());
 				}
 				//No option actually corresponds to "Yes to All" button
 				if (choice == JOptionPane.NO_OPTION)
@@ -4406,7 +4411,7 @@ public class GraphicalInterface extends JFrame {
 			
 			ReactionFactory f = new ReactionFactory("SBML");
 			Vector<SBMLReaction> reactions = f.getAllReactions();
-			int ecNumberColumn = f.getECColumnColumnIndex();
+			int ecNumberColumn = LocalConfig.getInstance().getEcNumberColumn();
 			String ecColumnName = "Protein Class";
 			if (ecNumberColumn != GraphicalInterfaceConstants.PROTEIN_CLASS_COLUMN &&
 					ecNumberColumn > -1) {
@@ -13058,7 +13063,14 @@ public class GraphicalInterface extends JFrame {
 		String missingItem = "";
 		String missingData = "";
 		boolean showMissingItemMessage = true;
-		if (f.getKeggIdColumnIndex() == -1) {
+		// if KEGG id not set by user, attempt to locate programmatically
+		System.out.println(LocalConfig.getInstance().getKeggMetaboliteIdColumn());
+		if (LocalConfig.getInstance().getKeggMetaboliteIdColumn() == -1) {
+			LocalConfig.getInstance().setKeggMetaboliteIdColumn(f.locateKeggIdColumn());
+			LocalConfig.getInstance().setChebiIdColumn(f.locateChebiIdColumn());
+		}
+		// if KEGG id still not found, show prompt
+		if (LocalConfig.getInstance().getKeggMetaboliteIdColumn() == -1) {
 			missingItem = "KEGG Ids";
 			missingData = "metabolites";
 		} else {

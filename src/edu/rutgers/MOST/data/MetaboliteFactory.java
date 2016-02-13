@@ -192,15 +192,15 @@ public class MetaboliteFactory {
 					metabolite.setCharge((String) GraphicalInterface.metabolitesTable.getModel().getValueAt(i, GraphicalInterfaceConstants.CHARGE_COLUMN));
 					metabolite.setCompartment((String) GraphicalInterface.metabolitesTable.getModel().getValueAt(i, GraphicalInterfaceConstants.COMPARTMENT_COLUMN));
 					metabolite.setBoundary((String) GraphicalInterface.metabolitesTable.getModel().getValueAt(i, GraphicalInterfaceConstants.BOUNDARY_COLUMN));
-					if (getKeggIdColumnIndex() > -1) {
-						String keggId = (String) GraphicalInterface.metabolitesTable.getModel().getValueAt(i, getKeggIdColumnIndex());
+					if (LocalConfig.getInstance().getKeggMetaboliteIdColumn() > -1) {
+						String keggId = (String) GraphicalInterface.metabolitesTable.getModel().getValueAt(i, LocalConfig.getInstance().getKeggMetaboliteIdColumn());
 						// accounts for models where KEGG ids start with "c"
 						if (keggId != null) {
 							metabolite.setKeggId(keggId.toUpperCase());
 						}
 					}
-					if (getChebiIdColumnIndex() > -1) {
-						metabolite.setChebiId((String) GraphicalInterface.metabolitesTable.getModel().getValueAt(i, getChebiIdColumnIndex()));
+					if (LocalConfig.getInstance().getChebiIdColumn() > -1) {
+						metabolite.setChebiId((String) GraphicalInterface.metabolitesTable.getModel().getValueAt(i, LocalConfig.getInstance().getChebiIdColumn()));
 					}
 					metabolites.add(metabolite);
 				}													
@@ -212,33 +212,27 @@ public class MetaboliteFactory {
 	}
 	
 	// get index of column with Kegg Id
-	public Integer getKeggIdColumnIndex() {
-		//int index = -1;
-		int index = LocalConfig.getInstance().getKeggMetaboliteIdColumn();
-		if (index == -1) {
-			for (int i = 0; i < LocalConfig.getInstance().getMetabolitesMetaColumnNames().size(); i++) {
-				if (LocalConfig.getInstance().getMetabolitesMetaColumnNames().get(i).contains(GraphicalInterfaceConstants.KEGG_ID_METABOLITES_COLUMN_NAMES[0])) {
-					index = GraphicalInterfaceConstants.METABOLITES_COLUMN_NAMES.length + i;
-				} else if (LocalConfig.getInstance().getMetabolitesMetaColumnNames().get(i).contains(GraphicalInterfaceConstants.KEGG_ID_METABOLITES_COLUMN_NAMES[1])) {
-					index = GraphicalInterfaceConstants.METABOLITES_COLUMN_NAMES.length + i;
-				}
+	public Integer locateKeggIdColumn() {
+		int index = -1;
+		for (int i = 0; i < LocalConfig.getInstance().getMetabolitesMetaColumnNames().size(); i++) {
+			if (LocalConfig.getInstance().getMetabolitesMetaColumnNames().get(i).contains(GraphicalInterfaceConstants.KEGG_ID_METABOLITES_COLUMN_NAMES[0])) {
+				index = GraphicalInterfaceConstants.METABOLITES_COLUMN_NAMES.length + i;
+			} else if (LocalConfig.getInstance().getMetabolitesMetaColumnNames().get(i).contains(GraphicalInterfaceConstants.KEGG_ID_METABOLITES_COLUMN_NAMES[1])) {
+				index = GraphicalInterfaceConstants.METABOLITES_COLUMN_NAMES.length + i;
 			}
 		}
-		
+
 		return index;
 	}
 	
 	// get index of column with Kegg Id
-	public Integer getChebiIdColumnIndex() {
-		//int index = -1;
-		int index = LocalConfig.getInstance().getChebiIdColumn();
-		if (index == -1) {
-			for (int i = 0; i < LocalConfig.getInstance().getMetabolitesMetaColumnNames().size(); i++) {
-				if (LocalConfig.getInstance().getMetabolitesMetaColumnNames().get(i).contains(GraphicalInterfaceConstants.CHEBI_ID_METABOLITES_COLUMN_NAMES[0])) {
-					index = GraphicalInterfaceConstants.METABOLITES_COLUMN_NAMES.length + i;
-				} else if (LocalConfig.getInstance().getMetabolitesMetaColumnNames().get(i).contains(GraphicalInterfaceConstants.CHEBI_ID_METABOLITES_COLUMN_NAMES[1])) {
-					index = GraphicalInterfaceConstants.METABOLITES_COLUMN_NAMES.length + i;
-				}
+	public Integer locateChebiIdColumn() {
+		int index = -1;
+		for (int i = 0; i < LocalConfig.getInstance().getMetabolitesMetaColumnNames().size(); i++) {
+			if (LocalConfig.getInstance().getMetabolitesMetaColumnNames().get(i).contains(GraphicalInterfaceConstants.CHEBI_ID_METABOLITES_COLUMN_NAMES[0])) {
+				index = GraphicalInterfaceConstants.METABOLITES_COLUMN_NAMES.length + i;
+			} else if (LocalConfig.getInstance().getMetabolitesMetaColumnNames().get(i).contains(GraphicalInterfaceConstants.CHEBI_ID_METABOLITES_COLUMN_NAMES[1])) {
+				index = GraphicalInterfaceConstants.METABOLITES_COLUMN_NAMES.length + i;
 			}
 		}
 	

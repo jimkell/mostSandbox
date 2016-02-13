@@ -129,30 +129,29 @@ public class IdentifierColumnNameDialog extends JDialog {
 		ActionListener okButtonActionListener = new ActionListener() {
 			public void actionPerformed(ActionEvent prodActionEvent) {
 				int index = -1;
-				if (selectedIndex > -1) {
+				if (cbColumnName.getSelectedIndex() > -1) {
 					if (type.equals(GraphicalInterfaceConstants.METABOLITES_COLUMNS_IDENTIFIER)) {
-						if (selectedIndex < LocalConfig.getInstance().getMetabolitesMetaColumnNames().size()) {
-							index = selectedIndex + GraphicalInterfaceConstants.METABOLITES_COLUMN_NAMES.length;
+						if (cbColumnName.getSelectedIndex() < LocalConfig.getInstance().getMetabolitesMetaColumnNames().size()) {
+							index = cbColumnName.getSelectedIndex() + GraphicalInterfaceConstants.METABOLITES_COLUMN_NAMES.length;
 						} else {
-							String name = GraphicalInterfaceConstants.metabolitesIdentifiersList.get(selectedIndex -
+							String name = GraphicalInterfaceConstants.metabolitesIdentifiersList.get(cbColumnName.getSelectedIndex() -
 									LocalConfig.getInstance().getMetabolitesMetaColumnNames().size());
-							//System.out.println(name);
+							System.out.println(name);
 							if (GraphicalInterfaceConstants.metabolitesList.contains(name)) {
 								index = GraphicalInterfaceConstants.metabolitesList.indexOf(name) +
 										LocalConfig.getInstance().getMetabolitesMetaColumnNames().size();
 							} 
 						}
-						//System.out.println(index);
 						if (columnType.equals(GraphicalInterfaceConstants.METABOLITE_KEGG_ID_COLUMN_NAME)) {
 							LocalConfig.getInstance().setKeggMetaboliteIdColumn(index);
 						} else if (columnType.equals(GraphicalInterfaceConstants.CHEBI_ID_COLUMN_NAME)) {
 							LocalConfig.getInstance().setChebiIdColumn(index);
 						}
 					} else if (type.equals(GraphicalInterfaceConstants.REACTIONS_COLUMNS_IDENTIFIER)) {
-						if (selectedIndex < LocalConfig.getInstance().getReactionsMetaColumnNames().size()) {
-							index = selectedIndex + GraphicalInterfaceConstants.REACTIONS_COLUMN_NAMES.length;
+						if (cbColumnName.getSelectedIndex() < LocalConfig.getInstance().getReactionsMetaColumnNames().size()) {
+							index = cbColumnName.getSelectedIndex() + GraphicalInterfaceConstants.REACTIONS_COLUMN_NAMES.length;
 						} else {
-							String name = GraphicalInterfaceConstants.reactionsIdentifiersList.get(selectedIndex -
+							String name = GraphicalInterfaceConstants.reactionsIdentifiersList.get(cbColumnName.getSelectedIndex() -
 									LocalConfig.getInstance().getReactionsMetaColumnNames().size());
 							//System.out.println(name);
 							if (GraphicalInterfaceConstants.reactionsList.contains(name)) {
@@ -204,8 +203,6 @@ public class IdentifierColumnNameDialog extends JDialog {
 				cbColumnName.addItem(GraphicalInterfaceConstants.metabolitesIdentifiersList.get(j));
 			}
 		}
-		// add empty item
-		cbColumnName.addItem("");
 		cbColumnName.setSelectedIndex(selectedIndex);
 	}
 	

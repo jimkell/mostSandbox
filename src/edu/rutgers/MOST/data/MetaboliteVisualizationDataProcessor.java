@@ -11,7 +11,7 @@ public class MetaboliteVisualizationDataProcessor {
 
 	public void processMetabolitesData() {
 		MetaboliteFactory f = new MetaboliteFactory("SBML");
-		if (f.getKeggIdColumnIndex() > -1) {
+		if (LocalConfig.getInstance().getKeggMetaboliteIdColumn() > -1) {
 			Vector<SBMLMetabolite> metabolites = f.getAllMetabolites();
 			for (int i = 0; i < metabolites.size(); i++) {
 				// if metabolite abbreviation is not empty and KEGG id is not empty
@@ -22,7 +22,7 @@ public class MetaboliteVisualizationDataProcessor {
 					String metabId = Integer.toString(metabolites.get(i).getId());
 					String keggId = metabolites.get(i).getKeggId();
 					if (keggId == null || keggId.length() == 0) {
-						if (f.getChebiIdColumnIndex() > -1) {
+						if (LocalConfig.getInstance().getChebiIdColumn() > -1) {
 							String chebiId = metabolites.get(i).getChebiId();
 							if (chebiId != null && chebiId.length() > 0) {
 								if (LocalConfig.getInstance().getChebiIdKeggIdMap().containsKey(chebiId)) {
