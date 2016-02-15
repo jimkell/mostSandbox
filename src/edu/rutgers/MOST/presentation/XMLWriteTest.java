@@ -27,11 +27,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.geom.Rectangle2D;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Random;
+//import java.util.Random;
+
+
+
 
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
@@ -43,7 +45,6 @@ import javax.swing.JOptionPane;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 import javax.xml.transform.OutputKeys;
@@ -55,6 +56,8 @@ import javax.xml.transform.stream.StreamResult;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+
+import edu.rutgers.MOST.presentation.GraphicalInterface.CSVFileFilter;
 
 /**
 * This program shows how to write an XML file. It saves a file describing a modern drawing in SVG
@@ -84,12 +87,24 @@ public class XMLWriteTest
  */
 class XMLWriteFrame extends JFrame
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
+	public static final int DEFAULT_WIDTH = 300;
+	public static final int DEFAULT_HEIGHT = 200;
+
+	private RectangleComponent comp;
+	private JFileChooser chooser;
+	
 	public XMLWriteFrame()
 	{
 		setTitle("XMLWriteTest");
 		setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
 
 		chooser = new JFileChooser();
+		chooser.setFileFilter(new SVGFileFilter());
 
 		// add component to frame
 
@@ -131,23 +146,6 @@ class XMLWriteFrame extends JFrame
 			}
 		});
 
-		JMenuItem saveStAXItem = new JMenuItem("Save with StAX");
-		menu.add(saveStAXItem);
-		saveStAXItem.addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent event)
-			{
-				try
-				{
-					saveStAX();
-				}
-				catch (Exception e)
-				{
-					JOptionPane.showMessageDialog(XMLWriteFrame.this, e.toString());
-				}
-			}
-		});
-
 		JMenuItem exitItem = new JMenuItem("Exit");
 		menu.add(exitItem);
 		exitItem.addActionListener(new ActionListener()
@@ -168,33 +166,24 @@ class XMLWriteFrame extends JFrame
 		File f = chooser.getSelectedFile();
 		Document doc = comp.buildDocument();
 		Transformer t = TransformerFactory.newInstance().newTransformer();
-		t.setOutputProperty(OutputKeys.DOCTYPE_SYSTEM,
-				"http://www.w3.org/TR/2000/CR-SVG-20000802/DTD/svg-20000802.dtd");
-		t.setOutputProperty(OutputKeys.DOCTYPE_PUBLIC, "-//W3C//DTD SVG 20000802//EN");
+//		t.setOutputProperty(OutputKeys.DOCTYPE_SYSTEM,
+//				"http://www.w3.org/TR/2000/CR-SVG-20000802/DTD/svg-20000802.dtd");
+//		t.setOutputProperty(OutputKeys.DOCTYPE_PUBLIC, "-//W3C//DTD SVG 20000802//EN");
 		t.setOutputProperty(OutputKeys.INDENT, "yes");
 		t.setOutputProperty(OutputKeys.METHOD, "xml");
 		t.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
 		t.transform(new DOMSource(doc), new StreamResult(new FileOutputStream(f)));
 	}
+}
 
-	/**
-	 * Saves the drawing in SVG format, using StAX
-	 */
-	public void saveStAX() throws FileNotFoundException, XMLStreamException
-	{
-		if (chooser.showSaveDialog(this) != JFileChooser.APPROVE_OPTION) return;
-		File f = chooser.getSelectedFile();
-		XMLOutputFactory factory = XMLOutputFactory.newInstance();
-		XMLStreamWriter writer = factory.createXMLStreamWriter(new FileOutputStream(f));
-		comp.writeDocument(writer);
-		writer.close();
+class SVGFileFilter extends javax.swing.filechooser.FileFilter {
+	public boolean accept(File f) {
+		return f.isDirectory() || f.getName().toLowerCase().endsWith(".svg");
 	}
 
-	public static final int DEFAULT_WIDTH = 300;
-	public static final int DEFAULT_HEIGHT = 200;
-
-	private RectangleComponent comp;
-	private JFileChooser chooser;
+	public String getDescription() {
+		return ".svg files";
+	}
 }
 
 /**
@@ -202,11 +191,23 @@ class XMLWriteFrame extends JFrame
  */
 class RectangleComponent extends JComponent
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
+	private ArrayList<ArrayList<String[]>> edges;
+	private ArrayList<Rectangle2D> rects;
+//	private ArrayList<Color> colors;
+//	private Random generator;
+	private DocumentBuilder builder;
+	
 	public RectangleComponent()
 	{
+		edges = new ArrayList<ArrayList<String[]>>();
 		rects = new ArrayList<Rectangle2D>();
-		colors = new ArrayList<Color>();
-		generator = new Random();
+//		colors = new ArrayList<Color>();
+		//generator = new Random();
 
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		try
@@ -224,21 +225,29 @@ class RectangleComponent extends JComponent
 	 */
 	public void newDrawing()
 	{
-		int n = 10 + generator.nextInt(20);
+		//int n = 10 + generator.nextInt(20);
+		edges.clear();
+		ArrayList<String[]> endpoints = new ArrayList<String[]>();
+		String[] e1 = {"1", "1"};
+		String[] e2 = {"500", "500"};
+		endpoints.add(e1);
+		endpoints.add(e2);
+		edges.add(endpoints);
 		rects.clear();
-		colors.clear();
-		for (int i = 1; i <= n; i++)
-		{
-			int x = generator.nextInt(getWidth());
-			int y = generator.nextInt(getHeight());
-			int width = generator.nextInt(getWidth() - x);
-			int height = generator.nextInt(getHeight() - y);
-			rects.add(new Rectangle(x, y, width, height));
-			int r = generator.nextInt(256);
-			int g = generator.nextInt(256);
-			int b = generator.nextInt(256);
-			colors.add(new Color(r, g, b));
-		}
+//		colors.clear();
+		rects.add(new Rectangle(0, 0, 100, 50));
+//		for (int i = 1; i <= n; i++)
+//		{
+//			int x = generator.nextInt(getWidth());
+//			int y = generator.nextInt(getHeight());
+//			int width = generator.nextInt(getWidth() - x);
+//			int height = generator.nextInt(getHeight() - y);
+//			rects.add(new Rectangle(x, y, width, height));
+//			int r = generator.nextInt(256);
+//			int g = generator.nextInt(256);
+//			int b = generator.nextInt(256);
+//			colors.add(new Color(r, g, b));
+//		}
 		repaint();
 	}
 
@@ -250,7 +259,8 @@ class RectangleComponent extends JComponent
 		// draw all rectangles
 		for (int i = 0; i < rects.size(); i++)
 		{
-			g2.setPaint(colors.get(i));
+			//g2.setPaint(colors.get(i));
+			g2.setPaint(Color.BLACK);
 			g2.fill(rects.get(i));
 		}
 	}
@@ -264,18 +274,33 @@ class RectangleComponent extends JComponent
 		Document doc = builder.newDocument();
 		Element svgElement = doc.createElement("svg");
 		doc.appendChild(svgElement);
+		svgElement.setAttribute("version", "1.1");
 		svgElement.setAttribute("width", "" + getWidth());
 		svgElement.setAttribute("height", "" + getHeight());
+		svgElement.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+		for (int e = 0; e < edges.size(); e++) {
+			Element lineElement = doc.createElement("line");
+			lineElement.setAttribute("x1", "" + edges.get(e).get(0)[0]);
+			lineElement.setAttribute("y1", "" + edges.get(e).get(0)[1]);
+			lineElement.setAttribute("x1", "" + edges.get(e).get(1)[0]);
+			lineElement.setAttribute("y1", "" + edges.get(e).get(1)[1]);
+			lineElement.setAttribute("stroke", "black");
+			lineElement.setAttribute("stroke-width", "2");
+			svgElement.appendChild(lineElement);
+		}
 		for (int i = 0; i < rects.size(); i++)
 		{
-			Color c = colors.get(i);
+			//Color c = colors.get(i);
 			Rectangle2D r = rects.get(i);
 			Element rectElement = doc.createElement("rect");
 			rectElement.setAttribute("x", "" + r.getX());
 			rectElement.setAttribute("y", "" + r.getY());
 			rectElement.setAttribute("width", "" + r.getWidth());
 			rectElement.setAttribute("height", "" + r.getHeight());
-			rectElement.setAttribute("fill", colorToString(c));
+			rectElement.setAttribute("stroke", "black");
+			rectElement.setAttribute("stroke-width", "6");
+			//rectElement.setAttribute("fill", colorToString(c));
+			rectElement.setAttribute("fill", colorToString(Color.WHITE));
 			svgElement.appendChild(rectElement);
 		}
 		return doc;
@@ -285,27 +310,39 @@ class RectangleComponent extends JComponent
 	 * Writers an SVG document of the current drawing.
 	 * @param writer the document destination
 	 */
-	public void writeDocument(XMLStreamWriter writer) throws XMLStreamException
-	{
-		writer.writeStartDocument();
-		writer.writeDTD("<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 20000802//EN\" " 
-				+ "\"http://www.w3.org/TR/2000/CR-SVG-20000802/DTD/svg-20000802.dtd\">");
-		writer.writeStartElement("svg");
-		writer.writeAttribute("width", "" + getWidth());
-		writer.writeAttribute("height", "" + getHeight());
-		for (int i = 0; i < rects.size(); i++)
-		{
-			Color c = colors.get(i);
-			Rectangle2D r = rects.get(i);
-			writer.writeEmptyElement("rect");
-			writer.writeAttribute("x", "" + r.getX());
-			writer.writeAttribute("y", "" + r.getY());
-			writer.writeAttribute("width", "" + r.getWidth());
-			writer.writeAttribute("height", "" + r.getHeight());
-			writer.writeAttribute("fill", colorToString(c));         
-		}
-		writer.writeEndDocument(); // closes svg element
-	}  
+//	public void writeDocument(XMLStreamWriter writer) throws XMLStreamException
+//	{
+//		writer.writeStartDocument();
+////		writer.writeDTD("<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 20000802//EN\" " 
+////				+ "\"http://www.w3.org/TR/2000/CR-SVG-20000802/DTD/svg-20000802.dtd\">");
+//		writer.writeStartElement("svg");
+//		writer.writeAttribute("width", "" + getWidth());
+//		writer.writeAttribute("height", "" + getHeight());
+//		for (int e = 0; e < edges.size(); e++) {
+//			writer.writeEmptyElement("line");
+//			writer.writeAttribute("x1", "" + edges.get(e).get(0)[0]);
+//			writer.writeAttribute("y1", "" + edges.get(e).get(0)[1]);
+//			writer.writeAttribute("x1", "" + edges.get(e).get(1)[0]);
+//			writer.writeAttribute("y1", "" + edges.get(e).get(1)[1]);
+//			writer.writeAttribute("stroke", "black");
+//			writer.writeAttribute("stroke-width", "2");
+//		}
+//		for (int i = 0; i < rects.size(); i++)
+//		{
+////			Color c = colors.get(i);
+//			Rectangle2D r = rects.get(i);
+//			writer.writeEmptyElement("rect");
+//			writer.writeAttribute("x", "" + r.getX());
+//			writer.writeAttribute("y", "" + r.getY());
+//			writer.writeAttribute("width", "" + r.getWidth());
+//			writer.writeAttribute("height", "" + r.getHeight());
+//			writer.writeAttribute("stroke", "black");
+//			writer.writeAttribute("stroke-width", "2");
+//			//writer.writeAttribute("fill", colorToString(c));
+//			writer.writeAttribute("fill", colorToString(Color.WHITE));
+//		}
+//		writer.writeEndDocument(); // closes svg element
+//	}  
 
 	/**
 	 * Converts a color to a hex value.
@@ -321,10 +358,6 @@ class RectangleComponent extends JComponent
 		buffer.insert(0, '#');
 		return buffer.toString();
 	}
-
-	private ArrayList<Rectangle2D> rects;
-	private ArrayList<Color> colors;
-	private Random generator;
-	private DocumentBuilder builder;
+	
 }
 
