@@ -45,8 +45,6 @@ import javax.swing.JOptionPane;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamWriter;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
@@ -56,8 +54,6 @@ import javax.xml.transform.stream.StreamResult;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-
-import edu.rutgers.MOST.presentation.GraphicalInterface.CSVFileFilter;
 
 /**
 * This program shows how to write an XML file. It saves a file describing a modern drawing in SVG
@@ -96,15 +92,15 @@ class XMLWriteFrame extends JFrame
 	public static final int DEFAULT_HEIGHT = 200;
 
 	private RectangleComponent comp;
-	private JFileChooser chooser;
+	//private JFileChooser chooser;
 	
 	public XMLWriteFrame()
 	{
 		setTitle("XMLWriteTest");
 		setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
 
-		chooser = new JFileChooser();
-		chooser.setFileFilter(new SVGFileFilter());
+//		chooser = new JFileChooser();
+//		chooser.setFileFilter(new SVGFileFilter());
 
 		// add component to frame
 
@@ -135,14 +131,15 @@ class XMLWriteFrame extends JFrame
 		{
 			public void actionPerformed(ActionEvent event)
 			{
-				try
-				{
-					saveDocument();
-				}
-				catch (Exception e)
-				{
-					JOptionPane.showMessageDialog(XMLWriteFrame.this, e.toString());
-				}
+				saveFile();
+//				try
+//				{
+//					saveDocument();
+//				}
+//				catch (Exception e)
+//				{
+//					JOptionPane.showMessageDialog(XMLWriteFrame.this, e.toString());
+//				}
 			}
 		});
 
@@ -160,19 +157,67 @@ class XMLWriteFrame extends JFrame
 	/**
 	 * Saves the drawing in SVG format, using DOM/XSLT
 	 */
-	public void saveDocument() throws TransformerException, IOException
+	public void saveDocument(File f) throws TransformerException, IOException
 	{
-		if (chooser.showSaveDialog(this) != JFileChooser.APPROVE_OPTION) return;
-		File f = chooser.getSelectedFile();
 		Document doc = comp.buildDocument();
 		Transformer t = TransformerFactory.newInstance().newTransformer();
-//		t.setOutputProperty(OutputKeys.DOCTYPE_SYSTEM,
-//				"http://www.w3.org/TR/2000/CR-SVG-20000802/DTD/svg-20000802.dtd");
-//		t.setOutputProperty(OutputKeys.DOCTYPE_PUBLIC, "-//W3C//DTD SVG 20000802//EN");
 		t.setOutputProperty(OutputKeys.INDENT, "yes");
 		t.setOutputProperty(OutputKeys.METHOD, "xml");
 		t.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
 		t.transform(new DOMSource(doc), new StreamResult(new FileOutputStream(f)));
+	}
+	
+	public void saveFile() {
+		JFileChooser chooser = new JFileChooser();
+		chooser.setFileFilter(new SVGFileFilter());
+		boolean done = false;
+		while (!done) {
+			int retval = chooser.showSaveDialog(this);
+			if (retval == JFileChooser.CANCEL_OPTION) {
+				done = true;
+			}
+			if (retval == JFileChooser.APPROVE_OPTION) {
+				File file = chooser.getSelectedFile();
+				String path = file.getPath();
+				if (!file.getPath().endsWith(".svg")) {
+					path = path + ".svg";
+					file = new File(path);
+				}
+				if (file.exists()) {
+					int confirmDialog = JOptionPane.showConfirmDialog(chooser, "Replace existing file?");
+					if (confirmDialog == JOptionPane.YES_OPTION) {
+						done = true;
+
+						try {
+							saveDocument(file);
+						} catch (TransformerException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+
+					} else if (confirmDialog == JOptionPane.NO_OPTION) {        		    	  
+						done = false;
+					} else {
+						done = true;
+					}       		    	  
+				} else {
+					done = true;
+					
+					try {
+						saveDocument(file);
+					} catch (TransformerException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}	
+			}
+		}
 	}
 }
 

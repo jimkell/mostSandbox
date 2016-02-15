@@ -87,6 +87,7 @@ import org.apache.commons.collections15.functors.ChainedTransformer;
 
 
 
+
 import edu.rutgers.MOST.config.LocalConfig;
 import edu.rutgers.MOST.data.MetabolicPathway;
 import edu.rutgers.MOST.data.PathwayMetaboliteNode;
@@ -99,6 +100,7 @@ import edu.rutgers.MOST.data.ReactionFactory;
 import edu.rutgers.MOST.data.SBMLMetabolite;
 import edu.rutgers.MOST.data.SBMLReaction;
 import edu.rutgers.MOST.data.SBMLReactionEquation;
+import edu.rutgers.MOST.data.SVGWriter;
 import edu.uci.ics.jung.algorithms.layout.Layout;                                                                    
 import edu.uci.ics.jung.algorithms.layout.StaticLayout;                                                              
 import edu.uci.ics.jung.graph.Graph;  
@@ -219,6 +221,7 @@ public class PathwaysFrame extends JApplet {
    	private double startX = 2*PathwaysFrameConstants.HORIZONTAL_INCREMENT;
    	private double startY = PathwaysFrameConstants.START_Y;
    
+   	private final JMenuItem saveGraphSVGItem = new JMenuItem("Save Graph As SVG");
    	private final JMenuItem saveGraphPNGItem = new JMenuItem("Save Graph As PNG");
    	private final JMenuItem saveWindowPNGItem = new JMenuItem("Save Window As PNG");
    	private final JCheckBoxMenuItem transformItem = new JCheckBoxMenuItem("Transform");
@@ -307,6 +310,15 @@ public class PathwaysFrame extends JApplet {
 
     	JMenu fileMenu = new JMenu("File");
     	fileMenu.setMnemonic(KeyEvent.VK_F);
+    	
+    	fileMenu.add(saveGraphSVGItem);
+    	saveGraphSVGItem.setMnemonic(KeyEvent.VK_S);
+    	
+    	saveGraphSVGItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ae) {
+				saveGraphAsSVG();
+			}
+		});
     	
     	fileMenu.add(saveGraphPNGItem);
     	saveGraphPNGItem.setMnemonic(KeyEvent.VK_G);
@@ -623,6 +635,11 @@ public class PathwaysFrame extends JApplet {
         add(controls, BorderLayout.SOUTH);  
        
     }  
+    
+    public void saveGraphAsSVG() {
+    	SVGWriter writer = new SVGWriter();
+    	writer.saveFile();
+    }
     
     public void saveGraphAsPNG() {
 //    	double centerX = 2000;
