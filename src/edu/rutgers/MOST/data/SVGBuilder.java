@@ -25,14 +25,33 @@ public class SVGBuilder {
 	public void setEdges(ArrayList<ArrayList<String[]>> edges) {
 		this.edges = edges;
 	}
+	
+	private ArrayList<BorderRectangle> rects;
+	
+	public ArrayList<BorderRectangle> getRects() {
+		return rects;
+	}
 
-	private ArrayList<Rectangle2D> rects;
+	public void setRects(ArrayList<BorderRectangle> rects) {
+		this.rects = rects;
+	}
+
+//	private ArrayList<Rectangle2D> rects;
+//	
+//	public ArrayList<Rectangle2D> getRects() {
+//		return rects;
+//	}
+//
+//	public void setRects(ArrayList<Rectangle2D> rects) {
+//		this.rects = rects;
+//	}
+
 	private DocumentBuilder builder;
 	
 	public SVGBuilder()
 	{
 //		edges = new ArrayList<ArrayList<String[]>>();
-		rects = new ArrayList<Rectangle2D>();
+//		rects = new ArrayList<Rectangle2D>();
 //		
 //		edges.clear();
 //		ArrayList<String[]> endpoints = new ArrayList<String[]>();
@@ -81,7 +100,8 @@ public class SVGBuilder {
 		for (int i = 0; i < rects.size(); i++)
 		{
 			//Color c = colors.get(i);
-			Rectangle2D r = rects.get(i);
+			//Rectangle2D r = rects.get(i);
+			BorderRectangle r = rects.get(i);
 			Element rectElement = doc.createElement("rect");
 			rectElement.setAttribute("x", "" + r.getX());
 			rectElement.setAttribute("y", "" + r.getY());

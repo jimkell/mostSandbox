@@ -20,6 +20,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.geom.AffineTransform;                                                                                
 import java.awt.geom.Point2D;                                                                                        
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -92,7 +93,10 @@ import org.apache.commons.collections15.functors.ChainedTransformer;
 
 
 
+
+
 import edu.rutgers.MOST.config.LocalConfig;
+import edu.rutgers.MOST.data.BorderRectangle;
 import edu.rutgers.MOST.data.MetabolicPathway;
 import edu.rutgers.MOST.data.PathwayMetaboliteNode;
 import edu.rutgers.MOST.data.PathwayMetaboliteNodeFactory;
@@ -656,10 +660,31 @@ public class PathwaysFrame extends JApplet {
     			endpoints.add(nodeNamePositionMap.get(info[1]));
     			edges.add(endpoints);
     		} else {
-    			System.out.println("nf");
+    			System.out.println("enf");
     		}
     	}
     	builder.setEdges(edges);
+    	ArrayList<BorderRectangle> rects = new ArrayList<BorderRectangle>();
+    	for (int j = 0; j < nodeNameList.size(); j++) {
+    		if (nodeNamePositionMap.containsKey(nodeNameList.get(j))) {
+    			double width = PathwaysFrameConstants.METABOLITE_BORDER_NODE_WIDTH;
+    			double height = PathwaysFrameConstants.METABOLITE_BORDER_NODE_HEIGHT;
+    			BorderRectangle r = new BorderRectangle();
+    			r.setX(Double.parseDouble(nodeNamePositionMap.get(nodeNameList.get(j))[0]) - width/2);
+    			r.setY(Double.parseDouble(nodeNamePositionMap.get(nodeNameList.get(j))[1]) - height/2);
+    			r.setWidth(width);
+    			r.setHeight(height);
+    			r.setStroke("black");
+    			r.setStrokeWidth(Double.toString(PathwaysFrameConstants.BORDER_THICKNESS));
+    			r.setFill(Color.WHITE);
+    			rects.add(r);
+//    			System.out.println(nodeNamePositionMap.get(nodeNameList.get(j))[0]);
+//    			System.out.println(nodeNamePositionMap.get(nodeNameList.get(j))[1]);
+    		} else {
+    			System.out.println("nnf");
+    		}
+    	}
+    	builder.setRects(rects);
     	SVGWriter writer = new SVGWriter();
     	writer.setBuilder(builder);
     	writer.saveFile();
