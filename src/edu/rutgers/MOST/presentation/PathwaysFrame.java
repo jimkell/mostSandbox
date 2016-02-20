@@ -669,13 +669,45 @@ public class PathwaysFrame extends JApplet {
     		if (nodeNamePositionMap.containsKey(nodeNameList.get(j))) {
     			double width = PathwaysFrameConstants.METABOLITE_BORDER_NODE_WIDTH;
     			double height = PathwaysFrameConstants.METABOLITE_BORDER_NODE_HEIGHT;
+    			String stroke = "black";
+    			if (noBorderList.contains(nodeNameList.get(j)) || reactions.contains(nodeNameList.get(j))) {
+    				stroke = "white";
+    			}
+    			double strokeWidth = PathwaysFrameConstants.BORDER_THICKNESS;
+    			if (borderList.contains(nodeNameList.get(j))) {
+            		width = (int) PathwaysFrameConstants.BORDER_THICKNESS;
+            		height = (int) PathwaysFrameConstants.BORDER_THICKNESS;
+            	} else if (nodeNameList.get(j).equals(compartmentLabel)) {
+            		width = PathwaysFrameConstants.COMPARTMENT_LABEL_NODE_WIDTH;
+                	height = PathwaysFrameConstants.COMPARTMENT_LABEL_NODE_HEIGHT;
+            	} else if (mainMetabolites.contains(nodeNameList.get(j))) {
+            		if (!noBorderList.contains(nodeNameList.get(j))) {
+            			width = PathwaysFrameConstants.METABOLITE_BORDER_NODE_WIDTH;
+                    	height = PathwaysFrameConstants.METABOLITE_BORDER_NODE_HEIGHT;
+            		} else {
+            			width = PathwaysFrameConstants.METABOLITE_NO_BORDER_NODE_WIDTH;
+                    	height = PathwaysFrameConstants.METABOLITE_NO_BORDER_NODE_HEIGHT;
+            		}
+            	} else if (smallMainMetabolites.contains(nodeNameList.get(j))) {	
+            		width = PathwaysFrameConstants.SMALL_MAIN_METABOLITE_NODE_WIDTH;
+                	height = PathwaysFrameConstants.SMALL_MAIN_METABOLITE_NODE_HEIGHT;
+            	} else if (sideMetabolites.contains(nodeNameList.get(j))) {	
+            		width = PathwaysFrameConstants.SIDE_METABOLITE_NODE_WIDTH;
+                	height = PathwaysFrameConstants.SIDE_METABOLITE_NODE_HEIGHT;	
+            	} else if (reactions.contains(nodeNameList.get(j))) {
+            		width = PathwaysFrameConstants.REACTION_NODE_WIDTH;
+            		height = PathwaysFrameConstants.REACTION_NODE_HEIGHT;
+            	} else if (pathwayNames.contains(nodeNameList.get(j))) {
+            		width = PathwaysFrameConstants.PATHWAY_NAME_NODE_WIDTH;
+            		height = PathwaysFrameConstants.PATHWAY_NAME_NODE_HEIGHT; 
+            	}
     			BorderRectangle r = new BorderRectangle();
     			r.setX(Double.parseDouble(nodeNamePositionMap.get(nodeNameList.get(j))[0]) - width/2);
     			r.setY(Double.parseDouble(nodeNamePositionMap.get(nodeNameList.get(j))[1]) - height/2);
     			r.setWidth(width);
     			r.setHeight(height);
-    			r.setStroke("black");
-    			r.setStrokeWidth(Double.toString(PathwaysFrameConstants.BORDER_THICKNESS));
+    			r.setStroke(stroke);
+    			r.setStrokeWidth(Double.toString(strokeWidth));
     			r.setFill(Color.WHITE);
     			rects.add(r);
 //    			System.out.println(nodeNamePositionMap.get(nodeNameList.get(j))[0]);

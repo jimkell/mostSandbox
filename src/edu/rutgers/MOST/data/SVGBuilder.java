@@ -107,10 +107,13 @@ public class SVGBuilder {
 			rectElement.setAttribute("y", "" + r.getY());
 			rectElement.setAttribute("width", "" + r.getWidth());
 			rectElement.setAttribute("height", "" + r.getHeight());
-			rectElement.setAttribute("stroke", "black");
-			rectElement.setAttribute("stroke-width", "6");
-			//rectElement.setAttribute("fill", colorToString(c));
-			rectElement.setAttribute("fill", colorToString(Color.WHITE));
+			rectElement.setAttribute("stroke", r.getStroke());
+			rectElement.setAttribute("stroke-width", r.getStrokeWidth());
+			rectElement.setAttribute("fill", colorToString(r.getFill()));
+//			rectElement.setAttribute("stroke", "black");
+//			rectElement.setAttribute("stroke-width", "6");
+//			rectElement.setAttribute("fill", colorToString(c));
+//			rectElement.setAttribute("fill", colorToString(Color.WHITE));
 			svgElement.appendChild(rectElement);
 		}
 		return doc;
