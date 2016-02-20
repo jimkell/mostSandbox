@@ -38,8 +38,17 @@ public class SVGWriter
 	private ResizableDialog dialog = new ResizableDialog( "Error",
 			"Error", "Error" );
 	// test data - will be replaced by data from visualization
-	private Builder builder = new Builder();
+	//private SVGBuilder builder = new SVGBuilder();
+	private SVGBuilder builder;
 	
+	public SVGBuilder getBuilder() {
+		return builder;
+	}
+
+	public void setBuilder(SVGBuilder builder) {
+		this.builder = builder;
+	}
+
 	/**
 	 * Saves the drawing in SVG format, using DOM/XSLT
 	 */
@@ -143,94 +152,94 @@ class SVGFileFilter extends javax.swing.filechooser.FileFilter {
 	}
 }
 
-class Builder
-{
-	private ArrayList<ArrayList<String[]>> edges;
-	private ArrayList<Rectangle2D> rects;
-	private DocumentBuilder builder;
-	
-	public Builder()
-	{
-		edges = new ArrayList<ArrayList<String[]>>();
-		rects = new ArrayList<Rectangle2D>();
-		
-		edges.clear();
-		ArrayList<String[]> endpoints = new ArrayList<String[]>();
-		String[] e1 = {"1", "1"};
-		String[] e2 = {"500", "500"};
-		endpoints.add(e1);
-		endpoints.add(e2);
-		edges.add(endpoints);
-		rects.clear();
-		rects.add(new Rectangle(0, 0, 100, 50));
-
-		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-		try
-		{
-			builder = factory.newDocumentBuilder();
-		}
-		catch (ParserConfigurationException e)
-		{
-			e.printStackTrace();
-		}
-	}
-
-	/**
-	 * Creates an SVG document of the current drawing.
-	 * @return the DOM tree of the SVG document
-	 */
-	public Document buildDocument()
-	{
-		Document doc = builder.newDocument();
-		Element svgElement = doc.createElement("svg");
-		doc.appendChild(svgElement);
-		svgElement.setAttribute("version", "1.1");
-		svgElement.setAttribute("width", "" + 1000);
-		svgElement.setAttribute("height", "" + 1000);
-		svgElement.setAttribute("xmlns", "http://www.w3.org/2000/svg");
-		for (int e = 0; e < edges.size(); e++) {
-			Element lineElement = doc.createElement("line");
-			lineElement.setAttribute("x1", "" + edges.get(e).get(0)[0]);
-			lineElement.setAttribute("y1", "" + edges.get(e).get(0)[1]);
-			lineElement.setAttribute("x2", "" + edges.get(e).get(1)[0]);
-			lineElement.setAttribute("y2", "" + edges.get(e).get(1)[1]);
-			lineElement.setAttribute("stroke", "black");
-			lineElement.setAttribute("stroke-width", "2");
-			svgElement.appendChild(lineElement);
-		}
-		for (int i = 0; i < rects.size(); i++)
-		{
-			//Color c = colors.get(i);
-			Rectangle2D r = rects.get(i);
-			Element rectElement = doc.createElement("rect");
-			rectElement.setAttribute("x", "" + r.getX());
-			rectElement.setAttribute("y", "" + r.getY());
-			rectElement.setAttribute("width", "" + r.getWidth());
-			rectElement.setAttribute("height", "" + r.getHeight());
-			rectElement.setAttribute("stroke", "black");
-			rectElement.setAttribute("stroke-width", "6");
-			//rectElement.setAttribute("fill", colorToString(c));
-			rectElement.setAttribute("fill", colorToString(Color.WHITE));
-			svgElement.appendChild(rectElement);
-		}
-		return doc;
-	}
-
-	/**
-	 * Converts a color to a hex value.
-	 * @param c a color
-	 * @return a string of the form #rrggbb
-	 */
-	private static String colorToString(Color c)
-	{
-		StringBuffer buffer = new StringBuffer();
-		buffer.append(Integer.toHexString(c.getRGB() & 0xFFFFFF));
-		while (buffer.length() < 6)
-			buffer.insert(0, '0');
-		buffer.insert(0, '#');
-		return buffer.toString();
-	}
-	
-}
+//class Builder
+//{
+//	private ArrayList<ArrayList<String[]>> edges;
+//	private ArrayList<Rectangle2D> rects;
+//	private DocumentBuilder builder;
+//	
+//	public Builder()
+//	{
+//		edges = new ArrayList<ArrayList<String[]>>();
+//		rects = new ArrayList<Rectangle2D>();
+//		
+//		edges.clear();
+//		ArrayList<String[]> endpoints = new ArrayList<String[]>();
+//		String[] e1 = {"1", "1"};
+//		String[] e2 = {"500", "500"};
+//		endpoints.add(e1);
+//		endpoints.add(e2);
+//		edges.add(endpoints);
+//		rects.clear();
+//		rects.add(new Rectangle(0, 0, 100, 50));
+//
+//		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+//		try
+//		{
+//			builder = factory.newDocumentBuilder();
+//		}
+//		catch (ParserConfigurationException e)
+//		{
+//			e.printStackTrace();
+//		}
+//	}
+//
+//	/**
+//	 * Creates an SVG document of the current drawing.
+//	 * @return the DOM tree of the SVG document
+//	 */
+//	public Document buildDocument()
+//	{
+//		Document doc = builder.newDocument();
+//		Element svgElement = doc.createElement("svg");
+//		doc.appendChild(svgElement);
+//		svgElement.setAttribute("version", "1.1");
+//		svgElement.setAttribute("width", "" + 1000);
+//		svgElement.setAttribute("height", "" + 1000);
+//		svgElement.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+//		for (int e = 0; e < edges.size(); e++) {
+//			Element lineElement = doc.createElement("line");
+//			lineElement.setAttribute("x1", "" + edges.get(e).get(0)[0]);
+//			lineElement.setAttribute("y1", "" + edges.get(e).get(0)[1]);
+//			lineElement.setAttribute("x2", "" + edges.get(e).get(1)[0]);
+//			lineElement.setAttribute("y2", "" + edges.get(e).get(1)[1]);
+//			lineElement.setAttribute("stroke", "black");
+//			lineElement.setAttribute("stroke-width", "2");
+//			svgElement.appendChild(lineElement);
+//		}
+//		for (int i = 0; i < rects.size(); i++)
+//		{
+//			//Color c = colors.get(i);
+//			Rectangle2D r = rects.get(i);
+//			Element rectElement = doc.createElement("rect");
+//			rectElement.setAttribute("x", "" + r.getX());
+//			rectElement.setAttribute("y", "" + r.getY());
+//			rectElement.setAttribute("width", "" + r.getWidth());
+//			rectElement.setAttribute("height", "" + r.getHeight());
+//			rectElement.setAttribute("stroke", "black");
+//			rectElement.setAttribute("stroke-width", "6");
+//			//rectElement.setAttribute("fill", colorToString(c));
+//			rectElement.setAttribute("fill", colorToString(Color.WHITE));
+//			svgElement.appendChild(rectElement);
+//		}
+//		return doc;
+//	}
+//
+//	/**
+//	 * Converts a color to a hex value.
+//	 * @param c a color
+//	 * @return a string of the form #rrggbb
+//	 */
+//	private static String colorToString(Color c)
+//	{
+//		StringBuffer buffer = new StringBuffer();
+//		buffer.append(Integer.toHexString(c.getRGB() & 0xFFFFFF));
+//		while (buffer.length() < 6)
+//			buffer.insert(0, '0');
+//		buffer.insert(0, '#');
+//		return buffer.toString();
+//	}
+//	
+//}
 
 

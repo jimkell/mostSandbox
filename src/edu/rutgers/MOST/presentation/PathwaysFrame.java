@@ -88,6 +88,10 @@ import org.apache.commons.collections15.functors.ChainedTransformer;
 
 
 
+
+
+
+
 import edu.rutgers.MOST.config.LocalConfig;
 import edu.rutgers.MOST.data.MetabolicPathway;
 import edu.rutgers.MOST.data.PathwayMetaboliteNode;
@@ -100,6 +104,7 @@ import edu.rutgers.MOST.data.ReactionFactory;
 import edu.rutgers.MOST.data.SBMLMetabolite;
 import edu.rutgers.MOST.data.SBMLReaction;
 import edu.rutgers.MOST.data.SBMLReactionEquation;
+import edu.rutgers.MOST.data.SVGBuilder;
 import edu.rutgers.MOST.data.SVGWriter;
 import edu.uci.ics.jung.algorithms.layout.Layout;                                                                    
 import edu.uci.ics.jung.algorithms.layout.StaticLayout;                                                              
@@ -637,7 +642,26 @@ public class PathwaysFrame extends JApplet {
     }  
     
     public void saveGraphAsSVG() {
+    	SVGBuilder builder = new SVGBuilder();
+    	ArrayList<ArrayList<String[]>> edges = new ArrayList<ArrayList<String[]>>();
+    	for(int i=0; i<reactionList.size(); i++) {
+    		String[] info = reactionMap.get(reactionList.get(i));
+    		if (nodeNamePositionMap.containsKey(info[0]) && nodeNamePositionMap.containsKey(info[1])) {
+    			ArrayList<String[]> endpoints = new ArrayList<String[]>();
+//    			System.out.println("0 " + nodeNamePositionMap.get(info[0])[0]);
+//    			System.out.println("0 " + nodeNamePositionMap.get(info[0])[1]);
+//    			System.out.println("1 " + nodeNamePositionMap.get(info[1])[0]);
+//    			System.out.println("1 " + nodeNamePositionMap.get(info[1])[1]);
+    			endpoints.add(nodeNamePositionMap.get(info[0]));
+    			endpoints.add(nodeNamePositionMap.get(info[1]));
+    			edges.add(endpoints);
+    		} else {
+    			System.out.println("nf");
+    		}
+    	}
+    	builder.setEdges(edges);
     	SVGWriter writer = new SVGWriter();
+    	writer.setBuilder(builder);
     	writer.saveFile();
     }
     
