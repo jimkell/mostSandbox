@@ -95,6 +95,7 @@ import org.apache.commons.collections15.functors.ChainedTransformer;
 
 
 
+
 import edu.rutgers.MOST.config.LocalConfig;
 import edu.rutgers.MOST.data.BorderRectangle;
 import edu.rutgers.MOST.data.MetabolicPathway;
@@ -109,6 +110,7 @@ import edu.rutgers.MOST.data.SBMLMetabolite;
 import edu.rutgers.MOST.data.SBMLReaction;
 import edu.rutgers.MOST.data.SBMLReactionEquation;
 import edu.rutgers.MOST.data.SVGBuilder;
+import edu.rutgers.MOST.data.SVGEdge;
 import edu.rutgers.MOST.data.SVGWriter;
 import edu.uci.ics.jung.algorithms.layout.Layout;                                                                    
 import edu.uci.ics.jung.algorithms.layout.StaticLayout;                                                              
@@ -647,10 +649,12 @@ public class PathwaysFrame extends JApplet {
     
     public void saveGraphAsSVG() {
     	SVGBuilder builder = new SVGBuilder();
-    	ArrayList<ArrayList<String[]>> edges = new ArrayList<ArrayList<String[]>>();
+//    	ArrayList<ArrayList<String[]>> edges = new ArrayList<ArrayList<String[]>>();
+    	ArrayList<SVGEdge> edges = new ArrayList<SVGEdge>();
     	for(int i=0; i<reactionList.size(); i++) {
     		String[] info = reactionMap.get(reactionList.get(i));
     		if (nodeNamePositionMap.containsKey(info[0]) && nodeNamePositionMap.containsKey(info[1])) {
+    			SVGEdge edge = new SVGEdge();
     			ArrayList<String[]> endpoints = new ArrayList<String[]>();
 //    			System.out.println("0 " + nodeNamePositionMap.get(info[0])[0]);
 //    			System.out.println("0 " + nodeNamePositionMap.get(info[0])[1]);
@@ -658,7 +662,15 @@ public class PathwaysFrame extends JApplet {
 //    			System.out.println("1 " + nodeNamePositionMap.get(info[1])[1]);
     			endpoints.add(nodeNamePositionMap.get(info[0]));
     			endpoints.add(nodeNamePositionMap.get(info[1]));
-    			edges.add(endpoints);
+//    			edges.add(endpoints);
+    			edge.setEndpoints(endpoints);
+    			edge.setStroke(colorFromColorValue(PathwaysFrameConstants.DEFAULT_COLOR_VALUE));
+    			if (colorMap.containsKey(reactionList.get(i))) {
+    				double color = colorMap.get(reactionList.get(i));
+    				edge.setStroke(colorFromColorValue(color));
+    			}
+    			edge.setStrokeWidth("2");
+    			edges.add(edge);
     		} else {
     			System.out.println("enf");
     		}
@@ -1799,29 +1811,34 @@ public class PathwaysFrame extends JApplet {
     }
     
     Transformer<Number, Paint> colorTransformer = new Transformer<Number, Paint>() {
-        //private final Color[] palette = {Color.BLACK, Color.GREEN, Color.BLUE, Color.RED}; 
 
         public Paint transform(Number i) {
         	if (edge_color.containsKey(i)) {
         		double color = edge_color.get(i).doubleValue();
-        		if (color == PathwaysFrameConstants.BLACK_COLOR_VALUE) {
-        			return Color.BLACK;
-        		} else if (color == PathwaysFrameConstants.GRAY_COLOR_VALUE) {
-        			return Color.GRAY;
-        		} else if (color == PathwaysFrameConstants.RED_COLOR_VALUE) {
-        			return Color.RED;
-        		} else if (color == PathwaysFrameConstants.GREEN_COLOR_VALUE) {
-        			return Color.GREEN;
-        		} else if (color == PathwaysFrameConstants.BLUE_COLOR_VALUE) {
-        			return Color.BLUE;
-        		} else if (color == PathwaysFrameConstants.BLUE_NOT_FOUND_COLOR_VALUE) {
-        			return PathwaysFrameConstants.REACTION_EDGE_NOT_FOUND_COLOR;
-        		}
+        		return colorFromColorValue(color);
         	}
         	return Color.BLACK;
-//            return palette[i.intValue() % palette.length];
         }
     };
+    
+    public Color colorFromColorValue(double color) {
+    	Color defaultColor = Color.BLACK;
+    	if (color == PathwaysFrameConstants.BLACK_COLOR_VALUE) {
+			return Color.BLACK;
+		} else if (color == PathwaysFrameConstants.GRAY_COLOR_VALUE) {
+			return Color.GRAY;
+		} else if (color == PathwaysFrameConstants.RED_COLOR_VALUE) {
+			return Color.RED;
+		} else if (color == PathwaysFrameConstants.GREEN_COLOR_VALUE) {
+			return Color.GREEN;
+		} else if (color == PathwaysFrameConstants.BLUE_COLOR_VALUE) {
+			return Color.BLUE;
+		} else if (color == PathwaysFrameConstants.BLUE_NOT_FOUND_COLOR_VALUE) {
+			return PathwaysFrameConstants.REACTION_EDGE_NOT_FOUND_COLOR;
+		}
+    	
+		return defaultColor;
+    }
     
     public void createNodeInformationDialog(Object arg0) {
     	final ArrayList<Image> icons = new ArrayList<Image>(); 

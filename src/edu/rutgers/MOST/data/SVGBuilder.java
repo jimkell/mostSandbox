@@ -1,8 +1,6 @@
 package edu.rutgers.MOST.data;
 
 import java.awt.Color;
-import java.awt.Rectangle;
-import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -16,16 +14,26 @@ import edu.rutgers.MOST.presentation.PathwaysFrameConstants;
 
 public class SVGBuilder {
 
-	private ArrayList<ArrayList<String[]>> edges;
+//	private ArrayList<ArrayList<String[]>> edges;
+//	
+//	public ArrayList<ArrayList<String[]>> getEdges() {
+//		return edges;
+//	}
+//
+//	public void setEdges(ArrayList<ArrayList<String[]>> edges) {
+//		this.edges = edges;
+//	}
 	
-	public ArrayList<ArrayList<String[]>> getEdges() {
+	private ArrayList<SVGEdge> edges;
+	
+	public ArrayList<SVGEdge> getEdges() {
 		return edges;
 	}
 
-	public void setEdges(ArrayList<ArrayList<String[]>> edges) {
+	public void setEdges(ArrayList<SVGEdge> edges) {
 		this.edges = edges;
 	}
-	
+
 	private ArrayList<BorderRectangle> rects;
 	
 	public ArrayList<BorderRectangle> getRects() {
@@ -89,12 +97,18 @@ public class SVGBuilder {
 		svgElement.setAttribute("xmlns", "http://www.w3.org/2000/svg");
 		for (int e = 0; e < edges.size(); e++) {
 			Element lineElement = doc.createElement("line");
-			lineElement.setAttribute("x1", "" + edges.get(e).get(0)[0]);
-			lineElement.setAttribute("y1", "" + edges.get(e).get(0)[1]);
-			lineElement.setAttribute("x2", "" + edges.get(e).get(1)[0]);
-			lineElement.setAttribute("y2", "" + edges.get(e).get(1)[1]);
-			lineElement.setAttribute("stroke", "black");
-			lineElement.setAttribute("stroke-width", "2");
+			lineElement.setAttribute("x1", "" + edges.get(e).getEndpoints().get(0)[0]);
+			lineElement.setAttribute("y1", "" + edges.get(e).getEndpoints().get(0)[1]);
+			lineElement.setAttribute("x2", "" + edges.get(e).getEndpoints().get(1)[0]);
+			lineElement.setAttribute("y2", "" + edges.get(e).getEndpoints().get(1)[1]);
+			lineElement.setAttribute("stroke", colorToString(edges.get(e).getStroke()));
+			lineElement.setAttribute("stroke-width", edges.get(e).getStrokeWidth());
+//			lineElement.setAttribute("x1", "" + edges.get(e).get(0)[0]);
+//			lineElement.setAttribute("y1", "" + edges.get(e).get(0)[1]);
+//			lineElement.setAttribute("x2", "" + edges.get(e).get(1)[0]);
+//			lineElement.setAttribute("y2", "" + edges.get(e).get(1)[1]);
+//			lineElement.setAttribute("stroke", "black");
+//			lineElement.setAttribute("stroke-width", "2");
 			svgElement.appendChild(lineElement);
 		}
 		for (int i = 0; i < rects.size(); i++)
