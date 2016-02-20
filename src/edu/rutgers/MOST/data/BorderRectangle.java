@@ -8,7 +8,7 @@ public class BorderRectangle {
 	private double y;
 	private double width;
 	private double height;
-	private String stroke;
+	private Color stroke;
 	private String strokeWidth;
 	private Color fill;
 	
@@ -36,10 +36,10 @@ public class BorderRectangle {
 	public void setHeight(double height) {
 		this.height = height;
 	}
-	public String getStroke() {
+	public Color getStroke() {
 		return stroke;
 	}
-	public void setStroke(String stroke) {
+	public void setStroke(Color stroke) {
 		this.stroke = stroke;
 	}
 	public String getStrokeWidth() {

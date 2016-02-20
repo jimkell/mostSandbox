@@ -107,7 +107,7 @@ public class SVGBuilder {
 			rectElement.setAttribute("y", "" + r.getY());
 			rectElement.setAttribute("width", "" + r.getWidth());
 			rectElement.setAttribute("height", "" + r.getHeight());
-			rectElement.setAttribute("stroke", r.getStroke());
+			rectElement.setAttribute("stroke", colorToString(r.getStroke()));
 			rectElement.setAttribute("stroke-width", r.getStrokeWidth());
 			rectElement.setAttribute("fill", colorToString(r.getFill()));
 //			rectElement.setAttribute("stroke", "black");
