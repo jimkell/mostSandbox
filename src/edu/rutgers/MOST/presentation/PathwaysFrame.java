@@ -656,20 +656,21 @@ public class PathwaysFrame extends JApplet {
     		if (nodeNamePositionMap.containsKey(info[0]) && nodeNamePositionMap.containsKey(info[1])) {
     			SVGEdge edge = new SVGEdge();
     			ArrayList<String[]> endpoints = new ArrayList<String[]>();
-//    			System.out.println("0 " + nodeNamePositionMap.get(info[0])[0]);
-//    			System.out.println("0 " + nodeNamePositionMap.get(info[0])[1]);
-//    			System.out.println("1 " + nodeNamePositionMap.get(info[1])[0]);
-//    			System.out.println("1 " + nodeNamePositionMap.get(info[1])[1]);
     			endpoints.add(nodeNamePositionMap.get(info[0]));
     			endpoints.add(nodeNamePositionMap.get(info[1]));
-//    			edges.add(endpoints);
     			edge.setEndpoints(endpoints);
     			edge.setStroke(colorFromColorValue(PathwaysFrameConstants.DEFAULT_COLOR_VALUE));
     			if (colorMap.containsKey(reactionList.get(i))) {
     				double color = colorMap.get(reactionList.get(i));
     				edge.setStroke(colorFromColorValue(color));
     			}
-    			edge.setStrokeWidth("2");
+    			edge.setStrokeWidth("1");
+    			if (fluxMap.containsKey(reactionList.get(i))) {
+    				double fluxValue = fluxMap.get(reactionList.get(i));
+    				if (fluxValue > 1) {
+    					edge.setStrokeWidth(Double.toString(fluxValue));
+    				}
+    			}
     			edges.add(edge);
     		} else {
     			System.out.println("enf");
