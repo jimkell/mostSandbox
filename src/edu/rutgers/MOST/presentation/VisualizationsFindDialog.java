@@ -190,10 +190,11 @@ public class VisualizationsFindDialog extends JDialog {
 			}
 		});
 		
-        caseCheckBox.setSelected(false);
-    	wrapCheckBox.setSelected(true);
+        caseCheckBox.setSelected(VisualizationsFindConstants.MATCH_CASE_DEFAULT);
+    	wrapCheckBox.setSelected(VisualizationsFindConstants.WRAP_AROUND_DEFAULT);
 //    	selectedAreaCheckBox.setSelected(false);
-        backwardsCheckBox.setSelected(false);
+        backwardsCheckBox.setSelected(VisualizationsFindConstants.SEARCH_BACKWARDS_DEFAULT);
+        exactMatchCheckBox.setSelected(VisualizationsFindConstants.EXACT_MATCH_DEFAULT);
         
         findLabel.setDisplayedMnemonic('F');
         findLabel.setLabelFor(findBox);
@@ -281,8 +282,6 @@ public class VisualizationsFindDialog extends JDialog {
         pack();
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         
-        caseCheckBox.setSelected(false);
-        
         findField.getDocument().addDocumentListener(new DocumentListener() {
 			public void changedUpdate(DocumentEvent e) {
 				enableFindButtons();
@@ -360,8 +359,8 @@ public class VisualizationsFindDialog extends JDialog {
     	
         ActionListener doneButtonActionListener = new ActionListener() {
     		public void actionPerformed(ActionEvent ae) {
-    			setVisible(false);
-    			dispose();				
+//    			setVisible(false);
+//    			dispose();				
     		}
     	};
 

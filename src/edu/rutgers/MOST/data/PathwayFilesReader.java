@@ -153,6 +153,14 @@ public class PathwayFilesReader {
 							if (s == PathwaysCSVFileConstants.PATHWAY_NAMES_NAME_COLUMN) {
 								pn.setName(dataArray[s]);
 							}
+							if (s == PathwaysCSVFileConstants.PATHWAY_NAMES_METABOLITES_COLUMN) {
+								String[] metabolites = dataArray[s].split("\\|");
+								ArrayList<String> metabolitesList = new ArrayList<String>();
+								for (int i = 0; i < metabolites.length; i++) {
+									metabolitesList.add(metabolites[i]);
+								}
+								pn.setMetabolites(metabolitesList);
+							}
 						}
 						pathwayNameMap.put(pn.getId(), pn);
 					}

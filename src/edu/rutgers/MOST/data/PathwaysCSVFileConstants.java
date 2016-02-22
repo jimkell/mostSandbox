@@ -29,7 +29,7 @@ public class PathwaysCSVFileConstants {
 	
 	public static final String[] PATHWAY_NAMES_COLUMN_NAMES = 
 		{
-		"Pathway ID", "Pathway KEGG Ids", "Pathway Level", "Pathway Level Position", "Pathway Name"
+		"Pathway ID", "Pathway KEGG Ids", "Pathway Level", "Pathway Level Position", "Pathway Name", "Metabolites"
 		};
 	
 	public static final String[] PATHWAY_GRAPH_COLUMN_NAMES = 
@@ -100,6 +100,7 @@ public class PathwaysCSVFileConstants {
 	public static final int PATHWAY_NAMES_LEVEL_COLUMN = pathwayNamesColumnsList.indexOf("Pathway Level");
 	public static final int PATHWAY_NAMES_LEVEL_POSITION_COLUMN = pathwayNamesColumnsList.indexOf("Pathway Level Position");
 	public static final int PATHWAY_NAMES_NAME_COLUMN = pathwayNamesColumnsList.indexOf("Pathway Name");
+	public static final int PATHWAY_NAMES_METABOLITES_COLUMN = pathwayNamesColumnsList.indexOf("Metabolites");
 	
 	public static final int PATHWAY_GRAPH_ID_COLUMN = pathwayGraphColumnsList.indexOf("Pathway ID");
 	// pathway name column is redundant and not used except for making it

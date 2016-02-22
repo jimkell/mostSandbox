@@ -1926,6 +1926,13 @@ public class PathwaysFrame extends JApplet {
 	/*******************************************************************************************/
 	// Find
 	/*******************************************************************************************/
+	
+	ActionListener doneButtonActionListener = new ActionListener() {
+		public void actionPerformed(ActionEvent ae) {
+			findDialogCloseAction();
+		}
+	};
+	
 	public void showFindDialog() {
 //		LocalConfig.getInstance().setReactionsLocationsListCount(0);
 //		LocalConfig.getInstance().setMetabolitesLocationsListCount(0);
@@ -1949,11 +1956,11 @@ public class PathwaysFrame extends JApplet {
 		findDialog.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent evt) {
 				findDialogCloseAction();
-				getVisualizationsFindDialog().setVisible(false);
-				getVisualizationsFindDialog().dispose();
 			}
 		});
 		VisualizationsFindDialog.findBox.setEnabled(true);
+		
+		VisualizationsFindDialog.doneButton.addActionListener(doneButtonActionListener);
 		
 //		findButtonClicked = false;
 		// ensure states of boolean values match states of findReplace frame
@@ -1962,10 +1969,20 @@ public class PathwaysFrame extends JApplet {
 		wrapAround = VisualizationsFindConstants.WRAP_AROUND_DEFAULT;
 		exactMatch = VisualizationsFindConstants.EXACT_MATCH_DEFAULT;
 		findMode = true;
+		findItem.setEnabled(false);
 	}	
 	
 	public void findDialogCloseAction() {
 		findMode = false;
+		findItem.setEnabled(true);
+		
+		// ensure states of boolean values match states of findReplace frame
+		searchBackwards = VisualizationsFindConstants.SEARCH_BACKWARDS_DEFAULT;
+		matchCase = VisualizationsFindConstants.MATCH_CASE_DEFAULT;
+		wrapAround = VisualizationsFindConstants.WRAP_AROUND_DEFAULT;
+		exactMatch = VisualizationsFindConstants.EXACT_MATCH_DEFAULT;
+		getVisualizationsFindDialog().setVisible(false);
+		getVisualizationsFindDialog().dispose();
 	}
 	
 	ActionListener findNextButtonActionListener = new ActionListener() {

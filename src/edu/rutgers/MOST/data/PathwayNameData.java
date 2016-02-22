@@ -9,6 +9,7 @@ public class PathwayNameData {
 	private String name;
 	private double level;
 	private double levelPosition;
+	private ArrayList<String> metabolites;
 	
 	public String getId() {
 		return id;
@@ -50,13 +51,22 @@ public class PathwayNameData {
 		this.levelPosition = levelPosition;
 	}
 
+	public ArrayList<String> getMetabolites() {
+		return metabolites;
+	}
+
+	public void setMetabolites(ArrayList<String> metabolites) {
+		this.metabolites = metabolites;
+	}
+
 	@Override
 	public String toString() {
 		return "PathwayName Data [id=" + id
 		+ ", keggIds=" + keggIds
 		+ ", name=" + name
 		+ ", level=" + level
-		+ ", levelPosition=" + levelPosition + "]";
+		+ ", levelPosition=" + levelPosition
+		+ ", metabolites=" + metabolites + "]";
 	}
 	
 }
