@@ -149,6 +149,8 @@ public class PathwaysFrameConstants {
 	public static final Color METABOLITE_NOT_FOUND_COLOR = new Color(224,224,224);
 	// one step darker 
 	//public static final Color METABOLITE_NOT_FOUND_COLOR = new Color(192,192,192);
+	
+	public static final Color PATHWAY_NAME_NOT_FOUND_COLOR = new Color(255,224,192);
 
 	public static final Color COFACTOR_COLOR = Color.red;
 	public static final Color COFACTOR_NOT_FOUND_COLOR = new Color(255,224,224);
