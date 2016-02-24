@@ -85,7 +85,7 @@ public class SBMLModelReader {
 		//System.out.println(listOfCompartments);
 		LocalConfig.getInstance().setListOfCompartments(listOfCompartments);
 		
-		ArrayList<String> compartmentsList = new ArrayList<String>();
+		//ArrayList<String> compartmentsList = new ArrayList<String>();
 		ArrayList<String> metabKeggIds = new ArrayList<String>();
 		ArrayList<String> reacKeggIds = new ArrayList<String>();
 		ArrayList<String> chebiIds = new ArrayList<String>();
@@ -242,9 +242,9 @@ public class SBMLModelReader {
 			
 			metabRow.add(charge);	
 			metabRow.add(metabolites.get(i).getCompartment());
-			if (!compartmentsList.contains(metabolites.get(i).getCompartment())) {
-				compartmentsList.add(metabolites.get(i).getCompartment());
-			}
+//			if (!compartmentsList.contains(metabolites.get(i).getCompartment())) {
+//				compartmentsList.add(metabolites.get(i).getCompartment());
+//			}
 			String boundary = "";
 			if (!metabolites.get(i).getBoundaryCondition()) {
 				boundary = GraphicalInterfaceConstants.BOOLEAN_VALUES[0]; 
@@ -319,7 +319,7 @@ public class SBMLModelReader {
 		LocalConfig.getInstance().setMaxMetaboliteId(metabolites.size());
 		LocalConfig.getInstance().setMetabolitesMetaColumnNames(metabolitesMetaColumnNames);
 		//System.out.println(metabolitesMetaColumnNames);
-		LocalConfig.getInstance().setCompartmentsList(compartmentsList);
+		//LocalConfig.getInstance().setCompartmentsList(compartmentsList);
 		//System.out.println(compartmentsList);
 		// end metabolites read
 		

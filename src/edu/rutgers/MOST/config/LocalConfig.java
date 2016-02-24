@@ -1031,22 +1031,28 @@ public class LocalConfig {
 		this.listOfCompartments = listOfCompartments;
 	}
 	
-	private ArrayList<String> listOfCompartmentIds;
+	// is this used?
+//	private ArrayList<String> listOfCompartmentIds;
+//
+//	public ArrayList<String> getListOfCompartmentIds() {
+//		return listOfCompartmentIds;
+//	}
+//
+//	public void setListOfCompartmentIds(ArrayList<String> listOfCompartmentIds) {
+//		this.listOfCompartmentIds = listOfCompartmentIds;
+//	}
 
-	public ArrayList<String> getListOfCompartmentIds() {
-		return listOfCompartmentIds;
-	}
-
+	// is this used?
 	// list from metabolites table
-	private ArrayList<String> compartmentsList;
-
-	public ArrayList<String> getCompartmentsList() {
-		return compartmentsList;
-	}
-
-	public void setCompartmentsList(ArrayList<String> compartmentsList) {
-		this.compartmentsList = compartmentsList;
-	}
+//	private ArrayList<String> compartmentsList;
+//
+//	public ArrayList<String> getCompartmentsList() {
+//		return compartmentsList;
+//	}
+//
+//	public void setCompartmentsList(ArrayList<String> compartmentsList) {
+//		this.compartmentsList = compartmentsList;
+//	}
 
 	private ArrayList<Integer> externalReactionIds;
 	

@@ -4160,6 +4160,8 @@ public class GraphicalInterface extends JFrame {
 				reader.load(LocalConfig.getInstance().getMetabolitesCSVFile());	
 				setUpMetabolitesTable(TextMetabolitesModelReader.getMetabolitesTableModel());
 				LocalConfig.getInstance().getMetabolitesTableModelMap().put(LocalConfig.getInstance().getModelName(), TextMetabolitesModelReader.getMetabolitesTableModel());
+				DefaultTableModel compModel = compartmentsTableUpdater.createCompartmentsTableModel(compartmentsTable);
+				setUpCompartmentsTable(compModel);
 				if (LocalConfig.getInstance().hasReactionsFile) {
 					loadReactionColumnNameInterface();
 				} else {
