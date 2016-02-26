@@ -993,10 +993,10 @@ public class PathwaysFrame extends JApplet {
 			Collections.sort(missingKeggId);
 			System.out.println("missing KEGG id " + missingKeggId);
 			for (int m = 0; m < missingKeggId.size(); m++) {
-//				System.out.println(idReactionMapAllReactions.get(missingKeggId.get(m)).getReactionAbbreviation() + " " +
-//						idReactionMapAllReactions.get(missingKeggId.get(m)).getReactionName() + " " +
-//						idReactionMapAllReactions.get(missingKeggId.get(m)).getReactionEqunAbbr() + " " +
-//						idReactionMapAllReactions.get(missingKeggId.get(m)).getReactionEqunNames());
+				System.out.println(idReactionMapAllReactions.get(missingKeggId.get(m)).getReactionAbbreviation() + " " +
+						idReactionMapAllReactions.get(missingKeggId.get(m)).getReactionName() + " " +
+						idReactionMapAllReactions.get(missingKeggId.get(m)).getReactionEqunAbbr() + " " +
+						idReactionMapAllReactions.get(missingKeggId.get(m)).getReactionEqunNames());
 			}
 // not working
 //			Collections.sort(keggIdNotInGraph);

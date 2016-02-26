@@ -14,3 +14,4 @@ tpj13081,Phaeodactylum tricornutum,-,850,754,"Kim et al., 2015",sbml/Phaeodactyl
 yeast_7.5_cobra,Saccharomyces cerevisiae Yeast v6.0,900,3490,3370,"Aung et al., 2013",sbml/Yeast_7.5,sbml,http://dx.doi.org/10.1089/ind.2013.0013
 yeast_7.5_recon,Saccharomyces cerevisiae Yeast v6.0,900,3490,3370,"Aung et al., 2013",sbml/Yeast_7.5,sbml,http://dx.doi.org/10.1089/ind.2013.0013
 iRR1083,Salmonella typhimurium LT2,1083,2546,1802,"Raghunathan et al., 2009",sbml/Salmonella typhimurium,sbml,http://dx.doi.org/10.1186/1752-0509-3-38
+syn7002,Synechococcus sp. PCC 7002,-,794,776,,sbml/Synechococcus,sbml,
