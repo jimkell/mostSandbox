@@ -496,13 +496,9 @@ public class SBMLModelReader {
 				if (!compartmentList.contains(metaboliteIdCompartmentMap.get(id))) {
 					compartmentList.add(metaboliteIdCompartmentMap.get(id));
 				}
-//				if (!compartmentReactantsList.contains(metaboliteIdCompartmentMap.get(id))) {
-//					compartmentReactantsList.add(metaboliteIdCompartmentMap.get(id));
-//				}
 				if (!compartmentProductsList.contains(metaboliteIdCompartmentMap.get(id))) {
 					compartmentProductsList.add(metaboliteIdCompartmentMap.get(id));
 				}
-				//System.out.println(product.toString());
 				equnProducts.add(product);
 			}
             equation.setReactants(equnReactants);

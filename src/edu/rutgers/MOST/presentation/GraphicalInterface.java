@@ -12909,7 +12909,6 @@ public class GraphicalInterface extends JFrame {
 	class VisualizeAction implements ActionListener {
 		public void actionPerformed(ActionEvent ae) {
 			LocalConfig.getInstance().setVisualizationsProgress(0);
-			//LocalConfig.getInstance().setProgress(0);
 			progressBar.setVisible(true);
 			progressBar.progress.setIndeterminate(true);
 			visualizeTimer.start();

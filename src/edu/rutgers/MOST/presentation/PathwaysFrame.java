@@ -1087,7 +1087,8 @@ public class PathwaysFrame extends JApplet {
     }
     
     public void drawMetabolites(MetabolicPathway pathway, int component, String compartment) {
-		for (int j = 0; j < pathway.getMetabolitesData().size(); j++) {
+//    	LocalConfig.getInstance().setVisualizationsProgress(100);
+    	for (int j = 0; j < pathway.getMetabolitesData().size(); j++) {
 			if (j%10 == 0) {
 				LocalConfig.getInstance().setVisualizationsProgress((j * ProgressConstants.VISUALIZATIONS_METABOLITE_LOAD_PERCENT) / pathway.getMetabolitesData().size()
 						+ ProgressConstants.VISUALIZATIONS_LOAD_PERCENT);	
