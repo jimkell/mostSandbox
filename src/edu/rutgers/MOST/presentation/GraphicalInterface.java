@@ -12963,14 +12963,33 @@ public class GraphicalInterface extends JFrame {
 			disableMenuItemsForFVA(false);
 		}
 	};
+	
+	/**
+	 * Compartment name from combo has compartment abbreviation and name present in string
+	 * to make selection more user-friendly. Name suffix needs to be removed to match user
+	 * selection with item from list of compartments.
+	 * @param combo
+	 * @return
+	 */
 	public String compNameFromCombo(JComboBox<String> combo) {
 		String abbr = "";
 		if (combo.getSelectedIndex() > -1) {
+			String item = (String) combo.getSelectedItem();
+			// " (compartment name) added to compartment abbreviation in combo box if name 
+			// exists. need to trim this off
+			if (item.contains("(")) {
+				item = item.substring(0, item.indexOf("(") - 1);
+			}
 			for (int i = 0; i < LocalConfig.getInstance().getListOfCompartments().size(); i++) {
-				if (LocalConfig.getInstance().getListOfCompartments().get(i).getName().equals((String) combo.getSelectedItem())) {
+				if (LocalConfig.getInstance().getListOfCompartments().get(i).getId().equals(item)) {
 					abbr = LocalConfig.getInstance().getListOfCompartments().get(i).getId();
 				}
 			}
+//			for (int i = 0; i < LocalConfig.getInstance().getListOfCompartments().size(); i++) {
+//				if (LocalConfig.getInstance().getListOfCompartments().get(i).getName().equals((String) combo.getSelectedItem())) {
+//					abbr = LocalConfig.getInstance().getListOfCompartments().get(i).getId();
+//				}
+//			}
 		}
 		return abbr;
 	}

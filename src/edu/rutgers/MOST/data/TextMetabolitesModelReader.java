@@ -180,7 +180,7 @@ public class TextMetabolitesModelReader {
 			for (int c = 0; c < compartments.size(); c++) {
 				SBMLCompartment comp = new SBMLCompartment();
 				comp.setId(compartments.get(c));
-				comp.setName(compartments.get(c));
+				//comp.setName(compartments.get(c));
 				listOfCompartments.add(comp);
 			}
 			LocalConfig.getInstance().setListOfCompartments(listOfCompartments);

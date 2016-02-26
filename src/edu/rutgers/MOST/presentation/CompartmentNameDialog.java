@@ -230,27 +230,35 @@ public class CompartmentNameDialog extends JDialog {
 //    		cbOutsideName.removeAllItems();
     		//populate combo boxes
     		for (int c = 0; c < LocalConfig.getInstance().getListOfCompartments().size(); c++) { 
-    			cbCompartmentName.addItem(LocalConfig.getInstance().getListOfCompartments().get(c).getName());
+    			String item = LocalConfig.getInstance().getListOfCompartments().get(c).getId();
+    			if (LocalConfig.getInstance().getListOfCompartments().get(c).getName() != null &&
+    					LocalConfig.getInstance().getListOfCompartments().get(c).getName().length() > 0) {
+    				item += " (" + LocalConfig.getInstance().getListOfCompartments().get(c).getName() + ")";
+    			}
+    			cbCompartmentName.addItem(item);
+//    			cbCompartmentName.addItem(LocalConfig.getInstance().getListOfCompartments().get(c).getName());
 //    			cbMembraneName.addItem(LocalConfig.getInstance().getListOfCompartments().get(c).getName());
 //    			cbOutsideName.addItem(LocalConfig.getInstance().getListOfCompartments().get(c).getName());
     		}
     		// add empty item
-    		cbCompartmentName.addItem("");
+//    		cbCompartmentName.addItem("");
 //			cbMembraneName.addItem("");
 //			cbOutsideName.addItem("");
     		cbCompartmentName.setSelectedIndex(-1);
 //    		cbMembraneName.setSelectedIndex(-1);
 //    		cbOutsideName.setSelectedIndex(-1);
     		for (int c = 0; c < LocalConfig.getInstance().getListOfCompartments().size(); c++) {
-    			//filters to match compartment names from list of compartments		
-    			if((LocalConfig.getInstance().getListOfCompartments().get(c).getName().toLowerCase()).contains(CompartmentsConstants.CYTOSOL_FILTER[0])) {
-    				cbCompartmentName.setSelectedIndex(c);
+    			//filters to match compartment names from list of compartments	
+    			if (LocalConfig.getInstance().getListOfCompartments().get(c).getName() != null) {
+    				if((LocalConfig.getInstance().getListOfCompartments().get(c).getName().toLowerCase()).contains(CompartmentsConstants.CYTOSOL_FILTER[0])) {
+        				cbCompartmentName.setSelectedIndex(c);
+        			}
+//        			} else if((LocalConfig.getInstance().getListOfCompartments().get(c).getName().toLowerCase()).contains(CompartmentsConstants.PERIPLASM_FILTER[0])) {
+//        				cbMembraneName.setSelectedIndex(c);
+//        			} else if((LocalConfig.getInstance().getListOfCompartments().get(c).getName().toLowerCase()).contains(CompartmentsConstants.EXTRA_ORGANISM_FILTER[0])) {
+//        				cbOutsideName.setSelectedIndex(c);
+//        			}  
     			}
-//    			} else if((LocalConfig.getInstance().getListOfCompartments().get(c).getName().toLowerCase()).contains(CompartmentsConstants.PERIPLASM_FILTER[0])) {
-//    				cbMembraneName.setSelectedIndex(c);
-//    			} else if((LocalConfig.getInstance().getListOfCompartments().get(c).getName().toLowerCase()).contains(CompartmentsConstants.EXTRA_ORGANISM_FILTER[0])) {
-//    				cbOutsideName.setSelectedIndex(c);
-//    			}  
     		}
     	}
     }
