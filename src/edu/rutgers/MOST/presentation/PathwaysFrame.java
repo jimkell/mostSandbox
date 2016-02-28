@@ -992,12 +992,12 @@ public class PathwaysFrame extends JApplet {
 			}
 			Collections.sort(missingKeggId);
 			System.out.println("missing KEGG id " + missingKeggId);
-			for (int m = 0; m < missingKeggId.size(); m++) {
-				System.out.println(idReactionMapAllReactions.get(missingKeggId.get(m)).getReactionAbbreviation() + " " +
-						idReactionMapAllReactions.get(missingKeggId.get(m)).getReactionName() + " " +
-						idReactionMapAllReactions.get(missingKeggId.get(m)).getReactionEqunAbbr() + " " +
-						idReactionMapAllReactions.get(missingKeggId.get(m)).getReactionEqunNames());
-			}
+//			for (int m = 0; m < missingKeggId.size(); m++) {
+//				System.out.println(idReactionMapAllReactions.get(missingKeggId.get(m)).getReactionAbbreviation() + " " +
+//						idReactionMapAllReactions.get(missingKeggId.get(m)).getReactionName() + " " +
+//						idReactionMapAllReactions.get(missingKeggId.get(m)).getReactionEqunAbbr() + " " +
+//						idReactionMapAllReactions.get(missingKeggId.get(m)).getReactionEqunNames());
+//			}
 // not working
 //			Collections.sort(keggIdNotInGraph);
 //			System.out.println("kegg id not in graph " + keggIdNotInGraph);
@@ -1295,8 +1295,8 @@ public class PathwaysFrame extends JApplet {
 //    	System.out.println("m " + prnf.getRenameMetabolitesMap());
     	ArrayList<String> renameMetaboliteKeys = new ArrayList<String>(prnf.getRenameMetabolitesMap().keySet());
     	for (int y = 0; y < renameMetaboliteKeys.size(); y++) {
-//    		// construct new name from kegg ids and put name and abbr into metaboliteNameAbbrMap
-//    		// get old abbreviation in case MetaboliteNameAbbrMap doesn't contain key
+    		// construct new name from kegg ids and put name and abbr into metaboliteNameAbbrMap
+    		// get old abbreviation in case MetaboliteNameAbbrMap doesn't contain key
 			String abbr = "";
 			if (LocalConfig.getInstance().getMetaboliteNameAbbrMap().containsKey(renameMetaboliteKeys.get(y))) {
 //    			System.out.println("a " + LocalConfig.getInstance().getMetaboliteNameAbbrMap().get(renameMetaboliteKeys.get(y)));
@@ -1360,7 +1360,13 @@ public class PathwaysFrame extends JApplet {
     				} else {
     					abbr = util.maybeRemovePrefixAndSuffix(metabAbbr);
     				}
-					//name = pmnf.htmlDisplayName(abbr, nameList, abbrList, keggIdList, chargeList);
+    				if (nodeNamePositionMap.containsKey(metabName)) {
+    					updateFindPositionsMap(metaboliteAbbrPositionsMap, abbr, 
+    							new String[] {nodeNamePositionMap.get(metabName)[0], nodeNamePositionMap.get(metabName)[1]});
+    				}
+					name = pmnf.htmlDisplayName(abbr, nameList, abbrList, keggIdList, chargeList);
+					oldNameNewNameMap.put(metabName, name);
+					LocalConfig.getInstance().getMetaboliteNameAbbrMap().put(metabName, abbr);
     			}
     		}
 //    		System.out.println("abbr " + abbr);
@@ -1372,9 +1378,7 @@ public class PathwaysFrame extends JApplet {
 				nameList.add(LocalConfig.getInstance().getKeggIdMetaboliteMap().get("C00080").get(0).getMetaboliteName());
 				keggList.add("C00080");
 				abbrList.add(compProtonAbbr);
-				try {
-					// this code is giving null pointer exceptions if draw missing metabolites and reactions
-					// is unchecked. probably need to add proton positions to map
+				if (nodeNamePositionMap.containsKey(metabName)) {
 					updateFindPositionsMap(metaboliteAbbrPositionsMap, compProtonAbbr, 
 							new String[] {nodeNamePositionMap.get(metabName)[0], nodeNamePositionMap.get(metabName)[1]});
 					for (int k = 0; k < LocalConfig.getInstance().getKeggIdMetaboliteMap().get("C00080").size(); k++) {
@@ -1391,10 +1395,7 @@ public class PathwaysFrame extends JApplet {
 						updateFindPositionsMap(metaboliteAbbrPositionsMap, abbrList.get(n), 
 								new String[] {nodeNamePositionMap.get(metabName)[0], nodeNamePositionMap.get(metabName)[1]});
 					}
-				} catch (Exception e) {
-					
 				}
-				//chargeList.add(LocalConfig.getInstance().getKeggIdMetaboliteMap().get("C00080").get(0).getCharge());
 			} 
     	}
     }
