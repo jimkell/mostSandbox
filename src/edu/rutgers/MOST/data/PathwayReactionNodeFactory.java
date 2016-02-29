@@ -183,7 +183,7 @@ public class PathwayReactionNodeFactory {
 	
 	/**
 	 * Checks if all KEGG Ids from data are present in KEGG Id list from model. 
-	 * If any species are in alternatives or substitutions, speciesExactMatch
+	 * If any species is in alternatives or substitutions, speciesExactMatch
 	 * is used.
 	 * @param dataIds
 	 * @param keggIdsDataMap
@@ -225,6 +225,7 @@ public class PathwayReactionNodeFactory {
 				}
 			}
 		}
+		
 		return speciesMatch;
 	}
 	
@@ -238,6 +239,10 @@ public class PathwayReactionNodeFactory {
 	public boolean speciesExactMatch(ArrayList<String> dataIds, Map<String, PathwayMetaboliteData> keggIdsDataMap, ArrayList<String> modelIds) {
 		boolean speciesMatch = false;
 		boolean containsProton = false;
+//		if (modelIds.contains("C00109")) {
+//			System.out.println("data " + dataIds);
+//			System.out.println("model " + modelIds);
+//		}
 //		System.out.println("data " + dataIds);
 //		System.out.println("model " + modelIds);
 		if (modelIds.contains("C00080")) {
@@ -270,21 +275,26 @@ public class PathwayReactionNodeFactory {
 				model1.add(model.get(i));
 			}
 			// remove all common entries
+			ArrayList<String> itemsToRemove = new ArrayList<String>();
 			for (int i = 0; i < data1.size(); i++) {
 				if (model1.contains(data1.get(i))) {
-					String ki = data1.get(i);
-					model1.remove(model1.indexOf(data1.get(i)));
-					data1.remove(data1.indexOf(data1.get(i)));
-					// add any removed keys in alternate or substitution to map
-					if (LocalConfig.getInstance().getAlternateMetabolitesMap().containsKey(ki) ||
-							LocalConfig.getInstance().getMetaboliteSubstitutionsMap().containsKey(ki)) {
-						if (keggIdsDataMap.containsKey(ki)) {
-							String name = keggIdsDataMap.get(ki).getName();
-							updateRenameMetabolitesMap(name, ki, containsProton);
-						} 
-					}
+					itemsToRemove.add(data1.get(i));
 				}
 			}
+			for (int i = 0; i < itemsToRemove.size(); i++) {
+				String ki = itemsToRemove.get(i);
+				model1.remove(model1.indexOf(ki));
+				data1.remove(data1.indexOf(ki));
+				// add any removed keys in alternate or substitution to map
+				if (LocalConfig.getInstance().getAlternateMetabolitesMap().containsKey(ki) ||
+						LocalConfig.getInstance().getMetaboliteSubstitutionsMap().containsKey(ki)) {
+					if (keggIdsDataMap.containsKey(ki)) {
+						String name = keggIdsDataMap.get(ki).getName();
+						updateRenameMetabolitesMap(name, ki, containsProton);
+					} 
+				}
+			}
+
 			// may not be necessary, should already be sorted
 			Collections.sort(data1);
 			Collections.sort(model1);
@@ -299,6 +309,7 @@ public class PathwayReactionNodeFactory {
 				String entry = model1.get(i);
 				if (LocalConfig.getInstance().getMetaboliteSubstitutionsMap().containsKey(data1.get(i))) {
 					for (int j = 0; j < model1.size(); j++) {
+						//System.out.println("m " + model1.get(j));
 						if (LocalConfig.getInstance().getMetaboliteSubstitutionsMap().get(data1.get(i)).contains(model1.get(j))) {
 							if (keggIdsDataMap.containsKey(data1.get(i))) {
 								// replace substitution with key
@@ -444,8 +455,8 @@ public class PathwayReactionNodeFactory {
 					+ displayKeggReactionId(keggReactionIds)
 					+ "<p> Equation: " + name
 					+ displaySubsystem(subsystems)
-					+ displayModelEquation(equations)
-					+ displayModelEquation(equationNames)
+					+ displayModelEquation(equations, "<p>Equation(s) (Abbreviations) from Model: ")
+					+ displayModelEquation(equationNames, "<p>Equation(s) (Names) from Model: ")
 					+ "<p> Fluxes: " + fluxes.toString()
 					+ "<p> Reaction ID: " + id;
 		}
@@ -517,15 +528,15 @@ public class PathwayReactionNodeFactory {
 		return reactionNameString;
 	}
 	
-	public String displayModelEquation(ArrayList<String> equations) {
+	public String displayModelEquation(ArrayList<String> equations, String description) {
 		// since equations can be quite long and a list of reactions may not fit on screen,
 		// each reaction is put on a separate line
 		String modelEquationString = "";
 		if (equations.size() > 0) {
-			modelEquationString = "<p>Equation from Model: " + equations.get(0);
+			modelEquationString = description + equations.get(0);
 		}
 		if (equations.size() > 1) {
-			modelEquationString = "<p>Equations from Model: " + equations.get(0);
+			modelEquationString = description + equations.get(0);
 			for (int m = 1; m < equations.size(); m++) {
 				modelEquationString += ", <p>" + equations.get(m);
 			}
