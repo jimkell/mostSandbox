@@ -12677,20 +12677,20 @@ public class GraphicalInterface extends JFrame {
 	
 	class VisualizeTimeListener implements ActionListener {
 		public void actionPerformed(ActionEvent ae) {
-			progressBar.setVisible(true);
+			visualizeProgressBar.setVisible(true);
 			if (LocalConfig.getInstance().getVisualizationsProgress() > 0) {
-				progressBar.progress.setIndeterminate(false);
+				visualizeProgressBar.progress.setIndeterminate(false);
 			}	
-			progressBar.progress.setValue(LocalConfig.getInstance().getVisualizationsProgress());
-			progressBar.progress.repaint();
+			visualizeProgressBar.progress.setValue(LocalConfig.getInstance().getVisualizationsProgress());
+			visualizeProgressBar.progress.repaint();
 			if (LocalConfig.getInstance().getVisualizationsProgress() == 100) {
-				progressBar.setVisible(false);	
+				visualizeProgressBar.setVisible(false);	
 				LocalConfig.getInstance().setVisualizationsProgress(0);
 				visualizeTimer.stop();
 				timerRunning = false;
 				// This appears redundant, but is the only way to not have an extra progress bar on screen
-				progressBar.setVisible(false);
-				progressBar.progress.setIndeterminate(false);
+				visualizeProgressBar.setVisible(false);
+				visualizeProgressBar.progress.setIndeterminate(false);
 				enableLoadItems();
 			}
 		}
@@ -12909,8 +12909,8 @@ public class GraphicalInterface extends JFrame {
 	class VisualizeAction implements ActionListener {
 		public void actionPerformed(ActionEvent ae) {
 			LocalConfig.getInstance().setVisualizationsProgress(0);
-			progressBar.setVisible(true);
-			progressBar.progress.setIndeterminate(true);
+			visualizeProgressBar.setVisible(true);
+			visualizeProgressBar.progress.setIndeterminate(true);
 			visualizeTimer.start();
 			timerRunning = true;
 			

@@ -235,7 +235,6 @@ public class PathwaysFrame extends JApplet {
    	private double startY = PathwaysFrameConstants.START_Y;
    
    	private final JMenuItem saveGraphSVGItem = new JMenuItem("Save Graph As SVG");
-   	private final JMenuItem saveGraphPNGItem = new JMenuItem("Save Graph As PNG");
    	private final JMenuItem saveWindowPNGItem = new JMenuItem("Save Window As PNG");
    	private final JCheckBoxMenuItem transformItem = new JCheckBoxMenuItem("Transform");
    	
@@ -330,15 +329,6 @@ public class PathwaysFrame extends JApplet {
     	saveGraphSVGItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
 				saveGraphAsSVG();
-			}
-		});
-    	
-    	fileMenu.add(saveGraphPNGItem);
-    	saveGraphPNGItem.setMnemonic(KeyEvent.VK_G);
-    	
-    	saveGraphPNGItem.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent ae) {
-				saveGraphAsPNG();
 			}
 		});
     	
@@ -767,70 +757,6 @@ public class PathwaysFrame extends JApplet {
     	SVGWriter writer = new SVGWriter();
     	writer.setBuilder(builder);
     	writer.saveFile();
-    }
-    
-    public void saveGraphAsPNG() {
-//    	double centerX = 2000;
-//    	double centerY = 2000;
-//    	double width = 6000;
-//    	double height = 18000;
-//    	vv.getGraphLayout().setSize(new Dimension((int) width, (int) height));
-    	// based on code from http://stackoverflow.com/questions/10420779/jung-save-whole-graph-not-only-visible-part-as-image
-    	// Create the VisualizationImageServer
-    	// vv is the VisualizationViewer containing my graph
-    	VisualizationImageServer<String, Number> vis =
-    	    new VisualizationImageServer<String,Number>(vv.getGraphLayout(),
-    	            vv.getGraphLayout().getSize());
-    	// Configure the VisualizationImageServer the same way
-    	// you did your VisualizationViewer.
-
-    	vis.setBackground(Color.WHITE);
-    	
-    	vis.getRenderContext().setVertexShapeTransformer(vv.getRenderContext().getVertexShapeTransformer());
-    	vis.getRenderContext().setVertexIconTransformer(vv.getRenderContext().getVertexIconTransformer());
-
-    	vis.getRenderContext().setEdgeDrawPaintTransformer(vv.getRenderContext().getEdgeDrawPaintTransformer());
-    	vis.getRenderContext().setEdgeShapeTransformer(vv.getRenderContext().getEdgeShapeTransformer());
-    	vis.getRenderContext().setEdgeStrokeTransformer(vv.getRenderContext().getEdgeStrokeTransformer());
-    	vis.getRenderContext().setEdgeArrowTransformer(vv.getRenderContext().getEdgeArrowTransformer());
-    	vis.getRenderContext().setArrowFillPaintTransformer(vv.getRenderContext().getArrowFillPaintTransformer());
-    	vis.getRenderContext().setArrowDrawPaintTransformer(vv.getRenderContext().getArrowDrawPaintTransformer());
-    	vis.getRenderContext().setEdgeShapeTransformer(new EdgeShape.Line<String, Number>());
-    	
-//    	double centerX = vv.getVisibleRect().getCenterX();
-//    	double centerY = vv.getVisibleRect().getCenterY();
-//    	double width = vv.getVisibleRect().getWidth();
-//    	double height = vv.getVisibleRect().getHeight();
-//    	double width = 8000;
-//    	double height = 15000;
-//    	System.out.println("cx " + centerX);
-//    	System.out.println("cy " + centerY);
-//    	System.out.println("w " + width);
-//    	System.out.println("h " + height);
-//    	System.out.println("cx2 " + vv.getGraphLayout().getSize().getWidth() / 2);
-//    	System.out.println("cy2 " + vv.getGraphLayout().getSize().getHeight() / 2);
-//    	System.out.println("s " + vv.getGraphLayout().getSize());
-//    	System.out.println(vv.getVisibleRect().getSize());
-//    	
-//    	// Create the buffered image
-//    	BufferedImage image = (BufferedImage) vis.getImage(
-//    	    new Point2D.Double(centerX, centerY),
-//    	    new Dimension((int) width, (int) height));
-    	
-    	// Create the buffered image
-    	BufferedImage image = (BufferedImage) vis.getImage(
-    	    new Point2D.Double(vv.getGraphLayout().getSize().getWidth() / 2,
-    	    vv.getGraphLayout().getSize().getHeight() / 2),
-    	    new Dimension(vv.getGraphLayout().getSize()));
-    	
-    	// Write image to a png file
-    	File outputfile = new File("graph.png");
-
-    	try {
-    	    ImageIO.write(image, "png", outputfile);
-    	} catch (IOException e) {
-    	    // Exception handling
-    	}
     }
     
     public void saveWindowAsPNG(String path) {
