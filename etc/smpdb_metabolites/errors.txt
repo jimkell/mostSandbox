@@ -1,5 +1,0 @@
-[C07297, C00672] C07297 error, should be 15371
-[C05295, C00535] C05295 error, should be 75308
-[C00445, C00143] 15636 wrong for both
-1989 = C00143
-15638 = C00445
