@@ -752,6 +752,11 @@ public class PathwaysFrame extends JApplet {
     		} else {
     			System.out.println("nnf");
     		}
+    		String displayName = nodeNameList.get(j);
+    		if (LocalConfig.getInstance().getMetaboliteNameAbbrMap().containsKey(nodeNameList.get(j))) {
+    			displayName = LocalConfig.getInstance().getMetaboliteNameAbbrMap().get(nodeNameList.get(j));
+    		} 
+    		System.out.println(displayString(displayName));
     	}
     	builder.setRects(rects);
     	SVGWriter writer = new SVGWriter();
@@ -1642,11 +1647,9 @@ public class PathwaysFrame extends JApplet {
 			return new Point2D.Double(xPos,yPos);                                                           
 		}                                                                                                                
     	                                                                                                             
-    }                                                                                                                
-       
-    // based on http://www.coderanch.com/t/336616/GUI/java/Center-Align-text-drawString
-    private void alignCenterString(Graphics g2d, String s, int width, int XPos, int YPos, int fontSize){  
-    	g2d.setFont(new Font("Arial", Font.TYPE1_FONT, fontSize));
+    }   
+    
+    private String displayString(String s) {
     	if (reactions.contains(s)) {
     		if (s.startsWith("<html>")) {
         		s = s.substring(6, s.indexOf("<p>"));
@@ -1678,6 +1681,15 @@ public class PathwaysFrame extends JApplet {
     	if (s.startsWith("R_") || s.startsWith("r_")) {
 			s = s.substring(2);
 		}
+    	
+		return s;
+    	
+    }
+       
+    // based on http://www.coderanch.com/t/336616/GUI/java/Center-Align-text-drawString
+    private void alignCenterString(Graphics g2d, String s, int width, int XPos, int YPos, int fontSize){  
+    	g2d.setFont(new Font("Arial", Font.TYPE1_FONT, fontSize));
+    	s = displayString(s);
         int stringLen = (int)  
             g2d.getFontMetrics().getStringBounds(s, g2d).getWidth();  
         int start = width/2 - stringLen/2;
