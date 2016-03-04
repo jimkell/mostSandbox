@@ -96,7 +96,6 @@ public class SVGBuilder {
 			svgElement.appendChild(rectElement);
 		}
 		for (int t = 0; t < textList.size(); t++) {
-			System.out.println(textList.get(t));
 			SVGText s = textList.get(t);
 			Element textElement = doc.createElement("text");
 			textElement.setAttribute("x", "" + s.getX());

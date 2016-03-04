@@ -749,7 +749,9 @@ public class PathwaysFrame extends JApplet {
     			r.setStroke(stroke);
     			r.setStrokeWidth(Double.toString(strokeWidth));
     			r.setFill(fillColor);
-    			rects.add(r);
+    			if (!borderList.contains(nodeNameList.get(j))) {
+    				rects.add(r);
+    			}
 //    			System.out.println(nodeNamePositionMap.get(nodeNameList.get(j))[0]);
 //    			System.out.println(nodeNamePositionMap.get(nodeNameList.get(j))[1]);
     			SVGText svgText = new SVGText();
@@ -758,33 +760,38 @@ public class PathwaysFrame extends JApplet {
         			displayName = LocalConfig.getInstance().getMetaboliteNameAbbrMap().get(nodeNameList.get(j));
         		} 
         		//System.out.println(displayString(displayName));
-        		svgText.setX(Double.parseDouble(nodeNamePositionMap.get(nodeNameList.get(j))[0]) - width/2);
-        		svgText.setY(Double.parseDouble(nodeNamePositionMap.get(nodeNameList.get(j))[1]) - height/2);
         		Color color = Color.black;
         		String fontSize = Integer.toString(PathwaysFrameConstants.PATHWAY_NAME_NODE_FONT_SIZE);
+        		int xOffset = 0;
+        		int yOffset = 0;
         		if (pathwayNames.contains(nodeNameList.get(j))) {
             		if (foundPathwayNamesList.contains(nodeNameList.get(j))) {
             			color = PathwaysFrameConstants.PATHWAY_NAME_COLOR;
             		} else {
             			color = PathwaysFrameConstants.PATHWAY_NAME_NOT_FOUND_COLOR;
             		}
+            		yOffset = PathwaysFrameConstants.PATHWAY_NAME_NODE_YPOS;
             	} else if (nodeNameList.get(j).equals(compartmentLabel)) {
             		fontSize = Integer.toString(PathwaysFrameConstants.COMPARTMENT_LABEL_NODE_FONT_SIZE);
 //            		graphics.setFont(new Font("Arial", Font.TYPE1_FONT, PathwaysFrameConstants.COMPARTMENT_LABEL_NODE_FONT_SIZE));
 //            		graphics.drawString(compartmentLabel, PathwaysFrameConstants.COMPARTMENT_LABEL_NODE_XPOS, PathwaysFrameConstants.COMPARTMENT_LABEL_NODE_YPOS);
 //            		graphics.drawString("Compartment Name: " + LocalConfig.getInstance().getSelectedCompartmentName(), PathwaysFrameConstants.COMPARTMENT_LABEL_NODE_XPOS, 
 //            				PathwaysFrameConstants.COMPARTMENT_LABEL_LINE_OFFSET + PathwaysFrameConstants.COMPARTMENT_LABEL_NODE_YPOS);
+            		xOffset = PathwaysFrameConstants.COMPARTMENT_LABEL_NODE_XPOS;
+            		yOffset = PathwaysFrameConstants.COMPARTMENT_LABEL_NODE_YPOS;
             	} else {
             		if (mainMetabolites.contains(nodeNameList.get(j))) {
             			fontSize = Integer.toString(PathwaysFrameConstants.METABOLITE_NODE_FONT_SIZE);
             			if (!foundMetabolitesList.contains(nodeNameList.get(j)) && LocalConfig.getInstance().isHighlightMissingMetabolitesSelected()) {
             				color = PathwaysFrameConstants.METABOLITE_NOT_FOUND_COLOR;
             			}
+            			yOffset = PathwaysFrameConstants.METABOLITE_NODE_YPOS;
             		} else if (smallMainMetabolites.contains(nodeNameList.get(j))) {
             			fontSize = Integer.toString(PathwaysFrameConstants.SMALL_MAIN_METABOLITE_NODE_FONT_SIZE);
             			if (!foundMetabolitesList.contains(nodeNameList.get(j)) && LocalConfig.getInstance().isHighlightMissingMetabolitesSelected()) {
             				color = PathwaysFrameConstants.METABOLITE_NOT_FOUND_COLOR;
             			}
+            			yOffset = PathwaysFrameConstants.SMALL_MAIN_METABOLITE_NODE_YPOS;
             		} else if (sideMetabolites.contains(nodeNameList.get(j))) {
             			fontSize = Integer.toString(PathwaysFrameConstants.SIDE_METABOLITE_NODE_FONT_SIZE);
             			if (!foundMetabolitesList.contains(nodeNameList.get(j)) && LocalConfig.getInstance().isHighlightMissingMetabolitesSelected()) {
@@ -796,6 +803,7 @@ public class PathwaysFrame extends JApplet {
                 				color = PathwaysFrameConstants.COFACTOR_NOT_FOUND_COLOR;
                 			}
             			}
+            			yOffset = PathwaysFrameConstants.SIDE_METABOLITE_NODE_YPOS;
             		} else if (reactions.contains(nodeNameList.get(j))) {
             			fontSize = Integer.toString(PathwaysFrameConstants.REACTION_NODE_FONT_SIZE);
             			color = PathwaysFrameConstants.REACTION_NODE_DETAULT_FONT_COLOR;
@@ -804,13 +812,18 @@ public class PathwaysFrame extends JApplet {
             			} else if (koReactions.contains(nodeNameList.get(j))) {
             				color = PathwaysFrameConstants.REACTION_KO_FONT_COLOR;
             			}
+            			yOffset = PathwaysFrameConstants.REACTION_NODE_YPOS;
             		}
             	}
+        		svgText.setX(Double.parseDouble(nodeNamePositionMap.get(nodeNameList.get(j))[0]) + xOffset - width/2);
+        		svgText.setY(Double.parseDouble((nodeNamePositionMap.get(nodeNameList.get(j))[1])) + yOffset - height/2);
         		svgText.setFont("Arial");
                 svgText.setFontSize(fontSize);
                 svgText.setStroke(color);
         		svgText.setText(displayString(displayName));
-        		textList.add(svgText);
+        		if (!borderList.contains(nodeNameList.get(j))) {
+        			textList.add(svgText);
+    			}
     		} else {
     			//System.out.println("nnf");
     		}

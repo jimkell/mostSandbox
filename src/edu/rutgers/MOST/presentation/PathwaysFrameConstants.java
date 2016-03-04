@@ -131,7 +131,8 @@ public class PathwaysFrameConstants {
 	// prevents nodes with calculated positions from touching
 	public static final double NODE_SPACING_CORRECTION = 1.1;
 	
-	public static final Color PATHWAY_NAME_COLOR = Color.orange;
+//	public static final Color PATHWAY_NAME_COLOR = Color.orange;
+	public static final Color PATHWAY_NAME_COLOR = new Color(255,153,51);
 	
 	public static final Color NODE_BACKGROUND_DETAULT_COLOR = Color.white;
 //	public static final Color METABOLITE_NODE_DETAULT_COLOR = Color.white;
