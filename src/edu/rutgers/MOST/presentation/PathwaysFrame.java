@@ -97,6 +97,7 @@ import org.apache.commons.collections15.functors.ChainedTransformer;
 
 
 
+
 import edu.rutgers.MOST.config.LocalConfig;
 import edu.rutgers.MOST.data.BorderRectangle;
 import edu.rutgers.MOST.data.MetabolicPathway;
@@ -112,6 +113,7 @@ import edu.rutgers.MOST.data.SBMLReaction;
 import edu.rutgers.MOST.data.SBMLReactionEquation;
 import edu.rutgers.MOST.data.SVGBuilder;
 import edu.rutgers.MOST.data.SVGEdge;
+import edu.rutgers.MOST.data.SVGText;
 import edu.rutgers.MOST.data.SVGWriter;
 import edu.uci.ics.jung.algorithms.layout.Layout;                                                                    
 import edu.uci.ics.jung.algorithms.layout.StaticLayout;                                                              
@@ -665,11 +667,12 @@ public class PathwaysFrame extends JApplet {
     			}
     			edges.add(edge);
     		} else {
-    			System.out.println("enf");
+    			//System.out.println("enf");
     		}
     	}
     	builder.setEdges(edges);
     	ArrayList<BorderRectangle> rects = new ArrayList<BorderRectangle>();
+    	ArrayList<SVGText> textList = new ArrayList<SVGText>();
     	for (int j = 0; j < nodeNameList.size(); j++) {
     		if (nodeNamePositionMap.containsKey(nodeNameList.get(j))) {
     			double width = PathwaysFrameConstants.METABOLITE_BORDER_NODE_WIDTH;
@@ -749,16 +752,71 @@ public class PathwaysFrame extends JApplet {
     			rects.add(r);
 //    			System.out.println(nodeNamePositionMap.get(nodeNameList.get(j))[0]);
 //    			System.out.println(nodeNamePositionMap.get(nodeNameList.get(j))[1]);
+    			SVGText svgText = new SVGText();
+        		String displayName = nodeNameList.get(j);
+        		if (LocalConfig.getInstance().getMetaboliteNameAbbrMap().containsKey(nodeNameList.get(j))) {
+        			displayName = LocalConfig.getInstance().getMetaboliteNameAbbrMap().get(nodeNameList.get(j));
+        		} 
+        		//System.out.println(displayString(displayName));
+        		svgText.setX(Double.parseDouble(nodeNamePositionMap.get(nodeNameList.get(j))[0]) - width/2);
+        		svgText.setY(Double.parseDouble(nodeNamePositionMap.get(nodeNameList.get(j))[1]) - height/2);
+        		Color color = Color.black;
+        		String fontSize = Integer.toString(PathwaysFrameConstants.PATHWAY_NAME_NODE_FONT_SIZE);
+        		if (pathwayNames.contains(nodeNameList.get(j))) {
+            		if (foundPathwayNamesList.contains(nodeNameList.get(j))) {
+            			color = PathwaysFrameConstants.PATHWAY_NAME_COLOR;
+            		} else {
+            			color = PathwaysFrameConstants.PATHWAY_NAME_NOT_FOUND_COLOR;
+            		}
+            	} else if (nodeNameList.get(j).equals(compartmentLabel)) {
+            		fontSize = Integer.toString(PathwaysFrameConstants.COMPARTMENT_LABEL_NODE_FONT_SIZE);
+//            		graphics.setFont(new Font("Arial", Font.TYPE1_FONT, PathwaysFrameConstants.COMPARTMENT_LABEL_NODE_FONT_SIZE));
+//            		graphics.drawString(compartmentLabel, PathwaysFrameConstants.COMPARTMENT_LABEL_NODE_XPOS, PathwaysFrameConstants.COMPARTMENT_LABEL_NODE_YPOS);
+//            		graphics.drawString("Compartment Name: " + LocalConfig.getInstance().getSelectedCompartmentName(), PathwaysFrameConstants.COMPARTMENT_LABEL_NODE_XPOS, 
+//            				PathwaysFrameConstants.COMPARTMENT_LABEL_LINE_OFFSET + PathwaysFrameConstants.COMPARTMENT_LABEL_NODE_YPOS);
+            	} else {
+            		if (mainMetabolites.contains(nodeNameList.get(j))) {
+            			fontSize = Integer.toString(PathwaysFrameConstants.METABOLITE_NODE_FONT_SIZE);
+            			if (!foundMetabolitesList.contains(nodeNameList.get(j)) && LocalConfig.getInstance().isHighlightMissingMetabolitesSelected()) {
+            				color = PathwaysFrameConstants.METABOLITE_NOT_FOUND_COLOR;
+            			}
+            		} else if (smallMainMetabolites.contains(nodeNameList.get(j))) {
+            			fontSize = Integer.toString(PathwaysFrameConstants.SMALL_MAIN_METABOLITE_NODE_FONT_SIZE);
+            			if (!foundMetabolitesList.contains(nodeNameList.get(j)) && LocalConfig.getInstance().isHighlightMissingMetabolitesSelected()) {
+            				color = PathwaysFrameConstants.METABOLITE_NOT_FOUND_COLOR;
+            			}
+            		} else if (sideMetabolites.contains(nodeNameList.get(j))) {
+            			fontSize = Integer.toString(PathwaysFrameConstants.SIDE_METABOLITE_NODE_FONT_SIZE);
+            			if (!foundMetabolitesList.contains(nodeNameList.get(j)) && LocalConfig.getInstance().isHighlightMissingMetabolitesSelected()) {
+            				color = PathwaysFrameConstants.METABOLITE_NOT_FOUND_COLOR;
+            			}
+            			if (cofactors.contains(nodeNameList.get(j))) {
+            				color = PathwaysFrameConstants.COFACTOR_COLOR;
+            				if (!foundMetabolitesList.contains(nodeNameList.get(j)) && LocalConfig.getInstance().isHighlightMissingMetabolitesSelected()) {
+                				color = PathwaysFrameConstants.COFACTOR_NOT_FOUND_COLOR;
+                			}
+            			}
+            		} else if (reactions.contains(nodeNameList.get(j))) {
+            			fontSize = Integer.toString(PathwaysFrameConstants.REACTION_NODE_FONT_SIZE);
+            			color = PathwaysFrameConstants.REACTION_NODE_DETAULT_FONT_COLOR;
+            			if (!foundReactionsList.contains(nodeNameList.get(j)) && LocalConfig.getInstance().isHighlightMissingReactionsSelected()) {
+            				color = PathwaysFrameConstants.REACTION_NOT_FOUND_FONT_COLOR;
+            			} else if (koReactions.contains(nodeNameList.get(j))) {
+            				color = PathwaysFrameConstants.REACTION_KO_FONT_COLOR;
+            			}
+            		}
+            	}
+        		svgText.setFont("Arial");
+                svgText.setFontSize(fontSize);
+                svgText.setStroke(color);
+        		svgText.setText(displayString(displayName));
+        		textList.add(svgText);
     		} else {
-    			System.out.println("nnf");
+    			//System.out.println("nnf");
     		}
-    		String displayName = nodeNameList.get(j);
-    		if (LocalConfig.getInstance().getMetaboliteNameAbbrMap().containsKey(nodeNameList.get(j))) {
-    			displayName = LocalConfig.getInstance().getMetaboliteNameAbbrMap().get(nodeNameList.get(j));
-    		} 
-    		System.out.println(displayString(displayName));
     	}
     	builder.setRects(rects);
+    	builder.setTextList(textList);
     	SVGWriter writer = new SVGWriter();
     	writer.setBuilder(builder);
     	writer.saveFile();

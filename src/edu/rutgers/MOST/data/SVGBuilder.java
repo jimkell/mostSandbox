@@ -14,16 +14,6 @@ import edu.rutgers.MOST.presentation.PathwaysFrameConstants;
 
 public class SVGBuilder {
 
-//	private ArrayList<ArrayList<String[]>> edges;
-//	
-//	public ArrayList<ArrayList<String[]>> getEdges() {
-//		return edges;
-//	}
-//
-//	public void setEdges(ArrayList<ArrayList<String[]>> edges) {
-//		this.edges = edges;
-//	}
-	
 	private ArrayList<SVGEdge> edges;
 	
 	public ArrayList<SVGEdge> getEdges() {
@@ -43,34 +33,21 @@ public class SVGBuilder {
 	public void setRects(ArrayList<BorderRectangle> rects) {
 		this.rects = rects;
 	}
+	
+	private ArrayList<SVGText> textList;
 
-//	private ArrayList<Rectangle2D> rects;
-//	
-//	public ArrayList<Rectangle2D> getRects() {
-//		return rects;
-//	}
-//
-//	public void setRects(ArrayList<Rectangle2D> rects) {
-//		this.rects = rects;
-//	}
+	public ArrayList<SVGText> getTextList() {
+		return textList;
+	}
+
+	public void setTextList(ArrayList<SVGText> textList) {
+		this.textList = textList;
+	}
 
 	private DocumentBuilder builder;
 	
 	public SVGBuilder()
 	{
-//		edges = new ArrayList<ArrayList<String[]>>();
-//		rects = new ArrayList<Rectangle2D>();
-//		
-//		edges.clear();
-//		ArrayList<String[]> endpoints = new ArrayList<String[]>();
-//		String[] e1 = {"1", "1"};
-//		String[] e2 = {"500", "500"};
-//		endpoints.add(e1);
-//		endpoints.add(e2);
-//		edges.add(endpoints);
-//		rects.clear();
-//		rects.add(new Rectangle(0, 0, 100, 50));
-
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		try
 		{
@@ -103,18 +80,10 @@ public class SVGBuilder {
 			lineElement.setAttribute("y2", "" + edges.get(e).getEndpoints().get(1)[1]);
 			lineElement.setAttribute("stroke", colorToString(edges.get(e).getStroke()));
 			lineElement.setAttribute("stroke-width", edges.get(e).getStrokeWidth());
-//			lineElement.setAttribute("x1", "" + edges.get(e).get(0)[0]);
-//			lineElement.setAttribute("y1", "" + edges.get(e).get(0)[1]);
-//			lineElement.setAttribute("x2", "" + edges.get(e).get(1)[0]);
-//			lineElement.setAttribute("y2", "" + edges.get(e).get(1)[1]);
-//			lineElement.setAttribute("stroke", "black");
-//			lineElement.setAttribute("stroke-width", "2");
 			svgElement.appendChild(lineElement);
 		}
 		for (int i = 0; i < rects.size(); i++)
 		{
-			//Color c = colors.get(i);
-			//Rectangle2D r = rects.get(i);
 			BorderRectangle r = rects.get(i);
 			Element rectElement = doc.createElement("rect");
 			rectElement.setAttribute("x", "" + r.getX());
@@ -124,11 +93,19 @@ public class SVGBuilder {
 			rectElement.setAttribute("stroke", colorToString(r.getStroke()));
 			rectElement.setAttribute("stroke-width", r.getStrokeWidth());
 			rectElement.setAttribute("fill", colorToString(r.getFill()));
-//			rectElement.setAttribute("stroke", "black");
-//			rectElement.setAttribute("stroke-width", "6");
-//			rectElement.setAttribute("fill", colorToString(c));
-//			rectElement.setAttribute("fill", colorToString(Color.WHITE));
 			svgElement.appendChild(rectElement);
+		}
+		for (int t = 0; t < textList.size(); t++) {
+			System.out.println(textList.get(t));
+			SVGText s = textList.get(t);
+			Element textElement = doc.createElement("text");
+			textElement.setAttribute("x", "" + s.getX());
+			textElement.setAttribute("y", "" + s.getY());
+			textElement.setAttribute("font-family", "" + s.getFont());
+			textElement.setAttribute("font-size", "" + s.getFontSize() + "px");
+			textElement.setAttribute("stroke", colorToString(s.getStroke()));
+			textElement.setTextContent(s.getText());
+			svgElement.appendChild(textElement);
 		}
 		return doc;
 	}
