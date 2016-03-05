@@ -27,9 +27,7 @@ public class CompartmentNameDialog extends JDialog {
 	 */
 	private static final long serialVersionUID = 1L;
 	public JComboBox<String> cbCompartmentName = new JComboBox<String>();
-//	public JComboBox<String> cbMembraneName = new JComboBox<String>();
-//	public JComboBox<String> cbOutsideName = new JComboBox<String>();
-	
+
 	public JButton okButton = new JButton("     OK     ");
 	public JButton cancelButton = new JButton("  Cancel  ");
 
@@ -41,21 +39,11 @@ public class CompartmentNameDialog extends JDialog {
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		//setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 
-		cbCompartmentName.setEditable(false);	
-//		cbMembraneName.setEditable(false);
-//		cbOutsideName.setEditable(false);	
+		cbCompartmentName.setEditable(false);		
 
 		cbCompartmentName.setPreferredSize(new Dimension(250, 25));
 		cbCompartmentName.setMaximumSize(new Dimension(250, 25));
 		cbCompartmentName.setMinimumSize(new Dimension(250, 25));
-
-//		cbMembraneName.setPreferredSize(new Dimension(250, 25));
-//		cbMembraneName.setMaximumSize(new Dimension(250, 25));
-//		cbMembraneName.setMinimumSize(new Dimension(250, 25));
-//	
-//		cbOutsideName.setPreferredSize(new Dimension(250, 25));
-//		cbOutsideName.setMaximumSize(new Dimension(250, 25));
-//		cbOutsideName.setMinimumSize(new Dimension(250, 25));
 
 		populateComboBoxes();
 		
@@ -66,10 +54,6 @@ public class CompartmentNameDialog extends JDialog {
 		Box hbTop = Box.createHorizontalBox();	    	    
 		Box hbCompartmentLabel = Box.createHorizontalBox();	    
 		Box hbCompartment = Box.createHorizontalBox();
-//		Box hbMembraneLabel = Box.createHorizontalBox();	    
-//		Box hbMembrane = Box.createHorizontalBox();
-//		Box hbOutsideLabel = Box.createHorizontalBox();	    
-//		Box hbOutside = Box.createHorizontalBox();
 		
 		Box vbLabels = Box.createVerticalBox();
 		Box vbCombos = Box.createVerticalBox();
@@ -119,68 +103,6 @@ public class CompartmentNameDialog extends JDialog {
 		JLabel blankLabel1 = new JLabel("");
 		vbLabels.add(blankLabel1);
 		vbCombos.add(hbCompartment);
-
-		//membrane Name Label and combo
-//		JLabel membraneLabel = new JLabel();
-//		membraneLabel.setText(CompartmentsConstants.MEMBRANE_NAME_LABEL);
-//		membraneLabel.setPreferredSize(new Dimension(150, 25));
-//		membraneLabel.setMaximumSize(new Dimension(150, 25));
-//		membraneLabel.setMinimumSize(new Dimension(150, 25));
-//		membraneLabel.setBorder(BorderFactory.createEmptyBorder(10,10,0,10));
-//		membraneLabel.setAlignmentX(LEFT_ALIGNMENT);
-//
-//		JPanel panelMembraneLabel = new JPanel();
-//		panelMembraneLabel.setLayout(new BoxLayout(panelMembraneLabel, BoxLayout.X_AXIS));
-//		panelMembraneLabel.add(membraneLabel);
-//		panelMembraneLabel.setBorder(BorderFactory.createEmptyBorder(0,0,10,0));
-//
-//		hbMembraneLabel.add(panelMembraneLabel);
-//		hbMembraneLabel.setAlignmentX(LEFT_ALIGNMENT);
-//
-//		JPanel panelMembrane = new JPanel();
-//		panelMembrane.setLayout(new BoxLayout(panelMembrane, BoxLayout.X_AXIS));
-//		panelMembrane.add(cbMembraneName);
-//		panelMembrane.setBorder(BorderFactory.createEmptyBorder(0,0,10,10));
-//		panelMembrane.setAlignmentX(RIGHT_ALIGNMENT);
-//
-//		hbMembrane.add(panelMembrane);
-//		hbMembrane.setAlignmentX(RIGHT_ALIGNMENT);
-//
-//		vbLabels.add(hbMembraneLabel);
-//		JLabel blankLabel2 = new JLabel("");
-//		vbLabels.add(blankLabel2);
-//		vbCombos.add(hbMembrane);
-
-		//outside label and combo
-//		JLabel outsideLabel = new JLabel();
-//		outsideLabel.setText(CompartmentsConstants.OUTSIDE_NAME_LABEL);
-//		outsideLabel.setPreferredSize(new Dimension(150, 25));
-//		outsideLabel.setMaximumSize(new Dimension(150, 25));
-//		outsideLabel.setMinimumSize(new Dimension(150, 25));
-//		outsideLabel.setBorder(BorderFactory.createEmptyBorder(10,10,0,10));
-//		outsideLabel.setAlignmentX(LEFT_ALIGNMENT);
-//
-//		JPanel panelOutsideLabel = new JPanel();
-//		panelOutsideLabel.setLayout(new BoxLayout(panelOutsideLabel, BoxLayout.X_AXIS));
-//		panelOutsideLabel.add(outsideLabel);
-//		panelOutsideLabel.setBorder(BorderFactory.createEmptyBorder(0,0,10,10));
-//
-//		hbOutsideLabel.add(panelOutsideLabel);
-//		hbOutsideLabel.setAlignmentX(LEFT_ALIGNMENT);
-//
-//		JPanel panelExtraOrganism = new JPanel();
-//		panelExtraOrganism.setLayout(new BoxLayout(panelExtraOrganism, BoxLayout.X_AXIS));
-//		panelExtraOrganism.add(cbOutsideName);
-//		panelExtraOrganism.setBorder(BorderFactory.createEmptyBorder(0,0,10,10));
-//		panelExtraOrganism.setAlignmentX(RIGHT_ALIGNMENT);
-//
-//		hbOutside.add(panelExtraOrganism);
-//		hbOutside.setAlignmentX(RIGHT_ALIGNMENT);
-//
-//		vbLabels.add(hbOutsideLabel);
-//		JLabel blankLabel3 = new JLabel("");
-//		vbLabels.add(blankLabel3);
-//		vbCombos.add(hbOutside);
 		
 		okButton.setMnemonic(KeyEvent.VK_O);
 		JLabel blank = new JLabel("    "); 
@@ -226,8 +148,6 @@ public class CompartmentNameDialog extends JDialog {
     	if (LocalConfig.getInstance().getListOfCompartments() != null && 
     			LocalConfig.getInstance().getListOfCompartments().size() > 0) {
     		cbCompartmentName.removeAllItems();
-//    		cbMembraneName.removeAllItems();
-//    		cbOutsideName.removeAllItems();
     		//populate combo boxes
     		for (int c = 0; c < LocalConfig.getInstance().getListOfCompartments().size(); c++) { 
     			String item = LocalConfig.getInstance().getListOfCompartments().get(c).getId();
@@ -236,28 +156,14 @@ public class CompartmentNameDialog extends JDialog {
     				item += " (" + LocalConfig.getInstance().getListOfCompartments().get(c).getName() + ")";
     			}
     			cbCompartmentName.addItem(item);
-//    			cbCompartmentName.addItem(LocalConfig.getInstance().getListOfCompartments().get(c).getName());
-//    			cbMembraneName.addItem(LocalConfig.getInstance().getListOfCompartments().get(c).getName());
-//    			cbOutsideName.addItem(LocalConfig.getInstance().getListOfCompartments().get(c).getName());
     		}
-    		// add empty item
-//    		cbCompartmentName.addItem("");
-//			cbMembraneName.addItem("");
-//			cbOutsideName.addItem("");
     		cbCompartmentName.setSelectedIndex(-1);
-//    		cbMembraneName.setSelectedIndex(-1);
-//    		cbOutsideName.setSelectedIndex(-1);
     		for (int c = 0; c < LocalConfig.getInstance().getListOfCompartments().size(); c++) {
     			//filters to match compartment names from list of compartments	
     			if (LocalConfig.getInstance().getListOfCompartments().get(c).getName() != null) {
     				if((LocalConfig.getInstance().getListOfCompartments().get(c).getName().toLowerCase()).contains(CompartmentsConstants.CYTOSOL_FILTER[0])) {
         				cbCompartmentName.setSelectedIndex(c);
-        			}
-//        			} else if((LocalConfig.getInstance().getListOfCompartments().get(c).getName().toLowerCase()).contains(CompartmentsConstants.PERIPLASM_FILTER[0])) {
-//        				cbMembraneName.setSelectedIndex(c);
-//        			} else if((LocalConfig.getInstance().getListOfCompartments().get(c).getName().toLowerCase()).contains(CompartmentsConstants.EXTRA_ORGANISM_FILTER[0])) {
-//        				cbOutsideName.setSelectedIndex(c);
-//        			}  
+        			} 
     			}
     		}
     	}

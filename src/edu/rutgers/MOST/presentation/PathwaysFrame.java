@@ -53,6 +53,7 @@ import javax.swing.WindowConstants;
 import org.apache.commons.collections15.Transformer;                                                                 
 import org.apache.commons.collections15.functors.ChainedTransformer;                                                 
                                                                                                                      
+
 import edu.rutgers.MOST.config.LocalConfig;
 import edu.rutgers.MOST.data.BorderRectangle;
 import edu.rutgers.MOST.data.MetabolicPathway;
@@ -744,7 +745,11 @@ public class PathwaysFrame extends JApplet {
 				svgText.setFontSize(fontSize);
 				svgText.setFontWeight(PathwaysFrameConstants.FONT_WEIGHT);
 				svgText.setFill(color);
-				svgText.setText(displayString(displayName));
+				if (nodeNameList.get(j).equals(compartmentLabel)) {
+					svgText.setText(nodeNameList.get(j));
+				} else {
+					svgText.setText(displayString(displayName));
+				}
 				if (!borderList.contains(nodeNameList.get(j))) {
 					textList.add(svgText);
 				}
@@ -872,9 +877,9 @@ public class PathwaysFrame extends JApplet {
 				PathwaysFrameConstants.COMPARTMENT_LABEL_NODE_HEIGHT/2 + 
 				PathwaysFrameConstants.COMPARTMENT_LABEL_LEFT_PADDING);
 
-		if (component == PathwaysFrameConstants.PATHWAYS_COMPONENT) {
+//		if (component == PathwaysFrameConstants.PATHWAYS_COMPONENT) {
 			drawCompartmentLabel(compartmentLabel, compartmentLabelXOffset, compartmentLabelYOffset);
-		}
+//		}
 
 		reactionList = new ArrayList<String>(reactionMap.keySet()); 
 		Collections.sort(reactionList);
@@ -1410,7 +1415,8 @@ public class PathwaysFrame extends JApplet {
 			} else if (name.equals(compartmentLabel)) {
 				graphics.setFont(new Font(PathwaysFrameConstants.FONT_NAME, PathwaysFrameConstants.FONT_STYLE, PathwaysFrameConstants.COMPARTMENT_LABEL_NODE_FONT_SIZE));
 				graphics.drawString(compartmentLabel, PathwaysFrameConstants.COMPARTMENT_LABEL_NODE_XPOS, PathwaysFrameConstants.COMPARTMENT_LABEL_NODE_YPOS);
-				graphics.drawString("Compartment Name: " + LocalConfig.getInstance().getSelectedCompartmentName(), PathwaysFrameConstants.COMPARTMENT_LABEL_NODE_XPOS, 
+				String comp = maybeAddCompartmentNameSuffix(LocalConfig.getInstance().getSelectedCompartmentName());
+				graphics.drawString("Compartment: " + comp, PathwaysFrameConstants.COMPARTMENT_LABEL_NODE_XPOS, 
 						PathwaysFrameConstants.COMPARTMENT_LABEL_LINE_OFFSET + PathwaysFrameConstants.COMPARTMENT_LABEL_NODE_YPOS);
 			} else {
 				if (mainMetabolites.contains(name)) {
@@ -1754,6 +1760,22 @@ public class PathwaysFrame extends JApplet {
 			duplicateSuffix = duplicateSuffix.replace("1", Integer.toString(duplicateCount + 1));
 		}
 		return duplicateSuffix;
+	}
+	
+	
+	public String maybeAddCompartmentNameSuffix(String compAbbr) {
+		for (int c = 0; c < LocalConfig.getInstance().getListOfCompartments().size(); c++) { 
+			String item = LocalConfig.getInstance().getListOfCompartments().get(c).getId();
+			if (item.equals(LocalConfig.getInstance().getSelectedCompartmentName())) {
+				if (LocalConfig.getInstance().getListOfCompartments().get(c).getName() != null &&
+    					LocalConfig.getInstance().getListOfCompartments().get(c).getName().length() > 0) {
+					compAbbr += " (" + LocalConfig.getInstance().getListOfCompartments().get(c).getName() + ")";
+    			}
+			}
+		}
+		
+		return compAbbr;
+		
 	}
 
 	class PNGFileFilter extends javax.swing.filechooser.FileFilter {
