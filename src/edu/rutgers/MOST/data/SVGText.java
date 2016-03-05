@@ -9,7 +9,7 @@ public class SVGText {
 	private String font;
 	private String fontSize;
 	private String fontWeight;
-	private Color stroke;
+	private Color fill;
 	private String text;
 	
 	public double getX() {
@@ -43,11 +43,11 @@ public class SVGText {
 	public void setFontWeight(String fontWeight) {
 		this.fontWeight = fontWeight;
 	}
-	public Color getStroke() {
-		return stroke;
+	public Color getFill() {
+		return fill;
 	}
-	public void setStroke(Color stroke) {
-		this.stroke = stroke;
+	public void setFill(Color fill) {
+		this.fill = fill;
 	}
 	public String getText() {
 		return text;
@@ -63,7 +63,7 @@ public class SVGText {
 		+ ", font=" + font
 		+ ", fontSize=" + fontSize
 		+ ", fontWeight=" + fontWeight
-		+ ", stroke=" + stroke.toString()
+		+ ", fill=" + fill.toString()
 		+ ", text=" + text + "]";
 	}
 

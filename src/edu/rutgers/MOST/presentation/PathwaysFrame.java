@@ -640,6 +640,7 @@ public class PathwaysFrame extends JApplet {
 				} else if (nodeNameList.get(j).equals(compartmentLabel)) {
 					width = PathwaysFrameConstants.COMPARTMENT_LABEL_NODE_WIDTH;
 					height = PathwaysFrameConstants.COMPARTMENT_LABEL_NODE_HEIGHT;
+					strokeWidth = 0;
 				} else if (mainMetabolites.contains(nodeNameList.get(j))) {
 					if (!noBorderList.contains(nodeNameList.get(j))) {
 						width = PathwaysFrameConstants.METABOLITE_BORDER_NODE_WIDTH;
@@ -687,6 +688,7 @@ public class PathwaysFrame extends JApplet {
 					} else {
 						color = PathwaysFrameConstants.PATHWAY_NAME_NOT_FOUND_COLOR;
 					}
+					xOffset = startX(getGraphics(), displayString(displayName), (int) (width*0.45));
 					yOffset = PathwaysFrameConstants.PATHWAY_NAME_NODE_YPOS;
 				} else if (nodeNameList.get(j).equals(compartmentLabel)) {
 					fontSize = Integer.toString(PathwaysFrameConstants.COMPARTMENT_LABEL_NODE_FONT_SIZE);
@@ -702,12 +704,14 @@ public class PathwaysFrame extends JApplet {
 						if (!foundMetabolitesList.contains(nodeNameList.get(j)) && LocalConfig.getInstance().isHighlightMissingMetabolitesSelected()) {
 							color = PathwaysFrameConstants.METABOLITE_NOT_FOUND_COLOR;
 						}
+						xOffset = startX(getGraphics(), displayString(displayName), (int) (width*0.5));
 						yOffset = PathwaysFrameConstants.METABOLITE_NODE_YPOS;
 					} else if (smallMainMetabolites.contains(nodeNameList.get(j))) {
 						fontSize = Integer.toString(PathwaysFrameConstants.SMALL_MAIN_METABOLITE_NODE_FONT_SIZE);
 						if (!foundMetabolitesList.contains(nodeNameList.get(j)) && LocalConfig.getInstance().isHighlightMissingMetabolitesSelected()) {
 							color = PathwaysFrameConstants.METABOLITE_NOT_FOUND_COLOR;
 						}
+						xOffset = startX(getGraphics(), displayString(displayName), (int) (width*0.4));
 						yOffset = PathwaysFrameConstants.SMALL_MAIN_METABOLITE_NODE_YPOS;
 					} else if (sideMetabolites.contains(nodeNameList.get(j))) {
 						fontSize = Integer.toString(PathwaysFrameConstants.SIDE_METABOLITE_NODE_FONT_SIZE);
@@ -720,6 +724,7 @@ public class PathwaysFrame extends JApplet {
 								color = PathwaysFrameConstants.COFACTOR_NOT_FOUND_COLOR;
 							}
 						}
+						xOffset = startX(getGraphics(), displayString(displayName), (int) (width*1));
 						yOffset = PathwaysFrameConstants.SIDE_METABOLITE_NODE_YPOS;
 					} else if (reactions.contains(nodeNameList.get(j))) {
 						fontSize = Integer.toString(PathwaysFrameConstants.REACTION_NODE_FONT_SIZE);
@@ -729,15 +734,16 @@ public class PathwaysFrame extends JApplet {
 						} else if (koReactions.contains(nodeNameList.get(j))) {
 							color = PathwaysFrameConstants.REACTION_KO_FONT_COLOR;
 						}
+						xOffset = startX(getGraphics(), displayString(displayName), (int) (width*0.5));
 						yOffset = PathwaysFrameConstants.REACTION_NODE_YPOS;
 					}
 				}
 				svgText.setX(Double.parseDouble(nodeNamePositionMap.get(nodeNameList.get(j))[0]) + xOffset - width/2);
-				svgText.setY(Double.parseDouble((nodeNamePositionMap.get(nodeNameList.get(j))[1])) + yOffset - height/2);
+				svgText.setY(Double.parseDouble((nodeNamePositionMap.get(nodeNameList.get(j))[1])) + yOffset*1.1 - height/2);
 				svgText.setFont(PathwaysFrameConstants.FONT_NAME);
 				svgText.setFontSize(fontSize);
 				svgText.setFontWeight(PathwaysFrameConstants.FONT_WEIGHT);
-				svgText.setStroke(color);
+				svgText.setFill(color);
 				svgText.setText(displayString(displayName));
 				if (!borderList.contains(nodeNameList.get(j))) {
 					textList.add(svgText);
@@ -1531,14 +1537,22 @@ public class PathwaysFrame extends JApplet {
 		return s;
 
 	}
+	
+	private int startX(Graphics g2d, String s, int width) {
+		int start = 0;
+		int stringLen = (int)  
+				g2d.getFontMetrics().getStringBounds(s, g2d).getWidth();  
+		start = width/2 - stringLen/2;
+		
+		return start;
+		
+	}
 
 	// based on http://www.coderanch.com/t/336616/GUI/java/Center-Align-text-drawString
 	private void alignCenterString(Graphics g2d, String s, int width, int XPos, int YPos, int fontSize){  
 		g2d.setFont(new Font(PathwaysFrameConstants.FONT_NAME, PathwaysFrameConstants.FONT_STYLE, fontSize));
 		s = displayString(s);
-		int stringLen = (int)  
-				g2d.getFontMetrics().getStringBounds(s, g2d).getWidth();  
-		int start = width/2 - stringLen/2;
+		int start = startX(g2d, s, width);
 		g2d.drawString(s, start + XPos, YPos);   
 	}  
 
