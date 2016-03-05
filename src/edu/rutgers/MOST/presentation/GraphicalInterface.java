@@ -1230,7 +1230,8 @@ public class GraphicalInterface extends JFrame {
 		//visualizeProgressBar.progress.setIndeterminate(true);
 		visualizeProgressBar.setLocationRelativeTo(null);
 		visualizeProgressBar.setVisible(false);
-		visualizeProgressBar.setAlwaysOnTop(true);
+		// if uncommented, progress bar locks up computer until finished
+		//visualizeProgressBar.setAlwaysOnTop(true);
 		
 		compartmentsTableUpdater = new CompartmentsTableUpdater();
 
