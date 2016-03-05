@@ -747,6 +747,7 @@ public class PathwaysFrame extends JApplet {
 				svgText.setFill(color);
 				if (nodeNameList.get(j).equals(compartmentLabel)) {
 					svgText.setText(nodeNameList.get(j));
+					// add compartment name to compartment label
 					SVGText svgText2 = new SVGText();
 					svgText2.setX(Double.parseDouble(nodeNamePositionMap.get(nodeNameList.get(j))[0]) + xOffset - width/2);
 					svgText2.setY(Double.parseDouble((nodeNamePositionMap.get(nodeNameList.get(j))[1])) + 
@@ -764,7 +765,7 @@ public class PathwaysFrame extends JApplet {
 					textList.add(svgText);
 				}
 			} else {
-				//System.out.println("nnf");
+				//System.out.println("node not found");
 			}
 		}
 		builder.setRects(rects);

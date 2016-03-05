@@ -72,6 +72,26 @@ public class SVGBuilder {
 		svgElement.setAttribute("width", "" + PathwaysFrameConstants.GRAPH_WIDTH);
 		svgElement.setAttribute("height", "" + PathwaysFrameConstants.GRAPH_HEIGHT);
 		svgElement.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+		
+		// add marker - based on http://tutorials.jenkov.com/svg/marker-element.html
+		Element defsElement = doc.createElement("defs");
+		Element markerElement = doc.createElement("marker");
+		// add arrows
+		markerElement.setAttribute("id", "arrow1");
+		markerElement.setAttribute("markerWidth", "13");
+		markerElement.setAttribute("markerHeight", "13");
+		markerElement.setAttribute("refX", "2");
+		markerElement.setAttribute("refY", "6");
+		markerElement.setAttribute("orient", "auto");
+		
+		Element pathElement = doc.createElement("path");
+		pathElement.setAttribute("d", "M2,2 L2,10 L10,6 L2,2");
+		pathElement.setAttribute("style", "fill: #000000;");
+		// append elements
+		markerElement.appendChild(pathElement);
+		defsElement.appendChild(markerElement);
+		svgElement.appendChild(defsElement);
+		
 		for (int e = 0; e < edges.size(); e++) {
 			Element lineElement = doc.createElement("line");
 			lineElement.setAttribute("x1", "" + edges.get(e).getEndpoints().get(0)[0]);
@@ -80,6 +100,7 @@ public class SVGBuilder {
 			lineElement.setAttribute("y2", "" + edges.get(e).getEndpoints().get(1)[1]);
 			lineElement.setAttribute("stroke", colorToString(edges.get(e).getStroke()));
 			lineElement.setAttribute("stroke-width", edges.get(e).getStrokeWidth());
+			lineElement.setAttribute("marker-end", "url(#arrow1)");
 			svgElement.appendChild(lineElement);
 		}
 		for (int i = 0; i < rects.size(); i++)
