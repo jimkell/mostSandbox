@@ -75,22 +75,74 @@ public class SVGBuilder {
 		
 		// add marker - based on http://tutorials.jenkov.com/svg/marker-element.html
 		Element defsElement = doc.createElement("defs");
-		Element markerElement = doc.createElement("marker");
+		Element markerElementBlack = doc.createElement("marker");
 		// add arrows - in svg 1.1 arrows cannot inherit color of stroke
 		// http://www.inkscapeforum.com/viewtopic.php?t=10824
-		markerElement.setAttribute("id", "arrow-black");
-		markerElement.setAttribute("markerWidth", "13");
-		markerElement.setAttribute("markerHeight", "13");
-		markerElement.setAttribute("refX", "20");
-		markerElement.setAttribute("refY", "6");
-		markerElement.setAttribute("orient", "auto");
+		markerElementBlack.setAttribute("id", PathwaysFrameConstants.BLACK_ARROW_NAME);
+		markerElementBlack.setAttribute("markerWidth", "13");
+		markerElementBlack.setAttribute("markerHeight", "13");
+		markerElementBlack.setAttribute("refX", "20");
+		markerElementBlack.setAttribute("refY", "6");
+		markerElementBlack.setAttribute("orient", "auto");
 		
-		Element pathElement = doc.createElement("path");
-		pathElement.setAttribute("d", "M2,2 L2,10 L10,6 L2,2");
-		pathElement.setAttribute("style", "fill: #000000;");
+		Element pathElementBlack = doc.createElement("path");
+		pathElementBlack.setAttribute("d", "M2,2 L2,10 L10,6 L2,2");
+		pathElementBlack.setAttribute("style", "fill: #000000;");
 		// append elements
-		markerElement.appendChild(pathElement);
-		defsElement.appendChild(markerElement);
+		markerElementBlack.appendChild(pathElementBlack);
+		defsElement.appendChild(markerElementBlack);
+		
+		Element markerElementGray = doc.createElement("marker");
+		// add arrows - in svg 1.1 arrows cannot inherit color of stroke
+		// http://www.inkscapeforum.com/viewtopic.php?t=10824
+		markerElementGray.setAttribute("id", PathwaysFrameConstants.GRAY_ARROW_NAME);
+		markerElementGray.setAttribute("markerWidth", "13");
+		markerElementGray.setAttribute("markerHeight", "13");
+		markerElementGray.setAttribute("refX", "20");
+		markerElementGray.setAttribute("refY", "6");
+		markerElementGray.setAttribute("orient", "auto");
+		
+		Element pathElementGray = doc.createElement("path");
+		pathElementGray.setAttribute("d", "M2,2 L2,10 L10,6 L2,2");
+		pathElementGray.setAttribute("style", "fill: #808080;");
+		// append elements
+		markerElementGray.appendChild(pathElementGray);
+		defsElement.appendChild(markerElementGray);
+		
+		Element markerElementRed = doc.createElement("marker");
+		// add arrows - in svg 1.1 arrows cannot inherit color of stroke
+		// http://www.inkscapeforum.com/viewtopic.php?t=10824
+		markerElementRed.setAttribute("id", PathwaysFrameConstants.RED_ARROW_NAME);
+		markerElementRed.setAttribute("markerWidth", "13");
+		markerElementRed.setAttribute("markerHeight", "13");
+		markerElementRed.setAttribute("refX", "20");
+		markerElementRed.setAttribute("refY", "6");
+		markerElementRed.setAttribute("orient", "auto");
+		
+		Element pathElementRed = doc.createElement("path");
+		pathElementRed.setAttribute("d", "M2,2 L2,10 L10,6 L2,2");
+		pathElementRed.setAttribute("style", "fill: #ff0000;");
+		// append elements
+		markerElementRed.appendChild(pathElementRed);
+		defsElement.appendChild(markerElementRed);
+		
+		Element markerElementNotFound = doc.createElement("marker");
+		// add arrows - in svg 1.1 arrows cannot inherit color of stroke
+		// http://www.inkscapeforum.com/viewtopic.php?t=10824
+		markerElementNotFound.setAttribute("id", PathwaysFrameConstants.NOT_FOUND_ARROW_NAME);
+		markerElementNotFound.setAttribute("markerWidth", "13");
+		markerElementNotFound.setAttribute("markerHeight", "13");
+		markerElementNotFound.setAttribute("refX", "20");
+		markerElementNotFound.setAttribute("refY", "6");
+		markerElementNotFound.setAttribute("orient", "auto");
+		
+		Element pathElementNF = doc.createElement("path");
+		pathElementNF.setAttribute("d", "M2,2 L2,10 L10,6 L2,2");
+		pathElementNF.setAttribute("style", "fill: #99ccff;");
+		// append elements
+		markerElementNotFound.appendChild(pathElementNF);
+		defsElement.appendChild(markerElementNotFound);
+		
 		svgElement.appendChild(defsElement);
 		
 		for (int e = 0; e < edges.size(); e++) {
@@ -101,7 +153,9 @@ public class SVGBuilder {
 			lineElement.setAttribute("y2", "" + edges.get(e).getEndpoints().get(1)[1]);
 			lineElement.setAttribute("stroke", colorToString(edges.get(e).getStroke()));
 			lineElement.setAttribute("stroke-width", edges.get(e).getStrokeWidth());
-			lineElement.setAttribute("marker-end", "url(#arrow-black)");
+			if (edges.get(e).getMarkerId() != null) {
+				lineElement.setAttribute("marker-end", "url(#" + edges.get(e).getMarkerId() + ")");
+			}
 			svgElement.appendChild(lineElement);
 		}
 		for (int i = 0; i < rects.size(); i++)

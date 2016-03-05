@@ -173,6 +173,11 @@ public class PathwaysFrameConstants {
 	public static final double BLUE_COLOR_VALUE = 4.0;
 	public static final double BLUE_NOT_FOUND_COLOR_VALUE = 5.0;
 	
+	public static final String BLACK_ARROW_NAME = "arrow-black";
+	public static final String GRAY_ARROW_NAME = "arrow-gray";
+	public static final String RED_ARROW_NAME = "arrow-red";
+	public static final String NOT_FOUND_ARROW_NAME = "arrow-nf";
+	
 	public static final Color REACTION_EDGE_NOT_FOUND_COLOR = new Color(153,204,255);
 	
 	public static final double DEFAULT_COLOR_VALUE = BLACK_COLOR_VALUE;

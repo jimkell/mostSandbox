@@ -578,6 +578,10 @@ public class PathwaysFrame extends JApplet {
 				if (colorMap.containsKey(reactionList.get(i))) {
 					double color = colorMap.get(reactionList.get(i));
 					edge.setStroke(colorFromColorValue(color));
+					if (!borderList.contains(info[0])) {
+						edge.setMarkerId(arrowFromColorValue(color));
+						edge.setRefX("20");
+					}
 				}
 				edge.setStrokeWidth("1");
 				if (fluxMap.containsKey(reactionList.get(i))) {
@@ -1699,6 +1703,21 @@ public class PathwaysFrame extends JApplet {
 		}
 
 		return defaultColor;
+	}
+	
+	public String arrowFromColorValue(double color) {
+		String defaultArrow = PathwaysFrameConstants.BLACK_ARROW_NAME;
+		if (color == PathwaysFrameConstants.BLACK_COLOR_VALUE) {
+			return PathwaysFrameConstants.BLACK_ARROW_NAME;
+		} else if (color == PathwaysFrameConstants.GRAY_COLOR_VALUE) {
+			return PathwaysFrameConstants.GRAY_ARROW_NAME;
+		} else if (color == PathwaysFrameConstants.RED_COLOR_VALUE) {
+			return PathwaysFrameConstants.RED_ARROW_NAME;
+		} else if (color == PathwaysFrameConstants.BLUE_NOT_FOUND_COLOR_VALUE) {
+			return PathwaysFrameConstants.NOT_FOUND_ARROW_NAME;
+		}
+		
+		return defaultArrow;
 	}
 
 	public void createNodeInformationDialog(Object arg0) {

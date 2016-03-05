@@ -8,6 +8,7 @@ public class SVGEdge {
 	ArrayList<String[]> endpoints;
 	private Color stroke;
 	private String strokeWidth;
+	private String markerId;
 	// changing refX moves arrow along edge
 	private String refX;
 	
@@ -28,6 +29,12 @@ public class SVGEdge {
 	}
 	public void setStrokeWidth(String strokeWidth) {
 		this.strokeWidth = strokeWidth;
+	}
+	public String getMarkerId() {
+		return markerId;
+	}
+	public void setMarkerId(String markerId) {
+		this.markerId = markerId;
 	}
 	public String getRefX() {
 		return refX;
