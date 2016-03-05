@@ -102,6 +102,7 @@ public class SVGBuilder {
 			textElement.setAttribute("y", "" + s.getY());
 			textElement.setAttribute("font-family", "" + s.getFont());
 			textElement.setAttribute("font-size", "" + s.getFontSize() + "px");
+			textElement.setAttribute("font-weight", "" + s.getFontWeight());
 			textElement.setAttribute("stroke", colorToString(s.getStroke()));
 			textElement.setTextContent(s.getText());
 			svgElement.appendChild(textElement);

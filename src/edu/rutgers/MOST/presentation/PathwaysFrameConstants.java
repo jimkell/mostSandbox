@@ -1,6 +1,7 @@
 package edu.rutgers.MOST.presentation;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.util.Arrays;
 
 public class PathwaysFrameConstants {
@@ -71,6 +72,10 @@ public class PathwaysFrameConstants {
 	public static final int REACTION_NODE_MAX_CHARS = 7;
 	public static final int PATHWAY_NAME_NODE_MAX_CHARS = 10;
 	public static final int COMPARTMENT_LABEL_NODE_MAX_CHARS = 60;
+	
+	public static final String FONT_NAME = "Arial";
+	public static final String FONT_WEIGHT = "bold";
+	public static final int FONT_STYLE = Font.BOLD;
 	
 	public static final int METABOLITE_NODE_ELLIPSIS_CORRECTION = 2;
 	public static final int SMALL_MAIN_METABOLITE_NODE_ELLIPSIS_CORRECTION = 2;

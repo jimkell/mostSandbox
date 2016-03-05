@@ -8,6 +8,7 @@ public class SVGText {
 	private double y;
 	private String font;
 	private String fontSize;
+	private String fontWeight;
 	private Color stroke;
 	private String text;
 	
@@ -36,6 +37,12 @@ public class SVGText {
 		this.fontSize = fontSize;
 	}
 	
+	public String getFontWeight() {
+		return fontWeight;
+	}
+	public void setFontWeight(String fontWeight) {
+		this.fontWeight = fontWeight;
+	}
 	public Color getStroke() {
 		return stroke;
 	}
@@ -55,6 +62,7 @@ public class SVGText {
 		+ ", y=" + y
 		+ ", font=" + font
 		+ ", fontSize=" + fontSize
+		+ ", fontWeight=" + fontWeight
 		+ ", stroke=" + stroke.toString()
 		+ ", text=" + text + "]";
 	}

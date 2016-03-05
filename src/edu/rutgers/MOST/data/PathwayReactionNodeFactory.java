@@ -22,7 +22,6 @@ public class PathwayReactionNodeFactory {
 	 * @return
 	 */
 	
-	//ArrayList<String> substitutionKeys = new ArrayList<String>(LocalConfig.getInstance().getMetaboliteSubstitutionsMap().keySet());
 	private Map<String, ArrayList<String>> renameMetabolitesMap = new HashMap<String, ArrayList<String>>();
 
 	public Map<String, ArrayList<String>> getRenameMetabolitesMap() {
@@ -44,45 +43,28 @@ public class PathwayReactionNodeFactory {
 			if (LocalConfig.getInstance().getEcNumberReactionMap().containsKey(prd.getEcNumbers().get(m))) {
 				// attributes from SBML Reaction
 				ArrayList<SBMLReaction> reac = LocalConfig.getInstance().getEcNumberReactionMap().get(prd.getEcNumbers().get(m));
-//				if (component == PathwaysFrameConstants.PROCESSES_COMPONENT) {
-//					//reactions.add(reac.get(0));
-//				} else {
 					addReactions(reactions, reac, compartment, prd, false);
-//				}
 			} 
 		}
 		for (int n = 0; n < prd.getKeggReactionIds().size(); n++) {
 			if (LocalConfig.getInstance().getKeggIdReactionMap() != null && 
 					LocalConfig.getInstance().getKeggIdReactionMap().containsKey(prd.getKeggReactionIds().get(n))) {
 				ArrayList<SBMLReaction> reac = LocalConfig.getInstance().getKeggIdReactionMap().get(prd.getKeggReactionIds().get(n));
-//				if (keggReactionIds.size() == 1 && component == PathwaysFrameConstants.PROCESSES_COMPONENT) {
-//					//reactions.add(reac.get(0));
-//				} else {
 					addReactions(reactions, reac, compartment, prd, false);
-//				}
 			}
 		}
-//		System.out.println("ni " + LocalConfig.getInstance().getNoIdentifierIds());
 		for (int i = 0; i < LocalConfig.getInstance().getNoIdentifierIds().size(); i++) {
 			SBMLReaction r = idReactionMap.get(LocalConfig.getInstance().getNoIdentifierIds().get(i));
 			ArrayList<SBMLReaction> reac = new ArrayList<SBMLReaction>();
 			reac.add(r);
-//			if (component == PathwaysFrameConstants.PROCESSES_COMPONENT) {
-//				//reactions.add(reac.get(0));
-//			} else {
 				addReactions(reactions, reac, compartment, prd, true);
-//			}
 		}
 		if (reactions.size() == 0) {
 			for (int u = 0; u < LocalConfig.getInstance().getUnplottedReactionIds().size(); u++) {
 				SBMLReaction r = idReactionMap.get(LocalConfig.getInstance().getUnplottedReactionIds().get(u));
 				ArrayList<SBMLReaction> reac = new ArrayList<SBMLReaction>();
 				reac.add(r);
-//				if (component == PathwaysFrameConstants.PROCESSES_COMPONENT) {
-//					//reactions.add(reac.get(0));
-//				} else {
 					addReactions(reactions, reac, compartment, prd, true);
-//				}
 			}
 		}
 		pn.setReactions(reactions);
@@ -95,7 +77,6 @@ public class PathwayReactionNodeFactory {
 	public void addReactions(ArrayList<SBMLReaction> reactions, ArrayList<SBMLReaction> reac, String compartment, 
 			PathwayReactionData prd, boolean exactMatch) {
 		for (int r = 0; r < reac.size(); r++) {
-			// if compartment not defined, just draw everything for now
 			if (compartment != null && compartment.length() > 0) {
 				if (reac.get(r) != null) {
 					SBMLReactionEquation equn = (SBMLReactionEquation) LocalConfig.getInstance().getReactionEquationMap().get(reac.get(r).getId());
@@ -108,9 +89,7 @@ public class PathwayReactionNodeFactory {
 						}
 					} 
 				}
-			} else {
-				//addReactionIfNotPresent(reactions, reac.get(r), keggReactantIds, keggProductIds);
-			}
+			} 
 		}
 	}
 	
@@ -130,8 +109,6 @@ public class PathwayReactionNodeFactory {
 		if (!idList.contains(id)) {
 			if (correctMainSpecies(r, prd, exactMatch)) {
 				reactions.add(r);
-				//System.out.println(reactions);
-				//System.out.println("found " + r);
 				match = true;
 			} else {
 				if (!LocalConfig.getInstance().getUnplottedReactionIds().contains(id)) {
@@ -154,10 +131,6 @@ public class PathwayReactionNodeFactory {
 		boolean match = false;
 		if (r != null && LocalConfig.getInstance().getModelKeggEquationMap().containsKey(Integer.toString(r.getId()))) {
 			PathwayReactionData modelData = LocalConfig.getInstance().getModelKeggEquationMap().get(Integer.toString(r.getId()));
-//			System.out.println("mr " + modelData.getKeggReactantIds());
-//			System.out.println("mp " + modelData.getKeggProductIds());
-//			System.out.println("d " + keggReactantIds);
-//			System.out.println("d " + keggProductIds);
 			if (exactMatch) {
 				if (speciesExactMatch(prd.getKeggReactantIds(), prd.getKeggReactantIdsDataMap(), modelData.getKeggReactantIds()) && 
 						speciesExactMatch(prd.getKeggProductIds(), prd.getKeggProductIdsDataMap(), modelData.getKeggProductIds())) {
@@ -191,18 +164,12 @@ public class PathwayReactionNodeFactory {
 	 * @return
 	 */
 	public boolean speciesMatch(ArrayList<String> dataIds, Map<String, PathwayMetaboliteData> keggIdsDataMap, ArrayList<String> modelIds) {
-//		if (dataIds.contains("C00091") && dataIds.contains("C00011")) {
-//			System.out.println("d " + dataIds);
-//			System.out.println("m " + modelIds);
-//		}
 //		System.out.println("d " + dataIds);
 //		System.out.println("m " + modelIds);
 		boolean speciesMatch = true;
 		boolean containsProton = false;
 		if (modelIds.contains("C00080")) {
 			containsProton = true;
-//			System.out.println("model " + modelIds);
-//			System.out.println("1 " + containsProton);
 		}
 		ArrayList<String> data = dataIds;
 		for (int i = 0; i < data.size(); i++) {
@@ -213,7 +180,6 @@ public class PathwayReactionNodeFactory {
 				} 
 			}
 		}
-		//System.out.println(speciesMatch);
 		if (speciesMatch) {
 			for (int j = 0; j < modelIds.size(); j++) {
 				if (LocalConfig.getInstance().getAlternateMetabolitesMap().containsKey(modelIds.get(j)) ||
@@ -239,10 +205,6 @@ public class PathwayReactionNodeFactory {
 	public boolean speciesExactMatch(ArrayList<String> dataIds, Map<String, PathwayMetaboliteData> keggIdsDataMap, ArrayList<String> modelIds) {
 		boolean speciesMatch = false;
 		boolean containsProton = false;
-//		if (modelIds.contains("C00109")) {
-//			System.out.println("data " + dataIds);
-//			System.out.println("model " + modelIds);
-//		}
 //		System.out.println("data " + dataIds);
 //		System.out.println("model " + modelIds);
 		if (modelIds.contains("C00080")) {
@@ -477,10 +439,6 @@ public class PathwayReactionNodeFactory {
 	public String displayReactionAbbreviation(ArrayList<String> reactionAbbrevations) {
 		return maybeMakeList(reactionAbbrevations, "Reaction Abbreviation");
 	}
-	
-//	public String displayReactionName(ArrayList<String> reactionNames) {
-//		return maybeMakeList(reactionNames, "Reaction Name");
-//	}
 	
 	public String displayECNumber(ArrayList<String> ecnumbers) {
 		return maybeMakeList(ecnumbers, "EC Number");

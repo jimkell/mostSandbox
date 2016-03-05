@@ -20,10 +20,8 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.geom.AffineTransform;                                                                                
 import java.awt.geom.Point2D;                                                                                        
-import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;                                                                                          
 import java.util.Collections;
 import java.util.Comparator;
@@ -55,53 +53,9 @@ import javax.swing.WindowConstants;
 import org.apache.commons.collections15.Transformer;                                                                 
 import org.apache.commons.collections15.functors.ChainedTransformer;                                                 
                                                                                                                      
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 import edu.rutgers.MOST.config.LocalConfig;
 import edu.rutgers.MOST.data.BorderRectangle;
 import edu.rutgers.MOST.data.MetabolicPathway;
-import edu.rutgers.MOST.data.PathwayMetaboliteNode;
 import edu.rutgers.MOST.data.PathwayMetaboliteNodeFactory;
 import edu.rutgers.MOST.data.PathwayNameNode;
 import edu.rutgers.MOST.data.PathwayReactionNode;
@@ -110,7 +64,6 @@ import edu.rutgers.MOST.data.PathwaysCSVFileConstants;
 import edu.rutgers.MOST.data.ReactionFactory;
 import edu.rutgers.MOST.data.SBMLMetabolite;
 import edu.rutgers.MOST.data.SBMLReaction;
-import edu.rutgers.MOST.data.SBMLReactionEquation;
 import edu.rutgers.MOST.data.SVGBuilder;
 import edu.rutgers.MOST.data.SVGEdge;
 import edu.rutgers.MOST.data.SVGText;
@@ -124,7 +77,6 @@ import edu.uci.ics.jung.graph.util.EdgeType;
 import edu.uci.ics.jung.visualization.GraphZoomScrollPane;                                                           
 import edu.uci.ics.jung.visualization.Layer;                                                                         
 import edu.uci.ics.jung.visualization.RenderContext;
-import edu.uci.ics.jung.visualization.VisualizationImageServer;
 import edu.uci.ics.jung.visualization.VisualizationViewer;                                                           
 import edu.uci.ics.jung.visualization.control.AbstractModalGraphMouse;                                               
 import edu.uci.ics.jung.visualization.control.CrossoverScalingControl;                                               
@@ -135,7 +87,6 @@ import edu.uci.ics.jung.visualization.control.ScalingControl;
 import edu.uci.ics.jung.visualization.decorators.DefaultVertexIconTransformer;
 import edu.uci.ics.jung.visualization.decorators.EdgeShape;
 import edu.uci.ics.jung.visualization.decorators.EllipseVertexShapeTransformer;
-import edu.uci.ics.jung.visualization.decorators.ToStringLabeller;                                                   
 import edu.uci.ics.jung.visualization.decorators.VertexIconShapeTransformer;
 import edu.uci.ics.jung.visualization.transform.MutableTransformer;
 import edu.uci.ics.jung.visualization.util.ArrowFactory;
@@ -148,13 +99,8 @@ import edu.uci.ics.jung.visualization.util.ArrowFactory;
  *                                                                                                                   
  */                                                                                                                  
 @SuppressWarnings("serial")                                                                                          
-public class PathwaysFrame extends JApplet {                                                                     
-	
-    /**                                                                                                              
-     * the graph                                                                                                     
-     */                                                                                                              
+public class PathwaysFrame extends JApplet {                                                                                                                                                                                 
     Graph<String, Number> graph; 
-    //public JButton redrawButton = new JButton("Redraw");
     public JPanel controls = new JPanel();
     
     private static VisualizationsFindDialog visualizationsFindDialog;                                                                                                              
@@ -182,67 +128,67 @@ public class PathwaysFrame extends JApplet {
 	/**                                                                                                              
      * the visual component and renderer for the graph                                                               
      */                                                                                                              
-    VisualizationViewer<String, Number> vv;  
-    
-    //public final JMenuItem visualizationOptionsItem = new JMenuItem(VisualizationOptionsConstants.VISUALIZATION_OPTIONS_MENU_ITEM_NAME);
- 
-    // map with node names and positions
+	VisualizationViewer<String, Number> vv;  
+
+	//public final JMenuItem visualizationOptionsItem = new JMenuItem(VisualizationOptionsConstants.VISUALIZATION_OPTIONS_MENU_ITEM_NAME);
+
+	// map with node names and positions
 	Map<String, String[]> nodeNamePositionMap = new HashMap<String, String[]>();
 	// keyset of node names
 	ArrayList<String> nodeNameList = new ArrayList<String>(); 
-   	
-   	// key = name of rxn, value = reactant, product, reversible
-   	Map<String, String[]> reactionMap = new HashMap<String, String[]>(); 
-   	// keyset of reactions
-   	ArrayList<String> reactionList = new ArrayList<String>();
-   	
-   	// lists used to distinguish node types
-   	ArrayList<String> borderList = new ArrayList<String>();   // compartment border
-   	ArrayList<String> noBorderList = new ArrayList<String>();   // metabolite node border
-   	ArrayList<String> pathwayNames = new ArrayList<String>();
-   	ArrayList<String> mainMetabolites = new ArrayList<String>();
-   	ArrayList<String> smallMainMetabolites = new ArrayList<String>();
-   	ArrayList<String> sideMetabolites = new ArrayList<String>();
-   	ArrayList<String> cofactors = new ArrayList<String>();
-   	ArrayList<String> reactions = new ArrayList<String>();
-   	Map<String, Double> fluxMap = new HashMap<String, Double>(); 
-   	Map<String, Double> colorMap = new HashMap<String, Double>();
-   	ArrayList<String> koReactions = new ArrayList<String>();
-   	ArrayList<String> foundMetabolitesList = new ArrayList<String>();
-   	ArrayList<String> foundReactionsList = new ArrayList<String>();
-   	ArrayList<String> foundPathwayNamesList = new ArrayList<String>();
-   	Map<String, Icon> iconMap = new HashMap<String, Icon>(); 
-   	ArrayList<Integer> plottedIds = new ArrayList<Integer>();
-   	Map<String, String> oldNameNewNameMap = new HashMap<String, String>(); 
-   	
-   	// maps for find - exact match
-   	HashMap<String, ArrayList<String[]>> metaboliteAbbrPositionsMap = new HashMap<String, ArrayList<String[]>>();
-   	HashMap<String, ArrayList<String[]>> keggMetaboliteIdPositionsMap = new HashMap<String, ArrayList<String[]>>();
-   	HashMap<String, ArrayList<String[]>> ecNumberPositionsMap = new HashMap<String, ArrayList<String[]>>();
-   	HashMap<String, ArrayList<String[]>> keggReactionIdPositionsMap = new HashMap<String, ArrayList<String[]>>();
-   	HashMap<String, ArrayList<String[]>> reactionAbbrPositionsMap = new HashMap<String, ArrayList<String[]>>();
-   	
-   	PathwayReactionNodeFactory prnf = new PathwayReactionNodeFactory();
-   	PathwayMetaboliteNodeFactory pmnf = new PathwayMetaboliteNodeFactory();
-   	Utilities util = new Utilities();
-   	
-   	String compartmentLabel = "Model Name: " + LocalConfig.getInstance().getModelName();
-   	
-//   	private double layoutScale;
-   	private double viewScale = PathwaysFrameConstants.START_SCALING_FACTOR;
-   	
-//   	private double startX = 0;
-//   	private double startY = PathwaysFrameConstants.START_Y;
-   	private double startX = 2*PathwaysFrameConstants.HORIZONTAL_INCREMENT;
-   	private double startY = PathwaysFrameConstants.START_Y;
-   
-   	private final JMenuItem saveGraphSVGItem = new JMenuItem("Save Graph As SVG");
-   	private final JMenuItem saveWindowPNGItem = new JMenuItem("Save Window As PNG");
-   	private final JCheckBoxMenuItem transformItem = new JCheckBoxMenuItem("Transform");
-   	
-   	private final JMenuItem findItem = new JMenuItem("Find");
-   	
-   	private NodeInformationDialog nodeInformationDialog;
+
+	// key = name of rxn, value = reactant, product, reversible
+	Map<String, String[]> reactionMap = new HashMap<String, String[]>(); 
+	// keyset of reactions
+	ArrayList<String> reactionList = new ArrayList<String>();
+
+	// lists used to distinguish node types
+	ArrayList<String> borderList = new ArrayList<String>();   // compartment border
+	ArrayList<String> noBorderList = new ArrayList<String>();   // metabolite node border
+	ArrayList<String> pathwayNames = new ArrayList<String>();
+	ArrayList<String> mainMetabolites = new ArrayList<String>();
+	ArrayList<String> smallMainMetabolites = new ArrayList<String>();
+	ArrayList<String> sideMetabolites = new ArrayList<String>();
+	ArrayList<String> cofactors = new ArrayList<String>();
+	ArrayList<String> reactions = new ArrayList<String>();
+	Map<String, Double> fluxMap = new HashMap<String, Double>(); 
+	Map<String, Double> colorMap = new HashMap<String, Double>();
+	ArrayList<String> koReactions = new ArrayList<String>();
+	ArrayList<String> foundMetabolitesList = new ArrayList<String>();
+	ArrayList<String> foundReactionsList = new ArrayList<String>();
+	ArrayList<String> foundPathwayNamesList = new ArrayList<String>();
+	Map<String, Icon> iconMap = new HashMap<String, Icon>(); 
+	ArrayList<Integer> plottedIds = new ArrayList<Integer>();
+	Map<String, String> oldNameNewNameMap = new HashMap<String, String>(); 
+
+	// maps for find - exact match
+	HashMap<String, ArrayList<String[]>> metaboliteAbbrPositionsMap = new HashMap<String, ArrayList<String[]>>();
+	HashMap<String, ArrayList<String[]>> keggMetaboliteIdPositionsMap = new HashMap<String, ArrayList<String[]>>();
+	HashMap<String, ArrayList<String[]>> ecNumberPositionsMap = new HashMap<String, ArrayList<String[]>>();
+	HashMap<String, ArrayList<String[]>> keggReactionIdPositionsMap = new HashMap<String, ArrayList<String[]>>();
+	HashMap<String, ArrayList<String[]>> reactionAbbrPositionsMap = new HashMap<String, ArrayList<String[]>>();
+
+	PathwayReactionNodeFactory prnf = new PathwayReactionNodeFactory();
+	PathwayMetaboliteNodeFactory pmnf = new PathwayMetaboliteNodeFactory();
+	Utilities util = new Utilities();
+
+	String compartmentLabel = "Model Name: " + LocalConfig.getInstance().getModelName();
+
+	//   	private double layoutScale;
+	private double viewScale = PathwaysFrameConstants.START_SCALING_FACTOR;
+
+	//   	private double startX = 0;
+	//   	private double startY = PathwaysFrameConstants.START_Y;
+	private double startX = 2*PathwaysFrameConstants.HORIZONTAL_INCREMENT;
+	private double startY = PathwaysFrameConstants.START_Y;
+
+	private final JMenuItem saveGraphSVGItem = new JMenuItem("Save Graph As SVG");
+	private final JMenuItem saveWindowPNGItem = new JMenuItem("Save Window As PNG");
+	private final JCheckBoxMenuItem transformItem = new JCheckBoxMenuItem("Transform");
+
+	private final JMenuItem findItem = new JMenuItem("Find");
+
+	private NodeInformationDialog nodeInformationDialog;
 
 	public NodeInformationDialog getNodeInformationDialog() {
 		return nodeInformationDialog;
@@ -253,103 +199,103 @@ public class PathwaysFrame extends JApplet {
 	}
 
 	protected EdgeWeightStrokeFunction<Number> ewcs;
-   	@SuppressWarnings("rawtypes")
+	@SuppressWarnings("rawtypes")
 	protected DirectionalEdgeArrowTransformer arrowTransformer;
-   	protected Map<Number, Number> edge_weight = new HashMap<Number, Number>();
-   	protected Map<Number, Number> edge_color = new HashMap<Number, Number>();
-   	
-   	private ArrayList<MetabolicPathway> pathwaysList;
-                                                                                                                     
-    public ArrayList<MetabolicPathway> getPathwaysList() {
+	protected Map<Number, Number> edge_weight = new HashMap<Number, Number>();
+	protected Map<Number, Number> edge_color = new HashMap<Number, Number>();
+
+	private ArrayList<MetabolicPathway> pathwaysList;
+
+	public ArrayList<MetabolicPathway> getPathwaysList() {
 		return pathwaysList;
 	}
 
 	public void setPathwaysList(ArrayList<MetabolicPathway> pathwaysList) {
 		this.pathwaysList = pathwaysList;
 	}
-	
+
 	private Map<String, ArrayList<Double>> startPosMap = new HashMap<String, ArrayList<Double>>();
 
 	// find-replace values 
 	private boolean findMode;
-//	private boolean findButtonClicked;
+	//	private boolean findButtonClicked;
 	private boolean matchCase;
 	private boolean wrapAround;
 	private boolean searchBackwards;
 	private boolean exactMatch;
-//	private boolean findFieldChanged;
+	//	private boolean findFieldChanged;
 	private boolean notFoundShown = false;
-	
+
 	private String oldFindValue = "";
 	private int findStartIndex = 0;
-	
+
 	final ScalingControl scaler = new CrossoverScalingControl();
-	
+
 	/**                                                                                                              
-     * create an instance of a simple graph with controls to                                                         
-     * demo the zoom features.                                                                                       
-     *                                                                                                               
-     */                                                                                                              
-    @SuppressWarnings({ "rawtypes", "unchecked" })
+	 * create an instance of a simple graph with controls to                                                         
+	 * demo the zoom features.                                                                                       
+	 *                                                                                                               
+	 */                                                                                                              
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public PathwaysFrame(int component) { 
-        setLayout(new BorderLayout());
-        //final ScalingControl scaler = new CrossoverScalingControl();
-        
-        transformItem.setState(false);
-        
-        // register actions
- 		ActionListener findActionListener = new ActionListener() {
- 			public void actionPerformed(ActionEvent actionEvent) {
- 				showFindDialog();							
- 			}
- 		};
- 		
- 		VisualizationsFindDialog.findButton.addActionListener(findNextButtonActionListener);
- 		VisualizationsFindDialog.doneButton.addActionListener(findDoneButtonActionListener);
- 		VisualizationsFindDialog.caseCheckBox.addActionListener(matchCaseActionListener);
- 		VisualizationsFindDialog.wrapCheckBox.addActionListener(wrapAroundActionListener);
- 		VisualizationsFindDialog.backwardsCheckBox.addActionListener(searchBackwardsActionListener);
- 		VisualizationsFindDialog.exactMatchCheckBox.addActionListener(exactMatchActionListener);
-        
-        KeyStroke find = KeyStroke.getKeyStroke(KeyEvent.VK_F,ActionEvent.CTRL_MASK,false);
-        getRootPane().registerKeyboardAction(findActionListener,find,JComponent.WHEN_IN_FOCUSED_WINDOW); 
-        
-        /**************************************************************************/
-    	// create menu bar
-    	/**************************************************************************/
+		setLayout(new BorderLayout());
+		//final ScalingControl scaler = new CrossoverScalingControl();
 
-    	JMenuBar menuBar = new JMenuBar();
+		transformItem.setState(false);
 
-    	setJMenuBar(menuBar);
+		// register actions
+		ActionListener findActionListener = new ActionListener() {
+			public void actionPerformed(ActionEvent actionEvent) {
+				showFindDialog();							
+			}
+		};
 
-    	JMenu fileMenu = new JMenu("File");
-    	fileMenu.setMnemonic(KeyEvent.VK_F);
-    	
-    	fileMenu.add(saveGraphSVGItem);
-    	saveGraphSVGItem.setMnemonic(KeyEvent.VK_S);
-    	
-    	saveGraphSVGItem.addActionListener(new ActionListener() {
+		VisualizationsFindDialog.findButton.addActionListener(findNextButtonActionListener);
+		VisualizationsFindDialog.doneButton.addActionListener(findDoneButtonActionListener);
+		VisualizationsFindDialog.caseCheckBox.addActionListener(matchCaseActionListener);
+		VisualizationsFindDialog.wrapCheckBox.addActionListener(wrapAroundActionListener);
+		VisualizationsFindDialog.backwardsCheckBox.addActionListener(searchBackwardsActionListener);
+		VisualizationsFindDialog.exactMatchCheckBox.addActionListener(exactMatchActionListener);
+
+		KeyStroke find = KeyStroke.getKeyStroke(KeyEvent.VK_F,ActionEvent.CTRL_MASK,false);
+		getRootPane().registerKeyboardAction(findActionListener,find,JComponent.WHEN_IN_FOCUSED_WINDOW); 
+
+		/**************************************************************************/
+		// create menu bar
+		/**************************************************************************/
+
+		JMenuBar menuBar = new JMenuBar();
+
+		setJMenuBar(menuBar);
+
+		JMenu fileMenu = new JMenu("File");
+		fileMenu.setMnemonic(KeyEvent.VK_F);
+
+		fileMenu.add(saveGraphSVGItem);
+		saveGraphSVGItem.setMnemonic(KeyEvent.VK_S);
+
+		saveGraphSVGItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
 				saveGraphAsSVG();
 			}
 		});
-    	
-    	fileMenu.add(saveWindowPNGItem);
-    	saveWindowPNGItem.setMnemonic(KeyEvent.VK_W);
-    	
-    	saveWindowPNGItem.addActionListener(new ActionListener() {
+
+		fileMenu.add(saveWindowPNGItem);
+		saveWindowPNGItem.setMnemonic(KeyEvent.VK_W);
+
+		saveWindowPNGItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
 				JTextArea output = null;
 				JFileChooser fileChooser = new JFileChooser();
 				fileChooser.setDialogTitle("Save PNG File");
 				fileChooser.setFileFilter(new PNGFileFilter());
 				fileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
-				
+
 				String lastPNG_path = GraphicalInterface.curSettings.get("LastPNGPath");
 				Utilities u = new Utilities();
 				// if path is null or does not exist, default used, else last path used		
 				fileChooser.setCurrentDirectory(new File(u.lastPath(lastPNG_path, fileChooser)));
-				
+
 				boolean done = false;
 				while (!done) {
 					//... Open a file dialog.
@@ -387,653 +333,530 @@ public class PathwaysFrame extends JApplet {
 							}       		    	  
 						} else {
 							done = true;
-							
+
 							saveWindowAsPNG(path);
 						}
 					}
 				}
 			}
 		});
-    	
-    	fileMenu.add(saveWindowPNGItem);
 
-    	menuBar.add(fileMenu);
-    	
-    	JMenu editMenu = new JMenu("Edit");
-    	fileMenu.setMnemonic(KeyEvent.VK_E);
-    	
-    	editMenu.add(findItem);
-    	findItem.addActionListener(new ActionListener() {
+		fileMenu.add(saveWindowPNGItem);
+
+		menuBar.add(fileMenu);
+
+		JMenu editMenu = new JMenu("Edit");
+		fileMenu.setMnemonic(KeyEvent.VK_E);
+
+		editMenu.add(findItem);
+		findItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
 				if (!findMode) {
 					showFindDialog();
 				}	
 			}
 		});
-    	
-    	editMenu.add(transformItem);
-    	transformItem.setMnemonic(KeyEvent.VK_T);
 
-    	transformItem.addActionListener(new ActionListener() {
+		editMenu.add(transformItem);
+		transformItem.setMnemonic(KeyEvent.VK_T);
+
+		transformItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
 				boolean state = transformItem.getState();
 				if (state == true) {
 					final AbstractModalGraphMouse graphMouse = new DefaultModalGraphMouse(); 
 					graphMouse.setMode(ModalGraphMouse.Mode.PICKING);
-			        vv.setGraphMouse(graphMouse); 
+					vv.setGraphMouse(graphMouse); 
 				} else {
 					final AbstractModalGraphMouse graphMouse = new DefaultModalGraphMouse(); 
 					graphMouse.setMode(ModalGraphMouse.Mode.TRANSFORMING);
-			        vv.setGraphMouse(graphMouse); 
+					vv.setGraphMouse(graphMouse); 
 				}
 			}
 		});
 
-    	menuBar.add(editMenu);
-    	
-    	/**************************************************************************/
-    	// end create menu bar
-    	/**************************************************************************/
-         
-    	processData(component);
-    	
-    	// create graph
-        graph = new SparseMultigraph<String, Number>();
-        createVertices();
-        createEdges(); 
-        LocalConfig.getInstance().setVisualizationsProgress(100);
-                                                                                                                                                                                                                                                                                                                      
-        Dimension layoutSize = new Dimension(PathwaysFrameConstants.GRAPH_WIDTH, PathwaysFrameConstants.GRAPH_HEIGHT);                                                             
-                                                                                                                     
-        Layout<String,Number> layout = new StaticLayout<String,Number>(graph,                                        
-        		new ChainedTransformer(new Transformer[]{                                                            
-        				new MetabTransformer(nodeNamePositionMap),                                                                    
-        				new PixelTransformer(new Dimension(PathwaysFrameConstants.GRAPH_WIDTH, PathwaysFrameConstants.GRAPH_HEIGHT))                                         
-        		}));                                                                                                 
-        	                                                                                                         
-        layout.setSize(layoutSize);   
-        vv =  new VisualizationViewer<String,Number>(layout,                                                         
-        		new Dimension(PathwaysFrameConstants.GRAPH_WINDOW_WIDTH, 
-        				PathwaysFrameConstants.GRAPH_WINDOW_HEIGHT));   
-        
-        //final ScalingControl scaler = new CrossoverScalingControl();
-        
-        Point2D.Float p = new Point2D.Float(0.f, 0.f);
-        scaler.scale(vv, PathwaysFrameConstants.START_SCALING_FACTOR, p);
-        //scaler.scale(vv, PathwaysFrameConstants.START_SCALING_FACTOR, vv.getCenter());
-        
-        vv.setBackground(Color.white);
-        
-        // based on code from http://stackoverflow.com/questions/21657249/mouse-events-on-vertex-of-jung-graph
-        vv.addGraphMouseListener(new GraphMouseListener() {
+		menuBar.add(editMenu);
+
+		/**************************************************************************/
+		// end create menu bar
+		/**************************************************************************/
+
+		processData(component);
+
+		// create graph
+		graph = new SparseMultigraph<String, Number>();
+		createVertices();
+		createEdges(); 
+		LocalConfig.getInstance().setVisualizationsProgress(100);
+
+		Dimension layoutSize = new Dimension(PathwaysFrameConstants.GRAPH_WIDTH, PathwaysFrameConstants.GRAPH_HEIGHT);                                                             
+
+		Layout<String,Number> layout = new StaticLayout<String,Number>(graph,                                        
+				new ChainedTransformer(new Transformer[]{                                                            
+						new MetabTransformer(nodeNamePositionMap),                                                                    
+						new PixelTransformer(new Dimension(PathwaysFrameConstants.GRAPH_WIDTH, PathwaysFrameConstants.GRAPH_HEIGHT))                                         
+				}));                                                                                                 
+
+		layout.setSize(layoutSize);   
+		vv =  new VisualizationViewer<String,Number>(layout,                                                         
+				new Dimension(PathwaysFrameConstants.GRAPH_WINDOW_WIDTH, 
+						PathwaysFrameConstants.GRAPH_WINDOW_HEIGHT));   
+
+		//final ScalingControl scaler = new CrossoverScalingControl();
+
+		Point2D.Float p = new Point2D.Float(0.f, 0.f);
+		scaler.scale(vv, PathwaysFrameConstants.START_SCALING_FACTOR, p);
+		//scaler.scale(vv, PathwaysFrameConstants.START_SCALING_FACTOR, vv.getCenter());
+
+		vv.setBackground(Color.white);
+
+		// based on code from http://stackoverflow.com/questions/21657249/mouse-events-on-vertex-of-jung-graph
+		vv.addGraphMouseListener(new GraphMouseListener() {
 
 			@Override
 			public void graphClicked(final Object arg0, MouseEvent me) {
 				// TODO Auto-generated method stub
 				if (me.getButton() == MouseEvent.BUTTON3) {
 					final VisualizationViewer<String,String> vv =(VisualizationViewer<String,String>)me.getSource();
-//			        final Point2D p = me.getPoint();
-			        JPopupMenu popup = new JPopupMenu();
-			        JMenuItem nodeInformationMenu = new JMenuItem("View Node Information");
-			        nodeInformationMenu.addActionListener(new ActionListener() {
+					//			        final Point2D p = me.getPoint();
+					JPopupMenu popup = new JPopupMenu();
+					JMenuItem nodeInformationMenu = new JMenuItem("View Node Information");
+					nodeInformationMenu.addActionListener(new ActionListener() {
 						public void actionPerformed(ActionEvent ae) {
 							createNodeInformationDialog(arg0);
 						}
 					});
-			        popup.add(nodeInformationMenu);
-			        popup.show(vv, me.getX(), me.getY());
-                }
+					popup.add(nodeInformationMenu);
+					popup.show(vv, me.getX(), me.getY());
+				}
 				if (me.getButton() == MouseEvent.BUTTON1 && me.getClickCount() == 2) {
 					createNodeInformationDialog(arg0);
-                }
-                me.consume();
+				}
+				me.consume();
 			}
 
 			@Override
 			public void graphPressed(Object arg0, MouseEvent me) {
 				// TODO Auto-generated method stub
-				
+
 			}
 
 			@Override
 			public void graphReleased(Object arg0, MouseEvent me) {
 				// TODO Auto-generated method stub
-				
+
 			}
-            
-        });
-           
-        //System.out.println("fl " + foundReactionsList);            
-        
-        final VertexIconShapeTransformer<String> vertexImageShapeFunction =                                                                           
-                new VertexIconShapeTransformer<String>(new EllipseVertexShapeTransformer<String>());                                                      
-                                                                                                                                                          
-        final DefaultVertexIconTransformer<String> vertexIconFunction =                                                                               
-            	new DefaultVertexIconTransformer<String>(); 
-        
-        createIconMap();
-        vertexImageShapeFunction.setIconMap(iconMap);                                                                                                 
-        vertexIconFunction.setIconMap(iconMap);                                                                                                       
-                                                                                                                                                      
-        vv.getRenderContext().setVertexShapeTransformer(vertexImageShapeFunction);                                                                    
-        vv.getRenderContext().setVertexIconTransformer(vertexIconFunction); 
-        
-        // this class will provide both label drawing and vertex shapes
-        //VertexLabelAsShapeRenderer<String,Number> vlasr = new VertexLabelAsShapeRenderer<String,Number>(vv.getRenderContext());
 
-        vv.addPreRenderPaintable(new VisualizationViewer.Paintable(){                                            
-        	public void paint(Graphics g) {                                                                      
-        		Graphics2D g2d = (Graphics2D)g;                                                                  
-        		AffineTransform oldXform = g2d.getTransform();                                                   
-        		AffineTransform lat =                                                                            
-        				vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.LAYOUT).getTransform();
-        		AffineTransform vat =                                                                            
-        				vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.VIEW).getTransform();  
-        		AffineTransform at = new AffineTransform();                                                      
-        		at.concatenate(g2d.getTransform());                                                              
-        		at.concatenate(vat);                                                                             
-        		at.concatenate(lat);                                                                             
-        		g2d.setTransform(at);                                                                            
-        		//                    g.drawImage(icon.getImage(), 0, 0,                                                               
-        		//                    		icon.getIconWidth(),icon.getIconHeight(),vv);                                            
-        		g2d.setTransform(oldXform);                                                                      
-        	}                                                                                                    
-        	public boolean useTransform() { return false; }                                                      
-        });  
-        
-        ewcs = new EdgeWeightStrokeFunction<Number>(edge_weight);
-        //arrowTransformer = new DirectionalEdgeArrowTransformer(PathwaysFrameConstants.ARROW_LENGTH, PathwaysFrameConstants.ARROW_WIDTH, PathwaysFrameConstants.ARROW_NOTCH); 
-        arrowTransformer = new DirectionalEdgeArrowTransformer();
-        
-        // don't think this is necessary
-        //vv.getRenderContext().setVertexLabelRenderer(new DefaultVertexLabelRenderer(Color.gray));
-        
-        // all edges same color
-        //vv.getRenderContext().setEdgeDrawPaintTransformer(new ConstantTransformer(Color.black));
-        // vary colors
-        vv.getRenderContext().setEdgeDrawPaintTransformer(colorTransformer);
-        
-        // all edges same thickness
-        //vv.getRenderContext().setEdgeStrokeTransformer(new ConstantTransformer(new BasicStroke(2.5f)));
-        // vary edge thicknesses
-        vv.getRenderContext().setEdgeStrokeTransformer(ewcs);
-        
-        // all arrows same
-        vv.getRenderContext().setEdgeArrowTransformer(arrowTransformer);
-        vv.getRenderContext().setArrowFillPaintTransformer(colorTransformer);
-        vv.getRenderContext().setArrowDrawPaintTransformer(colorTransformer);
-        
-        // add listeners for ToolTips  
-        //vv.setVertexToolTipTransformer(new ToStringLabeller()); 
-        
-        // Tooltips can be set programmatically
-        // based on http://stackoverflow.com/questions/31940238/settooltip-in-jung-for-several-vertices
-        vv.setVertexToolTipTransformer(new Transformer<String,String>() {                                              
-        	public String transform(String v) {
-        		return nodeName(v);                                                    
-        	}});                                
-        // no tooltips on edges for now
-        vv.setEdgeToolTipTransformer(new Transformer<Number,String>() {                                              
-        	public String transform(Number edge) {
-        		return "";
-        		//return "E"+graph.getEndpoints(edge).toString();                                                      
-        	}});                                                                                                     
-                   
-        vv.getRenderContext().setEdgeShapeTransformer(new EdgeShape.Line<String,Number>());
-        
-        final GraphZoomScrollPane panel = new GraphZoomScrollPane(vv);
-        add(panel);
-        final AbstractModalGraphMouse graphMouse = new DefaultModalGraphMouse(); 
+		});          
+
+		final VertexIconShapeTransformer<String> vertexImageShapeFunction =                                                                           
+				new VertexIconShapeTransformer<String>(new EllipseVertexShapeTransformer<String>());                                                      
+
+		final DefaultVertexIconTransformer<String> vertexIconFunction =                                                                               
+				new DefaultVertexIconTransformer<String>(); 
+
+		createIconMap();
+		vertexImageShapeFunction.setIconMap(iconMap);                                                                                                 
+		vertexIconFunction.setIconMap(iconMap);                                                                                                       
+
+		vv.getRenderContext().setVertexShapeTransformer(vertexImageShapeFunction);                                                                    
+		vv.getRenderContext().setVertexIconTransformer(vertexIconFunction); 
+
+		// this class will provide both label drawing and vertex shapes
+		//VertexLabelAsShapeRenderer<String,Number> vlasr = new VertexLabelAsShapeRenderer<String,Number>(vv.getRenderContext());
+
+		vv.addPreRenderPaintable(new VisualizationViewer.Paintable(){                                            
+			public void paint(Graphics g) {                                                                      
+				Graphics2D g2d = (Graphics2D)g;                                                                  
+				AffineTransform oldXform = g2d.getTransform();                                                   
+				AffineTransform lat =                                                                            
+						vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.LAYOUT).getTransform();
+				AffineTransform vat =                                                                            
+						vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.VIEW).getTransform();  
+				AffineTransform at = new AffineTransform();                                                      
+				at.concatenate(g2d.getTransform());                                                              
+				at.concatenate(vat);                                                                             
+				at.concatenate(lat);                                                                             
+				g2d.setTransform(at);                                                                                                                       
+				g2d.setTransform(oldXform);                                                                      
+			}                                                                                                    
+			public boolean useTransform() { return false; }                                                      
+		});  
+
+		ewcs = new EdgeWeightStrokeFunction<Number>(edge_weight);
+		arrowTransformer = new DirectionalEdgeArrowTransformer();
+
+		// vary colors
+		vv.getRenderContext().setEdgeDrawPaintTransformer(colorTransformer);
+
+		// vary edge thicknesses
+		vv.getRenderContext().setEdgeStrokeTransformer(ewcs);
+
+		// all arrows same
+		vv.getRenderContext().setEdgeArrowTransformer(arrowTransformer);
+		vv.getRenderContext().setArrowFillPaintTransformer(colorTransformer);
+		vv.getRenderContext().setArrowDrawPaintTransformer(colorTransformer);
+
+		// Tooltips can be set programmatically
+		// based on http://stackoverflow.com/questions/31940238/settooltip-in-jung-for-several-vertices
+		vv.setVertexToolTipTransformer(new Transformer<String,String>() {                                              
+			public String transform(String v) {
+				return nodeName(v);                                                    
+			}});                                
+		// no tooltips on edges
+		vv.setEdgeToolTipTransformer(new Transformer<Number,String>() {                                              
+			public String transform(Number edge) {
+				return "";
+				//return "E"+graph.getEndpoints(edge).toString();                                                      
+			}});                                                                                                     
+
+		vv.getRenderContext().setEdgeShapeTransformer(new EdgeShape.Line<String,Number>());
+
+		final GraphZoomScrollPane panel = new GraphZoomScrollPane(vv);
+		add(panel);
+		final AbstractModalGraphMouse graphMouse = new DefaultModalGraphMouse(); 
 		graphMouse.setMode(ModalGraphMouse.Mode.TRANSFORMING);
-        vv.setGraphMouse(graphMouse); 
-                                                                                                                
-        //final ScalingControl scaler = new CrossoverScalingControl();                                                 
-           
-        // not sure what this does
-        //vv.scaleToLayout(scaler);                                                                                                                                                                                              
-                                                                                                                     
-        JButton plus = new JButton("+");                                                                             
-        plus.addActionListener(new ActionListener() {                                                                
-            public void actionPerformed(ActionEvent e) { 
-                scaler.scale(vv, PathwaysFrameConstants.SCALING_FACTOR, vv.getCenter());
-//                System.out.println("layout scale " + vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.LAYOUT).getScale());
-//				System.out.println("view scale " + vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.VIEW).getScale());
-//                layoutScale = vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.LAYOUT).getScale();
+		vv.setGraphMouse(graphMouse); 
+
+		//final ScalingControl scaler = new CrossoverScalingControl();                                                 
+
+		// not sure what this does
+		//vv.scaleToLayout(scaler);                                                                                                                                                                                              
+
+		JButton plus = new JButton("+");                                                                             
+		plus.addActionListener(new ActionListener() {                                                                
+			public void actionPerformed(ActionEvent e) { 
+				scaler.scale(vv, PathwaysFrameConstants.SCALING_FACTOR, vv.getCenter());
+				//                System.out.println("layout scale " + vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.LAYOUT).getScale());
+				//				System.out.println("view scale " + vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.VIEW).getScale());
+				//                layoutScale = vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.LAYOUT).getScale();
 				viewScale = vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.VIEW).getScale();
-            }                                                                                                        
-        });                                                                                                          
-        JButton minus = new JButton("-");                                                                            
-        minus.addActionListener(new ActionListener() {                                                               
-            public void actionPerformed(ActionEvent e) {                                                             
-                scaler.scale(vv, 1/PathwaysFrameConstants.SCALING_FACTOR, vv.getCenter());
-//                System.out.println("layout scale " + vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.LAYOUT).getScale());
-//				System.out.println("view scale " + vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.VIEW).getScale());
-//                layoutScale = vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.LAYOUT).getScale();
+			}                                                                                                        
+		});                                                                                                          
+		JButton minus = new JButton("-");                                                                            
+		minus.addActionListener(new ActionListener() {                                                               
+			public void actionPerformed(ActionEvent e) {                                                             
+				scaler.scale(vv, 1/PathwaysFrameConstants.SCALING_FACTOR, vv.getCenter());
+				//                System.out.println("layout scale " + vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.LAYOUT).getScale());
+				//				System.out.println("view scale " + vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.VIEW).getScale());
+				//                layoutScale = vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.LAYOUT).getScale();
 				viewScale = vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.VIEW).getScale();
-            }                                                                                                        
-        });                                                                                                          
-                                                                                                                     
-//        JButton reset = new JButton("Reset");                                                                        
-//        reset.addActionListener(new ActionListener() {                                                               
-//                                                                                                                     
-//			public void actionPerformed(ActionEvent e) {                                                             
-//				vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.LAYOUT).setToIdentity();       
-//				vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.VIEW).setToIdentity();  
-//				System.out.println("layout scale " + vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.LAYOUT).getScale());
-//				System.out.println("view scale " + vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.VIEW).getScale());
-//				layoutScale = vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.LAYOUT).getScale();
-//				viewScale = vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.VIEW).getScale();
-//			}}); 
-        
-        //JButton redraw = new JButton("Redraw");                                                                        
-//        redrawButton.addActionListener(new ActionListener() {                                                               
-//
-//        	public void actionPerformed(ActionEvent e) {                                                             
-//
-//        	}});
+			}                                                                                                        
+		});                                                                                                          
 
-        //JPanel controls = new JPanel();                                                                              
-        controls.add(plus);                                                                                          
-        controls.add(minus); 
-        //controls.add(redrawButton);
-        //controls.add(reset);                                                                                         
-        add(controls, BorderLayout.SOUTH);  
-       
-    }  
-    
-    public void saveGraphAsSVG() {
-    	SVGBuilder builder = new SVGBuilder();
-//    	ArrayList<ArrayList<String[]>> edges = new ArrayList<ArrayList<String[]>>();
-    	ArrayList<SVGEdge> edges = new ArrayList<SVGEdge>();
-    	for(int i=0; i<reactionList.size(); i++) {
-    		String[] info = reactionMap.get(reactionList.get(i));
-    		if (nodeNamePositionMap.containsKey(info[0]) && nodeNamePositionMap.containsKey(info[1])) {
-    			SVGEdge edge = new SVGEdge();
-    			ArrayList<String[]> endpoints = new ArrayList<String[]>();
-    			endpoints.add(nodeNamePositionMap.get(info[0]));
-    			endpoints.add(nodeNamePositionMap.get(info[1]));
-    			edge.setEndpoints(endpoints);
-    			edge.setStroke(colorFromColorValue(PathwaysFrameConstants.DEFAULT_COLOR_VALUE));
-    			if (colorMap.containsKey(reactionList.get(i))) {
-    				double color = colorMap.get(reactionList.get(i));
-    				edge.setStroke(colorFromColorValue(color));
-    			}
-    			edge.setStrokeWidth("1");
-    			if (fluxMap.containsKey(reactionList.get(i))) {
-    				double fluxValue = fluxMap.get(reactionList.get(i));
-    				if (fluxValue > 1) {
-    					edge.setStrokeWidth(Double.toString(fluxValue));
-    				}
-    			}
-    			edges.add(edge);
-    		} else {
-    			//System.out.println("enf");
-    		}
-    	}
-    	builder.setEdges(edges);
-    	ArrayList<BorderRectangle> rects = new ArrayList<BorderRectangle>();
-    	ArrayList<SVGText> textList = new ArrayList<SVGText>();
-    	for (int j = 0; j < nodeNameList.size(); j++) {
-    		if (nodeNamePositionMap.containsKey(nodeNameList.get(j))) {
-    			double width = PathwaysFrameConstants.METABOLITE_BORDER_NODE_WIDTH;
-    			double height = PathwaysFrameConstants.METABOLITE_BORDER_NODE_HEIGHT;
-    			
-    			// set border color, borderless is node background color
-    			Color stroke = Color.BLACK;
-    			if (noBorderList.contains(nodeNameList.get(j)) || reactions.contains(nodeNameList.get(j))) {
-    				stroke = PathwaysFrameConstants.NODE_BACKGROUND_DETAULT_COLOR;
-    			} else if (pathwayNames.contains(nodeNameList.get(j))) {
-    				stroke = PathwaysFrameConstants.PATHWAY_NAME_COLOR;
-    			} else {
-    				if (mainMetabolites.contains(nodeNameList.get(j))) {
-            			if (!foundMetabolitesList.contains(nodeNameList.get(j)) && LocalConfig.getInstance().isHighlightMissingMetabolitesSelected()) {
-            				stroke = PathwaysFrameConstants.METABOLITE_NOT_FOUND_COLOR;
-            			}
-            		} else if (smallMainMetabolites.contains(nodeNameList.get(j))) {
-            			if (!foundMetabolitesList.contains(nodeNameList.get(j)) && LocalConfig.getInstance().isHighlightMissingMetabolitesSelected()) {
-            				stroke = PathwaysFrameConstants.METABOLITE_NOT_FOUND_COLOR;
-            			}
-            		} else if (sideMetabolites.contains(nodeNameList.get(j))) {
-            			if (!foundMetabolitesList.contains(nodeNameList.get(j)) && LocalConfig.getInstance().isHighlightMissingMetabolitesSelected()) {
-            				stroke = PathwaysFrameConstants.METABOLITE_NOT_FOUND_COLOR;
-            			}
-            			if (cofactors.contains(nodeNameList.get(j))) {
-            				stroke = PathwaysFrameConstants.COFACTOR_COLOR;
-            				if (!foundMetabolitesList.contains(nodeNameList.get(j)) && LocalConfig.getInstance().isHighlightMissingMetabolitesSelected()) {
-                				stroke = PathwaysFrameConstants.COFACTOR_NOT_FOUND_COLOR;
-                			}
-            			}
-            		} else if (reactions.contains(nodeNameList.get(j))) {
-            			stroke = PathwaysFrameConstants.REACTION_NODE_DETAULT_FONT_COLOR;
-            			if (!foundReactionsList.contains(nodeNameList.get(j)) && LocalConfig.getInstance().isHighlightMissingReactionsSelected()) {
-            				stroke = PathwaysFrameConstants.REACTION_NOT_FOUND_FONT_COLOR;
-            			} else if (koReactions.contains(nodeNameList.get(j))) {
-            				stroke = PathwaysFrameConstants.REACTION_KO_FONT_COLOR;
-            			}
-            		}
-    			}
-    			double strokeWidth = PathwaysFrameConstants.BORDER_THICKNESS;
-    			Color fillColor = PathwaysFrameConstants.NODE_BACKGROUND_DETAULT_COLOR;
-    			if (borderList.contains(nodeNameList.get(j))) {
-            		width = (int) PathwaysFrameConstants.BORDER_THICKNESS;
-            		height = (int) PathwaysFrameConstants.BORDER_THICKNESS;
-            	} else if (nodeNameList.get(j).equals(compartmentLabel)) {
-            		width = PathwaysFrameConstants.COMPARTMENT_LABEL_NODE_WIDTH;
-                	height = PathwaysFrameConstants.COMPARTMENT_LABEL_NODE_HEIGHT;
-            	} else if (mainMetabolites.contains(nodeNameList.get(j))) {
-            		if (!noBorderList.contains(nodeNameList.get(j))) {
-            			width = PathwaysFrameConstants.METABOLITE_BORDER_NODE_WIDTH;
-                    	height = PathwaysFrameConstants.METABOLITE_BORDER_NODE_HEIGHT;
-            		} else {
-            			width = PathwaysFrameConstants.METABOLITE_NO_BORDER_NODE_WIDTH;
-                    	height = PathwaysFrameConstants.METABOLITE_NO_BORDER_NODE_HEIGHT;
-            		}
-            	} else if (smallMainMetabolites.contains(nodeNameList.get(j))) {	
-            		width = PathwaysFrameConstants.SMALL_MAIN_METABOLITE_NODE_WIDTH;
-                	height = PathwaysFrameConstants.SMALL_MAIN_METABOLITE_NODE_HEIGHT;
-            	} else if (sideMetabolites.contains(nodeNameList.get(j))) {	
-            		width = PathwaysFrameConstants.SIDE_METABOLITE_NODE_WIDTH;
-                	height = PathwaysFrameConstants.SIDE_METABOLITE_NODE_HEIGHT;	
-            	} else if (reactions.contains(nodeNameList.get(j))) {
-            		width = PathwaysFrameConstants.REACTION_NODE_WIDTH;
-            		height = PathwaysFrameConstants.REACTION_NODE_HEIGHT;
-            	} else if (pathwayNames.contains(nodeNameList.get(j))) {
-            		width = PathwaysFrameConstants.PATHWAY_NAME_NODE_WIDTH;
-            		height = PathwaysFrameConstants.PATHWAY_NAME_NODE_HEIGHT; 
-            	}
-    			BorderRectangle r = new BorderRectangle();
-    			r.setX(Double.parseDouble(nodeNamePositionMap.get(nodeNameList.get(j))[0]) - width/2);
-    			r.setY(Double.parseDouble(nodeNamePositionMap.get(nodeNameList.get(j))[1]) - height/2);
-    			r.setWidth(width);
-    			r.setHeight(height);
-    			r.setStroke(stroke);
-    			r.setStrokeWidth(Double.toString(strokeWidth));
-    			r.setFill(fillColor);
-    			if (!borderList.contains(nodeNameList.get(j))) {
-    				rects.add(r);
-    			}
-//    			System.out.println(nodeNamePositionMap.get(nodeNameList.get(j))[0]);
-//    			System.out.println(nodeNamePositionMap.get(nodeNameList.get(j))[1]);
-    			SVGText svgText = new SVGText();
-        		String displayName = nodeNameList.get(j);
-        		if (LocalConfig.getInstance().getMetaboliteNameAbbrMap().containsKey(nodeNameList.get(j))) {
-        			displayName = LocalConfig.getInstance().getMetaboliteNameAbbrMap().get(nodeNameList.get(j));
-        		} 
-        		//System.out.println(displayString(displayName));
-        		Color color = Color.black;
-        		String fontSize = Integer.toString(PathwaysFrameConstants.PATHWAY_NAME_NODE_FONT_SIZE);
-        		int xOffset = 0;
-        		int yOffset = 0;
-        		if (pathwayNames.contains(nodeNameList.get(j))) {
-            		if (foundPathwayNamesList.contains(nodeNameList.get(j))) {
-            			color = PathwaysFrameConstants.PATHWAY_NAME_COLOR;
-            		} else {
-            			color = PathwaysFrameConstants.PATHWAY_NAME_NOT_FOUND_COLOR;
-            		}
-            		yOffset = PathwaysFrameConstants.PATHWAY_NAME_NODE_YPOS;
-            	} else if (nodeNameList.get(j).equals(compartmentLabel)) {
-            		fontSize = Integer.toString(PathwaysFrameConstants.COMPARTMENT_LABEL_NODE_FONT_SIZE);
-//            		graphics.setFont(new Font("Arial", Font.TYPE1_FONT, PathwaysFrameConstants.COMPARTMENT_LABEL_NODE_FONT_SIZE));
-//            		graphics.drawString(compartmentLabel, PathwaysFrameConstants.COMPARTMENT_LABEL_NODE_XPOS, PathwaysFrameConstants.COMPARTMENT_LABEL_NODE_YPOS);
-//            		graphics.drawString("Compartment Name: " + LocalConfig.getInstance().getSelectedCompartmentName(), PathwaysFrameConstants.COMPARTMENT_LABEL_NODE_XPOS, 
-//            				PathwaysFrameConstants.COMPARTMENT_LABEL_LINE_OFFSET + PathwaysFrameConstants.COMPARTMENT_LABEL_NODE_YPOS);
-            		xOffset = PathwaysFrameConstants.COMPARTMENT_LABEL_NODE_XPOS;
-            		yOffset = PathwaysFrameConstants.COMPARTMENT_LABEL_NODE_YPOS;
-            	} else {
-            		if (mainMetabolites.contains(nodeNameList.get(j))) {
-            			fontSize = Integer.toString(PathwaysFrameConstants.METABOLITE_NODE_FONT_SIZE);
-            			if (!foundMetabolitesList.contains(nodeNameList.get(j)) && LocalConfig.getInstance().isHighlightMissingMetabolitesSelected()) {
-            				color = PathwaysFrameConstants.METABOLITE_NOT_FOUND_COLOR;
-            			}
-            			yOffset = PathwaysFrameConstants.METABOLITE_NODE_YPOS;
-            		} else if (smallMainMetabolites.contains(nodeNameList.get(j))) {
-            			fontSize = Integer.toString(PathwaysFrameConstants.SMALL_MAIN_METABOLITE_NODE_FONT_SIZE);
-            			if (!foundMetabolitesList.contains(nodeNameList.get(j)) && LocalConfig.getInstance().isHighlightMissingMetabolitesSelected()) {
-            				color = PathwaysFrameConstants.METABOLITE_NOT_FOUND_COLOR;
-            			}
-            			yOffset = PathwaysFrameConstants.SMALL_MAIN_METABOLITE_NODE_YPOS;
-            		} else if (sideMetabolites.contains(nodeNameList.get(j))) {
-            			fontSize = Integer.toString(PathwaysFrameConstants.SIDE_METABOLITE_NODE_FONT_SIZE);
-            			if (!foundMetabolitesList.contains(nodeNameList.get(j)) && LocalConfig.getInstance().isHighlightMissingMetabolitesSelected()) {
-            				color = PathwaysFrameConstants.METABOLITE_NOT_FOUND_COLOR;
-            			}
-            			if (cofactors.contains(nodeNameList.get(j))) {
-            				color = PathwaysFrameConstants.COFACTOR_COLOR;
-            				if (!foundMetabolitesList.contains(nodeNameList.get(j)) && LocalConfig.getInstance().isHighlightMissingMetabolitesSelected()) {
-                				color = PathwaysFrameConstants.COFACTOR_NOT_FOUND_COLOR;
-                			}
-            			}
-            			yOffset = PathwaysFrameConstants.SIDE_METABOLITE_NODE_YPOS;
-            		} else if (reactions.contains(nodeNameList.get(j))) {
-            			fontSize = Integer.toString(PathwaysFrameConstants.REACTION_NODE_FONT_SIZE);
-            			color = PathwaysFrameConstants.REACTION_NODE_DETAULT_FONT_COLOR;
-            			if (!foundReactionsList.contains(nodeNameList.get(j)) && LocalConfig.getInstance().isHighlightMissingReactionsSelected()) {
-            				color = PathwaysFrameConstants.REACTION_NOT_FOUND_FONT_COLOR;
-            			} else if (koReactions.contains(nodeNameList.get(j))) {
-            				color = PathwaysFrameConstants.REACTION_KO_FONT_COLOR;
-            			}
-            			yOffset = PathwaysFrameConstants.REACTION_NODE_YPOS;
-            		}
-            	}
-        		svgText.setX(Double.parseDouble(nodeNamePositionMap.get(nodeNameList.get(j))[0]) + xOffset - width/2);
-        		svgText.setY(Double.parseDouble((nodeNamePositionMap.get(nodeNameList.get(j))[1])) + yOffset - height/2);
-        		svgText.setFont("Arial");
-                svgText.setFontSize(fontSize);
-                svgText.setStroke(color);
-        		svgText.setText(displayString(displayName));
-        		if (!borderList.contains(nodeNameList.get(j))) {
-        			textList.add(svgText);
-    			}
-    		} else {
-    			//System.out.println("nnf");
-    		}
-    	}
-    	builder.setRects(rects);
-    	builder.setTextList(textList);
-    	SVGWriter writer = new SVGWriter();
-    	writer.setBuilder(builder);
-    	writer.saveFile();
-    }
-    
-    public void saveWindowAsPNG(String path) {
-    	// based on http://stackoverflow.com/questions/8518390/exporting-jung-graphs-to-hi-res-images-preferably-vector-based
-    	Dimension vsDims = getSize();
+		//        JButton reset = new JButton("Reset");                                                                        
+		//        reset.addActionListener(new ActionListener() {                                                               
+		//                                                                                                                     
+		//			public void actionPerformed(ActionEvent e) {                                                             
+		//				vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.LAYOUT).setToIdentity();       
+		//				vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.VIEW).setToIdentity();  
+		//				System.out.println("layout scale " + vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.LAYOUT).getScale());
+		//				System.out.println("view scale " + vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.VIEW).getScale());
+		//				layoutScale = vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.LAYOUT).getScale();
+		//				viewScale = vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.VIEW).getScale();
+		//			}}); 
 
-    	int width = vsDims.width;
-    	int height = vsDims.height;
-    	Color bg = getBackground();
+		controls.add(plus);                                                                                          
+		controls.add(minus);                                                                                       
+		add(controls, BorderLayout.SOUTH);  
 
-    	BufferedImage im = new BufferedImage(width,height,BufferedImage.TYPE_INT_BGR);
-    	Graphics2D graphics = im.createGraphics();
-    	graphics.setColor(bg);
-    	graphics.fillRect(0,0, width, height);
-    	paintComponents(graphics);
+	}  
 
-    	// there does not seem to be any way to programmatically determine the scroll bar width
-    	// and height but it seems to remain constant at 17 any way the window is resized
-    	int scrollBarSize = 17;
-    	int heightCorrection = controls.getHeight() + getJMenuBar().getHeight() + scrollBarSize;
-    	// create a cropped image from the original image
-    	BufferedImage croppedImage = im.getSubimage(0, getJMenuBar().getHeight(), width - scrollBarSize, height - heightCorrection);
-    	//BufferedImage croppedImage = im.getSubimage(0, 23, width - 17, height - 76);
+	public void saveGraphAsSVG() {
+		SVGBuilder builder = new SVGBuilder();
+		ArrayList<SVGEdge> edges = new ArrayList<SVGEdge>();
+		for(int i=0; i<reactionList.size(); i++) {
+			String[] info = reactionMap.get(reactionList.get(i));
+			if (nodeNamePositionMap.containsKey(info[0]) && nodeNamePositionMap.containsKey(info[1])) {
+				SVGEdge edge = new SVGEdge();
+				ArrayList<String[]> endpoints = new ArrayList<String[]>();
+				endpoints.add(nodeNamePositionMap.get(info[0]));
+				endpoints.add(nodeNamePositionMap.get(info[1]));
+				edge.setEndpoints(endpoints);
+				edge.setStroke(colorFromColorValue(PathwaysFrameConstants.DEFAULT_COLOR_VALUE));
+				if (colorMap.containsKey(reactionList.get(i))) {
+					double color = colorMap.get(reactionList.get(i));
+					edge.setStroke(colorFromColorValue(color));
+				}
+				edge.setStrokeWidth("1");
+				if (fluxMap.containsKey(reactionList.get(i))) {
+					double fluxValue = fluxMap.get(reactionList.get(i));
+					if (fluxValue > 1) {
+						edge.setStrokeWidth(Double.toString(fluxValue));
+					}
+				}
+				edges.add(edge);
+			} else {
+				//System.out.println("edge not found");
+			}
+		}
+		builder.setEdges(edges);
+		ArrayList<BorderRectangle> rects = new ArrayList<BorderRectangle>();
+		ArrayList<SVGText> textList = new ArrayList<SVGText>();
+		for (int j = 0; j < nodeNameList.size(); j++) {
+			if (nodeNamePositionMap.containsKey(nodeNameList.get(j))) {
+				double width = PathwaysFrameConstants.METABOLITE_BORDER_NODE_WIDTH;
+				double height = PathwaysFrameConstants.METABOLITE_BORDER_NODE_HEIGHT;
 
-    	try{
-    		ImageIO.write(croppedImage,"png",new File(path));
-    		//ImageIO.write(croppedImage,"png",new File("window.png"));
-    	}catch(Exception e){
-    		e.printStackTrace();
-    	}
-    }
-    
-    public Vector<SBMLReaction> compartmentReactions(ReactionFactory f, String compartment) {
-    	Vector<SBMLReaction> rxns = null;
-    	if (compartment != null && compartment.length() > 0) {
+				// set border color, borderless is node background color
+				Color stroke = Color.BLACK;
+				if (noBorderList.contains(nodeNameList.get(j)) || reactions.contains(nodeNameList.get(j))) {
+					stroke = PathwaysFrameConstants.NODE_BACKGROUND_DETAULT_COLOR;
+				} else if (pathwayNames.contains(nodeNameList.get(j))) {
+					stroke = PathwaysFrameConstants.PATHWAY_NAME_COLOR;
+				} else {
+					if (mainMetabolites.contains(nodeNameList.get(j))) {
+						if (!foundMetabolitesList.contains(nodeNameList.get(j)) && LocalConfig.getInstance().isHighlightMissingMetabolitesSelected()) {
+							stroke = PathwaysFrameConstants.METABOLITE_NOT_FOUND_COLOR;
+						}
+					} else if (smallMainMetabolites.contains(nodeNameList.get(j))) {
+						if (!foundMetabolitesList.contains(nodeNameList.get(j)) && LocalConfig.getInstance().isHighlightMissingMetabolitesSelected()) {
+							stroke = PathwaysFrameConstants.METABOLITE_NOT_FOUND_COLOR;
+						}
+					} else if (sideMetabolites.contains(nodeNameList.get(j))) {
+						if (!foundMetabolitesList.contains(nodeNameList.get(j)) && LocalConfig.getInstance().isHighlightMissingMetabolitesSelected()) {
+							stroke = PathwaysFrameConstants.METABOLITE_NOT_FOUND_COLOR;
+						}
+						if (cofactors.contains(nodeNameList.get(j))) {
+							stroke = PathwaysFrameConstants.COFACTOR_COLOR;
+							if (!foundMetabolitesList.contains(nodeNameList.get(j)) && LocalConfig.getInstance().isHighlightMissingMetabolitesSelected()) {
+								stroke = PathwaysFrameConstants.COFACTOR_NOT_FOUND_COLOR;
+							}
+						}
+					} else if (reactions.contains(nodeNameList.get(j))) {
+						stroke = PathwaysFrameConstants.REACTION_NODE_DETAULT_FONT_COLOR;
+						if (!foundReactionsList.contains(nodeNameList.get(j)) && LocalConfig.getInstance().isHighlightMissingReactionsSelected()) {
+							stroke = PathwaysFrameConstants.REACTION_NOT_FOUND_FONT_COLOR;
+						} else if (koReactions.contains(nodeNameList.get(j))) {
+							stroke = PathwaysFrameConstants.REACTION_KO_FONT_COLOR;
+						}
+					}
+				}
+				double strokeWidth = PathwaysFrameConstants.BORDER_THICKNESS;
+				Color fillColor = PathwaysFrameConstants.NODE_BACKGROUND_DETAULT_COLOR;
+				if (borderList.contains(nodeNameList.get(j))) {
+					width = (int) PathwaysFrameConstants.BORDER_THICKNESS;
+					height = (int) PathwaysFrameConstants.BORDER_THICKNESS;
+				} else if (nodeNameList.get(j).equals(compartmentLabel)) {
+					width = PathwaysFrameConstants.COMPARTMENT_LABEL_NODE_WIDTH;
+					height = PathwaysFrameConstants.COMPARTMENT_LABEL_NODE_HEIGHT;
+				} else if (mainMetabolites.contains(nodeNameList.get(j))) {
+					if (!noBorderList.contains(nodeNameList.get(j))) {
+						width = PathwaysFrameConstants.METABOLITE_BORDER_NODE_WIDTH;
+						height = PathwaysFrameConstants.METABOLITE_BORDER_NODE_HEIGHT;
+					} else {
+						width = PathwaysFrameConstants.METABOLITE_NO_BORDER_NODE_WIDTH;
+						height = PathwaysFrameConstants.METABOLITE_NO_BORDER_NODE_HEIGHT;
+					}
+				} else if (smallMainMetabolites.contains(nodeNameList.get(j))) {	
+					width = PathwaysFrameConstants.SMALL_MAIN_METABOLITE_NODE_WIDTH;
+					height = PathwaysFrameConstants.SMALL_MAIN_METABOLITE_NODE_HEIGHT;
+				} else if (sideMetabolites.contains(nodeNameList.get(j))) {	
+					width = PathwaysFrameConstants.SIDE_METABOLITE_NODE_WIDTH;
+					height = PathwaysFrameConstants.SIDE_METABOLITE_NODE_HEIGHT;	
+				} else if (reactions.contains(nodeNameList.get(j))) {
+					width = PathwaysFrameConstants.REACTION_NODE_WIDTH;
+					height = PathwaysFrameConstants.REACTION_NODE_HEIGHT;
+				} else if (pathwayNames.contains(nodeNameList.get(j))) {
+					width = PathwaysFrameConstants.PATHWAY_NAME_NODE_WIDTH;
+					height = PathwaysFrameConstants.PATHWAY_NAME_NODE_HEIGHT; 
+				}
+				BorderRectangle r = new BorderRectangle();
+				r.setX(Double.parseDouble(nodeNamePositionMap.get(nodeNameList.get(j))[0]) - width/2);
+				r.setY(Double.parseDouble(nodeNamePositionMap.get(nodeNameList.get(j))[1]) - height/2);
+				r.setWidth(width);
+				r.setHeight(height);
+				r.setStroke(stroke);
+				r.setStrokeWidth(Double.toString(strokeWidth));
+				r.setFill(fillColor);
+				if (!borderList.contains(nodeNameList.get(j))) {
+					rects.add(r);
+				}
+				SVGText svgText = new SVGText();
+				String displayName = nodeNameList.get(j);
+				if (LocalConfig.getInstance().getMetaboliteNameAbbrMap().containsKey(nodeNameList.get(j))) {
+					displayName = LocalConfig.getInstance().getMetaboliteNameAbbrMap().get(nodeNameList.get(j));
+				} 
+				Color color = Color.black;
+				String fontSize = Integer.toString(PathwaysFrameConstants.PATHWAY_NAME_NODE_FONT_SIZE);
+				int xOffset = 0;
+				int yOffset = 0;
+				if (pathwayNames.contains(nodeNameList.get(j))) {
+					if (foundPathwayNamesList.contains(nodeNameList.get(j))) {
+						color = PathwaysFrameConstants.PATHWAY_NAME_COLOR;
+					} else {
+						color = PathwaysFrameConstants.PATHWAY_NAME_NOT_FOUND_COLOR;
+					}
+					yOffset = PathwaysFrameConstants.PATHWAY_NAME_NODE_YPOS;
+				} else if (nodeNameList.get(j).equals(compartmentLabel)) {
+					fontSize = Integer.toString(PathwaysFrameConstants.COMPARTMENT_LABEL_NODE_FONT_SIZE);
+					//            		graphics.setFont(new Font("Arial", Font.TYPE1_FONT, PathwaysFrameConstants.COMPARTMENT_LABEL_NODE_FONT_SIZE));
+					//            		graphics.drawString(compartmentLabel, PathwaysFrameConstants.COMPARTMENT_LABEL_NODE_XPOS, PathwaysFrameConstants.COMPARTMENT_LABEL_NODE_YPOS);
+					//            		graphics.drawString("Compartment Name: " + LocalConfig.getInstance().getSelectedCompartmentName(), PathwaysFrameConstants.COMPARTMENT_LABEL_NODE_XPOS, 
+							//            				PathwaysFrameConstants.COMPARTMENT_LABEL_LINE_OFFSET + PathwaysFrameConstants.COMPARTMENT_LABEL_NODE_YPOS);
+					xOffset = PathwaysFrameConstants.COMPARTMENT_LABEL_NODE_XPOS;
+					yOffset = PathwaysFrameConstants.COMPARTMENT_LABEL_NODE_YPOS;
+				} else {
+					if (mainMetabolites.contains(nodeNameList.get(j))) {
+						fontSize = Integer.toString(PathwaysFrameConstants.METABOLITE_NODE_FONT_SIZE);
+						if (!foundMetabolitesList.contains(nodeNameList.get(j)) && LocalConfig.getInstance().isHighlightMissingMetabolitesSelected()) {
+							color = PathwaysFrameConstants.METABOLITE_NOT_FOUND_COLOR;
+						}
+						yOffset = PathwaysFrameConstants.METABOLITE_NODE_YPOS;
+					} else if (smallMainMetabolites.contains(nodeNameList.get(j))) {
+						fontSize = Integer.toString(PathwaysFrameConstants.SMALL_MAIN_METABOLITE_NODE_FONT_SIZE);
+						if (!foundMetabolitesList.contains(nodeNameList.get(j)) && LocalConfig.getInstance().isHighlightMissingMetabolitesSelected()) {
+							color = PathwaysFrameConstants.METABOLITE_NOT_FOUND_COLOR;
+						}
+						yOffset = PathwaysFrameConstants.SMALL_MAIN_METABOLITE_NODE_YPOS;
+					} else if (sideMetabolites.contains(nodeNameList.get(j))) {
+						fontSize = Integer.toString(PathwaysFrameConstants.SIDE_METABOLITE_NODE_FONT_SIZE);
+						if (!foundMetabolitesList.contains(nodeNameList.get(j)) && LocalConfig.getInstance().isHighlightMissingMetabolitesSelected()) {
+							color = PathwaysFrameConstants.METABOLITE_NOT_FOUND_COLOR;
+						}
+						if (cofactors.contains(nodeNameList.get(j))) {
+							color = PathwaysFrameConstants.COFACTOR_COLOR;
+							if (!foundMetabolitesList.contains(nodeNameList.get(j)) && LocalConfig.getInstance().isHighlightMissingMetabolitesSelected()) {
+								color = PathwaysFrameConstants.COFACTOR_NOT_FOUND_COLOR;
+							}
+						}
+						yOffset = PathwaysFrameConstants.SIDE_METABOLITE_NODE_YPOS;
+					} else if (reactions.contains(nodeNameList.get(j))) {
+						fontSize = Integer.toString(PathwaysFrameConstants.REACTION_NODE_FONT_SIZE);
+						color = PathwaysFrameConstants.REACTION_NODE_DETAULT_FONT_COLOR;
+						if (!foundReactionsList.contains(nodeNameList.get(j)) && LocalConfig.getInstance().isHighlightMissingReactionsSelected()) {
+							color = PathwaysFrameConstants.REACTION_NOT_FOUND_FONT_COLOR;
+						} else if (koReactions.contains(nodeNameList.get(j))) {
+							color = PathwaysFrameConstants.REACTION_KO_FONT_COLOR;
+						}
+						yOffset = PathwaysFrameConstants.REACTION_NODE_YPOS;
+					}
+				}
+				svgText.setX(Double.parseDouble(nodeNamePositionMap.get(nodeNameList.get(j))[0]) + xOffset - width/2);
+				svgText.setY(Double.parseDouble((nodeNamePositionMap.get(nodeNameList.get(j))[1])) + yOffset - height/2);
+				svgText.setFont(PathwaysFrameConstants.FONT_NAME);
+				svgText.setFontSize(fontSize);
+				svgText.setFontWeight(PathwaysFrameConstants.FONT_WEIGHT);
+				svgText.setStroke(color);
+				svgText.setText(displayString(displayName));
+				if (!borderList.contains(nodeNameList.get(j))) {
+					textList.add(svgText);
+				}
+			} else {
+				//System.out.println("nnf");
+			}
+		}
+		builder.setRects(rects);
+		builder.setTextList(textList);
+		SVGWriter writer = new SVGWriter();
+		writer.setBuilder(builder);
+		writer.saveFile();
+	}
+
+	public void saveWindowAsPNG(String path) {
+		// based on http://stackoverflow.com/questions/8518390/exporting-jung-graphs-to-hi-res-images-preferably-vector-based
+		Dimension vsDims = getSize();
+
+		int width = vsDims.width;
+		int height = vsDims.height;
+		Color bg = getBackground();
+
+		BufferedImage im = new BufferedImage(width,height,BufferedImage.TYPE_INT_BGR);
+		Graphics2D graphics = im.createGraphics();
+		graphics.setColor(bg);
+		graphics.fillRect(0,0, width, height);
+		paintComponents(graphics);
+
+		// there does not seem to be any way to programmatically determine the scroll bar width
+		// and height but it seems to remain constant at 17 any way the window is resized
+		int scrollBarSize = 17;
+		int heightCorrection = controls.getHeight() + getJMenuBar().getHeight() + scrollBarSize;
+		// create a cropped image from the original image
+		BufferedImage croppedImage = im.getSubimage(0, getJMenuBar().getHeight(), width - scrollBarSize, height - heightCorrection);
+		//BufferedImage croppedImage = im.getSubimage(0, 23, width - 17, height - 76);
+
+		try{
+			ImageIO.write(croppedImage,"png",new File(path));
+			//ImageIO.write(croppedImage,"png",new File("window.png"));
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+
+	public Vector<SBMLReaction> compartmentReactions(ReactionFactory f, String compartment) {
+		Vector<SBMLReaction> rxns = null;
+		if (compartment != null && compartment.length() > 0) {
 			rxns = f.getReactionsByCompartment(compartment);
 		} else {
 			rxns = f.getAllReactions();
 		}
 		return rxns;
-    }
-    
-    public Map<Integer, SBMLReaction> createCompartmentIdReactionMap(ReactionFactory f, Vector<SBMLReaction> rxns) {
-    	Map<Integer, SBMLReaction> idReactionMap = new HashMap<Integer, SBMLReaction>();
+	}
+
+	public Map<Integer, SBMLReaction> createCompartmentIdReactionMap(ReactionFactory f, Vector<SBMLReaction> rxns) {
+		Map<Integer, SBMLReaction> idReactionMap = new HashMap<Integer, SBMLReaction>();
 		for (int i = 0; i < rxns.size(); i++) {
 			idReactionMap.put(rxns.get(i).getId(), rxns.get(i));
 		}
-    	
+
 		return idReactionMap;
-    }
-    
-    public void processData(int component) {
-    	ReactionFactory f = new ReactionFactory("SBML");
-    	Map<Integer, SBMLReaction> idReactionMapAllReactions = new HashMap<Integer, SBMLReaction>();
+	}
+
+	public void processData(int component) {
+		ReactionFactory f = new ReactionFactory("SBML");
+		Map<Integer, SBMLReaction> idReactionMapAllReactions = new HashMap<Integer, SBMLReaction>();
 		Vector<SBMLReaction> allReactions = f.getAllReactions();
 		for (int i = 0; i < allReactions.size(); i++) {
 			idReactionMapAllReactions.put(allReactions.get(i).getId(), allReactions.get(i));
 		}
-//    	if (component == PathwaysFrameConstants.PROCESSES_COMPONENT) {
-//    		double xPos = 200;
-//			double yPos = 300;
-//			for (int i = 0; i < LocalConfig.getInstance().getTransportReactionsByCompartmentsList().size(); i++) {
-//				//System.out.println(LocalConfig.getInstance().getTransportReactionsByCompartmentsList().get(i).getCompartmentIdsList());
-//				Map<String, ArrayList<SBMLReactionEquation>> keggIdReactionsMap = new HashMap<String, ArrayList<SBMLReactionEquation>>();
-//				// preprocessing step to consolidate multiple compounds that have the same KEGG id
-//				for (int j = 0; j < LocalConfig.getInstance().getTransportReactionsByCompartmentsList().get(i).getDiffusionReactions().size(); j++) {
-//					SBMLReactionEquation equn = LocalConfig.getInstance().getTransportReactionsByCompartmentsList().get(i).getDiffusionReactions().get(j);
-//					if (LocalConfig.getInstance().getMetaboliteIdKeggIdMap().containsKey(Integer.toString(equn.getReactants().get(0).getMetaboliteId()))) {
-//						String keggId = LocalConfig.getInstance().getMetaboliteIdKeggIdMap().get(Integer.toString(equn.getReactants().get(0).getMetaboliteId()));
-//						if (!keggIdReactionsMap.containsKey(keggId)) {
-//							ArrayList<SBMLReactionEquation> eqList = new ArrayList<SBMLReactionEquation>();
-//							eqList.add(equn);
-//							keggIdReactionsMap.put(keggId, eqList);
-//						} else {
-//							ArrayList<SBMLReactionEquation> eqList = keggIdReactionsMap.get(keggId);
-//							eqList.add(equn);
-//							keggIdReactionsMap.put(keggId, eqList);
-//						}
-//					}
-//				}
-//				ArrayList<String> keggIds = new ArrayList<String>(keggIdReactionsMap.keySet());
-//				for (int k = 0; k < keggIds.size(); k++) {
-//					ArrayList<SBMLReactionEquation> equns = keggIdReactionsMap.get(keggIds.get(k));
-//					String reactantName = "";
-//					String productName = "";
-//					String reactionName = "";
-//					for (int m = 0; m < equns.size(); m++) {
-//						for (int r = 0; r < equns.get(m).getReactants().size(); r++) {
-//							// if reactant and product are same this will work
-//							//System.out.println(idReactionMapAllReactions.get(equns.get(m).getReactants().get(r).getReactionId()).getReactionAbbreviation());
-//							String name = equns.get(m).getReactants().get(r).getMetaboliteAbbreviation();
-//							if (name.startsWith("M_")) {
-//								name = name.substring(2);
-//							}
-//							reactantName += name + " ";
-//						}
-//						// to make name unique. will be changed
-//						reactantName += " " + equns.get(m).equationAbbreviations;
-//						for (int p = 0; p < equns.get(m).getProducts().size(); p++) {
-//							String name = equns.get(m).getProducts().get(p).getMetaboliteAbbreviation();
-//							if (name.startsWith("M_")) {
-//								name = name.substring(2);
-//							}
-//							productName += name + " ";
-//						}
-//						productName += " " + equns.get(m).equationAbbreviations;
-//					}
-//					
-//					if (reactantName != null && reactantName.length() > 0 && productName != null && productName.length() > 0) {
-//						if (!nodeNamePositionMap.containsKey(reactantName) && !nodeNamePositionMap.containsKey(productName)) {
-//							metabolites.add(reactantName);
-//							LocalConfig.getInstance().getMetaboliteNameAbbrMap().put(reactantName, reactantName);
-//							foundMetabolitesList.add(reactantName);
-//							nodeNamePositionMap.put(reactantName, new String[] {Double.toString(xPos), Double.toString(yPos)});
-//							metabolites.add(productName);
-//							LocalConfig.getInstance().getMetaboliteNameAbbrMap().put(productName, productName);
-//							foundMetabolitesList.add(productName);
-//							nodeNamePositionMap.put(productName, new String[] {Double.toString(xPos), Double.toString(yPos + 400)});
-//							xPos += 300;
-//						} else {
-//							System.out.println(reactantName);
-//						}
-//					}
-//				}
-//				xPos = 200;
-//				yPos += 700;
-//			}
-//    	}
-    	Vector<SBMLReaction> rxns = compartmentReactions(f, LocalConfig.getInstance().getSelectedCompartmentName());
-    	Map<Integer, SBMLReaction> idReactionMap = createCompartmentIdReactionMap(f, rxns);
+
+		Vector<SBMLReaction> rxns = compartmentReactions(f, LocalConfig.getInstance().getSelectedCompartmentName());
+		Map<Integer, SBMLReaction> idReactionMap = createCompartmentIdReactionMap(f, rxns);
 		MetabolicPathway pathway = LocalConfig.getInstance().getMetabolicPathways().get("0");
-//		if (pathway.getComponent() == PathwaysFrameConstants.PATHWAYS_COMPONENT) {
-			if (startPosMap.containsKey(pathway.getId())) {
-				startX = startPosMap.get(pathway.getId()).get(0);
-				startY = startPosMap.get(pathway.getId()).get(1);
-			}
-			drawMetabolites(pathway, component, LocalConfig.getInstance().getSelectedCompartmentName());
-			drawReactions(pathway, component, rxns, idReactionMap);
-			
-			// create reports for reactions found and not found
-			Collections.sort(plottedIds);
-			System.out.println("plotted " + plottedIds);
-			ArrayList<Integer> missingKeggId = new ArrayList<Integer>();
-			ArrayList<Integer> keggIdNotInGraph = new ArrayList<Integer>();
-			ArrayList<Integer> unplottedIds = new ArrayList<Integer>();
-			for (int r = 0; r < rxns.size(); r++) {
-				if (LocalConfig.getInstance().getReactionsMissingKeggId().contains(rxns.get(r).getId())) {
-					missingKeggId.add(rxns.get(r).getId());
-				} else {
-//					if (!LocalConfig.getInstance().getReactionsContainingKeggIdsNotInGraph().contains(rxns.get(r).getId()) &&
-//							!plottedIds.contains(rxns.get(r).getId())) {
-//						keggIdNotInGraph.add(rxns.get(r).getId());
-//					} else {
-						if (!plottedIds.contains(rxns.get(r).getId())) {
-							unplottedIds.add(rxns.get(r).getId());
-						}
-//					}
+		if (startPosMap.containsKey(pathway.getId())) {
+			startX = startPosMap.get(pathway.getId()).get(0);
+			startY = startPosMap.get(pathway.getId()).get(1);
+		}
+		drawMetabolites(pathway, component, LocalConfig.getInstance().getSelectedCompartmentName());
+		drawReactions(pathway, component, rxns, idReactionMap);
+
+		// create reports for reactions found and not found
+		Collections.sort(plottedIds);
+		System.out.println("plotted " + plottedIds);
+		ArrayList<Integer> missingKeggId = new ArrayList<Integer>();
+		ArrayList<Integer> unplottedIds = new ArrayList<Integer>();
+		for (int r = 0; r < rxns.size(); r++) {
+			if (LocalConfig.getInstance().getReactionsMissingKeggId().contains(rxns.get(r).getId())) {
+				missingKeggId.add(rxns.get(r).getId());
+			} else {
+				if (!plottedIds.contains(rxns.get(r).getId())) {
+					unplottedIds.add(rxns.get(r).getId());
 				}
 			}
-			Collections.sort(missingKeggId);
-			System.out.println("missing KEGG id " + missingKeggId);
-//			for (int m = 0; m < missingKeggId.size(); m++) {
-//				System.out.println(idReactionMapAllReactions.get(missingKeggId.get(m)).getReactionAbbreviation() + " " +
-//						idReactionMapAllReactions.get(missingKeggId.get(m)).getReactionName() + " " +
-//						idReactionMapAllReactions.get(missingKeggId.get(m)).getReactionEqunAbbr() + " " +
-//						idReactionMapAllReactions.get(missingKeggId.get(m)).getReactionEqunNames());
-//			}
-// not working
-//			Collections.sort(keggIdNotInGraph);
-//			System.out.println("kegg id not in graph " + keggIdNotInGraph);
-//			for (int m = 0; m < keggIdNotInGraph.size(); m++) {
-//				System.out.println(idReactionMapAllReactions.get(keggIdNotInGraph.get(m)).getReactionAbbreviation() + " " +
-//						idReactionMapAllReactions.get(keggIdNotInGraph.get(m)).getReactionName() + " " +
-//						idReactionMapAllReactions.get(keggIdNotInGraph.get(m)).getReactionEqunAbbr() + " " +
-//						idReactionMapAllReactions.get(keggIdNotInGraph.get(m)).getReactionEqunNames());
-//			}
-			Collections.sort(unplottedIds);
-			System.out.println("unplotted " + unplottedIds);
-			for (int u = 0; u < unplottedIds.size(); u++) {
-				//System.out.println(idReactionMapAllReactions.get(unplottedIds.get(u)));
-			}
-			drawPathwayNames(component);
-//		} else if (pathway.getComponent() == PathwaysFrameConstants.PROCESSES_COMPONENT) {
-//			
-//		}
-//		drawMetabolites(pathway, component, LocalConfig.getInstance().getSelectedCompartmentName());
-//		drawReactions(pathway, component, rxns, idReactionMap);
-//		drawPathwayNames(component);
-		
+		}
+		Collections.sort(missingKeggId);
+		System.out.println("missing KEGG id " + missingKeggId);
+		//			for (int m = 0; m < missingKeggId.size(); m++) {
+		//				System.out.println(idReactionMapAllReactions.get(missingKeggId.get(m)).getReactionAbbreviation() + " " +
+		//						idReactionMapAllReactions.get(missingKeggId.get(m)).getReactionName() + " " +
+		//						idReactionMapAllReactions.get(missingKeggId.get(m)).getReactionEqunAbbr() + " " +
+		//						idReactionMapAllReactions.get(missingKeggId.get(m)).getReactionEqunNames());
+		//			}
+		Collections.sort(unplottedIds);
+		System.out.println("unplotted " + unplottedIds);
+		for (int u = 0; u < unplottedIds.size(); u++) {
+			//System.out.println(idReactionMapAllReactions.get(unplottedIds.get(u)));
+		}
+		drawPathwayNames(component);
+
 		String borderLeftX = Double.toString(PathwaysFrameConstants.HORIZONTAL_INCREMENT*PathwaysFrameConstants.BORDER_LEFT);
 		String borderRightX = Double.toString(PathwaysFrameConstants.HORIZONTAL_INCREMENT*PathwaysFrameConstants.BORDER_RIGHT);
 		String borderTopY = Double.toString(PathwaysFrameConstants.VERTICAL_INCREMENT*PathwaysFrameConstants.BORDER_TOP);
 		String borderBottomY = Double.toString(PathwaysFrameConstants.VERTICAL_INCREMENT*PathwaysFrameConstants.BORDER_BOTTOM);
-		
+
 		// draw cell border
 		drawCompartmentBorder(borderLeftX, borderRightX, borderTopY, borderBottomY, 0);
-//		System.out.println("lt " + borderLeftX);
-//		System.out.println("tp " + borderTopY);
-//		System.out.println("rt " + borderRightX);
-//		System.out.println("bt " + borderBottomY);
-		
+
 		String compartmentLabelXOffset = Double.toString(
 				PathwaysFrameConstants.BORDER_TOP*PathwaysFrameConstants.VERTICAL_INCREMENT + 
 				PathwaysFrameConstants.COMPARTMENT_LABEL_NODE_WIDTH/2 + 
@@ -1042,55 +865,18 @@ public class PathwaysFrame extends JApplet {
 				PathwaysFrameConstants.BORDER_LEFT*PathwaysFrameConstants.HORIZONTAL_INCREMENT + 
 				PathwaysFrameConstants.COMPARTMENT_LABEL_NODE_HEIGHT/2 + 
 				PathwaysFrameConstants.COMPARTMENT_LABEL_LEFT_PADDING);
-		
+
 		if (component == PathwaysFrameConstants.PATHWAYS_COMPONENT) {
 			drawCompartmentLabel(compartmentLabel, compartmentLabelXOffset, compartmentLabelYOffset);
 		}
-		
-//		if (LocalConfig.getInstance().getMembraneName() != null && LocalConfig.getInstance().getMembraneName().length() > 0
-//				&& component == PathwaysFrameConstants.PATHWAYS_COMPONENT) {
-//			maxY += PathwaysFrameConstants.ADDITIONAL_COMPARTMENT_OFFSET;
-//			Vector<SBMLReaction> membraneRxns = compartmentReactions(f, LocalConfig.getInstance().getMembraneName());
-//	    	Map<Integer, SBMLReaction> membraneIdReactionMap = createCompartmentIdReactionMap(f, membraneRxns);
-//	    	drawMetabolites(pathway, component, LocalConfig.getInstance().getMembraneName());
-//			drawReactions(pathway, component, membraneRxns, membraneIdReactionMap);
-//			drawPathwayNames(component);
-//		}
-//		if (LocalConfig.getInstance().getOutsideName() != null && LocalConfig.getInstance().getOutsideName().length() > 0
-//				&& component == PathwaysFrameConstants.PATHWAYS_COMPONENT) {
-//			if (LocalConfig.getInstance().getMembraneName() != null && LocalConfig.getInstance().getMembraneName().length() > 0) {
-//
-//			} else {
-//
-//			}
-//		}
-		
-//		Collections.sort(plottedIds);
-//		System.out.println("plotted " + plottedIds);
-		//System.out.println("pf unplotted " + LocalConfig.getInstance().getUnplottedReactionIds());
-//		for (int p = 0; p < plottedIds.size(); p++) {
-//			if (LocalConfig.getInstance().getUnplottedReactionIds().contains(plottedIds.get(p))) {
-//				LocalConfig.getInstance().getUnplottedReactionIds().remove(LocalConfig.getInstance().getUnplottedReactionIds().indexOf(plottedIds.get(p)));
-//			}
-//		}
-		//System.out.println("pf unplotted " + LocalConfig.getInstance().getUnplottedReactionIds());
-		
-		//Collections.sort(foundEcNumbers);
-		//System.out.println("found " + foundEcNumbers);
-		//Collections.sort(notFoundEcNumbers);
-		//System.out.println("not found " + notFoundEcNumbers);
-                                                                                                                     
-//   		nodeNameList = new ArrayList<String>(nodeNamePositionMap.keySet()); 
-//   		Collections.sort(nodeNameList);
-   		//System.out.println("m " + nodeNameList);
-   		
-   		reactionList = new ArrayList<String>(reactionMap.keySet()); 
-   		Collections.sort(reactionList);
-    }
-    
-    public void drawMetabolites(MetabolicPathway pathway, int component, String compartment) {
-//    	LocalConfig.getInstance().setVisualizationsProgress(100);
-    	for (int j = 0; j < pathway.getMetabolitesData().size(); j++) {
+
+		reactionList = new ArrayList<String>(reactionMap.keySet()); 
+		Collections.sort(reactionList);
+	}
+
+	public void drawMetabolites(MetabolicPathway pathway, int component, String compartment) {
+		//    	LocalConfig.getInstance().setVisualizationsProgress(100);
+		for (int j = 0; j < pathway.getMetabolitesData().size(); j++) {
 			if (j%10 == 0) {
 				LocalConfig.getInstance().setVisualizationsProgress((j * ProgressConstants.VISUALIZATIONS_METABOLITE_LOAD_PERCENT) / pathway.getMetabolitesData().size()
 						+ ProgressConstants.VISUALIZATIONS_LOAD_PERCENT);	
@@ -1110,7 +896,7 @@ public class PathwaysFrame extends JApplet {
 							// kegg ids in these maps will be substituted if node is side type
 							if (type.equals(PathwaysCSVFileConstants.SIDE_METABOLITE_TYPE) && (LocalConfig.getInstance().getAlternateMetabolitesMap().containsKey(keggId) ||
 									LocalConfig.getInstance().getMetaboliteSubstitutionsMap().containsKey(keggId))) {
-								
+
 							} else {
 								abbrList.add(LocalConfig.getInstance().getKeggIdMetaboliteMap().get(keggId).get(k).getMetaboliteAbbreviation());
 							}
@@ -1121,7 +907,7 @@ public class PathwaysFrame extends JApplet {
 					if (!LocalConfig.getInstance().isGraphMissingMetabolitesSelected()) {
 						if (LocalConfig.getInstance().getAlternateMetabolitesMap().containsKey(keggId) ||
 								LocalConfig.getInstance().getMetaboliteSubstitutionsMap().containsKey(keggId)) {
-							
+
 						} else {
 							drawMetabolite = false;
 						}
@@ -1136,11 +922,6 @@ public class PathwaysFrame extends JApplet {
 					double y = 0;
 					x = startX + PathwaysFrameConstants.HORIZONTAL_INCREMENT*pathway.getMetabolitesData().get(Integer.toString(j)).getLevel();
 					y = startY + PathwaysFrameConstants.VERTICAL_INCREMENT*pathway.getMetabolitesData().get(Integer.toString(j)).getLevelPosition();
-//					PathwayMetaboliteNodeFactory pmnf = new PathwayMetaboliteNodeFactory();
-//					PathwayMetaboliteNode pn = pmnf.createPathwayMetaboliteNode(pathway.getMetabolitesData().get(Integer.toString(j)).getId(), 
-//							x, y, type, pathway.getMetabolitesData().get(Integer.toString(j)).getAbbreviation(), 
-//							pathway.getMetabolitesData().get(Integer.toString(j)).getName(), keggId);
-					//pathway.getMetabolitesNodes().put(pn.getDataId(), pn);
 					nodeNamePositionMap.put(metabName, new String[] {Double.toString(x), Double.toString(y)});
 					for (int i = 0; i < abbrList.size(); i++) {
 						updateFindPositionsMap(metaboliteAbbrPositionsMap, abbrList.get(i), 
@@ -1151,17 +932,15 @@ public class PathwaysFrame extends JApplet {
 				}
 			}
 		}
-		//System.out.println(keggMetaboliteIdPositionsMap);
-    }
-    
-    public void drawReactions(MetabolicPathway pathway, int component, Vector<SBMLReaction> rxns, Map<Integer, SBMLReaction> idReactionMap) {
-    	ArrayList<String> metabPosKeys = new ArrayList<String>(nodeNamePositionMap.keySet());
-//    	LocalConfig.getInstance().setVisualizationsProgress(100);
-    	for (int k = 0; k < pathway.getReactionsData().size(); k++) {
-    		if (k%10 == 0) {
+	}
+
+	public void drawReactions(MetabolicPathway pathway, int component, Vector<SBMLReaction> rxns, Map<Integer, SBMLReaction> idReactionMap) {
+		ArrayList<String> metabPosKeys = new ArrayList<String>(nodeNamePositionMap.keySet());
+		//    	LocalConfig.getInstance().setVisualizationsProgress(100);
+		for (int k = 0; k < pathway.getReactionsData().size(); k++) {
+			if (k%10 == 0) {
 				LocalConfig.getInstance().setVisualizationsProgress((k * ProgressConstants.VISUALIZATIONS_REACTION_LOAD_PERCENT) / pathway.getReactionsData().size()
 						+ ProgressConstants.VISUALIZATIONS_LOAD_PERCENT + ProgressConstants.VISUALIZATIONS_METABOLITE_LOAD_PERCENT);	
-				//System.out.println(LocalConfig.getInstance().getVisualizationsProgress());
 			}
 			if (pathway.getComponent() == component) {
 				ArrayList<String> reacAbbrList = new ArrayList<String>();
@@ -1200,7 +979,7 @@ public class PathwaysFrame extends JApplet {
 								foundMetabolitesList.add(metabName);
 							}
 						} catch (Exception e) {
-							
+
 						}
 					}
 					for (int p = 0; p < pathway.getReactionsData().get(Integer.toString(k)).getProductIds().size(); p++) {
@@ -1211,7 +990,7 @@ public class PathwaysFrame extends JApplet {
 								foundMetabolitesList.add(metabName);
 							}
 						} catch (Exception e) {
-							
+
 						}
 					}
 					// for bookkeeping only
@@ -1254,7 +1033,7 @@ public class PathwaysFrame extends JApplet {
 						updateFindPositionsMap(reactionAbbrPositionsMap, reacAbbrList.get(a), 
 								new String[] {Double.toString(x), Double.toString(y)});
 					}
-					
+
 					for (int r = 0; r < pathway.getReactionsData().get(Integer.toString(k)).getReactantIds().size(); r++) {
 						if (pathway.getMetabolitesData().containsKey((pathway.getReactionsData().get(Integer.toString(k)).getReactantIds().get(r)))) {
 							String reac = pathway.getMetabolitesData().get((pathway.getReactionsData().get(Integer.toString(k)).getReactantIds().get(r))).getName();
@@ -1286,24 +1065,24 @@ public class PathwaysFrame extends JApplet {
 				}
 			}
 		}
-    	// removes "orphan" nodes
-    	if (!LocalConfig.getInstance().isGraphMissingMetabolitesSelected()) {
+		// removes "orphan" nodes
+		if (!LocalConfig.getInstance().isGraphMissingMetabolitesSelected()) {
 			for (int i = 0; i < metabPosKeys.size(); i++) {
 				if (!foundMetabolitesList.contains(metabPosKeys.get(i))) {
 					nodeNamePositionMap.remove(metabPosKeys.get(i));
 				}
 			}
 		}
-//    	System.out.println("m " + prnf.getRenameMetabolitesMap());
-    	ArrayList<String> renameMetaboliteKeys = new ArrayList<String>(prnf.getRenameMetabolitesMap().keySet());
-    	for (int y = 0; y < renameMetaboliteKeys.size(); y++) {
-    		// construct new name from kegg ids and put name and abbr into metaboliteNameAbbrMap
-    		// get old abbreviation in case MetaboliteNameAbbrMap doesn't contain key
+		//    	System.out.println("m " + prnf.getRenameMetabolitesMap());
+		ArrayList<String> renameMetaboliteKeys = new ArrayList<String>(prnf.getRenameMetabolitesMap().keySet());
+		for (int y = 0; y < renameMetaboliteKeys.size(); y++) {
+			// construct new name from kegg ids and put name and abbr into metaboliteNameAbbrMap
+			// get old abbreviation in case MetaboliteNameAbbrMap doesn't contain key
 			String abbr = "";
 			if (LocalConfig.getInstance().getMetaboliteNameAbbrMap().containsKey(renameMetaboliteKeys.get(y))) {
-//    			System.out.println("a " + LocalConfig.getInstance().getMetaboliteNameAbbrMap().get(renameMetaboliteKeys.get(y)));
-    			abbr = LocalConfig.getInstance().getMetaboliteNameAbbrMap().get(renameMetaboliteKeys.get(y));
-    		}
+				//    			System.out.println("a " + LocalConfig.getInstance().getMetaboliteNameAbbrMap().get(renameMetaboliteKeys.get(y)));
+				abbr = LocalConfig.getInstance().getMetaboliteNameAbbrMap().get(renameMetaboliteKeys.get(y));
+			}
 			String metabName = renameMetaboliteKeys.get(y);
 			String metabAbbr = "";
 			String name = "";
@@ -1323,58 +1102,58 @@ public class PathwaysFrame extends JApplet {
 				}
 			}
 			ArrayList<String> chargeList = new ArrayList<String>();
-    		for (int z = 0; z < prnf.getRenameMetabolitesMap().get(renameMetaboliteKeys.get(y)).size(); z++) {
-////    			System.out.println("k1 " + prnf.getRenameMetabolitesMap().get(renameMetaboliteKeys.get(y)).get(z));
-    			if (LocalConfig.getInstance().getKeggIdMetaboliteMap().containsKey(prnf.getRenameMetabolitesMap().get(renameMetaboliteKeys.get(y)).get(z))) {	
-    				for (int j = 0; j < LocalConfig.getInstance().getKeggIdMetaboliteMap().get(prnf.getRenameMetabolitesMap().get(renameMetaboliteKeys.get(y)).get(z)).size(); j++) {
-    					if (!prnf.getRenameMetabolitesMap().get(renameMetaboliteKeys.get(y)).get(z).equals("C00080")) {
-    						if (LocalConfig.getInstance().getKeggIdMetaboliteMap().get(prnf.getRenameMetabolitesMap().get(renameMetaboliteKeys.get(y)).get(z)).get(j).getCompartment().
-        							equals(LocalConfig.getInstance().getSelectedCompartmentName())) {
-        						metabAbbr = LocalConfig.getInstance().getKeggIdMetaboliteMap().get(prnf.getRenameMetabolitesMap().get(renameMetaboliteKeys.get(y)).get(z)).get(j).getMetaboliteAbbreviation();
-            					if (!abbrList.contains(LocalConfig.getInstance().getKeggIdMetaboliteMap().get(prnf.getRenameMetabolitesMap().get(renameMetaboliteKeys.get(y)).get(z)).get(j).getMetaboliteAbbreviation())) {
-            						abbrList.add(LocalConfig.getInstance().getKeggIdMetaboliteMap().get(prnf.getRenameMetabolitesMap().get(renameMetaboliteKeys.get(y)).get(z)).get(j).getMetaboliteAbbreviation());
-            					}
-            					if (!nameList.contains(LocalConfig.getInstance().getKeggIdMetaboliteMap().get(prnf.getRenameMetabolitesMap().get(renameMetaboliteKeys.get(y)).get(z)).get(j).getMetaboliteName())) {
-            						nameList.add(LocalConfig.getInstance().getKeggIdMetaboliteMap().get(prnf.getRenameMetabolitesMap().get(renameMetaboliteKeys.get(y)).get(z)).get(j).getMetaboliteName());
-            					}
-            					if (!keggList.contains(LocalConfig.getInstance().getKeggIdMetaboliteMap().get(prnf.getRenameMetabolitesMap().get(renameMetaboliteKeys.get(y)).get(z)).get(j).getKeggId())) {
-            						keggList.add(LocalConfig.getInstance().getKeggIdMetaboliteMap().get(prnf.getRenameMetabolitesMap().get(renameMetaboliteKeys.get(y)).get(z)).get(j).getKeggId());
-            					}
-            					String charge = LocalConfig.getInstance().getKeggIdMetaboliteMap().get(prnf.getRenameMetabolitesMap().get(renameMetaboliteKeys.get(y)).get(z)).get(j).getCharge();
-            					if (charge != null && charge.length() > 0 && !chargeList.contains(charge.trim())) {
-            						chargeList.add(charge.trim());
-            					}
-        					}
-    					}
-    				}
-    				if (abbrList.size() > 0) {
+			for (int z = 0; z < prnf.getRenameMetabolitesMap().get(renameMetaboliteKeys.get(y)).size(); z++) {
+				////    			System.out.println("k1 " + prnf.getRenameMetabolitesMap().get(renameMetaboliteKeys.get(y)).get(z));
+				if (LocalConfig.getInstance().getKeggIdMetaboliteMap().containsKey(prnf.getRenameMetabolitesMap().get(renameMetaboliteKeys.get(y)).get(z))) {	
+					for (int j = 0; j < LocalConfig.getInstance().getKeggIdMetaboliteMap().get(prnf.getRenameMetabolitesMap().get(renameMetaboliteKeys.get(y)).get(z)).size(); j++) {
+						if (!prnf.getRenameMetabolitesMap().get(renameMetaboliteKeys.get(y)).get(z).equals("C00080")) {
+							if (LocalConfig.getInstance().getKeggIdMetaboliteMap().get(prnf.getRenameMetabolitesMap().get(renameMetaboliteKeys.get(y)).get(z)).get(j).getCompartment().
+									equals(LocalConfig.getInstance().getSelectedCompartmentName())) {
+								metabAbbr = LocalConfig.getInstance().getKeggIdMetaboliteMap().get(prnf.getRenameMetabolitesMap().get(renameMetaboliteKeys.get(y)).get(z)).get(j).getMetaboliteAbbreviation();
+								if (!abbrList.contains(LocalConfig.getInstance().getKeggIdMetaboliteMap().get(prnf.getRenameMetabolitesMap().get(renameMetaboliteKeys.get(y)).get(z)).get(j).getMetaboliteAbbreviation())) {
+									abbrList.add(LocalConfig.getInstance().getKeggIdMetaboliteMap().get(prnf.getRenameMetabolitesMap().get(renameMetaboliteKeys.get(y)).get(z)).get(j).getMetaboliteAbbreviation());
+								}
+								if (!nameList.contains(LocalConfig.getInstance().getKeggIdMetaboliteMap().get(prnf.getRenameMetabolitesMap().get(renameMetaboliteKeys.get(y)).get(z)).get(j).getMetaboliteName())) {
+									nameList.add(LocalConfig.getInstance().getKeggIdMetaboliteMap().get(prnf.getRenameMetabolitesMap().get(renameMetaboliteKeys.get(y)).get(z)).get(j).getMetaboliteName());
+								}
+								if (!keggList.contains(LocalConfig.getInstance().getKeggIdMetaboliteMap().get(prnf.getRenameMetabolitesMap().get(renameMetaboliteKeys.get(y)).get(z)).get(j).getKeggId())) {
+									keggList.add(LocalConfig.getInstance().getKeggIdMetaboliteMap().get(prnf.getRenameMetabolitesMap().get(renameMetaboliteKeys.get(y)).get(z)).get(j).getKeggId());
+								}
+								String charge = LocalConfig.getInstance().getKeggIdMetaboliteMap().get(prnf.getRenameMetabolitesMap().get(renameMetaboliteKeys.get(y)).get(z)).get(j).getCharge();
+								if (charge != null && charge.length() > 0 && !chargeList.contains(charge.trim())) {
+									chargeList.add(charge.trim());
+								}
+							}
+						}
+					}
+					if (abbrList.size() > 0) {
 						name = util.makeCommaSeparatedList(abbrList);
 						metabAbbr = name;
 					} else {
 						name = metabAbbr;
 					}
-    				if (abbrList.size() > 1) {
-    					ArrayList<String> abbrNoPrefixOrSuffix = new ArrayList<String>();
-    					for (int p = 0; p < abbrList.size(); p++) {
-    						abbrNoPrefixOrSuffix.add(util.maybeRemovePrefixAndSuffix(abbrList.get(p)));
-    					}
-    					abbr = util.makeCommaSeparatedList(abbrNoPrefixOrSuffix);
-    				} else {
-    					abbr = util.maybeRemovePrefixAndSuffix(metabAbbr);
-    				}
-    				if (nodeNamePositionMap.containsKey(metabName)) {
-    					updateFindPositionsMap(metaboliteAbbrPositionsMap, abbr, 
-    							new String[] {nodeNamePositionMap.get(metabName)[0], nodeNamePositionMap.get(metabName)[1]});
-    				}
+					if (abbrList.size() > 1) {
+						ArrayList<String> abbrNoPrefixOrSuffix = new ArrayList<String>();
+						for (int p = 0; p < abbrList.size(); p++) {
+							abbrNoPrefixOrSuffix.add(util.maybeRemovePrefixAndSuffix(abbrList.get(p)));
+						}
+						abbr = util.makeCommaSeparatedList(abbrNoPrefixOrSuffix);
+					} else {
+						abbr = util.maybeRemovePrefixAndSuffix(metabAbbr);
+					}
+					if (nodeNamePositionMap.containsKey(metabName)) {
+						updateFindPositionsMap(metaboliteAbbrPositionsMap, abbr, 
+								new String[] {nodeNamePositionMap.get(metabName)[0], nodeNamePositionMap.get(metabName)[1]});
+					}
 					name = pmnf.htmlDisplayName(abbr, nameList, abbrList, keggIdList, chargeList);
 					oldNameNewNameMap.put(metabName, name);
 					LocalConfig.getInstance().getMetaboliteNameAbbrMap().put(metabName, abbr);
-    			}
-    		}
-//    		System.out.println("abbr " + abbr);
-//			System.out.println("name " + name);
-//			System.out.println("old " + metabName);
-    		if (containsProton) {
+				}
+			}
+			//    		System.out.println("abbr " + abbr);
+			//			System.out.println("name " + name);
+			//			System.out.println("old " + metabName);
+			if (containsProton) {
 				String protonAbbr = util.maybeRemovePrefixAndSuffix(LocalConfig.getInstance().getKeggIdMetaboliteMap().get("C00080").get(0).getMetaboliteAbbreviation());
 				abbr += " + " + protonAbbr;
 				nameList.add(LocalConfig.getInstance().getKeggIdMetaboliteMap().get("C00080").get(0).getMetaboliteName());
@@ -1399,11 +1178,11 @@ public class PathwaysFrame extends JApplet {
 					}
 				}
 			} 
-    	}
-    }
-    
-    public void drawPathwayNames(int component) {
-    	if (component == PathwaysFrameConstants.PATHWAYS_COMPONENT) {
+		}
+	}
+
+	public void drawPathwayNames(int component) {
+		if (component == PathwaysFrameConstants.PATHWAYS_COMPONENT) {
 			for(int p = 0; p < LocalConfig.getInstance().getPathwayNameMap().size(); p++) {
 				ArrayList<String> metabList = LocalConfig.getInstance().getPathwayNameMap().get(Integer.toString(p)).getMetabolites();
 				boolean drawPathwayName = true;
@@ -1432,26 +1211,26 @@ public class PathwaysFrame extends JApplet {
 				}
 			}
 		}
-    }
-    
-    public boolean pathwayNameMetaboliteFound(ArrayList<String> list) {
-    	boolean found = false;
-    	for (int i = 0; i < list.size(); i++) {
-    		if (LocalConfig.getInstance().getKeggIdMetaboliteMap().containsKey(list.get(i))) {
-    			ArrayList<SBMLMetabolite> m = LocalConfig.getInstance().getKeggIdMetaboliteMap().get(list.get(i));
-    			for (int j = 0; j < m.size(); j++) {
-    				if (m.get(j).getCompartment().equals(LocalConfig.getInstance().getSelectedCompartmentName())) {
-    					found = true;
-    				}
-    			}
-    		}
-    	}
-    	
+	}
+
+	public boolean pathwayNameMetaboliteFound(ArrayList<String> list) {
+		boolean found = false;
+		for (int i = 0; i < list.size(); i++) {
+			if (LocalConfig.getInstance().getKeggIdMetaboliteMap().containsKey(list.get(i))) {
+				ArrayList<SBMLMetabolite> m = LocalConfig.getInstance().getKeggIdMetaboliteMap().get(list.get(i));
+				for (int j = 0; j < m.size(); j++) {
+					if (m.get(j).getCompartment().equals(LocalConfig.getInstance().getSelectedCompartmentName())) {
+						found = true;
+					}
+				}
+			}
+		}
+
 		return found;
-    	
-    }
-    
-    public void classifyMetabolite(String type, String metabName, String keggId) {
+
+	}
+
+	public void classifyMetabolite(String type, String metabName, String keggId) {
 		if (type.equals(PathwaysCSVFileConstants.MAIN_METABOLITE_TYPE)) {
 			if (!mainMetabolites.contains(metabName)) {
 				mainMetabolites.add(metabName);
@@ -1470,16 +1249,16 @@ public class PathwaysFrame extends JApplet {
 				}
 			}
 		}
-    }
-    
-    public void drawCompartmentBorder(String borderLeftX, String borderRightX, 
-    		String borderTopY, String borderBottomY, int startNumber) {
+	}
+
+	public void drawCompartmentBorder(String borderLeftX, String borderRightX, 
+			String borderTopY, String borderBottomY, int startNumber) {
 		// draw cell border
-    	String topLeft = Integer.toString(startNumber + 1);
-    	String topRight = Integer.toString(startNumber + 2);
-    	String bottomRight = Integer.toString(startNumber + 3);
-    	String bottomLeft = Integer.toString(startNumber + 4);
-    	
+		String topLeft = Integer.toString(startNumber + 1);
+		String topRight = Integer.toString(startNumber + 2);
+		String bottomRight = Integer.toString(startNumber + 3);
+		String bottomLeft = Integer.toString(startNumber + 4);
+
 		nodeNamePositionMap.put(topLeft, new String[] {borderLeftX, borderTopY}); 
 		nodeNamePositionMap.put(topRight, new String[] {borderRightX, borderTopY}); 
 		nodeNamePositionMap.put(bottomRight, new String[] {borderRightX, borderBottomY});
@@ -1498,211 +1277,207 @@ public class PathwaysFrame extends JApplet {
 		for (int b = startNumber + 1; b < startNumber + 5; b++) {
 			borderList.add(Integer.toString(b));
 		}
-    }
-    
-    public void drawCompartmentLabel(String text, String xOffset, String yOffset) {
-    	nodeNamePositionMap.put(text, new String[] {xOffset, yOffset});
-    }
-    
-    public void createGraph() {
-    	
-    }
-                                                                                                                     
-    /**                                                                                                              
-     * create some vertices                                                                                          
-     * @param count how many to create                                                                               
-     * @return the Vertices in an array                                                                              
-     */                                                                                                              
-    public void createVertices() {                                                                                  
-        for (String met : nodeNamePositionMap.keySet()) {
-            graph.addVertex(met); 
-        } 
-    } 
-    
-    public void removeVertices() {                                                                                  
-        for (String met : nodeNamePositionMap.keySet()) {
-            graph.removeVertex(met); 
-        } 
-    } 
-                                                                                                                     
-    /**                                                                                                              
-     * create edges for this demo graph                                                                              
-     * @param v an array of Vertices to connect                                                                      
-     */                                                                                                              
-    public void createEdges() { 
-    	for(int i=0; i<reactionList.size(); i++) {
-    		String[] info = reactionMap.get(reactionList.get(i));
-    		String rev = info[2];
-    		if (rev.equals("true")) {
-    			graph.addEdge(new Double(i), info[0], info[1], EdgeType.DIRECTED); 
-    		} else if (rev.equals("false")) {
-    			graph.addEdge(new Double(i), info[0], info[1], EdgeType.UNDIRECTED); 
-    		}
-    		//String rxnName = "";
-    		if (fluxMap.containsKey(reactionList.get(i))) {
-    			double fluxValue = fluxMap.get(reactionList.get(i));
-        		edge_weight.put(new Double(i), fluxValue);
-    		} else {
-    			edge_weight.put(new Double(i), PathwaysFrameConstants.DEFAULT_EDGE_WIDTH);
-    		}
-    		if (colorMap.containsKey(reactionList.get(i))) {
-    			double color = colorMap.get(reactionList.get(i));
-    			edge_color.put(new Double(i), color);
-    		} else {
-    			edge_color.put(new Double(i), PathwaysFrameConstants.DEFAULT_COLOR_VALUE);
-    		}
-    	} 
-    } 
-    
-    public void removeEdges() {
-    	for(int i=0; i<reactionList.size(); i++) {
-    		graph.removeEdge(new Double(i)); 
-    		fluxMap.clear();
-    		edge_weight.clear();
-    		edge_color.clear();
-    	}
-    }
-    
-    /**
-     * Creates image icons to be used as nodes
-     * @return
-     */
-    public void createIconMap() {
-    	//Map<String, Icon> iconMap = new HashMap<String, Icon>();   
-    	iconMap.clear();
-    	nodeNameList = new ArrayList<String>(nodeNamePositionMap.keySet()); 
-//   		Collections.sort(nodeNameList);
-        for (int i = 0; i < nodeNameList.size(); i++) {                                                                                                        
-        	String name = nodeNameList.get(i);
-        	String abbr = LocalConfig.getInstance().getMetaboliteNameAbbrMap().get(name);
-        	int width = (int) PathwaysFrameConstants.BORDER_THICKNESS;
-    		int height = (int) PathwaysFrameConstants.BORDER_THICKNESS;
-        	if (borderList.contains(name)) {
-        		width = (int) PathwaysFrameConstants.BORDER_THICKNESS;
-        		height = (int) PathwaysFrameConstants.BORDER_THICKNESS;
-        	} else if (name.equals(compartmentLabel)) {
-        		width = PathwaysFrameConstants.COMPARTMENT_LABEL_NODE_WIDTH;
-            	height = PathwaysFrameConstants.COMPARTMENT_LABEL_NODE_HEIGHT;
-        	} else if (mainMetabolites.contains(name)) {
-        		if (!noBorderList.contains(name)) {
-        			width = PathwaysFrameConstants.METABOLITE_BORDER_NODE_WIDTH;
-                	height = PathwaysFrameConstants.METABOLITE_BORDER_NODE_HEIGHT;
-        		} else {
-        			width = PathwaysFrameConstants.METABOLITE_NO_BORDER_NODE_WIDTH;
-                	height = PathwaysFrameConstants.METABOLITE_NO_BORDER_NODE_HEIGHT;
-        		}
-        	} else if (smallMainMetabolites.contains(name)) {	
-        		width = PathwaysFrameConstants.SMALL_MAIN_METABOLITE_NODE_WIDTH;
-            	height = PathwaysFrameConstants.SMALL_MAIN_METABOLITE_NODE_HEIGHT;
-        	} else if (sideMetabolites.contains(name)) {	
-        		width = PathwaysFrameConstants.SIDE_METABOLITE_NODE_WIDTH;
-            	height = PathwaysFrameConstants.SIDE_METABOLITE_NODE_HEIGHT;	
-        	} else if (reactions.contains(name)) {
-        		width = PathwaysFrameConstants.REACTION_NODE_WIDTH;
-        		height = PathwaysFrameConstants.REACTION_NODE_HEIGHT;
-        	} else if (pathwayNames.contains(name)) {
-        		width = PathwaysFrameConstants.PATHWAY_NAME_NODE_WIDTH;
-        		height = PathwaysFrameConstants.PATHWAY_NAME_NODE_HEIGHT; 
-        	}
-        	// based on http://stackoverflow.com/questions/2736320/write-text-onto-image-in-java
-        	BufferedImage bufferedImage = new BufferedImage(width, height,
-        			BufferedImage.TYPE_INT_RGB);
-        	Graphics graphics = bufferedImage.getGraphics();
-        	graphics.setColor(PathwaysFrameConstants.NODE_BACKGROUND_DETAULT_COLOR);
-        	if (borderList.contains(name)) {
-        		graphics.setColor(Color.black);
-        	}
-        	graphics.fillRect(0, 0, width, height);
-        	graphics.setColor(Color.BLACK);
-        	if (pathwayNames.contains(name)) {
-        		if (foundPathwayNamesList.contains(name)) {
-        			graphics.setColor(PathwaysFrameConstants.PATHWAY_NAME_COLOR);
-        		} else {
-        			graphics.setColor(PathwaysFrameConstants.PATHWAY_NAME_NOT_FOUND_COLOR);
-        		}
-//        		graphics.setFont(new Font("Arial", Font.BOLD, PathwaysFrameConstants.PATHWAY_NAME_NODE_FONT_SIZE));
-//            	graphics.drawString(name, 5, 15);
-        		alignCenterString(graphics, name, width, PathwaysFrameConstants.PATHWAY_NAME_NODE_XPOS, PathwaysFrameConstants.PATHWAY_NAME_NODE_YPOS, PathwaysFrameConstants.PATHWAY_NAME_NODE_FONT_SIZE);
-            	drawBorder(graphics, width, height, PathwaysFrameConstants.PATHWAY_NAME_BORDER_WIDTH);
-        	} else if (name.equals(compartmentLabel)) {
-        		graphics.setFont(new Font("Arial", Font.TYPE1_FONT, PathwaysFrameConstants.COMPARTMENT_LABEL_NODE_FONT_SIZE));
-        		graphics.drawString(compartmentLabel, PathwaysFrameConstants.COMPARTMENT_LABEL_NODE_XPOS, PathwaysFrameConstants.COMPARTMENT_LABEL_NODE_YPOS);
-        		graphics.drawString("Compartment Name: " + LocalConfig.getInstance().getSelectedCompartmentName(), PathwaysFrameConstants.COMPARTMENT_LABEL_NODE_XPOS, 
-        				PathwaysFrameConstants.COMPARTMENT_LABEL_LINE_OFFSET + PathwaysFrameConstants.COMPARTMENT_LABEL_NODE_YPOS);
-        		//alignCenterString(graphics, compartmentLabel, width, PathwaysFrameConstants.COMPARTMENT_LABEL_NODE_XPOS, PathwaysFrameConstants.COMPARTMENT_LABEL_NODE_YPOS, PathwaysFrameConstants.COMPARTMENT_LABEL_NODE_FONT_SIZE);
-        		//drawBorder(graphics, width, height, PathwaysFrameConstants.PATHWAY_NAME_BORDER_WIDTH);
-        	} else {
-        		if (mainMetabolites.contains(name)) {
-        			if (!foundMetabolitesList.contains(name) && LocalConfig.getInstance().isHighlightMissingMetabolitesSelected()) {
-        				graphics.setColor(PathwaysFrameConstants.METABOLITE_NOT_FOUND_COLOR);
-        			}
-        			alignCenterString(graphics, abbr, width, PathwaysFrameConstants.METABOLITE_NODE_XPOS, PathwaysFrameConstants.METABOLITE_NODE_YPOS, PathwaysFrameConstants.METABOLITE_NODE_FONT_SIZE);
-        		} else if (smallMainMetabolites.contains(name)) {
-        			if (!foundMetabolitesList.contains(name) && LocalConfig.getInstance().isHighlightMissingMetabolitesSelected()) {
-        				graphics.setColor(PathwaysFrameConstants.METABOLITE_NOT_FOUND_COLOR);
-        			}
-        			alignCenterString(graphics, abbr, width, PathwaysFrameConstants.SMALL_MAIN_METABOLITE_NODE_XPOS, PathwaysFrameConstants.SMALL_MAIN_METABOLITE_NODE_YPOS, PathwaysFrameConstants.SMALL_MAIN_METABOLITE_NODE_FONT_SIZE);
-        		} else if (sideMetabolites.contains(name)) {
-        			if (!foundMetabolitesList.contains(name) && LocalConfig.getInstance().isHighlightMissingMetabolitesSelected()) {
-        				graphics.setColor(PathwaysFrameConstants.METABOLITE_NOT_FOUND_COLOR);
-        			}
-        			if (cofactors.contains(name)) {
-        				graphics.setColor(PathwaysFrameConstants.COFACTOR_COLOR);
-        				if (!foundMetabolitesList.contains(name) && LocalConfig.getInstance().isHighlightMissingMetabolitesSelected()) {
-            				graphics.setColor(PathwaysFrameConstants.COFACTOR_NOT_FOUND_COLOR);
-            			}
-        			}
-        			alignCenterString(graphics, abbr, width, PathwaysFrameConstants.SIDE_METABOLITE_NODE_XPOS, PathwaysFrameConstants.SIDE_METABOLITE_NODE_YPOS, PathwaysFrameConstants.SIDE_METABOLITE_NODE_FONT_SIZE);
-        		} else if (reactions.contains(name)) {
-        			graphics.setColor(PathwaysFrameConstants.REACTION_NODE_DETAULT_FONT_COLOR);
-        			if (!foundReactionsList.contains(name) && LocalConfig.getInstance().isHighlightMissingReactionsSelected()) {
-        				graphics.setColor(PathwaysFrameConstants.REACTION_NOT_FOUND_FONT_COLOR);
-        			} else if (koReactions.contains(name)) {
-        				graphics.setColor(PathwaysFrameConstants.REACTION_KO_FONT_COLOR);
-        			}
-        			alignCenterString(graphics, name, width, PathwaysFrameConstants.REACTION_NODE_XPOS, PathwaysFrameConstants.REACTION_NODE_YPOS, PathwaysFrameConstants.REACTION_NODE_FONT_SIZE);
-        		}
-        	}
-        	if (mainMetabolites.contains(name) || smallMainMetabolites.contains(name)) {
-        		if (!noBorderList.contains(name)) {
-        			drawBorder(graphics, width, height, PathwaysFrameConstants.METABOLITE_BORDER_WIDTH);
-        		}
-        	} else if (sideMetabolites.contains(name)) {
-        		if (!noBorderList.contains(name)) {
-        			drawBorder(graphics, width, height, PathwaysFrameConstants.SIDE_METABOLITE_BORDER_WIDTH);
-        		}
-        	}
-        	Icon icon = new ImageIcon(bufferedImage);
-            iconMap.put(name, icon);                                                                                                                                        
-        } 
-    }
-                                                                                                                     
-    static class MetabTransformer implements Transformer<String,String[]> {                                           
-                                                                                                                     
-    	Map<String,String[]> map;                                                                                    
-    	public MetabTransformer(Map<String,String[]> map) {                                                           
-    		this.map = map;                                                                                          
-    	}                                                                                                            
-                                                                                                                                                                                                                             
+	}
+
+	public void drawCompartmentLabel(String text, String xOffset, String yOffset) {
+		nodeNamePositionMap.put(text, new String[] {xOffset, yOffset});
+	}
+
+	public void createGraph() {
+
+	}
+
+	/**                                                                                                              
+	 * create some vertices                                                                                          
+	 * @param count how many to create                                                                               
+	 * @return the Vertices in an array                                                                              
+	 */                                                                                                              
+	public void createVertices() {                                                                                  
+		for (String met : nodeNamePositionMap.keySet()) {
+			graph.addVertex(met); 
+		} 
+	} 
+
+	public void removeVertices() {                                                                                  
+		for (String met : nodeNamePositionMap.keySet()) {
+			graph.removeVertex(met); 
+		} 
+	} 
+
+	/**                                                                                                              
+	 * create edges for this demo graph                                                                              
+	 * @param v an array of Vertices to connect                                                                      
+	 */                                                                                                              
+	public void createEdges() { 
+		for(int i=0; i<reactionList.size(); i++) {
+			String[] info = reactionMap.get(reactionList.get(i));
+			String rev = info[2];
+			if (rev.equals("true")) {
+				graph.addEdge(new Double(i), info[0], info[1], EdgeType.DIRECTED); 
+			} else if (rev.equals("false")) {
+				graph.addEdge(new Double(i), info[0], info[1], EdgeType.UNDIRECTED); 
+			}
+			//String rxnName = "";
+			if (fluxMap.containsKey(reactionList.get(i))) {
+				double fluxValue = fluxMap.get(reactionList.get(i));
+				edge_weight.put(new Double(i), fluxValue);
+			} else {
+				edge_weight.put(new Double(i), PathwaysFrameConstants.DEFAULT_EDGE_WIDTH);
+			}
+			if (colorMap.containsKey(reactionList.get(i))) {
+				double color = colorMap.get(reactionList.get(i));
+				edge_color.put(new Double(i), color);
+			} else {
+				edge_color.put(new Double(i), PathwaysFrameConstants.DEFAULT_COLOR_VALUE);
+			}
+		} 
+	} 
+
+	public void removeEdges() {
+		for(int i=0; i<reactionList.size(); i++) {
+			graph.removeEdge(new Double(i)); 
+			fluxMap.clear();
+			edge_weight.clear();
+			edge_color.clear();
+		}
+	}
+
+	/**
+	 * Creates image icons to be used as nodes
+	 * @return
+	 */
+	public void createIconMap() {
+		//Map<String, Icon> iconMap = new HashMap<String, Icon>();   
+		iconMap.clear();
+		nodeNameList = new ArrayList<String>(nodeNamePositionMap.keySet()); 
+		//   		Collections.sort(nodeNameList);
+		for (int i = 0; i < nodeNameList.size(); i++) {                                                                                                        
+			String name = nodeNameList.get(i);
+			String abbr = LocalConfig.getInstance().getMetaboliteNameAbbrMap().get(name);
+			int width = (int) PathwaysFrameConstants.BORDER_THICKNESS;
+			int height = (int) PathwaysFrameConstants.BORDER_THICKNESS;
+			if (borderList.contains(name)) {
+				width = (int) PathwaysFrameConstants.BORDER_THICKNESS;
+				height = (int) PathwaysFrameConstants.BORDER_THICKNESS;
+			} else if (name.equals(compartmentLabel)) {
+				width = PathwaysFrameConstants.COMPARTMENT_LABEL_NODE_WIDTH;
+				height = PathwaysFrameConstants.COMPARTMENT_LABEL_NODE_HEIGHT;
+			} else if (mainMetabolites.contains(name)) {
+				if (!noBorderList.contains(name)) {
+					width = PathwaysFrameConstants.METABOLITE_BORDER_NODE_WIDTH;
+					height = PathwaysFrameConstants.METABOLITE_BORDER_NODE_HEIGHT;
+				} else {
+					width = PathwaysFrameConstants.METABOLITE_NO_BORDER_NODE_WIDTH;
+					height = PathwaysFrameConstants.METABOLITE_NO_BORDER_NODE_HEIGHT;
+				}
+			} else if (smallMainMetabolites.contains(name)) {	
+				width = PathwaysFrameConstants.SMALL_MAIN_METABOLITE_NODE_WIDTH;
+				height = PathwaysFrameConstants.SMALL_MAIN_METABOLITE_NODE_HEIGHT;
+			} else if (sideMetabolites.contains(name)) {	
+				width = PathwaysFrameConstants.SIDE_METABOLITE_NODE_WIDTH;
+				height = PathwaysFrameConstants.SIDE_METABOLITE_NODE_HEIGHT;	
+			} else if (reactions.contains(name)) {
+				width = PathwaysFrameConstants.REACTION_NODE_WIDTH;
+				height = PathwaysFrameConstants.REACTION_NODE_HEIGHT;
+			} else if (pathwayNames.contains(name)) {
+				width = PathwaysFrameConstants.PATHWAY_NAME_NODE_WIDTH;
+				height = PathwaysFrameConstants.PATHWAY_NAME_NODE_HEIGHT; 
+			}
+			// based on http://stackoverflow.com/questions/2736320/write-text-onto-image-in-java
+			BufferedImage bufferedImage = new BufferedImage(width, height,
+					BufferedImage.TYPE_INT_RGB);
+			Graphics graphics = bufferedImage.getGraphics();
+			graphics.setColor(PathwaysFrameConstants.NODE_BACKGROUND_DETAULT_COLOR);
+			if (borderList.contains(name)) {
+				graphics.setColor(Color.black);
+			}
+			graphics.fillRect(0, 0, width, height);
+			graphics.setColor(Color.BLACK);
+			if (pathwayNames.contains(name)) {
+				if (foundPathwayNamesList.contains(name)) {
+					graphics.setColor(PathwaysFrameConstants.PATHWAY_NAME_COLOR);
+				} else {
+					graphics.setColor(PathwaysFrameConstants.PATHWAY_NAME_NOT_FOUND_COLOR);
+				}
+				alignCenterString(graphics, name, width, PathwaysFrameConstants.PATHWAY_NAME_NODE_XPOS, PathwaysFrameConstants.PATHWAY_NAME_NODE_YPOS, PathwaysFrameConstants.PATHWAY_NAME_NODE_FONT_SIZE);
+				drawBorder(graphics, width, height, PathwaysFrameConstants.PATHWAY_NAME_BORDER_WIDTH);
+			} else if (name.equals(compartmentLabel)) {
+				graphics.setFont(new Font(PathwaysFrameConstants.FONT_NAME, PathwaysFrameConstants.FONT_STYLE, PathwaysFrameConstants.COMPARTMENT_LABEL_NODE_FONT_SIZE));
+				graphics.drawString(compartmentLabel, PathwaysFrameConstants.COMPARTMENT_LABEL_NODE_XPOS, PathwaysFrameConstants.COMPARTMENT_LABEL_NODE_YPOS);
+				graphics.drawString("Compartment Name: " + LocalConfig.getInstance().getSelectedCompartmentName(), PathwaysFrameConstants.COMPARTMENT_LABEL_NODE_XPOS, 
+						PathwaysFrameConstants.COMPARTMENT_LABEL_LINE_OFFSET + PathwaysFrameConstants.COMPARTMENT_LABEL_NODE_YPOS);
+			} else {
+				if (mainMetabolites.contains(name)) {
+					if (!foundMetabolitesList.contains(name) && LocalConfig.getInstance().isHighlightMissingMetabolitesSelected()) {
+						graphics.setColor(PathwaysFrameConstants.METABOLITE_NOT_FOUND_COLOR);
+					}
+					alignCenterString(graphics, abbr, width, PathwaysFrameConstants.METABOLITE_NODE_XPOS, PathwaysFrameConstants.METABOLITE_NODE_YPOS, PathwaysFrameConstants.METABOLITE_NODE_FONT_SIZE);
+				} else if (smallMainMetabolites.contains(name)) {
+					if (!foundMetabolitesList.contains(name) && LocalConfig.getInstance().isHighlightMissingMetabolitesSelected()) {
+						graphics.setColor(PathwaysFrameConstants.METABOLITE_NOT_FOUND_COLOR);
+					}
+					alignCenterString(graphics, abbr, width, PathwaysFrameConstants.SMALL_MAIN_METABOLITE_NODE_XPOS, PathwaysFrameConstants.SMALL_MAIN_METABOLITE_NODE_YPOS, PathwaysFrameConstants.SMALL_MAIN_METABOLITE_NODE_FONT_SIZE);
+				} else if (sideMetabolites.contains(name)) {
+					if (!foundMetabolitesList.contains(name) && LocalConfig.getInstance().isHighlightMissingMetabolitesSelected()) {
+						graphics.setColor(PathwaysFrameConstants.METABOLITE_NOT_FOUND_COLOR);
+					}
+					if (cofactors.contains(name)) {
+						graphics.setColor(PathwaysFrameConstants.COFACTOR_COLOR);
+						if (!foundMetabolitesList.contains(name) && LocalConfig.getInstance().isHighlightMissingMetabolitesSelected()) {
+							graphics.setColor(PathwaysFrameConstants.COFACTOR_NOT_FOUND_COLOR);
+						}
+					}
+					alignCenterString(graphics, abbr, width, PathwaysFrameConstants.SIDE_METABOLITE_NODE_XPOS, PathwaysFrameConstants.SIDE_METABOLITE_NODE_YPOS, PathwaysFrameConstants.SIDE_METABOLITE_NODE_FONT_SIZE);
+				} else if (reactions.contains(name)) {
+					graphics.setColor(PathwaysFrameConstants.REACTION_NODE_DETAULT_FONT_COLOR);
+					if (!foundReactionsList.contains(name) && LocalConfig.getInstance().isHighlightMissingReactionsSelected()) {
+						graphics.setColor(PathwaysFrameConstants.REACTION_NOT_FOUND_FONT_COLOR);
+					} else if (koReactions.contains(name)) {
+						graphics.setColor(PathwaysFrameConstants.REACTION_KO_FONT_COLOR);
+					}
+					alignCenterString(graphics, name, width, PathwaysFrameConstants.REACTION_NODE_XPOS, PathwaysFrameConstants.REACTION_NODE_YPOS, PathwaysFrameConstants.REACTION_NODE_FONT_SIZE);
+				}
+			}
+			if (mainMetabolites.contains(name) || smallMainMetabolites.contains(name)) {
+				if (!noBorderList.contains(name)) {
+					drawBorder(graphics, width, height, PathwaysFrameConstants.METABOLITE_BORDER_WIDTH);
+				}
+			} else if (sideMetabolites.contains(name)) {
+				if (!noBorderList.contains(name)) {
+					drawBorder(graphics, width, height, PathwaysFrameConstants.SIDE_METABOLITE_BORDER_WIDTH);
+				}
+			}
+			Icon icon = new ImageIcon(bufferedImage);
+			iconMap.put(name, icon);                                                                                                                                        
+		} 
+	}
+
+	static class MetabTransformer implements Transformer<String,String[]> {                                           
+
+		Map<String,String[]> map;                                                                                    
+		public MetabTransformer(Map<String,String[]> map) {                                                           
+			this.map = map;                                                                                          
+		}                                                                                                            
+
 		public String[] transform(String m) { 
 			return map.get(m);                                                                                    
 		}                                                                                                            
-    }                                                                                                                
-                                                                                                                     
-    static class PixelTransformer implements Transformer<String[],Point2D> {                                   
-    	Dimension d;                                                                                                 
-    	int startOffset;                                                                                             
-    	                                                                                                             
-    	public PixelTransformer(Dimension d) {                                                                 
-    		this.d = d;                                                                                              
-    	}                                                                                                            
-    	/**                                                                                                          
-    	 * transform a lat                                                                                           
-    	 */                                                                                                          
-    	public Point2D transform(String[] coord) { 
-    		double xPos = 0;
+	}                                                                                                                
+
+	static class PixelTransformer implements Transformer<String[],Point2D> {                                   
+		Dimension d;                                                                                                 
+		int startOffset;                                                                                             
+
+		public PixelTransformer(Dimension d) {                                                                 
+			this.d = d;                                                                                              
+		}                                                                                                            
+		/**                                                                                                          
+		 * transform a lat                                                                                           
+		 */                                                                                                          
+		 public Point2D transform(String[] coord) { 
+			double xPos = 0;
 			double yPos = 0;                                                                                     
-			   
+
 			String x = "0.0";
 			String y = "0.0"; 
 			if (coord != null) {
@@ -1711,174 +1486,174 @@ public class PathwaysFrame extends JApplet {
 			}
 			//String x = coord[0];                                                                     
 			//String y = coord[1];  
-			
+
 			xPos = Double.parseDouble(x);
 			yPos = Double.parseDouble(y);
-			                                                                                                  
+
 			return new Point2D.Double(xPos,yPos);                                                           
-		}                                                                                                                
-    	                                                                                                             
-    }   
-    
-    private String displayString(String s) {
-    	if (reactions.contains(s)) {
-    		if (s.startsWith("<html>")) {
-        		s = s.substring(6, s.indexOf("<p>"));
-        	}
-    		if (s.length() > PathwaysFrameConstants.REACTION_NODE_MAX_CHARS) {
-        		s = s.substring(0, PathwaysFrameConstants.REACTION_NODE_MAX_CHARS - PathwaysFrameConstants.REACTION_NODE_ELLIPSIS_CORRECTION) + "...";
-        	}
-    	} else if (s.equals(compartmentLabel)) {
-    		if (s.length() > PathwaysFrameConstants.COMPARTMENT_LABEL_NODE_MAX_CHARS) {
-        		s = s.substring(0, PathwaysFrameConstants.COMPARTMENT_LABEL_NODE_MAX_CHARS - PathwaysFrameConstants.COMPARTMENT_LABEL_NODE_ELLIPSIS_CORRECTION) + "...";
-        	}	
-    	} else if (pathwayNames.contains(s)) {
-    		if (s.length() > PathwaysFrameConstants.PATHWAY_NAME_NODE_MAX_CHARS) {
-        		s = s.substring(0, PathwaysFrameConstants.PATHWAY_NAME_NODE_MAX_CHARS - PathwaysFrameConstants.PATHWAY_NAME_NODE_ELLIPSIS_CORRECTION) + "...";
-        	}	
-    	} else if (smallMainMetabolites.contains(s)) {
-    		if (s.length() > PathwaysFrameConstants.SMALL_MAIN_METABOLITE_NODE_MAX_CHARS) {
-        		s = s.substring(0, PathwaysFrameConstants.SMALL_MAIN_METABOLITE_NODE_MAX_CHARS - PathwaysFrameConstants.SMALL_MAIN_METABOLITE_NODE_ELLIPSIS_CORRECTION) + "...";
-        	}
-    	} else if (sideMetabolites.contains(s)) {
-    		if (s.length() > PathwaysFrameConstants.SIDE_METABOLITE_NODE_MAX_CHARS) {
-        		s = s.substring(0, PathwaysFrameConstants.SIDE_METABOLITE_NODE_MAX_CHARS - PathwaysFrameConstants.SIDE_METABOLITE_NODE_ELLIPSIS_CORRECTION) + "...";
-        	}
-    	} else {
-    		if (s.length() > PathwaysFrameConstants.METABOLITE_NODE_MAX_CHARS) {
-        		s = s.substring(0, PathwaysFrameConstants.METABOLITE_NODE_MAX_CHARS - PathwaysFrameConstants.METABOLITE_NODE_ELLIPSIS_CORRECTION) + "...";
-        	}
-    	}
-    	if (s.startsWith("R_") || s.startsWith("r_")) {
+		 }                                                                                                                
+
+	}   
+
+	private String displayString(String s) {
+		if (reactions.contains(s)) {
+			if (s.startsWith("<html>")) {
+				s = s.substring(6, s.indexOf("<p>"));
+			}
+			if (s.length() > PathwaysFrameConstants.REACTION_NODE_MAX_CHARS) {
+				s = s.substring(0, PathwaysFrameConstants.REACTION_NODE_MAX_CHARS - PathwaysFrameConstants.REACTION_NODE_ELLIPSIS_CORRECTION) + "...";
+			}
+		} else if (s.equals(compartmentLabel)) {
+			if (s.length() > PathwaysFrameConstants.COMPARTMENT_LABEL_NODE_MAX_CHARS) {
+				s = s.substring(0, PathwaysFrameConstants.COMPARTMENT_LABEL_NODE_MAX_CHARS - PathwaysFrameConstants.COMPARTMENT_LABEL_NODE_ELLIPSIS_CORRECTION) + "...";
+			}	
+		} else if (pathwayNames.contains(s)) {
+			if (s.length() > PathwaysFrameConstants.PATHWAY_NAME_NODE_MAX_CHARS) {
+				s = s.substring(0, PathwaysFrameConstants.PATHWAY_NAME_NODE_MAX_CHARS - PathwaysFrameConstants.PATHWAY_NAME_NODE_ELLIPSIS_CORRECTION) + "...";
+			}	
+		} else if (smallMainMetabolites.contains(s)) {
+			if (s.length() > PathwaysFrameConstants.SMALL_MAIN_METABOLITE_NODE_MAX_CHARS) {
+				s = s.substring(0, PathwaysFrameConstants.SMALL_MAIN_METABOLITE_NODE_MAX_CHARS - PathwaysFrameConstants.SMALL_MAIN_METABOLITE_NODE_ELLIPSIS_CORRECTION) + "...";
+			}
+		} else if (sideMetabolites.contains(s)) {
+			if (s.length() > PathwaysFrameConstants.SIDE_METABOLITE_NODE_MAX_CHARS) {
+				s = s.substring(0, PathwaysFrameConstants.SIDE_METABOLITE_NODE_MAX_CHARS - PathwaysFrameConstants.SIDE_METABOLITE_NODE_ELLIPSIS_CORRECTION) + "...";
+			}
+		} else {
+			if (s.length() > PathwaysFrameConstants.METABOLITE_NODE_MAX_CHARS) {
+				s = s.substring(0, PathwaysFrameConstants.METABOLITE_NODE_MAX_CHARS - PathwaysFrameConstants.METABOLITE_NODE_ELLIPSIS_CORRECTION) + "...";
+			}
+		}
+		if (s.startsWith("R_") || s.startsWith("r_")) {
 			s = s.substring(2);
 		}
-    	
+
 		return s;
-    	
-    }
-       
-    // based on http://www.coderanch.com/t/336616/GUI/java/Center-Align-text-drawString
-    private void alignCenterString(Graphics g2d, String s, int width, int XPos, int YPos, int fontSize){  
-    	g2d.setFont(new Font("Arial", Font.TYPE1_FONT, fontSize));
-    	s = displayString(s);
-        int stringLen = (int)  
-            g2d.getFontMetrics().getStringBounds(s, g2d).getWidth();  
-        int start = width/2 - stringLen/2;
-        g2d.drawString(s, start + XPos, YPos);   
-    }  
-    
-    private void drawBorder(Graphics g2d, int width, int height, int strokeWidth){
-    	((Graphics2D) g2d).setStroke(new BasicStroke(strokeWidth));
-    	g2d.drawLine(1, 1, width, 1);
-    	g2d.drawLine(1, height - 1, width, height - 1);
-    	g2d.drawLine(1, 1, 1, height);
-    	g2d.drawLine(width - 1, 1, width - 1, height);
-    }
-    
-    private final static class EdgeWeightStrokeFunction<E>
-    implements Transformer<E,Stroke>
-    {
-        protected Map<E,Number> edge_weight;
-       
-        public EdgeWeightStrokeFunction(Map<E,Number> edge_weight)
-        {
-            this.edge_weight = edge_weight;
-        }
-        
-        public Stroke transform(E e)
-        {
-        	int strokeWidth = 1;
-        	if (LocalConfig.getInstance().isScaleEdgeThicknessSelected()) {
-        		if (edge_weight.containsKey(e)) {
-                	double value = edge_weight.get(e).doubleValue();
-                	//System.out.println(value);
-                    if (value > 0.1) {
-                    	if (value == PathwaysFrameConstants.BORDER_THICKNESS) {
-                    		strokeWidth = (int) PathwaysFrameConstants.BORDER_THICKNESS;
-                    	} else {
-                    		strokeWidth = (int) value;
-                    	}
-                    	return new BasicStroke(strokeWidth);
-                    } else {
-                    	return RenderContext.DOTTED;
-                    }  
-                } else {
-                	return RenderContext.DOTTED;
-                }
-        	} else {
-        		return new BasicStroke(strokeWidth);
-        	}
-        }
-    }
-    
-    /**
-     * Returns wedge arrows for undirected edges and notched arrows
-     * for directed edges, of the specified dimensions.
-     *
-     * based on code from https://code.google.com/p/geoviz/source/browse/trunk/network/src/main/java/edu/uci/ics/jung/visualization/decorators/DirectionalEdgeArrowTransformer.java?r=774
-     * by Joshua O'Madadhain
-     */
-    public class DirectionalEdgeArrowTransformer<V,E> implements Transformer<Context<Graph<V,E>,E>,Shape> {
-        //protected Shape undirected_arrow;
-//        protected Shape directed_arrow;	
-    	float length = PathwaysFrameConstants.ARROW_LENGTH;
-    	float width = PathwaysFrameConstants.ARROW_WIDTH;
-    	float notch_depth = PathwaysFrameConstants.ARROW_NOTCH;
-    	protected Shape directed_arrow = ArrowFactory.getNotchedArrow(width, length, notch_depth);
-        
-//        public DirectionalEdgeArrowTransformer(int length, int width, int notch_depth)
-//        {
-//        	directed_arrow = ArrowFactory.getNotchedArrow(width, length, notch_depth);
-            //undirected_arrow = ArrowFactory.getWedgeArrow(width, length);
-            // no arrow for undirected edge
-            //undirected_arrow = ArrowFactory.getWedgeArrow(0, 0);
-//        }
-       
-        /**
-         *
-         */
-        public Shape transform(Context<Graph<V,E>,E> context)
-        {
-        	double value = 1.0;
-        	if (LocalConfig.getInstance().isScaleEdgeThicknessSelected()) {
-        		if (edge_weight.containsKey(context.element)) {
-                	value = edge_weight.get(context.element).doubleValue();
-            	}
-        	}
-        	double arrowSize = 0.25;
-        	if (LocalConfig.getInstance().isScaleEdgeThicknessSelected()) {
-        		if (value >= 1) {
-            		arrowSize = Math.sqrt(value)/2;
-            	}
-        	}
-        	directed_arrow = ArrowFactory.getNotchedArrow((float) (arrowSize*width), 
-        			(float) (arrowSize*length), (float) (arrowSize*notch_depth));
-        	return directed_arrow;
-//        	System.out.println("c " + context.graph.getEdgeType(context.element));
-//        	if (context.graph.getEdgeType(context.element) == EdgeType.DIRECTED) {
-//                return directed_arrow;
-//        	} else {
-//        		System.out.println("c " + context.element.toString());
-//        		return undirected_arrow;
-//        	} 
-        }
 
-    }
-    
-    Transformer<Number, Paint> colorTransformer = new Transformer<Number, Paint>() {
+	}
 
-        public Paint transform(Number i) {
-        	if (edge_color.containsKey(i)) {
-        		double color = edge_color.get(i).doubleValue();
-        		return colorFromColorValue(color);
-        	}
-        	return Color.BLACK;
-        }
-    };
-    
-    public Color colorFromColorValue(double color) {
-    	Color defaultColor = Color.BLACK;
-    	if (color == PathwaysFrameConstants.BLACK_COLOR_VALUE) {
+	// based on http://www.coderanch.com/t/336616/GUI/java/Center-Align-text-drawString
+	private void alignCenterString(Graphics g2d, String s, int width, int XPos, int YPos, int fontSize){  
+		g2d.setFont(new Font(PathwaysFrameConstants.FONT_NAME, PathwaysFrameConstants.FONT_STYLE, fontSize));
+		s = displayString(s);
+		int stringLen = (int)  
+				g2d.getFontMetrics().getStringBounds(s, g2d).getWidth();  
+		int start = width/2 - stringLen/2;
+		g2d.drawString(s, start + XPos, YPos);   
+	}  
+
+	private void drawBorder(Graphics g2d, int width, int height, int strokeWidth){
+		((Graphics2D) g2d).setStroke(new BasicStroke(strokeWidth));
+		g2d.drawLine(1, 1, width, 1);
+		g2d.drawLine(1, height - 1, width, height - 1);
+		g2d.drawLine(1, 1, 1, height);
+		g2d.drawLine(width - 1, 1, width - 1, height);
+	}
+
+	private final static class EdgeWeightStrokeFunction<E>
+	implements Transformer<E,Stroke>
+	{
+		protected Map<E,Number> edge_weight;
+
+		public EdgeWeightStrokeFunction(Map<E,Number> edge_weight)
+		{
+			this.edge_weight = edge_weight;
+		}
+
+		public Stroke transform(E e)
+		{
+			int strokeWidth = 1;
+			if (LocalConfig.getInstance().isScaleEdgeThicknessSelected()) {
+				if (edge_weight.containsKey(e)) {
+					double value = edge_weight.get(e).doubleValue();
+					//System.out.println(value);
+					if (value > 0.1) {
+						if (value == PathwaysFrameConstants.BORDER_THICKNESS) {
+							strokeWidth = (int) PathwaysFrameConstants.BORDER_THICKNESS;
+						} else {
+							strokeWidth = (int) value;
+						}
+						return new BasicStroke(strokeWidth);
+					} else {
+						return RenderContext.DOTTED;
+					}  
+				} else {
+					return RenderContext.DOTTED;
+				}
+			} else {
+				return new BasicStroke(strokeWidth);
+			}
+		}
+	}
+
+	/**
+	 * Returns wedge arrows for undirected edges and notched arrows
+	 * for directed edges, of the specified dimensions.
+	 *
+	 * based on code from https://code.google.com/p/geoviz/source/browse/trunk/network/src/main/java/edu/uci/ics/jung/visualization/decorators/DirectionalEdgeArrowTransformer.java?r=774
+	 * by Joshua O'Madadhain
+	 */
+	public class DirectionalEdgeArrowTransformer<V,E> implements Transformer<Context<Graph<V,E>,E>,Shape> {
+		//protected Shape undirected_arrow;
+		//        protected Shape directed_arrow;	
+		float length = PathwaysFrameConstants.ARROW_LENGTH;
+		float width = PathwaysFrameConstants.ARROW_WIDTH;
+		float notch_depth = PathwaysFrameConstants.ARROW_NOTCH;
+		protected Shape directed_arrow = ArrowFactory.getNotchedArrow(width, length, notch_depth);
+
+		//        public DirectionalEdgeArrowTransformer(int length, int width, int notch_depth)
+		//        {
+		//        	directed_arrow = ArrowFactory.getNotchedArrow(width, length, notch_depth);
+		//undirected_arrow = ArrowFactory.getWedgeArrow(width, length);
+		// no arrow for undirected edge
+		//undirected_arrow = ArrowFactory.getWedgeArrow(0, 0);
+		//        }
+
+		/**
+		 *
+		 */
+		public Shape transform(Context<Graph<V,E>,E> context)
+		{
+			double value = 1.0;
+			if (LocalConfig.getInstance().isScaleEdgeThicknessSelected()) {
+				if (edge_weight.containsKey(context.element)) {
+					value = edge_weight.get(context.element).doubleValue();
+				}
+			}
+			double arrowSize = 0.25;
+			if (LocalConfig.getInstance().isScaleEdgeThicknessSelected()) {
+				if (value >= 1) {
+					arrowSize = Math.sqrt(value)/2;
+				}
+			}
+			directed_arrow = ArrowFactory.getNotchedArrow((float) (arrowSize*width), 
+					(float) (arrowSize*length), (float) (arrowSize*notch_depth));
+			return directed_arrow;
+			//        	System.out.println("c " + context.graph.getEdgeType(context.element));
+			//        	if (context.graph.getEdgeType(context.element) == EdgeType.DIRECTED) {
+			//                return directed_arrow;
+			//        	} else {
+			//        		System.out.println("c " + context.element.toString());
+			//        		return undirected_arrow;
+			//        	} 
+		}
+
+	}
+
+	Transformer<Number, Paint> colorTransformer = new Transformer<Number, Paint>() {
+
+		public Paint transform(Number i) {
+			if (edge_color.containsKey(i)) {
+				double color = edge_color.get(i).doubleValue();
+				return colorFromColorValue(color);
+			}
+			return Color.BLACK;
+		}
+	};
+
+	public Color colorFromColorValue(double color) {
+		Color defaultColor = Color.BLACK;
+		if (color == PathwaysFrameConstants.BLACK_COLOR_VALUE) {
 			return Color.BLACK;
 		} else if (color == PathwaysFrameConstants.GRAY_COLOR_VALUE) {
 			return Color.GRAY;
@@ -1891,12 +1666,12 @@ public class PathwaysFrame extends JApplet {
 		} else if (color == PathwaysFrameConstants.BLUE_NOT_FOUND_COLOR_VALUE) {
 			return PathwaysFrameConstants.REACTION_EDGE_NOT_FOUND_COLOR;
 		}
-    	
+
 		return defaultColor;
-    }
-    
-    public void createNodeInformationDialog(Object arg0) {
-    	final ArrayList<Image> icons = new ArrayList<Image>(); 
+	}
+
+	public void createNodeInformationDialog(Object arg0) {
+		final ArrayList<Image> icons = new ArrayList<Image>(); 
 		icons.add(new ImageIcon("images/most16.jpg").getImage()); 
 		icons.add(new ImageIcon("images/most32.jpg").getImage());
 
@@ -1910,46 +1685,46 @@ public class PathwaysFrame extends JApplet {
 		frame.pack();
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
-    }
-    
-    public double edgeThickness(double fluxValue) {
-    	double thickness = PathwaysFrameConstants.DEFAULT_EDGE_WIDTH;
-    	if (Math.abs(fluxValue) > PathwaysFrameConstants.INFINITE_FLUX_RATIO*LocalConfig.getInstance().getMaxUpperBound()) {
+	}
+
+	public double edgeThickness(double fluxValue) {
+		double thickness = PathwaysFrameConstants.DEFAULT_EDGE_WIDTH;
+		if (Math.abs(fluxValue) > PathwaysFrameConstants.INFINITE_FLUX_RATIO*LocalConfig.getInstance().getMaxUpperBound()) {
 			//System.out.println("flux " + pn.getFluxValue());
 			thickness = PathwaysFrameConstants.INFINITE_FLUX_WIDTH;
-    	} else if (Math.abs(fluxValue) > 0) {
-    		if (Math.abs(fluxValue) < PathwaysFrameConstants.MINIMUM_FLUX_RATIO*LocalConfig.getInstance().getSecondaryMaxFlux()) {
-        		thickness = PathwaysFrameConstants.MINIMUM_FLUX_WIDTH;
-    		} else if (Math.abs(fluxValue) < PathwaysFrameConstants.LOWER_MID_FLUX_RATIO*LocalConfig.getInstance().getSecondaryMaxFlux()) {
-    			thickness = PathwaysFrameConstants.LOW_MID_FLUX_WIDTH;
-    		} else if (Math.abs(fluxValue) < PathwaysFrameConstants.LOWER_MID_FLUX_RATIO*LocalConfig.getInstance().getSecondaryMaxFlux()) {
-    			thickness = PathwaysFrameConstants.MID_FLUX_WIDTH;
-    		} else if (Math.abs(fluxValue) < PathwaysFrameConstants.LOWER_MID_FLUX_RATIO*LocalConfig.getInstance().getSecondaryMaxFlux()) {
-    			thickness = PathwaysFrameConstants.MID_FLUX_WIDTH;
-    		} else if (Math.abs(fluxValue) < PathwaysFrameConstants.TOP_FLUX_RATIO*LocalConfig.getInstance().getSecondaryMaxFlux()) {
-    			thickness = PathwaysFrameConstants.TOP_FLUX_WIDTH;
-    		} else if (Math.abs(fluxValue) <= LocalConfig.getInstance().getSecondaryMaxFlux()) {
-    			thickness = PathwaysFrameConstants.SECONDARY_MAX_FLUX_WIDTH;
-    		}
-    	}
-    		
+		} else if (Math.abs(fluxValue) > 0) {
+			if (Math.abs(fluxValue) < PathwaysFrameConstants.MINIMUM_FLUX_RATIO*LocalConfig.getInstance().getSecondaryMaxFlux()) {
+				thickness = PathwaysFrameConstants.MINIMUM_FLUX_WIDTH;
+			} else if (Math.abs(fluxValue) < PathwaysFrameConstants.LOWER_MID_FLUX_RATIO*LocalConfig.getInstance().getSecondaryMaxFlux()) {
+				thickness = PathwaysFrameConstants.LOW_MID_FLUX_WIDTH;
+			} else if (Math.abs(fluxValue) < PathwaysFrameConstants.LOWER_MID_FLUX_RATIO*LocalConfig.getInstance().getSecondaryMaxFlux()) {
+				thickness = PathwaysFrameConstants.MID_FLUX_WIDTH;
+			} else if (Math.abs(fluxValue) < PathwaysFrameConstants.LOWER_MID_FLUX_RATIO*LocalConfig.getInstance().getSecondaryMaxFlux()) {
+				thickness = PathwaysFrameConstants.MID_FLUX_WIDTH;
+			} else if (Math.abs(fluxValue) < PathwaysFrameConstants.TOP_FLUX_RATIO*LocalConfig.getInstance().getSecondaryMaxFlux()) {
+				thickness = PathwaysFrameConstants.TOP_FLUX_WIDTH;
+			} else if (Math.abs(fluxValue) <= LocalConfig.getInstance().getSecondaryMaxFlux()) {
+				thickness = PathwaysFrameConstants.SECONDARY_MAX_FLUX_WIDTH;
+			}
+		}
+
 		return thickness;
-    }
-    
-    /**
-     * Returns name of renamed node if oldNameNewNameMap contains name, else returns name.
-     * @param name
-     * @return
-     */
-    public String nodeName(String name) {
-    	if (oldNameNewNameMap.containsKey(name)) {
-    		return oldNameNewNameMap.get(name);
-    	}
+	}
+
+	/**
+	 * Returns name of renamed node if oldNameNewNameMap contains name, else returns name.
+	 * @param name
+	 * @return
+	 */
+	public String nodeName(String name) {
+		if (oldNameNewNameMap.containsKey(name)) {
+			return oldNameNewNameMap.get(name);
+		}
 		return name;
-    	
-    }
-    
-    /**
+
+	}
+
+	/**
 	 * Adds suffix to duplicate names
 	 * @param value
 	 * @param metaboliteNameAbbrMap
@@ -1966,7 +1741,7 @@ public class PathwaysFrame extends JApplet {
 		}
 		return duplicateSuffix;
 	}
-	
+
 	class PNGFileFilter extends javax.swing.filechooser.FileFilter {
 		public boolean accept(File f) {
 			return f.isDirectory() || f.getName().toLowerCase().endsWith(".png");
@@ -1976,21 +1751,21 @@ public class PathwaysFrame extends JApplet {
 			return ".png files";
 		}
 	}
-	
+
 	/*******************************************************************************************/
 	// Find
 	/*******************************************************************************************/
-	
+
 	ActionListener doneButtonActionListener = new ActionListener() {
 		public void actionPerformed(ActionEvent ae) {
 			findDialogCloseAction();
 		}
 	};
-	
+
 	public void showFindDialog() {
-//		LocalConfig.getInstance().setReactionsLocationsListCount(0);
-//		LocalConfig.getInstance().setMetabolitesLocationsListCount(0);
-//		findFieldChanged = false;
+		//		LocalConfig.getInstance().setReactionsLocationsListCount(0);
+		//		LocalConfig.getInstance().setMetabolitesLocationsListCount(0);
+		//		findFieldChanged = false;
 		VisualizationsFindDialog findDialog = new VisualizationsFindDialog();
 		setVisualizationsFindDialog(findDialog);
 		//getVisualizationsFindDialog().findButton.addActionListener(findNextButtonActionListener);
@@ -2013,10 +1788,10 @@ public class PathwaysFrame extends JApplet {
 			}
 		});
 		VisualizationsFindDialog.findBox.setEnabled(true);
-		
+
 		VisualizationsFindDialog.doneButton.addActionListener(doneButtonActionListener);
-		
-//		findButtonClicked = false;
+
+		//		findButtonClicked = false;
 		// ensure states of boolean values match states of findReplace frame
 		searchBackwards = VisualizationsFindConstants.SEARCH_BACKWARDS_DEFAULT;
 		matchCase = VisualizationsFindConstants.MATCH_CASE_DEFAULT;
@@ -2025,11 +1800,11 @@ public class PathwaysFrame extends JApplet {
 		findMode = true;
 		findItem.setEnabled(false);
 	}	
-	
+
 	public void findDialogCloseAction() {
 		findMode = false;
 		findItem.setEnabled(true);
-		
+
 		// ensure states of boolean values match states of findReplace frame
 		searchBackwards = VisualizationsFindConstants.SEARCH_BACKWARDS_DEFAULT;
 		matchCase = VisualizationsFindConstants.MATCH_CASE_DEFAULT;
@@ -2038,14 +1813,14 @@ public class PathwaysFrame extends JApplet {
 		getVisualizationsFindDialog().setVisible(false);
 		getVisualizationsFindDialog().dispose();
 	}
-	
+
 	ActionListener findNextButtonActionListener = new ActionListener() {
 		public void actionPerformed(ActionEvent ae) {
 			findAction();
-//			findButtonClicked = true;
+			//			findButtonClicked = true;
 		}
 	};
-	
+
 	public void findAction() {
 		findNext();
 	}
@@ -2065,7 +1840,7 @@ public class PathwaysFrame extends JApplet {
 		}
 		getVisualizationsFindDialog().setAlwaysOnTop(true);
 	}
-	
+
 	public void endFindAction() {
 		getVisualizationsFindDialog().setAlwaysOnTop(false);
 		Object[] options = {"    Yes    ", "    No    ",};
@@ -2077,7 +1852,7 @@ public class PathwaysFrame extends JApplet {
 				null, options, options[0]);
 		if (choice == JOptionPane.YES_OPTION) {
 			wrapAround = true; 
-			
+
 			VisualizationsFindDialog.wrapCheckBox.setSelected(true);
 			if (searchBackwards) {
 				if (searchBackwards && getFindLocationsMap() != null && getFindLocationsMap().size() > 0) {
@@ -2092,7 +1867,7 @@ public class PathwaysFrame extends JApplet {
 		}
 		getVisualizationsFindDialog().setAlwaysOnTop(true);
 	}
-	
+
 	private boolean findValueChanged(String findValue) {
 		boolean changed = false;
 		if (findValue.equals(oldFindValue)) {
@@ -2100,7 +1875,7 @@ public class PathwaysFrame extends JApplet {
 		} else {
 			changed = true;
 		}
-//		System.out.println("changed " + changed);
+		//		System.out.println("changed " + changed);
 		return changed;
 	}
 
@@ -2130,7 +1905,7 @@ public class PathwaysFrame extends JApplet {
 			ArrayList<String> findXCoordinates = new ArrayList<String>(findLocationsMap.keySet());
 			//System.out.println(findXCoordinates);
 			Collections.sort(findXCoordinates, new NumComparator());
-//			System.out.println(findXCoordinates);
+			//			System.out.println(findXCoordinates);
 			ArrayList<Double> findPositions = findLocationsMap.get(findXCoordinates.get(findStartIndex));
 			findNodeByLocation(findPositions.get(0), findPositions.get(1));
 			for (int i = 0; i < findXCoordinates.size(); i++) {
@@ -2160,10 +1935,10 @@ public class PathwaysFrame extends JApplet {
 		}
 		getVisualizationsFindDialog().requestFocus();
 	}
-	
+
 	public HashMap<String, ArrayList<Double>> findLocationsMap() {		
 		HashMap<String, ArrayList<Double>> findLocationsMap = new HashMap<String, ArrayList<Double>>();
-		
+
 		String findValue = "";
 		// save original entry for exact match
 		String originalFindValue = "";
@@ -2174,7 +1949,7 @@ public class PathwaysFrame extends JApplet {
 			originalFindValue = VisualizationsFindDialog.findBox.getSelectedItem().toString();
 			findValue = VisualizationsFindDialog.findBox.getSelectedItem().toString().toLowerCase();
 		}
-//		System.out.println("fv " + findValue);
+		//		System.out.println("fv " + findValue);
 		if (exactMatch) {
 			if (VisualizationsFindDialog.matchByBox.getSelectedItem().equals(
 					GraphicalInterfaceConstants.METABOLITE_ABBREVIATION_COLUMN_NAME)) {
@@ -2242,21 +2017,21 @@ public class PathwaysFrame extends JApplet {
 				}
 			}
 		}
-		
+
 		return findLocationsMap;
 
 	}
-	
+
 	private void updateFindLocationsMap(HashMap<String, ArrayList<Double>> findLocationsMap, String xString, String yString) {
 		ArrayList<Double> coordinates = new ArrayList<Double>();
 		double x = Double.parseDouble(xString);
 		double y = Double.parseDouble(yString);
-		
+
 		coordinates.add(x);
 		coordinates.add(y);
 		findLocationsMap.put(xString, coordinates);
 	}
-	
+
 	/**
 	 * Zoom to full scale and move node to center
 	 * @param x
@@ -2264,33 +2039,33 @@ public class PathwaysFrame extends JApplet {
 	 */
 	private void findNodeByLocation(double x, double y) {
 		// zoom in to full scale
-    	double zoom = 1/viewScale;
-    	viewScale = 1;
-    	Point2D.Float p = new Point2D.Float((float) vv.getCenter().getX(), (float) vv.getCenter().getY());
-    	scaler.scale(vv, (float) zoom, p);
-    	
-    	// based on code from http://stackoverflow.com/questions/5745183/how-to-programatically-pan-a-visualizationviewer-with-jung-the-java-library
-    	// scroll to location
-//    	MutableTransformer view = vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.VIEW);
-    	MutableTransformer layout = vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.LAYOUT);
-    	Point2D ctr = vv.getCenter();
-    	
-    	Point2D pnt = layout.inverseTransform(ctr);
-    	double deltaX = (pnt.getX()/viewScale);
-        double deltaY = (pnt.getY()/viewScale);
-        
-        deltaX += 5680;   // start
-        deltaY += 2700;  // start
-//        deltaY += 2570;  // start (before removing tabbed pane)
-        // does not move exactly to center when in full screen, but values
-        // above seem to work well enough
-//        deltaX += 6050;  // full
-//        deltaY += 2960;   // full
-//        deltaY += 2830;   // full (before removing tabbed pane)       
-        
-        layout.translate(deltaX - x, deltaY - y);
+		double zoom = 1/viewScale;
+		viewScale = 1;
+		Point2D.Float p = new Point2D.Float((float) vv.getCenter().getX(), (float) vv.getCenter().getY());
+		scaler.scale(vv, (float) zoom, p);
+
+		// based on code from http://stackoverflow.com/questions/5745183/how-to-programatically-pan-a-visualizationviewer-with-jung-the-java-library
+		// scroll to location
+		//    	MutableTransformer view = vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.VIEW);
+		MutableTransformer layout = vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.LAYOUT);
+		Point2D ctr = vv.getCenter();
+
+		Point2D pnt = layout.inverseTransform(ctr);
+		double deltaX = (pnt.getX()/viewScale);
+		double deltaY = (pnt.getY()/viewScale);
+
+		deltaX += 5680;   // start
+		deltaY += 2700;  // start
+		//        deltaY += 2570;  // start (before removing tabbed pane)
+		// does not move exactly to center when in full screen, but values
+		// above seem to work well enough
+		//        deltaX += 6050;  // full
+		//        deltaY += 2960;   // full
+		//        deltaY += 2830;   // full (before removing tabbed pane)       
+
+		layout.translate(deltaX - x, deltaY - y);
 	}
-	
+
 	ActionListener matchCaseActionListener = new ActionListener() {
 		public void actionPerformed(ActionEvent actionEvent) {
 			AbstractButton abstractButton = (AbstractButton) actionEvent.getSource();
@@ -2316,7 +2091,7 @@ public class PathwaysFrame extends JApplet {
 			}
 		}
 	};
-	
+
 	ActionListener exactMatchActionListener = new ActionListener() {
 		public void actionPerformed(ActionEvent actionEvent) {
 			AbstractButton abstractButton = (AbstractButton) actionEvent.getSource();
@@ -2329,7 +2104,7 @@ public class PathwaysFrame extends JApplet {
 			findDialogCloseAction();
 		}
 	};	
-	
+
 	public void updateFindPositionsMap(HashMap<String, ArrayList<String[]>> positionsMap, String key, String[] pos) {
 		if (key != null && key.length() > 0) {
 			if (positionsMap.containsKey(key)) {
@@ -2343,26 +2118,26 @@ public class PathwaysFrame extends JApplet {
 			}
 		}
 	}
-	
+
 	/*******************************************************************************************/
 	// End Find
 	/*******************************************************************************************/
-    
+
 	// based on http://stackoverflow.com/questions/6686007/how-to-sort-array-of-strings-in-numerical-order
 	class NumComparator implements Comparator<String> {
 		public int compare(String a, String b) {
 			return Float.valueOf(a.toString()).compareTo(Float.valueOf(b.toString()));
 		}
 	}
-	
-    public static void main(String[] args) {                                                                         
-        // create a frome to hold the graph                                                                          
-//        final JFrame frame = new JFrame();                                                                           
-//        Container content = frame.getContentPane();                                                                  
-//        content.add(new PathwaysFrame());                                                                        
-//        frame.pack();                                                                                                
-//        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
-//        frame.setLocationRelativeTo(null);
-//        frame.setVisible(true);                                                                                      
-    }                                                                                                                
+
+	public static void main(String[] args) {                                                                         
+		// create a frome to hold the graph                                                                          
+		//        final JFrame frame = new JFrame();                                                                           
+		//        Container content = frame.getContentPane();                                                                  
+		//        content.add(new PathwaysFrame());                                                                        
+		//        frame.pack();                                                                                                
+		//        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
+		//        frame.setLocationRelativeTo(null);
+		//        frame.setVisible(true);                                                                                      
+	}                                                                                                                
 }  
