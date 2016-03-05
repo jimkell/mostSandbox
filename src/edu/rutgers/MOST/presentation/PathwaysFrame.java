@@ -747,6 +747,16 @@ public class PathwaysFrame extends JApplet {
 				svgText.setFill(color);
 				if (nodeNameList.get(j).equals(compartmentLabel)) {
 					svgText.setText(nodeNameList.get(j));
+					SVGText svgText2 = new SVGText();
+					svgText2.setX(Double.parseDouble(nodeNamePositionMap.get(nodeNameList.get(j))[0]) + xOffset - width/2);
+					svgText2.setY(Double.parseDouble((nodeNamePositionMap.get(nodeNameList.get(j))[1])) + 
+							PathwaysFrameConstants.COMPARTMENT_LABEL_LINE_OFFSET + yOffset*1.1 - height/2);
+					svgText2.setFont(PathwaysFrameConstants.FONT_NAME);
+					svgText2.setFontSize(fontSize);
+					svgText2.setFontWeight(PathwaysFrameConstants.FONT_WEIGHT);
+					svgText2.setFill(color);
+					svgText2.setText("Compartment: " + maybeAddCompartmentNameSuffix(LocalConfig.getInstance().getSelectedCompartmentName()));
+					textList.add(svgText2);
 				} else {
 					svgText.setText(displayString(displayName));
 				}
