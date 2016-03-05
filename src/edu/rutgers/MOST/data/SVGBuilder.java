@@ -76,11 +76,12 @@ public class SVGBuilder {
 		// add marker - based on http://tutorials.jenkov.com/svg/marker-element.html
 		Element defsElement = doc.createElement("defs");
 		Element markerElement = doc.createElement("marker");
-		// add arrows
-		markerElement.setAttribute("id", "arrow1");
+		// add arrows - in svg 1.1 arrows cannot inherit color of stroke
+		// http://www.inkscapeforum.com/viewtopic.php?t=10824
+		markerElement.setAttribute("id", "arrow-black");
 		markerElement.setAttribute("markerWidth", "13");
 		markerElement.setAttribute("markerHeight", "13");
-		markerElement.setAttribute("refX", "2");
+		markerElement.setAttribute("refX", "20");
 		markerElement.setAttribute("refY", "6");
 		markerElement.setAttribute("orient", "auto");
 		
@@ -100,7 +101,7 @@ public class SVGBuilder {
 			lineElement.setAttribute("y2", "" + edges.get(e).getEndpoints().get(1)[1]);
 			lineElement.setAttribute("stroke", colorToString(edges.get(e).getStroke()));
 			lineElement.setAttribute("stroke-width", edges.get(e).getStrokeWidth());
-			lineElement.setAttribute("marker-end", "url(#arrow1)");
+			lineElement.setAttribute("marker-end", "url(#arrow-black)");
 			svgElement.appendChild(lineElement);
 		}
 		for (int i = 0; i < rects.size(); i++)
