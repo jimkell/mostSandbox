@@ -1242,10 +1242,11 @@ public class LocalConfig {
 	// Visualization options
 	private boolean graphMissingReactionsSelected;
 	private boolean highlightMissingReactionsSelected;
-//	private boolean gapFillingSelected;
 	private boolean graphMissingMetabolitesSelected;
 	private boolean highlightMissingMetabolitesSelected;
 	private boolean scaleEdgeThicknessSelected;
+	private boolean ignoreProtonSelected;
+	private boolean ignoreWaterSelected;
 
 	public boolean isGraphMissingReactionsSelected() {
 		return graphMissingReactionsSelected;
@@ -1264,15 +1265,7 @@ public class LocalConfig {
 			boolean highlightMissingReactionsSelected) {
 		this.highlightMissingReactionsSelected = highlightMissingReactionsSelected;
 	}
-
-//	public boolean isGapFillingSelected() {
-//		return gapFillingSelected;
-//	}
-//
-//	public void setGapFillingSelected(boolean gapFillingSelected) {
-//		this.gapFillingSelected = gapFillingSelected;
-//	}
-
+	
 	public boolean isGraphMissingMetabolitesSelected() {
 		return graphMissingMetabolitesSelected;
 	}
@@ -1299,6 +1292,22 @@ public class LocalConfig {
 		this.scaleEdgeThicknessSelected = scaleEdgeThicknessSelected;
 	}
 	
+	public boolean isIgnoreProtonSelected() {
+		return ignoreProtonSelected;
+	}
+
+	public void setIgnoreProtonSelected(boolean ignoreProtonSelected) {
+		this.ignoreProtonSelected = ignoreProtonSelected;
+	}
+
+	public boolean isIgnoreWaterSelected() {
+		return ignoreWaterSelected;
+	}
+
+	public void setIgnoreWaterSelected(boolean ignoreWaterSelected) {
+		this.ignoreWaterSelected = ignoreWaterSelected;
+	}
+
 	// compartment names from model
 	private String selectedCompartmentName;
 	

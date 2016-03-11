@@ -1216,7 +1216,7 @@ public class GraphicalInterface extends JFrame {
 		progressBar.setIconImages(icons);
 		progressBar.setSize(GraphicalInterfaceConstants.PROGRESS_BAR_WIDTH, GraphicalInterfaceConstants.PROGRESS_BAR_HEIGHT);		
 		progressBar.setResizable(false);
-		progressBar.setTitle("Loading...");
+		progressBar.setTitle(GraphicalInterfaceConstants.PROGRESS_BAR_TEXT);
 		//progressBar.progress.setIndeterminate(true);
 		progressBar.setLocationRelativeTo(null);
 		progressBar.setVisible(false);
@@ -1226,7 +1226,7 @@ public class GraphicalInterface extends JFrame {
 		visualizeProgressBar.setIconImages(icons);
 		visualizeProgressBar.setSize(GraphicalInterfaceConstants.PROGRESS_BAR_WIDTH, GraphicalInterfaceConstants.PROGRESS_BAR_HEIGHT);		
 		visualizeProgressBar.setResizable(false);
-		visualizeProgressBar.setTitle("Loading...");
+		visualizeProgressBar.setTitle(GraphicalInterfaceConstants.VISUALIZATION_PROGRESS_BAR_TEXT);
 		//visualizeProgressBar.progress.setIndeterminate(true);
 		visualizeProgressBar.setLocationRelativeTo(null);
 		visualizeProgressBar.setVisible(false);
@@ -13048,10 +13048,8 @@ public class GraphicalInterface extends JFrame {
 		LocalConfig.getInstance().setGraphMissingReactionsSelected(VisualizationOptionsConstants.GRAPH_MISSING_REACTIONS_DEFAULT);
 		if (VisualizationOptionsConstants.GRAPH_MISSING_REACTIONS_DEFAULT) {
 			LocalConfig.getInstance().setHighlightMissingReactionsSelected(VisualizationOptionsConstants.HIGHLIGHT_MISSING_REACTIONS_DEFAULT);
-//			LocalConfig.getInstance().setGapFillingSelected(VisualizationOptionsConstants.USE_GAP_FILLING_DEFAULT);
 		} else {
 			LocalConfig.getInstance().setHighlightMissingReactionsSelected(VisualizationOptionsConstants.HIGHLIGHT_MISSING_REACTIONS_GRAYED_DEFAULT);
-//			LocalConfig.getInstance().setGapFillingSelected(VisualizationOptionsConstants.USE_GAP_FILLING_GRAYED_DEFAULT);
 		}
 		LocalConfig.getInstance().setGraphMissingMetabolitesSelected(VisualizationOptionsConstants.GRAPH_MISSING_REACTIONS_DEFAULT);
 		if (VisualizationOptionsConstants.GRAPH_MISSING_METABOLITES_DEFAULT) {
@@ -13060,6 +13058,8 @@ public class GraphicalInterface extends JFrame {
 			LocalConfig.getInstance().setHighlightMissingMetabolitesSelected(VisualizationOptionsConstants.HIGHLIGHT_MISSING_METABOLITES_GRAYED_DEFAULT);
 		}
 		LocalConfig.getInstance().setScaleEdgeThicknessSelected(VisualizationOptionsConstants.SCALE_EDGE_THICKNESS_DEFAULT);
+		LocalConfig.getInstance().setIgnoreProtonSelected(VisualizationOptionsConstants.IGNORE_PROTON_DEFAULT);
+		LocalConfig.getInstance().setIgnoreWaterSelected(VisualizationOptionsConstants.IGNORE_WATER_DEFAULT);
 	}
 	
 	public void clearVisualizationCollections() {

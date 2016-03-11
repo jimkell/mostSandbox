@@ -210,8 +210,17 @@ public class PathwayReactionNodeFactory {
 		if (modelIds.contains("C00080")) {
 			containsProton = true;
 		}
-		ArrayList<String> data = removedSpeciesBeforeComparison(VisualizationConstants.REMOVE_BEFORE_REACTION_COMPARISON, dataIds);
-		ArrayList<String> model = removedSpeciesBeforeComparison(VisualizationConstants.REMOVE_BEFORE_REACTION_COMPARISON, modelIds);
+		ArrayList<String> ignoreItems = new ArrayList<String>();
+		//if (LocalConfig.getInstance().isIgnoreProtonSelected()) {
+		ignoreItems.add("C00080");
+		//}
+		if (LocalConfig.getInstance().isIgnoreWaterSelected()) {
+			ignoreItems.add("C00001");
+		}
+		ArrayList<String> data = removedSpeciesBeforeComparison(ignoreItems, dataIds);
+		//System.out.println("d " + data);
+		ArrayList<String> model = removedSpeciesBeforeComparison(ignoreItems, modelIds);
+		//System.out.println("m " + model);
 		if (data.size() != model.size()) {
 			return false;
 		} 
@@ -328,12 +337,11 @@ public class PathwayReactionNodeFactory {
 		}
 	}
 	
-	public ArrayList<String> removedSpeciesBeforeComparison(String[] removeList, ArrayList<String> list) {
-		java.util.List<String> removeArrayList = Arrays.asList(removeList);
+	public ArrayList<String> removedSpeciesBeforeComparison(ArrayList<String> removeList, ArrayList<String> list) {
 		ArrayList<String> list2 = new ArrayList<String>();
 		// make a new list since removing items modifies original list
 		for (int i = 0; i < list.size(); i++) {
-			if (!removeArrayList.contains(list.get(i))) {
+			if (!removeList.contains(list.get(i))) {
 				list2.add(list.get(i));
 			}
 		}

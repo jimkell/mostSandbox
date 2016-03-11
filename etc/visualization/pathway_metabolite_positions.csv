@@ -4184,3 +4184,4 @@ Pathway ID,Metabolite ID,Metabolite Level,Metabolite Level Position,Metabolite N
 0,4182,26.3,5,Adenosine 5'-triphosphate,ATP,C00002,0,s,,,,
 0,4183,26.3,4.8,Adenosine 5'-phosphate,AMP,C00020,0,s,,,,
 0,4184,26.2,4.7,Diphosphate,PPI,C00013,0,s,,,,
+0,4185,2,-1.7,Uridine 5'-diphosphate,UDP,C00015,0,s,,,,
