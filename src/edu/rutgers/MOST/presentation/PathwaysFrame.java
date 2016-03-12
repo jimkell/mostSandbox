@@ -871,9 +871,9 @@ public class PathwaysFrame extends JApplet {
 		Collections.sort(unplottedIds);
 		System.out.println("unplotted " + unplottedIds);
 		for (int u = 0; u < unplottedIds.size(); u++) {
-			System.out.println(idReactionMapAllReactions.get(unplottedIds.get(u)).getReactionAbbreviation() + " " +
-					idReactionMapAllReactions.get(unplottedIds.get(u)).getReactionName() + " " +
-					idReactionMapAllReactions.get(unplottedIds.get(u)).getReactionEqunAbbr() + " " +
+			System.out.println(idReactionMapAllReactions.get(unplottedIds.get(u)).getReactionAbbreviation() + "\t" +
+					idReactionMapAllReactions.get(unplottedIds.get(u)).getReactionName() + "\t" +
+					idReactionMapAllReactions.get(unplottedIds.get(u)).getReactionEqunAbbr() + "\t" +
 					idReactionMapAllReactions.get(unplottedIds.get(u)).getReactionEqunNames());
 		}
 		drawPathwayNames(component);
