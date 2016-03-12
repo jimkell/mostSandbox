@@ -870,11 +870,38 @@ public class PathwaysFrame extends JApplet {
 		//			}
 		Collections.sort(unplottedIds);
 		System.out.println("unplotted " + unplottedIds);
+		String header = String.format("%1$-15s %2$-40s %3$-50s %4$-100s", 
+				"Reaction Abbr", 
+				GraphicalInterfaceConstants.REACTION_NAME_COLUMN_NAME, 
+				GraphicalInterfaceConstants.REACTION_EQUATION_ABBR_COLUMN_NAME, 
+				GraphicalInterfaceConstants.REACTION_EQUATION_NAMES_COLUMN_NAME);
+	    System.out.println(header);
 		for (int u = 0; u < unplottedIds.size(); u++) {
-			System.out.println(idReactionMapAllReactions.get(unplottedIds.get(u)).getReactionAbbreviation() + "\t" +
-					idReactionMapAllReactions.get(unplottedIds.get(u)).getReactionName() + "\t" +
-					idReactionMapAllReactions.get(unplottedIds.get(u)).getReactionEqunAbbr() + "\t" +
-					idReactionMapAllReactions.get(unplottedIds.get(u)).getReactionEqunNames());
+//			System.out.println(idReactionMapAllReactions.get(unplottedIds.get(u)).getReactionAbbreviation() + "\t" +
+//					idReactionMapAllReactions.get(unplottedIds.get(u)).getReactionName() + "\t" +
+//					idReactionMapAllReactions.get(unplottedIds.get(u)).getReactionEqunAbbr() + "\t" +
+//					idReactionMapAllReactions.get(unplottedIds.get(u)).getReactionEqunNames());
+			String abbr = idReactionMapAllReactions.get(unplottedIds.get(u)).getReactionAbbreviation();
+			if (abbr.length() > 11) {
+				abbr = abbr.substring(0, 11) + "...";
+			}
+			String name = idReactionMapAllReactions.get(unplottedIds.get(u)).getReactionName();
+			if (name.length() > 36) {
+				name = name.substring(0, 36) + "...";
+			}
+			String eqAbbr = idReactionMapAllReactions.get(unplottedIds.get(u)).getReactionEqunAbbr();
+			if (eqAbbr.length() > 46) {
+				eqAbbr = eqAbbr.substring(0, 46) + "...";
+			}
+			String eqNames = idReactionMapAllReactions.get(unplottedIds.get(u)).getReactionEqunNames();
+			String formattedOutput = String.format("%1$-15s %2$-40s %3$-50s %4$-100s", abbr, name, eqAbbr, eqNames);
+		    System.out.println(formattedOutput);
+			//			String formattedOutput = String.format("%1$-20s %2-$40s %3$-20s %4-$40s",
+//					idReactionMapAllReactions.get(unplottedIds.get(u)).getReactionAbbreviation(),
+//					idReactionMapAllReactions.get(unplottedIds.get(u)).getReactionName(),
+//					idReactionMapAllReactions.get(unplottedIds.get(u)).getReactionEqunAbbr(),
+//					idReactionMapAllReactions.get(unplottedIds.get(u)).getReactionEqunNames());
+//			System.out.println(formattedOutput);
 		}
 		drawPathwayNames(component);
 
