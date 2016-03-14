@@ -877,31 +877,7 @@ public class PathwaysFrame extends JApplet {
 				GraphicalInterfaceConstants.REACTION_EQUATION_NAMES_COLUMN_NAME);
 	    System.out.println(header);
 		for (int u = 0; u < unplottedIds.size(); u++) {
-//			System.out.println(idReactionMapAllReactions.get(unplottedIds.get(u)).getReactionAbbreviation() + "\t" +
-//					idReactionMapAllReactions.get(unplottedIds.get(u)).getReactionName() + "\t" +
-//					idReactionMapAllReactions.get(unplottedIds.get(u)).getReactionEqunAbbr() + "\t" +
-//					idReactionMapAllReactions.get(unplottedIds.get(u)).getReactionEqunNames());
-			String abbr = idReactionMapAllReactions.get(unplottedIds.get(u)).getReactionAbbreviation();
-			if (abbr.length() > 11) {
-				abbr = abbr.substring(0, 11) + "...";
-			}
-			String name = idReactionMapAllReactions.get(unplottedIds.get(u)).getReactionName();
-			if (name.length() > 36) {
-				name = name.substring(0, 36) + "...";
-			}
-			String eqAbbr = idReactionMapAllReactions.get(unplottedIds.get(u)).getReactionEqunAbbr();
-			if (eqAbbr.length() > 46) {
-				eqAbbr = eqAbbr.substring(0, 46) + "...";
-			}
-			String eqNames = idReactionMapAllReactions.get(unplottedIds.get(u)).getReactionEqunNames();
-			String formattedOutput = String.format("%1$-15s %2$-40s %3$-50s %4$-100s", abbr, name, eqAbbr, eqNames);
-		    System.out.println(formattedOutput);
-			//			String formattedOutput = String.format("%1$-20s %2-$40s %3$-20s %4-$40s",
-//					idReactionMapAllReactions.get(unplottedIds.get(u)).getReactionAbbreviation(),
-//					idReactionMapAllReactions.get(unplottedIds.get(u)).getReactionName(),
-//					idReactionMapAllReactions.get(unplottedIds.get(u)).getReactionEqunAbbr(),
-//					idReactionMapAllReactions.get(unplottedIds.get(u)).getReactionEqunNames());
-//			System.out.println(formattedOutput);
+			System.out.println(util.formattedString(idReactionMapAllReactions.get(unplottedIds.get(u))));
 		}
 		drawPathwayNames(component);
 
@@ -1119,6 +1095,12 @@ public class PathwaysFrame extends JApplet {
 						}
 					}
 				}
+			}
+		}
+		for (int i = 0; i < prnf.plottedIds.size(); i++) {
+			if (LocalConfig.getInstance().getUnplottedReactionIds().contains(prnf.plottedIds.get(i))) {
+//				//System.out.println(reac.get(r).getId());
+				LocalConfig.getInstance().getUnplottedReactionIds().remove(LocalConfig.getInstance().getUnplottedReactionIds().indexOf(prnf.plottedIds.get(i)));
 			}
 		}
 		// removes "orphan" nodes

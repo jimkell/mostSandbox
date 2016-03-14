@@ -17,6 +17,7 @@ import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileSystemView;
 
 import edu.rutgers.MOST.data.SBMLConstants;
+import edu.rutgers.MOST.data.SBMLReaction;
 
 /**
  * Class contains commonly used functions and eliminate redundancy of code.
@@ -298,6 +299,27 @@ public class Utilities {
 		}
 		
 		return name; 
+	}
+	
+	public String formattedString(SBMLReaction reaction) {
+		String formattedOutput = "";
+		String abbr = reaction.getReactionAbbreviation();
+		if (abbr.length() > 11) {
+			abbr = abbr.substring(0, 11) + "...";
+		}
+		String name = reaction.getReactionName();
+		if (name.length() > 36) {
+			name = name.substring(0, 36) + "...";
+		}
+		String eqAbbr = reaction.getReactionEqunAbbr();
+		if (eqAbbr.length() > 46) {
+			eqAbbr = eqAbbr.substring(0, 46) + "...";
+		}
+		String eqNames = reaction.getReactionEqunNames();
+		formattedOutput = String.format("%1$-15s %2$-40s %3$-50s %4$-100s", abbr, name, eqAbbr, eqNames);
+		
+		return formattedOutput;
+		
 	}
 	
 }

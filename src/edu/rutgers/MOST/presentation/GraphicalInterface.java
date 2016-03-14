@@ -2338,6 +2338,8 @@ public class GraphicalInterface extends JFrame {
 			}
 		});
 		
+		visualizationMenu.addSeparator();
+		
 		visualizationMenu.add(locateKeggMetaboliteIdColumnMenu);
 		locateKeggMetaboliteIdColumnMenu.setMnemonic(KeyEvent.VK_M);
 
