@@ -13247,9 +13247,9 @@ public class GraphicalInterface extends JFrame {
         OutputPopout p = new OutputPopout();
 		p.setIconImages(icons);
 		p.setTitle(gi.getTitle());
-		p.setOutputText(pf1.report);
 		p.setLocationRelativeTo(null);
 		p.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		p.setOutputText(pf1.report);
 	}
 	
 	

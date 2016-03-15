@@ -28,7 +28,6 @@ import java.util.Comparator;
 import java.util.HashMap;                                                                                            
 import java.util.Map;                                                                                                
                                                                                                                      
-import java.util.Vector;
 
 import javax.imageio.ImageIO;
 import javax.swing.AbstractButton;
@@ -58,17 +57,12 @@ import org.apache.commons.collections15.functors.ChainedTransformer;
 
 
 
+
 import edu.rutgers.MOST.config.LocalConfig;
 import edu.rutgers.MOST.data.BorderRectangle;
 import edu.rutgers.MOST.data.MetabolicPathway;
 import edu.rutgers.MOST.data.PathwayMetaboliteNodeFactory;
-import edu.rutgers.MOST.data.PathwayNameNode;
-import edu.rutgers.MOST.data.PathwayReactionNode;
 import edu.rutgers.MOST.data.PathwayReactionNodeFactory;
-import edu.rutgers.MOST.data.PathwaysCSVFileConstants;
-import edu.rutgers.MOST.data.ReactionFactory;
-import edu.rutgers.MOST.data.SBMLMetabolite;
-import edu.rutgers.MOST.data.SBMLReaction;
 import edu.rutgers.MOST.data.SVGBuilder;
 import edu.rutgers.MOST.data.SVGEdge;
 import edu.rutgers.MOST.data.SVGText;
@@ -582,7 +576,7 @@ public class PathwaysFrame extends JApplet {
 		controls.add(plus);                                                                                          
 		controls.add(minus);                                                                                       
 		add(controls, BorderLayout.SOUTH);  
-
+		
 	}  
 
 	public void saveGraphAsSVG() {

@@ -102,8 +102,8 @@ public class VisualizationDataProcessor {
 		drawReactions(pathway, component, rxns, idReactionMap);
 
 		// create reports for reactions found and not found
+		VisualizationReportGenerator reportGenerator = new VisualizationReportGenerator();
 		Collections.sort(plottedIds);
-		System.out.println("plotted " + plottedIds);
 		ArrayList<Integer> missingKeggId = new ArrayList<Integer>();
 		ArrayList<Integer> unplottedIds = new ArrayList<Integer>();
 		for (int r = 0; r < rxns.size(); r++) {
@@ -116,29 +116,18 @@ public class VisualizationDataProcessor {
 			}
 		}
 		Collections.sort(missingKeggId);
-		System.out.println("missing KEGG id " + missingKeggId);
-		//			for (int m = 0; m < missingKeggId.size(); m++) {
-		//				System.out.println(idReactionMapAllReactions.get(missingKeggId.get(m)).getReactionAbbreviation() + " " +
-		//						idReactionMapAllReactions.get(missingKeggId.get(m)).getReactionName() + " " +
-		//						idReactionMapAllReactions.get(missingKeggId.get(m)).getReactionEqunAbbr() + " " +
-		//						idReactionMapAllReactions.get(missingKeggId.get(m)).getReactionEqunNames());
-		//			}
+		//System.out.println("missing KEGG id " + missingKeggId);
 		Collections.sort(unplottedIds);
-		System.out.println("unplotted " + unplottedIds);
-		String header = String.format("%1$-15s %2$-40s %3$-50s %4$-100s", 
-				"Reaction Abbr", 
-				GraphicalInterfaceConstants.REACTION_NAME_COLUMN_NAME, 
-				GraphicalInterfaceConstants.REACTION_EQUATION_ABBR_COLUMN_NAME, 
-				GraphicalInterfaceConstants.REACTION_EQUATION_NAMES_COLUMN_NAME);
-		System.out.println(header);
-		//report += "Unplotted Reactions - Reaction not in Database: " + System.getProperty("line.separator");
-		report += "Unplotted Reactions - Reaction not in Database: " + Integer.toString(unplottedIds.size()) + " reactions" + "\n";
-		report += header + "\n";
-		for (int u = 0; u < unplottedIds.size(); u++) {
-			String line = util.formattedString(idReactionMapAllReactions.get(unplottedIds.get(u)));
-			System.out.println(line);
-			report += line + "\n";
-		}
+		//System.out.println("unplotted " + unplottedIds);
+		String unplottedTitle = "Unplotted Reactions - Reaction not in Database: ";
+		String missingKeggIdTitle = "Unplotted Reactions - Missing KEGG Id(s): ";
+		String plottedTitle = "Plotted Reactions: ";
+		report += reportGenerator.reportSection(unplottedTitle, idReactionMapAllReactions, unplottedIds);
+		report += "\n";
+		report += reportGenerator.reportSection(missingKeggIdTitle, idReactionMapAllReactions, missingKeggId);
+		report += "\n";
+		report += reportGenerator.reportSection(plottedTitle, idReactionMapAllReactions, plottedIds);
+		
 		drawPathwayNames(component);
 
 		String borderLeftX = Double.toString(PathwaysFrameConstants.HORIZONTAL_INCREMENT*PathwaysFrameConstants.BORDER_LEFT);

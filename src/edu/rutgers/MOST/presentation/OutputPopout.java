@@ -25,6 +25,7 @@ public class OutputPopout extends JFrame {
 	private final JMenuItem outputCopyItem = new JMenuItem("Copy");
 	private final JMenuItem outputSelectAllItem = new JMenuItem("Select All");
 	private String pathName;
+	private JScrollPane scrollingText;
 
 	public OutputPopout() {		
 		//... Create scrollable text area.
@@ -33,7 +34,7 @@ public class OutputPopout extends JFrame {
 		textArea.setFont(new Font("Lucida Console", Font.PLAIN, 14));
 		textArea.setBorder(BorderFactory.createEmptyBorder(2,2,2,2));
 		textArea.setEditable(false);
-		JScrollPane scrollingText = new JScrollPane(textArea);
+		scrollingText = new JScrollPane(textArea);
 
 		fileChooser.setFileFilter(new TextFileFilter());
 		
@@ -283,6 +284,10 @@ public class OutputPopout extends JFrame {
 	
 	public void setOutputText(String text) {
 		textArea.setText(text);
+	}
+	
+	public void scrollToTop() {
+		scrollingText.getVerticalScrollBar().setValue(0);
 	}
 	
 	public static void main(String[] args) {
