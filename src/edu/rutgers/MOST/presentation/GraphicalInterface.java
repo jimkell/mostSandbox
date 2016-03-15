@@ -1585,7 +1585,7 @@ public class GraphicalInterface extends JFrame {
 				OutputPopout popout = new OutputPopout();
 				popout.setIconImages(icons);
 				setPopout(popout);
-				popout.setSize(700, 400);
+//				popout.setSize(700, 400);
 				popout.setLocationRelativeTo(null);
 				popout.addWindowListener(new WindowAdapter() {
 					public void windowClosing(WindowEvent evt) {
@@ -13282,6 +13282,22 @@ public class GraphicalInterface extends JFrame {
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
         enableVisualizationItems(false);
+        
+        try {
+            Thread.sleep(2000);                 //1000 milliseconds is one second.
+        } catch(InterruptedException ex) {
+            Thread.currentThread().interrupt();
+        }
+        
+        OutputPopout p = new OutputPopout();
+		p.setIconImages(icons);
+		p.setTitle(gi.getTitle());
+		p.setOutputText(pf1.report);
+//		setPopout(popout);
+//		popout.setSize(800, 600);
+		p.setLocationRelativeTo(null);
+//		popout.setAlwaysOnTop(true);
+		p.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 	}
 	
 	

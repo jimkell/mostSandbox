@@ -9,6 +9,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 import edu.rutgers.MOST.config.LocalConfig;
+import edu.rutgers.MOST.data.SettingsFactory;
 
 import java.io.*;
 
@@ -27,9 +28,10 @@ public class OutputPopout extends JFrame {
 
 	public OutputPopout() {		
 		//... Create scrollable text area.
-		textArea = new JTextArea(30, 60);
+		textArea = new JTextArea(35, 150);
+		// need to use monospaced font for columns to line up in visualization report
+		textArea.setFont(new Font("Lucida Console", Font.PLAIN, 14));
 		textArea.setBorder(BorderFactory.createEmptyBorder(2,2,2,2));
-		//textArea.setFont(new Font("monospaced", Font.PLAIN, 14));
 		textArea.setEditable(false);
 		JScrollPane scrollingText = new JScrollPane(textArea);
 
@@ -119,24 +121,24 @@ public class OutputPopout extends JFrame {
 
 	class OpenAction implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			String lastPopout_path = GraphicalInterface.curSettings.get("LastPopoutOpen");
-			Utilities u = new Utilities();
-			// if path is null or does not exist, default used, else last path used
-			fileChooser.setCurrentDirectory(new File(u.lastPath(lastPopout_path, fileChooser)));	
-			int retval = fileChooser.showOpenDialog(OutputPopout.this);
-			if (retval == JFileChooser.APPROVE_OPTION) {
-				String path = fileChooser.getSelectedFile().getPath();
-				GraphicalInterface.curSettings.add("LastPopoutOpen", path);
-				File f = fileChooser.getSelectedFile();
-				String filename = fileChooser.getSelectedFile().getName();
-				setTitle(GraphicalInterfaceConstants.TITLE + " - " + filename);
-				readFile(f);
-//				try {
-//					FileReader reader = new FileReader(f);
-//					textArea.read(reader, "");  // Use TextComponent read
-//				} catch (IOException ie) {
-//					//System.exit(1);
-//				}
+			try {
+				SettingsFactory curSettings = new SettingsFactory();
+				String lastPopout_path = curSettings.get("LastPopoutOpen");
+				Utilities u = new Utilities();
+				// if path is null or does not exist, default used, else last path used
+				fileChooser.setCurrentDirectory(new File(u.lastPath(lastPopout_path, fileChooser)));	
+				int retval = fileChooser.showOpenDialog(OutputPopout.this);
+				if (retval == JFileChooser.APPROVE_OPTION) {
+					String path = fileChooser.getSelectedFile().getPath();
+					GraphicalInterface.curSettings.add("LastPopoutOpen", path);
+					File f = fileChooser.getSelectedFile();
+					String filename = fileChooser.getSelectedFile().getName();
+					setTitle(GraphicalInterfaceConstants.TITLE + " - " + filename);
+					readFile(f);
+				}
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
 			}
 		}
 	}

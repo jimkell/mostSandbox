@@ -39,6 +39,7 @@ import javax.swing.JButton;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -53,6 +54,8 @@ import javax.swing.WindowConstants;
 import org.apache.commons.collections15.Transformer;                                                                 
 import org.apache.commons.collections15.functors.ChainedTransformer;                                                 
                                                                                                                      
+
+
 
 import edu.rutgers.MOST.config.LocalConfig;
 import edu.rutgers.MOST.data.BorderRectangle;
@@ -231,6 +234,8 @@ public class PathwaysFrame extends JApplet {
 	private int findStartIndex = 0;
 
 	final ScalingControl scaler = new CrossoverScalingControl();
+	
+	public String report;
 
 	/**                                                                                                              
 	 * create an instance of a simple graph with controls to                                                         
@@ -243,6 +248,8 @@ public class PathwaysFrame extends JApplet {
 		//final ScalingControl scaler = new CrossoverScalingControl();
 
 		transformItem.setState(false);
+		
+		report = "";
 
 		// register actions
 		ActionListener findActionListener = new ActionListener() {
@@ -876,8 +883,13 @@ public class PathwaysFrame extends JApplet {
 				GraphicalInterfaceConstants.REACTION_EQUATION_ABBR_COLUMN_NAME, 
 				GraphicalInterfaceConstants.REACTION_EQUATION_NAMES_COLUMN_NAME);
 	    System.out.println(header);
+	    //report += "Unplotted Reactions - Reaction not in Database: " + System.getProperty("line.separator");
+	    report += "Unplotted Reactions - Reaction not in Database: " + Integer.toString(unplottedIds.size()) + " reactions" + "\n";
+	    report += header + "\n";
 		for (int u = 0; u < unplottedIds.size(); u++) {
-			System.out.println(util.formattedString(idReactionMapAllReactions.get(unplottedIds.get(u))));
+			String line = util.formattedString(idReactionMapAllReactions.get(unplottedIds.get(u)));
+			System.out.println(line);
+			report += line + "\n";
 		}
 		drawPathwayNames(component);
 
