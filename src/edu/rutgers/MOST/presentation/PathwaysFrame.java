@@ -57,6 +57,7 @@ import org.apache.commons.collections15.functors.ChainedTransformer;
 
 
 
+
 import edu.rutgers.MOST.config.LocalConfig;
 import edu.rutgers.MOST.data.BorderRectangle;
 import edu.rutgers.MOST.data.MetabolicPathway;
@@ -72,6 +73,7 @@ import edu.rutgers.MOST.data.SVGBuilder;
 import edu.rutgers.MOST.data.SVGEdge;
 import edu.rutgers.MOST.data.SVGText;
 import edu.rutgers.MOST.data.SVGWriter;
+import edu.rutgers.MOST.data.VisualizationData;
 import edu.uci.ics.jung.algorithms.layout.Layout;                                                                    
 import edu.uci.ics.jung.algorithms.layout.StaticLayout;                                                              
 import edu.uci.ics.jung.graph.Graph;  
@@ -247,9 +249,38 @@ public class PathwaysFrame extends JApplet {
 		setLayout(new BorderLayout());
 		//final ScalingControl scaler = new CrossoverScalingControl();
 
+		VisualizationData visualizationData = LocalConfig.getInstance().getVisualizationData();
+		nodeNamePositionMap = visualizationData.getNodeNamePositionMap();
+		nodeNameList = visualizationData.getNodeNameList();
+		reactionMap = visualizationData.getReactionMap();
+		reactionList = visualizationData.getReactionList();
+		borderList = visualizationData.getBorderList();
+		noBorderList = visualizationData.getNoBorderList();
+		pathwayNames = visualizationData.getPathwayNames();
+		mainMetabolites = visualizationData.getMainMetabolites();
+		smallMainMetabolites = visualizationData.getSmallMainMetabolites();
+		sideMetabolites = visualizationData.getSideMetabolites();
+		cofactors = visualizationData.getCofactors();
+		reactions = visualizationData.getReactions();
+		fluxMap = visualizationData.getFluxMap();
+		colorMap = visualizationData.getColorMap();
+		koReactions = visualizationData.getKoReactions();
+		foundMetabolitesList = visualizationData.getFoundMetabolitesList();
+		foundReactionsList = visualizationData.getFoundReactionsList();
+		foundPathwayNamesList = visualizationData.getFoundPathwayNamesList();
+		iconMap = visualizationData.getIconMap();
+		plottedIds = visualizationData.getPlottedIds();
+		oldNameNewNameMap = visualizationData.getOldNameNewNameMap();
+		metaboliteAbbrPositionsMap = visualizationData.getMetaboliteAbbrPositionsMap();
+		keggMetaboliteIdPositionsMap = visualizationData.getKeggMetaboliteIdPositionsMap();
+		ecNumberPositionsMap = visualizationData.getEcNumberPositionsMap();
+		keggReactionIdPositionsMap = visualizationData.getKeggReactionIdPositionsMap();
+		reactionAbbrPositionsMap = visualizationData.getReactionAbbrPositionsMap();
+		report = visualizationData.getReport();
+		
 		transformItem.setState(false);
 		
-		report = "";
+		//report = "";
 
 		// register actions
 		ActionListener findActionListener = new ActionListener() {
@@ -389,7 +420,7 @@ public class PathwaysFrame extends JApplet {
 		// end create menu bar
 		/**************************************************************************/
 
-		processData(component);
+		//processData(component);
 
 		// create graph
 		graph = new SparseMultigraph<String, Number>();

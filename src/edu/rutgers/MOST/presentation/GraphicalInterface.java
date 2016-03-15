@@ -67,6 +67,7 @@ import edu.rutgers.MOST.data.TextReactionsWriter;
 import edu.rutgers.MOST.data.TransportReactionCategorizer;
 import edu.rutgers.MOST.data.TransportReactionsByCompartments;
 import edu.rutgers.MOST.data.UndoConstants;
+import edu.rutgers.MOST.data.VisualizationDataProcessor;
 import edu.rutgers.MOST.logic.ReactionParser;
 import edu.rutgers.MOST.optimization.solvers.GurobiSolver;
 
@@ -12695,6 +12696,7 @@ public class GraphicalInterface extends JFrame {
 				visualizeProgressBar.setVisible(false);
 				visualizeProgressBar.progress.setIndeterminate(false);
 				enableLoadItems();
+				createVisualizationsPane();
 			}
 		}
 	}
@@ -13201,18 +13203,9 @@ public class GraphicalInterface extends JFrame {
 			}
 		}
 		LocalConfig.getInstance().setNoIdentifierIds(noIdentifierIds);
-//		System.out.println("g no " + noIdentifierIds);
-//		if (LocalConfig.getInstance().getExtraOrganismName() != null && LocalConfig.getInstance().getExtraOrganismName().length() > 0) {
-//			Vector<SBMLReaction> eRxns = rf.getReactionsByCompartment(LocalConfig.getInstance().getExtraOrganismName());
-//			for (int i = 0; i < eRxns.size(); i++) {
-//				if (!LocalConfig.getInstance().getExternalReactionIds().contains(eRxns.get(i).getId())) {
-//					System.out.println(eRxns.get(i).getId());
-//					System.out.println(eRxns.get(i).getReactionEqunAbbr());
-//					System.out.println(eRxns.get(i).getReactionEqunNames());
-//				}
-//			}
-//		} 
-		createVisualizationsPane();
+		VisualizationDataProcessor vdp = new VisualizationDataProcessor();
+		vdp.processData(PathwaysFrameConstants.PATHWAYS_COMPONENT);
+//		createVisualizationsPane();
 	}
 	
 	public void createVisualizationsPane() {
@@ -13221,45 +13214,7 @@ public class GraphicalInterface extends JFrame {
         setVisualizationsPane(frame);
         frame.setIconImages(icons);
         frame.setTitle(gi.getTitle());
-//        final JTabbedPane visualizationTabbedPane = new JTabbedPane(3); 
         final PathwaysFrame pf1 = new PathwaysFrame(PathwaysFrameConstants.PATHWAYS_COMPONENT);
-//        final PathwaysFrame pf2 = new PathwaysFrame(PathwaysFrameConstants.PROCESSES_COMPONENT);
-//        visualizationTabbedPane.addTab("Metabolic Pathways", pf1);
-//        visualizationTabbedPane.setMnemonicAt(0, KeyEvent.VK_M);
-//        visualizationTabbedPane.addTab("Cellular and Molecular Processes", pf2);
-//        visualizationTabbedPane.setMnemonicAt(1, KeyEvent.VK_P);
-//        pf1.redrawButton.addActionListener(new ActionListener() {                                                               
-//        	public void actionPerformed(ActionEvent e) { 
-//        		pf1.removeVertices();
-//        		pf1.removeEdges();
-//        		processVisualizationsData();
-//        		pf1.processData(PathwaysFrameConstants.PATHWAYS_COMPONENT);
-//        		pf2.processData(PathwaysFrameConstants.PROCESSES_COMPONENT);
-//        		pf1.removeVertices();
-//        		pf1.removeEdges();
-//        		pf1.createIconMap();
-//        		pf1.createVertices();
-//        		pf1.createEdges();
-//        		frame.setTitle(gi.getTitle());
-        		// refresh display by switching tabs
-//        		visualizationTabbedPane.setSelectedIndex(1);
-//        		visualizationTabbedPane.setSelectedIndex(0);
-//        	}});
-//        pf2.redrawButton.addActionListener(new ActionListener() {                                                               
-//        	public void actionPerformed(ActionEvent e) {                                                             
-//        		
-//        	}});
-//        visualizationTabbedPane.addChangeListener(new ChangeListener() {
-//			public void stateChanged(ChangeEvent e) {
-//				if (pf1.getNodeInformationDialog() != null) {
-//					pf1.getNodeInformationDialog().dispose();
-//				}
-//				if (pf2.getNodeInformationDialog() != null) {
-//					pf2.getNodeInformationDialog().dispose();
-//				}
-//			}
-//		});
-//        frame.add(visualizationTabbedPane);
         frame.add(pf1);
         frame.setSize(1300, 700);
         frame.setMinimumSize(new Dimension(400, 300));
@@ -13293,10 +13248,7 @@ public class GraphicalInterface extends JFrame {
 		p.setIconImages(icons);
 		p.setTitle(gi.getTitle());
 		p.setOutputText(pf1.report);
-//		setPopout(popout);
-//		popout.setSize(800, 600);
 		p.setLocationRelativeTo(null);
-//		popout.setAlwaysOnTop(true);
 		p.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 	}
 	

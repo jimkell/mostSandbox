@@ -18,6 +18,7 @@ import edu.rutgers.MOST.data.SBMLCompartment;
 import edu.rutgers.MOST.data.SBMLMetabolite;
 import edu.rutgers.MOST.data.SBMLReaction;
 import edu.rutgers.MOST.data.TransportReactionsByCompartments;
+import edu.rutgers.MOST.data.VisualizationData;
 
 public class LocalConfig {	
 
@@ -1460,6 +1461,16 @@ public class LocalConfig {
 
 	public void setKeggReactionIdColumn(int keggReactionIdColumn) {
 		this.keggReactionIdColumn = keggReactionIdColumn;
+	}
+	
+	private VisualizationData visualizationData;
+
+	public VisualizationData getVisualizationData() {
+		return visualizationData;
+	}
+
+	public void setVisualizationData(VisualizationData visualizationData) {
+		this.visualizationData = visualizationData;
 	}
 
 }
