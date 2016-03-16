@@ -73,6 +73,9 @@ public class PathwaysFrameConstants {
 	public static final int PATHWAY_NAME_NODE_MAX_CHARS = 10;
 	public static final int COMPARTMENT_LABEL_NODE_MAX_CHARS = 60;
 	
+	public static final String REACTION_CORRECTION_TYPE = "r";
+	public static final String METABOLITE_CORRECTION_TYPE = "m";
+	
 	public static final String FONT_NAME = "Arial";
 	public static final String FONT_WEIGHT = "bold";
 	public static final int FONT_STYLE = Font.BOLD;

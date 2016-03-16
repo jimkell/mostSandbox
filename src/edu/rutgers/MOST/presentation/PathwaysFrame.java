@@ -1411,11 +1411,11 @@ public class PathwaysFrame extends JApplet {
 		for(int i=0; i<reactionList.size(); i++) {
 			String[] info = reactionMap.get(reactionList.get(i));
 			if (nodeNamePositionMap.containsKey(info[0]) && nodeNamePositionMap.containsKey(info[1])) {
+				int width = 0;
+				int height = 0;
 				if (LocalConfig.getInstance().getMetaboliteNameDataMap().get(info[1]) != null) {
-					int width = PathwaysFrameConstants.METABOLITE_NO_BORDER_NODE_WIDTH;
-					int height = PathwaysFrameConstants.METABOLITE_NO_BORDER_NODE_HEIGHT;
-					System.out.println(LocalConfig.getInstance().getMetaboliteNameDataMap().get(info[1]).getBorder());
-					System.out.println(LocalConfig.getInstance().getMetaboliteNameDataMap().get(info[1]).getType());
+					width = PathwaysFrameConstants.METABOLITE_NO_BORDER_NODE_WIDTH;
+					height = PathwaysFrameConstants.METABOLITE_NO_BORDER_NODE_HEIGHT;
 					if (LocalConfig.getInstance().getMetaboliteNameDataMap().get(info[1]).getType().equals(PathwaysCSVFileConstants.SMALL_MAIN_METABOLITE_TYPE)) {
 						width = PathwaysFrameConstants.SMALL_MAIN_METABOLITE_NODE_WIDTH;
 						height = PathwaysFrameConstants.SMALL_MAIN_METABOLITE_NODE_HEIGHT;
@@ -1426,13 +1426,26 @@ public class PathwaysFrame extends JApplet {
 						width = PathwaysFrameConstants.METABOLITE_BORDER_NODE_WIDTH;
 						height = PathwaysFrameConstants.METABOLITE_BORDER_NODE_HEIGHT;
 					}
-					System.out.println(width);
-					System.out.println(height);
 				} 
+				String[] reacEndpointCorrection = endpointCorrection(nodeNamePositionMap.get(info[0]), nodeNamePositionMap.get(info[1]), 
+						PathwaysFrameConstants.REACTION_NODE_WIDTH, PathwaysFrameConstants.REACTION_NODE_HEIGHT);
+//				System.out.println("r0 " + reacEndpointCorrection[0]);
+//				System.out.println("r1 " + reacEndpointCorrection[0]);
+				String[] metabEndpointCorrection = endpointCorrection(nodeNamePositionMap.get(info[0]), nodeNamePositionMap.get(info[1]), width, height);
+//				System.out.println("m0 " + metabEndpointCorrection[0]);
+//				System.out.println("m1 " + metabEndpointCorrection[0]);
 				SVGEdge edge = new SVGEdge();
 				ArrayList<String[]> endpoints = new ArrayList<String[]>();
-				endpoints.add(nodeNamePositionMap.get(info[0]));
-				endpoints.add(nodeNamePositionMap.get(info[1]));
+//				endpoints.add(nodeNamePositionMap.get(info[0]));
+//				endpoints.add(nodeNamePositionMap.get(info[1]));
+				if (borderList.contains(info[0])) {
+					endpoints.add(nodeNamePositionMap.get(info[0]));
+				} else {
+					endpoints.add(correctedEndpoint(nodeNamePositionMap.get(info[0]), reacEndpointCorrection, 
+							PathwaysFrameConstants.REACTION_CORRECTION_TYPE));
+				}
+				endpoints.add(correctedEndpoint(nodeNamePositionMap.get(info[1]), metabEndpointCorrection, 
+						PathwaysFrameConstants.METABOLITE_CORRECTION_TYPE));
 				edge.setEndpoints(endpoints);
 				edge.setStroke(colorFromColorValue(PathwaysFrameConstants.DEFAULT_COLOR_VALUE));
 				if (colorMap.containsKey(reactionList.get(i))) {
@@ -1440,8 +1453,12 @@ public class PathwaysFrame extends JApplet {
 					edge.setStroke(colorFromColorValue(color));
 					if (!borderList.contains(info[0])) {
 						edge.setMarkerId(arrowFromColorValue(color));
-						edge.setRefX("20");
+//						edge.setRefX("-5");
 					}
+				}
+				if (!borderList.contains(info[0])) {
+//					edge.setMarkerId(arrowFromColorValue(color));
+					edge.setRefX("0");
 				}
 				edge.setStrokeWidth("1");
 				if (fluxMap.containsKey(reactionList.get(i))) {
@@ -1637,6 +1654,65 @@ public class PathwaysFrame extends JApplet {
 		SVGWriter writer = new SVGWriter();
 		writer.setBuilder(builder);
 		writer.saveFile();
+	}
+	
+	private String[] endpointCorrection(String[] endpoint0, String[] endpoint1, int width, int height) {
+		String[] correction = {"0", "0"};
+		// cast all four values once
+		double endpoint0X = Double.valueOf(endpoint0[0]);
+		double endpoint0Y = Double.valueOf(endpoint0[1]);
+		double endpoint1X = Double.valueOf(endpoint1[0]);
+		double endpoint1Y = Double.valueOf(endpoint1[1]);
+		// since trig. functions are expensive, calculate corrections for horizontal and vertical
+		// lines without using trig.
+		// vertical
+		if (endpoint0X == endpoint1X) {
+			// down
+			if (endpoint1Y > endpoint0Y) {
+				correction[1] = Double.toString(height/2);
+			// up
+			} else if (endpoint0Y > endpoint1Y) {
+				correction[1] = Double.toString(-height/2);
+			}
+		// horizontal
+		} else if (endpoint0Y == endpoint1Y) {
+			// left
+			if (endpoint1X > endpoint0X) {
+				correction[0] = Double.toString(-width/2);
+			// right
+			} else if (endpoint0X > endpoint1X) {
+				correction[0] = Double.toString(width/2);
+			}
+		} else {
+			
+		}
+		System.out.println(correction[0]);
+		System.out.println(correction[1]);
+		
+		return correction;
+	}
+	
+	private String[] correctedEndpoint(String[] endpoint, String[] correction, String type) {
+		String[] correctedEndpoint = {endpoint[0], endpoint[1]};
+		// cast all four values once
+		double endpointX = Double.valueOf(endpoint[0]);
+		double endpointY = Double.valueOf(endpoint[1]);
+		double correctionX = Double.valueOf(correction[0]);
+		double correctionY = Double.valueOf(correction[1]);
+		System.out.println("e " + endpointX);
+		System.out.println("e " + endpointY);
+		if (type.equals(PathwaysFrameConstants.REACTION_CORRECTION_TYPE)) {
+			correctedEndpoint[0] = Double.toString(endpointX - correctionX);
+			correctedEndpoint[1] = Double.toString(endpointY + correctionY);
+		} else if (type.equals(PathwaysFrameConstants.METABOLITE_CORRECTION_TYPE)) {
+			correctedEndpoint[0] = Double.toString(endpointX + correctionX);
+			correctedEndpoint[1] = Double.toString(endpointY - correctionY);
+		}
+		System.out.println("c " + correctedEndpoint[0]);
+		System.out.println("c " + correctedEndpoint[1]);
+		
+		return correctedEndpoint;
+		
 	}
 	
 	public void saveAsPNG() {
