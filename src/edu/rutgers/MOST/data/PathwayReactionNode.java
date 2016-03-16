@@ -14,31 +14,15 @@ public class PathwayReactionNode {
 	private String modelReactionName;
 	private String dataId;
 	private String equation;
-//	private String modelEquation;
 	private ArrayList<SBMLReaction> reactions;
-//	private ArrayList<String> modelEquations;
-//	private ArrayList<Double> fluxes;
 	private double fluxValue;
-	
-	// data from enzyme.dat
-//	private ArrayList<String> enzymeDataEquations;
-//	private ArrayList<String> mainReactants;
-//	private ArrayList<String> mainProducts;
-//	private ArrayList<String> sideReactants;
-//	private ArrayList<String> sideProducts;
-	
-//	private ArrayList<PathwayMetaboliteNode> mainPathwayReactants;
-//	private ArrayList<PathwayMetaboliteNode> mainPathwayProducts;
 	private String reversible;
-	//private ArrayList<String> ecNumbers;
 	private double xPosition;
-	private double yPosition;
-	
+	private double yPosition;	
 	private ArrayList<String> compartmentList;
 	private ArrayList<String> compartmentReactantsList;
 	private ArrayList<String> compartmentProductsList;
-	private String subsystem;
-	
+	private String subsystem;	
 	private String displayName;
 	private String name;
 
