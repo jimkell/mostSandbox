@@ -1663,36 +1663,45 @@ public class PathwaysFrame extends JApplet {
 		double endpoint0Y = Double.valueOf(endpoint0[1]);
 		double endpoint1X = Double.valueOf(endpoint1[0]);
 		double endpoint1Y = Double.valueOf(endpoint1[1]);
+		double sine = 0;
+		double cosine = 0;
 		// since trig. functions are expensive, calculate corrections for horizontal and vertical
 		// lines without using trig.
 		// vertical
 		if (endpoint0X == endpoint1X) {
 			// down
 			if (endpoint1Y > endpoint0Y) {
-				correction[1] = Double.toString(height/2);
+				sine = 1;
+//				correction[1] = Double.toString(height/2);
 			// up
 			} else if (endpoint0Y > endpoint1Y) {
-				correction[1] = Double.toString(-height/2);
+				sine = -1;
+//				correction[1] = Double.toString(-height/2);
 			}
 		// horizontal
 		} else if (endpoint0Y == endpoint1Y) {
 			// left
 			if (endpoint1X > endpoint0X) {
-				correction[0] = Double.toString(-width/2);
+				cosine = 1;
+//				correction[0] = Double.toString(-width/2);
 			// right
 			} else if (endpoint0X > endpoint1X) {
-				correction[0] = Double.toString(width/2);
+				cosine = -1;
+//				correction[0] = Double.toString(width/2);
 			}
 		} else {
 			System.out.println("p1 " + endpoint0X + " " + endpoint0Y);
 			System.out.println("p2 " + endpoint1X + " " + endpoint1Y);
-			System.out.println("angle " + Math.toDegrees(getAngleOfLineBetweenTwoPoints(endpoint0X, endpoint0Y, 
-		    		endpoint1X, endpoint1Y)));
-			System.out.println("sin " + Math.sin(getAngleOfLineBetweenTwoPoints(endpoint0X, endpoint0Y, 
-		    		endpoint1X, endpoint1Y)));
-			System.out.println("cos " + Math.cos(getAngleOfLineBetweenTwoPoints(endpoint0X, endpoint0Y, 
-		    		endpoint1X, endpoint1Y)));
+			double angle = getAngleOfLineBetweenTwoPoints(endpoint0X, endpoint0Y, 
+		    		endpoint1X, endpoint1Y);
+			System.out.println("angle " + angle);
+			sine = Math.sin(angle);
+			cosine = Math.cos(angle);
+			System.out.println("sin " + sine);
+			System.out.println("cos " + cosine);
 		}
+		correction[0] = Double.toString(-cosine*width/2);
+		correction[1] = Double.toString(sine*width/2);
 //		System.out.println(correction[0]);
 //		System.out.println(correction[1]);
 		
