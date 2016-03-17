@@ -4046,7 +4046,7 @@ Pathway ID,Metabolite ID,Metabolite Level,Metabolite Level Position,Metabolite N
 0,4044,4.8,-9.1,L-Galactonate,L-Galactonate,C15930,0,m,,,,
 0,4045,4.8,-9.5,"L-Galactono-1,4-lactone","L-Galactono-1,4-lactone",C01115,0,m,,,,
 0,4046,4.4,-8.75,Reduced nicotinamide adenine dinucleotide,NADPH,C00005,0,s,,,,
-0,4047,4.5,-9.1,Nicotinamide adenine dinucleotide phosphate,NADP,C00006,0,s,,,,
+0,4047,4.5,-8.9,Nicotinamide adenine dinucleotide phosphate,NADP,C00006,0,s,,,,
 0,4048,4.5,-9.4,Water,H2O,C00001,0,s,,,,
 0,4049,4.7,-9.6,Ferricytochrome c,Ferricytochrome c,C00125,0,s,,,,
 0,4050,4.8,-10.1,Ferrocytochrome c,Ferrocytochrome c,C00126,0,s,,,,

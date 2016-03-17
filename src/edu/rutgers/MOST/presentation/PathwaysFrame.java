@@ -1663,45 +1663,138 @@ public class PathwaysFrame extends JApplet {
 		double endpoint0Y = Double.valueOf(endpoint0[1]);
 		double endpoint1X = Double.valueOf(endpoint1[0]);
 		double endpoint1Y = Double.valueOf(endpoint1[1]);
-		double sine = 0;
-		double cosine = 0;
 		// since trig. functions are expensive, calculate corrections for horizontal and vertical
 		// lines without using trig.
 		// vertical
 		if (endpoint0X == endpoint1X) {
 			// down
 			if (endpoint1Y > endpoint0Y) {
-				sine = 1;
-//				correction[1] = Double.toString(height/2);
+				correction[1] = Double.toString(height/2);
 			// up
 			} else if (endpoint0Y > endpoint1Y) {
-				sine = -1;
-//				correction[1] = Double.toString(-height/2);
+				correction[1] = Double.toString(-height/2);
 			}
 		// horizontal
 		} else if (endpoint0Y == endpoint1Y) {
 			// left
 			if (endpoint1X > endpoint0X) {
-				cosine = 1;
-//				correction[0] = Double.toString(-width/2);
+				correction[0] = Double.toString(-width/2);
 			// right
 			} else if (endpoint0X > endpoint1X) {
-				cosine = -1;
-//				correction[0] = Double.toString(width/2);
+				correction[0] = Double.toString(width/2);
 			}
 		} else {
-			System.out.println("p1 " + endpoint0X + " " + endpoint0Y);
-			System.out.println("p2 " + endpoint1X + " " + endpoint1Y);
 			double angle = getAngleOfLineBetweenTwoPoints(endpoint0X, endpoint0Y, 
 		    		endpoint1X, endpoint1Y);
-			System.out.println("angle " + angle);
-			sine = Math.sin(angle);
-			cosine = Math.cos(angle);
-			System.out.println("sin " + sine);
-			System.out.println("cos " + cosine);
+			// get tangent of complement of absolute value of angle
+			double tangent = Math.tan(Math.toRadians(90 - Math.toDegrees(Math.abs(angle))));
+			double x = tangent*height/2;
+			if (Math.abs(x) < width/2) {
+				// down
+				if (endpoint1Y > endpoint0Y) {
+					correction[1] = Double.toString(height/2);
+				// up
+				} else if (endpoint0Y > endpoint1Y) {
+					correction[1] = Double.toString(-height/2);
+				}
+				// left
+				if (endpoint1X > endpoint0X) {
+					correction[0] = Double.toString(-Math.abs(tangent)*height/2);
+				// right
+				} else if (endpoint0X > endpoint1X) {
+					correction[0] = Double.toString(Math.abs(tangent)*height/2);
+				}
+			} else {
+				// left
+				if (endpoint1X > endpoint0X) {
+					correction[0] = Double.toString(-width/2);
+				// right
+				} else if (endpoint0X > endpoint1X) {
+					correction[0] = Double.toString(width/2);
+				}
+			}
 		}
-		correction[0] = Double.toString(-cosine*width/2);
-		correction[1] = Double.toString(sine*width/2);
+//		System.out.println(correction[0]);
+//		System.out.println(correction[1]);
+		
+		return correction;
+	}
+	
+	private String[] endpointCorrection1(String[] endpoint0, String[] endpoint1, int width, int height) {
+		String[] correction = {"0", "0"};
+		// cast all four values once
+		double endpoint0X = Double.valueOf(endpoint0[0]);
+		double endpoint0Y = Double.valueOf(endpoint0[1]);
+		double endpoint1X = Double.valueOf(endpoint1[0]);
+		double endpoint1Y = Double.valueOf(endpoint1[1]);
+//		double sine = 0;
+//		double cosine = 0;
+		double xCorr = 0;
+		double yCorr = 0;
+		// since trig. functions are expensive, calculate corrections for horizontal and vertical
+		// lines without using trig.
+		// vertical
+		if (endpoint0X == endpoint1X) {
+			// down
+			if (endpoint1Y > endpoint0Y) {
+				correction[1] = Double.toString(height/2);
+			// up
+			} else if (endpoint0Y > endpoint1Y) {
+				correction[1] = Double.toString(-height/2);
+			}
+		// horizontal
+		} else if (endpoint0Y == endpoint1Y) {
+			// left
+			if (endpoint1X > endpoint0X) {
+				correction[0] = Double.toString(-width/2);
+			// right
+			} else if (endpoint0X > endpoint1X) {
+				correction[0] = Double.toString(width/2);
+			}
+		} else {
+//			System.out.println("p1 " + endpoint0X + " " + endpoint0Y);
+//			System.out.println("p2 " + endpoint1X + " " + endpoint1Y);
+			double angle = getAngleOfLineBetweenTwoPoints(endpoint0X, endpoint0Y, 
+		    		endpoint1X, endpoint1Y);
+			double tangent = Math.tan(angle);
+			double y = tangent*height/2;
+			if (Math.abs(y) < height/2) {
+				if (endpoint1X > endpoint0X) {
+					xCorr = 1;
+				// right
+				} else if (endpoint0X > endpoint1X) {
+					xCorr = -1;
+				}
+				yCorr = tangent;
+				correction[0] = Double.toString(xCorr*width/2);
+				correction[1] = Double.toString(yCorr*width/2);
+			} else {
+				if (endpoint1Y > endpoint0Y) {
+					yCorr = 1;
+				// up
+				} else if (endpoint0Y > endpoint1Y) {
+					yCorr = -1;
+				}
+				double complement = 0;
+				if (angle > 0) {
+					complement = 90 - Math.toDegrees(angle);
+				} else {
+					complement = Math.toDegrees(angle) + 90;
+				}
+				yCorr = Math.tan(Math.toRadians(complement));
+				correction[0] = Double.toString(xCorr*height/2);
+				correction[1] = Double.toString(-yCorr*height/2);
+			}
+//			System.out.println("angle " + angle);
+//			sine = Math.sin(angle);
+//			cosine = Math.cos(angle);
+//			System.out.println("sin " + sine);
+//			System.out.println("cos " + cosine);
+		}
+		correction[0] = Double.toString(xCorr*width/2);
+		correction[1] = Double.toString(yCorr*width/2);
+//		correction[0] = Double.toString(-cosine*width/2);
+//		correction[1] = Double.toString(sine*width/2);
 //		System.out.println(correction[0]);
 //		System.out.println(correction[1]);
 		
