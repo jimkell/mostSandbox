@@ -1712,6 +1712,14 @@ public class PathwaysFrame extends JApplet {
 				} else if (endpoint0X > endpoint1X) {
 					correction[0] = Double.toString(width/2);
 				}
+				double tangent2 = Math.tan(angle);
+				// down
+				if (endpoint1Y > endpoint0Y) {
+					correction[1] = Double.toString(Math.abs(tangent2)*width/2);
+				// up
+				} else if (endpoint0Y > endpoint1Y) {
+					correction[1] = Double.toString(-Math.abs(tangent2)*width/2);
+				}
 			}
 		}
 //		System.out.println(correction[0]);
