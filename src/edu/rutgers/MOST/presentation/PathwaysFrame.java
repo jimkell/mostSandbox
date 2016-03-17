@@ -1684,10 +1684,17 @@ public class PathwaysFrame extends JApplet {
 				correction[0] = Double.toString(width/2);
 			}
 		} else {
-			
+			System.out.println("p1 " + endpoint0X + " " + endpoint0Y);
+			System.out.println("p2 " + endpoint1X + " " + endpoint1Y);
+			System.out.println("angle " + Math.toDegrees(getAngleOfLineBetweenTwoPoints(endpoint0X, endpoint0Y, 
+		    		endpoint1X, endpoint1Y)));
+			System.out.println("sin " + Math.sin(getAngleOfLineBetweenTwoPoints(endpoint0X, endpoint0Y, 
+		    		endpoint1X, endpoint1Y)));
+			System.out.println("cos " + Math.cos(getAngleOfLineBetweenTwoPoints(endpoint0X, endpoint0Y, 
+		    		endpoint1X, endpoint1Y)));
 		}
-		System.out.println(correction[0]);
-		System.out.println(correction[1]);
+//		System.out.println(correction[0]);
+//		System.out.println(correction[1]);
 		
 		return correction;
 	}
@@ -1699,8 +1706,8 @@ public class PathwaysFrame extends JApplet {
 		double endpointY = Double.valueOf(endpoint[1]);
 		double correctionX = Double.valueOf(correction[0]);
 		double correctionY = Double.valueOf(correction[1]);
-		System.out.println("e " + endpointX);
-		System.out.println("e " + endpointY);
+//		System.out.println("e " + endpointX);
+//		System.out.println("e " + endpointY);
 		if (type.equals(PathwaysFrameConstants.REACTION_CORRECTION_TYPE)) {
 			correctedEndpoint[0] = Double.toString(endpointX - correctionX);
 			correctedEndpoint[1] = Double.toString(endpointY + correctionY);
@@ -1708,12 +1715,26 @@ public class PathwaysFrame extends JApplet {
 			correctedEndpoint[0] = Double.toString(endpointX + correctionX);
 			correctedEndpoint[1] = Double.toString(endpointY - correctionY);
 		}
-		System.out.println("c " + correctedEndpoint[0]);
-		System.out.println("c " + correctedEndpoint[1]);
+//		System.out.println("c " + correctedEndpoint[0]);
+//		System.out.println("c " + correctedEndpoint[1]);
 		
 		return correctedEndpoint;
 		
 	}
+	
+	/**
+     * Determines the angle of a straight line drawn between point one and two. The number returned, which is a double in degrees, tells us how much we have to rotate a horizontal line clockwise for it to match the line between the two points.
+     * If you prefer to deal with angles using radians instead of degrees, just change the last line to: "return Math.atan2(yDiff, xDiff);"
+     * based on http://wikicode.wikidot.com/get-angle-of-line-between-two-points
+     */
+    private double getAngleOfLineBetweenTwoPoints(double endpoint0X, double endpoint0Y, 
+    		double endpoint1X, double endpoint1Y)
+    {
+        double xDiff = endpoint1X - endpoint0X;
+        double yDiff = endpoint1Y - endpoint0Y;
+//        return Math.toDegrees(Math.atan2(yDiff, xDiff));
+        return Math.atan2(yDiff, xDiff);
+    }
 	
 	public void saveAsPNG() {
 		JTextArea output = null;

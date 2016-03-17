@@ -13238,18 +13238,18 @@ public class GraphicalInterface extends JFrame {
         frame.setVisible(true);
         enableVisualizationItems(false);
         
-        try {
-            Thread.sleep(2000);                 //1000 milliseconds is one second.
-        } catch(InterruptedException ex) {
-            Thread.currentThread().interrupt();
-        }
-        
-        OutputPopout p = new OutputPopout();
-		p.setIconImages(icons);
-		p.setTitle(gi.getTitle());
-		p.setLocationRelativeTo(null);
-		p.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		p.setOutputText(pf1.report);
+//        try {
+//            Thread.sleep(2000);                 //1000 milliseconds is one second.
+//        } catch(InterruptedException ex) {
+//            Thread.currentThread().interrupt();
+//        }
+//        
+//        OutputPopout p = new OutputPopout();
+//		p.setIconImages(icons);
+//		p.setTitle(gi.getTitle());
+//		p.setLocationRelativeTo(null);
+//		p.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+//		p.setOutputText(pf1.report);
 	}
 	
 	

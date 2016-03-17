@@ -445,7 +445,7 @@ public class PathwayFilesReader {
 				LocalConfig.getInstance().setMetaboliteNameAbbrMap(metaboliteNameAbbrMap);
 				LocalConfig.getInstance().setMetaboliteNameDataMap(metaboliteNameDataMap);
 				LocalConfig.getInstance().setKeggIdsInGraph(keggIdsInGraph);
-				System.out.println(keggIdsInGraph);
+//				System.out.println("pfr kegg ids in graph " + keggIdsInGraph);
 			} catch (IOException e) {
 				JOptionPane.showMessageDialog(null,                
 						"File Not Found Error.",                
