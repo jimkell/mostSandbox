@@ -40,7 +40,6 @@ import javax.swing.JButton;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
-import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -1455,18 +1454,25 @@ public class PathwaysFrame extends JApplet {
 				if (colorMap.containsKey(reactionList.get(i))) {
 					double color = colorMap.get(reactionList.get(i));
 					edge.setStroke(colorFromColorValue(color));
-					if (!borderList.contains(info[0])) {
-						if (info[2].equals("true")) {
-							// set triangle
-							edge.setTriangle(triangle(correctedMetabEndpoint, angle, 1.0));
-						}
-					}
 				}
 				edge.setStrokeWidth("1");
+				double arrowValue = 1.0;
 				if (fluxMap.containsKey(reactionList.get(i))) {
 					double fluxValue = fluxMap.get(reactionList.get(i));
 					if (fluxValue > 1 && LocalConfig.getInstance().isScaleEdgeThicknessSelected()) {
 						edge.setStrokeWidth(Double.toString(fluxValue));
+						arrowValue = fluxValue;
+					}
+				}
+				if (!borderList.contains(info[0]) && LocalConfig.getInstance().isScaleEdgeThicknessSelected()) {
+					if (info[2].equals("true")) {
+						double arrowSize = 0.25;
+						if (LocalConfig.getInstance().isScaleEdgeThicknessSelected()) {
+							if (arrowValue >= 1) {
+								arrowSize = Math.sqrt(arrowValue)/2;
+							}
+						}
+						edge.setTriangle(triangle(correctedMetabEndpoint, angle, arrowSize));
 					}
 				}
 				edges.add(edge);
@@ -1838,17 +1844,11 @@ public class PathwaysFrame extends JApplet {
 		points.add(endpoint);
 		double endpointX = Double.valueOf(endpoint[0]);
 		double endpointY = Double.valueOf(endpoint[1]);
-//		System.out.println("ex " + endpointX);
-//		System.out.println("ey " + endpointY);
 		
 		double point1X = endpointX - size*PathwaysFrameConstants.ARROW_LENGTH;
 		double point1Y = endpointY - size*PathwaysFrameConstants.ARROW_WIDTH/2;
-//		System.out.println("px " + point1X);
-//		System.out.println("py " + point1Y);
 		double[] p1 = rotatedPoint(endpointX, endpointY, point1X, point1Y, angle);
 		points.add(rotatedPointToString(p1));
-//		System.out.println("px " + p1[0]);
-//		System.out.println("py " + p1[1]);
 		
 		double point2X = endpointX - size*PathwaysFrameConstants.ARROW_LENGTH;
 		double point2Y = endpointY + size*PathwaysFrameConstants.ARROW_WIDTH/2;

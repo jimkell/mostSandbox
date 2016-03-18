@@ -85,7 +85,6 @@ public class SVGBuilder {
 		}
 		for (int e = 0; e < edges.size(); e++) {
 			if (edges.get(e).getTriangle() != null && edges.get(e).getTriangle().size() == 3) {
-//				System.out.println(edges.get(e).getTriangle().get(0)[0]);
 				Element polygonElement = doc.createElement("polygon");
 				String points = edges.get(e).getTriangle().get(0)[0] + "," +
 						edges.get(e).getTriangle().get(0)[1] + " " +
@@ -93,11 +92,9 @@ public class SVGBuilder {
 						edges.get(e).getTriangle().get(1)[1] + " " +
 						edges.get(e).getTriangle().get(2)[0] + "," +
 						edges.get(e).getTriangle().get(2)[1] + " ";
-//				System.out.println(points);
 				polygonElement.setAttribute("points", points);
 				String style = "fill:" + colorToString(edges.get(e).getStroke()) +
 						";stroke:" + colorToString(edges.get(e).getStroke()) + ";stroke-width:1";
-//				System.out.println(style);
 				polygonElement.setAttribute("style", style);
 				svgElement.appendChild(polygonElement);
 			}
