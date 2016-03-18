@@ -507,6 +507,16 @@ public class GraphicalInterface extends JFrame {
 	public static OutputPopout getPopout() {
 		return popout;
 	}
+	
+	private static OutputPopout visualizationPopout;
+
+	public static OutputPopout getVisualizationPopout() {
+		return visualizationPopout;
+	}
+
+	public static void setVisualizationPopout(OutputPopout visualizationPopout) {
+		GraphicalInterface.visualizationPopout = visualizationPopout;
+	}
 
 	private static ReactionColAddRenameInterface reactionColAddRenameInterface;
 
@@ -13224,14 +13234,14 @@ public class GraphicalInterface extends JFrame {
 				if (pf1.getNodeInformationDialog() != null) {
 					pf1.getNodeInformationDialog().dispose();
 				}
-//				if (pf2.getNodeInformationDialog() != null) {
-//					pf2.getNodeInformationDialog().dispose();
-//				}
 				frame.setVisible(false);
 				enableLoadItems();
 				disableMenuItemsForFVA(false);
 				enableVisualizationItems(true);
 				isVisualizing = false;
+				if (getVisualizationPopout() != null) {
+					getVisualizationPopout().dispose();
+				}
 			}
 		});		
         frame.setLocationRelativeTo(null);
@@ -13250,6 +13260,7 @@ public class GraphicalInterface extends JFrame {
 		p.setLocationRelativeTo(null);
 		p.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		p.setOutputText(pf1.report);
+		setVisualizationPopout(p);
 	}
 	
 	
