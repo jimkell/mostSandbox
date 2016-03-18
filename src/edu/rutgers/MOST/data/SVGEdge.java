@@ -5,12 +5,10 @@ import java.util.ArrayList;
 
 public class SVGEdge {
 
-	ArrayList<String[]> endpoints;
+	private ArrayList<String[]> endpoints;
 	private Color stroke;
 	private String strokeWidth;
-	private String markerId;
-	// changing refX moves arrow along edge
-	private String refX;
+	private ArrayList<String[]> triangle;
 	
 	public ArrayList<String[]> getEndpoints() {
 		return endpoints;
@@ -30,17 +28,11 @@ public class SVGEdge {
 	public void setStrokeWidth(String strokeWidth) {
 		this.strokeWidth = strokeWidth;
 	}
-	public String getMarkerId() {
-		return markerId;
+	public ArrayList<String[]> getTriangle() {
+		return triangle;
 	}
-	public void setMarkerId(String markerId) {
-		this.markerId = markerId;
-	}
-	public String getRefX() {
-		return refX;
-	}
-	public void setRefX(String refX) {
-		this.refX = refX;
+	public void setTriangle(ArrayList<String[]> triangle) {
+		this.triangle = triangle;
 	}
 	
 }

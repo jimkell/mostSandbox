@@ -30,6 +30,7 @@ import java.util.Map;
                                                                                                                      
 
 
+
 import javax.imageio.ImageIO;
 import javax.swing.AbstractButton;
 import javax.swing.Icon;
@@ -54,6 +55,7 @@ import javax.swing.WindowConstants;
 import org.apache.commons.collections15.Transformer;                                                                 
 import org.apache.commons.collections15.functors.ChainedTransformer;                                                 
                                                                                                                      
+
 
 
 
@@ -859,14 +861,6 @@ public class PathwaysFrame extends JApplet {
 		float notch_depth = PathwaysFrameConstants.ARROW_NOTCH;
 		protected Shape directed_arrow = ArrowFactory.getNotchedArrow(width, length, notch_depth);
 
-		//        public DirectionalEdgeArrowTransformer(int length, int width, int notch_depth)
-		//        {
-		//        	directed_arrow = ArrowFactory.getNotchedArrow(width, length, notch_depth);
-		//undirected_arrow = ArrowFactory.getWedgeArrow(width, length);
-		// no arrow for undirected edge
-		//undirected_arrow = ArrowFactory.getWedgeArrow(0, 0);
-		//        }
-
 		/**
 		 *
 		 */
@@ -1410,7 +1404,9 @@ public class PathwaysFrame extends JApplet {
 		ArrayList<SVGEdge> edges = new ArrayList<SVGEdge>();
 		for(int i=0; i<reactionList.size(); i++) {
 			String[] info = reactionMap.get(reactionList.get(i));
+			// create edges
 			if (nodeNamePositionMap.containsKey(info[0]) && nodeNamePositionMap.containsKey(info[1])) {
+				// node width and height
 				int width = 0;
 				int height = 0;
 				if (LocalConfig.getInstance().getMetaboliteNameDataMap().get(info[1]) != null) {
@@ -1427,9 +1423,17 @@ public class PathwaysFrame extends JApplet {
 						height = PathwaysFrameConstants.METABOLITE_BORDER_NODE_HEIGHT;
 					}
 				} 
-				String[] reacEndpointCorrection = endpointCorrection(nodeNamePositionMap.get(info[0]), nodeNamePositionMap.get(info[1]), 
-						PathwaysFrameConstants.REACTION_NODE_WIDTH, PathwaysFrameConstants.REACTION_NODE_HEIGHT);
-				String[] metabEndpointCorrection = endpointCorrection(nodeNamePositionMap.get(info[0]), nodeNamePositionMap.get(info[1]), width, height);
+				// correct endpoints for intersection with rectangular nodes
+				double endpoint0X = Double.valueOf(nodeNamePositionMap.get(info[0])[0]);
+				double endpoint0Y = Double.valueOf(nodeNamePositionMap.get(info[0])[1]);
+				double endpoint1X = Double.valueOf(nodeNamePositionMap.get(info[1])[0]);
+				double endpoint1Y = Double.valueOf(nodeNamePositionMap.get(info[1])[1]);
+				double angle = getAngleOfLineBetweenTwoPoints(endpoint0X, endpoint0Y, 
+			    		endpoint1X, endpoint1Y);
+				String[] reacEndpointCorrection = endpointCorrection(endpoint0X, endpoint0Y, endpoint1X, endpoint1Y,
+						angle, PathwaysFrameConstants.REACTION_NODE_WIDTH, PathwaysFrameConstants.REACTION_NODE_HEIGHT);
+				String[] metabEndpointCorrection = endpointCorrection(endpoint0X, endpoint0Y, endpoint1X, endpoint1Y, 
+						angle, width, height);
 				SVGEdge edge = new SVGEdge();
 				ArrayList<String[]> endpoints = new ArrayList<String[]>();
 //				endpoints.add(nodeNamePositionMap.get(info[0]));
@@ -1440,28 +1444,28 @@ public class PathwaysFrame extends JApplet {
 					endpoints.add(correctedEndpoint(nodeNamePositionMap.get(info[0]), reacEndpointCorrection, 
 							PathwaysFrameConstants.REACTION_CORRECTION_TYPE));
 				}
-				endpoints.add(correctedEndpoint(nodeNamePositionMap.get(info[1]), metabEndpointCorrection, 
-						PathwaysFrameConstants.METABOLITE_CORRECTION_TYPE));
+				String[] correctedMetabEndpoint = correctedEndpoint(nodeNamePositionMap.get(info[1]), metabEndpointCorrection, 
+						PathwaysFrameConstants.METABOLITE_CORRECTION_TYPE);
+//				endpoints.add(correctedEndpoint(nodeNamePositionMap.get(info[1]), metabEndpointCorrection, 
+//						PathwaysFrameConstants.METABOLITE_CORRECTION_TYPE));
+				endpoints.add(correctedMetabEndpoint);
 				edge.setEndpoints(endpoints);
+				// stroke width and color
 				edge.setStroke(colorFromColorValue(PathwaysFrameConstants.DEFAULT_COLOR_VALUE));
 				if (colorMap.containsKey(reactionList.get(i))) {
 					double color = colorMap.get(reactionList.get(i));
 					edge.setStroke(colorFromColorValue(color));
 					if (!borderList.contains(info[0])) {
 						if (info[2].equals("true")) {
-							edge.setMarkerId(arrowFromColorValue(color));
+							// set triangle
+							edge.setTriangle(triangle(correctedMetabEndpoint, angle, 1.0));
 						}
-//						edge.setRefX("-5");
 					}
-				}
-				if (!borderList.contains(info[0])) {
-//					edge.setMarkerId(arrowFromColorValue(color));
-					edge.setRefX("0");
 				}
 				edge.setStrokeWidth("1");
 				if (fluxMap.containsKey(reactionList.get(i))) {
 					double fluxValue = fluxMap.get(reactionList.get(i));
-					if (fluxValue > 1) {
+					if (fluxValue > 1 && LocalConfig.getInstance().isScaleEdgeThicknessSelected()) {
 						edge.setStrokeWidth(Double.toString(fluxValue));
 					}
 				}
@@ -1471,6 +1475,7 @@ public class PathwaysFrame extends JApplet {
 			}
 		}
 		builder.setEdges(edges);
+		// create nodes and text for node labels
 		ArrayList<BorderRectangle> rects = new ArrayList<BorderRectangle>();
 		ArrayList<SVGText> textList = new ArrayList<SVGText>();
 		for (int j = 0; j < nodeNameList.size(); j++) {
@@ -1656,48 +1661,34 @@ public class PathwaysFrame extends JApplet {
 	
 	/**
 	 * Returns intersection points between edge and rectangular node
-	 * @param endpoint0
-	 * @param endpoint1
+	 * @param endpoint0X
+	 * @param endpoint0Y
+	 * @param endpoint1X
+	 * @param endpoint1Y
+	 * @param angle
 	 * @param width
 	 * @param height
 	 * @return
 	 */
-	private String[] endpointCorrection(String[] endpoint0, String[] endpoint1, int width, int height) {
+	private String[] endpointCorrection(double endpoint0X, double endpoint0Y, double endpoint1X, double endpoint1Y, 
+			double angle, int width, int height) {
 		String[] correction = {"0", "0"};
-		// cast all four values once
-		double endpoint0X = Double.valueOf(endpoint0[0]);
-		double endpoint0Y = Double.valueOf(endpoint0[1]);
-		double endpoint1X = Double.valueOf(endpoint1[0]);
-		double endpoint1Y = Double.valueOf(endpoint1[1]);
-		// since trig. functions are expensive, calculate corrections for horizontal and vertical
-		// lines without using trig.
-		// vertical line
-		if (endpoint0X == endpoint1X) {
+		// determine if edge intersects long edge of rectangle
+		// get tangent of complement of absolute value of angle
+		double tangent = Math.tan(Math.toRadians(90 - Math.toDegrees(Math.abs(angle))));
+		double x = tangent*height/2;
+		if (Math.abs(x) < width/2) {
+			// return x intersection and height/2
 			correction[1] = Double.toString(yDirection(endpoint0Y, endpoint1Y)*height/2);
-		// horizontal line
-		} else if (endpoint0Y == endpoint1Y) {
-			correction[0] = Double.toString(xDirection(endpoint0X, endpoint1X)*width/2);
-		// angular edge
+			correction[0] = Double.toString(Math.abs(tangent)*xDirection(endpoint0X, endpoint1X)*height/2);
 		} else {
-			double angle = getAngleOfLineBetweenTwoPoints(endpoint0X, endpoint0Y, 
-		    		endpoint1X, endpoint1Y);
-			// determine if edge intersects long edge of rectangle
-			// get tangent of complement of absolute value of angle
-			double tangent = Math.tan(Math.toRadians(90 - Math.toDegrees(Math.abs(angle))));
-			double x = tangent*height/2;
-			if (Math.abs(x) < width/2) {
-				// return x intersection and height/2
-				correction[1] = Double.toString(yDirection(endpoint0Y, endpoint1Y)*height/2);
-				correction[0] = Double.toString(Math.abs(tangent)*xDirection(endpoint0X, endpoint1X)*height/2);
-			} else {
-				// edge intersects short edge of rectangle
-				// return width/2 and y intersection
-				correction[0] = Double.toString(xDirection(endpoint0X, endpoint1X)*width/2);
-				double tangent2 = Math.tan(angle);
-				correction[1] = Double.toString(Math.abs(tangent2)*yDirection(endpoint0Y, endpoint1Y)*width/2);
-			}
+			// edge intersects short edge of rectangle
+			// return width/2 and y intersection
+			correction[0] = Double.toString(xDirection(endpoint0X, endpoint1X)*width/2);
+			double tangent2 = Math.tan(angle);
+			correction[1] = Double.toString(Math.abs(tangent2)*yDirection(endpoint0Y, endpoint1Y)*width/2);
 		}
-		
+
 		return correction;
 	}
 	
@@ -1833,6 +1824,63 @@ public class PathwaysFrame extends JApplet {
 				}
 			}
 		}
+	}
+	
+	/**
+	 * Calculates triangle coordinates to be used as arrow
+	 * @param endpoint
+	 * @param angle
+	 * @param size
+	 * @return
+	 */
+	private ArrayList<String[]> triangle(String[] endpoint, double angle, double size) {
+		ArrayList<String[]> points = new ArrayList <String[]>();
+		points.add(endpoint);
+		double endpointX = Double.valueOf(endpoint[0]);
+		double endpointY = Double.valueOf(endpoint[1]);
+//		System.out.println("ex " + endpointX);
+//		System.out.println("ey " + endpointY);
+		
+		double point1X = endpointX - size*PathwaysFrameConstants.ARROW_LENGTH;
+		double point1Y = endpointY - size*PathwaysFrameConstants.ARROW_WIDTH/2;
+//		System.out.println("px " + point1X);
+//		System.out.println("py " + point1Y);
+		double[] p1 = rotatedPoint(endpointX, endpointY, point1X, point1Y, angle);
+		points.add(rotatedPointToString(p1));
+//		System.out.println("px " + p1[0]);
+//		System.out.println("py " + p1[1]);
+		
+		double point2X = endpointX - size*PathwaysFrameConstants.ARROW_LENGTH;
+		double point2Y = endpointY + size*PathwaysFrameConstants.ARROW_WIDTH/2;
+		double[] p2 = rotatedPoint(endpointX, endpointY, point2X, point2Y, angle);
+		points.add(rotatedPointToString(p2));
+		
+		return points;
+		
+	}
+	
+	/**
+	 * based on http://stackoverflow.com/questions/9985473/java-rotate-point-around-another-by-specified-degree-value
+	 * @param centerX
+	 * @param centerY
+	 * @param pointX
+	 * @param pointY
+	 * @param angle
+	 * @return
+	 */
+	private double[] rotatedPoint(double centerX, double centerY, double pointX, double pointY, double angle) {
+		double pt[] = {pointX, pointY};
+		AffineTransform.getRotateInstance(angle, centerX, centerY)
+		  .transform(pt, 0, pt, 0, 1); // specifying to use this double[] to hold coords
+		
+		return pt;
+		
+	}
+	
+	private String[] rotatedPointToString(double[] point) {
+		String[] rotatedPoint = {Double.toString(point[0]), Double.toString(point[1])};
+		
+		return rotatedPoint;
 	}
 
 	public void saveWindowAsPNG(String path) {
