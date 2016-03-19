@@ -368,10 +368,14 @@ public class GraphicalInterfaceConstants {
     
     public static final String DUPLICATE_SUFFIX = "[1]";
     
- // duplicate metabolite
+     // duplicate metabolite
     public static final String DUPLICATE_REACTION_TITLE = "Duplicate Reaction";
     public static final String DUPLICATE_REACTION_MESSAGE = "Duplicate Reaction. Rename as "; 
     public static final String DUPLICATE_REACTION_PASTE_MESSAGE = "Duplicate Reactions. Names Will Be Appended With '[1]', '[2]', etc.";
+    
+    public static final String COMPARTMENT_RENAME_TITLE = "Rename Compartment?";
+    public static final String COMPARTMENT_RENAME_MESSAGE_PREFIX = "Renaming '";
+    public static final String COMPARTMENT_RENAME_MESSAGE_SUFFIX = "' will result in changing one or more metabolites and reactions. Are you sure you want to do this?";
     
     // invalid reactions
     public static final String INVALID_REACTIONS_ENTRY_ERROR_TITLE = "Invalid Reaction";
