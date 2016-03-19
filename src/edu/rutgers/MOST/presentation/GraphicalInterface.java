@@ -1376,6 +1376,7 @@ public class GraphicalInterface extends JFrame {
 		LocalConfig.getInstance().setMaxCompartmentId(GraphicalInterfaceConstants.BLANK_COMPARTMENT_ROW_COUNT);
 		LocalConfig.getInstance().setReactionsLocationsListCount(0);
 		LocalConfig.getInstance().setMetabolitesLocationsListCount(0);
+		
 
 		formulaBar.setLineWrap(true);
 		outputTextArea.setEditable(false);
@@ -6076,16 +6077,18 @@ public class GraphicalInterface extends JFrame {
 		if (!contains) {
 			int maxId = LocalConfig.getInstance().getMaxCompartmentId();
 			DefaultTableModel model = (DefaultTableModel) compartmentsTable.getModel();	
-			model.addRow(createCompartmentsRow(maxId));
+			if (maxId > LocalConfig.getInstance().getListOfCompartments().size()) {
+				model.addRow(createCompartmentsRow(maxId));
+			}
 			setUpCompartmentsTable(model);
 //			MetaboliteUndoItem undoItem = createMetaboliteUndoItem("", "", row, col, id, UndoConstants.ADD_ROW, UndoConstants.METABOLITE_UNDO_ITEM_TYPE);
 //			setUndoOldCollections(undoItem);				
-			int maxRow = compartmentsTable.getModel().getRowCount();
-			int viewRow = compartmentsTable.convertRowIndexToView(maxRow - 1);
+//			int maxRow = compartmentsTable.getModel().getRowCount();
+//			int viewRow = compartmentsTable.convertRowIndexToView(maxRow - 1);
 //			setTableCellFocused(viewRow, 1, compartmentsTable);
 //			setUndoNewCollections(undoItem);
 //			setUpMetabolitesUndo(undoItem);
-			model.setValueAt(newValue, viewRow, CompartmentsConstants.ABBREVIATION_COLUMN);
+			model.setValueAt(newValue, LocalConfig.getInstance().getListOfCompartments().size(), CompartmentsConstants.ABBREVIATION_COLUMN);
 			SBMLCompartment comp = new SBMLCompartment();
 			comp.setId(newValue);
 			comp.setName("");

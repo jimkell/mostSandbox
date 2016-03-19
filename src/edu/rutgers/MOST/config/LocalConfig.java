@@ -257,7 +257,7 @@ public class LocalConfig {
 	public void setMaxReactionId(Integer maxReactionId) {
 		this.maxReactionId = maxReactionId;
 	}
-	
+
 	private Integer maxCompartmentId;
 
 	public Integer getMaxCompartmentId() {
