@@ -416,6 +416,9 @@ public class GraphicalInterfaceConstants {
     public static final String RENAME_METABOLITE_INTERFACE_TITLE = "Rename Metabolite";
     public static final String RENAME_METABOLITE_LABEL = "Enter New Metabolite Name";
     
+    public static final String RENAME_COMPARTMENT_INTERFACE_TITLE = "Rename Compartment";
+    public static final String RENAME_COMPARTMENT_LABEL = "Enter New Compartment Abbreviation";
+    
     public static final String CSV_FILE_LOAD_INTERFACE_TITLE = "CSV File Load";    
     public static final String CSV_FILE_LOAD_METAB_BUTTON = "Load Metabolites File";
     public static final String CSV_FILE_LOAD_REAC_BUTTON = " Load Reactions File  "; 
