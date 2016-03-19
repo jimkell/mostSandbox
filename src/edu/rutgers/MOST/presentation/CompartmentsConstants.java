@@ -22,8 +22,6 @@ public class CompartmentsConstants {
 	public static final int OUTSIDE_COLUMN = visibleColumnsList.indexOf("Outside");
 	public static final int OUTSIDE_WIDTH = 280;
 	
-	public static final int BLANK_TABLE_ROW_COUNT = 20;
-	
 	public static final int WIDTH = 450;
 	public static final int HEIGHT = 300;
 	

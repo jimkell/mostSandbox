@@ -11,6 +11,7 @@ public class GraphicalInterfaceConstants {
 	
 	public static final int BLANK_METABOLITE_ROW_COUNT = 2000;
 	public static final int BLANK_REACTION_ROW_COUNT = 2000;
+	public static final int BLANK_COMPARTMENT_ROW_COUNT = 20;
 	
 	public static final String REACTION_ID_COLUMN_NAME = "ID";
 	public static final String KNOCKOUT_COLUMN_NAME = "KO";
