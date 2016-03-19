@@ -7,7 +7,7 @@ public class ProgressConstants {
 	public static final int REACTION_LOAD_PERCENT = 18;
 	
 	public static final int VISUALIZATIONS_LOAD_PERCENT = 0;
-	public static final int VISUALIZATIONS_METABOLITE_LOAD_PERCENT = 10;
-	public static final int VISUALIZATIONS_REACTION_LOAD_PERCENT = 90;
+	public static final int VISUALIZATIONS_METABOLITE_LOAD_PERCENT = 20;
+	public static final int VISUALIZATIONS_REACTION_LOAD_PERCENT = 80;
 	
 }

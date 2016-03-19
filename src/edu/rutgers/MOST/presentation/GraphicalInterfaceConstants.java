@@ -393,6 +393,8 @@ public class GraphicalInterfaceConstants {
     public static final String UPPER_BOUND_PASTE_ERROR = "Upper bound must be greater than or equal to lower bound.";
     public static final String INVALID_PASTE_BOOLEAN_VALUE = "Boolean Value Error";
     public static final String PASTE_OUT_OF_RANGE_ERROR = "Paste area out of range";
+    public static final String INVALID_PASTE_COMPARTMENT_VALUE_TITLE = "Invalid Entry";
+    public static final String INVALID_PASTE_COMPARTMENT_VALUE = "Compartment Abbreviation Cannot Be Blank";
     
     // clear error
     public static final String CLEAR_ERROR_MESSAGE = "One or more cells selected require a value and cannot be cleared.";

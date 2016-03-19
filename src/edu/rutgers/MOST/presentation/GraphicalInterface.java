@@ -5975,10 +5975,22 @@ public class GraphicalInterface extends JFrame {
 				}
 			}
 		} else if (colIndex == GraphicalInterfaceConstants.COMPARTMENT_COLUMN) {
-			updateCompartmentColumn(id, metabAbbrev, newValue);
-//			rewriteReactionEquationNames(id, metabAbbrev, newValue);
-//			LocalConfig.getInstance().getMetaboliteIdCompartmentMap().put(new Integer(id), newValue); 
-			//System.out.println(LocalConfig.getInstance().getMetaboliteIdCompartmentMap());
+			if (newValue == null || newValue.trim().length() == 0) {
+				if (!replaceAllMode) {
+					setFindReplaceAlwaysOnTop(false);
+					JOptionPane.showMessageDialog(null,                
+							GraphicalInterfaceConstants.INVALID_PASTE_COMPARTMENT_VALUE,                
+							GraphicalInterfaceConstants.INVALID_PASTE_COMPARTMENT_VALUE_TITLE,                               
+							JOptionPane.ERROR_MESSAGE);
+					formulaBar.setText(getTableCellOldValue());
+					setFindReplaceAlwaysOnTop(true);
+				}				
+				metaboliteUpdateValid = false;
+				metabolitesTable.getModel().setValueAt(oldValue, rowIndex, colIndex);
+			} else {
+				metabolitesTable.getModel().setValueAt(newValue, rowIndex, colIndex);
+				updateCompartmentColumn(id, metabAbbrev, newValue);
+			}
 		} else {
 			// action for remaining columns
 			metabolitesTable.getModel().setValueAt(newValue, rowIndex, colIndex);
@@ -9832,10 +9844,12 @@ public class GraphicalInterface extends JFrame {
 				LocalConfig.getInstance().getMetaboliteIdNameMap().put(id, value);				
 			}
 		} else if (col == GraphicalInterfaceConstants.COMPARTMENT_COLUMN) {	
-			metabolitesTable.setValueAt(value, row, col);
-			updateCompartmentColumn(id, metabAbbrev, value);
-//			rewriteReactionEquationNames(id, metabAbbrev, value);
-//			LocalConfig.getInstance().getMetaboliteIdCompartmentMap().put(new Integer(id), value); 
+			if (isMetabolitesEntryValid(GraphicalInterfaceConstants.COMPARTMENT_COLUMN, value)) {
+				metabolitesTable.setValueAt(value, row, col);
+				updateCompartmentColumn(id, metabAbbrev, value); 
+			} else {
+				validPaste = false;
+			}
 		} else if (isMetabolitesEntryValid(col, value)) {
 			if (col < metabolitesTable.getColumnCount()) {
 				metabolitesTable.setValueAt(value, row, col);
@@ -9864,7 +9878,15 @@ public class GraphicalInterface extends JFrame {
 				setReplaceAllError(GraphicalInterfaceConstants.INVALID_REPLACE_ALL_BOOLEAN_VALUE);
 				return false;
 			}
-		} 	
+		} else if (columnIndex == GraphicalInterfaceConstants.COMPARTMENT_COLUMN) {
+			if (value != null && value.trim().length() > 0) {
+				return true;
+			} else {
+				setPasteError(GraphicalInterfaceConstants.INVALID_PASTE_COMPARTMENT_VALUE);
+				setReplaceAllError(GraphicalInterfaceConstants.INVALID_PASTE_COMPARTMENT_VALUE);
+				return false;
+			}
+		}
 		return true;
 		 
 	}
