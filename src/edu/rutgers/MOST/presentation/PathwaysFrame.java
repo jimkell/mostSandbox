@@ -747,36 +747,38 @@ public class PathwaysFrame extends JApplet {
 	}   
 
 	private String displayString(String s) {
-		if (reactions.contains(s)) {
-			if (s.startsWith("<html>")) {
-				s = s.substring(6, s.indexOf("<p>"));
+		if (s != null) {
+			if (reactions.contains(s)) {
+				if (s.startsWith("<html>")) {
+					s = s.substring(6, s.indexOf("<p>"));
+				}
+				if (s.length() > PathwaysFrameConstants.REACTION_NODE_MAX_CHARS) {
+					s = s.substring(0, PathwaysFrameConstants.REACTION_NODE_MAX_CHARS - PathwaysFrameConstants.REACTION_NODE_ELLIPSIS_CORRECTION) + "...";
+				}
+			} else if (s.equals(compartmentLabel)) {
+				if (s.length() > PathwaysFrameConstants.COMPARTMENT_LABEL_NODE_MAX_CHARS) {
+					s = s.substring(0, PathwaysFrameConstants.COMPARTMENT_LABEL_NODE_MAX_CHARS - PathwaysFrameConstants.COMPARTMENT_LABEL_NODE_ELLIPSIS_CORRECTION) + "...";
+				}	
+			} else if (pathwayNames.contains(s)) {
+				if (s.length() > PathwaysFrameConstants.PATHWAY_NAME_NODE_MAX_CHARS) {
+					s = s.substring(0, PathwaysFrameConstants.PATHWAY_NAME_NODE_MAX_CHARS - PathwaysFrameConstants.PATHWAY_NAME_NODE_ELLIPSIS_CORRECTION) + "...";
+				}	
+			} else if (smallMainMetabolites.contains(s)) {
+				if (s.length() > PathwaysFrameConstants.SMALL_MAIN_METABOLITE_NODE_MAX_CHARS) {
+					s = s.substring(0, PathwaysFrameConstants.SMALL_MAIN_METABOLITE_NODE_MAX_CHARS - PathwaysFrameConstants.SMALL_MAIN_METABOLITE_NODE_ELLIPSIS_CORRECTION) + "...";
+				}
+			} else if (sideMetabolites.contains(s)) {
+				if (s.length() > PathwaysFrameConstants.SIDE_METABOLITE_NODE_MAX_CHARS) {
+					s = s.substring(0, PathwaysFrameConstants.SIDE_METABOLITE_NODE_MAX_CHARS - PathwaysFrameConstants.SIDE_METABOLITE_NODE_ELLIPSIS_CORRECTION) + "...";
+				}
+			} else {
+				if (s.length() > PathwaysFrameConstants.METABOLITE_NODE_MAX_CHARS) {
+					s = s.substring(0, PathwaysFrameConstants.METABOLITE_NODE_MAX_CHARS - PathwaysFrameConstants.METABOLITE_NODE_ELLIPSIS_CORRECTION) + "...";
+				}
 			}
-			if (s.length() > PathwaysFrameConstants.REACTION_NODE_MAX_CHARS) {
-				s = s.substring(0, PathwaysFrameConstants.REACTION_NODE_MAX_CHARS - PathwaysFrameConstants.REACTION_NODE_ELLIPSIS_CORRECTION) + "...";
+			if (s.startsWith("R_") || s.startsWith("r_")) {
+				s = s.substring(2);
 			}
-		} else if (s.equals(compartmentLabel)) {
-			if (s.length() > PathwaysFrameConstants.COMPARTMENT_LABEL_NODE_MAX_CHARS) {
-				s = s.substring(0, PathwaysFrameConstants.COMPARTMENT_LABEL_NODE_MAX_CHARS - PathwaysFrameConstants.COMPARTMENT_LABEL_NODE_ELLIPSIS_CORRECTION) + "...";
-			}	
-		} else if (pathwayNames.contains(s)) {
-			if (s.length() > PathwaysFrameConstants.PATHWAY_NAME_NODE_MAX_CHARS) {
-				s = s.substring(0, PathwaysFrameConstants.PATHWAY_NAME_NODE_MAX_CHARS - PathwaysFrameConstants.PATHWAY_NAME_NODE_ELLIPSIS_CORRECTION) + "...";
-			}	
-		} else if (smallMainMetabolites.contains(s)) {
-			if (s.length() > PathwaysFrameConstants.SMALL_MAIN_METABOLITE_NODE_MAX_CHARS) {
-				s = s.substring(0, PathwaysFrameConstants.SMALL_MAIN_METABOLITE_NODE_MAX_CHARS - PathwaysFrameConstants.SMALL_MAIN_METABOLITE_NODE_ELLIPSIS_CORRECTION) + "...";
-			}
-		} else if (sideMetabolites.contains(s)) {
-			if (s.length() > PathwaysFrameConstants.SIDE_METABOLITE_NODE_MAX_CHARS) {
-				s = s.substring(0, PathwaysFrameConstants.SIDE_METABOLITE_NODE_MAX_CHARS - PathwaysFrameConstants.SIDE_METABOLITE_NODE_ELLIPSIS_CORRECTION) + "...";
-			}
-		} else {
-			if (s.length() > PathwaysFrameConstants.METABOLITE_NODE_MAX_CHARS) {
-				s = s.substring(0, PathwaysFrameConstants.METABOLITE_NODE_MAX_CHARS - PathwaysFrameConstants.METABOLITE_NODE_ELLIPSIS_CORRECTION) + "...";
-			}
-		}
-		if (s.startsWith("R_") || s.startsWith("r_")) {
-			s = s.substring(2);
 		}
 
 		return s;
@@ -785,9 +787,11 @@ public class PathwaysFrame extends JApplet {
 	
 	private int startX(Graphics g2d, String s, int width) {
 		int start = 0;
-		int stringLen = (int)  
-				g2d.getFontMetrics().getStringBounds(s, g2d).getWidth();  
-		start = width/2 - stringLen/2;
+		if (s != null) {
+			int stringLen = (int)  
+					g2d.getFontMetrics().getStringBounds(s, g2d).getWidth();  
+			start = width/2 - stringLen/2;
+		}
 		
 		return start;
 		
@@ -796,9 +800,11 @@ public class PathwaysFrame extends JApplet {
 	// based on http://www.coderanch.com/t/336616/GUI/java/Center-Align-text-drawString
 	private void alignCenterString(Graphics g2d, String s, int width, int XPos, int YPos, int fontSize){  
 		g2d.setFont(new Font(PathwaysFrameConstants.FONT_NAME, PathwaysFrameConstants.FONT_STYLE, fontSize));
-		s = displayString(s);
-		int start = startX(g2d, s, width);
-		g2d.drawString(s, start + XPos, YPos);   
+		if (s != null) {
+			s = displayString(s);
+			int start = startX(g2d, s, width);
+			g2d.drawString(s, start + XPos, YPos);  
+		}
 	}  
 
 	private void drawBorder(Graphics g2d, int width, int height, int strokeWidth){

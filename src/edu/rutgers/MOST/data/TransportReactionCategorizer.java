@@ -40,6 +40,10 @@ public class TransportReactionCategorizer {
 					}
 				}
 			}
+			// remove reactions of a --> or --> a type
+			if (reactants.size() == 0 || products.size() == 0) {
+				externalReactionIds.add(id);
+			}
 		}
 		//System.out.println("ext rxns " + externalReactionIds);
 		LocalConfig.getInstance().setExternalReactionIds(externalReactionIds);
@@ -265,7 +269,7 @@ public class TransportReactionCategorizer {
 		//System.out.println("no trans " + LocalConfig.getInstance().getUnplottedReactionIds());
 	}
 	
-	public void createTransportCollectionFromList(ArrayList<Integer> idsList, Map<Integer, SBMLReaction> idReactionMap) {
+//	public void createTransportCollectionFromList(ArrayList<Integer> idsList, Map<Integer, SBMLReaction> idReactionMap) {
 //		for (int n = 0; n < idsList.size(); n++) {
 //			transportCollectionsCreator.createTransportCollections(idsList.get(n), 
 //					idReactionMap, TransportReactionConstants.PERIPLASM_EXTRAORGANISM_TRANSPORT);
@@ -273,5 +277,5 @@ public class TransportReactionCategorizer {
 //				LocalConfig.getInstance().getUnplottedReactionIds().remove(LocalConfig.getInstance().getUnplottedReactionIds().indexOf(idsList.get(n)));
 //			}
 //		}
-	}
+//	}
 }

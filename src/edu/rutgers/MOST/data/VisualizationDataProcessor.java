@@ -108,10 +108,14 @@ public class VisualizationDataProcessor {
 		ArrayList<Integer> unplottedIds = new ArrayList<Integer>();
 		for (int r = 0; r < rxns.size(); r++) {
 			if (LocalConfig.getInstance().getReactionsMissingKeggId().contains(rxns.get(r).getId())) {
-				missingKeggId.add(rxns.get(r).getId());
+				if (!LocalConfig.getInstance().getExternalReactionIds().contains(rxns.get(r).getId())) {
+					missingKeggId.add(rxns.get(r).getId());
+				}
 			} else {
 				if (!plottedIds.contains(rxns.get(r).getId())) {
-					unplottedIds.add(rxns.get(r).getId());
+					if (!LocalConfig.getInstance().getExternalReactionIds().contains(rxns.get(r).getId())) {
+						unplottedIds.add(rxns.get(r).getId());
+					}
 				}
 			}
 		}
