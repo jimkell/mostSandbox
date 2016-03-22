@@ -5232,57 +5232,7 @@ public class GraphicalInterface extends JFrame {
 		
 			if (tcl.getOldValue() != tcl.getNewValue()) {
 				if (tcl.getColumn() == CompartmentsConstants.ABBREVIATION_COLUMN) {
-					MetaboliteFactory f = new MetaboliteFactory("SBML");
-			    	Vector<SBMLMetabolite> metabolites = f.getAllMetabolites();
-			    	Map<String, SBMLMetabolite> idMetabMap = new HashMap<String, SBMLMetabolite>();
-			    	for (int i = 0; i < metabolites.size(); i++) {
-			    		if (metabolites.get(i).getCompartment().equals(tcl.getOldValue())) {
-			    			idMetabMap.put(Integer.toString(metabolites.get(i).getId()), (metabolites.get(i)));
-			    		}
-			    	}
-			    	if (idMetabMap.size() > 0) {
-			    		Object[] options = {"    Yes    ", "    No    ",};
-			    		int choice = JOptionPane.showOptionDialog(null, 
-			    				GraphicalInterfaceConstants.COMPARTMENT_RENAME_MESSAGE_PREFIX + 
-			    				tcl.getOldValue() + GraphicalInterfaceConstants.COMPARTMENT_RENAME_MESSAGE_SUFFIX, 
-			    				GraphicalInterfaceConstants.COMPARTMENT_RENAME_TITLE, 
-			    				JOptionPane.YES_NO_OPTION, 
-			    				JOptionPane.QUESTION_MESSAGE, 
-			    				null, options, options[0]);
-			    		createMetabolitesIdRowMap();
-			    		if (choice == JOptionPane.YES_OPTION) {
-			    			ArrayList<String>idList = new ArrayList<String>(idMetabMap.keySet());
-			    			// update compartments first
-			    			for (int j = 0; j < idList.size(); j++) {
-			    				updateMetabolitesCellById(tcl.getNewValue(), Integer.valueOf(idList.get(j)), GraphicalInterfaceConstants.COMPARTMENT_COLUMN);
-			    			}
-			    			int index = -1;
-			    			for (int c = 0; c < LocalConfig.getInstance().getListOfCompartments().size(); c++) {
-			    				if (LocalConfig.getInstance().getListOfCompartments().get(c).getId().equals(tcl.getOldValue())) {
-			    					index = c;
-			    				}
-			    			}
-			    			if (index > -1) {
-			    				LocalConfig.getInstance().getListOfCompartments().remove(index);
-			    			}
-			    			SBMLCompartment comp = new SBMLCompartment();
-			    			comp.setId(tcl.getNewValue());
-			    			comp.setName((String) compartmentsTable.getModel().getValueAt(tcl.getRow(), CompartmentsConstants.NAME_COLUMN));
-			    			comp.setOutside((String) compartmentsTable.getModel().getValueAt(tcl.getRow(), CompartmentsConstants.OUTSIDE_COLUMN));
-			    			LocalConfig.getInstance().getListOfCompartments().add(comp);
-			    			for (int j = 0; j < idList.size(); j++) {
-			    				rewriteReactionEquationNames(Integer.valueOf(idList.get(j)), idMetabMap.get(idList.get(j)).getMetaboliteAbbreviation(), 
-			    						tcl.getNewValue());
-			    				LocalConfig.getInstance().getMetaboliteIdCompartmentMap().put(Integer.valueOf(idList.get(j)), 
-			    						tcl.getNewValue()); 
-			    			}
-			    		}
-			    		if (choice == JOptionPane.NO_OPTION) {
-			    			int id = Integer.parseInt((String) (compartmentsTable.getModel().getValueAt(tcl.getRow(), 0)));
-			    			updateMetabolitesCellById(tcl.getOldValue(), id, GraphicalInterfaceConstants.COMPARTMENT_COLUMN);
-			    			compartmentsTableUpdater.updateTableByRow(compartmentsTable, tcl.getRow());
-			    		}		
-			    	}
+					renameCompartmentsTableCompartment(tcl.getOldValue(), tcl.getNewValue(), tcl.getRow(), true);
 				} else {
 					compartmentsTableUpdater.updateTableByRow(compartmentsTable, tcl.getRow());
 				}
@@ -6042,7 +5992,7 @@ public class GraphicalInterface extends JFrame {
 				metabolitesTable.getModel().setValueAt(oldValue, rowIndex, colIndex);
 			} else {
 				metabolitesTable.getModel().setValueAt(newValue, rowIndex, colIndex);
-				updateCompartmentColumn(id, metabAbbrev, newValue);
+				updateMetabolitesCompartmentValue(id, metabAbbrev, newValue);
 			}
 		} else {
 			// action for remaining columns
@@ -6116,7 +6066,70 @@ public class GraphicalInterface extends JFrame {
 		}		
 	}
 	
-	public void updateCompartmentColumn(int id, String metabAbbrev, String newValue) {
+	public void renameCompartmentsTableCompartment(String oldValue, String newValue, int row, boolean showMessage) {
+		MetaboliteFactory f = new MetaboliteFactory("SBML");
+    	Vector<SBMLMetabolite> metabolites = f.getAllMetabolites();
+    	Map<String, SBMLMetabolite> idMetabMap = new HashMap<String, SBMLMetabolite>();
+    	for (int i = 0; i < metabolites.size(); i++) {
+    		if (metabolites.get(i).getCompartment().equals(oldValue)) {
+    			idMetabMap.put(Integer.toString(metabolites.get(i).getId()), (metabolites.get(i)));
+    		}
+    	}
+    	if (idMetabMap.size() > 0) {
+    		if (showMessage) {
+    			Object[] options = {"    Yes    ", "    No    ",};
+        		int choice = JOptionPane.showOptionDialog(null, 
+        				GraphicalInterfaceConstants.COMPARTMENT_RENAME_MESSAGE_PREFIX + 
+        				oldValue + GraphicalInterfaceConstants.COMPARTMENT_RENAME_MESSAGE_SUFFIX, 
+        				GraphicalInterfaceConstants.COMPARTMENT_RENAME_TITLE, 
+        				JOptionPane.YES_NO_OPTION, 
+        				JOptionPane.QUESTION_MESSAGE, 
+        				null, options, options[0]);
+        		createMetabolitesIdRowMap();
+        		if (choice == JOptionPane.YES_OPTION) {
+        			updateTablesForCompartmentRename(idMetabMap, oldValue, newValue, row);
+        		}
+        		if (choice == JOptionPane.NO_OPTION) {
+        			int id = Integer.parseInt((String) (compartmentsTable.getModel().getValueAt(row, 0)));
+        			updateMetabolitesCellById(oldValue, id, GraphicalInterfaceConstants.COMPARTMENT_COLUMN);
+        			compartmentsTableUpdater.updateTableByRow(compartmentsTable, row);
+        		}		
+    		} else {
+    			updateTablesForCompartmentRename(idMetabMap, oldValue, newValue, row);
+    		}
+    	}
+	}
+	
+	public void updateTablesForCompartmentRename(Map<String, SBMLMetabolite> idMetabMap, String oldValue, String newValue, int row) {
+		ArrayList<String>idList = new ArrayList<String>(idMetabMap.keySet());
+		createMetabolitesIdRowMap();
+		// update compartments first
+		for (int j = 0; j < idList.size(); j++) {
+			updateMetabolitesCellById(newValue, Integer.valueOf(idList.get(j)), GraphicalInterfaceConstants.COMPARTMENT_COLUMN);
+		}
+		int index = -1;
+		for (int c = 0; c < LocalConfig.getInstance().getListOfCompartments().size(); c++) {
+			if (LocalConfig.getInstance().getListOfCompartments().get(c).getId().equals(oldValue)) {
+				index = c;
+			}
+		}
+		if (index > -1) {
+			LocalConfig.getInstance().getListOfCompartments().remove(index);
+		}
+		for (int j = 0; j < idList.size(); j++) {
+			rewriteReactionEquationNames(Integer.valueOf(idList.get(j)), idMetabMap.get(idList.get(j)).getMetaboliteAbbreviation(), 
+					newValue);
+			LocalConfig.getInstance().getMetaboliteIdCompartmentMap().put(Integer.valueOf(idList.get(j)), 
+					newValue); 
+		}
+		SBMLCompartment comp = new SBMLCompartment();
+		comp.setId(newValue);
+		comp.setName((String) compartmentsTable.getModel().getValueAt(row, CompartmentsConstants.NAME_COLUMN));
+		comp.setOutside((String) compartmentsTable.getModel().getValueAt(row, CompartmentsConstants.OUTSIDE_COLUMN));
+		LocalConfig.getInstance().getListOfCompartments().add(comp);
+	}
+	
+	public void updateMetabolitesCompartmentValue(int id, String metabAbbrev, String newValue) {
 		rewriteReactionEquationNames(id, metabAbbrev, newValue);
 		LocalConfig.getInstance().getMetaboliteIdCompartmentMap().put(new Integer(id), newValue); 
 		boolean contains = false;
@@ -9792,7 +9805,7 @@ public class GraphicalInterface extends JFrame {
 		} else if (col == GraphicalInterfaceConstants.COMPARTMENT_COLUMN) {	
 			if (isMetabolitesEntryValid(GraphicalInterfaceConstants.COMPARTMENT_COLUMN, value)) {
 				metabolitesTable.setValueAt(value, row, col);
-				updateCompartmentColumn(id, metabAbbrev, value); 
+				updateMetabolitesCompartmentValue(id, metabAbbrev, value); 
 			} else {
 				validPaste = false;
 			}
@@ -11976,7 +11989,7 @@ public class GraphicalInterface extends JFrame {
 					} else if (getMetabolitesFindLocationsList().get(i).get(1) == GraphicalInterfaceConstants.COMPARTMENT_COLUMN) {
 						if (isMetabolitesEntryValid(getMetabolitesFindLocationsList().get(i).get(1), replaceAllValue)) {
 							metabolitesTable.setValueAt(replaceAllValue, viewRow, getMetabolitesFindLocationsList().get(i).get(1));
-							updateCompartmentColumn(id, metabAbbrev, replaceAllValue);
+							updateMetabolitesCompartmentValue(id, metabAbbrev, replaceAllValue);
 //							rewriteReactionEquationNames(id, metabAbbrev, replaceAllValue);
 //							LocalConfig.getInstance().getMetaboliteIdCompartmentMap().put(new Integer(id), replaceAllValue); 
 						} else {
@@ -13139,7 +13152,51 @@ public class GraphicalInterface extends JFrame {
 	
 	
 	// updates model correctly but locks up when visualizing
-//	public void visualizeMenuProcesses() {
+	public void visualizeMenuProcesses() {
+		MetaboliteFactory f = new MetaboliteFactory("SBML");
+		Vector<SBMLMetabolite> metabolites = f.getAllMetabolites();
+//		Map<String, SBMLMetabolite> idMetabMap = new HashMap<String, SBMLMetabolite>();
+//		for (int i = 0; i < metabolites.size(); i++) {
+//    		if (metabolites.get(i).getCompartment() == null || metabolites.get(i).getCompartment().trim().length() == 0) {
+//    			idMetabMap.put(Integer.toString(metabolites.get(i).getId()), (metabolites.get(i)));
+//    		}
+//    	}
+		int index = -1;
+		// check for blank compartment value
+		for (int k = 0; k < LocalConfig.getInstance().getListOfCompartments().size(); k++) {
+			if (LocalConfig.getInstance().getListOfCompartments().get(k).getId() == null ||
+					LocalConfig.getInstance().getListOfCompartments().get(k).getId().trim().length() == 0) {
+				index = k;
+			}
+		}
+		if (index > -1) {
+//		if (idMetabMap.size() > 0) {
+			String blankCompartmentId = "\"C_1\"";
+			// remove quotes
+			String blankCompartmentEntry = blankCompartmentId.substring(1, blankCompartmentId.length() - 1);
+			Object[] options = {"    Yes    ", "    No    ",};
+    		int choice = JOptionPane.showOptionDialog(null, 
+    				"Model Cannot Be Visualized With Blank Compartment Abbreviations. "
+    				+ "Blank Compartment Abbreviations Will Be Renamed to " + blankCompartmentId,
+    				"Blank Compartment Entries", 
+    				JOptionPane.YES_NO_OPTION, 
+    				JOptionPane.QUESTION_MESSAGE, 
+    				null, options, options[0]);
+    		
+    		if (choice == JOptionPane.YES_OPTION) {
+    			DefaultTableModel model = (DefaultTableModel) compartmentsTable.getModel();
+    			int maxId = LocalConfig.getInstance().getMaxCompartmentId();
+    			if (LocalConfig.getInstance().getListOfCompartments().size() > maxId) {
+    				model.addRow(createCompartmentsRow(maxId));
+    			}
+    			model.setValueAt(blankCompartmentEntry, index, CompartmentsConstants.ABBREVIATION_COLUMN);
+    			renameCompartmentsTableCompartment("", blankCompartmentEntry, index, false);
+    			//locateMetaboliteIdentifierColumn();
+    		}
+		} else {
+			locateMetaboliteIdentifierColumn();
+		}
+//		locateMetaboliteIdentifierColumn();
 //		MetaboliteFactory f = new MetaboliteFactory("SBML");
 //		Vector<SBMLMetabolite> metabolites = f.getAllMetabolites();
 //		Map<String, SBMLMetabolite> idMetabMap = new HashMap<String, SBMLMetabolite>();
@@ -13230,14 +13287,15 @@ public class GraphicalInterface extends JFrame {
 //    					visualizeModel();
 //    				}
 //    			}
+//    			locateMetaboliteIdentifierColumn();
 //    		}
 //    		if (choice == JOptionPane.NO_OPTION) {
 //    			
 //    		}
 //		}
-//	}
+	}
 	
-	public void visualizeMenuProcesses() {
+	public void locateMetaboliteIdentifierColumn() {
 		MetaboliteFactory f = new MetaboliteFactory("SBML");
 		String missingItem = "";
 		String missingData = "";
