@@ -13147,37 +13147,69 @@ public class GraphicalInterface extends JFrame {
 	
 	public void visualizeMenuProcesses() {
 		MetaboliteFactory f = new MetaboliteFactory("SBML");
-		String missingItem = "";
-		String missingData = "";
-		boolean showMissingItemMessage = true;
-		// if KEGG id not set by user, attempt to locate programmatically
-		if (LocalConfig.getInstance().getKeggMetaboliteIdColumn() == -1) {
-			LocalConfig.getInstance().setKeggMetaboliteIdColumn(f.locateKeggIdColumn());
-			LocalConfig.getInstance().setChebiIdColumn(f.locateChebiIdColumn());
-		}
-		// if KEGG id still not found, show prompt
-		if (LocalConfig.getInstance().getKeggMetaboliteIdColumn() == -1) {
-			missingItem = "KEGG Ids";
-			missingData = "metabolites";
-		} else {
-			showMissingItemMessage = false;
-		} 
-		
-		if (showMissingItemMessage) {
-			JOptionPane.showMessageDialog(null,                
-					"<html>No " + missingItem + " column present in the loaded model.<p><p>"
-							+ "MOST is unable to link " + missingData + " in model to "
-							+ missingData + " in the Visualizations database.<p><p>"
-							+ "Click Visualize --> Locate KEGG Id Column menu item to "
-							+ "locate KEGG Id column.", 
-							"Unable to Visualize Model",                             
-					JOptionPane.WARNING_MESSAGE);
-		} else {
-			if (LocalConfig.getInstance().getListOfCompartments().size() > 0) {
-				createCompartmentNameDialog();
-			} else {
-				visualizeModel();
-			}
+		Vector<SBMLMetabolite> metabolites = f.getAllMetabolites();
+		Map<String, SBMLMetabolite> idMetabMap = new HashMap<String, SBMLMetabolite>();
+		for (int i = 0; i < metabolites.size(); i++) {
+    		if (metabolites.get(i).getCompartment() == null || metabolites.get(i).getCompartment().trim().length() == 0) {
+    			idMetabMap.put(Integer.toString(metabolites.get(i).getId()), (metabolites.get(i)));
+    		}
+    	}
+		if (idMetabMap.size() > 0) {
+			String blankCompartmentId = "\"C_1\"";
+			// remove quotes
+			String blankCompartmentEntry = blankCompartmentId.substring(1, blankCompartmentId.length() - 1);
+			Object[] options = {"    Yes    ", "    No    ",};
+    		int choice = JOptionPane.showOptionDialog(null, 
+    				"Model Cannot Be Visualized With Blank Compartment Abbreviations. "
+    				+ "Blank Compartment Abbreviations Will Be Renamed to " + blankCompartmentId,
+    				"Blank Compartment Entries", 
+    				JOptionPane.YES_NO_OPTION, 
+    				JOptionPane.QUESTION_MESSAGE, 
+    				null, options, options[0]);
+    		if (choice == JOptionPane.YES_OPTION) {
+    			createMetabolitesIdRowMap();
+    			ArrayList<String>idList = new ArrayList<String>(idMetabMap.keySet());
+    			// update cpmpartments first
+    			
+    			for (int j = 0; j < idList.size(); j++) {
+    				updateMetabolitesCellById(blankCompartmentEntry, Integer.valueOf(idList.get(j)), GraphicalInterfaceConstants.COMPARTMENT_COLUMN);
+    			}
+    			String missingItem = "";
+    			String missingData = "";
+    			boolean showMissingItemMessage = true;
+    			// if KEGG id not set by user, attempt to locate programmatically
+    			if (LocalConfig.getInstance().getKeggMetaboliteIdColumn() == -1) {
+    				LocalConfig.getInstance().setKeggMetaboliteIdColumn(f.locateKeggIdColumn());
+    				LocalConfig.getInstance().setChebiIdColumn(f.locateChebiIdColumn());
+    			}
+    			// if KEGG id still not found, show prompt
+    			if (LocalConfig.getInstance().getKeggMetaboliteIdColumn() == -1) {
+    				missingItem = "KEGG Ids";
+    				missingData = "metabolites";
+    			} else {
+    				showMissingItemMessage = false;
+    			} 
+    			
+    			if (showMissingItemMessage) {
+    				JOptionPane.showMessageDialog(null,                
+    						"<html>No " + missingItem + " column present in the loaded model.<p><p>"
+    								+ "MOST is unable to link " + missingData + " in model to "
+    								+ missingData + " in the Visualizations database.<p><p>"
+    								+ "Click Visualize --> Locate KEGG Id Column menu item to "
+    								+ "locate KEGG Id column.", 
+    								"Unable to Visualize Model",                             
+    						JOptionPane.WARNING_MESSAGE);
+    			} else {
+    				if (LocalConfig.getInstance().getListOfCompartments().size() > 0) {
+    					createCompartmentNameDialog();
+    				} else {
+    					visualizeModel();
+    				}
+    			}
+    		}
+    		if (choice == JOptionPane.NO_OPTION) {
+    			
+    		}
 		}
 	}
 	
