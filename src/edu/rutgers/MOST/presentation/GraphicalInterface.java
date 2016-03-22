@@ -5252,8 +5252,7 @@ public class GraphicalInterface extends JFrame {
 			    		createMetabolitesIdRowMap();
 			    		if (choice == JOptionPane.YES_OPTION) {
 			    			ArrayList<String>idList = new ArrayList<String>(idMetabMap.keySet());
-			    			// update cpmpartments first
-			    			
+			    			// update compartments first
 			    			for (int j = 0; j < idList.size(); j++) {
 			    				updateMetabolitesCellById(tcl.getNewValue(), Integer.valueOf(idList.get(j)), GraphicalInterfaceConstants.COMPARTMENT_COLUMN);
 			    			}
@@ -5273,9 +5272,9 @@ public class GraphicalInterface extends JFrame {
 			    			LocalConfig.getInstance().getListOfCompartments().add(comp);
 			    			for (int j = 0; j < idList.size(); j++) {
 			    				rewriteReactionEquationNames(Integer.valueOf(idList.get(j)), idMetabMap.get(idList.get(j)).getMetaboliteAbbreviation(), 
-			    						idMetabMap.get(idList.get(j)).getMetaboliteAbbreviation());
+			    						tcl.getNewValue());
 			    				LocalConfig.getInstance().getMetaboliteIdCompartmentMap().put(Integer.valueOf(idList.get(j)), 
-			    						idMetabMap.get(idList.get(j)).getMetaboliteAbbreviation()); 
+			    						tcl.getNewValue()); 
 			    			}
 			    		}
 			    		if (choice == JOptionPane.NO_OPTION) {
@@ -13136,80 +13135,141 @@ public class GraphicalInterface extends JFrame {
 		// create list of ids from model to keep track of which reactions are unplotted
 		TransportReactionCategorizer categorizer = new TransportReactionCategorizer();
 		categorizer.createUnplottedReactionsList();
-		
-//		// should only run this if ec number column exists
-//		ECNumberMapCreator ecMapCreator = new ECNumberMapCreator();
-//		ecMapCreator.createEcNumberReactionMap();
-//		// key = reaction id, value = PathwayReactionData (lists of KEGG ids of reactants and products)
-//		ModelKeggEquationMapCreator modelKeggEquationMapCreator = new ModelKeggEquationMapCreator();
-//		modelKeggEquationMapCreator.createKeggEquationMap();
 	}
+	
+	
+	// updates model correctly but locks up when visualizing
+//	public void visualizeMenuProcesses() {
+//		MetaboliteFactory f = new MetaboliteFactory("SBML");
+//		Vector<SBMLMetabolite> metabolites = f.getAllMetabolites();
+//		Map<String, SBMLMetabolite> idMetabMap = new HashMap<String, SBMLMetabolite>();
+//		for (int i = 0; i < metabolites.size(); i++) {
+//    		if (metabolites.get(i).getCompartment() == null || metabolites.get(i).getCompartment().trim().length() == 0) {
+//    			idMetabMap.put(Integer.toString(metabolites.get(i).getId()), (metabolites.get(i)));
+//    		}
+//    	}
+//		if (idMetabMap.size() > 0) {
+//			String blankCompartmentId = "\"C_1\"";
+//			// remove quotes
+//			String blankCompartmentEntry = blankCompartmentId.substring(1, blankCompartmentId.length() - 1);
+//			Object[] options = {"    Yes    ", "    No    ",};
+//    		int choice = JOptionPane.showOptionDialog(null, 
+//    				"Model Cannot Be Visualized With Blank Compartment Abbreviations. "
+//    				+ "Blank Compartment Abbreviations Will Be Renamed to " + blankCompartmentId,
+//    				"Blank Compartment Entries", 
+//    				JOptionPane.YES_NO_OPTION, 
+//    				JOptionPane.QUESTION_MESSAGE, 
+//    				null, options, options[0]);
+//    		if (choice == JOptionPane.YES_OPTION) {
+//    			createMetabolitesIdRowMap();
+//    			ArrayList<String>idList = new ArrayList<String>(idMetabMap.keySet());
+//    			// update compartments first
+//    			for (int j = 0; j < idList.size(); j++) {
+//    				updateMetabolitesCellById(blankCompartmentEntry, Integer.valueOf(idList.get(j)), GraphicalInterfaceConstants.COMPARTMENT_COLUMN);
+//    			}
+//    			int maxId = LocalConfig.getInstance().getMaxCompartmentId();
+//    			System.out.println(maxId);
+//    			DefaultTableModel model = (DefaultTableModel) compartmentsTable.getModel();
+//    			if (LocalConfig.getInstance().getListOfCompartments().size() > maxId) {
+//    				model.addRow(createCompartmentsRow(maxId));
+//    			}
+//    			// remove blank compartment entry from list
+//    			int index = -1;
+//    			for (int k = 0; k < LocalConfig.getInstance().getListOfCompartments().size(); k++) {
+//    				if (LocalConfig.getInstance().getListOfCompartments().get(k).getId() == null ||
+//    						LocalConfig.getInstance().getListOfCompartments().get(k).getId().trim().length() == 0) {
+//    					index = k;
+//    				}
+//    			}
+//    			if (index > -1) {
+//    				LocalConfig.getInstance().getListOfCompartments().remove(index);
+//    			}
+//    			// replace contents of row with blank value with compartment entry
+//    			model.setValueAt(blankCompartmentEntry, index, CompartmentsConstants.ABBREVIATION_COLUMN);
+//    			SBMLCompartment comp = new SBMLCompartment();
+//    			comp.setId(blankCompartmentEntry);
+//    			comp.setName("");
+//    			comp.setOutside("");
+//    			LocalConfig.getInstance().getListOfCompartments().add(comp);
+//    			for (int j = 0; j < idList.size(); j++) {
+//    				rewriteReactionEquationNames(Integer.valueOf(idList.get(j)), idMetabMap.get(idList.get(j)).getMetaboliteAbbreviation(), 
+//    						blankCompartmentEntry);
+//    				LocalConfig.getInstance().getMetaboliteIdCompartmentMap().put(Integer.valueOf(idList.get(j)), 
+//    						blankCompartmentEntry); 
+//    			}
+//    			System.out.println(LocalConfig.getInstance().getListOfCompartments());
+//    			String missingItem = "";
+//    			String missingData = "";
+//    			boolean showMissingItemMessage = true;
+//    			// if KEGG id not set by user, attempt to locate programmatically
+//    			if (LocalConfig.getInstance().getKeggMetaboliteIdColumn() == -1) {
+//    				LocalConfig.getInstance().setKeggMetaboliteIdColumn(f.locateKeggIdColumn());
+//    				LocalConfig.getInstance().setChebiIdColumn(f.locateChebiIdColumn());
+//    			}
+//    			// if KEGG id still not found, show prompt
+//    			if (LocalConfig.getInstance().getKeggMetaboliteIdColumn() == -1) {
+//    				missingItem = "KEGG Ids";
+//    				missingData = "metabolites";
+//    			} else {
+//    				showMissingItemMessage = false;
+//    			} 
+//    			
+//    			if (showMissingItemMessage) {
+//    				JOptionPane.showMessageDialog(null,                
+//    						"<html>No " + missingItem + " column present in the loaded model.<p><p>"
+//    								+ "MOST is unable to link " + missingData + " in model to "
+//    								+ missingData + " in the Visualizations database.<p><p>"
+//    								+ "Click Visualize --> Locate KEGG Id Column menu item to "
+//    								+ "locate KEGG Id column.", 
+//    								"Unable to Visualize Model",                             
+//    						JOptionPane.WARNING_MESSAGE);
+//    			} else {
+//    				if (LocalConfig.getInstance().getListOfCompartments().size() > 0) {
+//    					createCompartmentNameDialog();
+//    				} else {
+//    					visualizeModel();
+//    				}
+//    			}
+//    		}
+//    		if (choice == JOptionPane.NO_OPTION) {
+//    			
+//    		}
+//		}
+//	}
 	
 	public void visualizeMenuProcesses() {
 		MetaboliteFactory f = new MetaboliteFactory("SBML");
-		Vector<SBMLMetabolite> metabolites = f.getAllMetabolites();
-		Map<String, SBMLMetabolite> idMetabMap = new HashMap<String, SBMLMetabolite>();
-		for (int i = 0; i < metabolites.size(); i++) {
-    		if (metabolites.get(i).getCompartment() == null || metabolites.get(i).getCompartment().trim().length() == 0) {
-    			idMetabMap.put(Integer.toString(metabolites.get(i).getId()), (metabolites.get(i)));
-    		}
-    	}
-		if (idMetabMap.size() > 0) {
-			String blankCompartmentId = "\"C_1\"";
-			// remove quotes
-			String blankCompartmentEntry = blankCompartmentId.substring(1, blankCompartmentId.length() - 1);
-			Object[] options = {"    Yes    ", "    No    ",};
-    		int choice = JOptionPane.showOptionDialog(null, 
-    				"Model Cannot Be Visualized With Blank Compartment Abbreviations. "
-    				+ "Blank Compartment Abbreviations Will Be Renamed to " + blankCompartmentId,
-    				"Blank Compartment Entries", 
-    				JOptionPane.YES_NO_OPTION, 
-    				JOptionPane.QUESTION_MESSAGE, 
-    				null, options, options[0]);
-    		if (choice == JOptionPane.YES_OPTION) {
-    			createMetabolitesIdRowMap();
-    			ArrayList<String>idList = new ArrayList<String>(idMetabMap.keySet());
-    			// update cpmpartments first
-    			
-    			for (int j = 0; j < idList.size(); j++) {
-    				updateMetabolitesCellById(blankCompartmentEntry, Integer.valueOf(idList.get(j)), GraphicalInterfaceConstants.COMPARTMENT_COLUMN);
-    			}
-    			String missingItem = "";
-    			String missingData = "";
-    			boolean showMissingItemMessage = true;
-    			// if KEGG id not set by user, attempt to locate programmatically
-    			if (LocalConfig.getInstance().getKeggMetaboliteIdColumn() == -1) {
-    				LocalConfig.getInstance().setKeggMetaboliteIdColumn(f.locateKeggIdColumn());
-    				LocalConfig.getInstance().setChebiIdColumn(f.locateChebiIdColumn());
-    			}
-    			// if KEGG id still not found, show prompt
-    			if (LocalConfig.getInstance().getKeggMetaboliteIdColumn() == -1) {
-    				missingItem = "KEGG Ids";
-    				missingData = "metabolites";
-    			} else {
-    				showMissingItemMessage = false;
-    			} 
-    			
-    			if (showMissingItemMessage) {
-    				JOptionPane.showMessageDialog(null,                
-    						"<html>No " + missingItem + " column present in the loaded model.<p><p>"
-    								+ "MOST is unable to link " + missingData + " in model to "
-    								+ missingData + " in the Visualizations database.<p><p>"
-    								+ "Click Visualize --> Locate KEGG Id Column menu item to "
-    								+ "locate KEGG Id column.", 
-    								"Unable to Visualize Model",                             
-    						JOptionPane.WARNING_MESSAGE);
-    			} else {
-    				if (LocalConfig.getInstance().getListOfCompartments().size() > 0) {
-    					createCompartmentNameDialog();
-    				} else {
-    					visualizeModel();
-    				}
-    			}
-    		}
-    		if (choice == JOptionPane.NO_OPTION) {
-    			
-    		}
+		String missingItem = "";
+		String missingData = "";
+		boolean showMissingItemMessage = true;
+		// if KEGG id not set by user, attempt to locate programmatically
+		if (LocalConfig.getInstance().getKeggMetaboliteIdColumn() == -1) {
+			LocalConfig.getInstance().setKeggMetaboliteIdColumn(f.locateKeggIdColumn());
+			LocalConfig.getInstance().setChebiIdColumn(f.locateChebiIdColumn());
+		}
+		// if KEGG id still not found, show prompt
+		if (LocalConfig.getInstance().getKeggMetaboliteIdColumn() == -1) {
+			missingItem = "KEGG Ids";
+			missingData = "metabolites";
+		} else {
+			showMissingItemMessage = false;
+		} 
+		
+		if (showMissingItemMessage) {
+			JOptionPane.showMessageDialog(null,                
+					"<html>No " + missingItem + " column present in the loaded model.<p><p>"
+							+ "MOST is unable to link " + missingData + " in model to "
+							+ missingData + " in the Visualizations database.<p><p>"
+							+ "Click Visualize --> Locate KEGG Id Column menu item to "
+							+ "locate KEGG Id column.", 
+							"Unable to Visualize Model",                             
+					JOptionPane.WARNING_MESSAGE);
+		} else {
+			if (LocalConfig.getInstance().getListOfCompartments().size() > 0) {
+				createCompartmentNameDialog();
+			} else {
+				visualizeModel();
+			}
 		}
 	}
 	
