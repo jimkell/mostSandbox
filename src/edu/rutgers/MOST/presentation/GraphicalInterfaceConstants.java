@@ -584,6 +584,8 @@ public class GraphicalInterfaceConstants {
     // spaces for alignment
     public static final String ROW_HEADER_TITLE = "   Row";
     
+    public static final String DEFAULT_COMPARTMENT_ID = "C_";
+    
     // since csv accepts anything, and sbml is much more stringent, 
     // the default if the save button is used when editing a blank
     // or "Untitled" model is csv

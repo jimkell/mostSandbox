@@ -29,6 +29,7 @@ import org.sbml.jsbml.UnitDefinition;
 
 import edu.rutgers.MOST.config.LocalConfig;
 import edu.rutgers.MOST.presentation.GraphicalInterface;
+import edu.rutgers.MOST.presentation.GraphicalInterfaceConstants;
 import edu.rutgers.MOST.presentation.Utilities;
 
 public class JSBMLWriter implements TreeModelListener{
@@ -383,6 +384,11 @@ public class JSBMLWriter implements TreeModelListener{
 					compartments.put(compId,temp);
 				}
 			}
+			// compartment cannot be empty in SBML
+			String blankCompName = GraphicalInterfaceConstants.DEFAULT_COMPARTMENT_ID + Integer.toString(1);
+			if (compartments.containsKey(blankCompName)) {
+				blankCompName += "_1";
+			}
 			
 			for (int i=0; i < length; i++) {
 				SBMLMetabolite curMeta = (SBMLMetabolite) mFactory.getMetaboliteByRow(i);
@@ -400,6 +406,13 @@ public class JSBMLWriter implements TreeModelListener{
 					curMeta.setMetaboliteAbbreviation(abbr);
 					String comp = validator.replaceInvalidSBMLCharacters(curMeta.getCompartment());
 					String compTrim = comp.trim();
+					
+					if (compTrim == null || compTrim.length() == 0) {
+						compTrim = blankCompName;
+					}
+					if (curMeta.getCompartment() == null || curMeta.getCompartment().trim().length() == 0) {
+						curMeta.setCompartment(blankCompName);
+					}
 					// leave this here for csv models where there is no list of compartments
 					if (!compartments.containsKey(compTrim)) {
 						Compartment temp = model.createCompartment(compTrim);
