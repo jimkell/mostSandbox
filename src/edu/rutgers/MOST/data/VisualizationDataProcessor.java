@@ -90,8 +90,9 @@ public class VisualizationDataProcessor {
 		for (int i = 0; i < allReactions.size(); i++) {
 			idReactionMapAllReactions.put(allReactions.get(i).getId(), allReactions.get(i));
 		}
-
+		System.out.println(LocalConfig.getInstance().getSelectedCompartmentName());
 		Vector<SBMLReaction> rxns = compartmentReactions(f, LocalConfig.getInstance().getSelectedCompartmentName());
+		System.out.println(rxns.size());
 		Map<Integer, SBMLReaction> idReactionMap = createCompartmentIdReactionMap(f, rxns);
 		MetabolicPathway pathway = LocalConfig.getInstance().getMetabolicPathways().get("0");
 		if (startPosMap.containsKey(pathway.getId())) {

@@ -5992,7 +5992,7 @@ public class GraphicalInterface extends JFrame {
 				metabolitesTable.getModel().setValueAt(oldValue, rowIndex, colIndex);
 			} else {
 				metabolitesTable.getModel().setValueAt(newValue, rowIndex, colIndex);
-				updateMetabolitesCompartmentValue(id, metabAbbrev, newValue);
+				updateMetabolitesCompartmentValue(id, metabAbbrev, oldValue, newValue);
 			}
 		} else {
 			// action for remaining columns
@@ -6118,7 +6118,7 @@ public class GraphicalInterface extends JFrame {
 		}
 		for (int j = 0; j < idList.size(); j++) {
 			rewriteReactionEquationNames(Integer.valueOf(idList.get(j)), idMetabMap.get(idList.get(j)).getMetaboliteAbbreviation(), 
-					newValue);
+					oldValue, newValue);
 			LocalConfig.getInstance().getMetaboliteIdCompartmentMap().put(Integer.valueOf(idList.get(j)), 
 					newValue); 
 		}
@@ -6129,8 +6129,8 @@ public class GraphicalInterface extends JFrame {
 		LocalConfig.getInstance().getListOfCompartments().add(comp);
 	}
 	
-	public void updateMetabolitesCompartmentValue(int id, String metabAbbrev, String newValue) {
-		rewriteReactionEquationNames(id, metabAbbrev, newValue);
+	public void updateMetabolitesCompartmentValue(int id, String metabAbbrev, String oldValue, String newValue) {
+		rewriteReactionEquationNames(id, metabAbbrev, oldValue, newValue);
 		LocalConfig.getInstance().getMetaboliteIdCompartmentMap().put(new Integer(id), newValue); 
 		boolean contains = false;
 		for (int i = 0; i < LocalConfig.getInstance().getListOfCompartments().size(); i++) {
@@ -9073,7 +9073,7 @@ public class GraphicalInterface extends JFrame {
 	 * @param metabAbbrev
 	 * @param compartment
 	 */
-	public void rewriteReactionEquationNames(int id, String metabAbbrev, String compartment) {
+	public void rewriteReactionEquationNames(int id, String metabAbbrev, String oldCompartment, String compartment) {
 		MetaboliteFactory aFactory = new MetaboliteFactory("SBML");
 		ArrayList<Integer> participatingReactions = aFactory.participatingReactions(metabAbbrev);			
 		// rewrite reactions 
@@ -9091,7 +9091,19 @@ public class GraphicalInterface extends JFrame {
 			}
 			equn.writeReactionEquation();
 			createReactionsIdRowMap();
-			updateReactionsCellById(equn.equationNames, participatingReactions.get(i), GraphicalInterfaceConstants.REACTION_EQUN_NAMES_COLUMN);								
+			updateReactionsCellById(equn.equationNames, participatingReactions.get(i), GraphicalInterfaceConstants.REACTION_EQUN_NAMES_COLUMN);	
+			updateCompartmentList(equn.getCompartmentList(), oldCompartment, compartment);
+			updateCompartmentList(equn.getCompartmentReactantsList(), oldCompartment, compartment);
+			updateCompartmentList(equn.getCompartmentProductsList(), oldCompartment, compartment);
+		}
+	}
+	
+	public void updateCompartmentList(ArrayList<String> list, String oldValue, String newValue) {
+		if (list.contains(oldValue)) {
+			list.remove(list.indexOf(oldValue));
+		}
+		if (!list.contains(newValue)) {
+			list.add(newValue);
 		}
 	}
 
@@ -9805,7 +9817,7 @@ public class GraphicalInterface extends JFrame {
 		} else if (col == GraphicalInterfaceConstants.COMPARTMENT_COLUMN) {	
 			if (isMetabolitesEntryValid(GraphicalInterfaceConstants.COMPARTMENT_COLUMN, value)) {
 				metabolitesTable.setValueAt(value, row, col);
-				updateMetabolitesCompartmentValue(id, metabAbbrev, value); 
+				updateMetabolitesCompartmentValue(id, metabAbbrev, value, value); 
 			} else {
 				validPaste = false;
 			}
@@ -11989,7 +12001,7 @@ public class GraphicalInterface extends JFrame {
 					} else if (getMetabolitesFindLocationsList().get(i).get(1) == GraphicalInterfaceConstants.COMPARTMENT_COLUMN) {
 						if (isMetabolitesEntryValid(getMetabolitesFindLocationsList().get(i).get(1), replaceAllValue)) {
 							metabolitesTable.setValueAt(replaceAllValue, viewRow, getMetabolitesFindLocationsList().get(i).get(1));
-							updateMetabolitesCompartmentValue(id, metabAbbrev, replaceAllValue);
+							updateMetabolitesCompartmentValue(id, metabAbbrev, oldValue, replaceAllValue);
 //							rewriteReactionEquationNames(id, metabAbbrev, replaceAllValue);
 //							LocalConfig.getInstance().getMetaboliteIdCompartmentMap().put(new Integer(id), replaceAllValue); 
 						} else {
@@ -13153,14 +13165,6 @@ public class GraphicalInterface extends JFrame {
 	
 	// updates model correctly but locks up when visualizing
 	public void visualizeMenuProcesses() {
-		MetaboliteFactory f = new MetaboliteFactory("SBML");
-		Vector<SBMLMetabolite> metabolites = f.getAllMetabolites();
-//		Map<String, SBMLMetabolite> idMetabMap = new HashMap<String, SBMLMetabolite>();
-//		for (int i = 0; i < metabolites.size(); i++) {
-//    		if (metabolites.get(i).getCompartment() == null || metabolites.get(i).getCompartment().trim().length() == 0) {
-//    			idMetabMap.put(Integer.toString(metabolites.get(i).getId()), (metabolites.get(i)));
-//    		}
-//    	}
 		int index = -1;
 		// check for blank compartment value
 		for (int k = 0; k < LocalConfig.getInstance().getListOfCompartments().size(); k++) {
@@ -13191,7 +13195,7 @@ public class GraphicalInterface extends JFrame {
     			}
     			model.setValueAt(blankCompartmentEntry, index, CompartmentsConstants.ABBREVIATION_COLUMN);
     			renameCompartmentsTableCompartment("", blankCompartmentEntry, index, false);
-    			//locateMetaboliteIdentifierColumn();
+    			locateMetaboliteIdentifierColumn();
     		}
 		} else {
 			locateMetaboliteIdentifierColumn();
