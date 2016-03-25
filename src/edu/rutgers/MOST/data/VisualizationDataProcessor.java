@@ -90,9 +90,7 @@ public class VisualizationDataProcessor {
 		for (int i = 0; i < allReactions.size(); i++) {
 			idReactionMapAllReactions.put(allReactions.get(i).getId(), allReactions.get(i));
 		}
-		System.out.println(LocalConfig.getInstance().getSelectedCompartmentName());
 		Vector<SBMLReaction> rxns = compartmentReactions(f, LocalConfig.getInstance().getSelectedCompartmentName());
-		System.out.println(rxns.size());
 		Map<Integer, SBMLReaction> idReactionMap = createCompartmentIdReactionMap(f, rxns);
 		MetabolicPathway pathway = LocalConfig.getInstance().getMetabolicPathways().get("0");
 		if (startPosMap.containsKey(pathway.getId())) {
@@ -608,7 +606,7 @@ public class VisualizationDataProcessor {
 
 	public double edgeThickness(double fluxValue) {
 		double thickness = PathwaysFrameConstants.DEFAULT_EDGE_WIDTH;
-		if (Math.abs(fluxValue) > PathwaysFrameConstants.INFINITE_FLUX_RATIO*LocalConfig.getInstance().getMaxUpperBound()) {
+		if (Math.abs(fluxValue) > PathwaysFrameConstants.INFINITE_FLUX_RATIO*LocalConfig.getInstance().getMaxFlux()) {
 			//System.out.println("flux " + pn.getFluxValue());
 			thickness = PathwaysFrameConstants.INFINITE_FLUX_WIDTH;
 		} else if (Math.abs(fluxValue) > 0) {

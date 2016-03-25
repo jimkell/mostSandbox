@@ -1381,16 +1381,16 @@ public class LocalConfig {
 		this.fluxes = fluxes;
 	}
 	
-	private double maxUpperBound;
-
-	public double getMaxUpperBound() {
-		return maxUpperBound;
-	}
-
-	public void setMaxUpperBound(double maxUpperBound) {
-		this.maxUpperBound = maxUpperBound;
-	}
+	private double maxFlux;
 	
+	public double getMaxFlux() {
+		return maxFlux;
+	}
+
+	public void setMaxFlux(double maxFlux) {
+		this.maxFlux = maxFlux;
+	}
+
 	private double secondaryMaxFlux;
 
 	public double getSecondaryMaxFlux() {

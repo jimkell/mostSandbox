@@ -407,7 +407,7 @@ public class GraphicalInterface extends JFrame {
 
 	private static void setCSVSaveInterface(CSVSaveInterface csvSaveInterface) {
 		GraphicalInterface.csvSaveInterface = csvSaveInterface;
-	}
+	} 
 
 	private static FindReplaceDialog findReplaceDialog;
 
@@ -417,6 +417,16 @@ public class GraphicalInterface extends JFrame {
 
 	public static FindReplaceDialog getFindReplaceDialog() {
 		return findReplaceDialog;
+	}
+	
+	private static FluxLevelsDialog fluxLevelsDialog;
+
+	public static FluxLevelsDialog getFluxLevelsDialog() {
+		return fluxLevelsDialog;
+	}
+
+	public static void setFluxLevelsDialog(FluxLevelsDialog fluxLevelsDialog) {
+		GraphicalInterface.fluxLevelsDialog = fluxLevelsDialog;
 	}
 
 	private static GDBBDialog gdbbDialog;
@@ -730,6 +740,7 @@ public class GraphicalInterface extends JFrame {
 	public final JMenuItem locateChebiIdColumnMenu = new JMenuItem("Locate CHEBI Id Column");
 	public final JMenuItem locateECNumberColumnMenu = new JMenuItem("Locate EC Number Column");
 	public final JMenuItem locateKeggReactionIdColumnMenu = new JMenuItem("Locate KEGG Reaction Id Column");
+	public final JMenuItem setFluxLevelsMenu = new JMenuItem("Set Edge Flux Levels");
 	public final JMenuItem setUpSolver = new JMenuItem("Select Solvers");
 	public final JMenuItem gurobiParametersItem = new JMenuItem(GurobiParameters.GUROBI_PARAMETERS_MENU_ITEM);
 	public final JMenuItem glpkParametersItem = new JMenuItem( GLPKParameters.GLPK_PARAMETERS_MENU_ITEM );
@@ -2408,6 +2419,17 @@ public class GraphicalInterface extends JFrame {
 						"Locate KEGG Reaction Id Column",
 						GraphicalInterfaceConstants.METABOLITE_KEGG_ID_COLUMN_NAME,
 						index);
+			}
+		});
+		
+		visualizationMenu.addSeparator();
+		
+		visualizationMenu.add(setFluxLevelsMenu);
+		setFluxLevelsMenu.setMnemonic(KeyEvent.VK_F);
+
+		setFluxLevelsMenu.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ae) {
+				createFluxLevelsDialog();
 			}
 		});
         
@@ -4409,19 +4431,13 @@ public class GraphicalInterface extends JFrame {
 			String abbr = metabolites.get(i).getMetaboliteAbbreviation();
 			if (abbr != null && abbr.length() > totalTrimLength) {
 				String trimmedAbbr = abbr.substring(modeltrimStartIndex, abbr.length() - modeltrimEndIndex);
-//				System.out.println("model " + trimmedAbbr);
 				if (trimmedAbbr.contains("DASH_")) {
-					//System.out.println("model " + trimmedAbbr);
 					trimmedAbbr = trimmedAbbr.replace("DASH_", "");
-					//System.out.println("model " + trimmedAbbr);
 				}
 				String row = (LocalConfig.getInstance().getMetabolitesIdRowMap().get(Integer.toString(metabolites.get(i).getId()))).toString();
 				int rowNum = Integer.valueOf(row);
 				if (LocalConfig.getInstance().getMetaboliteAbbrKeggIdMap().containsKey(trimmedAbbr)) {
 					count += 1;
-//					System.out.println("count " + count);
-//					System.out.println(metabolites.get(i).getId());
-//					System.out.println(LocalConfig.getInstance().getMetaboliteAbbrKeggIdMap().get(trimmedAbbr));
 					metabolitesTable.getModel().setValueAt(LocalConfig.getInstance().getMetaboliteAbbrKeggIdMap().get(trimmedAbbr), rowNum, keggIdColumn);
 				} else {
 					metabolitesTable.getModel().setValueAt("", rowNum, keggIdColumn);
@@ -4520,14 +4536,10 @@ public class GraphicalInterface extends JFrame {
 			String abbr = reactions.get(i).getReactionAbbreviation();
 			if (abbr != null && abbr.length() > totalTrimLength) {
 				String trimmedAbbr = abbr.substring(modeltrimStartIndex, abbr.length() - modeltrimEndIndex);
-//				System.out.println("model " + trimmedAbbr);
 				String row = (LocalConfig.getInstance().getReactionsIdRowMap().get(Integer.toString(reactions.get(i).getId()))).toString();
 				int rowNum = Integer.valueOf(row);
 				if (LocalConfig.getInstance().getReactionAbbrECNumberMap().containsKey(trimmedAbbr)) {
 					count += 1;
-//					System.out.println("count " + count);
-//					System.out.println(reactions.get(i).getId());
-//					System.out.println(LocalConfig.getInstance().getReactionAbbrECNumberMap().get(trimmedAbbr));
 					reactionsTable.getModel().setValueAt(LocalConfig.getInstance().getReactionAbbrECNumberMap().get(trimmedAbbr), rowNum, ecNumberColumn);
 				} else {
 					reactionsTable.getModel().setValueAt("", rowNum, ecNumberColumn);
@@ -5714,10 +5726,7 @@ public class GraphicalInterface extends JFrame {
 		} else {
 			reactionsTable.getModel().setValueAt("", rowIndex, GraphicalInterfaceConstants.REACTION_EQUN_NAMES_COLUMN);
 			LocalConfig.getInstance().getReactionEquationMap().remove(reactionId);
-		}
-//		System.out.println("upd equn " + LocalConfig.getInstance().getReactionEquationMap());
-//		System.out.println("upd equn id " + LocalConfig.getInstance().getMetaboliteAbbreviationIdMap());
-//		System.out.println("upd equn used " + LocalConfig.getInstance().getMetaboliteUsedMap());	
+		}	
 	}
 	
 	public void maybeAddMetabolite(String species) {
@@ -8238,12 +8247,7 @@ public class GraphicalInterface extends JFrame {
 							}
 							LocalConfig.getInstance().getReactionEquationMap().remove(id);
 						}
-						
-//						System.out.println("del " + LocalConfig.getInstance().getReactionEquationMap());
-//						System.out.println("del id " + LocalConfig.getInstance().getMetaboliteAbbreviationIdMap());
-//						System.out.println("del used " + LocalConfig.getInstance().getMetaboliteUsedMap());
 					}
-					//System.out.println(deleteIds);
 					ReactionUndoItem undoItem = createReactionUndoItem("", "", startRow, reactionsTable.getSelectedColumn(), deleteIds.get(0), UndoConstants.DELETE_ROW, UndoConstants.REACTION_UNDO_ITEM_TYPE);
 					undoItem.setOldMetaboliteUsedMap(oldMetaboliteUsedMap);
 					undoItem.setTableCopyIndex(LocalConfig.getInstance().getNumReactionTablesCopied());
@@ -8338,7 +8342,6 @@ public class GraphicalInterface extends JFrame {
 		} 
 		
 		setClipboardContents(sbf.toString());
-		//System.out.println(sbf.toString());
 	}
 
 	public void reactionsCopy() {
@@ -8372,7 +8375,6 @@ public class GraphicalInterface extends JFrame {
 
 							}
 							if (j<numCols-1) {
-								//System.out.println("t");
 								excelStr.append("\t"); 
 							} 
 						}
@@ -8402,12 +8404,10 @@ public class GraphicalInterface extends JFrame {
 
 							}	
 							if (j<numCols-1) {
-								//System.out.println("t");
 								excelStr.append("\t"); 
 							} 
 						}				
 					} 
-					//System.out.println("n");
 					excelStr.append("\n"); 
 				}
 				StringSelection sel  = new StringSelection(excelStr.toString()); 
@@ -8504,7 +8504,6 @@ public class GraphicalInterface extends JFrame {
 				int startRow =reactionsTable.getSelectedRows()[0]; 
 				int startCol =reactionsTable.getSelectedColumns()[0];
 				int numSelectedRows = reactionsTable.getSelectedRowCount();
-				//System.out.println(pasteColumnList());
 				ArrayList<Integer> colList = pasteColumnList();
 				String pasteString = ""; 
 				try { 
@@ -8640,9 +8639,6 @@ public class GraphicalInterface extends JFrame {
 					if (pasteIds.size() > 0) {
 						scrollToLocation(reactionsTable, getRowFromReactionsId(Integer.valueOf(pasteIds.get(0))), startCol);
 					}
-//					System.out.println("paste " + LocalConfig.getInstance().getReactionEquationMap());
-//					System.out.println("paste id " + LocalConfig.getInstance().getMetaboliteAbbreviationIdMap());
-//					System.out.println("paste used " + LocalConfig.getInstance().getMetaboliteUsedMap());
 				}
 			} 	
 		}
@@ -8656,7 +8652,6 @@ public class GraphicalInterface extends JFrame {
 				showPasteOutOfRangeError();			
 			} else {
 				for (int j = 0; j < colList.size(); j++) {
-//				for (int j=0 ; j < numberOfClipboardColumns(); j++) { 
 					if (j < cells.length) {
 						updateReactionsCellIfPasteValid(cells[j], pasteRows.get(startIndex + i), colList.get(j));
 					} else {
@@ -8768,7 +8763,6 @@ public class GraphicalInterface extends JFrame {
 		} else {
 			validPaste = false;
 		}	
-		//System.out.println(LocalConfig.getInstance().getReactionAbbreviationIdMap());
 	}
 
 	public boolean isReactionsEntryValid(int row, int columnIndex, String value) {
@@ -8913,9 +8907,6 @@ public class GraphicalInterface extends JFrame {
 				deleteReactionsPasteUndoItem();
 			}
 		}
-//		System.out.println("clear " + LocalConfig.getInstance().getReactionEquationMap());
-//		System.out.println("clear id " + LocalConfig.getInstance().getMetaboliteAbbreviationIdMap());
-//		System.out.println("clear used " + LocalConfig.getInstance().getMetaboliteUsedMap());
 	}
 	
 	/**************************************************************************/
@@ -8997,9 +8988,6 @@ public class GraphicalInterface extends JFrame {
 
 	public void updateMetaboliteMaps(int id, String metabAbbrev, String metabName, String newName, int columnIndex) {
 		if (columnIndex == GraphicalInterfaceConstants.METABOLITE_ABBREVIATION_COLUMN ) {
-//			System.out.println("bef" + LocalConfig.getInstance().getMetaboliteAbbreviationIdMap());
-//			System.out.println("bef" + LocalConfig.getInstance().getMetaboliteIdNameMap());
-//			System.out.println("bef" + LocalConfig.getInstance().getMetaboliteUsedMap());
 			LocalConfig.getInstance().getMetaboliteAbbreviationIdMap().remove(metabAbbrev);	
 			LocalConfig.getInstance().getMetaboliteAbbreviationIdMap().put(newName, id);
 			if (LocalConfig.getInstance().getMetaboliteUsedMap().containsKey(metabAbbrev)) {
@@ -9007,9 +8995,6 @@ public class GraphicalInterface extends JFrame {
 				LocalConfig.getInstance().getMetaboliteUsedMap().remove(metabAbbrev);
 				LocalConfig.getInstance().getMetaboliteUsedMap().put(newName, value);
 			}			
-//			System.out.println("aft" + LocalConfig.getInstance().getMetaboliteAbbreviationIdMap());
-//			System.out.println("aft" + LocalConfig.getInstance().getMetaboliteIdNameMap());
-//			System.out.println("aft" + LocalConfig.getInstance().getMetaboliteUsedMap());
 		} else if (columnIndex == GraphicalInterfaceConstants.METABOLITE_NAME_COLUMN) {
 			LocalConfig.getInstance().getMetaboliteIdNameMap().remove(id);	
 			LocalConfig.getInstance().getMetaboliteIdNameMap().put(id, metabName);
@@ -9467,7 +9452,6 @@ public class GraphicalInterface extends JFrame {
 			sbf.append("\n"); 
 		}  
 		setClipboardContents(sbf.toString());
-		//System.out.println(sbf.toString());
 	}
 
 	public void metabolitesCopy() {
@@ -9500,7 +9484,6 @@ public class GraphicalInterface extends JFrame {
 
 						}
 						if (j<numCols-1) {
-							//System.out.println("t");
 							excelStr.append("\t"); 
 						} 
 					}
@@ -9521,11 +9504,9 @@ public class GraphicalInterface extends JFrame {
 
 						}						
 						if (j<numCols-1) {
-							//System.out.println("t");
 							excelStr.append("\t"); 
 						} 
 					} 
-					//System.out.println("n");
 					excelStr.append("\n"); 
 				} 
 
@@ -12365,6 +12346,7 @@ public class GraphicalInterface extends JFrame {
 		locateChebiIdColumnMenu.setEnabled(state);
 		locateECNumberColumnMenu.setEnabled(state);
 		locateKeggReactionIdColumnMenu.setEnabled(state);
+		setFluxLevelsMenu.setEnabled(state);
 	}
 	
 	/**
@@ -12989,6 +12971,80 @@ public class GraphicalInterface extends JFrame {
 		}
 	}
 	
+	public void createFluxLevelsDialog() {
+		FluxLevelsDialog frame = new FluxLevelsDialog();
+		setFluxLevelsDialog(frame);
+		frame.setIconImages(icons);
+		//frame.setSize(550, 270);
+		frame.pack();
+		frame.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+		frame.setLocationRelativeTo(null);
+		frame.addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent evt) {
+				getFluxLevelsDialog().setVisible(false);
+				getFluxLevelsDialog().dispose();
+				enableLoadItems();
+				disableMenuItemsForFVA(false);
+			}
+		});
+		frame.setAlwaysOnTop(true);
+		frame.setVisible(true);
+		frame.okButton.addActionListener(fluxLevelsOKActionListener);
+		frame.cancelButton.addActionListener(fluxLevelsCancelActionListener);
+		disableLoadItems();
+		disableMenuItemsForFVA(true);
+	}
+	
+	ActionListener fluxLevelsOKActionListener = new ActionListener() {
+		public void actionPerformed(ActionEvent ae) {
+			LocalConfig.getInstance().setMaxFlux(Double.valueOf(getFluxLevelsDialog().maxFluxField.getText()));
+			LocalConfig.getInstance().setSecondaryMaxFlux(Double.valueOf(getFluxLevelsDialog().secondaryMaxFluxField.getText()));
+			getFluxLevelsDialog().setVisible(false);
+			getFluxLevelsDialog().dispose();
+			System.out.println(LocalConfig.getInstance().getMaxFlux());
+			System.out.println(LocalConfig.getInstance().getSecondaryMaxFlux());
+		}
+	};
+	
+	ActionListener fluxLevelsCancelActionListener = new ActionListener() {
+		public void actionPerformed(ActionEvent ae) {
+			getFluxLevelsDialog().setVisible(false);
+			getFluxLevelsDialog().dispose();
+			enableLoadItems();
+			disableMenuItemsForFVA(false);
+		}
+	};
+	
+	/**
+	 * Compartment name from combo has compartment abbreviation and name present in string
+	 * to make selection more user-friendly. Name suffix needs to be removed to match user
+	 * selection with item from list of compartments.
+	 * @param combo
+	 * @return
+	 */
+	public String compNameFromCombo(JComboBox<String> combo) {
+		String abbr = "";
+		if (combo.getSelectedIndex() > -1) {
+			String item = (String) combo.getSelectedItem();
+			// " (compartment name) added to compartment abbreviation in combo box if name 
+			// exists. need to trim this off
+			if (item.contains("(")) {
+				item = item.substring(0, item.indexOf("(") - 1);
+			}
+			for (int i = 0; i < LocalConfig.getInstance().getListOfCompartments().size(); i++) {
+				if (LocalConfig.getInstance().getListOfCompartments().get(i).getId().equals(item)) {
+					abbr = LocalConfig.getInstance().getListOfCompartments().get(i).getId();
+				}
+			}
+//			for (int i = 0; i < LocalConfig.getInstance().getListOfCompartments().size(); i++) {
+//				if (LocalConfig.getInstance().getListOfCompartments().get(i).getName().equals((String) combo.getSelectedItem())) {
+//					abbr = LocalConfig.getInstance().getListOfCompartments().get(i).getId();
+//				}
+//			}
+		}
+		return abbr;
+	}
+	
 	public void createCompartmentNameDialog() {
 		CompartmentNameDialog frame = new CompartmentNameDialog();
 		setCompNameDialog(frame);
@@ -13033,81 +13089,6 @@ public class GraphicalInterface extends JFrame {
 			disableMenuItemsForFVA(false);
 		}
 	};
-	
-	/**
-	 * Compartment name from combo has compartment abbreviation and name present in string
-	 * to make selection more user-friendly. Name suffix needs to be removed to match user
-	 * selection with item from list of compartments.
-	 * @param combo
-	 * @return
-	 */
-	public String compNameFromCombo(JComboBox<String> combo) {
-		String abbr = "";
-		if (combo.getSelectedIndex() > -1) {
-			String item = (String) combo.getSelectedItem();
-			// " (compartment name) added to compartment abbreviation in combo box if name 
-			// exists. need to trim this off
-			if (item.contains("(")) {
-				item = item.substring(0, item.indexOf("(") - 1);
-			}
-			for (int i = 0; i < LocalConfig.getInstance().getListOfCompartments().size(); i++) {
-				if (LocalConfig.getInstance().getListOfCompartments().get(i).getId().equals(item)) {
-					abbr = LocalConfig.getInstance().getListOfCompartments().get(i).getId();
-				}
-			}
-//			for (int i = 0; i < LocalConfig.getInstance().getListOfCompartments().size(); i++) {
-//				if (LocalConfig.getInstance().getListOfCompartments().get(i).getName().equals((String) combo.getSelectedItem())) {
-//					abbr = LocalConfig.getInstance().getListOfCompartments().get(i).getId();
-//				}
-//			}
-		}
-		return abbr;
-	}
-	
-//	public void assignKeggReactionIds() {
-//		VisualizationKeggReactionProcessor processor = new VisualizationKeggReactionProcessor();
-//		setCurrentReactionsRow(reactionsTable.getSelectedRow());
-//		setCurrentReactionsColumn(reactionsTable.getSelectedColumn());
-//		ReactionFactory rf = new ReactionFactory("SBML");
-//		if (rf.getKeggIdColumnIndex() == -1) {
-//			addReactionsColumn(GraphicalInterfaceConstants.REACTION_KEGG_ID_COLUMN_NAME);
-//		}
-//		LocalConfig.getInstance().setKeggReactionIdColumnName(GraphicalInterfaceConstants.REACTION_KEGG_ID_COLUMN_NAME);
-//		//ReactionFactory rf = new ReactionFactory("SBML");
-//		int keggIdColumn = rf.getKeggIdColumnIndex();
-//		createReactionsIdRowMap();
-//		ArrayList<String> reactionDataKeggIds = new ArrayList<String>(LocalConfig.getInstance().getReactionDataKeggIdMap().keySet());
-//		System.out.println(LocalConfig.getInstance().getUnplottedReactionIds());
-//		for (int i = 0; i < LocalConfig.getInstance().getUnplottedReactionIds().size(); i++) {
-//			if (LocalConfig.getInstance().getModelKeggEquationMap().containsKey(Integer.toString(LocalConfig.getInstance().getUnplottedReactionIds().get(i)))) {
-//				// data from model
-//				PathwayReactionData modelData = LocalConfig.getInstance().getModelKeggEquationMap().get(Integer.toString(LocalConfig.getInstance().getUnplottedReactionIds().get(i)));
-//				for (int k = 0; k < reactionDataKeggIds.size(); k++) {
-//					// data from reactions.csv file
-//					PathwayReactionData fileData = LocalConfig.getInstance().getReactionDataKeggIdMap().get(reactionDataKeggIds.get(k));
-//					// compare metabolite kegg id reactant and product lists from reaction equations 
-//					// from model with reactant and product lists in file
-//					if (processor.keggReactionIdFound(fileData.getKeggReactantIds(), fileData.getKeggProductIds(), 
-//							modelData.getKeggReactantIds(), modelData.getKeggProductIds(), "forward")) {
-//						updateReactionsCellById(fileData.getKeggReactionId(), Integer.valueOf(modelData.getReactionId()), keggIdColumn);
-//						if (LocalConfig.getInstance().getUnplottedReactionIds().contains(Integer.parseInt(modelData.getReactionId()))) {
-//							LocalConfig.getInstance().getUnplottedReactionIds().remove(LocalConfig.getInstance().getUnplottedReactionIds().indexOf(Integer.parseInt(modelData.getReactionId())));
-//						}
-//					} else {
-//						if (processor.keggReactionIdFound(fileData.getKeggReactantIds(), fileData.getKeggProductIds(), 
-//								modelData.getKeggProductIds(), modelData.getKeggReactantIds(), "reverse")) {
-//							updateReactionsCellById(fileData.getKeggReactionId(), Integer.valueOf(modelData.getReactionId()), keggIdColumn);
-//							if (LocalConfig.getInstance().getUnplottedReactionIds().contains(Integer.parseInt(modelData.getReactionId()))) {
-//								LocalConfig.getInstance().getUnplottedReactionIds().remove(LocalConfig.getInstance().getUnplottedReactionIds().indexOf(Integer.parseInt(modelData.getReactionId())));
-//							}
-//						}
-//					}
-//				}
-//			} else {
-////				System.out.println(LocalConfig.getInstance().getUnplottedReactionIds().get(i) + " has no kegg ids");
-//			}
-//		}
-//	}
 	
 	/**
 	 * Sets Visualization Options defaults on startup of Graphical Interface
@@ -13200,103 +13181,6 @@ public class GraphicalInterface extends JFrame {
 		} else {
 			locateMetaboliteIdentifierColumn();
 		}
-//		locateMetaboliteIdentifierColumn();
-//		MetaboliteFactory f = new MetaboliteFactory("SBML");
-//		Vector<SBMLMetabolite> metabolites = f.getAllMetabolites();
-//		Map<String, SBMLMetabolite> idMetabMap = new HashMap<String, SBMLMetabolite>();
-//		for (int i = 0; i < metabolites.size(); i++) {
-//    		if (metabolites.get(i).getCompartment() == null || metabolites.get(i).getCompartment().trim().length() == 0) {
-//    			idMetabMap.put(Integer.toString(metabolites.get(i).getId()), (metabolites.get(i)));
-//    		}
-//    	}
-//		if (idMetabMap.size() > 0) {
-//			String blankCompartmentId = "\"C_1\"";
-//			// remove quotes
-//			String blankCompartmentEntry = blankCompartmentId.substring(1, blankCompartmentId.length() - 1);
-//			Object[] options = {"    Yes    ", "    No    ",};
-//    		int choice = JOptionPane.showOptionDialog(null, 
-//    				"Model Cannot Be Visualized With Blank Compartment Abbreviations. "
-//    				+ "Blank Compartment Abbreviations Will Be Renamed to " + blankCompartmentId,
-//    				"Blank Compartment Entries", 
-//    				JOptionPane.YES_NO_OPTION, 
-//    				JOptionPane.QUESTION_MESSAGE, 
-//    				null, options, options[0]);
-//    		if (choice == JOptionPane.YES_OPTION) {
-//    			createMetabolitesIdRowMap();
-//    			ArrayList<String>idList = new ArrayList<String>(idMetabMap.keySet());
-//    			// update compartments first
-//    			for (int j = 0; j < idList.size(); j++) {
-//    				updateMetabolitesCellById(blankCompartmentEntry, Integer.valueOf(idList.get(j)), GraphicalInterfaceConstants.COMPARTMENT_COLUMN);
-//    			}
-//    			int maxId = LocalConfig.getInstance().getMaxCompartmentId();
-//    			System.out.println(maxId);
-//    			DefaultTableModel model = (DefaultTableModel) compartmentsTable.getModel();
-//    			if (LocalConfig.getInstance().getListOfCompartments().size() > maxId) {
-//    				model.addRow(createCompartmentsRow(maxId));
-//    			}
-//    			// remove blank compartment entry from list
-//    			int index = -1;
-//    			for (int k = 0; k < LocalConfig.getInstance().getListOfCompartments().size(); k++) {
-//    				if (LocalConfig.getInstance().getListOfCompartments().get(k).getId() == null ||
-//    						LocalConfig.getInstance().getListOfCompartments().get(k).getId().trim().length() == 0) {
-//    					index = k;
-//    				}
-//    			}
-//    			if (index > -1) {
-//    				LocalConfig.getInstance().getListOfCompartments().remove(index);
-//    			}
-//    			// replace contents of row with blank value with compartment entry
-//    			model.setValueAt(blankCompartmentEntry, index, CompartmentsConstants.ABBREVIATION_COLUMN);
-//    			SBMLCompartment comp = new SBMLCompartment();
-//    			comp.setId(blankCompartmentEntry);
-//    			comp.setName("");
-//    			comp.setOutside("");
-//    			LocalConfig.getInstance().getListOfCompartments().add(comp);
-//    			for (int j = 0; j < idList.size(); j++) {
-//    				rewriteReactionEquationNames(Integer.valueOf(idList.get(j)), idMetabMap.get(idList.get(j)).getMetaboliteAbbreviation(), 
-//    						blankCompartmentEntry);
-//    				LocalConfig.getInstance().getMetaboliteIdCompartmentMap().put(Integer.valueOf(idList.get(j)), 
-//    						blankCompartmentEntry); 
-//    			}
-//    			System.out.println(LocalConfig.getInstance().getListOfCompartments());
-//    			String missingItem = "";
-//    			String missingData = "";
-//    			boolean showMissingItemMessage = true;
-//    			// if KEGG id not set by user, attempt to locate programmatically
-//    			if (LocalConfig.getInstance().getKeggMetaboliteIdColumn() == -1) {
-//    				LocalConfig.getInstance().setKeggMetaboliteIdColumn(f.locateKeggIdColumn());
-//    				LocalConfig.getInstance().setChebiIdColumn(f.locateChebiIdColumn());
-//    			}
-//    			// if KEGG id still not found, show prompt
-//    			if (LocalConfig.getInstance().getKeggMetaboliteIdColumn() == -1) {
-//    				missingItem = "KEGG Ids";
-//    				missingData = "metabolites";
-//    			} else {
-//    				showMissingItemMessage = false;
-//    			} 
-//    			
-//    			if (showMissingItemMessage) {
-//    				JOptionPane.showMessageDialog(null,                
-//    						"<html>No " + missingItem + " column present in the loaded model.<p><p>"
-//    								+ "MOST is unable to link " + missingData + " in model to "
-//    								+ missingData + " in the Visualizations database.<p><p>"
-//    								+ "Click Visualize --> Locate KEGG Id Column menu item to "
-//    								+ "locate KEGG Id column.", 
-//    								"Unable to Visualize Model",                             
-//    						JOptionPane.WARNING_MESSAGE);
-//    			} else {
-//    				if (LocalConfig.getInstance().getListOfCompartments().size() > 0) {
-//    					createCompartmentNameDialog();
-//    				} else {
-//    					visualizeModel();
-//    				}
-//    			}
-//    			locateMetaboliteIdentifierColumn();
-//    		}
-//    		if (choice == JOptionPane.NO_OPTION) {
-//    			
-//    		}
-//		}
 	}
 	
 	public void locateMetaboliteIdentifierColumn() {
@@ -13360,37 +13244,16 @@ public class GraphicalInterface extends JFrame {
 		} else {
 			rxns = rf.getAllReactions();
 		}
-		// uncomment to get periplasm reactions
-//		if (LocalConfig.getInstance().getPeriplasmName() != null && LocalConfig.getInstance().getPeriplasmName().length() > 0) {
-//			Vector<SBMLReaction> pRxns = rf.getReactionsByCompartment(LocalConfig.getInstance().getPeriplasmName());
-//			for (int i = 0; i < pRxns.size(); i++) {
-//				System.out.println(pRxns.get(i).getId());
-//				System.out.println(pRxns.get(i).getReactionEqunAbbr());
-//				System.out.println(pRxns.get(i).getReactionEqunNames());
-//			}
-//		} 
-//		Vector<SBMLReaction> ceRxns = rf.getTransportReactionsByCompartments(LocalConfig.getInstance().getCytosolName(), 
-//				LocalConfig.getInstance().getExtraOrganismName());
-//		for (int i = 0; i < ceRxns.size(); i++) {
-//			System.out.println(ceRxns.get(i).getId());
-//			System.out.println(ceRxns.get(i).getReactionEqunAbbr());
-//			System.out.println(ceRxns.get(i).getReactionEqunNames());
-//		}
 		ECNumberMapCreator ecMapCreator = new ECNumberMapCreator();
 		Map<String, ArrayList<SBMLReaction>> ecNumberReactionMap = ecMapCreator.createEcNumberReactionMap(rxns);
 		LocalConfig.getInstance().setEcNumberReactionMap(ecNumberReactionMap);
-//		System.out.println("e " + ecNumberReactionMap);
 		// key = reaction id, value = PathwayReactionData (lists of KEGG ids of reactants and products)
 		ModelKeggEquationMapCreator modelKeggEquationMapCreator = new ModelKeggEquationMapCreator();
 		modelKeggEquationMapCreator.createKeggEquationMap();
-		// It is probably not valid to assign KEGG reaction ids. 
-		//assignKeggReactionIds();
 		categorizeTransportReactions();
 		KEGGIdReactionMapCreator keggIdReactionMapCreator = new KEGGIdReactionMapCreator();
 		Map<String, ArrayList<SBMLReaction>> keggIdReactionMap = keggIdReactionMapCreator.createKEGGIdReactionMap(rxns);
 		LocalConfig.getInstance().setKeggIdReactionMap(keggIdReactionMap);
-//		System.out.println("g ids " + LocalConfig.getInstance().getIdentifierIds());
-//		System.out.println("g nt " + LocalConfig.getInstance().getNoTransportReactionIds());
 		ArrayList<Integer> noIdentifierIds = new ArrayList<Integer>();
 		for (int i = 0; i < LocalConfig.getInstance().getNoTransportReactionIds().size(); i++) {
 			if (!LocalConfig.getInstance().getIdentifierIds().contains(LocalConfig.getInstance().getNoTransportReactionIds().get(i))) {
@@ -13400,7 +13263,6 @@ public class GraphicalInterface extends JFrame {
 		LocalConfig.getInstance().setNoIdentifierIds(noIdentifierIds);
 		VisualizationDataProcessor vdp = new VisualizationDataProcessor();
 		vdp.processData(PathwaysFrameConstants.PATHWAYS_COMPONENT);
-//		createVisualizationsPane();
 	}
 	
 	public void createVisualizationsPane() {

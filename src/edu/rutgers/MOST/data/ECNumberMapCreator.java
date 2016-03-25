@@ -94,7 +94,7 @@ public class ECNumberMapCreator {
 				maxUpperBound = reaction.getUpperBound();
 			}
 		}
-		processor.setMaxUpperBound(maxUpperBound);
+		processor.setMaxFlux(maxUpperBound);
 		processor.setFluxes(fluxes);
 		processor.processFluxes();
 

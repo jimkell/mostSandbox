@@ -212,10 +212,6 @@ public class PathwayReactionNodeFactory {
 	public boolean speciesExactMatch(ArrayList<String> dataIds, Map<String, PathwayMetaboliteData> keggIdsDataMap, ArrayList<String> modelIds) {
 		boolean speciesMatch = false;
 		boolean containsProton = false;
-//		if (dataIds.contains("C00111") && modelIds.contains("C00111")) {
-//			System.out.println("data e " + dataIds);
-//			System.out.println("model e " + modelIds);
-//		}
 //		System.out.println("data " + dataIds);
 //		System.out.println("model " + modelIds);
 		if (modelIds.contains("C00080")) {

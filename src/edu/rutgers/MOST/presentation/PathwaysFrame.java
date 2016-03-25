@@ -831,7 +831,6 @@ public class PathwaysFrame extends JApplet {
 			if (LocalConfig.getInstance().isScaleEdgeThicknessSelected()) {
 				if (edge_weight.containsKey(e)) {
 					double value = edge_weight.get(e).doubleValue();
-					//System.out.println(value);
 					if (value > 0.1) {
 						if (value == PathwaysFrameConstants.BORDER_THICKNESS) {
 							strokeWidth = (int) PathwaysFrameConstants.BORDER_THICKNESS;
@@ -954,8 +953,7 @@ public class PathwaysFrame extends JApplet {
 
 	public double edgeThickness(double fluxValue) {
 		double thickness = PathwaysFrameConstants.DEFAULT_EDGE_WIDTH;
-		if (Math.abs(fluxValue) > PathwaysFrameConstants.INFINITE_FLUX_RATIO*LocalConfig.getInstance().getMaxUpperBound()) {
-			//System.out.println("flux " + pn.getFluxValue());
+		if (Math.abs(fluxValue) > PathwaysFrameConstants.INFINITE_FLUX_RATIO*LocalConfig.getInstance().getMaxFlux()) {
 			thickness = PathwaysFrameConstants.INFINITE_FLUX_WIDTH;
 		} else if (Math.abs(fluxValue) > 0) {
 			if (Math.abs(fluxValue) < PathwaysFrameConstants.MINIMUM_FLUX_RATIO*LocalConfig.getInstance().getSecondaryMaxFlux()) {
@@ -1156,7 +1154,7 @@ public class PathwaysFrame extends JApplet {
 		} else {
 			changed = true;
 		}
-		//		System.out.println("changed " + changed);
+		
 		return changed;
 	}
 
@@ -1184,14 +1182,12 @@ public class PathwaysFrame extends JApplet {
 		} else {
 			getVisualizationsFindDialog().requestFocus();
 			ArrayList<String> findXCoordinates = new ArrayList<String>(findLocationsMap.keySet());
-			//System.out.println(findXCoordinates);
 			Collections.sort(findXCoordinates, new NumComparator());
-			//			System.out.println(findXCoordinates);
 			ArrayList<Double> findPositions = findLocationsMap.get(findXCoordinates.get(findStartIndex));
 			findNodeByLocation(findPositions.get(0), findPositions.get(1));
-			for (int i = 0; i < findXCoordinates.size(); i++) {
-				//System.out.println(findLocationsMap.get(findXCoordinates.get(i)));
-			}
+//			for (int i = 0; i < findXCoordinates.size(); i++) {
+//				System.out.println(findLocationsMap.get(findXCoordinates.get(i)));
+//			}
 			if (searchBackwards) {
 				if (findStartIndex > 0) {
 					findStartIndex -= 1;
@@ -1230,7 +1226,6 @@ public class PathwaysFrame extends JApplet {
 			originalFindValue = VisualizationsFindDialog.findBox.getSelectedItem().toString();
 			findValue = VisualizationsFindDialog.findBox.getSelectedItem().toString().toLowerCase();
 		}
-		//		System.out.println("fv " + findValue);
 		if (exactMatch) {
 			if (VisualizationsFindDialog.matchByBox.getSelectedItem().equals(
 					GraphicalInterfaceConstants.METABOLITE_ABBREVIATION_COLUMN_NAME)) {

@@ -78,9 +78,9 @@ public class CompartmentNameDialog extends JDialog {
 		compartmentLabel.setPreferredSize(new Dimension(150, 25));
 		compartmentLabel.setMaximumSize(new Dimension(150, 25));
 		compartmentLabel.setMinimumSize(new Dimension(150, 25));
-		compartmentLabel.setBorder(BorderFactory.createEmptyBorder(10,10,0,10));
+		compartmentLabel.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
 		compartmentLabel.setAlignmentX(LEFT_ALIGNMENT);
-		//compartmentLabel.setAlignmentY(TOP_ALIGNMENT);	    	    
+		compartmentLabel.setAlignmentY(TOP_ALIGNMENT);	    	    
 
 		JPanel panelCompartmentLabel = new JPanel();
 		panelCompartmentLabel.setLayout(new BoxLayout(panelCompartmentLabel, BoxLayout.X_AXIS));
@@ -181,8 +181,8 @@ public class CompartmentNameDialog extends JDialog {
 	public static void main(String[] args) throws Exception {
 		//based on code from http://stackoverflow.com/questions/6403821/how-to-add-an-image-to-a-jframe-title-bar
 		final ArrayList<Image> icons = new ArrayList<Image>(); 
-		icons.add(new ImageIcon("images/most16.jpg").getImage()); 
-		icons.add(new ImageIcon("images/most32.jpg").getImage());
+		icons.add(new ImageIcon("etc/most16.jpg").getImage()); 
+		icons.add(new ImageIcon("etc/most32.jpg").getImage());
 
 		CompartmentNameDialog frame = new CompartmentNameDialog();
 
