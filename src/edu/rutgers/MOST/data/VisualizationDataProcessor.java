@@ -64,17 +64,7 @@ public class VisualizationDataProcessor {
 
 	public String report = "";
 
-	public Vector<SBMLReaction> compartmentReactions(ReactionFactory f, String compartment) {
-		Vector<SBMLReaction> rxns = null;
-		if (compartment != null && compartment.length() > 0) {
-			rxns = f.getReactionsByCompartment(compartment);
-		} else {
-			rxns = f.getAllReactions();
-		}
-		return rxns;
-	}
-
-	public Map<Integer, SBMLReaction> createCompartmentIdReactionMap(ReactionFactory f, Vector<SBMLReaction> rxns) {
+	public Map<Integer, SBMLReaction> createCompartmentIdReactionMap(Vector<SBMLReaction> rxns) {
 		Map<Integer, SBMLReaction> idReactionMap = new HashMap<Integer, SBMLReaction>();
 		for (int i = 0; i < rxns.size(); i++) {
 			idReactionMap.put(rxns.get(i).getId(), rxns.get(i));
@@ -83,15 +73,14 @@ public class VisualizationDataProcessor {
 		return idReactionMap;
 	}
 
-	public void processData(int component) {
+	public void processData(int component, Vector<SBMLReaction> rxns) {
 		ReactionFactory f = new ReactionFactory("SBML");
 		Map<Integer, SBMLReaction> idReactionMapAllReactions = new HashMap<Integer, SBMLReaction>();
 		Vector<SBMLReaction> allReactions = f.getAllReactions();
 		for (int i = 0; i < allReactions.size(); i++) {
 			idReactionMapAllReactions.put(allReactions.get(i).getId(), allReactions.get(i));
 		}
-		Vector<SBMLReaction> rxns = compartmentReactions(f, LocalConfig.getInstance().getSelectedCompartmentName());
-		Map<Integer, SBMLReaction> idReactionMap = createCompartmentIdReactionMap(f, rxns);
+		Map<Integer, SBMLReaction> idReactionMap = createCompartmentIdReactionMap(rxns);
 		MetabolicPathway pathway = LocalConfig.getInstance().getMetabolicPathways().get("0");
 		if (startPosMap.containsKey(pathway.getId())) {
 			startX = startPosMap.get(pathway.getId()).get(0);

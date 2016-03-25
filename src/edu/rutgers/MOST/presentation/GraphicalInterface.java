@@ -741,6 +741,7 @@ public class GraphicalInterface extends JFrame {
 	public final JMenuItem locateECNumberColumnMenu = new JMenuItem("Locate EC Number Column");
 	public final JMenuItem locateKeggReactionIdColumnMenu = new JMenuItem("Locate KEGG Reaction Id Column");
 	public final JMenuItem setFluxLevelsMenu = new JMenuItem("Set Edge Flux Levels");
+	public final JMenuItem resetFluxLevelsMenu = new JMenuItem("Reset Edge Flux Levels to Default");
 	public final JMenuItem setUpSolver = new JMenuItem("Select Solvers");
 	public final JMenuItem gurobiParametersItem = new JMenuItem(GurobiParameters.GUROBI_PARAMETERS_MENU_ITEM);
 	public final JMenuItem glpkParametersItem = new JMenuItem( GLPKParameters.GLPK_PARAMETERS_MENU_ITEM );
@@ -1145,6 +1146,7 @@ public class GraphicalInterface extends JFrame {
 		analysisRunning = false;
 		timerRunning = false;
 		isVisualizing = false;
+		LocalConfig.getInstance().setFluxLevelsSet(false);
 		
 		enableSaveItems(false);
 		// setEnableAnalysisMenuItems( false );
@@ -1242,7 +1244,6 @@ public class GraphicalInterface extends JFrame {
 		//visualizeProgressBar.progress.setIndeterminate(true);
 		visualizeProgressBar.setLocationRelativeTo(null);
 		visualizeProgressBar.setVisible(false);
-		// if uncommented, progress bar locks up computer until finished
 		visualizeProgressBar.setAlwaysOnTop(true);
 		
 		compartmentsTableUpdater = new CompartmentsTableUpdater();
@@ -2346,9 +2347,8 @@ public class GraphicalInterface extends JFrame {
 
 		visualizeMenu.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
+				LocalConfig.getInstance().setVisualizationsProgress(0);
 				visualizeMenuProcesses();
-				//processVisualizationsData();
-				//visualizeMenuProcesses();
 			}
 		});
 		
@@ -2430,6 +2430,15 @@ public class GraphicalInterface extends JFrame {
 		setFluxLevelsMenu.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
 				createFluxLevelsDialog();
+			}
+		});
+		
+		visualizationMenu.add(resetFluxLevelsMenu);
+		resetFluxLevelsMenu.setMnemonic(KeyEvent.VK_D);
+
+		resetFluxLevelsMenu.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ae) {
+				LocalConfig.getInstance().setFluxLevelsSet(false);
 			}
 		});
         
@@ -12973,6 +12982,10 @@ public class GraphicalInterface extends JFrame {
 	
 	public void createFluxLevelsDialog() {
 		FluxLevelsDialog frame = new FluxLevelsDialog();
+		if (LocalConfig.getInstance().isFluxLevelsSet()) {
+			frame.maxFluxField.setText(Double.toString(LocalConfig.getInstance().getMaxFlux()));
+			frame.secondaryMaxFluxField.setText(Double.toString(LocalConfig.getInstance().getSecondaryMaxFlux()));
+		}
 		setFluxLevelsDialog(frame);
 		frame.setIconImages(icons);
 		//frame.setSize(550, 270);
@@ -12983,26 +12996,66 @@ public class GraphicalInterface extends JFrame {
 			public void windowClosing(WindowEvent evt) {
 				getFluxLevelsDialog().setVisible(false);
 				getFluxLevelsDialog().dispose();
-				enableLoadItems();
-				disableMenuItemsForFVA(false);
 			}
 		});
 		frame.setAlwaysOnTop(true);
 		frame.setVisible(true);
 		frame.okButton.addActionListener(fluxLevelsOKActionListener);
 		frame.cancelButton.addActionListener(fluxLevelsCancelActionListener);
-		disableLoadItems();
-		disableMenuItemsForFVA(true);
 	}
 	
 	ActionListener fluxLevelsOKActionListener = new ActionListener() {
 		public void actionPerformed(ActionEvent ae) {
-			LocalConfig.getInstance().setMaxFlux(Double.valueOf(getFluxLevelsDialog().maxFluxField.getText()));
-			LocalConfig.getInstance().setSecondaryMaxFlux(Double.valueOf(getFluxLevelsDialog().secondaryMaxFluxField.getText()));
-			getFluxLevelsDialog().setVisible(false);
-			getFluxLevelsDialog().dispose();
-			System.out.println(LocalConfig.getInstance().getMaxFlux());
-			System.out.println(LocalConfig.getInstance().getSecondaryMaxFlux());
+			boolean valid = false;
+			EntryValidator validator = new EntryValidator();
+			if (!validator.isNumber(getFluxLevelsDialog().maxFluxField.getText())) {
+				getFluxLevelsDialog().setAlwaysOnTop(false);
+				JOptionPane.showMessageDialog(null,                
+						"Maximum Flux Entry is not a Number.",                
+						GraphicalInterfaceConstants.NUMERIC_VALUE_ERROR_TITLE,                                
+						JOptionPane.ERROR_MESSAGE);
+				getFluxLevelsDialog().setAlwaysOnTop(true);
+			} else if (!validator.isNumber(getFluxLevelsDialog().secondaryMaxFluxField.getText())) {
+				getFluxLevelsDialog().setAlwaysOnTop(false);
+				JOptionPane.showMessageDialog(null,                
+						"Secondary Maximum Flux Entry is not a Number.",                
+						GraphicalInterfaceConstants.NUMERIC_VALUE_ERROR_TITLE,                                
+						JOptionPane.ERROR_MESSAGE);
+				getFluxLevelsDialog().setAlwaysOnTop(true);
+			} else {
+				double maxFlux = Double.valueOf(getFluxLevelsDialog().maxFluxField.getText());
+				double secondaryMaxFlux = Double.valueOf(getFluxLevelsDialog().secondaryMaxFluxField.getText());		
+				if (maxFlux > 0 && secondaryMaxFlux > 0) {
+					if (maxFlux >= secondaryMaxFlux) {
+						LocalConfig.getInstance().setMaxFlux(maxFlux);
+						LocalConfig.getInstance().setSecondaryMaxFlux(secondaryMaxFlux);
+						valid = true;
+					} else {
+						getFluxLevelsDialog().setAlwaysOnTop(false);
+						JOptionPane.showMessageDialog(null,                
+								"Maximum Flux Must Be Greater Than or Equal to Secondary Maximum Flux.",                
+								"Invalid Entry",                                
+								JOptionPane.ERROR_MESSAGE);
+						getFluxLevelsDialog().setAlwaysOnTop(true);
+					}
+				} else {
+					getFluxLevelsDialog().setAlwaysOnTop(false);
+					JOptionPane.showMessageDialog(null,                
+							"Flux Values Must Be > 0.",                
+							"Invalid Entry",                                
+							JOptionPane.ERROR_MESSAGE);
+					getFluxLevelsDialog().setAlwaysOnTop(true);
+				}
+			}
+			if (valid) {
+				getFluxLevelsDialog().setVisible(false);
+				getFluxLevelsDialog().dispose();
+				LocalConfig.getInstance().setFluxLevelsSet(true);
+//				if (LocalConfig.getInstance().isFluxLevelsSet()) {
+//					System.out.println("mzx " + LocalConfig.getInstance().getMaxFlux());
+//					System.out.println("sec " + LocalConfig.getInstance().getSecondaryMaxFlux());
+//				}
+			}
 		}
 	};
 	
@@ -13214,7 +13267,7 @@ public class GraphicalInterface extends JFrame {
 			if (LocalConfig.getInstance().getListOfCompartments().size() > 0) {
 				createCompartmentNameDialog();
 			} else {
-				visualizeModel();
+				//visualizeModel();
 			}
 		}
 	}
@@ -13262,7 +13315,7 @@ public class GraphicalInterface extends JFrame {
 		}
 		LocalConfig.getInstance().setNoIdentifierIds(noIdentifierIds);
 		VisualizationDataProcessor vdp = new VisualizationDataProcessor();
-		vdp.processData(PathwaysFrameConstants.PATHWAYS_COMPONENT);
+		vdp.processData(PathwaysFrameConstants.PATHWAYS_COMPONENT, rxns);
 	}
 	
 	public void createVisualizationsPane() {
@@ -13306,7 +13359,7 @@ public class GraphicalInterface extends JFrame {
 		p.setTitle(gi.getTitle());
 		p.setLocationRelativeTo(null);
 		p.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		p.setOutputText(pf1.report);
+		p.setOutputText(LocalConfig.getInstance().getVisualizationData().getReport());
 		setVisualizationPopout(p);
 	}
 	

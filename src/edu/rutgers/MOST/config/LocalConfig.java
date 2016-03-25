@@ -1401,6 +1401,16 @@ public class LocalConfig {
 		this.secondaryMaxFlux = secondaryMaxFlux;
 	}
 	
+	private boolean isFluxLevelsSet;
+	
+	public boolean isFluxLevelsSet() {
+		return isFluxLevelsSet;
+	}
+
+	public void setFluxLevelsSet(boolean isFluxLevelsSet) {
+		this.isFluxLevelsSet = isFluxLevelsSet;
+	}
+
 	private ArrayList<Integer> reactionsMissingKeggId;
 
 	public ArrayList<Integer> getReactionsMissingKeggId() {

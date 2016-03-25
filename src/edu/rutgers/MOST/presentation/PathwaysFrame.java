@@ -27,10 +27,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;                                                                                            
 import java.util.Map;                                                                                                
-                                                                                                                     
-
-
-
+                                                                                                                    
 import javax.imageio.ImageIO;
 import javax.swing.AbstractButton;
 import javax.swing.Icon;
@@ -54,13 +51,6 @@ import javax.swing.WindowConstants;
 import org.apache.commons.collections15.Transformer;                                                                 
 import org.apache.commons.collections15.functors.ChainedTransformer;                                                 
                                                                                                                      
-
-
-
-
-
-
-
 import edu.rutgers.MOST.config.LocalConfig;
 import edu.rutgers.MOST.data.BorderRectangle;
 import edu.rutgers.MOST.data.MetabolicPathway;
@@ -229,8 +219,6 @@ public class PathwaysFrame extends JApplet {
 	private int findStartIndex = 0;
 
 	final ScalingControl scaler = new CrossoverScalingControl();
-	
-	public String report;
 
 	/**                                                                                                              
 	 * create an instance of a simple graph with controls to                                                         
@@ -270,11 +258,8 @@ public class PathwaysFrame extends JApplet {
 		ecNumberPositionsMap = visualizationData.getEcNumberPositionsMap();
 		keggReactionIdPositionsMap = visualizationData.getKeggReactionIdPositionsMap();
 		reactionAbbrPositionsMap = visualizationData.getReactionAbbrPositionsMap();
-		report = visualizationData.getReport();
 		
 		transformItem.setState(false);
-		
-		//report = "";
 
 		// register actions
 		ActionListener findActionListener = new ActionListener() {

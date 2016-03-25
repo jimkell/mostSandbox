@@ -94,9 +94,13 @@ public class ECNumberMapCreator {
 				maxUpperBound = reaction.getUpperBound();
 			}
 		}
-		processor.setMaxFlux(maxUpperBound);
-		processor.setFluxes(fluxes);
-		processor.processFluxes();
+		if (!LocalConfig.getInstance().isFluxLevelsSet()) {
+			processor.setMaxFlux(maxUpperBound);
+			processor.setFluxes(fluxes);
+			processor.processFluxes();
+		}
+//		System.out.println("max " + LocalConfig.getInstance().getMaxFlux());
+//		System.out.println("sec " + LocalConfig.getInstance().getSecondaryMaxFlux());
 
 		//LocalConfig.getInstance().setEcNumberReactionMap(ecNumberReactionMap);
 		//System.out.println("ec " + ecNumberReactionMap);
