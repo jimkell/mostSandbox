@@ -79,6 +79,9 @@ public class PathwaysFrameConstants {
 	public static final String FONT_NAME = "Arial";
 	public static final String FONT_WEIGHT = "bold";
 	public static final int FONT_STYLE = Font.BOLD;
+//	public static final String FONT_NAME = "Lucida Console";
+//	public static final String FONT_WEIGHT = "plain";
+//	public static final int FONT_STYLE = Font.PLAIN;
 	
 	public static final int METABOLITE_NODE_ELLIPSIS_CORRECTION = 2;
 	public static final int SMALL_MAIN_METABOLITE_NODE_ELLIPSIS_CORRECTION = 2;
