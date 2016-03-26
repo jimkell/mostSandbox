@@ -736,6 +736,7 @@ public class GraphicalInterface extends JFrame {
 	public final JMenuItem unsortReacMenuItem = new JMenuItem("Unsort Reactions Table");
 	public final JMenuItem unsortMetabMenuItem = new JMenuItem("Unsort Metabolites Table");
 	public final JMenuItem visualizeMenu = new JMenuItem("Visualize Compartment");
+	public final JMenuItem showVisualizationReportMenu = new JMenuItem("Show Visualization Report");
 	public final JMenuItem locateKeggMetaboliteIdColumnMenu = new JMenuItem("Locate KEGG Metabolite Id Column");
 	public final JMenuItem locateChebiIdColumnMenu = new JMenuItem("Locate CHEBI Id Column");
 	public final JMenuItem locateECNumberColumnMenu = new JMenuItem("Locate EC Number Column");
@@ -2349,6 +2350,22 @@ public class GraphicalInterface extends JFrame {
 			public void actionPerformed(ActionEvent ae) {
 				LocalConfig.getInstance().setVisualizationsProgress(0);
 				visualizeMenuProcesses();
+			}
+		});
+		
+		visualizationMenu.add(showVisualizationReportMenu);
+		showVisualizationReportMenu.setMnemonic(KeyEvent.VK_Z);
+		
+		if (isVisualizing && getVisualizationPopout() == null) {
+			showVisualizationReportMenu.setEnabled(true);
+		} else {
+			showVisualizationReportMenu.setEnabled(false);
+		}
+
+		showVisualizationReportMenu.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ae) {
+				createVisualizationReport();
+				showVisualizationReportMenu.setEnabled(false);
 			}
 		});
 		
@@ -12356,6 +12373,7 @@ public class GraphicalInterface extends JFrame {
 		locateECNumberColumnMenu.setEnabled(state);
 		locateKeggReactionIdColumnMenu.setEnabled(state);
 		setFluxLevelsMenu.setEnabled(state);
+		resetFluxLevelsMenu.setEnabled(state);
 	}
 	
 	/**
@@ -13343,6 +13361,7 @@ public class GraphicalInterface extends JFrame {
 				if (getVisualizationPopout() != null) {
 					getVisualizationPopout().dispose();
 				}
+				showVisualizationReportMenu.setEnabled(false);
 			}
 		});		
         frame.setLocationRelativeTo(null);
@@ -13365,9 +13384,15 @@ public class GraphicalInterface extends JFrame {
 		p.setIconImages(icons);
 		p.setTitle(gi.getTitle());
 		p.setLocationRelativeTo(null);
-		p.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		p.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		p.setOutputText(LocalConfig.getInstance().getVisualizationData().getReport());
 		setVisualizationPopout(p);
+		p.addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent evt) {
+				getVisualizationPopout().dispose();
+				showVisualizationReportMenu.setEnabled(true);
+			}
+		});		
 	}
 	
 	public void showIdentifierColumnNameDialog(String type, String title, String columnType, int selectedIndex) {
