@@ -1251,32 +1251,12 @@ public class LocalConfig {
 	}
 
 	// Visualization options
-	private boolean graphMissingReactionsSelected;
-	private boolean highlightMissingReactionsSelected;
 	private boolean graphMissingMetabolitesSelected;
-	private boolean highlightMissingMetabolitesSelected;
 	private boolean scaleEdgeThicknessSelected;
 	private boolean ignoreProtonSelected;
 	private boolean ignoreWaterSelected;
+	private boolean showVisualizationReportSelected;
 
-	public boolean isGraphMissingReactionsSelected() {
-		return graphMissingReactionsSelected;
-	}
-
-	public void setGraphMissingReactionsSelected(
-			boolean graphMissingReactionsSelected) {
-		this.graphMissingReactionsSelected = graphMissingReactionsSelected;
-	}
-
-	public boolean isHighlightMissingReactionsSelected() {
-		return highlightMissingReactionsSelected;
-	}
-
-	public void setHighlightMissingReactionsSelected(
-			boolean highlightMissingReactionsSelected) {
-		this.highlightMissingReactionsSelected = highlightMissingReactionsSelected;
-	}
-	
 	public boolean isGraphMissingMetabolitesSelected() {
 		return graphMissingMetabolitesSelected;
 	}
@@ -1284,15 +1264,6 @@ public class LocalConfig {
 	public void setGraphMissingMetabolitesSelected(
 			boolean graphMissingMetabolitesSelected) {
 		this.graphMissingMetabolitesSelected = graphMissingMetabolitesSelected;
-	}
-
-	public boolean isHighlightMissingMetabolitesSelected() {
-		return highlightMissingMetabolitesSelected;
-	}
-
-	public void setHighlightMissingMetabolitesSelected(
-			boolean highlightMissingMetabolitesSelected) {
-		this.highlightMissingMetabolitesSelected = highlightMissingMetabolitesSelected;
 	}
 
 	public boolean isScaleEdgeThicknessSelected() {
@@ -1313,6 +1284,15 @@ public class LocalConfig {
 
 	public boolean isIgnoreWaterSelected() {
 		return ignoreWaterSelected;
+	}
+
+	public boolean isShowVisualizationReportSelected() {
+		return showVisualizationReportSelected;
+	}
+
+	public void setShowVisualizationReportSelected(
+			boolean showVisualizationReportSelected) {
+		this.showVisualizationReportSelected = showVisualizationReportSelected;
 	}
 
 	public void setIgnoreWaterSelected(boolean ignoreWaterSelected) {

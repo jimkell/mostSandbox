@@ -644,29 +644,29 @@ public class PathwaysFrame extends JApplet {
 						PathwaysFrameConstants.COMPARTMENT_LABEL_LINE_OFFSET + PathwaysFrameConstants.COMPARTMENT_LABEL_NODE_YPOS);
 			} else {
 				if (mainMetabolites.contains(name)) {
-					if (!foundMetabolitesList.contains(name) && LocalConfig.getInstance().isHighlightMissingMetabolitesSelected()) {
+					if (!foundMetabolitesList.contains(name)) {
 						graphics.setColor(PathwaysFrameConstants.METABOLITE_NOT_FOUND_COLOR);
 					}
 					alignCenterString(graphics, abbr, width, PathwaysFrameConstants.METABOLITE_NODE_XPOS, PathwaysFrameConstants.METABOLITE_NODE_YPOS, PathwaysFrameConstants.METABOLITE_NODE_FONT_SIZE);
 				} else if (smallMainMetabolites.contains(name)) {
-					if (!foundMetabolitesList.contains(name) && LocalConfig.getInstance().isHighlightMissingMetabolitesSelected()) {
+					if (!foundMetabolitesList.contains(name)) {
 						graphics.setColor(PathwaysFrameConstants.METABOLITE_NOT_FOUND_COLOR);
 					}
 					alignCenterString(graphics, abbr, width, PathwaysFrameConstants.SMALL_MAIN_METABOLITE_NODE_XPOS, PathwaysFrameConstants.SMALL_MAIN_METABOLITE_NODE_YPOS, PathwaysFrameConstants.SMALL_MAIN_METABOLITE_NODE_FONT_SIZE);
 				} else if (sideMetabolites.contains(name)) {
-					if (!foundMetabolitesList.contains(name) && LocalConfig.getInstance().isHighlightMissingMetabolitesSelected()) {
+					if (!foundMetabolitesList.contains(name)) {
 						graphics.setColor(PathwaysFrameConstants.METABOLITE_NOT_FOUND_COLOR);
 					}
 					if (cofactors.contains(name)) {
 						graphics.setColor(PathwaysFrameConstants.COFACTOR_COLOR);
-						if (!foundMetabolitesList.contains(name) && LocalConfig.getInstance().isHighlightMissingMetabolitesSelected()) {
+						if (!foundMetabolitesList.contains(name)) {
 							graphics.setColor(PathwaysFrameConstants.COFACTOR_NOT_FOUND_COLOR);
 						}
 					}
 					alignCenterString(graphics, abbr, width, PathwaysFrameConstants.SIDE_METABOLITE_NODE_XPOS, PathwaysFrameConstants.SIDE_METABOLITE_NODE_YPOS, PathwaysFrameConstants.SIDE_METABOLITE_NODE_FONT_SIZE);
 				} else if (reactions.contains(name)) {
 					graphics.setColor(PathwaysFrameConstants.REACTION_NODE_DETAULT_FONT_COLOR);
-					if (!foundReactionsList.contains(name) && LocalConfig.getInstance().isHighlightMissingReactionsSelected()) {
+					if (!foundReactionsList.contains(name)) {
 						graphics.setColor(PathwaysFrameConstants.REACTION_NOT_FOUND_FONT_COLOR);
 					} else if (koReactions.contains(name)) {
 						graphics.setColor(PathwaysFrameConstants.REACTION_KO_FONT_COLOR);
@@ -1483,26 +1483,26 @@ public class PathwaysFrame extends JApplet {
 					stroke = PathwaysFrameConstants.PATHWAY_NAME_COLOR;
 				} else {
 					if (mainMetabolites.contains(nodeNameList.get(j))) {
-						if (!foundMetabolitesList.contains(nodeNameList.get(j)) && LocalConfig.getInstance().isHighlightMissingMetabolitesSelected()) {
+						if (!foundMetabolitesList.contains(nodeNameList.get(j))) {
 							stroke = PathwaysFrameConstants.METABOLITE_NOT_FOUND_COLOR;
 						}
 					} else if (smallMainMetabolites.contains(nodeNameList.get(j))) {
-						if (!foundMetabolitesList.contains(nodeNameList.get(j)) && LocalConfig.getInstance().isHighlightMissingMetabolitesSelected()) {
+						if (!foundMetabolitesList.contains(nodeNameList.get(j))) {
 							stroke = PathwaysFrameConstants.METABOLITE_NOT_FOUND_COLOR;
 						}
 					} else if (sideMetabolites.contains(nodeNameList.get(j))) {
-						if (!foundMetabolitesList.contains(nodeNameList.get(j)) && LocalConfig.getInstance().isHighlightMissingMetabolitesSelected()) {
+						if (!foundMetabolitesList.contains(nodeNameList.get(j))) {
 							stroke = PathwaysFrameConstants.METABOLITE_NOT_FOUND_COLOR;
 						}
 						if (cofactors.contains(nodeNameList.get(j))) {
 							stroke = PathwaysFrameConstants.COFACTOR_COLOR;
-							if (!foundMetabolitesList.contains(nodeNameList.get(j)) && LocalConfig.getInstance().isHighlightMissingMetabolitesSelected()) {
+							if (!foundMetabolitesList.contains(nodeNameList.get(j))) {
 								stroke = PathwaysFrameConstants.COFACTOR_NOT_FOUND_COLOR;
 							}
 						}
 					} else if (reactions.contains(nodeNameList.get(j))) {
 						stroke = PathwaysFrameConstants.REACTION_NODE_DETAULT_FONT_COLOR;
-						if (!foundReactionsList.contains(nodeNameList.get(j)) && LocalConfig.getInstance().isHighlightMissingReactionsSelected()) {
+						if (!foundReactionsList.contains(nodeNameList.get(j))) {
 							stroke = PathwaysFrameConstants.REACTION_NOT_FOUND_FONT_COLOR;
 						} else if (koReactions.contains(nodeNameList.get(j))) {
 							stroke = PathwaysFrameConstants.REACTION_KO_FONT_COLOR;
@@ -1578,26 +1578,26 @@ public class PathwaysFrame extends JApplet {
 				} else {
 					if (mainMetabolites.contains(nodeNameList.get(j))) {
 						fontSize = Integer.toString(PathwaysFrameConstants.METABOLITE_NODE_FONT_SIZE);
-						if (!foundMetabolitesList.contains(nodeNameList.get(j)) && LocalConfig.getInstance().isHighlightMissingMetabolitesSelected()) {
+						if (!foundMetabolitesList.contains(nodeNameList.get(j))) {
 							color = PathwaysFrameConstants.METABOLITE_NOT_FOUND_COLOR;
 						}
 						xOffset = startX(getGraphics(), displayString(displayName), (int) (width*0.5));
 						yOffset = PathwaysFrameConstants.METABOLITE_NODE_YPOS;
 					} else if (smallMainMetabolites.contains(nodeNameList.get(j))) {
 						fontSize = Integer.toString(PathwaysFrameConstants.SMALL_MAIN_METABOLITE_NODE_FONT_SIZE);
-						if (!foundMetabolitesList.contains(nodeNameList.get(j)) && LocalConfig.getInstance().isHighlightMissingMetabolitesSelected()) {
+						if (!foundMetabolitesList.contains(nodeNameList.get(j))) {
 							color = PathwaysFrameConstants.METABOLITE_NOT_FOUND_COLOR;
 						}
 						xOffset = startX(getGraphics(), displayString(displayName), (int) (width*0.4));
 						yOffset = PathwaysFrameConstants.SMALL_MAIN_METABOLITE_NODE_YPOS;
 					} else if (sideMetabolites.contains(nodeNameList.get(j))) {
 						fontSize = Integer.toString(PathwaysFrameConstants.SIDE_METABOLITE_NODE_FONT_SIZE);
-						if (!foundMetabolitesList.contains(nodeNameList.get(j)) && LocalConfig.getInstance().isHighlightMissingMetabolitesSelected()) {
+						if (!foundMetabolitesList.contains(nodeNameList.get(j))) {
 							color = PathwaysFrameConstants.METABOLITE_NOT_FOUND_COLOR;
 						}
 						if (cofactors.contains(nodeNameList.get(j))) {
 							color = PathwaysFrameConstants.COFACTOR_COLOR;
-							if (!foundMetabolitesList.contains(nodeNameList.get(j)) && LocalConfig.getInstance().isHighlightMissingMetabolitesSelected()) {
+							if (!foundMetabolitesList.contains(nodeNameList.get(j))) {
 								color = PathwaysFrameConstants.COFACTOR_NOT_FOUND_COLOR;
 							}
 						}
@@ -1606,7 +1606,7 @@ public class PathwaysFrame extends JApplet {
 					} else if (reactions.contains(nodeNameList.get(j))) {
 						fontSize = Integer.toString(PathwaysFrameConstants.REACTION_NODE_FONT_SIZE);
 						color = PathwaysFrameConstants.REACTION_NODE_DETAULT_FONT_COLOR;
-						if (!foundReactionsList.contains(nodeNameList.get(j)) && LocalConfig.getInstance().isHighlightMissingReactionsSelected()) {
+						if (!foundReactionsList.contains(nodeNameList.get(j))) {
 							color = PathwaysFrameConstants.REACTION_NOT_FOUND_FONT_COLOR;
 						} else if (koReactions.contains(nodeNameList.get(j))) {
 							color = PathwaysFrameConstants.REACTION_KO_FONT_COLOR;

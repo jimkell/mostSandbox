@@ -26,20 +26,16 @@ public class VisualizationOptionsDialog extends JDialog {
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	private JCheckBox graphMissingMetabolitesCheckBox = new JCheckBox("Graph Missing Metabolites");
-	// only enabled if graphMissingReactions is checked
-	private JCheckBox highlightMissingMetabolitesCheckBox = new JCheckBox("Highlight Missing Metabolites");
+	private JCheckBox graphMissingMetabolitesCheckBox = new JCheckBox(VisualizationOptionsConstants.GRAPH_ALL_REACTIONS_METABOLITES_IN_DATABASE_NAME);
 	
-	private JCheckBox graphMissingReactionsCheckBox = new JCheckBox("Graph Missing Reactions");
-	// only enabled if graphMissingReactions is checked
-	private JCheckBox highlightMissingReactionsCheckBox = new JCheckBox("Highlight Missing Reactions");
-	
-	private JCheckBox scaleEdgeThicknessCheckBox = new JCheckBox("Scale Edge Thickness Using Flux Values");
+	private JCheckBox scaleEdgeThicknessCheckBox = new JCheckBox(VisualizationOptionsConstants.SCALE_EDGE_THICKNESS_USING_FLUX_VALUES_NAME);
 	
 	// Proton cannot be ignored unless reactions and metabolites positions databases are updated
 	// to include protons. Protons currently omitted in most reactions.
-//	private JCheckBox ignoreProtonCheckBox = new JCheckBox("Ignore Proton for Reaction Matching");
-	private JCheckBox ignoreWaterCheckBox = new JCheckBox("Ignore Water for Reaction Matching");
+//	private JCheckBox ignoreProtonCheckBox = new JCheckBox(VisualizationOptionsConstants.IGNORE_PROTON_FOR_REACTION_MATCHING_NAME);
+	private JCheckBox ignoreWaterCheckBox = new JCheckBox(VisualizationOptionsConstants.IGNORE_WATER_FOR_REACTION_MATCHING_NAME);
+	
+	private JCheckBox showVisualizationRerortCheckBox = new JCheckBox(VisualizationOptionsConstants.SHOW_VISUALIZATION_REPORT);
 	
 	public JButton okButton = new JButton("    OK    ");
 	public JButton cancelButton = new JButton("  Cancel  ");
@@ -52,31 +48,25 @@ public class VisualizationOptionsDialog extends JDialog {
 		
 		// set check box defaults
 		graphMissingMetabolitesCheckBox.setSelected(LocalConfig.getInstance().isGraphMissingMetabolitesSelected());
-		highlightMissingMetabolitesCheckBox.setSelected(LocalConfig.getInstance().isHighlightMissingMetabolitesSelected());
-		graphMissingReactionsCheckBox.setSelected(LocalConfig.getInstance().isGraphMissingReactionsSelected());
-		highlightMissingReactionsCheckBox.setSelected(LocalConfig.getInstance().isHighlightMissingReactionsSelected());
 		scaleEdgeThicknessCheckBox.setSelected(LocalConfig.getInstance().isScaleEdgeThicknessSelected());
 //		ignoreProtonCheckBox.setSelected(LocalConfig.getInstance().isIgnoreProtonSelected());
 		ignoreWaterCheckBox.setSelected(LocalConfig.getInstance().isIgnoreWaterSelected());
+		showVisualizationRerortCheckBox.setSelected(LocalConfig.getInstance().isShowVisualizationReportSelected());
 		
 		graphMissingMetabolitesCheckBox.setMnemonic(KeyEvent.VK_G);
-		highlightMissingMetabolitesCheckBox.setMnemonic(KeyEvent.VK_M);
-		graphMissingReactionsCheckBox.setMnemonic(KeyEvent.VK_R);
-		highlightMissingReactionsCheckBox.setMnemonic(KeyEvent.VK_H);
 		scaleEdgeThicknessCheckBox.setMnemonic(KeyEvent.VK_S);
 //		ignoreProtonCheckBox.setMnemonic(KeyEvent.VK_I);
 		ignoreWaterCheckBox.setMnemonic(KeyEvent.VK_W);
+		showVisualizationRerortCheckBox.setMnemonic(KeyEvent.VK_R);
 		
 		//box layout
 		Box vb = Box.createVerticalBox();
 
 		Box hbGraphMissingMetabolites = Box.createHorizontalBox();
-		Box hbHighlightMissingMetabolites = Box.createHorizontalBox();
-		Box hbGraphMissingReactions = Box.createHorizontalBox();
-		Box hbHighlightMissingReactions = Box.createHorizontalBox();
 		Box hbScaleEdgeThickness = Box.createHorizontalBox();
 //		Box hbIgnoreProton = Box.createHorizontalBox();
 		Box hbIgnoreWater = Box.createHorizontalBox();
+		Box hbShowReport = Box.createHorizontalBox();
 		Box hbButton = Box.createHorizontalBox();
 		
 		JPanel hbGraphMissingMetabolitesPanel = new JPanel();
@@ -89,37 +79,6 @@ public class VisualizationOptionsDialog extends JDialog {
 				VisualizationOptionsConstants.RIGHT_BORDER));
 
 		hbGraphMissingMetabolites.add(leftJustify(hbGraphMissingMetabolitesPanel));
-		
-		JPanel hbHighlightMissingMetabolitesPanel = new JPanel();
-		hbHighlightMissingMetabolitesPanel.setLayout(new BoxLayout(hbHighlightMissingMetabolitesPanel, BoxLayout.X_AXIS));
-		hbHighlightMissingMetabolitesPanel.add(highlightMissingMetabolitesCheckBox);
-		hbHighlightMissingMetabolitesPanel.setBorder(BorderFactory.createEmptyBorder(0, 
-				VisualizationOptionsConstants.LEFT_BORDER + VisualizationOptionsConstants.LEFT_INDENT, 
-				VisualizationOptionsConstants.MAIN_TOPIC_GAP, 
-				VisualizationOptionsConstants.RIGHT_BORDER));
-
-		hbHighlightMissingMetabolites.add(leftJustify(hbHighlightMissingMetabolitesPanel));
-		
-		JPanel hbGraphMissingReactionsPanel = new JPanel();
-		hbGraphMissingReactionsPanel.setLayout(new BoxLayout(hbGraphMissingReactionsPanel, BoxLayout.X_AXIS));
-		hbGraphMissingReactionsPanel.add(graphMissingReactionsCheckBox);
-		hbGraphMissingReactionsPanel.setBorder(BorderFactory.createEmptyBorder(
-				VisualizationOptionsConstants.TOP_BORDER, 
-				VisualizationOptionsConstants.LEFT_BORDER, 
-				VisualizationOptionsConstants.SUB_TOPIC_GAP, 
-				VisualizationOptionsConstants.RIGHT_BORDER));
-
-		hbGraphMissingReactions.add(leftJustify(hbGraphMissingReactionsPanel));
-		
-		JPanel hbHighlightMissingReactionsPanel = new JPanel();
-		hbHighlightMissingReactionsPanel.setLayout(new BoxLayout(hbHighlightMissingReactionsPanel, BoxLayout.X_AXIS));
-		hbHighlightMissingReactionsPanel.add(highlightMissingReactionsCheckBox);
-		hbHighlightMissingReactionsPanel.setBorder(BorderFactory.createEmptyBorder(0, 
-				VisualizationOptionsConstants.LEFT_BORDER + VisualizationOptionsConstants.LEFT_INDENT, 
-				VisualizationOptionsConstants.SUB_TOPIC_GAP, 
-				VisualizationOptionsConstants.RIGHT_BORDER));
-
-		hbHighlightMissingReactions.add(leftJustify(hbHighlightMissingReactionsPanel));
 		
 		JPanel hbScaleEdgeThicknessPanel = new JPanel();
 		hbScaleEdgeThicknessPanel.setLayout(new BoxLayout(hbScaleEdgeThicknessPanel, BoxLayout.X_AXIS));
@@ -151,6 +110,16 @@ public class VisualizationOptionsDialog extends JDialog {
 
 		hbIgnoreWater.add(leftJustify(hbIgnoreWaterPanel));
 		
+		JPanel hbShowReportPanel = new JPanel();
+		hbShowReportPanel.setLayout(new BoxLayout(hbShowReportPanel, BoxLayout.X_AXIS));
+		hbShowReportPanel.add(showVisualizationRerortCheckBox);
+		hbShowReportPanel.setBorder(BorderFactory.createEmptyBorder(0, 
+				VisualizationOptionsConstants.LEFT_BORDER, 
+				VisualizationOptionsConstants.MAIN_TOPIC_GAP, 
+				VisualizationOptionsConstants.RIGHT_BORDER));
+
+		hbShowReport.add(leftJustify(hbShowReportPanel));
+		
 		okButton.setMnemonic(KeyEvent.VK_O);
 		JLabel blank = new JLabel("    "); 
 		cancelButton.setMnemonic(KeyEvent.VK_C);
@@ -165,40 +134,20 @@ public class VisualizationOptionsDialog extends JDialog {
 		hbButton.add(buttonPanel);
 
 		vb.add(hbGraphMissingMetabolites);
-		vb.add(hbHighlightMissingMetabolites);
-		vb.add(hbGraphMissingReactions);
-		vb.add(hbHighlightMissingReactions);
 		vb.add(hbScaleEdgeThickness);
 //		vb.add(hbIgnoreProton);
 		vb.add(hbIgnoreWater);
+		vb.add(hbShowReport);
 		vb.add(hbButton);
 		add(vb);
     	
-    	ActionListener graphMissingMetabolitesActionListener = new ActionListener() {
-    		public void actionPerformed(ActionEvent actionEvent) {
-    			setGraphMissingMetabolitesDefaults();							
-    		}
-    	};
-    	
-    	graphMissingMetabolitesCheckBox.addActionListener(graphMissingMetabolitesActionListener);
-    	
-    	ActionListener graphMissingReactionsActionListener = new ActionListener() {
-    		public void actionPerformed(ActionEvent actionEvent) {
-    			setGraphMissingReactionsDefaults();							
-    		}
-    	};
-    	
-    	graphMissingReactionsCheckBox.addActionListener(graphMissingReactionsActionListener);
-    	
     	ActionListener okButtonActionListener = new ActionListener() {
 			public void actionPerformed(ActionEvent prodActionEvent) {
-				LocalConfig.getInstance().setGraphMissingReactionsSelected(graphMissingReactionsCheckBox.isSelected());
-				LocalConfig.getInstance().setHighlightMissingReactionsSelected(highlightMissingReactionsCheckBox.isSelected());
 				LocalConfig.getInstance().setGraphMissingMetabolitesSelected(graphMissingMetabolitesCheckBox.isSelected());
-				LocalConfig.getInstance().setHighlightMissingMetabolitesSelected(highlightMissingMetabolitesCheckBox.isSelected());
 				LocalConfig.getInstance().setScaleEdgeThicknessSelected(scaleEdgeThicknessCheckBox.isSelected());
 //				LocalConfig.getInstance().setIgnoreProtonSelected(ignoreProtonCheckBox.isSelected());
 				LocalConfig.getInstance().setIgnoreWaterSelected(ignoreWaterCheckBox.isSelected());
+				LocalConfig.getInstance().setShowVisualizationReportSelected(showVisualizationRerortCheckBox.isSelected());
 				setVisible(false);
 				dispose();
 //				System.out.println(LocalConfig.getInstance().isGraphMissingReactionsSelected());
@@ -219,35 +168,6 @@ public class VisualizationOptionsDialog extends JDialog {
 		
 		cancelButton.addActionListener(cancelButtonActionListener);
 		
-	}
-	
-	/**
-	 * Set sub topic check boxes to correct values based on main topic 
-	 */
-	public void setGraphMissingReactionsDefaults() {
-		if (graphMissingReactionsCheckBox.isSelected()) {
-			highlightMissingReactionsCheckBox.setSelected(VisualizationOptionsConstants.HIGHLIGHT_MISSING_REACTIONS_DEFAULT);
-			highlightMissingReactionsCheckBox.setEnabled(true);
-		} else {
-			highlightMissingReactionsCheckBox.setSelected(VisualizationOptionsConstants.HIGHLIGHT_MISSING_REACTIONS_GRAYED_DEFAULT);
-			highlightMissingReactionsCheckBox.setEnabled(false);
-		}
-	}
-	
-	public void setGraphMissingMetabolitesDefaults() {
-		if (graphMissingMetabolitesCheckBox.isSelected()) {
-			highlightMissingMetabolitesCheckBox.setSelected(VisualizationOptionsConstants.HIGHLIGHT_MISSING_METABOLITES_DEFAULT);
-			highlightMissingMetabolitesCheckBox.setEnabled(true);
-			graphMissingReactionsCheckBox.setEnabled(true);
-		} else {
-			highlightMissingMetabolitesCheckBox.setSelected(VisualizationOptionsConstants.HIGHLIGHT_MISSING_METABOLITES_GRAYED_DEFAULT);
-			highlightMissingMetabolitesCheckBox.setEnabled(false);
-			// only possible to graph missing reactions if graph missing metabolites
-			// selected. otherwise metabolite node that connects to reaction may be null
-			graphMissingReactionsCheckBox.setEnabled(false);
-			graphMissingReactionsCheckBox.setSelected(false);
-			setGraphMissingReactionsDefaults();
-		}
 	}
 	
 	/**

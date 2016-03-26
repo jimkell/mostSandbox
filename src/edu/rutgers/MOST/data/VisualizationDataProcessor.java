@@ -306,7 +306,7 @@ public class VisualizationDataProcessor {
 						}	
 					}
 				} else {
-					if (!LocalConfig.getInstance().isGraphMissingReactionsSelected()) {
+					if (!LocalConfig.getInstance().isGraphMissingMetabolitesSelected()) {
 						drawReaction = false;
 					} 
 				}

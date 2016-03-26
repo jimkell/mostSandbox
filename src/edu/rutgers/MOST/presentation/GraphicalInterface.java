@@ -13148,21 +13148,22 @@ public class GraphicalInterface extends JFrame {
 	 */
 	public void setVisualizationOptionsDefaults() {
 		// may eventually get this from a config file
-		LocalConfig.getInstance().setGraphMissingReactionsSelected(VisualizationOptionsConstants.GRAPH_MISSING_REACTIONS_DEFAULT);
-		if (VisualizationOptionsConstants.GRAPH_MISSING_REACTIONS_DEFAULT) {
-			LocalConfig.getInstance().setHighlightMissingReactionsSelected(VisualizationOptionsConstants.HIGHLIGHT_MISSING_REACTIONS_DEFAULT);
-		} else {
-			LocalConfig.getInstance().setHighlightMissingReactionsSelected(VisualizationOptionsConstants.HIGHLIGHT_MISSING_REACTIONS_GRAYED_DEFAULT);
-		}
-		LocalConfig.getInstance().setGraphMissingMetabolitesSelected(VisualizationOptionsConstants.GRAPH_MISSING_REACTIONS_DEFAULT);
-		if (VisualizationOptionsConstants.GRAPH_MISSING_METABOLITES_DEFAULT) {
-			LocalConfig.getInstance().setHighlightMissingMetabolitesSelected(VisualizationOptionsConstants.HIGHLIGHT_MISSING_METABOLITES_DEFAULT);
-		} else {
-			LocalConfig.getInstance().setHighlightMissingMetabolitesSelected(VisualizationOptionsConstants.HIGHLIGHT_MISSING_METABOLITES_GRAYED_DEFAULT);
-		}
+//		LocalConfig.getInstance().setGraphMissingReactionsSelected(VisualizationOptionsConstants.GRAPH_MISSING_REACTIONS_DEFAULT);
+//		if (VisualizationOptionsConstants.GRAPH_MISSING_REACTIONS_DEFAULT) {
+//			LocalConfig.getInstance().setHighlightMissingReactionsSelected(VisualizationOptionsConstants.HIGHLIGHT_MISSING_REACTIONS_DEFAULT);
+//		} else {
+//			LocalConfig.getInstance().setHighlightMissingReactionsSelected(VisualizationOptionsConstants.HIGHLIGHT_MISSING_REACTIONS_GRAYED_DEFAULT);
+//		}
+		LocalConfig.getInstance().setGraphMissingMetabolitesSelected(VisualizationOptionsConstants.GRAPH_MISSING_METABOLITES_DEFAULT);
+//		if (VisualizationOptionsConstants.GRAPH_MISSING_METABOLITES_DEFAULT) {
+//			LocalConfig.getInstance().setHighlightMissingMetabolitesSelected(VisualizationOptionsConstants.HIGHLIGHT_MISSING_METABOLITES_DEFAULT);
+//		} else {
+//			LocalConfig.getInstance().setHighlightMissingMetabolitesSelected(VisualizationOptionsConstants.HIGHLIGHT_MISSING_METABOLITES_GRAYED_DEFAULT);
+//		}
 		LocalConfig.getInstance().setScaleEdgeThicknessSelected(VisualizationOptionsConstants.SCALE_EDGE_THICKNESS_DEFAULT);
 		LocalConfig.getInstance().setIgnoreProtonSelected(VisualizationOptionsConstants.IGNORE_PROTON_DEFAULT);
 		LocalConfig.getInstance().setIgnoreWaterSelected(VisualizationOptionsConstants.IGNORE_WATER_DEFAULT);
+		LocalConfig.getInstance().setShowVisualizationReportSelected(VisualizationOptionsConstants.SHOW_VISUALIZATION_REPORT_DEFAULT);
 	}
 	
 	public void clearVisualizationCollections() {
@@ -13354,7 +13355,13 @@ public class GraphicalInterface extends JFrame {
             Thread.currentThread().interrupt();
         }
         
-        OutputPopout p = new OutputPopout();
+        if (LocalConfig.getInstance().isShowVisualizationReportSelected()) {
+        	createVisualizationReport();
+        }
+	}
+	
+	public void createVisualizationReport() {
+		OutputPopout p = new OutputPopout();
 		p.setIconImages(icons);
 		p.setTitle(gi.getTitle());
 		p.setLocationRelativeTo(null);
@@ -13362,7 +13369,6 @@ public class GraphicalInterface extends JFrame {
 		p.setOutputText(LocalConfig.getInstance().getVisualizationData().getReport());
 		setVisualizationPopout(p);
 	}
-	
 	
 	public void showIdentifierColumnNameDialog(String type, String title, String columnType, int selectedIndex) {
 		if (selectedIndex > -1) {
