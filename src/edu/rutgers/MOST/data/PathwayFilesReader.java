@@ -715,8 +715,6 @@ public class PathwayFilesReader {
 	}
 	
 	public void readChebiIdsKeggIdsFile(File chebiIdsKeggIds) {
-		// currently all lists have length 1, but there are errors in the file that were manually corrected, therefore
-		// the file may contain other errors, so this functionality will be left in for future sources
 		CSVReader reader;
 		
 		int count = 0;

@@ -7785,6 +7785,10 @@ public class GraphicalInterface extends JFrame {
 				undoItem.setNewMetaColumnNames(newMetaCol);
 				setNewUsedMap(undoItem);
 				setUpReactionsUndo(undoItem);
+				// find these columns after deletion since index may have changed
+				ReactionFactory r = new ReactionFactory("SBML");
+				LocalConfig.getInstance().setEcNumberColumn(r.locateECColumnColumn());
+				LocalConfig.getInstance().setKeggReactionIdColumn(r.locateKeggIdColumn());
 			}
 		});
 		reactionsHeaderContextMenu.add(deleteColumnMenu);	
@@ -7855,6 +7859,10 @@ public class GraphicalInterface extends JFrame {
 				undoItem.setNewMetaColumnNames(newMetaCol);
 				setUndoNewCollections(undoItem);				
 				setUpMetabolitesUndo(undoItem);
+				// find these columns since index may have changed
+				MetaboliteFactory f = new MetaboliteFactory("SBML");
+				LocalConfig.getInstance().setKeggMetaboliteIdColumn(f.locateKeggIdColumn());
+				LocalConfig.getInstance().setChebiIdColumn(f.locateChebiIdColumn());
 			}
 		});
 		metabolitesHeaderContextMenu.add(deleteColumnMenu);	
@@ -13166,18 +13174,7 @@ public class GraphicalInterface extends JFrame {
 	 */
 	public void setVisualizationOptionsDefaults() {
 		// may eventually get this from a config file
-//		LocalConfig.getInstance().setGraphMissingReactionsSelected(VisualizationOptionsConstants.GRAPH_MISSING_REACTIONS_DEFAULT);
-//		if (VisualizationOptionsConstants.GRAPH_MISSING_REACTIONS_DEFAULT) {
-//			LocalConfig.getInstance().setHighlightMissingReactionsSelected(VisualizationOptionsConstants.HIGHLIGHT_MISSING_REACTIONS_DEFAULT);
-//		} else {
-//			LocalConfig.getInstance().setHighlightMissingReactionsSelected(VisualizationOptionsConstants.HIGHLIGHT_MISSING_REACTIONS_GRAYED_DEFAULT);
-//		}
 		LocalConfig.getInstance().setGraphMissingMetabolitesSelected(VisualizationOptionsConstants.GRAPH_MISSING_METABOLITES_DEFAULT);
-//		if (VisualizationOptionsConstants.GRAPH_MISSING_METABOLITES_DEFAULT) {
-//			LocalConfig.getInstance().setHighlightMissingMetabolitesSelected(VisualizationOptionsConstants.HIGHLIGHT_MISSING_METABOLITES_DEFAULT);
-//		} else {
-//			LocalConfig.getInstance().setHighlightMissingMetabolitesSelected(VisualizationOptionsConstants.HIGHLIGHT_MISSING_METABOLITES_GRAYED_DEFAULT);
-//		}
 		LocalConfig.getInstance().setScaleEdgeThicknessSelected(VisualizationOptionsConstants.SCALE_EDGE_THICKNESS_DEFAULT);
 		LocalConfig.getInstance().setIgnoreProtonSelected(VisualizationOptionsConstants.IGNORE_PROTON_DEFAULT);
 		LocalConfig.getInstance().setIgnoreWaterSelected(VisualizationOptionsConstants.IGNORE_WATER_DEFAULT);
@@ -13193,7 +13190,6 @@ public class GraphicalInterface extends JFrame {
 		LocalConfig.getInstance().getMetaboliteIdKeggIdMap().clear();
 		LocalConfig.getInstance().getKeggIdMetaboliteMap().clear();
 		LocalConfig.getInstance().getKeggIdCompartmentMap().clear();
-//		LocalConfig.getInstance().getSubstitutedMetabolitesMap().clear();
 	}
 	
 	public void processVisualizationsData() {
@@ -13261,17 +13257,25 @@ public class GraphicalInterface extends JFrame {
 		String missingData = "";
 		boolean showMissingItemMessage = true;
 		// if KEGG id not set by user, attempt to locate programmatically
-		if (LocalConfig.getInstance().getKeggMetaboliteIdColumn() == -1) {
+		if (LocalConfig.getInstance().getKeggMetaboliteIdColumn() == -1 || 
+				LocalConfig.getInstance().getChebiIdColumn() > -1) {
 			LocalConfig.getInstance().setKeggMetaboliteIdColumn(f.locateKeggIdColumn());
 			LocalConfig.getInstance().setChebiIdColumn(f.locateChebiIdColumn());
 		}
-		// if KEGG id still not found, show prompt
-		if (LocalConfig.getInstance().getKeggMetaboliteIdColumn() == -1) {
+		// if KEGG id or CHEBI id still not found, show prompt
+		if (LocalConfig.getInstance().getKeggMetaboliteIdColumn() > -1 || 
+				LocalConfig.getInstance().getChebiIdColumn() > -1) {
+			showMissingItemMessage = false;
+		} else {
 			missingItem = "KEGG Ids";
 			missingData = "metabolites";
-		} else {
-			showMissingItemMessage = false;
-		} 
+		}
+//		if (LocalConfig.getInstance().getKeggMetaboliteIdColumn() == -1) {
+//			missingItem = "KEGG Ids";
+//			missingData = "metabolites";
+//		} else {
+//			showMissingItemMessage = false;
+//		} 
 		
 		if (showMissingItemMessage) {
 			JOptionPane.showMessageDialog(null,                
