@@ -13125,34 +13125,37 @@ public class GraphicalInterface extends JFrame {
 	}
 	
 	public void createCompartmentNameDialog() {
-		CompartmentNameDialog frame = new CompartmentNameDialog();
-		setCompNameDialog(frame);
-		frame.setIconImages(icons);
-		//frame.setSize(550, 270);
-		frame.pack();
-		frame.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-		frame.setLocationRelativeTo(null);
-		frame.addWindowListener(new WindowAdapter() {
-			public void windowClosing(WindowEvent evt) {
-				getCompNameDialog().setVisible(false);
-				getCompNameDialog().dispose();
-				enableLoadItems();
-				disableMenuItemsForFVA(false);
-			}
-		});
-		frame.setAlwaysOnTop(true);
-		frame.setVisible(true);
-		frame.okButton.addActionListener(compartmentNameAbbrOKActionListener);
-		frame.cancelButton.addActionListener(compartmentNameAbbrCancelActionListener);
-		disableLoadItems();
-		disableMenuItemsForFVA(true);
+		// compartment list should always be > 0
+		if (LocalConfig.getInstance().getListOfCompartments().size() > 0) {
+			CompartmentNameDialog frame = new CompartmentNameDialog();
+			setCompNameDialog(frame);
+			frame.setIconImages(icons);
+			//frame.setSize(550, 270);
+			frame.pack();
+			frame.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+			frame.setLocationRelativeTo(null);
+			frame.addWindowListener(new WindowAdapter() {
+				public void windowClosing(WindowEvent evt) {
+					getCompNameDialog().setVisible(false);
+					getCompNameDialog().dispose();
+					enableLoadItems();
+					disableMenuItemsForFVA(false);
+				}
+			});
+			frame.setAlwaysOnTop(true);
+			frame.setVisible(true);
+			frame.okButton.addActionListener(compartmentNameAbbrOKActionListener);
+			frame.cancelButton.addActionListener(compartmentNameAbbrCancelActionListener);
+			disableLoadItems();
+			disableMenuItemsForFVA(true);
+		} else {
+			
+		}
 	}
 	
 	ActionListener compartmentNameAbbrOKActionListener = new ActionListener() {
 		public void actionPerformed(ActionEvent ae) {
 			LocalConfig.getInstance().setSelectedCompartmentName(compNameFromCombo(getCompNameDialog().cbCompartmentName));
-//			LocalConfig.getInstance().setOutsideName(compNameFromCombo(getCompNameDialog().cbOutsideName));
-//			LocalConfig.getInstance().setMembraneName(compNameFromCombo(getCompNameDialog().cbMembraneName));
 			getCompNameDialog().setVisible(false);
 			getCompNameDialog().dispose();
 			processVisualizationsData();
@@ -13214,44 +13217,47 @@ public class GraphicalInterface extends JFrame {
 	
 	// updates model correctly but locks up when visualizing
 	public void visualizeMenuProcesses() {
-		int index = -1;
-		// check for blank compartment value
-		for (int k = 0; k < LocalConfig.getInstance().getListOfCompartments().size(); k++) {
-			if (LocalConfig.getInstance().getListOfCompartments().get(k).getId() == null ||
-					LocalConfig.getInstance().getListOfCompartments().get(k).getId().trim().length() == 0) {
-				index = k;
+		if (locateMetaboliteIdentifierColumn() ) {
+			int index = -1;
+			// check for blank compartment value
+			for (int k = 0; k < LocalConfig.getInstance().getListOfCompartments().size(); k++) {
+				if (LocalConfig.getInstance().getListOfCompartments().get(k).getId() == null ||
+						LocalConfig.getInstance().getListOfCompartments().get(k).getId().trim().length() == 0) {
+					index = k;
+				}
 			}
-		}
-		if (index > -1) {
-//		if (idMetabMap.size() > 0) {
-			String blankCompartmentId = "\"C_1\"";
-			// remove quotes
-			String blankCompartmentEntry = blankCompartmentId.substring(1, blankCompartmentId.length() - 1);
-			Object[] options = {"    Yes    ", "    No    ",};
-    		int choice = JOptionPane.showOptionDialog(null, 
-    				"Model Cannot Be Visualized With Blank Compartment Abbreviations. "
-    				+ "Blank Compartment Abbreviations Will Be Renamed to " + blankCompartmentId,
-    				"Blank Compartment Entries", 
-    				JOptionPane.YES_NO_OPTION, 
-    				JOptionPane.QUESTION_MESSAGE, 
-    				null, options, options[0]);
-    		
-    		if (choice == JOptionPane.YES_OPTION) {
-    			DefaultTableModel model = (DefaultTableModel) compartmentsTable.getModel();
-    			int maxId = LocalConfig.getInstance().getMaxCompartmentId();
-    			if (LocalConfig.getInstance().getListOfCompartments().size() > maxId) {
-    				model.addRow(createCompartmentsRow(maxId));
-    			}
-    			model.setValueAt(blankCompartmentEntry, index, CompartmentsConstants.ABBREVIATION_COLUMN);
-    			renameCompartmentsTableCompartment("", blankCompartmentEntry, index, false);
-    			locateMetaboliteIdentifierColumn();
-    		}
-		} else {
-			locateMetaboliteIdentifierColumn();
+			if (index > -1) {
+//			if (idMetabMap.size() > 0) {
+				String blankCompartmentId = "\"C_1\"";
+				// remove quotes
+				String blankCompartmentEntry = blankCompartmentId.substring(1, blankCompartmentId.length() - 1);
+				Object[] options = {"    Yes    ", "    No    ",};
+	    		int choice = JOptionPane.showOptionDialog(null, 
+	    				"Model Cannot Be Visualized With Blank Compartment Abbreviations. "
+	    				+ "Blank Compartment Abbreviations Will Be Renamed to " + blankCompartmentId,
+	    				"Blank Compartment Entries", 
+	    				JOptionPane.YES_NO_OPTION, 
+	    				JOptionPane.QUESTION_MESSAGE, 
+	    				null, options, options[0]);
+	    		
+	    		if (choice == JOptionPane.YES_OPTION) {
+	    			DefaultTableModel model = (DefaultTableModel) compartmentsTable.getModel();
+	    			int maxId = LocalConfig.getInstance().getMaxCompartmentId();
+	    			if (LocalConfig.getInstance().getListOfCompartments().size() > maxId) {
+	    				model.addRow(createCompartmentsRow(maxId));
+	    			}
+	    			model.setValueAt(blankCompartmentEntry, index, CompartmentsConstants.ABBREVIATION_COLUMN);
+	    			renameCompartmentsTableCompartment("", blankCompartmentEntry, index, false);
+	    			createCompartmentNameDialog();
+	    		}
+			} else {
+				createCompartmentNameDialog();
+			}
 		}
 	}
 	
-	public void locateMetaboliteIdentifierColumn() {
+	public boolean locateMetaboliteIdentifierColumn() {
+		boolean found = false;
 		MetaboliteFactory f = new MetaboliteFactory("SBML");
 		String missingItem = "";
 		String missingData = "";
@@ -13270,12 +13276,6 @@ public class GraphicalInterface extends JFrame {
 			missingItem = "KEGG Ids";
 			missingData = "metabolites";
 		}
-//		if (LocalConfig.getInstance().getKeggMetaboliteIdColumn() == -1) {
-//			missingItem = "KEGG Ids";
-//			missingData = "metabolites";
-//		} else {
-//			showMissingItemMessage = false;
-//		} 
 		
 		if (showMissingItemMessage) {
 			JOptionPane.showMessageDialog(null,                
@@ -13287,12 +13287,9 @@ public class GraphicalInterface extends JFrame {
 							"Unable to Visualize Model",                             
 					JOptionPane.WARNING_MESSAGE);
 		} else {
-			if (LocalConfig.getInstance().getListOfCompartments().size() > 0) {
-				createCompartmentNameDialog();
-			} else {
-				//visualizeModel();
-			}
+			found = true;
 		}
+		return found;
 	}
 	
 	public void categorizeTransportReactions() {
