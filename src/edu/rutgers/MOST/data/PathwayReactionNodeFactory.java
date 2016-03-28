@@ -9,6 +9,7 @@ import java.util.Vector;
 
 import edu.rutgers.MOST.config.LocalConfig;
 import edu.rutgers.MOST.presentation.GraphicalInterface;
+import edu.rutgers.MOST.presentation.GraphicalInterfaceConstants;
 import edu.rutgers.MOST.presentation.PathwaysFrameConstants;
 
 public class PathwayReactionNodeFactory {
@@ -66,6 +67,9 @@ public class PathwayReactionNodeFactory {
 			ArrayList<SBMLReaction> reac = new ArrayList<SBMLReaction>();
 			reac.add(r);
 			addReactions(reactions, reac, compartment, prd, true);
+		}
+		if (reactions.size() > 0) {
+			setReversibilityAndDirection(prd, pn, reactions);
 		}
 		pn.setReactions(reactions);
 		
@@ -133,17 +137,21 @@ public class PathwayReactionNodeFactory {
 			if (exactMatch) {
 				if (speciesExactMatch(prd.getKeggReactantIds(), prd.getKeggReactantIdsDataMap(), modelData.getKeggReactantIds()) && 
 						speciesExactMatch(prd.getKeggProductIds(), prd.getKeggProductIdsDataMap(), modelData.getKeggProductIds())) {
+					prd.setDirection(PathwaysCSVFileConstants.FORWARD_DIRECTION);
 					match = true;
 				} else if (speciesExactMatch(prd.getKeggReactantIds(), prd.getKeggReactantIdsDataMap(), modelData.getKeggProductIds()) && 
 						speciesExactMatch(prd.getKeggProductIds(), prd.getKeggProductIdsDataMap(), modelData.getKeggReactantIds())) {
+					prd.setDirection(PathwaysCSVFileConstants.REVERSE_DIRECTION);
 					match = true;
 				}
 			} else {
 				if (speciesMatch(prd.getKeggReactantIds(), prd.getKeggReactantIdsDataMap(), modelData.getKeggReactantIds()) && 
 						speciesMatch(prd.getKeggProductIds(), prd.getKeggProductIdsDataMap(), modelData.getKeggProductIds())) {
+					prd.setDirection(PathwaysCSVFileConstants.FORWARD_DIRECTION);
 					match = true;
 				} else if (speciesMatch(prd.getKeggReactantIds(), prd.getKeggReactantIdsDataMap(), modelData.getKeggProductIds()) && 
 						speciesMatch(prd.getKeggProductIds(), prd.getKeggProductIdsDataMap(), modelData.getKeggReactantIds())) {
+					prd.setDirection(PathwaysCSVFileConstants.REVERSE_DIRECTION);
 					match = true;
 				}
 			}
@@ -367,6 +375,45 @@ public class PathwayReactionNodeFactory {
 		}
 		return false;
 		
+	}
+	
+	/**
+	 * Reversible obtained from model for each item in list of reactions. 
+	 * If all reactions are irreversible and directions match, set reaction
+	 * as irreversible. Else set reaction as reversible.
+	 * For reversible reactions, if all directions match set direction,
+	 * else, set direction as forward.
+	 * @param prd
+	 * @param pn
+	 * @param reactions
+	 */
+	private void setReversibilityAndDirection(PathwayReactionData prd, PathwayReactionNode pn, 
+			ArrayList<SBMLReaction> reactions) {
+		String reversible = GraphicalInterfaceConstants.BOOLEAN_VALUES[0];
+		ArrayList<String> directions = new ArrayList<String>();
+		for (int j = 0; j < reactions.size(); j++) {
+			// get directions set in correctMainSpecies method
+			if (!directions.contains(prd.getDirection())) {
+				directions.add(prd.getDirection());
+			}
+			if (reactions.get(j).getReversible().equals(GraphicalInterfaceConstants.BOOLEAN_VALUES[1])) {
+				reversible = GraphicalInterfaceConstants.BOOLEAN_VALUES[1];
+			}
+		}
+		// if reaction is not reversible and all directions are not the same
+		// set reaction as irreversible, else keep irreversible
+		if (reversible.equals(GraphicalInterfaceConstants.BOOLEAN_VALUES[0])) {
+			if (directions.size() != 1) {
+				reversible = GraphicalInterfaceConstants.BOOLEAN_VALUES[1];
+			} 
+		}
+		if (directions.size() == 1) {
+			pn.setDirection(directions.get(0));
+		} else {
+			pn.setDirection(PathwaysCSVFileConstants.FORWARD_DIRECTION);
+		}
+		pn.setReversible(reversible);
+		pn.setReactions(reactions);
 	}
 	
 	/** 
