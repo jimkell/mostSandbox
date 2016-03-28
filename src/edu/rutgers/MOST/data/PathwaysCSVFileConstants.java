@@ -159,5 +159,8 @@ public class PathwaysCSVFileConstants {
 	public static final String MAIN_METABOLITE_TYPE = "m";
 	public static final String SMALL_MAIN_METABOLITE_TYPE = "sm";
 	public static final String SIDE_METABOLITE_TYPE = "s";
+	
+	public static final String FORWARD_DIRECTION = "f";
+	public static final String REVERSE_DIRECTION = "r";
 
 }

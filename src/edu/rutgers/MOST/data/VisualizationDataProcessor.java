@@ -322,6 +322,14 @@ public class VisualizationDataProcessor {
 					pn.setxPosition(x);
 					pn.setyPosition(y);
 					String reversible = prnf.reversibleString(pathway.getReactionsData().get(Integer.toString(k)).getReversible());
+					String direction = PathwaysCSVFileConstants.FORWARD_DIRECTION;
+					// use reversible from reactions in model if set
+					if (pn.getReversible() != null && pn.getReversible().length() > 0) {
+						reversible = pn.getReversible();
+					} 
+					if (pn.getDirection() != null && pn.getDirection().length() > 0) {
+						direction = pn.getDirection();
+					} 
 					pn.setReversible(reversible);
 					pathway.getReactionsNodes().put(pn.getDataId(), pn);
 					// update maps for find exact match
@@ -338,10 +346,22 @@ public class VisualizationDataProcessor {
 								new String[] {Double.toString(x), Double.toString(y)});
 					}
 
+					String drawForwardArrow = GraphicalInterfaceConstants.BOOLEAN_VALUES[1];
+					String drawReverseArrow = GraphicalInterfaceConstants.BOOLEAN_VALUES[1];
+					// for irreversible reactions, if direction is forward, draw -->
+					// if direction is reverse, draw <--
+					// for reversible reactions <-->
+					if (reversible == GraphicalInterfaceConstants.BOOLEAN_VALUES[0]) {
+						if (direction.equals(PathwaysCSVFileConstants.FORWARD_DIRECTION)) {
+							drawReverseArrow = GraphicalInterfaceConstants.BOOLEAN_VALUES[0];
+						} else if (direction.equals(PathwaysCSVFileConstants.REVERSE_DIRECTION)) {
+							drawForwardArrow = GraphicalInterfaceConstants.BOOLEAN_VALUES[0];
+						}
+					}
 					for (int r = 0; r < pathway.getReactionsData().get(Integer.toString(k)).getReactantIds().size(); r++) {
 						if (pathway.getMetabolitesData().containsKey((pathway.getReactionsData().get(Integer.toString(k)).getReactantIds().get(r)))) {
 							String reac = pathway.getMetabolitesData().get((pathway.getReactionsData().get(Integer.toString(k)).getReactantIds().get(r))).getName();
-							reactionMap.put(displayName + "reactant " + Integer.toString(r), new String[] {displayName, reac, reversible});
+							reactionMap.put(displayName + "reactant " + Integer.toString(r), new String[] {displayName, reac, drawReverseArrow});
 							fluxMap.put(displayName + "reactant " + Integer.toString(r), edgeThickness(pn.getFluxValue()));
 							if (pn.getFluxValue() == 0 && !koReactions.contains(displayName)) {
 								edgeColor = PathwaysFrameConstants.GRAY_COLOR_VALUE;
@@ -355,7 +375,7 @@ public class VisualizationDataProcessor {
 					for (int p = 0; p < pathway.getReactionsData().get(Integer.toString(k)).getProductIds().size(); p++) {
 						if (pathway.getMetabolitesData().containsKey((pathway.getReactionsData().get(Integer.toString(k)).getProductIds().get(p)))) {
 							String prod = pathway.getMetabolitesData().get((pathway.getReactionsData().get(Integer.toString(k)).getProductIds().get(p))).getName();
-							reactionMap.put(displayName + "product " + Integer.toString(p), new String[] {displayName, prod, "true"});
+							reactionMap.put(displayName + "product " + Integer.toString(p), new String[] {displayName, prod, drawForwardArrow});
 							fluxMap.put(displayName + "product " + Integer.toString(p), edgeThickness(pn.getFluxValue()));
 							if (pn.getFluxValue() == 0 && !koReactions.contains(displayName)) {
 								edgeColor = PathwaysFrameConstants.GRAY_COLOR_VALUE;

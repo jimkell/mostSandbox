@@ -35,6 +35,8 @@ public class PathwayReactionData {
 	private String displayName;
 	private int occurences;
 	
+	private String direction;
+	
 	// data from pathway_reaction_positions, currently using same class for storing
 	// data from reactions.csv and pathway_reaction_positions. may consider using
 	// two different classes in future
@@ -190,11 +192,17 @@ public class PathwayReactionData {
 		this.occurences = occurences;
 	}
 
+	public String getDirection() {
+		return direction;
+	}
+
+	public void setDirection(String direction) {
+		this.direction = direction;
+	}
+
 	public void setLevelPosition(double levelPosition) {
 		this.levelPosition = levelPosition;
 	}
-
-	
 
 	public String getEquation() {
 		return equation;
