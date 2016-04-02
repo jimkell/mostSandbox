@@ -488,7 +488,9 @@ public class VisualizationDataProcessor {
 				abbr += " + " + protonAbbr;
 				nameList.add(LocalConfig.getInstance().getKeggIdMetaboliteMap().get("C00080").get(0).getMetaboliteName());
 				keggList.add("C00080");
-				abbrList.add(compProtonAbbr);
+				if (abbrList.contains(compProtonAbbr)) {
+					abbrList.add(compProtonAbbr);
+				}
 				if (nodeNamePositionMap.containsKey(metabName)) {
 					updateFindPositionsMap(metaboliteAbbrPositionsMap, compProtonAbbr, 
 							new String[] {nodeNamePositionMap.get(metabName)[0], nodeNamePositionMap.get(metabName)[1]});

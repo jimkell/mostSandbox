@@ -1180,21 +1180,27 @@ public class PathwaysFrame extends JApplet {
 				if (findStartIndex > 0) {
 					findStartIndex -= 1;
 				} else {
-					if (wrapAround) {
+//					if (wrapAround) {
 						findStartIndex = findLocationsMap.size() - 1;
-					} else {
-						endFindAction();
-					}
+						if (!wrapAround) {
+							endFindAction();
+						}
+//					} else {
+//						endFindAction();
+//					}
 				}
 			} else {
 				if (findStartIndex < (findLocationsMap.size() - 1)) {
 					findStartIndex += 1;
 				} else {
-					if (wrapAround) {
+//					if (wrapAround) {
 						findStartIndex = 0;
-					} else {
-						endFindAction();
-					}
+						if (!wrapAround) {
+							endFindAction();
+						}
+//					} else {
+//						endFindAction();
+//					}
 				}
 			}													
 		}
