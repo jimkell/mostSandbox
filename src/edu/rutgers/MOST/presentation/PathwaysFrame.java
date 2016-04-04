@@ -102,7 +102,7 @@ public class PathwaysFrame extends JApplet {
     
     private static VisualizationsFindDialog visualizationsFindDialog;                                                                                                              
 	
-	public static VisualizationsFindDialog getVisualizationsFindDialog() {
+	public VisualizationsFindDialog getVisualizationsFindDialog() {
 		return visualizationsFindDialog;
 	}
 
@@ -216,7 +216,7 @@ public class PathwaysFrame extends JApplet {
 	private boolean searchBackwards;
 	private boolean exactMatch;
 	//	private boolean findFieldChanged;
-	private boolean notFoundShown = false;
+	//private boolean notFoundShown = false;
 
 	private String oldFindValue = "";
 	private int findStartIndex = 0;
@@ -1093,18 +1093,11 @@ public class PathwaysFrame extends JApplet {
 	}
 
 	public void notFoundAction() {
-		notFoundShown = true;
 		getVisualizationsFindDialog().setAlwaysOnTop(false);
-		Object[] options = {"OK"};
-		int choice = JOptionPane.showOptionDialog(null, 
-				"MOST has not found the item you are searching for.", 
-				"Item Not Found", 
-				JOptionPane.YES_OPTION, 
-				JOptionPane.QUESTION_MESSAGE, 
-				null, options, options[0]);
-		if (choice == JOptionPane.YES_OPTION || choice == JOptionPane.CLOSED_OPTION) {
-			notFoundShown = false;
-		}
+		JOptionPane.showMessageDialog(null,                
+				"MOST has not found the item you are searching for.",                
+				"Item Not Found",                                
+				JOptionPane.INFORMATION_MESSAGE);
 		getVisualizationsFindDialog().setAlwaysOnTop(true);
 	}
 
@@ -1164,9 +1157,9 @@ public class PathwaysFrame extends JApplet {
 		oldFindValue = findValue;
 		//HashMap<String, ArrayList<Double>> findLocationsMap = findLocationsMap();
 		if (findLocationsMap.size() == 0) {
-			if (!notFoundShown) {
+			//if (!notFoundShown) {
 				notFoundAction();
-			}
+			//}
 		} else {
 			getVisualizationsFindDialog().requestFocus();
 			ArrayList<String> findXCoordinates = new ArrayList<String>(findLocationsMap.keySet());

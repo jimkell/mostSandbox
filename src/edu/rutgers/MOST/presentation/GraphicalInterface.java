@@ -13362,6 +13362,9 @@ public class GraphicalInterface extends JFrame {
 				if (getVisualizationPopout() != null) {
 					getVisualizationPopout().dispose();
 				}
+				if (pf1.getVisualizationsFindDialog() != null) {
+					pf1.getVisualizationsFindDialog().dispose();
+				}
 				showVisualizationReportMenu.setEnabled(false);
 			}
 		});		
