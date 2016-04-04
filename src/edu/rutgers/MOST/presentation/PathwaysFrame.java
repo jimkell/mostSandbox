@@ -38,7 +38,6 @@ import javax.swing.JButton;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
-import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -215,8 +214,6 @@ public class PathwaysFrame extends JApplet {
 	private boolean wrapAround;
 	private boolean searchBackwards;
 	private boolean exactMatch;
-	//	private boolean findFieldChanged;
-	//private boolean notFoundShown = false;
 
 	private String oldFindValue = "";
 	private int findStartIndex = 0;
@@ -1157,9 +1154,7 @@ public class PathwaysFrame extends JApplet {
 		oldFindValue = findValue;
 		//HashMap<String, ArrayList<Double>> findLocationsMap = findLocationsMap();
 		if (findLocationsMap.size() == 0) {
-			//if (!notFoundShown) {
-				notFoundAction();
-			//}
+			notFoundAction();
 		} else {
 			getVisualizationsFindDialog().requestFocus();
 			ArrayList<String> findXCoordinates = new ArrayList<String>(findLocationsMap.keySet());
