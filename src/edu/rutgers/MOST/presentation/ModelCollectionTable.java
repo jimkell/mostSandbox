@@ -260,7 +260,8 @@ class ModelCollectionTable
             }
             if (i == ModelCollectionConstants.GENES_COLUMN ||
             		i == ModelCollectionConstants.REACTIONS_COLUMN || 
-            		i == ModelCollectionConstants.METABOLITES_COLUMN) {
+            		i == ModelCollectionConstants.METABOLITES_COLUMN ||
+            		i == ModelCollectionConstants.IDENTIFIERS_COLUMN) {
             	column.setPreferredWidth(ModelCollectionConstants.DEFAULT_WIDTH);
             	renderer.setHorizontalAlignment(JLabel.RIGHT);
             }

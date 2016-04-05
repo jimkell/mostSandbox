@@ -209,7 +209,6 @@ public class PathwaysFrame extends JApplet {
 
 	// find-replace values 
 	private boolean findMode;
-	//	private boolean findButtonClicked;
 	private boolean matchCase;
 	private boolean wrapAround;
 	private boolean searchBackwards;
@@ -1055,7 +1054,6 @@ public class PathwaysFrame extends JApplet {
 
 		VisualizationsFindDialog.doneButton.addActionListener(doneButtonActionListener);
 
-		//		findButtonClicked = false;
 		// ensure states of boolean values match states of findReplace frame
 		searchBackwards = VisualizationsFindConstants.SEARCH_BACKWARDS_DEFAULT;
 		matchCase = VisualizationsFindConstants.MATCH_CASE_DEFAULT;
@@ -1081,7 +1079,6 @@ public class PathwaysFrame extends JApplet {
 	ActionListener findNextButtonActionListener = new ActionListener() {
 		public void actionPerformed(ActionEvent ae) {
 			findAction();
-			//			findButtonClicked = true;
 		}
 	};
 

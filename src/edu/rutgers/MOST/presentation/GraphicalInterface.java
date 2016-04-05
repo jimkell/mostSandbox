@@ -6336,7 +6336,7 @@ public class GraphicalInterface extends JFrame {
 		// enables or disables menu items depending on if there are unused items present
 		createUnusedMetabolitesList();
 		enableMenuItems();
-		setUpCellSelectionMode();	
+		setUpCellSelectionMode();
 		resetIdentifierColumns();
 		maybeDisplaySuspiciousMetabMessage(statusBarRow());
 		if (saveEnabled) {
