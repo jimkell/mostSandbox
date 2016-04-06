@@ -265,6 +265,10 @@ class ModelCollectionTable
             	column.setPreferredWidth(ModelCollectionConstants.DEFAULT_WIDTH);
             	renderer.setHorizontalAlignment(JLabel.RIGHT);
             }
+            if (i == ModelCollectionConstants.IDENTIFIERS_COLUMN) {
+            	column.setPreferredWidth(ModelCollectionConstants.DEFAULT_WIDTH);
+            	renderer.setHorizontalAlignment(JLabel.LEFT);
+            }
             if (i >= ModelCollectionConstants.VISIBLE_COLUMN_NAMES.length) {
             	//sets column not visible
     			column.setMaxWidth(0);
