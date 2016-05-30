@@ -511,7 +511,7 @@ public class PathwaysFrame extends JApplet {
 
 		controls.add(plus);                                                                                          
 		controls.add(minus);                                                                                       
-		add(controls, BorderLayout.SOUTH);  
+		add(controls, BorderLayout.SOUTH); 
 		
 	}  
 
