@@ -13479,6 +13479,7 @@ public class GraphicalInterface extends JFrame {
 			// selected row default at first row
 			statusBar.setText("Row 1");
 			
+			// test
 //			Map<String, String> env = System.getenv();
 //	        for (String envName : env.keySet()) {
 //	            System.out.format("%s=%s%n", envName, env.get(envName));
