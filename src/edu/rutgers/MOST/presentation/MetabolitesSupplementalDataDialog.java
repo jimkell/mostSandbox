@@ -85,7 +85,7 @@ public class MetabolitesSupplementalDataDialog extends JDialog {
 		cbTrimEndFromModel.setMaximumSize(new Dimension(40, 25));
 		cbTrimEndFromModel.setMinimumSize(new Dimension(40, 25));
 		
-		for (int i = 0; i < 5; i++) {
+		for (int i = 0; i < 15; i++) {
 			cbTrimBeginFromFile.addItem(Integer.toString(i));
 			cbTrimEndFromFile.addItem(Integer.toString(i));
 			cbTrimBeginFromModel.addItem(Integer.toString(i));
