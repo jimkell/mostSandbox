@@ -1,0 +1,835 @@
+Compound name,KEGG ID,Charge,Formular
+H2O,C00001,,H2O
+H2O[e],C00001,,H2O
+ATP,C00002,-4,C10H12N5O13P3
+NAD+,C00003,-1,C21H26N7O14P2
+NADH,C00004,-2,C21H27N7O14P2
+NADPH,C00005,-4,C21H26N7O17P3
+NADP+,C00006,-3,C21H25N7O17P3
+Oxygen,C00007,,O2
+Oxygen[e],C00007,,O2
+ADP,C00008,-3,C10H12N5O10P2
+Orthophosphate,C00009,-2,HO4P
+Orthophosphate[e],C00009,-2,HO4P
+CoA,C00010,-4,C21H32N7O16P3S
+CO2,C00011,,CO2
+CO2[e],C00011,,CO2
+Diphosphate,C00013,-3,HO7P2
+NH3,C00014,,H3N
+UDP,C00015,-3,C9H11N2O12P2
+FAD,C00016,-2,C27H31N9O15P2
+Pyridoxal phosphate,C00018,-2,C8H8NO6P
+S-Adenosyl-L-methionine,C00019,1,C15H23N6O5S
+AMP,C00020,-2,C10H12N5O7P
+S-Adenosyl-L-homocysteine,C00021,,C14H20N6O5S
+Pyruvate,C00022,-1,C3H3O3
+Iron,C00023,2,Fe
+Iron[e],C00023,2,Fe
+Acetyl-CoA,C00024,-4,C23H34N7O17P3S
+L-Glutamate,C00025,-1,C5H8NO4
+L-Glutamate[e],C00025,-1,C5H8NO4
+2-Oxoglutarate,C00026,-2,C5H4O5
+2-Oxoglutarate[e],C00026,-2,C5H4O5
+H2O2,C00027,,H2O2
+UDPglucose,C00029,-2,C15H22N2O17P2
+D-Glucose,C00031,,C6H12O6
+D-Glucose[e],C00031,,C6H12O6
+Heme,C00032,-2,C34H30FeN4O4
+Acetate,C00033,-1,C2H3O2
+Acetate[e],C00033,-1,C2H3O2
+GDP,C00035,-3,C10H12N5O11P2
+Oxaloacetate,C00036,-2,C4H2O5
+Glycine,C00037,,C2H5NO2
+Glycine[e],C00037,,C2H5NO2
+L-Alanine,C00041,,C3H7NO2
+L-Alanine[e],C00041,,C3H7NO2
+Succinate,C00042,-2,C4H4O4
+Succinate[e],C00042,-2,C4H4O4
+UDP-N-acetyl-D-glucosamine,C00043,-2,C17H25N3O17P2
+GTP,C00044,-4,C10H12N5O14P3
+L-Lysine,C00047,1,C6H15N2O2
+L-Lysine[e],C00047,1,C6H15N2O2
+Glyoxylate,C00048,-1,C2H1O3
+L-Aspartate,C00049,-1,C4H6NO4
+L-Aspartate[e],C00049,-1,C4H6NO4
+Glutathione,C00051,-1,C10H16N3O6S
+UDP-D-galactose,C00052,-2,C15H22N2O17P2
+3'-Phosphoadenylyl sulfate,C00053,-4,C10H11N5O13P2S
+"Adenosine 3',5'-bisphosphate",C00054,-4,C10H11N5O10P2
+CMP,C00055,-2,C9H12N3O8P
+Formate,C00058,-1,CH1O2
+Formate[e],C00058,-1,CH1O2
+Sulfate,C00059,-2,O4S
+Sulfate[e],C00059,-2,O4S
+FMN,C00061,-2,C17H19N4O9P
+L-Arginine,C00062,1,C6H15N4O2
+L-Arginine[e],C00062,1,C6H15N4O2
+CTP,C00063,-4,C9H12N3O14P3
+L-Glutamine,C00064,,C5H10N2O3
+L-Glutamine[e],C00064,,C5H10N2O3
+L-Serine,C00065,,C3H7NO3
+L-Serine[e],C00065,,C3H7NO3
+Thiamin diphosphate,C00068,-2,C12H16N4O7P2S
+Copper,C00070,,Cu
+Copper[e],C00070,,Cu
+L-Methionine,C00073,,C5H11NO2S
+L-Methionine[e],C00073,,C5H11NO2S
+Phosphoenolpyruvate,C00074,-3,C3H2O6P
+UTP,C00075,-4,C9H11N2O15P3
+Calcium,C00076,,Ca
+Calcium[e],C00076,,Ca
+L-Ornithine,C00077,1,C5H13N2O2
+L-Ornithine[e],C00077,1,C5H13N2O2
+L-Tryptophan,C00078,,C11H12N2O2
+L-Tryptophan[e],C00078,,C11H12N2O2
+L-Phenylalanine,C00079,,C9H11NO2
+L-Phenylalanine[e],C00079,,C9H11NO2
+H+,C00080,1,H
+H+[e],C00080,1,H
+ITP,C00081,-4,C10H11N4O14P3
+L-Tyrosine,C00082,,C9H11NO3
+L-Tyrosine[e],C00082,,C9H11NO3
+Malonyl-CoA,C00083,-5,C24H33N7O19P3S
+Acetaldehyde,C00084,,C2H4O
+D-Fructose 6-phosphate,C00085,-2,C6H11O9P
+Urea,C00086,,CH4N2O
+Sulfur,C00087,,S
+Nitrite,C00088,-1,NO2
+Nitrite[e],C00088,-1,NO2
+Sucrose[e],C00089,,C12H22O11
+Catechol,C00090,,C6H6O2
+Succinyl-CoA,C00091,-5,C25H35N7O19P3S
+D-Glucose 6-phosphate,C00092,-2,C6H11O9P
+D-Glucose 6-phosphate[e],C00092,-2,C6H11O9P
+Glycerol 3-phosphate,C00093,-2,C3H7O6P
+Sulfite,C00094,-2,O3S
+D-Fructose,C00095,,C6H12O6
+GDPmannose,C00096,-2,C16H23N5O16P2
+L-Cysteine,C00097,,C3H7NO2S
+L-Cysteine[e],C00097,,C3H7NO2S
+beta-Alanine,C00099,,C3H7NO2
+Propanoyl-CoA,C00100,-4,C24H36N7O17P3S
+Tetrahydrofolate,C00101,-1,C19H22N7O6
+D-Glucose 1-phosphate,C00103,-2,C6H11O9P
+IDP,C00104,-3,C10H11N4O11P2
+UMP,C00105,-2,C9H11N2O9P
+Uracil,C00106,,C4H4N2O2
+anthranilate,C00108,,C7H6NO2
+Anthranilate,C00108,-1,C7H6NO2
+2-Oxobutanoate,C00109,-1,C4H5O3
+Dihydroxyacetone phosphate,C00111,-2,C3H5O6P
+CDP,C00112,-3,C9H12N3O11P2
+Glycerol,C00116,,C3H8O3
+Glycerol[e],C00116,,C3H8O3
+D-Ribose 5-phosphate,C00117,-2,C5H9O8P
+D-Glyceraldehyde 3-phosphate,C00118,-2,C3H5O6P
+5-Phospho-alpha-D-ribose 1-diphosphate,C00119,-5,C5H8O14P3
+Biotin,C00120,-1,C10H15N2O3S
+D-Ribose,C00121,,C5H10O5
+Fumarate,C00122,-2,C4H2O4
+Fumarate[e],C00122,-2,C4H2O4
+L-Leucine,C00123,,C6H13NO2
+L-Leucine[e],C00123,,C6H13NO2
+D-Galactose,C00124,,C6H12O6
+D-Galactose[e],C00124,,C6H12O6
+Ferricytochrome c,C00125,3,C42H50FeN8O6S2
+Ferrocytochrome c,C00126,2,C42H50FeN8O6S2
+Oxidized glutathione,C00127,-2,C20H30N6O12S2
+Isopentenyl diphosphate,C00129,-3,C5H9O7P2
+IMP,C00130,-2,C10H11N4O8P
+dATP,C00131,-4,C10H12N5O12P3
+D-Alanine,C00133,,C3H7NO2
+Putrescine,C00134,2,C4H14N2
+Putrescine[e],C00134,2,C4H14N2
+L-Histidine,C00135,,C6H9N3O2
+L-Histidine[e],C00135,,C6H9N3O2
+myo-Inositol,C00137,,C6H12O6
+myo-Inositol[e],C00137,,C6H12O6
+N-Acetyl-D-glucosamine[e],C00140,,C8H15NO6
+3-Methyl-2-oxobutanoate,C00141,-1,C5H7O3
+"5,10-Methylenetetrahydrofolate",C00143,-1,C20H22N7O6
+GMP,C00144,-2,C10H12N5O8P
+Adenine,C00147,,C5H5N5
+L-Proline,C00148,,C5H9NO2
+L-Proline[e],C00148,,C5H9NO2
+(S)-Malate,C00149,-2,C4H4O5
+(S)-Malate[e],C00149,-2,C4H4O5
+L-Asparagine,C00152,,C4H8N2O3
+L-Asparagine[e],C00152,,C4H8N2O3
+Nicotinamide,C00153,,C6H6N2O
+L-Homocysteine,C00155,,C4H9NO2S
+4-Hydroxybenzoate,C00156,-1,C7H5O3
+Citrate,C00158,-3,C6H5O7
+Citrate[e],C00158,-3,C6H5O7
+Glycolate,C00160,-1,C2H3O3
+Propanoate,C00163,-1,C3H5O2
+Propanoate[e],C00163,-1,C3H5O2
+Acetoacetate,C00164,-1,C4H5O3
+Phenylpyruvate,C00166,-1,C9H7O3
+UDPglucuronate,C00167,-3,C15H19N2O18P2
+Hydroxypyruvate,C00168,-1,C3H3O4
+Carbamoyl phosphate,C00169,-2,CH2NO5P
+5'-Methylthioadenosine,C00170,,C11H15N5O3S
+5'-Methylthioadenosine[e],C00170,,C11H15N5O3S
+Cobalt,C00175,,Co
+Cobalt[e],C00175,,Co
+Thymine,C00178,,C5H6N2O2
+Agmatine,C00179,2,C5H16N4
+Glycogen,C00182,,C6H10O5
+L-Valine,C00183,,C5H11NO2
+L-Valine[e],C00183,,C5H11NO2
+(S)-Lactate,C00186,-1,C3H5O3
+(S)-Lactate[e],C00186,-1,C3H5O3
+L-Threonine,C00188,,C4H9NO3
+L-Threonine[e],C00188,,C4H9NO3
+Ethanolamine,C00189,1,C2H8NO
+Cobamide coenzyme,C00194,7,C72H101CoN18O17P
+"2,3-Dihydroxybenzoate",C00196,-1,C7H5O4
+3-Phospho-D-glycerate,C00197,-3,C3H4O7P
+"D-Glucono-1,5-lactone",C00198,,C6H10O6
+D-Ribulose 5-phosphate,C00199,-2,C5H9O8P
+2-Dehydro-3-deoxy-D-gluconate,C00204,-1,C6H9O6
+2-Dehydro-3-deoxy-D-gluconate[e],C00204,-1,C6H9O6
+dADP,C00206,-3,C10H12N5O9P2
+Acetone,C00207,,C3H6O
+Adenosine,C00212,,C10H13N5O4
+Thymidine,C00214,,C10H14N2O5
+Thymidine[e],C00214,,C10H14N2O5
+D-Glutamate,C00217,-1,C5H8NO4
+beta-D-Glucose,C00221,,C6H12O6
+3-Oxopropanoate,C00222,-1,C3H3O3
+Adenylylsulfate,C00224,-2,C10H12N5O10PS
+Acetyl phosphate,C00227,-2,C2H3O5P
+D-Xylulose 5-phosphate,C00231,-2,C5H9O8P
+Succinate semialdehyde,C00232,-1,C4H5O3
+4-Methyl-2-oxopentanoate,C00233,-1,C6H9O3
+10-Formyltetrahydrofolate,C00234,-1,C20H22N7O7
+Dimethylallyl diphosphate,C00235,-3,C5H9O7P2
+"1,3-Bisphospho-D-glycerate",C00236,-4,C3H4O10P2
+Potassium,C00238,1,K
+Potassium[e],C00238,1,K
+dCMP,C00239,-2,C9H12N3O7P
+Guanine,C00242,,C5H5N5O
+Nitrate,C00244,-1,NO3
+Nitrate[e],C00244,-1,NO3
+Taurine,C00245,,C2H7NO3S
+Taurine[e],C00245,,C2H7NO3S
+Lipoamide,C00248,,C8H15NOS2
+Pyridoxal,C00250,,C8H9NO3
+Chorismate,C00251,-2,C10H8O6
+Nicotinate,C00253,-1,C6H4NO2
+Prephenate,C00254,-2,C10H8O6
+Riboflavin,C00255,,C17H20N4O6
+(R)-Lactate,C00256,-1,C3H5O3
+(R)-Lactate[e],C00256,-1,C3H5O3
+D-Gluconic acid,C00257,-1,C6H11O7
+D-Gluconic acid[e],C00257,-1,C6H11O7
+D-Glycerate,C00258,-1,C3H5O4
+Hypoxanthine,C00262,,C5H4N4O
+L-Homoserine,C00263,,C4H9NO3
+Glycolaldehyde,C00266,,C2H4O2
+alpha-D-Glucose,C00267,,C6H12O6
+Dihydrobiopterin,C00268,,C9H13N5O3
+"CDP-1,2-dihexadec-9-enoylglycerol",C00269,-2,C44H75N3O15P2
+Tetrahydrobiopterin,C00272,,C9H15N5O3
+D-Mannose 6-phosphate,C00275,-2,C6H11O9P
+D-Erythrose 4-phosphate,C00279,-2,C4H7O7P
+Sedoheptulose 7-phosphate,C00281,-2,C7H13O10P
+Hydrogen sulfide,C00283,,H2S
+dGTP,C00286,-4,C10H12N5O13P3
+HCO3,C00288,-1,CHO3
+Nickel,C00291,,Ni
+Nickel[e],C00291,,Ni
+Inosine,C00294,,C10H12N4O5
+Orotate,C00295,-1,C5H3N2O4
+Quinate,C00296,,C7H12O6
+Quinate[e],C00296,,C7H12O6
+Uridine,C00299,,C9H12N2O6
+Uridine[e],C00299,,C9H12N2O6
+Magnesium,C00305,,Mg
+Magnesium[e],C00305,,Mg
+Isocitrate,C00311,-3,C6H5O7
+Pyridoxine,C00314,,C8H11NO3
+Spermidine,C00315,3,C7H22N3
+Spermidine[e],C00315,3,C7H22N3
+L-Carnitine,C00318,,C7H15NO3
+L-Carnitine[e],C00318,,C7H15NO3
+2-Oxoadipate,C00322,,C6H8O5
+L-Citrulline,C00327,,C6H13N3O3
+L-kynurenine,C00328,,C10H11N2O3
+L-Kynurenine,C00328,-1,C10H11N2O3
+Deoxyguanosine,C00330,,C10H13N5O4
+Acetoacetyl-CoA,C00332,-4,C25H36N7O18P3S
+4-Aminobutanoate,C00334,,C4H9NO2
+4-Aminobutanoate[e],C00334,,C4H9NO2
+(S)-Dihydroorotate,C00337,-1,C5H5N2O4
+Geranyl diphosphate,C00341,-3,C10H17O7P2
+6-Phospho-D-gluconate,C00345,-3,C6H10O10P
+Undecaprenyl phosphate,C00348,-2,C55H89O4P
+2-Methyl-3-oxopropanoate,C00349,-1,C4H5O3
+pe161,C00350,0,C37H70N1O8P1
+D-Glucosamine 6-phosphate,C00352,-1,C6H13NO8P
+"D-Fructose 1,6-bisphosphate",C00354,-4,C6H10O12P2
+(S)-3-Hydroxy-3-methylglutaryl-CoA,C00356,-5,C27H39N7O20P3S
+N-Acetyl-D-glucosamine 6-phosphate,C00357,-2,C8H14NO9P
+dAMP,C00360,-2,C10H12N5O6P
+dGDP,C00361,-3,C10H12N5O10P2
+dGMP,C00362,-2,C10H12N5O7P
+dTDP,C00363,-3,C10H13N2O11P2
+dTMP,C00364,-2,C10H13N2O8P
+dUMP,C00365,-2,C9H11N2O8P
+Thiamin,C00378,1,C12H17N4OS
+Thiamin[e],C00378,1,C12H17N4OS
+Cytosine,C00380,,C4H5N3O
+Malonate,C00383,-2,C3H2O4
+Malonate[e],C00383,-2,C3H2O4
+Xanthine,C00385,,C5H4N4O2
+Guanosine,C00387,,C10H13N5O5
+Mannitol,C00392,,C6H14O6
+D-Aspartate,C00402,,C4H7NO4
+L-Isoleucine,C00407,,C6H13NO2
+L-Isoleucine[e],C00407,,C6H13NO2
+Methanethiol,C00409,,CH4S
+Dihydrofolate,C00415,-1,C19H20N7O6
+pa161,C00416,-2,C35H63O8P1
+cis-Aconitate,C00417,,C6H6O6
+cis-Aconitate[e],C00417,,C6H6O6
+"5,6-Dihydrouracil",C00429,,C4H6N2O2
+5-Aminolevulinate,C00430,,C5H9NO3
+N2-Acetyl-L-ornithine,C00437,,C7H14N2O3
+N-Carbamoyl-L-aspartate,C00438,-2,C5H6N2O5
+N-Formimino-L-glutamate,C00439,-1,C6H9N2O4
+5-Methyltetrahydrofolate,C00440,-1,C20H24N7O6
+L-Aspartate 4-semialdehyde,C00441,,C4H7NO3
+"5,10-Methenyltetrahydrofolate",C00445,-1,C20H20N7O6
+"trans,trans-Farnesyl diphosphate",C00448,-3,C15H25O7P2
+Nicotinamide D-ribonucleotide,C00455,-1,C11H14N2O8P
+dCTP,C00458,-4,C9H12N3O13P3
+dTTP,C00459,-4,C10H13N2O14P3
+dUTP,C00460,-4,C9H11N2O14P3
+Indole,C00463,,C8H7N
+Cytidine,C00475,,C9H13N3O5
+Formamide,C00488,,CH3NO
+Shikimate,C00493,-1,C7H9O5
+Shikimate[e],C00493,-1,C7H9O5
+ADPglucose,C00498,-2,C16H23N5O15P2
+Allantoate,C00499,-1,C4H7N4O4
+Folic acid,C00504,,C19H19N7O6
+(R)-Pantoate,C00522,-1,C6H11O4
+Deoxyuridine,C00526,,C9H12N2O5
+Glutaryl-CoA,C00527,-5,C26H37N7O19P3S
+Pyridoxamine,C00534,1,C8H13N2O2
+Triphosphate,C00536,,H5O10P3
+Homogentisate,C00544,-1,C8H7O4
+Methylglyoxal,C00546,,C3H4O2
+Deoxyadenosine,C00559,,C10H13N5O3
+4-Aminobenzoate,C00568,-1,C7H6NO2
+CDPethanolamine,C00570,-1,C11H19N4O11P2
+D-Glyceraldehyde,C00577,,C3H6O3
+Dihydrolipoamide,C00579,,C8H17NOS2
+Phenylacetyl-CoA,C00582,-4,C29H38N7O17P3S
+"2-Hydroxy-2,4-pentadienoate",C00596,-1,C5H5O3
+Phenylacetaldehyde,C00601,,C8H8O
+(-)-Ureidoglycolate,C00603,-1,C3H5N2O4
+3-Sulfino-L-alanine,C00606,,C3H7NO4S
+N-Acetyl-L-glutamate,C00624,-2,C7H9NO5
+Pyridoxine phosphate,C00627,-2,C8H10NO6P
+2-Methylpropanoyl-CoA,C00630,-4,C25H38N7O17P3S
+2-Phospho-D-glycerate,C00631,-3,C3H4O7P
+D-Mannose 1-phosphate,C00636,-2,C6H11O9P
+4-Hydroxyphenylacetate,C00642,,C8H8O3
+Pyridoxamine phosphate,C00647,-1,C8H12N2O5P
+Xanthosine 5'-phosphate,C00655,-2,C10H11N4O9P
+"LL-2,6-Diaminoheptanedioate",C00666,,C7H14N2O4
+gamma-L-Glutamyl-L-cysteine,C00669,-1,C8H13N2O5S
+2-Deoxy-D-ribose 1-phosphate,C00672,-2,C5H9O7P
+2-Deoxy-D-ribose 5-phosphate,C00673,-2,C5H9O7P
+5-Dehydro-4-deoxy-D-glucarate,C00679,-2,C6H6O7
+"meso-2,6-Diaminoheptanedioate",C00680,,C7H14N2O4
+(S)-2-Methyl-3-oxopropanoyl-CoA,C00683,-5,C25H35N7O19P3S
+dTDP-4-dehydro-6-deoxy-L-mannose,C00688,-2,C16H22N2O15P2
+"alpha,alpha'-Trehalose 6-phosphate",C00689,-2,C12H21O14P
+"2,4,6/3,5-Pentahydroxycyclohexanone",C00691,,C6H10O6
+UDP-N-acetylmuramoyl-L-alanyl-D-glutamate,C00692,-4,C28H39N5O23P2
+Cl,C00698,,Cl
+Cl-[e],C00698,,Cl
+O2.,C00704,-1,O2
+dCDP,C00705,-3,C9H12N3O10P2
+D-Serine,C00740,,C3H7NO3
+Spermine,C00750,,C10H26N4
+Urocanate,C00785,-1,C6H5N2O2
+(R)-Acetoin,C00810,,C4H8O2
+D-Glucarate,C00818,-2,C6H8O8
+D-Glucarate[e],C00818,-2,C6H8O8
+L-Arogenate,C00826,,C10H13NO5
+Pantetheine,C00831,,C11H22N2O4S
+dTDPglucose,C00842,-2,C16H24N2O16P2
+3-Oxoadipate,C00846,-2,C6H6O5
+Deamino-NAD+,C00857,-2,C21H24N6O15P2
+L-Histidinol,C00860,1,C6H12N3O
+Pantothenate,C00864,-1,C9H16NO5
+D-Galactonate,C00880,-1,C6H11O7
+D-Galactonate[e],C00880,-1,C6H11O7
+Deoxycytidine,C00881,,C9H13N3O4
+Dephospho-CoA,C00882,-2,C21H33N7O13P2S
+Isochorismate,C00885,-2,C10H8O6
+Propenoyl-CoA,C00894,,C24H38N7O17P3S
+2-Acetolactate,C00900,,C5H8O4
+Dihydropteroate,C00921,-1,C14H13N6O3
+Ferricytochrome,C00923,,C33H34FeN4O4
+Ferrocytochrome,C00924,,C33H34FeN4O4
+Porphobilinogen,C00931,-1,C10H13N2O4
+3-Dehydroquinate,C00944,-1,C7H9O6
+2-Dehydropantoate,C00966,-1,C6H9O4
+O-Acetyl-L-serine,C00979,,C5H9NO4
+2-Phosphoglycolate,C00988,-3,C2H2O6P
+D-Alanyl-D-alanine,C00993,,C6H12N2O3
+O-Phospho-L-serine,C01005,-2,C3H6NO6P
+4-Hydroxy-L-proline,C01015,,C5H9NO3
+4-Hydroxy-L-proline[e],C01015,,C5H9NO3
+Hydroxymethylbilane,C01024,-8,C40H38N4O17
+Malonyl-ACP,C01029,-2,C14H22N2O10PRS
+2-Methylbutanoyl-CoA,C01033,-4,C26H40N7O17P3S
+4-Guanidinobutanoate,C01035,,C5H11N3O2
+4-Maleylacetoacetate,C01036,-2,C8H6O6
+"7,8-Diaminononanoate",C01037,1,C9H21N2O2
+UDP-N-acetylmuramate,C01050,-3,C20H28N3O19P2
+Uroporphyrinogen III,C01051,-8,C40H36N4O16
+4-Fumarylacetoacetate,C01061,-2,C8H6O6
+6-Carboxyhexanoyl-CoA,C01063,-5,C28H41N7O19P3S
+O-Acetyl-L-homoserine,C01077,,C6H11NO4
+Protoporphyrinogen IX,C01079,-2,C34H38N4O4
+Thiamin monophosphate,C01081,-1,C12H16N4O4PS
+"alpha,alpha-Trehalose",C01083,,C12H22O11
+"alpha,alpha-Trehalose[e]",C01083,,C12H22O11
+(R)-3-Hydroxybutanoate,C01089,-1,C4H7O3
+(R)-3-Hydroxybutanoate[e],C01089,-1,C4H7O3
+8-Amino-7-oxononanoate,C01092,,C9H17NO3
+D-Fructose 1-phosphate,C01094,-2,C6H11O9P
+L-Histidinol phosphate,C01100,-1,C6H11N3O4P
+O-Phospho-L-homoserine,C01102,-2,C4H8NO6P
+Orotidine 5'-phosphate,C01103,-3,C10H10N2O11P
+D-Arabinose 5-phosphate,C01112,-2,C5H9O8P
+Pantetheine 4'-phosphate,C01134,-2,C11H21N2O7PS
+S-Acetyldihydrolipoamide,C01136,,C10H19NO2S2
+S-Adenosylmethioninamine,C01137,2,C14H24N6O3S
+(S)-3-Hydroxybutanoyl-CoA,C01144,-4,C25H38N7O18P3S
+2-Hydroxy-3-oxopropanoate,C01146,-1,C3H3O4
+trans-4-Hydroxy-L-proline,C01157,,C5H9NO3
+"3,4-Dihydroxyphenylacetate",C01161,-1,C8H7O4
+L-Glutamate 5-semialdehyde,C01165,0,C5H9NO3
+S-Succinyldihydrolipoamide,C01169,-1,C12H20NO4S2
+beta-D-Glucose 6-phosphate,C01172,,C6H13O9P
+3-(4-Hydroxyphenyl)pyruvate,C01179,-1,C9H7O4
+Nicotinate D-ribonucleotide,C01185,-2,C11H12NO9P
+3-Deoxy-D-manno-octulosonate,C01187,-1,C8H13O8
+UDP-N-acetylmuramoyl-L-alanine,C01212,-3,C23H33N4O20P2
+2-Dehydro-3-deoxy-D-galactonate,C01216,-1,C6H9O6
+GDP-4-dehydro-6-deoxy-D-mannose,C01222,-2,C16H21N5O15P2
+"Guanosine 3',5'-bis(diphosphate)",C01228,-6,C10H11N5O17P4
+all-trans-Hexaprenyl diphosphate,C01230,,C30H52O7P2
+"D-Glucono-1,5-lactone 6-phosphate",C01236,-2,C6H9O9P
+N-Acetyl-L-glutamate 5-semialdehyde,C01250,-1,C7H10NO4
+3-(Imidazol-4-yl)-2-oxopropyl phosphate,C01267,-2,C6H7N2O5P
+5-Amino-6-(5'-phosphoribosylamino)uracil,C01268,-2,C9H13N4O9P
+5-O-(1-Carboxyvinyl)-3-phosphoshikimate,C01269,-4,C10H9O10P
+4-Amino-5-hydroxymethyl-2-methylpyrimidine,C01279,,C6H9N3O
+2-Dehydro-3-deoxy-D-galactonate 6-phosphate,C01286,-3,C6H8O9P
+"2-Amino-4-hydroxy-6-hydroxymethyl-7,8-dihydropteridine",C01300,0,C7H9N5O2
+1-(2-Carboxyphenylamino)-1'-deoxy-D-ribulose 5'-phosphate,C01302,-3,C12H13NO9P
+"2,5-Diamino-6-hydroxy-4-(5'-phosphoribosylamino)-pyrimidine",C01304,-2,C9H14N5O8P
+Sodium,C01330,1,Na
+Sodium[e],C01330,1,Na
+NH4+,C01342,1,H4N
+NH4+[e],C01342,1,H4N
+dUDP,C01346,-3,C9H11N2O11P2
+FADH2,C01352,-2,C27H33N9O15P2
+Carbonic acid,C01353,,CH2O3
+NH4OH,C01358,,H5NO
+Cadmium[e],C01413,,Cd
+Cyanate,C01417,-1,CNO
+Cys-Gly,C01419,,C5H10N2O3S
+Carbamate,C01563,,CH3NO2
+Kievitone,C01590,,C20H20O6
+Ornithine,C01602,1,C5H12N2O2
+Xanthosine,C01762,,C10H12N4O6
+Deoxyribose,C01801,,C5H10O4
+Reduced FMN,C01847,,C17H23N4O9P
+5-Oxoproline,C01879,,C5H7NO3
+5-Oxoproline[e],C01879,,C5H7NO3
+Aminoacetone,C01888,,C3H7NO
+Dethiobiotin,C01909,-1,C10H17N2O3
+(S)-Mevalonate,C02104,,C6H12O4
+2-Nitropropane,C02116,,C3H7NO2
+Protoporphyrin,C02191,-2,C34H32N4O4
+2-Aminoacrylate,C02218,,C3H5NO2
+2-Aminomuconate,C02220,,C6H7NO4
+L-Cystathionine,C02291,,C7H14N2O4S
+Precorrin 2,C02463,,C42H48N4O16
+"cis,cis-Muconate",C02480,0,C6H6O4
+2-Isopropylmalate,C02504,-2,C7H10O5
+Kievitone hydrate,C02549,,C20H22O7
+Sucrose 6-phosphate,C02591,-2,C12H21O14P
+2-Isopropylmaleate,C02631,-2,C7H8O4
+3-Dehydroshikimate,C02637,-1,C7H7O5
+3-Ureidopropionate,C02642,-1,C4H7N2O3
+L-Formylkynurenine,C02700,-1,C11H11N2O4
+L-Formylkynurenine,C02700,-1,C11H11N2O4
+ps161,C02737,-1,C38H69N1O10P1
+Phosphoribosyl-ATP,C02739,-6,C15H19N5O20P4
+Phosphoribosyl-AMP,C02741,,C15H23N5O14P2
+Propanoyl phosphate,C02876,-2,C3H5O5P
+3-Methylbutanoyl-CoA,C02939,-4,C26H40N7O17P3S
+"(R,R)-Butane-2,3-diol",C03044,,C4H10O2
+2-Oxohept-3-enedioate,C03063,,C7H8O5
+3-Methylcrotonyl-CoA,C03069,-4,C26H38N7O17P3S
+4-Guanidinobutanamide,C03078,,C5H12N4O
+4-Phospho-L-aspartate,C03082,-2,C4H6NO7P
+5-Methylthio-D-ribose,C03089,,C6H12O4S
+5-Phosphoribosylamine,C03090,-1,C5H11NO7P
+Dimethylbenzimidazole,C03114,,C9H10N2
+N-Ribosylnicotinamide,C03150,1,C11H15N2O5
+Shikimate 3-phosphate,C03175,-3,C7H8O8P
+3-Methylglutaconyl-CoA,C03231,-5,C27H37N7O19P3S
+3-Phosphonooxypyruvate,C03232,-3,C3H2O7P
+Coproporphyrinogen III,C03263,-4,C36H40N4O8
+L-3-Amino-isobutanoate,C03284,,C4H9NO2
+L-Glutamyl 5-phosphate,C03287,-2,C5H8NO7P
+N2-Succinyl-L-arginine,C03296,-1,C10H17N4O5
+dTDP-6-deoxy-L-mannose,C03319,-2,C16H24N2O15P2
+"2,3-Dihydrodipicolinate",C03340,-2,C7H5NO4
+2-Methylacetoacetyl-CoA,C03344,-4,C26H38N7O18P3S
+Aminoimidazole ribotide,C03373,-2,C8H12N3O7P
+"D-Galactono-1,4-lactone",C03383,,C6H10O6
+N-(L-Arginino)succinate,C03406,-1,C10H17N4O6
+N2-Succinyl-L-ornithine,C03415,-1,C9H15N2O5
+(R)-S-Lactoylglutathione,C03451,-1,C13H20N3O8S
+(Z)-5-Oxohex-2-enedioate,C03453,,C6H6O5
+5-Formyltetrahydrofolate,C03479,,C20H23N7O7
+D-4'-Phosphopantothenate,C03492,-3,C9H15NO8P
+Deoxy-ribose 1-phosphate,C03496,,C5H11O7P
+Indoleglycerol phosphate,C03506,-2,C11H12NO6P
+L-2-Amino-3-oxobutanoate,C03508,,C4H7NO3
+S-Ribosyl-L-homocysteine,C03539,,C9H17NO6S
+Undecaprenyl diphosphate,C03543,-3,C55H89O7P2
+(R)-3-Hydroxybutanoyl-CoA,C03561,-4,C25H38N7O18P3S
+"2-Oxo-2,3-dihydrofuran-5-acetate",C03586,-1,C6H5O4
+4-Hydroxy-2-oxopentanoate,C03589,-1,C5H7O4
+4-Imidazolone-5-propanoate,C03680,-1,C6H7N2O3
+"Pyridine-2,3-dicarboxylate",C03722,-2,C7H3NO4
+(S)-4-Amino-5-oxopentanoate,C03741,,C5H9NO3
+"N6-(1,2-Dicarboxyethyl)-AMP",C03794,-4,C14H14N5O11P
+2-Aminomuconate semialdehyde,C03824,,C6H7NO3
+5'-Phosphoribosylglycinamide,C03838,-1,C7H14N2O8P
+(S)-1-Pyrroline-5-carboxylate,C03912,-1,C5H6NO2
+"2,3,4,5-Tetrahydrodipicolinate",C03972,-2,C7H7NO4
+"(2,3-Dihydroxybenzoyl)adenylate",C04030,-2,C17H16N5O10P
+"2,3-Dihydroxy-3-methylbutanoate",C04039,,C5H10O4
+5-Carboxy-2-oxohept-3-enedioate,C04052,,C8H8O7
+N-((R)-Pantothenoyl)-L-cysteine,C04079,,C12H22N2O6S
+"2,5-Dihydro-5-oxofuran-2-acetate",C04105,-1,C6H5O4
+CMP-3-deoxy-D-manno-octulosonate,C04121,-2,C17H24N3O15P
+D-1-Aminopropan-2-ol O-phosphate,C04122,,C3H10NO4P
+N-Acetyl-L-glutamate 5-phosphate,C04133,-3,C7H9NO8P
+Tetrahydropteroyltri-L-glutamate,C04144,-2,C24H32N8O12
+all-trans-Octaprenyl diphosphate,C04146,-3,C40H65O7P2
+5-Carboxymethyl-2-hydroxymuconate,C04186,-3,C8H5O7
+all-trans-Heptaprenyl diphosphate,C04216,-1,C35H60O7P2
+all-trans-Pentaprenyl diphosphate,C04217,,C25H44O7P2
+(2S)-2-Isopropyl-3-oxosuccinate,C04236,-2,C7H8O5
+But-2-enoyl-ACP,C04246,-1,C15H25N2O8PRS
+"(R)-2,3-Dihydroxy-3-methylbutanoate",C04272,-1,C5H9O4
+L-1-Pyrroline-3-hydroxy-5-carboxylate,C04281,,C5H7NO3
+"3,5/4-Trihydroxycyclohexa-1,2-dione",C04287,,C6H8O5
+N-(5-Phospho-D-ribosyl)anthranilate,C04302,-3,C12H13NO9P
+4-Methyl-5-(2-phosphoethyl)-thiazole,C04327,-2,C6H8NO4PS
+"6,7-Dimethyl-8-(1-D-ribityl)lumazine",C04332,,C13H18N4O6
+(R)-4'-Phosphopantothenoyl-L-cysteine,C04352,-3,C12H20N2O9PS
+5'-Phosphoribosyl-N-formylglycinamide,C04376,-2,C8H13N2O9P
+2-Amino-3-carboxymuconate semialdehyde,C04409,,C7H7NO5
+3-Isopropylmalate,C04411,-2,C7H10O5
+"N-Succinyl-LL-2,6-diaminoheptanedioate",C04421,-2,C11H16N2O7
+S-(2-Methylpropanoyl)-dihydrolipoamide,C04424,,C12H23NO2S2
+S-Adenosyl-4-methylthio-2-oxobutanoate,C04425,,C15H19N5O6S
+2-Dehydro-3-deoxy-6-phospho-D-gluconate,C04442,-3,C6H8O9P
+5-Amino-6-(5'-phosphoribitylamino)uracil,C04454,-2,C9H15N4O9P
+N-Succinyl-2-L-amino-6-oxoheptanedioate,C04462,-3,C11H12NO8
+3-Deoxy-D-manno-octulosonate 8-phosphate,C04478,-3,C8H12O11P
+5-Methyltetrahydropteroyltri-L-glutamate,C04489,-2,C25H34N8O12
+Guanosine 3'-diphosphate 5'-triphosphate,C04494,-7,C10H11N5O20P5
+N-Acetyl-alpha-D-glucosamine 1-phosphate,C04501,,C8H16NO9P
+4-Amino-2-methyl-5-phosphomethylpyrimidine,C04556,-2,C6H8N3O4P
+"di-trans,poly-cis-Undecaprenyl diphosphate",C04574,,C55H92O7P2
+(R)-3-Hydroxybutanoyl-ACP,C04618,-1,C15H27N2O9PRS
+(R)-3-Hydroxyoctanoyl-ACP,C04620,-1,C19H35N2O9PRS
+UDP-N-acetyl-3-(1-carboxyvinyl)-D-glucosamine,C04631,-3,C20H26N3O19P2
+2-(Formamido)-N1-(5'-phosphoribosyl)acetamidine,C04640,-1,C8H15N3O8P
+2-Hydroxy-5-carboxymethylmuconate semialdehyde,C04642,-3,C8H5O6
+"UDP-2,3-bis(3-hydroxytetradecanoyl)glucosamine",C04652,-2,C43H75N3O20P2
+D-erythro-1-(Imidazol-4-yl)glycerol 3-phosphate,C04666,-2,C6H9N2O6P
+1-(5'-Phosphoribosyl)-5-amino-4-imidazolecarboxamide,C04677,-2,C9H13N4O8P
+2-Dehydro-3-deoxy-D-arabino-heptonate 7-phosphate,C04691,-3,C7H10O10P
+"4-(1-D-Ribitylamino)-5-amino-2,6-dihydroxypyrimidine",C04732,,C9H16N4O6
+1-(5'-Phosphoribosyl)-5-formamido-4-imidazolecarboxamide,C04734,-2,C10H13N4O9P
+UDP-3-O-(3-hydroxytetradecanoyl)-N-acetylglucosamine,C04738,-2,C31H51N3O19P2
+1-(5-Phospho-D-ribosyl)-5-amino-4-imidazolecarboxylate,C04751,-3,C9H11N3O9P
+2-Methyl-4-amino-5-hydroxymethylpyrimidine diphosphate,C04752,-3,C6H8N3O7P2
+"N1-(5-Phospho-alpha-D-ribosyl)-5,6-dimethylbenzimidazole",C04778,-2,C14H17N2O7P
+"2-Amino-7,8-dihydro-4-hydroxy-6-(diphosphooxymethyl)pteridine",C04807,-3,C7H8N5O8P2
+1-(5'-Phosphoribosyl)-5-amino-4-(N-succinocarboxamide)-imidazole,C04823,-4,C13H15N4O12P
+"2,3-Bis(3-hydroxytetradecanoyl)-beta-D-glucosaminyl 1-phosphate",C04824,-2,C34H64NO12P
+"2-Amino-4-hydroxy-6-(D-erythro-1,2,3-trihydroxypropyl)-7,8-dihydropteridine",C04874,1,C9H14N5O4
+"UDP-N-acetylmuramoyl-L-alanyl-D-gamma-glutamyl-meso-2,6-diaminopimelate",C04877,-4,C35H51N7O26P2
+UDP-N-acetylmuramoyl-L-alanyl-D-glutamyl-6-carboxy-L-lysyl-D-alanyl-D-alanine,C04882,-4,C41H61N9O28P2
+"2-Amino-4-hydroxy-6-(erythro-1,2,3-trihydroxypropyl)dihydropteridine triphosphate",C04895,-3,C9H13N5O13P3
+5-(5-Phospho-D-ribosylaminoformimino)-1-(5-phosphoribosyl)-imidazole-4-carboxamide,C04896,-4,C15H21N5O15P2
+N-(5'-Phospho-D-1'-ribulosylformimino)-5-amino-1-(5''-phospho-D-ribosyl)-4-imidazolecarboxamide,C04916,-4,C15H21N5O15P2
+Lipid IV(A),C04919,-4,C68H126N2O23P2
+Lipid A disaccharide,C04932,-2,C68H127N2O20P
+S-(2-Methylbutanoyl)-dihydrolipoamide,C05118,,C13H25NO2S2
+S-(3-Methylbutanoyl)-dihydrolipoamide,C05119,,C13H25NO2S2
+2-(alpha-Hydroxyethyl)thiamine diphosphate,C05125,-2,C14H20N4O8P2S
+(S)-Hydroxydecanoyl-CoA,C05264,-4,C31H50N7O18P3S
+trans-Dec-2-enoyl-CoA,C05275,-4,C31H48N7O17P3S
+Phenethylamine,C05332,1,C8H12N
+beta-D-Fructose 6-phosphate,C05345,-2,C6H11O9P
+"beta-D-Fructose 1,6-bisphosphate",C05378,,C6H14O12P2
+Oxalosuccinate,C05379,,C6H6O7
+3-Carboxy-1-hydroxypropyl-ThPP,C05381,-3,C16H21N4O10P2S
+Deoxyinosine,C05512,,C10H12N4O4
+"2-Hydroxyhepta-2,4-dienedioate",C05600,,C7H8O5
+3-Hydroxypropionyl-CoA,C05668,,C24H40N7O18P3S
+Butyryl-ACP,C05745,-1,C15H27N2O8PRS
+3-Oxohexanoyl-ACP,C05746,-1,C17H29N2O9PRS
+(R)-3-Hydroxyhexanoyl-ACP,C05747,-1,C17H31N2O9PRS
+3-Oxooctanoyl-ACP,C05750,-1,C19H33N2O9PRS
+trans-Oct-2-enoyl-ACP,C05751,-1,C19H33N2O8PRS
+Octanoyl-ACP,C05752,-1,C19H35N2O8PRS
+3-oxodecanoyl-ACP,C05753,-1,C21H37N2O9PRS
+trans-Dec-2-enoyl-ACP,C05754,-1,C21H37N2O8PRS
+Decanoyl-ACP,C05755,-1,C21H39N2O8PRS
+3-Oxododecanoyl-ACP,C05756,-1,C23H41N2O9PRS
+(R)-3-Hydroxydodecanoyl-ACP,C05757,-1,C23H43N2O9PRS
+trans-Dodec-2-enoyl-ACP,C05758,-1,C23H41N2O8PRS
+3-Oxotetradecanoyl-ACP,C05759,-1,C25H45N2O9PRS
+3-Oxohexadecanoyl-ACP,C05762,-1,C27H49N2O9PRS
+Precorrin 3A,C05772,-7,C43H43N4O16
+Cobyrinate,C05773,,C45H59CoN4O14
+Cobinamide,C05774,5,C48H73CoN11O8
+alpha-Ribazole,C05775,,C14H18N2O4
+3-Octaprenyl-4-hydroxybenzoate,C05809,-1,C47H69O3
+2-Octaprenylphenol,C05810,,C46H70O
+2-Octaprenyl-6-hydroxyphenol,C05811,,C46H70O2
+2-Octaprenyl-6-methoxyphenol,C05812,,C47H72O2
+"2-Octaprenyl-6-methoxy-1,4-benzoquinone",C05813,,C47H72O3
+"2-Octaprenyl-3-methyl-6-methoxy-1,4-benzoquinone",C05814,,C48H74O3
+"2-Octaprenyl-3-methyl-5-hydroxy-6-methoxy-1,4-benzoquinone",C05815,,C48H72O4
+Iminoaspartate,C05840,-1,C4H4NO4
+"Undecaprenyl-diphospho-N-acetylmuramoyl-L-alanyl-D-glutamyl-meso-2,6-diaminopimeloyl-D-alanyl-D-alanine",C05897,-4,C87H139N7O23P2
+"Undecaprenyl-diphospho-N-acetylmuramoyl-(N-acetylglucosamine)-L-alanyl-D-glutamyl-meso-2,6-diaminopimeloyl-D-alanyl-D-alanine",C05898,-4,C95H152N8O28P2
+Biotinyl-5'-AMP,C05921,-1,C20H27N7O9PS
+Formamidopyrimidine nucleoside triphosphate,C05922,,C10H18N5O15P3
+"2,5-Diaminopyrimidine nucleoside triphosphate",C05923,,C9H18N5O14P3
+Dihydroneopterin phosphate,C05925,-1,C9H13N5O7P
+N2-Succinyl-L-glutamate,C05931,-3,C9H10NO7
+N2-Succinyl-L-glutamate 5-semialdehyde,C05932,-2,C9H11NO6
+L-4-Hydroxyglutamate semialdehyde,C05938,,C5H9NO4
+D-4-Hydroxy-2-oxoglutarate,C05946,,C5H6O6
+L-erythro-4-Hydroxyglutamate,C05947,,C5H9NO5
+clpn161,C05980,-2,C73H132O17P2
+Propinol adenylate,C05983,,C13H18N5O8P
+Acetyl adenylate,C05993,,C12H16N5O8P
+3-Hydroxyisovaleryl-CoA,C05998,-4,C26H40N7O18P3S
+(S)-3-Hydroxyisobutyrate,C06001,,C4H8O3
+(S)-Methylmalonate semialdehyde,C06002,,C4H6O3
+(S)-2-Aceto-2-hydroxybutanoate,C06006,-1,C6H9O4
+"(R)-2,3-Dihydroxy-3-methylpentanoate",C06007,-1,C6H11O4
+(R)-2-Oxo-3-methylpentanoate,C06008,-1,C6H9O3
+(S)-2-Acetolactate,C06010,-1,C5H7O4
+UDP-3-O-(3-hydroxytetradecanoyl)-D-glucosamine,C06022,-1,C29H50N3O18P2
+3-Deoxy-D-manno-octulosonyl-lipid IV(A),C06024,-5,C76H137N2O30P2
+KDO2-lipid IV(A),C06025,-6,C84H148N2O37P2
+KDO-KO-lipid (A),C06026,-6,C110H196N2O39P2
+2-Oxo-3-hydroxy-4-phosphobutanoate,C06054,-3,C4H4O8P
+O-Phospho-4-hydroxy-L-threonine,C06055,-2,C4H8NO7P
+"2,5-Diamino-6-(5'-triphosphoryl-3',4'-trihydroxy-2'-oxopentyl)-amino-4-oxopyrimidine",C06148,,C9H18N5O14P3
+D-Glucosamine 1-phosphate,C06156,-1,C6H13NO8P
+S-Glutaryldihydrolipoamide,C06157,,C13H23NO4S2
+"2,4-Dihydroxyhept-2-enedioate",C06201,,C7H10O6
+Ferrichrome,C06228,,C27H45FeN9O12
+Ferrichrome[e],C06228,,C27H45FeN9O12
+Fe-enterobactin,C06230,,C30H27FeN3O15
+Fe-enterobactin[e],C06230,,C30H27FeN3O15
+(R)-3-Hydroxy-3-methyl-2-oxobutanoate,C06237,,C5H8O4
+Precorrin 6Y,C06319,,C44H56N4O16
+Precorrin 6X,C06320,,C44H54N4O16
+ADP-D-glycero-D-manno-heptose,C06397,-2,C17H25N5O16P2
+ADP-L-glycero-D-manno-heptose,C06398,-2,C17H25N5O16P2
+Hydrogenobyrinate,C06399,-6,C45H54N4O14
+Precorrin 3B,C06406,-6,C43H44N4O17
+Precorrin 4,C06407,-8,C44H44N4O17
+Precorrin 8X,C06408,,C45H60N4O14
+Precorrin 5,C06416,-8,C45H46N4O17
+"(6R)-6-(L-erythro-1,2-Dihydroxypropyl)-5,6,7,8-tetrahydro-4a-hydroxypterin",C06486,,C9H14N4O3
+"(6R)-6-(L-erythro-1,2-Dihydroxypropyl)-7,8-dihydro-6H-pterin",C06487,,C9H12N4O2
+"Hydrogenobyrinate a,c diamide",C06503,-4,C45H58N6O12
+"Cob(II)yrinate a,c diamide",C06504,-3,C45CoH59N6O12
+"Cob(I)yrinate a,c diamide",C06505,,C45H64CoN6O12
+"Adenosyl cobyrinate a,c diamide",C06506,,C55H76CoN11O15
+Adenosyl cobyrinate hexaamide,C06507,,C55H80CoN15O11
+Adenosyl cobinamide,C06508,1,C58CoH87N16O11
+Adenosyl cobinamide phosphate,C06509,4,C58H84CoN16O14P
+Adenosine-GDP-cobinamide,C06510,4,C68H96CoN21O21P2
+Phenylacetic acid,C07086,-1,C8H7O2
+D-Glycero-D-manno-heptose 7-phosphate,C07836,-2,C7H13O10P
+D-Glycero-D-manno-heptose 1-phosphate,C07838,-2,C7H13O10P
+4-amino-4-deoxychorismate,C11355,-1,C10H10NO5
+"trans,trans,cis-Geranylgeranyl diphosphate",C11356,,C20H36O7P2
+2-C-Methyl-D-erythritol 4-phosphate,C11434,-2,C5H11O7P
+4-(Cytidine 5'-diphospho)-2-C-methyl-D-erythritol,C11435,-2,C14H23N3O14P2
+2-Phospho-4-(cytidine 5'-diphospho)-2-C-methyl-D-erythritol,C11436,-4,C14H22N3O17P3
+1-Deoxy-D-xylulose 5-phosphate,C11437,-2,C5H9O7P
+"2-C-Methyl-D-erythritol 2,4-cyclodiphosphate",C11453,-2,C5H10O9P2
+"D-Glycero-D-manno-heptose 1,7-bisphosphate",C11472,-4,C7H12O13P2
+Cobalt-precorrin 3,C11539,,C43H48CoN4O16
+Cobalt-precorrin 4,C11540,,C44H51CoN4O16
+Cobalt-precorrin 5,C11541,,C45H53CoN4O16
+Cobalt-precorrin 6,C11542,,C44H53CoN4O16
+Cobalt-dihydro-precorrin 6,C11543,,C44H55CoN4O16
+Cobalt-precorrin 8,C11545,,C45H59CoN4O14
+1-Hydroxy-2-methyl-2-butenyl 4-diphosphate,C11811,-3,C5H9O8P2
+"4,6-Dideoxy-4-oxo-dTDP-D-glucose",C11907,-2,C16H22N2O15P2
+5-Carboxyamino-1-(5-phospho-D-ribosyl)imidazole,C15667,,C9H14N3O9P
+(R)-3-hydroxy-cis-dodec-5-enoyl-ACP,,-1,C23H41N2O9PRS
+(R)-3-hydroxy-cis-myristol-7-eoyl-ACP,,-1,C25H45N2O9PRS
+(R)-3-hydroxy-cis-palm-9-eoyl-ACP,,-1,C27H49N2O9PRS
+(R)-3-hydroxy-cis-vacc-11-enoyl-ACP,,-1,C29H53N2O9PRS
+(R)-3-Hydroxydecanoyl-ACP,,-1,C21H39N2O9PRS
+(R)-3-Hydroxytetradecanoyl-ACP,,-1,C25H47N2O9PRS
+(S)-3-Hydroxydecanoyl-CoA,,-4,C31H50N7O18P3S
+"1,2-Diacylglycerol  (E.coli) **",,,C1836H3448O250
+1-hexadecanoyl-sn-glycerol 3-phosphate,,-2,C19H37O7P1
+1-hexadec-9-enoyl-sn-glycerol 3-phosphate,,-2,C19H35O7P1
+1-heptadecanoyl-sn-glycerol 3-phosphate,,-2,C20H39O7P1
+1-octadecanoyl-sn-glycerol 3-phosphate,,-2,C21H41O7P1
+1-octadec-11-enoyl-sn-glycerol 3-phosphate,,-2,C21H39O7P1
+2-heptyl-4-quinolone,,0,C16H21ON
+2-heptyl-4-quinolone[e],,0,C16H21ON
+2-hydroxy-Octadec-ACP(n-C18:1),,,C29H51N2O9PRS
+2-keto-4-methylthiobutyrate,,-1,C5H7O3S
+"3,4-dihydroxy-2-butanone 4-phosphate",,-2,C4H7O6P
+3-hydroxydecanoyl-3-hydroxydecanoate,,0,C20H38O5
+3-oxo-cis-dodec-5-enoyl-ACP,,-1,C23H39N2O9PRS
+3-oxo-cis-myristol-7-eoyl-ACP,,-1,C25H45N2O9PRS
+3-oxo-cis-palm-9-eoyl-ACP,,-1,C27H47N2O9PRS
+3-oxo-cis-vacc-11-enoyl-ACP,,-1,C29H51N2O9PRS
+3-Oxododecanoyl-CoA,,-4,C33H52N7O18P3S
+3-Oxoninadecanoyl-ACP,,-1,C30H52N2O9PRS
+Acetoacetyl-ACP,,-1,C15H25N2O9PRS
+Acetyl-ACP,,-1,C13H23N2O8PRS
+ACP,,-1,C11H21N2O7PRS
+BCJ-acolipa,,,None
+BCJ-acolipa[e],,,None
+BCJ-Core-LipidA,,,None
+beta-hydroxydecanoyl-beta-hydroxydecanoyl-S-CoA,,0,C41H68O20N7P3S
+Biomass,,,Biomass
+"CDP-1,2-diheptadecanoylglycerol",,-2,C46H83N3O15P2
+"CDP-1,2-dihexadecanoylglycerol",,-2,C44H79N3O15P2
+CDPdiacylglycerol (E coli) **,,-100,C2286H3998N150O750P100
+"CDP-1,2-dioctadec-11-enoylglycerol",,-2,C48H83N3O15P2
+CDP-pa160161,,-2,C44H77N3O15P2
+CDP-pa180181,,-2,C48H85N3O15P2
+cis-2-Dodecenoic acid,,-1,C12H21O2
+cis-2-Dodecenoic acid[e],,-1,C12H21O2
+cis-dec-3-enoyl-ACP (n-C10:1),,-1,C21H37N2O8PRS
+cis-dodec-5-enoyl-ACP (n-C12:1),,-1,C23H43N2O8PRS
+clpn160,,-2,C73H140O17P2
+clpn160161,,,C73H136O17P2
+clpn170cyc,,,None
+clpn180181,,,C81H150O17P2
+clpn181,,-2,C81H148O17P2
+clpn190cyc,,,None
+Decanoyl-CoA (n-C10:0CoA),,-4,C31H50N7O17P3S
+di-Rhamnolipid,,0,C32H58O13
+Dodecanoyl-ACP (n-C12:0ACP),,-1,C23H43N2O8PRS
+Heptadec-ACP (n-C17:0 ACP),,-1,C29H55N2O8PRS
+Hexadecenoyl-ACP (n-C16:1ACP),,-1,C27H49N2O8PRS
+Hexanoyl-ACP,,-1,C17H31N2O8PRS
+KDO-KO-lipid4,,-6,C84H148N2O38P2
+L-Glutamyl-tRNA(Glu),,,C5H7NO3R
+LOL(3-OH-14:0),,,None
+LOL(3-OH-16:0),,,None
+mono-Rhamnolipid,,0,C26H48O9
+Myristoyl-ACP (n-C14:0ACP),,-1,C25H47N2O8PRS
+N-Hexanoyl-L-homoserine lactone,,,C19H15NO3
+N-Hexanoyl-L-homoserine lactone[e],,,C19H15NO3
+Ninadecenoyl-ACP (n-C19:1ACP),,-1,C30H53N2O8PRS
+N-Octanoyl-L-homoserine lactone,,,C12H21NO3
+N-Octanoyl-L-homoserine lactone[e],,,C12H21NO3
+Octadecanoyl-ACP (n C18:0 ACP),,-1,C29H55N2O8PRS
+Octadecenoyl-ACP (n-C18:1ACP),,-1,C29H53N2O8PRS
+Ornithine lipid (3-OH-14:0 2-OH-18:1),,,None
+Ornithine lipid (3-OH-16:0 2-OH-18:1),,,None
+Oxidized thioredoxin,,,X
+pa160,,-2,C35H67O8P1
+pa160161,,-2,C35H65O8P1
+pa170,,-2,C37H71O8P1
+pa180181,,-2,C39H73O8P1
+pa181,,-2,C39H71O8P1
+palmACP,,-1,C27H51N2O8PRS
+pe160,,0,C37H74N1O8P1
+pe160161,,0,C37H72N1O8P1
+pe170,,0,C39H78N1O8P1
+pe170cyc,,,None
+pe180181,,0,C41H80N1O8P1
+pe181,,0,C41H78N1O8P1
+pe190cyc,,,None
+peptide,,-1,C6H7N3O4R3
+peptide[e],,-1,C6H7N3O4R3
+peptido-EC,,-2,C40H62N8O21
+pg160,,-1,C38H74O10P1
+pg160161,,-1,C38H72O10P1
+pg161,,-1,C38H70O10P1
+pg170cyc,,,None
+pg180181,,-1,C42H80O10P1
+pg181,,-1,C42H78O10P1
+pg190cyc,,,None
+pgp160,,-3,C38H73O13P2
+pgp160161,,-3,C38H71O13P2
+pgp161,,-3,C38H69O13P2
+pgp180181,,-3,C42H79O13P2
+pgp181,,-3,C42H77O13P2
+Phospatidylglycerol (Ecoli) **,,-50,C1986H3748O500P50
+phosphatidate  (E.coli) **,,-100,C1836H3398O400P50
+Phosphatidylethanolamine (Ecoli) **,,,C1936H3748N50O400P50
+Phosphatidylglycerophosphate (Ecoli) **,,-150,C1986H3698O650P100
+phosphatidylserine (Ecoli) **,,-50,C1986H3698N50O500P50
+Power,,0,Power
+Propanoyl-ACP,,-1,C14H26N2O8PRS
+ps160,,-1,C38H73N1O10P1
+ps160161,,-1,C38H71N1O10P1
+ps170,,-1,C40H77N1O10P1
+ps180181,,-1,C42H79N1O10P1
+ps181,,-1,C42H77N1O10P1
+R-3-hydroxy-hexadecanoyl-ACP,,-1,C27H51N2O9PRS
+R-3-hydroxy-ninadecanoyl-ACP,,-1,C30H55N2O9PRS
+Reduced thioredoxin,,,XH2
+semiquinone-8,,0,C49H75O4
+Succinamic Acid,,-1,C4H7NO3
+Succinamic Acid[e],,-1,C4H7NO3
+Tetradecenoyl-ACP (n-C14:1ACP),,-1,C25H45N2O8PRS
+trans-3-cis-11-vacceoyl-ACP,,-1,C29H51N2O8PRS
+trans-3-cis-5-dodecenoyl-ACP,,-1,C23H39N2O8PRS
+trans-3-cis-7-myristoleoyl-ACP,,-1,C25H43N2O8PRS
+trans-3-cis-9-palmitoleoyl-ACP,,-1,C27H47N2O8PRS
+trans-Hex-2-enoyl-ACP,,-1,C17H29N2O8PRS
+trans-Tetradec-2-enoyl-ACP,,,C14H25OSR
+tRNA (Glu),,,R
+Ubiquinol-8,,,C49H76O4
+Ubiquinone-8,,,C49H74O4
+UDP-D-Quinovosamine,,,C17H25N3O16P2
+UDP-L-(4-amino-4-deoxy-L-arabinose)-N-Formyl,,,C15H23N3O16P2
+uridine-5-diphospho-beta-(4-amino-4-deoxy-L-arabinose),,,C14H23N3O15P2
+uridine 5-(beta-L-threo-pentapyranosyl-4-ulose diphosphate,,,C14H20N2O16P2
+undecaprenylphosphate-L-(4-amino-4-deoxy-L-arabinose)-N-Formyl,,,C61H100NO8P
+undecaprenyl phosphate-4-amino-4-deoxy-L-arabinose,,0,C60H100N1O7P1
