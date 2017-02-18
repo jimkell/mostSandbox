@@ -4454,8 +4454,11 @@ public class GraphicalInterface extends JFrame {
 		// add kegg ids from hashmap to table
 		for (int i = 0; i < metabolites.size(); i++) {
 			int totalTrimLength = modeltrimStartIndex + modeltrimEndIndex;
-			String abbr = metabolites.get(i).getMetaboliteName();
-			//String abbr = metabolites.get(i).getMetaboliteAbbreviation();
+			// probably should eventually add a dropbox for this
+			String abbr = metabolites.get(i).getMetaboliteAbbreviation();
+			if (GraphicalInterfaceConstants.USE_METAB_NAME_FOR_MATCHING_KEGG_IDS) {
+				abbr = metabolites.get(i).getMetaboliteName();
+			}
 			if (abbr != null && abbr.length() > totalTrimLength) {
 				String trimmedAbbr = abbr.substring(modeltrimStartIndex, abbr.length() - modeltrimEndIndex);
 				if (trimmedAbbr.contains("DASH_")) {

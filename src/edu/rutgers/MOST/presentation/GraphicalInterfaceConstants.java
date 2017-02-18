@@ -581,6 +581,8 @@ public class GraphicalInterfaceConstants {
         
     public static final String LOAD_FROM_MODEL_COLLECTION_TABLE_TITLE = "Load from Model Collection Database";
     
+    public static final boolean USE_METAB_NAME_FOR_MATCHING_KEGG_IDS = false;
+    
     // spaces for alignment
     public static final String ROW_HEADER_TITLE = "   Row";
     
